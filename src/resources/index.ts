@@ -19,7 +19,6 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/metamask-token-button/metamask-token-button"),
     PLATFORM.moduleName("./elements/donutChart/donut-chart"),
     PLATFORM.moduleName("./elements/inline-svg"),
-    PLATFORM.moduleName("../pool/liquidity-buttons/liquidity-buttons"),
     PLATFORM.moduleName("../pools/weth-eth-exchange/weth-eth-exchange"),
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
