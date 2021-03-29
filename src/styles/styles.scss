@@ -1,0 +1,223 @@
+@import "./animations";
+@import "./dialogs";
+@import "tippy.js/dist/tippy.css"; // TODO: use CDN?
+
+html {
+  body {
+    margin: 0;
+    background-color: $global-background-color;
+    color: $color-white;
+    font-family: Aeonik;
+    min-height: 100vh;
+
+    input {
+      border: $input-border;
+      width: 70px;
+      background-color: $color-white;
+      color: $color-black;
+      border-radius: $input-border-radius;
+      outline: none;
+
+      &::placeholder {
+        color: $color-black;
+      }
+      &:focus::placeholder {
+        color: transparent;
+      }
+    }
+
+    .clearInput {
+      background-color: transparent;
+      color: $color-black;
+
+      &::placeholder {
+        color: $color-black;
+      }
+    }
+
+    hr {
+      height: 1px;
+      border: none;
+      background-color: #eeeeee;
+    }
+
+    a {
+      color: $color-white;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .heading1 {
+      font-size: 18px;
+      font-family: "Cera Pro";
+      margin-bottom: 8px;
+      color: $color-light-purple;
+    }
+    .heading2 {
+      font-size: 24px;
+      font-family: "Cera Pro";
+      white-space: nowrap;
+    }
+    .heading3 {
+      font-size: 16px;
+      font-family: "Cera Pro";
+      white-space: nowrap;
+    }
+
+    .button,
+    .button1,
+    .button2,
+    .button3,
+    .button4,
+    .buttonBw {
+      border-radius: $global-button-radius;
+      padding: 6px 48px;
+      padding-bottom: 8px;
+      font-family: "Cera Pro";
+      font-size: 12px;
+      color: $color-white;
+      border: 2px solid $color-white;
+      outline: none;
+      box-shadow: 3px 3px 8px #00000029;
+      white-space: nowrap;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover:not(:disabled) {
+        background-color: $color-black;
+        border-color: $color-black;
+        color: $color-white;
+        text-decoration: none;
+      }
+
+      &.small {
+        padding: 3px 13px;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    .button1 {
+      background-color: $button1-color;
+      border-color: $button1-color;
+    }
+    .button2 {
+      background-color: $button2-color;
+      border-color: $button2-color;
+    }
+    .button3 {
+      background-color: $button3-color;
+      border-color: $button3-color;
+    }
+    .button4 {
+      color: $button4-color;
+      border: 2px solid $button4-color;
+    }
+    .buttonBw {
+      color: $color-black;
+      border: 2px solid $color-green;
+    }
+
+    .sectionStyles {
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      line-height: 15px;
+      background-color: $section-background-color;
+
+      a {
+        text-decoration: underline;
+      }
+
+      input {
+        font-size: 12px;
+      }
+    }
+
+    .section {
+      @extend .sectionStyles;
+
+      border: $section-border;
+      border-radius: $section-border-radius;
+      padding: 18px 24px;
+
+      &.top {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: none;
+        padding-top: 60px;
+        padding-bottom: 12px;
+
+        > div {
+          margin-bottom: 16px;
+        }
+      }
+      &.middle {
+        border-radius: 0;
+        border-bottom: none;
+        text-align: center;
+
+        &.doubleSection {
+          display: flex;
+          padding: 0;
+
+          .left,
+          .right {
+            padding-top: 18px;
+            padding-bottom: 18px;
+          }
+
+          .left {
+            flex-basis: 50%;
+            border-right: $section-border;
+          }
+
+          .right {
+            flex-basis: 50%;
+          }
+        }
+      }
+      &.bottom {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        text-align: center;
+      }
+    }
+  }
+}
+
+etherscanlink {
+  white-space: nowrap;
+  display: inline-block;
+
+  .etherscanlink .text {
+    margin-right: 4px;
+  }
+}
+
+.smallEtherScanLink {
+  display: inline-block;
+  vertical-align: middle;
+  width: 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copy-to-clip-button,
+.copy-to-clip-button:focus {
+  color: $color-white;
+}
+
+.copy-to-clip-button:hover {
+  color: $color-grey-3;
+}
+
+#WEB3_CONNECT_MODAL_ID {
+  div:first-of-type {
+    z-index: 10002; // stay over everything except modal mask
+  }
+}

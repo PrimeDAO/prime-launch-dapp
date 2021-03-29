@@ -1,0 +1,140 @@
+{
+  "name": "@primedao/prime-ido-dapp",
+  "version": "1.0.0",
+  "description": "The PrimeDAO’s Home for IDOs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PrimeDAO/prime-ido-dapp"
+  },
+  "author": "CL Cybernetix GmbH",
+  "homepage": "./",
+  "license": "MIT",
+  "scripts": {
+    "build": "cross-env NETWORK=mainnet webpack --env.production --extractCss",
+    "build-kovan": "cross-env NETWORK=kovan webpack --env.production  --extractCss",
+    "build-dev": "cross-env NETWORK=kovan webpack --env.development --extractCss",
+    "build-dev-mainnet": "cross-env NETWORK=mainnet webpack --env.development --extractCss",
+    "serve": "serve -s dist --listen=3300 --cors",
+    "serve-dev": "cross-env NETWORK=kovan webpack-dev-server --env.development --extractCss",
+    "serve-dev-mainnet": "cross-env NETWORK=mainnet webpack-dev-server --env.development --extractCss",
+    "analyze": "webpack --env.production --analyze",
+    "test": "au test",
+    "ipfs-deploy": "ipfs-deploy dist --pinner pinata --no-open --no-clipboard",
+    "lint": "eslint --ext .ts ./src ./test",
+    "lint.fix": "npm run lint -- --fix",
+    "fetchContracts": "node scripts/fetchContracts.js"
+  },
+  "dependencies": {
+    "@toruslabs/torus-embed": "1.8.6",
+    "@walletconnect/web3-provider": "^1.3.6",
+    "aurelia-animator-css": "^1.0.4",
+    "aurelia-bootstrapper": "^2.3.3",
+    "aurelia-dialog": "^2.0.0",
+    "aurelia-event-aggregator": "^1.0.3",
+    "aurelia-typed-observable-plugin": "^0.4.2",
+    "axios": "^0.21.1",
+    "d3": "^3.5.17",
+    "ethers": "^5.0.14",
+    "json-to-graphql-query": "^2.0.0",
+    "lightweight-charts": "^3.3.0",
+    "moment-timezone": "^0.5.31",
+    "numbro": "^2.3.2",
+    "rxjs": "^6.6.3",
+    "tippy.js": "^6.2.7",
+    "web3modal": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.2",
+    "@types/webpack": "^4.41.22",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "app-settings-loader": "^1.0.6",
+    "aurelia-cli": "^2.0.2",
+    "aurelia-loader-nodejs": "^1.1.0",
+    "aurelia-pal-nodejs": "^2.0.0",
+    "aurelia-testing": "^1.0.0",
+    "aurelia-webpack-plugin": "^4.0.0",
+    "babel-eslint": "^10.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.1.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^4.3.0",
+    "dotenv": "^8.2.0",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
+    "eslint": "^7.10.0",
+    "eslint-plugin-rxjs": "^2.1.2",
+    "expose-loader": "^1.0.0",
+    "file-loader": "^6.1.0",
+    "fs-extra": "^9.0.1",
+    "gulp": "^4.0.2",
+    "gulp-eslint": "^6.0.0",
+    "html-loader": "^1.3.1",
+    "html-webpack-plugin": "^4.5.0",
+    "ipfs-deploy": "^8.0.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jest": "^26.4.2",
+    "jest-cli": "^26.4.2",
+    "jest-transform-stub": "^2.0.0",
+    "json-loader": "^0.5.7",
+    "mini-css-extract-plugin": "^0.11.2",
+    "minimatch": "^3.0.4",
+    "node-sass": "^4.14.1",
+    "promise-polyfill": "^8.1.3",
+    "sass-loader": "^10.0.2",
+    "serve": "^11.3.2",
+    "style-loader": "^1.2.1",
+    "tree-kill": "^1.2.2",
+    "ts-jest": "^26.4.1",
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.44.2",
+    "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "engines": {
+    "node": ">=14.11.0"
+  },
+  "browser": {
+    "http": false
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^aurelia-binding$": "<rootDir>/node_modules/aurelia-binding"
+    },
+    "modulePaths": [
+      "<rootDir>/src",
+      "<rootDir>/node_modules"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.(css|less|sass|scss|styl|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub",
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "\\.spec\\.(ts|js)$",
+    "setupFiles": [
+      "<rootDir>/test/jest-pretest.ts"
+    ],
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}",
+      "!**/*.spec.{js,ts}",
+      "!**/node_modules/**",
+      "!**/test/**"
+    ],
+    "coverageDirectory": "<rootDir>/test/coverage-jest",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
+  }
+}

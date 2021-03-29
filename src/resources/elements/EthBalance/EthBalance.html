@@ -1,0 +1,16 @@
+<template>
+  <span if.to-view="balance !== null">
+    <formatted-number
+      if.to-view="formatted"
+      value.to-view="balance | ethwei"
+      format.to-view="formatted"
+      placement.to-view="top">
+    </formatted-number>
+    <formatted-number
+      else
+      class="ethbalance"
+      value.to-view="balance | ethwei"
+      placement.to-view="placement"></formatted-number>
+  </span>
+  <span else class="ethbalance">--</span>
+</template>

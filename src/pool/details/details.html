@@ -1,0 +1,51 @@
+<template>
+  <div class="animated-page au-animate details">
+    <div class="detail">
+      <div class="labelValue">
+        <div class="label">Accrued Fees</div>
+        <div class="value">$<formatted-number value.to-view="pool.accruedFees"
+            average="false"
+            mantissa="2"
+            thousands-separated></formatted-number>
+        </div>
+      </div>
+      <div class="description">The total collected thus far in fees by pool members in exchange for providing liquidity.</div>
+    </div>
+    <div class="detail">
+      <div class="labelValue">
+        <div class="label">Accrued Volume</div>
+        <div class="value">$<formatted-number value.to-view="pool.accruedVolume"
+            average="false"
+            mantissa="2"
+            thousands-separated></formatted-number>
+        </div>
+      </div>
+      <div class="description">The total volume of exchanges made using the pool</div>
+    </div>
+    <div class="detail">
+      <div class="labelValue">
+        <div class="label">Pool Members</div>
+        <div class="value">${pool.membersCount === 1000 ? ">= " : ""}
+          <formatted-number value.to-view="pool.membersCount"
+            average="false"
+            mantissa="0"
+            thousands-separated></formatted-number>
+        </div>
+      </div>
+      <div class="description">The number of unique member addresses who hold pool tokens.</div>
+    </div>
+    <div class="detail">
+      <div class="labelValue">
+        <div class="label">View on Etherscan</div>
+        <div class="value">
+          <etherscanlink
+            address.to-view="pool.address"
+            text.to-view="pool.address | smallHexString"
+            css="link">
+          </etherscanlink>
+        </div>
+      </div>
+    </div>
+  </div>
+  <liquidity-buttons pool.to-view="pool"></liquidity-buttons>
+</template>

@@ -1,0 +1,124 @@
+@import "./colors";
+
+.dialog {
+  color: $color-white;
+  background-color: $color-black;
+}
+
+// .dialog ux-dialog-header {
+//   font-weight: 500;
+//   font-size: 1.2rem;
+// }
+
+// .dialog img.logo,
+// ux-dialog-header .material-icons {
+//   position: relative;
+//   top: 0.3rem;
+//   margin-right: 0.4rem;
+// }
+
+// .dialog .body div {
+//   margin-bottom: 1rem;
+// }
+
+// ux-dialog-body .important {
+//   font-weight: 500;
+// }
+
+// .dialog .body .buttonContainer,
+// .dialog .body .userAddressContainer {
+//   text-align: center;
+//   padding-top: 0.5rem;
+// }
+
+// .dialog .body etherscanlink a,
+// .dialog .body etherscanlink a:hover,
+// .dialog .body .copy-to-clip-button,
+// .dialog .body .copy-to-clip-button:hover {
+//   color: $color-darkblue;
+// }
+
+// ux-dialog {
+//   border-radius: 0 !important;
+//   border-width: 0 !important;
+// }
+
+// ux-dialog-container > div > div {
+//   min-width: 10rem;
+// }
+
+// ux-dialog.connections,
+// ux-dialog.alert {
+//   border-top-width: 0.5rem !important;
+//   border-top-color: $color-black !important;
+//   max-width: 53rem;
+//   min-width: 10rem;
+// }
+
+// ux-dialog.connections .disclaimer {
+//   overflow-y: auto;
+// }
+
+// ux-dialog.connections .disclaimer .WordSection1 {
+//   padding-left: 0.8rem;
+//   padding-right: 2rem;
+// }
+
+// ux-dialog.connections .disclaimer .checks {
+//   margin-left: 1rem;
+// }
+
+// ux-dialog.connections .disclaimer .checks label {
+//   padding-left: 1.75rem;
+//   font-weight: 500;
+//   color: $color-black-2;
+// }
+
+// ux-dialog.connections .disclaimer .title {
+//   display: inline-block;
+//   width: 100%;
+//   margin-bottom: 1.5rem;
+//   font-size: 1.5rem;
+// }
+
+// ux-dialog.connections .disclaimer .body p:before {
+//   content: "\2022";
+//   margin-right: 0.35rem;
+// }
+
+// ux-dialog.connections .disclaimer .checks .checkbox label {
+//   white-space: normal;
+//   margin-right: 2rem;
+//   text-transform: uppercase;
+// }
+
+// ux-dialog.connections .disclaimer .checks input[type="checkbox"]:checked + .checkbox-decorator .check,
+// label.checkbox-inline input[type="checkbox"]:checked + .checkbox-decorator .check {
+//   color: $color-green;
+// }
+
+// ux-dialog.connections .disclaimer .checks .checkbox-decorator {
+//   padding-top: 1.05rem;
+// }
+
+// ux-dialog.connections .disclaimer .bmd-form-group {
+//   padding-top: 0.5rem;
+// }
+
+// ux-dialog.connections .disclaimer hr {
+//   border-color: $color-black;
+// }
+
+// ux-dialog-overlay.active {
+//   background-color: $color-black;
+//   opacity: 0.5 !important;
+// }
+
+// ux-dialog.connections ux-dialog-body,
+// ux-dialog.alert ux-dialog-body {
+//   padding-bottom: 0.25rem !important;
+// }
+
+// .dialog.connections pageloading .fas .fa-spin {
+//   margin-top: 0.4rem;
+// }

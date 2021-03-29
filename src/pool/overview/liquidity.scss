@@ -1,0 +1,356 @@
+@import "styles/colors.scss";
+
+.liquidityContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "header header"
+    "leftColumn rightColumn"
+    "messageRow messageRow"
+    "secondRow secondRow"
+    "thirdRow thirdRow";
+
+  border: 1px solid #e6e6e6;
+
+  .leftColumn {
+    grid-area: leftColumn;
+    background-color: #e6e6e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 44px;
+    padding-right: 44px;
+    padding-top: 38px;
+
+    .poolOverview {
+      .heading {
+        color: $color-light-purple;
+      }
+      .body {
+        margin-bottom: 20px;
+      }
+
+      .body > .dataGroup {
+        margin-bottom: 11px;
+
+        .copy-to-clip-button,
+        .copy-to-clip-button:focus {
+          color: $button3-color;
+        }
+
+        .copy-to-clip-button:hover {
+          color: $color-grey-3;
+        }
+
+        &.token {
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          margin-bottom: 6px;
+
+          .icon {
+            margin-right: 8px;
+
+            img {
+              width: 18px;
+              border-radius: 9px;
+            }
+          }
+
+          .symbol {
+            margin-right: 4px;
+          }
+        }
+      }
+
+      .wethEthExchange {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        .inputButtonGroup:not(:last-child) {
+          margin-bottom: 6px;
+        }
+
+        .inputButtonGroup {
+          text-align: left;
+          white-space: nowrap;
+
+          .inputGroup {
+            display: inline-block;
+            padding-right: 6px;
+            label {
+              display: block;
+              color: $color-black;
+              margin-bottom: 4px;
+            }
+            input {
+              margin-right: 6px;
+            }
+          }
+        }
+
+        .inputButtonGroup:not(:last) {
+          margin-right: 6px;
+        }
+      }
+
+      .heading {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .rightColumn {
+    grid-area: rightColumn;
+    padding: 18px 20px;
+    background-color: $color-white;
+
+    .table {
+      display: grid;
+      background-color: $color-white;
+      margin-bottom: 16px;
+      grid-template-columns: auto 1fr 1fr minmax(128px, 1fr);
+      grid-template-rows: auto;
+
+      .cell {
+        border-bottom: $section-border;
+        padding-top: 11px;
+        padding-bottom: 11px;
+        min-height: 24px;
+        padding-left: 8px;
+        padding-right: 8px;
+        white-space: nowrap;
+
+        numeric-input input {
+          width: 56px;
+          text-align: right;
+        }
+      }
+
+      // header cells
+      //.cell:nth-child(-n + 4) {
+      .cell.heading {
+        color: $color-light-purple;
+        border-top: $section-border;
+        white-space: normal;
+      }
+
+      .cell.heading:not(:first-child) {
+        border-bottom: 2px solid $color-light-purple;
+      }
+
+      .cell:nth-child(4n + 1) {
+        border-left: $section-border;
+        padding-left: 20px;
+        padding-right: 16px;
+        text-align: right;
+        input[type="checkbox"] {
+          width: 12px;
+        }
+      }
+
+      .cell:nth-child(4n + 2) {
+        img {
+          width: 15px;
+          margin-right: 6px;
+          position: relative;
+          top: 2px;
+        }
+
+        button.unlock {
+          margin-left: 4px;
+        }
+      }
+
+      // 3rd column
+      .cell:nth-child(4n + 3) {
+        text-align: center;
+      }
+
+      // 3rd column not including the header
+      .cell:nth-child(4n - 1) {
+        :not(.heading) {
+          position: relative;
+          top: 1px;
+        }
+      }
+
+      .cell:nth-child(4n) {
+        border-right: $section-border;
+        text-align: right;
+        padding-right: 20px;
+        white-space: nowrap;
+      }
+
+      .cell:first-child {
+        border-top-left-radius: $section-border-radius;
+      }
+
+      .cell:last-child {
+        border-bottom-right-radius: $section-border-radius;
+      }
+
+      .cell:nth-child(4) {
+        border-top-right-radius: $section-border-radius;
+      }
+      .cell:nth-last-child(4) {
+        border-bottom-left-radius: $section-border-radius;
+      }
+    }
+
+    // .inputButtonGroup:first-of-type {
+    //   margin-bottom: 16px;
+    // }
+
+    .poolAmount,
+    .poolTokenAmount {
+      display: flex;
+      padding: 11px 20px;
+      align-items: center;
+      height: 20px;
+      margin-bottom: 20px;
+      justify-content: space-between;
+
+      // .label {
+      //   flex-grow: 2;
+      // }
+      .amount {
+        text-align: right;
+        white-space: nowrap;
+
+        .value,
+        .label {
+          display: inline-block;
+        }
+      }
+      input {
+        width: 68px;
+        text-align: right;
+      }
+    }
+
+    .messageRow {
+      grid-area: messageRow;
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-bottom: 20px;
+      color: $color-orange;
+      font-weight: bold;
+
+      .liquidityMessage {
+        .icon {
+          display: inline-block;
+
+          img {
+            width: 16px;
+            margin-right: 7px;
+            position: relative;
+            top: 2px;
+          }
+        }
+      }
+
+      .body {
+        display: inline-block;
+      }
+    }
+
+    .secondRow {
+      grid-area: secondRow;
+      text-align: center;
+      margin-bottom: 20px;
+      padding-left: 13px;
+      padding-right: 13px;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .thirdRow {
+      grid-area: thirdRow;
+      text-align: center;
+      &.back img {
+        margin-right: 6px;
+        width: 16px;
+        position: relative;
+        top: 2px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .liquidityContainer {
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto auto auto;
+    grid-template-areas:
+      "header"
+      "leftColumn"
+      "rightColumn"
+      "messageRow"
+      "secondRow"
+      "thirdRow";
+
+    .leftColumn {
+      max-width: unset;
+
+      .poolOverview {
+        padding: 0;
+        align-items: center;
+      }
+    }
+
+    .rightColumn {
+      padding-left: 0;
+      padding-right: 0;
+
+      .table {
+        margin-right: 13px;
+      }
+      .messageRow {
+        letter-spacing: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .liquidityContainer {
+    .leftColumn {
+      max-width: unset;
+      border-top: 2px solid #8668fc;
+      border-left: 2px solid #8668fc;
+      border-right: 2px solid #8668fc;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .rightColumn {
+      border-bottom: 2px solid #8668fc;
+      border-left: 2px solid #8668fc;
+      border-right: 2px solid #8668fc;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .liquidityContainer {
+    .rightColumn {
+      padding-left: 0;
+      padding-right: 0;
+
+      .table {
+        margin-right: 13px;
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<template>
+  <require from="./footer">
+  </require>
+  <banner></banner>
+  <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
+    <div class="appWrapper  ${showingMobileMenu ? 'showingMobileMenu' : ''}">
+      <div class="logo" click.delegate="goto('http://primedao.io')">
+        <img src="/logo.svg" /> PrimeDAO
+      </div>
+      <div class="appHeader">
+        <div class="networkFeedback">
+          <networkfeedback></networkfeedback>
+        </div>
+        <div class="hConnectButton" show.to-view="!showingMobileMenu">
+          <connectbutton></connectbutton>
+        </div>
+        <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
+      </div>
+      <div class="sidebarContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
+        <div class="sidebar">
+          <div show.to-view="showingMobileMenu" class="sbConnectButton">
+            <connectbutton hide-balances></connectbutton>
+          </div>
+          <div class="menuitems">
+            <template repeat.for="row of router.navigation">
+              <a class="item ${row.isActive ? 'active' : ''}"
+                click.delegate="navigate(row.href)">
+                <div class="text"><img src="${row.settings.icon}" />${row.title}</div>
+              </a>
+              <div if.to-view="row.config.name === 'pools'">
+                <div if.to-view="$parent.initializing" class="initialize">
+                  <loading-dots></loading-dots>
+                </div>
+                <div else class="poolItems">
+                  <template repeat.for="pool of $parent.pools">
+                    <a if.to-view="!pool.preview"
+                      class="item pool"
+                      href="#"
+                      click.delegate="gotoPool(pool)">
+                      <div class="text"><img src="/PoolMenuBullet.svg" />${pool.name}</div>
+                    </a>
+                  </template>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="appFooter">
+          <footer></footer>
+        </div>
+      </div>
+      <div show.to-view="!showingMobileMenu" class="mainContent">
+        <router-view></router-view>
+      </div>
+      <div class="appFooter">
+        <footer></footer>
+      </div>
+    </div>
+  </modalscreen>
+</template>

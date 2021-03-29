@@ -1,0 +1,27 @@
+@import "styles/colors.scss";
+.modalScreenContainer {
+  height: auto;
+  .modalMask {
+    z-index: 999;
+    position: absolute;
+    min-width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; // set to flex by the view model
+    justify-content: center;
+    align-items: center;
+
+    .modelContent {
+      text-align: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      i {
+        font-size: 38px;
+        color: $color-lightblue;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

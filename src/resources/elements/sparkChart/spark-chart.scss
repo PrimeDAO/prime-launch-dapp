@@ -1,0 +1,12 @@
+.sparkChartContainer {
+  position: relative;
+  height: 100%;
+  .chart {
+    width: 100%;
+    // so we take up no space in the cell, otherwise is a catch-22 when computing cell-width
+    // in a css grid
+    position: absolute;
+  }
+  // .tv-lightweight-charts {
+  // }
+}

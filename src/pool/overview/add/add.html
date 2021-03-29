@@ -1,0 +1,83 @@
+<template>
+  <require from="../poolOverview.html"></require>
+  <div class="animated-page au-animate liquidityContainer">
+    <div class="leftColumn section">
+      <poolOverview pool.to-view="pool"></poolOverview>
+    </div>
+    <div class="rightColumn sectionStyles">
+      <div class="table sectionStyles">
+        <div class="cell heading heading3"></div>
+        <div class="cell heading heading3">Asset</div>
+
+        <div class="cell heading heading3">Wallet Balance</div>
+
+        <div class="cell heading heading3">Pay</div>
+
+        <template repeat.for="token of pool.assetTokensArray">
+          <div class="cell"><input type="checkbox" model.bind="token" checked.bind="selectedTokens" /></div>
+          <div class="cell"><img src.one-time="token.icon" />${token.symbol}
+            <button show.to-view="getShowTokenUnlock(token) & signal:'updateShowTokenUnlock'" class="unlock button4 small" click.delegate="unlock(token)">Unlock</button>
+          </div>
+          <div class="cell">
+            <div if.to-view="connected">
+              <!-- "Wallet Balance" -->
+              <formatted-number value.to-view="token.userBalance | ethwei"></formatted-number>
+            </div>
+            <div else>--</div>
+          </div>
+          <div class="cell">
+            <div if.to-view="connected && token.selected_add">
+              <label if.to-view="token.userBalance.gt(0)"><button class="button4 small" click.delegate="handleGetMaxToken(token)">Max</button></label>
+              <numeric-input id.one-time="token.address"
+                handle-change.call="handleInputAmountChange(token, { keyCode: number })"
+                value.two-way="token.inputAmount_add"
+                placeholder="0.0"
+                css="clearInput"></numeric-input>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div if.to-view="connected" class="poolAmount section">
+        <div class="label">${pool.poolToken.symbol} Amount</div>
+        <div class="amount" with.bind="getUserLiquidity() & signal:'updatePoolTokenChange'">
+          <div if.to-view="absolute.future" class="value">
+            <formatted-number
+              value.to-view="absolute.current | ethwei"
+              placement.to-view="top">
+            </formatted-number>
+            <span> → </span>
+            <formatted-number
+              value.to-view="absolute.future | ethwei"
+              placement.to-view="top">
+            </formatted-number> ${$this.pool.poolToken.symbol}
+          </div>
+          <div else class="value">
+            <formatted-number
+              value.to-view="absolute.current | ethwei"
+              placement.to-view="top">
+            </formatted-number> ${$this.pool.poolToken.symbol}
+          </div>
+        </div>
+      </div>
+      <div show.to-view="showSlippage" class="messageRow">
+        <div class="liquidityMessage">
+          <div class="icon"><img src="/PD_ASSET_ICON_INFO_01.svg" /></div>
+          <div class="body">
+            <div>Adding liquidity will incur <formatted-number
+                value.to-view="getSlippage() & signal:'updateSlippage'"
+                average="false"
+                mantissa="2"
+                placement.to-view="top">
+              </formatted-number>% of slippage</div>
+          </div>
+        </div>
+      </div>
+      <div class="secondRow">
+        <button class="button2" click.delegate="handleSubmit()">Buy ${pool.poolToken.symbol}</button>
+      </div>
+      <div class="thirdRow back">
+        <a click.delegate="goBack()" href="#"><img src="/back.svg"></img> Back</a>
+      </div>
+    </div>
+  </div>
+</template>

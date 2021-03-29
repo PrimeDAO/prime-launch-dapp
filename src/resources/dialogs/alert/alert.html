@@ -1,0 +1,14 @@
+<template>
+  <ux-dialog class="dialog alert">
+    <ux-dialog-header>
+      <i class="fas fa-error"></i>
+      An error occurred
+    </ux-dialog-header>
+    <ux-dialog-body with.bind="model">
+      <div class="body">${message}</div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="button1" ref="okButton" click.trigger="controller.ok()">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

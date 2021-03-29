@@ -1,0 +1,303 @@
+@import "styles/colors.scss";
+.appWrapper {
+  display: grid;
+  grid-template-columns: 213px 1fr;
+  grid-template-rows: 76px 100fr;
+  grid-template-areas:
+    "logo header"
+    "sidebar mainContent";
+  height: 100vh;
+
+  > .logo {
+    grid-area: logo;
+    background-color: $color-black;
+    align-items: center;
+    // just for vertical alignment of the logo
+    display: flex;
+    padding-left: 24px;
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  .appHeader {
+    grid-area: header;
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-black;
+    height: 76px;
+
+    .networkfeedback {
+      color: $color-white;
+      margin-left: 10px;
+      text-align: left;
+      .testnet {
+        color: $color-red;
+      }
+    }
+
+    /**
+     * header connectButton
+     */
+    > .hConnectButton {
+      flex-grow: 2;
+      padding-right: 20px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    > .mobilemenuButton {
+      display: none;
+      padding-right: 24px;
+      position: relative;
+      top: 2px;
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  .sidebarContainer {
+    z-index: 9998; // so stays above model screen, below tooltips
+    grid-area: sidebar;
+
+    .sidebar {
+      padding: 20px 0;
+
+      .menuitems {
+        margin-bottom: 20px;
+        a.item {
+          display: block;
+          margin-bottom: 6px;
+          padding: 14px 20px;
+          cursor: pointer;
+
+          &.active,
+          &:hover {
+            background-color: #9478ff;
+            border-right: 6px solid #694ae2;
+          }
+
+          .text {
+            display: flex;
+            justify-items: center;
+
+            img {
+              width: 14px;
+              padding-right: 16px;
+            }
+          }
+        }
+
+        .poolItems {
+          > a.item {
+            padding-top: 0;
+            padding-bottom: 16px;
+
+            > .text {
+              font-size: 12px;
+              display: flex;
+              justify-items: center;
+
+              > img {
+                padding-left: 3px;
+                padding-right: 19px;
+                width: 9px;
+              }
+            }
+          }
+
+          > a.item:last-child {
+            padding-bottom: 0;
+          }
+        }
+      }
+      /**
+       * sidebar connect button
+       */
+      // > .connectButton {
+      //   flex-grow: 2;
+      //   padding-right: 20px;
+      //   padding-top: 12px;
+      //   padding-bottom: 12px;
+      // }
+    }
+
+    /**
+     * sidebar footer
+     */
+    > .appFooter {
+      padding: 0 20px;
+      position: fixed;
+      bottom: 30px;
+
+      .logo {
+        flex-direction: column;
+
+        img {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .mainContent {
+    grid-area: mainContent;
+    background-color: $color-white;
+    color: $color-black;
+
+    .page {
+      padding: 60px;
+
+      .title {
+        font-size: 34px;
+        font-family: "Cera Pro";
+        margin-bottom: 18px;
+      }
+    }
+  }
+
+  > .appFooter {
+    display: none;
+  }
+
+  /**
+   * styles common to both footer instances
+   */
+  .appFooter {
+    grid-area: footer;
+    .footerContainer {
+      .links {
+        text-decoration: underline;
+        font-size: 14px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .social {
+        border-bottom: 2px solid #1ee0fc;
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+
+        a {
+          img {
+            width: 17px;
+          }
+        }
+      }
+
+      .logo {
+        align-items: center;
+        display: flex;
+        img {
+          width: 24px;
+          margin-right: 6px;
+        }
+        .text {
+          font-size: 10px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .appWrapper {
+    grid-template-areas:
+      "logo header"
+      "mainContent mainContent"
+      "footer footer";
+
+    grid-template-columns: 137px 1fr;
+    grid-template-rows: 76px 100fr 1fr;
+
+    &.showingMobileMenu {
+      grid-template-columns: 1fr 100fr;
+      grid-template-areas:
+        "logo header"
+        "sidebar sidebar"
+        "footer footer";
+    }
+
+    .appHeader {
+      > .hConnectButton {
+        display: none;
+      }
+      > .mobilemenuButton {
+        display: block;
+      }
+    }
+
+    .sidebarContainer {
+      display: none; // hide when small, unless when &.showingMobileMenu, see below
+
+      &.showingMobileMenu {
+        display: unset;
+        width: 100%;
+        text-align: center;
+      }
+
+      .sidebar {
+        .sbConnectButton {
+          margin-bottom: 26px;
+        }
+
+        .menuitems {
+          a.item {
+            padding-left: calc(50% - 80px);
+            .text {
+              justify-items: unset;
+            }
+          }
+        }
+      }
+
+      .appFooter {
+        position: unset;
+        bottom: unset;
+      }
+    }
+
+    // footers are the same in this respect in menu or at the bottom of the page
+    .appFooter {
+      width: 208px;
+      margin: auto;
+      padding: 16px;
+
+      .footerContainer {
+        .social {
+          margin-bottom: 12px;
+          padding-bottom: 8px;
+        }
+
+        .links {
+          margin-bottom: 12px;
+        }
+      }
+    }
+
+    /**
+      * the mobile footer that appears at the bottom of every page
+      */
+    :not(&.showingMobileMenu) {
+      > .appFooter {
+        display: block;
+      }
+    }
+
+    .mainContent {
+      .page {
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-bottom: 16px;
+      }
+    }
+  }
+}
