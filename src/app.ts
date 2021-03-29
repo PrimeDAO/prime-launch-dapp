@@ -87,47 +87,7 @@ export class App {
         name: "home",
         route: ["", "/", "home"],
         title: "Home",
-        settings: {icon: "/HomeIcon.svg"},
       }
-      , {
-        moduleId: PLATFORM.moduleName("./pools/pools"),
-        nav: true,
-        name: "pools",
-        route: ["pools"],
-        title: "All Pools",
-        settings: {icon: "/AllPoolsIcon.svg"},
-      }
-      , {
-        moduleId: PLATFORM.moduleName("./txHistory/tx-history"),
-        nav: true,
-        name: "txHistory",
-        route: ["txHistory"],
-        title: "Transaction History",
-        settings: {icon: "/txHistoryIcon.svg"},
-      }
-      , {
-        moduleId: PLATFORM.moduleName("./documentation/documentation"),
-        nav: true,
-        name: "documentation",
-        route: ["documentation"],
-        title: "Documentation",
-        settings: { icon: "/DocumentationIcon.svg"},
-      }
-      , {
-        moduleId: PLATFORM.moduleName("./primeToken/prime-token"),
-        nav: true,
-        name: "primeToken",
-        route: ["primeToken"],
-        title: "The PRIME Token",
-        settings: {icon: "/PrimePoolIcon.svg"},
-      }
-      , {
-        moduleId: PLATFORM.moduleName("./pool/pool"),
-        name: "pool",
-        route: ["pool/:poolAddress"],
-        title: "Pool",
-        settings: { icon: "/PoolMenuBullet.svg" },
-      },
     ]);
 
     config.fallbackRoute("home");
