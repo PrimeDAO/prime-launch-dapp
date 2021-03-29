@@ -1,11 +1,12 @@
 @import "styles/colors.scss";
 .appWrapper {
   display: grid;
-  grid-template-columns: 213px 1fr;
-  grid-template-rows: 76px 100fr;
+  grid-template-columns: auto auto;
+  grid-template-rows: 76px 100fr 1fr;
   grid-template-areas:
     "logo header"
-    "sidebar mainContent";
+    "mainContent mainContent"
+    "footer footer";
   height: 100vh;
 
   > .logo {
@@ -63,6 +64,7 @@
   .sidebarContainer {
     z-index: 9998; // so stays above model screen, below tooltips
     grid-area: sidebar;
+    display: none;
 
     .sidebar {
       padding: 20px 0;
@@ -160,20 +162,20 @@
     }
   }
 
-  > .appFooter {
-    display: none;
-  }
-
   /**
    * styles common to both footer instances
    */
   .appFooter {
     grid-area: footer;
+    width: 208px;
+    margin: auto;
+    padding: 16px;
+
     .footerContainer {
       .links {
+        margin-bottom: 12px;
         text-decoration: underline;
         font-size: 14px;
-        margin-bottom: 16px;
         display: flex;
         justify-content: space-evenly;
       }
@@ -182,8 +184,8 @@
         border-bottom: 2px solid #1ee0fc;
         display: flex;
         justify-content: space-evenly;
-        margin-bottom: 16px;
-        padding-bottom: 16px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
 
         a {
           img {
@@ -210,20 +212,16 @@
 
 @media screen and (max-width: 780px) {
   .appWrapper {
-    grid-template-areas:
-      "logo header"
-      "mainContent mainContent"
-      "footer footer";
-
-    grid-template-columns: 137px 1fr;
-    grid-template-rows: 76px 100fr 1fr;
-
     &.showingMobileMenu {
       grid-template-columns: 1fr 100fr;
       grid-template-areas:
         "logo header"
         "sidebar sidebar"
         "footer footer";
+
+      > .appFooter {
+        display: none;
+      }
     }
 
     .appHeader {
@@ -236,8 +234,6 @@
     }
 
     .sidebarContainer {
-      display: none; // hide when small, unless when &.showingMobileMenu, see below
-
       &.showingMobileMenu {
         display: unset;
         width: 100%;
@@ -262,33 +258,6 @@
       .appFooter {
         position: unset;
         bottom: unset;
-      }
-    }
-
-    // footers are the same in this respect in menu or at the bottom of the page
-    .appFooter {
-      width: 208px;
-      margin: auto;
-      padding: 16px;
-
-      .footerContainer {
-        .social {
-          margin-bottom: 12px;
-          padding-bottom: 8px;
-        }
-
-        .links {
-          margin-bottom: 12px;
-        }
-      }
-    }
-
-    /**
-      * the mobile footer that appears at the bottom of every page
-      */
-    :not(&.showingMobileMenu) {
-      > .appFooter {
-        display: block;
       }
     }
 

@@ -42,7 +42,7 @@ npm run start
 
 ## Debug
 
-Each of the following commands will serve up a site that will support Hot Module Reload (HMR).  You can then use your favorate debugger to launch the app at http://localhost:3300.
+Each of the following commands will serve up a site that will support Hot Module Reload (HMR).  You can then use your favorate debugger to launch the app at http://localhost:3330.
 
 ### Build and serve, running against kovan
 `npm run serve-dev`

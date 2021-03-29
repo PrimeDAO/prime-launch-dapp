@@ -87,7 +87,29 @@ export class App {
         name: "home",
         route: ["", "/", "home"],
         title: "Home",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./apply/apply"),
+        nav: true,
+        name: "apply",
+        route: ["apply"],
+        title: "Apply to Launch",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./raise/raise"),
+        nav: true,
+        name: "raise",
+        route: ["raise"],
+        title: "Liquid Raise",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./seed/seed"),
+        nav: true,
+        name: "seed",
+        route: ["seed"],
+        title: "SEED",
       }
+
     ]);
 
     config.fallbackRoute("home");
@@ -97,11 +119,6 @@ export class App {
 
   goto(where: string): void {
     Utils.goto(where);
-  }
-
-  gotoPool(pool: Pool): void {
-    this.showingMobileMenu = false;
-    this.router.navigate(`pool/${pool.address}`);
   }
 
   toggleMobileMenu(): void {

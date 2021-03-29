@@ -23,7 +23,7 @@
   "platform": {
     "hmr": true,
     "open": false,
-    "port": 3300,
+    "port": 3330,
     "host": "localhost",
     "output": "dist"
   }
