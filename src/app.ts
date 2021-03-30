@@ -89,6 +89,13 @@ export class App {
         title: "Home",
       },
       {
+        moduleId: PLATFORM.moduleName("./contribute/contribute"),
+        nav: true,
+        name: "contribute",
+        route: ["contribute"],
+        title: "Contribute",
+      },
+      {
         moduleId: PLATFORM.moduleName("./apply/apply"),
         nav: true,
         name: "apply",
@@ -108,7 +115,7 @@ export class App {
         name: "seed",
         route: ["seed"],
         title: "SEED",
-      }
+      },
 
     ]);
 
