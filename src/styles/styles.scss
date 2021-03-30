@@ -50,21 +50,32 @@ html {
       }
     }
 
-    .heading1 {
-      font-size: 18px;
+    .heading {
       font-family: "Cera Pro";
-      margin-bottom: 8px;
-      color: $color-light-purple;
+      color: $color-white;
+
+      &.heading1 {
+        font-size: 32px;
+        font-family: "Cera Pro";
+        margin-bottom: 8px;
+        white-space: nowrap;
+      }
+      &.heading2 {
+        font-size: 26px;
+        font-family: "Cera Pro";
+        white-space: nowrap;
+        margin-bottom: 8px;
+      }
+      &.heading3 {
+        font-size: 20px;
+        font-family: "Cera Pro";
+        white-space: nowrap;
+      }
     }
-    .heading2 {
-      font-size: 24px;
-      font-family: "Cera Pro";
-      white-space: nowrap;
-    }
-    .heading3 {
-      font-size: 16px;
-      font-family: "Cera Pro";
-      white-space: nowrap;
+
+    .subtext {
+      color: $color-grey-3;
+      font-size: 13px;
     }
 
     .button,
