@@ -127,23 +127,6 @@
       //   padding-bottom: 12px;
       // }
     }
-
-    /**
-     * sidebar footer
-     */
-    > .appFooter {
-      padding: 0 20px;
-      position: fixed;
-      bottom: 30px;
-
-      .logo {
-        flex-direction: column;
-
-        img {
-          margin-bottom: 10px;
-        }
-      }
-    }
   }
 
   .mainContent {
@@ -156,14 +139,9 @@
     }
   }
 
-  /**
-   * styles common to both footer instances
-   */
   .appFooter {
     grid-area: footer;
-    width: 208px;
-    margin: auto;
-    padding: 16px;
+    padding: 30px;
   }
 }
 
@@ -173,8 +151,7 @@
       grid-template-columns: 1fr 100fr;
       grid-template-areas:
         "logo header"
-        "sidebar sidebar"
-        "footer footer";
+        "sidebar sidebar";
 
       > .appFooter {
         display: none;
@@ -210,11 +187,6 @@
             }
           }
         }
-      }
-
-      .appFooter {
-        position: unset;
-        bottom: unset;
       }
     }
 

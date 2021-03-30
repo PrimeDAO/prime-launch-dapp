@@ -38,7 +38,7 @@ html {
     hr {
       height: 1px;
       border: none;
-      background-color: #eeeeee;
+      background-color: $divider-color;
     }
 
     a {
@@ -69,7 +69,7 @@ html {
     }
 
     .subtext {
-      color: $color-grey-3;
+      color: $subtext-color;
       font-size: 13px;
     }
 
