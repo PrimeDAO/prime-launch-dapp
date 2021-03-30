@@ -96,13 +96,6 @@ export class App {
         title: "Contribute",
       },
       {
-        moduleId: PLATFORM.moduleName("./apply/apply"),
-        nav: true,
-        name: "apply",
-        route: ["apply"],
-        title: "Apply to Launch",
-      },
-      {
         moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: false,
         name: "launch",
