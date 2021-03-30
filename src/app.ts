@@ -104,17 +104,24 @@ export class App {
       },
       {
         moduleId: PLATFORM.moduleName("./launch/launch"),
-        nav: true,
+        nav: false,
         name: "launch",
         route: ["launch"],
         title: "Liquid Launch",
       },
       {
         moduleId: PLATFORM.moduleName("./seed/seed"),
-        nav: true,
+        nav: false,
         name: "seed",
         route: ["seed"],
         title: "SEED",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
+        nav: false,
+        name: "selectPackage",
+        route: ["selectPackage"],
+        title: "Select Your Package",
       },
 
     ]);

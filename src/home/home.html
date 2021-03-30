@@ -1,8 +1,50 @@
 <template>
   <div class="page animated-page au-animate home">
-    <div class="topSection">
+    <div class="section">
       <div class="title">Seamlessly...</div>
       <div class="subtitle">Prime Launch is a....</div>
+      <div class="buttons">
+        <div class="contribute" click.delegate="navigate('contribute')">
+          <div class="title">Contribute</div>
+          <div class="icon"></div>
+          <div class="subtitle">blah blah</div>
+        </div>
+        <div class="launch" click.delegate="navigate('launch')">
+          <div class="title">Launch</div>
+          <div class="icon"></div>
+          <div class="subtitle">blah blah</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="title">Prime Launch</div>
+      <div class="subtitle">Participate...</div>
+      <div class="dao">PrimeDAO</div>
+    </div>
+    <div class="section">
+      <div class="title">Never miss a launch</div>
+      <div class="subtitle">blah blah</div>
+    </div>
+    <div class="section">
+      <div class="title">Upcoming launches</div>
+      <div class="launches">
+        <div class="launch" repeat.for="i of 5">
+          <div class="deadline">in 3 days</div>
+          <div class="title">PrimeDAO ${i}</div>
+          <div class="description">blah blah</div>
+          <div class="label">PRIME / DAI</div>
+          <div class="tokens">icons</div>
+          <div class="label">$ 4,000,000</div>
+          <div class="target">$4,000,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="section fairLaunch">
+      <div class="pic">pic</div>
+      <div class="title">PrimeDAO ${i}</div>
+      <div class="subtitle"></div>
+      <div class="launchButton">LAUNCH</div>
+      <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
     </div>
   </div>
 </template>
