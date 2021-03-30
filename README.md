@@ -102,7 +102,7 @@ To run in watch mode, `npm run test --watch`.
 
 To run the Webpack Bundle Analyzer, do `npm run analyze` (production build).
 
-## Deploy
+## Run Locally or Host Centrally
 
 ### <a name="env"></a> Environment Variables
 
@@ -117,13 +117,13 @@ ETHPLORER_KEY=
 ETHERSCAN_KEY=
 ```
 
-### IPFS
+## Deploy to IPFS
 
 To deploy the dApp to IPFS you must first create your build in the `dist` folder using one of the [build commands above](#build).
 
 Then the fastest way to deploy the site on ipfs is using [Pinata](https://pinata.cloud/). Pinata will automatically deploy the code to IPFS, generating a hash of the code, and the "pin" the hash so that it remains in a cache and doesn't eventually fall out of easy sight of the cloud of IPFS nodes.
 
-Make sure you added your Pinata `IPFS_DEPLOY_PINATA__API_KEY` and `IPFS_DEPLOY_PINATA__SECRET_API_KEY` in a .env file.
+Make sure you added your Pinata `IPFS_DEPLOY_PINATA__API_KEY` and `IPFS_DEPLOY_PINATA__SECRET_API_KEY` in your environment or a .env file.
 
 Install IPFS: [https://docs.ipfs.io/install/ipfs-desktop/](https://docs.ipfs.io/install/ipfs-desktop/)
 
@@ -161,7 +161,7 @@ You have to be a controller of the ENS domain.  On the domain's details page, ad
 
 To verify that the code you are building is the same as what you see stored in IPFS, you can compute the hash of the code and compare it to the hash stored in IPFS.
 
-To calculate the ipfs hash you will need the [environment variables](#env) that were used for the original build.
+To calculate the ipfs hash you will need the same [environment variables](#env) that were used for the original build.
 
 Next run `npm ci` to install fresh dependencies.
 
