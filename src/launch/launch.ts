@@ -1,3 +1,3 @@
 import "./raise.scss";
-export class Raise {
+export class Launch {
 }

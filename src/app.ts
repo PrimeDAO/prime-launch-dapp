@@ -103,11 +103,11 @@ export class App {
         title: "Apply to Launch",
       },
       {
-        moduleId: PLATFORM.moduleName("./raise/raise"),
+        moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: true,
-        name: "raise",
-        route: ["raise"],
-        title: "Liquid Raise",
+        name: "launch",
+        route: ["launch"],
+        title: "Liquid Launch",
       },
       {
         moduleId: PLATFORM.moduleName("./seed/seed"),
