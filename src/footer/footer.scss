@@ -1,0 +1,36 @@
+.footerContainer {
+  .links {
+    margin-bottom: 12px;
+    text-decoration: underline;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .social {
+    border-bottom: 2px solid #1ee0fc;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+
+    a {
+      img {
+        width: 17px;
+      }
+    }
+  }
+
+  .logo {
+    align-items: center;
+    display: flex;
+    img {
+      width: 24px;
+      margin-right: 6px;
+    }
+    .text {
+      font-size: 10px;
+      display: inline-block;
+    }
+  }
+}

@@ -122,102 +122,37 @@ html {
       color: $color-black;
       border: 2px solid $color-green;
     }
+  }
 
-    .sectionStyles {
-      font-size: 12px;
-      letter-spacing: 0.6px;
-      line-height: 15px;
-      background-color: $section-background-color;
+  etherscanlink {
+    white-space: nowrap;
+    display: inline-block;
 
-      a {
-        text-decoration: underline;
-      }
-
-      input {
-        font-size: 12px;
-      }
-    }
-
-    .section {
-      @extend .sectionStyles;
-
-      border: $section-border;
-      border-radius: $section-border-radius;
-      padding: 18px 24px;
-
-      &.top {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-bottom: none;
-        padding-top: 60px;
-        padding-bottom: 12px;
-
-        > div {
-          margin-bottom: 16px;
-        }
-      }
-      &.middle {
-        border-radius: 0;
-        border-bottom: none;
-        text-align: center;
-
-        &.doubleSection {
-          display: flex;
-          padding: 0;
-
-          .left,
-          .right {
-            padding-top: 18px;
-            padding-bottom: 18px;
-          }
-
-          .left {
-            flex-basis: 50%;
-            border-right: $section-border;
-          }
-
-          .right {
-            flex-basis: 50%;
-          }
-        }
-      }
-      &.bottom {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        text-align: center;
-      }
+    .etherscanlink .text {
+      margin-right: 4px;
     }
   }
-}
 
-etherscanlink {
-  white-space: nowrap;
-  display: inline-block;
-
-  .etherscanlink .text {
-    margin-right: 4px;
+  .smallEtherScanLink {
+    display: inline-block;
+    vertical-align: middle;
+    width: 4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-}
 
-.smallEtherScanLink {
-  display: inline-block;
-  vertical-align: middle;
-  width: 4rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .copy-to-clip-button,
+  .copy-to-clip-button:focus {
+    color: $color-white;
+  }
 
-.copy-to-clip-button,
-.copy-to-clip-button:focus {
-  color: $color-white;
-}
+  .copy-to-clip-button:hover {
+    color: $color-grey-3;
+  }
 
-.copy-to-clip-button:hover {
-  color: $color-grey-3;
-}
-
-#WEB3_CONNECT_MODAL_ID {
-  div:first-of-type {
-    z-index: 10002; // stay over everything except modal mask
+  #WEB3_CONNECT_MODAL_ID {
+    div:first-of-type {
+      z-index: 10002; // stay over everything except modal mask
+    }
   }
 }

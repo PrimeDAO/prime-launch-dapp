@@ -148,17 +148,17 @@
 
   .mainContent {
     grid-area: mainContent;
-    background-color: $color-white;
-    color: $color-black;
+    color: $color-white;
+    background-color: $color-black;
 
     .page {
-      padding: 60px;
+      padding: 20px 10px;
 
-      .title {
-        font-size: 34px;
-        font-family: "Cera Pro";
-        margin-bottom: 18px;
-      }
+      // .title {
+      //   font-size: 34px;
+      //   font-family: "Cera Pro";
+      //   margin-bottom: 18px;
+      // }
     }
   }
 
@@ -170,43 +170,6 @@
     width: 208px;
     margin: auto;
     padding: 16px;
-
-    .footerContainer {
-      .links {
-        margin-bottom: 12px;
-        text-decoration: underline;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-evenly;
-      }
-
-      .social {
-        border-bottom: 2px solid #1ee0fc;
-        display: flex;
-        justify-content: space-evenly;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
-
-        a {
-          img {
-            width: 17px;
-          }
-        }
-      }
-
-      .logo {
-        align-items: center;
-        display: flex;
-        img {
-          width: 24px;
-          margin-right: 6px;
-        }
-        .text {
-          font-size: 10px;
-          display: inline-block;
-        }
-      }
-    }
   }
 }
 
