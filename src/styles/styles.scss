@@ -53,23 +53,18 @@ html {
     .heading {
       font-family: "Cera Pro";
       color: $color-white;
+      white-space: nowrap;
 
       &.heading1 {
         font-size: 32px;
-        font-family: "Cera Pro";
         margin-bottom: 8px;
-        white-space: nowrap;
       }
       &.heading2 {
         font-size: 26px;
-        font-family: "Cera Pro";
-        white-space: nowrap;
         margin-bottom: 8px;
       }
       &.heading3 {
         font-size: 20px;
-        font-family: "Cera Pro";
-        white-space: nowrap;
       }
     }
 
