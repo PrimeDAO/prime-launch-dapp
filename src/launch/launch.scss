@@ -1,3 +1,107 @@
 @import "styles/colors.scss";
+@import "styles/styles.scss";
 .page.launch {
+  display: grid;
+  justify-content: center;
+  grid-gap: 30px;
+  .banner {
+    .banner1 {
+      // Make like a heading
+      @extend .heading;
+      font-size: 4vw;
+      display: grid;
+      justify-content: center;
+    }
+    // TODO: Customize for mobile
+    .banner2 {
+      @extend .subtext;
+      // TODO: Get font from figma
+      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      display: grid;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+  // Let's define layouts for the launch divs
+  .launch-divs {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  // ** For styling the container holding buttons
+  .div-style {
+    background-color: $color-black-2;
+    border-radius: 15px;
+    // Don't overflow width
+    max-width: 400px;
+    // Try to make divs same height
+    height: 350px;
+  }
+  .start-container {
+    @extend .div-style;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    & > div > header {
+      @extend .heading;
+    }
+    & > div {
+      // Make these divs have paddings to align contents
+      padding-left: 20px;
+      padding-right: 40px;
+      font-size: 20px;
+    }
+    .top-div {
+      padding-top: 10px;
+      padding-bottom: 40px;
+      @extend .subtext;
+      p {
+        line-height: 1.3em;
+      }
+    }
+    .button-div {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: row wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .start-button {
+      // TODO: Need params from figma and adjust global styles
+      //   @extend .button1;
+      text-align: center;
+      padding: 13px 28px;
+      background-color: #2e5aff;
+      font-size: 0.7em;
+      border-radius: 20px;
+      // TODO: Colors need to be updated in global style
+    }
+    a {
+      font-size: 0.8em;
+      text-decoration: underline;
+      text-decoration-color: #2e5aff;
+      text-decoration-thickness: 0.2em;
+    }
+    & .start-container-footer {
+      background-color: $color-grey-6;
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      padding-top: 30px;
+      padding-bottom: 30px;
+      font-size: 0.9em;
+      span {
+        @extend .subtext;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  }
 }
+// **
