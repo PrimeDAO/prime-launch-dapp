@@ -78,6 +78,9 @@
       font-size: 0.7em;
       border-radius: 20px;
       // TODO: Colors need to be updated in global style
+      &:hover {
+        cursor: pointer;
+      }
     }
     a {
       font-size: 0.8em;
