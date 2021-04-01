@@ -1,5 +1,5 @@
 @import "styles/colors.scss";
-@import "styles/styles.scss";
+@import "styles/styles";
 .page.launch {
   display: grid;
   justify-content: center;
@@ -16,15 +16,14 @@
     .banner2 {
       @extend .subtext;
       // TODO: Get font from figma
-      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      font-family: "Aeonik", "Cera Pro";
       display: grid;
       justify-content: center;
       text-align: center;
     }
   }
   // Let's define layouts for the launch divs
-  .launch-divs {
+  .launch-boxs {
     display: flex;
     flex-flow: row wrap;
     flex: 1;
@@ -33,7 +32,7 @@
     justify-content: space-evenly;
   }
   // ** For styling the container holding buttons
-  .div-style {
+  .box-style {
     background-color: $color-black-2;
     border-radius: 15px;
     // Don't overflow width
@@ -42,7 +41,7 @@
     height: 350px;
   }
   .start-container {
-    @extend .div-style;
+    @extend .box-style;
     display: grid;
     grid-template-rows: 2fr 1fr;
     & > div > header {
@@ -54,7 +53,7 @@
       padding-right: 40px;
       font-size: 20px;
     }
-    .top-div {
+    .top-box {
       padding-top: 10px;
       padding-bottom: 40px;
       @extend .subtext;
@@ -62,7 +61,7 @@
         line-height: 1.3em;
       }
     }
-    .button-div {
+    .button-box {
       display: flex;
       flex-direction: row;
       flex-wrap: row wrap;
