@@ -56,6 +56,10 @@ html {
       color: $color-white;
       white-space: nowrap;
 
+      &.heading0 {
+        font-size: 3.5em;
+        margin-bottom: 12px;
+      }
       &.heading1 {
         font-size: 2em;
         margin-bottom: 8px;
