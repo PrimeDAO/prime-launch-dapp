@@ -1,0 +1,21 @@
+<template bindable="title, subTitle1, btnText, poweredBy">
+  <div class="launch-box-container">
+    <div class="topSection">
+      <div class="heading heading3">${title}</div>
+      <div class="subtext">${subTitle1}</div>
+    </div>
+    <div class="buttons">
+      <div class="buttonContainer button1">
+        <a route-href="route: selectPackage">${btnText}</a>
+      </div>
+      <div>
+        <a>Learn more</a>
+      </div>
+    </div>
+    <div class="container-footer">
+      <div>POWERED BY</div>
+      <img alt="icon" />
+      <div>${poweredBy}</div>
+    </div>
+  </div>
+</template>
