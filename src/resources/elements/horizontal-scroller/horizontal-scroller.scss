@@ -1,0 +1,34 @@
+.scrollerContainer {
+  .scroller {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > div {
+      flex: 0 0 auto;
+    }
+  }
+
+  .rightButton {
+    width: 0;
+    height: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+
+    border-left: 24px solid green;
+  }
+
+  .leftButton {
+    width: 0;
+    height: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+
+    border-right: 24px solid blue;
+  }
+}

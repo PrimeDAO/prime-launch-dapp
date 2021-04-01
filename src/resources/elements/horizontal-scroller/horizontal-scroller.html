@@ -1,0 +1,9 @@
+<template>
+  <div class="scrollerContainer">
+    <div ref="scroller" class="scroller">
+      <slot></slot>
+    </div>
+    <div class="rightButton" click.delegate="right()"></div>
+    <div class="leftButton" click.delegate="left()"></div>
+  </div>
+</template>
