@@ -1,22 +1,21 @@
 <template bindable="title, subTitle1, btnText, poweredBy">
-  <div class="start-container">
-    <div class="top-box">
-      <header>
-        <h1>${title}</h1>
-      </header>
-      <p>${subTitle1}</p>
+  <div class="launch-box-container">
+    <div class="topSection">
+      <div class="heading heading3">${title}</div>
+      <div class="subtext">${subTitle1}</div>
     </div>
-    <div class="button-box">
-      <div class="start-button">
+    <div class="buttons">
+      <div class="buttonContainer button1">
         <a route-href="route: selectPackage">${btnText}</a>
       </div>
       <div>
         <a>Learn more</a>
       </div>
     </div>
-    <div class="start-container-footer">
-      <span> POWERED BY</span>
-      <span> ${poweredBy} </span>
+    <div class="container-footer">
+      <div>POWERED BY</div>
+      <img alt="icon" />
+      <div>${poweredBy}</div>
     </div>
   </div>
 </template>

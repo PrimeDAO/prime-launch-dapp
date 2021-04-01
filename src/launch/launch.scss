@@ -2,92 +2,73 @@
 @import "styles/styles";
 .page.launch {
   display: grid;
-  justify-content: center;
-  grid-gap: 30px;
+  grid-template-columns: 1fr minmax(352px, 400px) 0.2fr minmax(352px, 400px) 1fr;
+  grid-template-rows: auto 350px;
+  grid-template-areas:
+    "banner banner banner banner banner"
+    ". launch-box1 . launch-box2 .";
+  justify-items: center;
+  row-gap: 30px;
   .banner {
-    .banner1 {
-      // Make like a heading
-      @extend .heading;
-      font-size: 4vw;
-      display: grid;
-      justify-content: center;
-    }
+    grid-area: banner;
+    text-align: center;
     // TODO: Customize for mobile
-    .banner2 {
-      @extend .subtext;
-      // TODO: Get font from figma
-      font-family: "Aeonik", "Cera Pro";
-      display: grid;
-      justify-content: center;
-      text-align: center;
-    }
   }
-  // Let's define layouts for the launch divs
-  .launch-boxs {
-    display: flex;
-    flex-flow: row wrap;
-    flex: 1;
-    width: 100vw;
-    align-items: center;
-    justify-content: space-evenly;
+  .launch-box1 {
+    grid-area: launch-box1;
+  }
+
+  .launch-box2 {
+    grid-area: launch-box2;
   }
   // ** For styling the container holding buttons
-  .box-style {
+  .launch-box-container {
     background-color: $color-black-2;
     border-radius: 15px;
     // Don't overflow width
-    max-width: 400px;
     // Try to make divs same height
-    height: 350px;
-  }
-  .start-container {
-    @extend .box-style;
+    height: 100%;
     display: grid;
     grid-template-rows: 2fr 1fr;
-    & > div > header {
-      @extend .heading;
-    }
-    & > div {
+    > div {
       // Make these divs have paddings to align contents
+      // TODO:
       padding-left: 20px;
       padding-right: 40px;
       font-size: 20px;
     }
-    .top-box {
+    .topSection {
       padding-top: 10px;
       padding-bottom: 40px;
-      @extend .subtext;
-      p {
-        line-height: 1.3em;
-      }
+      line-height: 1.3em;
     }
-    .button-box {
+    .buttons {
       display: flex;
       flex-direction: row;
       flex-wrap: row wrap;
       align-items: center;
       justify-content: space-between;
     }
-    .start-button {
-      // TODO: Need params from figma and adjust global styles
-      //   @extend .button1;
-      text-align: center;
-      padding: 13px 28px;
-      background-color: #2e5aff;
-      font-size: 0.7em;
-      border-radius: 20px;
-      // TODO: Colors need to be updated in global style
-      &:hover {
-        cursor: pointer;
-      }
-    }
+    // .buttonContainer {
+    //   // TODO: Need params from figma and adjust global styles
+    //   //   @extend .button1;
+    //   text-align: center;
+    //   padding: 13px 28px;
+    //   background-color: #2e5aff;
+    //   font-size: 0.7em;
+    //   border-radius: 20px;
+    //   // TODO: Colors need to be updated in global style
+    //   &:hover {
+    //     cursor: pointer;
+    //   }
+    // }
     a {
       font-size: 0.8em;
       text-decoration: underline;
       text-decoration-color: #2e5aff;
       text-decoration-thickness: 0.2em;
     }
-    & .start-container-footer {
+    & .container-footer {
       background-color: $color-grey-6;
       border-bottom-right-radius: 15px;
       border-bottom-left-radius: 15px;
@@ -98,7 +79,7 @@
       padding-top: 30px;
       padding-bottom: 30px;
       font-size: 0.9em;
-      span {
+      & div {
         @extend .subtext;
         padding-left: 10px;
         padding-right: 10px;
