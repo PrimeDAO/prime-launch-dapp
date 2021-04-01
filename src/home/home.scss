@@ -1,3 +1,13 @@
 @import "styles/colors.scss";
 .page.home {
+  .section {
+    margin-bottom: 20px;
+  }
+
+  .launches {
+    width: 90vw; // for the scroller
+    .launch {
+      width: 400px;
+    }
+  }
 }
