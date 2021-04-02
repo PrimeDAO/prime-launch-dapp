@@ -1,6 +1,7 @@
 <template>
   <div class="scrollerContainer">
     <div ref="scroller" scrollleft.bind="scrollPos" class="scroller au-animate">
+      <!-- must be a set of divs -->
       <slot></slot>
     </div>
     <div class="rightButton" click.delegate="right()"></div>

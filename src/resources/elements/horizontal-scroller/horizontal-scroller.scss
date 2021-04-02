@@ -1,4 +1,9 @@
 .scrollerContainer {
+  /**
+   * simply to make this have 100% width while still supporting scrolling
+   */
+  display: inline-grid;
+
   .scroller {
     display: flex;
     flex-wrap: nowrap;
@@ -34,28 +39,5 @@
 
   .au-enter-left {
     animation: slideLeft 2s;
-  }
-
-  .au-enter-right {
-    animation: slideRight 2s;
-  }
-
-  .au-stagger {
-    animation-delay: 50ms;
-  }
-
-  @keyframes slideLeft {
-    // 0% {
-    //   transform: translateX(-100%);
-    // }
-    to {
-      transform: translateX(-100px);
-    }
-  }
-
-  @keyframes slideRight {
-    to {
-      transform: translateX(100%);
-    }
   }
 }

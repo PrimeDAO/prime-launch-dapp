@@ -27,15 +27,15 @@
     </div>
     <div class="section launches">
       <div class="title heading heading2">Upcoming launches</div>
-      <horizontal-scroller>
-        <div class="launch" repeat.for="i of 5">
-          <div class="deadline">in ${i+10} days</div>
+      <horizontal-scroller item-count="20">
+        <div class="launch" repeat.for="i of 20">
+          <div class="deadline">in ${i} days</div>
           <div class="title heading heading3">PrimeDAO ${i}</div>
           <div class="description">blah blah</div>
           <div class="label">PRIME / DAI</div>
           <div class="tokens">icons</div>
-          <div class="label">$${i+1},000,000</div>
-          <div class="target">$${i+5},000,000</div>
+          <div class="label">$${i},000,000</div>
+          <div class="target">$${i+2},000,000</div>
         </div>
       </horizontal-scroller>
     </div>
