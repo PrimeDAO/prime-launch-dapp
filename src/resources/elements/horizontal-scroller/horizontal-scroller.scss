@@ -1,8 +1,11 @@
+@import "styles/colors.scss";
+
 .scrollerContainer {
   /**
    * simply to make this have 100% width while still supporting scrolling
    */
   display: inline-grid;
+  position: relative; // for positioning the scroll buttons
 
   .scroller {
     display: flex;
@@ -19,25 +22,33 @@
     }
   }
 
+  .leftButton,
   .rightButton {
-    width: 0;
-    height: 0;
-    border-top: 24px solid transparent;
-    border-bottom: 24px solid transparent;
+    background-color: $color-darkblue;
+    opacity: 0.8;
+    border-radius: 26px;
+    cursor: pointer;
+    color: $color-white;
+    font-size: 22.5px;
+    text-decoration: none;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
 
-    border-left: 24px solid green;
+    &.hide {
+      display: none;
+    }
+  }
+
+  .leftButton:hover,
+  .rightButton:hover {
+    background-color: $color-lightblue;
   }
 
   .leftButton {
-    width: 0;
-    height: 0;
-    border-top: 24px solid transparent;
-    border-bottom: 24px solid transparent;
-
-    border-right: 24px solid blue;
-  }
-
-  .au-enter-left {
-    animation: slideLeft 2s;
+    right: 0;
   }
 }
