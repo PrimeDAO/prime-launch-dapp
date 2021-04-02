@@ -2,12 +2,59 @@
 .page.home {
   .section {
     margin-bottom: 20px;
+
+    &.top,
+    &.participate,
+    &.nomiss,
+    &.launches {
+      padding-left: 72px;
+      padding-right: 72px;
+      margin-bottom: 92px;
+    }
+
+    &.top {
+      width: 55%;
+      .title {
+        white-space: normal;
+      }
+
+      > .subtitle {
+        color: $color-grey-2;
+        margin-bottom: 86px;
+      }
+
+      .buttons {
+        display: flex;
+
+        .contribute,
+        .launch {
+          border-left: 4px solid $color-darkblue;
+          padding-left: 12px;
+          padding-top: 6px;
+          padding-bottom: 6px;
+          width: 200px;
+        }
+
+        .contribute {
+          margin-right: 24px;
+        }
+      }
+    }
   }
 
   .launches {
-    width: 90vw; // for the scroller
-    .launch {
-      width: 400px;
+    > .title {
+      margin-bottom: 24px;
+    }
+
+    horizontal-scroller {
+      display: inline-block;
+      margin-left: -72px;
+      margin-right: -72px;
+
+      .launch {
+        width: 300px;
+      }
     }
   }
 }

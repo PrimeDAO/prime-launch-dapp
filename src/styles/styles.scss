@@ -45,6 +45,7 @@ html {
     a {
       color: $color-white;
       text-decoration: none;
+      white-space: nowrap;
 
       &:hover {
         text-decoration: underline;
@@ -58,7 +59,8 @@ html {
 
       &.heading0 {
         font-size: 3.5em;
-        margin-bottom: 12px;
+        margin-bottom: 24px;
+        line-height: 54px;
       }
       &.heading1 {
         font-size: 2em;
@@ -66,7 +68,7 @@ html {
       }
       &.heading2 {
         font-size: 1.625em;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
       &.heading3 {
         font-size: 1.25em;
