@@ -17,7 +17,7 @@ export class HorizontalScroller {
     const scrollDistance = this.scrollDistance();
 
     this.scroller.scroll({
-      left: this.scrollPos - Math.min(this.scrollPos, scrollDistance),
+      left: this.scrollPos - scrollDistance,
       behavior: "smooth",
     });
   }
@@ -26,19 +26,15 @@ export class HorizontalScroller {
     const scrollDistance = this.scrollDistance();
 
     this.scroller.scroll({
-      left: this.scrollPos + Math.min(this.scroller.scrollWidth - this.scrollPos, scrollDistance),
+      left: this.scrollPos + scrollDistance,
       behavior: "smooth",
     });
-  }
-
-  itemWidth(): number {
-    return this.scroller.scrollWidth / this.itemCount;
   }
 
   scrollDistance(): number {
     const visibleWidth = this.scroller.clientWidth;
     // itemWidth better not be 0
-    const itemWidth = this.itemWidth();
+    const itemWidth = this.scroller.scrollWidth / this.itemCount;
     const visibleItemsCount = Math.floor(visibleWidth / itemWidth);
     /**
      * scroll by the sum of the widths of the wholly-visible items

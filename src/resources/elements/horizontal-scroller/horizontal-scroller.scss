@@ -1,10 +1,7 @@
 @import "styles/colors.scss";
 
 .scrollerContainer {
-  /**
-   * simply to make this have 100% width while still supporting scrolling
-   */
-  display: inline-grid;
+  display: inline-grid; // to make this have 100% width while still supporting scrolling
   position: relative; // for positioning the scroll buttons
 
   .scroller {
