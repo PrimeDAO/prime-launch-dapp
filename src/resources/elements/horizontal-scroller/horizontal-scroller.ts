@@ -24,7 +24,6 @@ export class HorizontalScroller {
   }
 
   right(): void {
-
     const scrollDistance = this.scrollDistance();
     const scrollPos = (this.scrollPos ?? 0);
 
