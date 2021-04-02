@@ -60,6 +60,37 @@
         .upcoming {
           > .title {
             text-transform: uppercase;
+            margin-bottom: 20px;
+            color: $subtext-color;
+          }
+        }
+
+        .upcoming {
+          .launchGrid {
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            grid-template-rows: auto;
+            column-gap: 32px;
+            row-gap: 16px;
+
+            margin-bottom: 20px;
+
+            .launchRow {
+              border-bottom: 1px solid $subtext-color;
+              &.hideMore {
+                display: none;
+              }
+            }
+          }
+
+          .seeMore {
+            display: flex;
+            color: $subtext-color;
+            cursor: pointer;
+
+            > .arrow {
+              margin-right: 6px;
+            }
           }
         }
       }

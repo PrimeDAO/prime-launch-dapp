@@ -40,26 +40,44 @@
         </div>
         <div class="upcoming">
           <div class="title heading3">Upcoming</div>
-          <div class="list">List</div>
+          <div class="launchGrid">
+            <div class="project header">PROJECT</div>
+            <div class="starts header">STARTS</div>
+            <div class="type header">TYPE</div>
+            <div class="target header">TARGET</div>
+            <template repeat.for="j of 6">
+              <div class="launchRow project  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
+              <div class="launchRow starts  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${j+1} days</div>
+              <div class="launchRow type  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${$even ? "LBP" : "SEED"}</div>
+              <div class="launchRow target  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${(j+1) * 1.5}M</div>
+            </template>
+          </div>
+          <div if.to-view="!seeingMore" class="seeMore">
+            <div class="arrow">&darr;</div>
+            <div class="text" click.delegate="seeMore(true)">SEE MORE</div>
+          </div>
+          <div if.to-view="seeingMore" class="seeMore">
+            <div class="arrow">&uarr;</div>
+            <div class="text" click.delegate="seeMore(false)">SEE LESS</div>
+          </div>
         </div>
       </div>
+      <div class="section nomiss">
+        <div class="title heading heading2">Never miss a launch</div>
+        <div class="subtitle subtext">blah blah</div>
+      </div>
+      <div class="section launches">
+        <div class="title heading heading2">Upcoming launches</div>
+        <horizontal-scroller item-count="20">
+          <launch repeat.for="i of 20" i.to-view="i"></launch>
+        </horizontal-scroller>
+      </div>
+      <div class="section fairLaunch">
+        <div class="pic">pic</div>
+        <div class="title heading heading2">PrimeDAO ${i}</div>
+        <div class="subtitle subtext"></div>
+        <div class="launchButton">LAUNCH</div>
+        <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
+      </div>
     </div>
-    <div class="section nomiss">
-      <div class="title heading heading2">Never miss a launch</div>
-      <div class="subtitle subtext">blah blah</div>
-    </div>
-    <div class="section launches">
-      <div class="title heading heading2">Upcoming launches</div>
-      <horizontal-scroller item-count="20">
-        <launch repeat.for="i of 20" i.to-view="i"></launch>
-      </horizontal-scroller>
-    </div>
-    <div class="section fairLaunch">
-      <div class="pic">pic</div>
-      <div class="title heading heading2">PrimeDAO ${i}</div>
-      <div class="subtitle subtext"></div>
-      <div class="launchButton">LAUNCH</div>
-      <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
-    </div>
-  </div>
 </template>
