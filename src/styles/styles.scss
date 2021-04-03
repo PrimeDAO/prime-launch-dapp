@@ -14,13 +14,13 @@ html {
     input {
       border: $input-border;
       width: 70px;
-      background-color: $color-white;
-      color: $color-black;
+      background-color: $color-black;
+      color: $color-white;
       border-radius: $input-border-radius;
       outline: none;
 
       &::placeholder {
-        color: $color-black;
+        color: $color-grey-4;
       }
       &:focus::placeholder {
         color: transparent;

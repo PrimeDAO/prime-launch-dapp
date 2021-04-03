@@ -26,9 +26,9 @@ $button3-color: $color-light-purple;
 $button4-color: $color-green;
 
 $global-background-color: $color-black;
-$global-button-radius: 26px;
+$global-button-radius: 6px;
 $subtext-color: $color-grey-5;
 $divider-color: $subtext-color;
 $lightbutton-border: 2px solid $color-green;
-$input-border: $lightbutton-border;
-$input-border-radius: 5px;
+$input-border: $subtext-color;
+$input-border-radius: 3px;

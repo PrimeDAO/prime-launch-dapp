@@ -145,5 +145,21 @@
         }
       }
     }
+
+    &.nomiss {
+      display: grid;
+      grid-template-columns: auto auto;
+
+      .emailColumn {
+        .form {
+          display: flex;
+
+          .emailInput {
+            flex-grow: 2;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
   }
 }
