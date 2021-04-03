@@ -1,4 +1,6 @@
 <template>
+  <require from="./launchSummary/launchSummary"></require>
+
   <div class="page animated-page au-animate home">
     <div class="section top">
       <div class="title heading heading0">Seamlessly fundraise for your moonshot</div>
@@ -6,13 +8,19 @@
         completely permissionless fashion.</div>
       <div class="buttons">
         <div class="contribute" click.delegate="navigate('contribute')">
-          <div class="title heading heading3">Contribute</div>
+          <div class="title">
+            <div class="heading heading3">Contribute</div>
+            <div cass="arrow">&#8599;</div>
+          </div>
           <div class="icon"></div>
           <div class="subtitle subtext">Donec facilisis tortor ut augue lacinia, at
             viverra est semper. Sed sapien metus</div>
         </div>
         <div class="launch" click.delegate="navigate('launch')">
-          <div class="title heading heading3">Launch</div>
+          <div class="title">
+            <div class="heading heading3">Launch</div>
+            <div cass="arrow">&#8599;</div>
+          </div>
           <div class="icon"></div>
           <div class="subtitle subtext">Donec facilisis tortor ut augue lacinia, at
             viverra est semper. Sed sapien metus</div>
@@ -22,33 +30,79 @@
     <div class="section participate">
       <div class="title heading heading2">Prime Launch</div>
       <div class="subtitle subtext">Participate in permissionless seed and liquid launches ahead of the curve.</div>
-      <div class="featured">Featured</div>
-      <div class="dao">PrimeDAO</div>
+      <div class="launches">
+        <div class="featured">
+          <div class="title heading3">Featured</div>
+          <div class="launch">
+            <launch-summary i.to-view="1"></launch-summary>
+          </div>
+          <div class="launchButton"><span class="arrow">&rarr;</span><a href="#" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>
+        </div>
+        <div class="upcoming">
+          <div class="title heading3">Upcoming</div>
+          <div class="launchGrid">
+            <div class="project header">PROJECT</div>
+            <div class="header divider">&nbsp;</div>
+            <div class="starts header">STARTS</div>
+            <div class="header divider">&nbsp;</div>
+            <div class="type header">TYPE</div>
+            <div class="header divider">&nbsp;</div>
+            <div class="target header">TARGET</div>
+            <template repeat.for="j of 6">
+              <div class="launchRow project  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
+              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow starts  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${j+1} days</div>
+              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow type  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${$even ? "LBP" : "SEED"}</div>
+              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow target  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${(j+1) * 1.5}M</div>
+            </template>
+          </div>
+          <div if.to-view="!seeingMore" class="seeMore">
+            <div class="arrow">&darr;</div>
+            <div class="text" click.delegate="seeMore(true)">SEE MORE</div>
+          </div>
+          <div if.to-view="seeingMore" class="seeMore">
+            <div class="arrow">&uarr;</div>
+            <div class="text" click.delegate="seeMore(false)">SEE LESS</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="section nomiss">
-      <div class="title heading heading2">Never miss a launch</div>
-      <div class="subtitle subtext">blah blah</div>
+      <div class="noMissColumn">
+        <div class="title heading heading2">Never miss a launch</div>
+        <div class="subtitle subtext">Sign-up for our newsletter to stay ahead of the curve</div>
+      </div>
+      <div class="emailColumn">
+        <div class="form">
+          <input class="emailInput" placeholder="Enter your email"></input>
+          <button class="notifyButton button1">Notify Me</button>
+        </div>
+        <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
+      </div>
     </div>
     <div class="section launches">
       <div class="title heading heading2">Upcoming launches</div>
       <horizontal-scroller item-count="20">
-        <div class="launch" repeat.for="i of 20">
-          <div class="deadline">in ${i} days</div>
-          <div class="title heading heading3">PrimeDAO ${i}</div>
-          <div class="description">blah blah</div>
-          <div class="label">PRIME / DAI</div>
-          <div class="tokens">icons</div>
-          <div class="label">$${i},000,000</div>
-          <div class="target">$${i+2},000,000</div>
-        </div>
+        <launch-summary repeat.for="i of 20" i.to-view="i"></launch-summary>
       </horizontal-scroller>
     </div>
     <div class="section fairLaunch">
-      <div class="pic">pic</div>
-      <div class="title heading heading2">PrimeDAO ${i}</div>
-      <div class="subtitle subtext"></div>
-      <div class="launchButton">LAUNCH</div>
-      <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
+      <div class="pic"><img src="#" /></div>
+      <div class="rightColumn">
+        <div class="title heading heading2">The real fair launch</div>
+        <div class="subtitle subtext">
+          <div>Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In
+            malesuada enim in dolor euismod, id commodo mi consectetur. Curabitur
+            at vestibulum nisi. Nullam vehicula nisi velit. Mauris turpis nisl, molestie ut
+            ipsum et, suscipit vehicula odio. Vestibulum interdum.</div>
+          <div>Praesent aliquet quam et libero dictum, vitae dignissim leo eleifend. In in
+            turpis turpis. Quisque justo turpis, vestibulum non enim nec, tempor mollis
+            mi. Sed vel tristique quam.</div>
+        </div>
+        <div class="launchButton"><button class="button1">LAUNCH</button></div>
+        <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
+      </div>
     </div>
-  </div>
 </template>

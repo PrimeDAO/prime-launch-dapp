@@ -25,6 +25,7 @@
 
       .buttons {
         display: flex;
+        cursor: pointer;
 
         .contribute,
         .launch {
@@ -33,6 +34,11 @@
           padding-top: 6px;
           padding-bottom: 6px;
           width: 200px;
+
+          .title {
+            display: flex;
+            justify-content: space-between;
+          }
         }
 
         .contribute {
@@ -40,20 +46,149 @@
         }
       }
     }
-  }
 
-  .launches {
-    > .title {
-      margin-bottom: 24px;
+    &.participate {
+      margin-bottom: 92px;
+
+      .subtitle {
+        margin-bottom: 48px;
+      }
+
+      .launches {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        column-gap: 20%;
+
+        .featured,
+        .upcoming {
+          > .title {
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: $subtext-color;
+          }
+        }
+
+        .featured {
+          .launch {
+            margin-bottom: 20px;
+          }
+
+          .launchButton {
+            text-align: center;
+
+            > .arrow {
+              margin-right: 6px;
+            }
+          }
+        }
+
+        .upcoming {
+          .launchGrid {
+            display: grid;
+            grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr;
+            grid-template-rows: auto;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.8em;
+
+            .launchRow {
+              &.hideMore {
+                display: none;
+              }
+            }
+
+            .launchRow {
+              border-bottom: 1px solid $subtext-color;
+              white-space: nowrap;
+            }
+
+            .header {
+              border-bottom: 1px solid $color-darkblue;
+            }
+
+            .launchRow,
+            .header {
+              padding: 10px 0;
+            }
+
+            > .target {
+              text-align: right;
+            }
+          }
+
+          .seeMore {
+            display: flex;
+            color: $subtext-color;
+            cursor: pointer;
+
+            > .arrow {
+              margin-right: 6px;
+            }
+          }
+        }
+      }
     }
 
-    horizontal-scroller {
-      display: inline-block;
-      margin-left: -72px;
-      margin-right: -72px;
+    &.launches {
+      > .title {
+        margin-bottom: 24px;
+      }
 
-      .launch {
-        width: 300px;
+      horizontal-scroller {
+        display: inline-block;
+        margin-left: -72px;
+        margin-right: -72px;
+
+        // note this is inside of the launch-summary element
+        .launchSummary {
+          width: 300px;
+        }
+      }
+    }
+
+    &.nomiss {
+      display: grid;
+      grid-template-columns: auto auto;
+
+      .emailColumn {
+        .form {
+          display: flex;
+
+          .emailInput {
+            flex-grow: 2;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    &.fairLaunch {
+      display: grid;
+      grid-template-columns: auto auto;
+      column-gap: 10%;
+
+      .pic {
+        img {
+          width: 350px;
+          height: 350px;
+        }
+      }
+
+      .rightColumn {
+        .subtext {
+          div {
+            margin-bottom: 1em;
+          }
+        }
+        .launchButton,
+        .learnMore {
+          display: inline-block;
+        }
+
+        .launchButton {
+          margin-right: 8px;
+        }
       }
     }
   }

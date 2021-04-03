@@ -6,6 +6,8 @@ import "./home.scss";
 @autoinject
 export class Home {
 
+  seeingMore = false;
+
   constructor(
     private router: Router,
   ) {
@@ -13,5 +15,9 @@ export class Home {
 
   navigate(href: string): void {
     this.router.navigate(href);
+  }
+
+  seeMore(yesNo: boolean): void {
+    this.seeingMore = yesNo;
   }
 }
