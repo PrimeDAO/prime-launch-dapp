@@ -161,5 +161,26 @@
         }
       }
     }
+
+    &.fairLaunch {
+      display: grid;
+      grid-template-columns: auto auto;
+
+      .rightColumn {
+        .subtext {
+          div {
+            margin-bottom: 1em;
+          }
+        }
+        .launchButton,
+        .learnMore {
+          display: inline-block;
+        }
+
+        .launchButton {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
