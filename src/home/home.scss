@@ -166,6 +166,14 @@
     &.fairLaunch {
       display: grid;
       grid-template-columns: auto auto;
+      column-gap: 10%;
+
+      .pic {
+        img {
+          width: 350px;
+          height: 350px;
+        }
+      }
 
       .rightColumn {
         .subtext {
