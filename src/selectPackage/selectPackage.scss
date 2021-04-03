@@ -41,17 +41,22 @@
       .benefitsContainer {
         text-align: left;
         text-orientation: sideways-right;
-        padding-left: 1.2em;
-        padding-right: 1.2em;
-        padding-top: 1em;
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        padding-top: 1.5em;
+        font-size: 0.8em;
+        line-height: 2em;
+        span {
+          color: firebrick;
+          font-size: 1.3em;
+          padding: 0.4em;
+        }
       }
     }
-    .buttons {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: row wrap;
-      align-items: center;
-      justify-content: space-between;
+    .buttonContainer a {
+      text-decoration: none;
+      // TODO: Remove this
+      color: white;
     }
     // .buttonContainer {
     //   // TODO: Need params from figma and adjust global styles
@@ -69,8 +74,9 @@
     a {
       font-size: 0.8em;
       text-decoration: underline;
+      // TODO: Wrong color
       text-decoration-color: #2e5aff;
-      text-decoration-thickness: 0.2em;
+      text-decoration-thickness: 0.15em;
     }
     .packageFooter {
       display: grid;
