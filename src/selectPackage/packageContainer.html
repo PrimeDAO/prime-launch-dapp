@@ -1,0 +1,27 @@
+<template bindable="title, subTitle, btnText, benefits, discount">
+  <div class="packageContainer">
+    <div class="topSection">
+      <div class="heading heading3">${title}</div>
+      <div class="subtext">${subTitle}</div>
+      <div class="benefitsContainer">
+        <div class="benefit"><i style="color: white">&nbsp;</i> Support</div>
+        <div class="benefit">Hosted</div>
+        <div class="benefit">Marketing</div>
+        <div class="benefit">25% discount on services</div>
+      </div>
+    </div>
+    <div class="packageFooter">
+      <div class="heading heading2 discount">
+        ${discount > 0 ? discount + "% "+ "FEE" : "FREE"}
+      </div>
+      <div class="buttons">
+        <div class="buttonContainer button button1">
+          <a route-href="route: selectPackage">${btnText}</a>
+        </div>
+      </div>
+      <div class="learnMore">
+        <a>Learn more</a>
+      </div>
+    </div>
+  </div>
+</template>
