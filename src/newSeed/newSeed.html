@@ -1,0 +1,16 @@
+<template>
+  <div class="newSeedContainer">
+    <div class="currentStageSidebar">
+      <template repeat.for="stage of router.navigation">
+        <div
+          class="currentstage ${row.isActive ? 'active' : ''}"
+          click.delegate="setStage(stage.config.route)">
+          ${$index+1} ${stage.config.title}
+        </div>
+      </template>
+    </div>
+    <div class="stageContainer">
+      <router-view></router-view>
+    </div>
+  </div>
+</template>

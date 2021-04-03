@@ -111,6 +111,13 @@ export class App {
         title: "SEED",
       },
       {
+        moduleId: PLATFORM.moduleName("./newSeed/newSeed"),
+        nav: false,
+        name: "newSeed",
+        route: ["newSeed"],
+        title: "Register New SEED",
+      },
+      {
         moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
         nav: false,
         name: "selectPackage",
