@@ -20,17 +20,15 @@ export class NewSeed {
     config.title = "Register New SEED";
 
     const routes = [
-      { route: ["", "newseed/generalinfo"], nav: true, moduleId: PLATFORM.moduleName("./stage1"), name: "generalinfo", title: "General Information", settings: { seedConfig: Object.assign({ stageNumber: 1 }, this.seedConfig) } },
-      { route: ["newseed/projectdetails"], nav: true, moduleId: PLATFORM.moduleName("./stage2"), name: "projectdetails", title: "Project Details", settings: { seedConfig: Object.assign({ stageNumber: 2 }, this.seedConfig) } },
-      { route: ["newseed/tokendetails"], nav: true, moduleId: PLATFORM.moduleName("./stage3"), name: "tokendetails", title: "Token Details", settings: { seedConfig: Object.assign({ stageNumber: 3 }, this.seedConfig) } },
-      { route: ["newseed/seeddetails"], nav: true, moduleId: PLATFORM.moduleName("./stage4"), name: "seeddetails", title: "SEED Details", settings: { seedConfig: Object.assign({ stageNumber: 4 }, this.seedConfig) } },
-      { route: ["newseed/contactdetails"], nav: true, moduleId: PLATFORM.moduleName("./stage5"), name: "contactdetails", title: "Contact Details", settings: { seedConfig: Object.assign({ stageNumber: 5 }, this.seedConfig) } },
-      { route: ["newseed/thankyou"], nav: true, moduleId: PLATFORM.moduleName("./stage6"), name: "thankyou", title: "Thank You!", settings: { seedConfig: Object.assign({ stageNumber: 6 }, this.seedConfig) } },
+      { route: ["", "newseed/stage1"], nav: true, moduleId: PLATFORM.moduleName("./stage1"), name: "stage1", title: "General Information", settings: { seedConfig: this.seedConfig, stageNumber: 1, maxStage: 6 } },
+      { route: ["newseed/stage2"], nav: true, moduleId: PLATFORM.moduleName("./stage2"), name: "stage2", title: "Project Details", settings: { seedConfig: this.seedConfig, stageNumber: 2, maxStage: 6 } },
+      { route: ["newseed/stage3"], nav: true, moduleId: PLATFORM.moduleName("./stage3"), name: "stage3", title: "Token Details", settings: { seedConfig: this.seedConfig, stageNumber: 3, maxStage: 6 } },
+      { route: ["newseed/stage4"], nav: true, moduleId: PLATFORM.moduleName("./stage4"), name: "stage4", title: "SEED Details", settings: { seedConfig: this.seedConfig, stageNumber: 4, maxStage: 6 } },
+      { route: ["newseed/stage5"], nav: true, moduleId: PLATFORM.moduleName("./stage5"), name: "stage5", title: "Contact Details", settings: { seedConfig: this.seedConfig, stageNumber: 5, maxStage: 6 } },
+      { route: ["newseed/stage6"], nav: true, moduleId: PLATFORM.moduleName("./stage6"), name: "stage6", title: "Thank You!", settings: { seedConfig: this.seedConfig, stageNumber: 6, maxStage: 6 } },
     ];
 
     config.map(routes);
-
-    this.seedConfig.maxStage = routes.length+1;
 
     this.router = router;
   }
