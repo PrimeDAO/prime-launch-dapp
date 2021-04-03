@@ -24,13 +24,13 @@ export abstract class BaseStage {
 
   next(): void {
     if (this.stageNumber < this.maxStage) {
-      this.router.navigate(`newseed/stage${this.stageNumber + 1}`);
+      this.router.navigate(`stage${this.stageNumber + 1}`);
     }
   }
 
   back(): void {
     if (this.stageNumber > 1) {
-      this.router.navigate(`newseed/stage${this.stageNumber - 1}`);
+      this.router.navigate(`stage${this.stageNumber - 1}`);
     }
   }
 }
