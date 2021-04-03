@@ -1,7 +1,7 @@
 import { bindable } from "aurelia-typed-observable-plugin";
-import "./launch.scss";
+import "./launchSummary.scss";
 
-export class Launch {
+export class LaunchSummary {
 
   @bindable.number i: number;
 }

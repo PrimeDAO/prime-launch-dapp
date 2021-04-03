@@ -140,7 +140,8 @@
         margin-left: -72px;
         margin-right: -72px;
 
-        .launch {
+        // note this is inside of the launch-summary element
+        .launchSummary {
           width: 300px;
         }
       }

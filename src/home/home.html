@@ -1,5 +1,5 @@
 <template>
-  <require from="./launch/launch"></require>
+  <require from="./launchSummary/launchSummary"></require>
 
   <div class="page animated-page au-animate home">
     <div class="section top">
@@ -34,7 +34,7 @@
         <div class="featured">
           <div class="title heading3">Featured</div>
           <div class="launch">
-            <launch i.to-view="1"></launch>
+            <launch-summary i.to-view="1"></launch-summary>
           </div>
           <div class="launchButton"><span class="arrow">&rarr;</span><a href="#" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>
         </div>
@@ -85,7 +85,7 @@
     <div class="section launches">
       <div class="title heading heading2">Upcoming launches</div>
       <horizontal-scroller item-count="20">
-        <launch repeat.for="i of 20" i.to-view="i"></launch>
+        <launch-summary repeat.for="i of 20" i.to-view="i"></launch-summary>
       </horizontal-scroller>
     </div>
     <div class="section fairLaunch">
