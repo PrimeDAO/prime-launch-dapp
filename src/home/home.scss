@@ -48,13 +48,17 @@
     }
 
     &.participate {
+      margin-bottom: 92px;
+
       .subtitle {
         margin-bottom: 48px;
       }
 
       .launches {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        column-gap: 20%;
 
         .featured,
         .upcoming {
@@ -65,21 +69,51 @@
           }
         }
 
+        .featured {
+          .launch {
+            margin-bottom: 20px;
+          }
+
+          .launchButton {
+            text-align: center;
+
+            > .arrow {
+              margin-right: 6px;
+            }
+          }
+        }
+
         .upcoming {
           .launchGrid {
             display: grid;
-            grid-template-columns: auto auto auto auto;
+            grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr;
             grid-template-rows: auto;
-            column-gap: 32px;
-            row-gap: 16px;
-
+            align-items: center;
             margin-bottom: 20px;
+            font-size: 0.8em;
 
             .launchRow {
-              border-bottom: 1px solid $subtext-color;
               &.hideMore {
                 display: none;
               }
+            }
+
+            .launchRow {
+              border-bottom: 1px solid $subtext-color;
+              white-space: nowrap;
+            }
+
+            .header {
+              border-bottom: 1px solid $color-darkblue;
+            }
+
+            .launchRow,
+            .header {
+              padding: 10px 0;
+            }
+
+            > .target {
+              text-align: right;
             }
           }
 
