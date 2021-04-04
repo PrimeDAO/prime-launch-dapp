@@ -14,7 +14,8 @@
     </div>
     <div class="packageFooter">
       <div class="heading heading2 discount">
-        ${discount > 0 ? discount + "% "+ "FEE" : "FREE"}
+        <div if.bind="disc"></div>
+        ${discount > 0 ? `${discount}% FEE` : "FREE"}
       </div>
       <div>
         <div class="buttonContainer button button1">
