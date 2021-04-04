@@ -1,5 +1,4 @@
 @import "styles/colors.scss";
-@import "styles/styles";
 
 .page.selectPackage {
   display: grid;
@@ -55,28 +54,8 @@
     }
     .buttonContainer a {
       text-decoration: none;
-      // TODO: Remove this
-      color: white;
-    }
-    // .buttonContainer {
-    //   // TODO: Need params from figma and adjust global styles
-    //   //   @extend .button1;
-    //   text-align: center;
-    //   padding: 13px 28px;
-    //   background-color: #2e5aff;
-    //   font-size: 0.7em;
-    //   border-radius: 20px;
-    //   // TODO: Colors need to be updated in global style
-    //   &:hover {
-    //     cursor: pointer;
-    //   }
-    // }
-    a {
+      color: $color-white;
       font-size: 0.8em;
-      text-decoration: underline;
-      // TODO: Wrong color
-      text-decoration-color: #2e5aff;
-      text-decoration-thickness: 0.15em;
     }
     .packageFooter {
       display: grid;
