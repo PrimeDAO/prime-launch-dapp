@@ -1,3 +1,76 @@
 @import "styles/colors.scss";
+
 .page.selectPackage {
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  justify-content: center;
+  // TODO: em or px
+  gap: 30px;
+
+  .banner {
+    text-align: center;
+  }
+
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 350px));
+    // TODO: em or px
+    gap: 20px;
+  }
+
+  .packageContainer {
+    background-color: $color-black-2;
+    border-radius: 15px;
+    // Don't overflow width
+    // Try to make divs same height
+    height: 100%;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    > div {
+      // Make these divs have paddings to align contents
+      // TODO:
+      padding-left: 20px;
+      padding-right: 40px;
+      font-size: 20px;
+    }
+    .topSection {
+      padding-top: 10px;
+      padding-bottom: 40px;
+      line-height: 1.3em;
+      .benefitsContainer {
+        text-align: left;
+        text-orientation: sideways-right;
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        padding-top: 1.5em;
+        font-size: 0.8em;
+        line-height: 2em;
+        span {
+          color: firebrick;
+          font-size: 1.3em;
+          padding: 0.4em;
+        }
+      }
+    }
+    .buttonContainer a {
+      text-decoration: none;
+      color: $color-white;
+      font-size: 0.8em;
+    }
+    .packageFooter {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      justify-content: center;
+      row-gap: 10px;
+      .discount {
+        text-align: center;
+      }
+      a {
+        text-align: center;
+      }
+    }
+    .learnMore {
+      text-align: center;
+    }
+  }
 }

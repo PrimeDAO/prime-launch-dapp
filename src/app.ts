@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";

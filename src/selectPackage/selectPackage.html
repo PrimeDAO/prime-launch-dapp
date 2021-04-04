@@ -1,5 +1,39 @@
 <template>
+  <require from="./packageContainer.html"></require>
   <div class="page animated-page au-animate selectPackage">
-    Select Your Package
+    <div class="banner">
+      <div class="heading heading1">
+        <div>Select your package</div>
+      </div>
+      <div class="subtext">
+        <div>
+          <div>
+            PrimeDAO can help you host a succesfull permissionless token launch.
+          </div>
+          <div>Select the package that firts best for your project.</div>
+        </div>
+      </div>
+    </div>
+    <div class="packages">
+      <packageContainer
+        title="Self-Hosted"
+        sub-title="Use the open-source technology created by PrimeDAO & Balancer tot host your own LBP."
+        btn-text="SELECT PACKAGE"
+        discount="0"
+      ></packageContainer>
+      <packageContainer
+        title="Basic"
+        sub-title="Use the open-source technology created by PrimeDAO & Balancer tot host your own LBP."
+        btn-text="SELECT PACKAGE"
+        discount="1"
+      ></packageContainer>
+      <packageContainer
+        title="Prime"
+        sub-title="Use the open-source technology created by PrimeDAO & Balancer tot host your own LBP.
+        "
+        btn-text="SELECT PACKAGE"
+        discount="2"
+      ></packageContainer>
+    </div>
   </div>
 </template>

@@ -1,0 +1,30 @@
+<template bindable="title, subTitle, btnText, benefits, discount">
+  <div class="packageContainer">
+    <div class="topSection">
+      <div class="heading heading3">${title}</div>
+      <div class="subtext">${subTitle}</div>
+      <div class="benefitsContainer">
+        <div class="benefit"><span>&#10026;</span> Support</div>
+        <div class="benefit"><span>&#10026;</span> Hosted</div>
+        <div class="benefit"><span>&#10026;</span> Marketing</div>
+        <div class="benefit">
+          <span>&#10026;</span> 25% discount on services
+        </div>
+      </div>
+    </div>
+    <div class="packageFooter">
+      <div class="heading heading2 discount">
+        <div if.bind="disc"></div>
+        ${discount > 0 ? `${discount}% FEE` : "FREE"}
+      </div>
+      <div>
+        <div class="buttonContainer button button1">
+          <a route-href="route: newSeed">${btnText}</a>
+        </div>
+      </div>
+      <div class="learnMore">
+        <a class="subtext">Learn more</a>
+      </div>
+    </div>
+  </div>
+</template>
