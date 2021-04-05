@@ -1,5 +1,11 @@
 <template>
   <div class="connectButtonContainer ${accountAddress ? 'connected' : ''}">
+    <div class="link">
+      <a route-href="route: home">Launches</a>
+    </div>
+    <div class="link">
+      <a href="#" target="_blank" rel="noopener noreferrer">Docs</a>
+    </div>
     <div class="connectedButtons" if.to-view="accountAddress">
       <template if.to-view="!hideBalances">
         <div class="ethBalanceContainer">

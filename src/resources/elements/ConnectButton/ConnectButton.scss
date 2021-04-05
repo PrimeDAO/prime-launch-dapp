@@ -11,6 +11,24 @@
   border-color: transparent;
   z-index: 1000;
 
+  > .link {
+    display: inline-block;
+    margin-right: 6px;
+
+    > a {
+      color: $color-white;
+
+      &:hover {
+        color: $color-white;
+        text-decoration: underline;
+      }
+    }
+
+    &:last-child {
+      margin-right: 18px;
+    }
+  }
+
   .connectButton {
     display: inline-block;
     padding: 0.6rem 0.9rem;
@@ -29,7 +47,7 @@
   }
 
   .connectedButtons {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
 
@@ -100,8 +118,12 @@
 @media screen and (max-width: 1300px) {
 }
 
-@media screen and (max-width: 830px) {
+@media screen and (max-width: 780px) {
   .connectButtonContainer {
+    > .link {
+      display: none;
+    }
+
     &.connected {
       padding-left: 0;
       .connectedButtons {
