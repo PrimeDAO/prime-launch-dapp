@@ -70,7 +70,7 @@ export class App {
 
   private configureRouter(config: RouterConfiguration, router: Router) {
 
-    config.title = "primepool.eth";
+    config.title = "primelaunch.eth";
     config.options.pushState = true;
     // const isIpfs = (window as any).IS_IPFS;
     // if (isIpfs) {
@@ -107,7 +107,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./seed/seed"),
         nav: false,
         name: "seed",
-        route: ["seed"],
+        route: ["seed:address"],
         title: "SEED",
       },
       {

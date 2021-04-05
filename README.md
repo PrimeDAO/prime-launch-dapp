@@ -139,7 +139,7 @@ And in another shell:
 npm run ipfs-deploy
 ```
 
-Note that this command has shown you the hash that has been pinned in IPFS, and which you will need to associate with an ENS URI like `primepool.eth.link`.  You'll also find the hash in Pinata.
+Note that this command has shown you the hash that has been pinned in IPFS, and which you will need to associate with an ENS URI like `primelaunch.eth.link`.  You'll also find the hash in Pinata.
 
 You can also use the Pinata website to upload the `dist` folder directly from your computer.
 
@@ -151,7 +151,7 @@ ipfs add dist -r dist
 
 ### ENS
 
-Having deployed and pinned the hash in IPFS, you can associate it with a URI like `primepool.eth.link` using [https://app.ens.domains/](https://app.ens.domains/).
+Having deployed and pinned the hash in IPFS, you can associate it with a URI like `primelaunch.eth.link` using [https://app.ens.domains/](https://app.ens.domains/).
 
 You have to be a controller of the ENS domain.  On the domain's details page, add or edit the `content` record so it looks something like this:
 
