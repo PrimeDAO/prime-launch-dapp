@@ -107,7 +107,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./seed/seed"),
         nav: false,
         name: "seed",
-        route: ["seed:address"],
+        route: ["seed/:address"],
         title: "SEED",
       },
       {
