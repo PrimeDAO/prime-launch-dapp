@@ -6,3 +6,4 @@
 *.md text eol=lf
 *.ejs text eol=lf
 *.svg text eol=lf
+.* text eol=lf
