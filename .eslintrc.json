@@ -121,7 +121,7 @@
     "getter-return": 0,
     "linebreak-style": [
       "error",
-      "windows"
+      "unix"
     ]
   }
 }
