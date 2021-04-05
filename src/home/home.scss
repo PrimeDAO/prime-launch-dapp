@@ -135,14 +135,15 @@
         margin-bottom: 24px;
       }
 
-      horizontal-scroller {
+      > horizontal-scroller {
         display: inline-block;
         margin-left: -72px;
         margin-right: -72px;
 
         // note this is inside of the launch-summary element
         .launchSummary {
-          width: 300px;
+          width: 320px;
+          padding-right: 30px;
         }
       }
     }

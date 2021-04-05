@@ -8,6 +8,7 @@
     "icon description description"
     "icon tokensTarget tokensTarget";
   row-gap: 12px;
+  cursor: pointer;
 
   .icon {
     grid-area: icon;
@@ -22,6 +23,7 @@
     grid-area: timeLeft;
     font-size: 0.8em;
     align-self: center;
+    text-align: right;
 
     > .icon {
       margin-right: 6px;

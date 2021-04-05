@@ -1,8 +1,8 @@
 <template>
-  <div class="launchSummary">
+  <div class="launchSummary" click.delegate="gotoDetails()">
     <div class="icon"><img src="#" /></div>
-    <div class="title heading heading3">PrimeDAO ${i}</div>
-    <div class="timeLeft"><span class="icon far fa-clock"></span>in ${i} days</div>
+    <div class="title heading heading3">PrimeDAO ${address}</div>
+    <div class="timeLeft"><span class="icon far fa-clock"></span>in ${address} days</div>
     <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
       pretium pretium tempor. Ut eget imperdiet neque. In volutpat
       ante semper diam molestie, et aliquam.</div>
@@ -13,7 +13,7 @@
       </div>
       <div class="target">
         <div class="title subtext">TARGET</div>
-        <div class="target">$${i+1},000,000</div>
+        <div class="target">$${address},000,000</div>
       </div>
     </div>
   </div>
