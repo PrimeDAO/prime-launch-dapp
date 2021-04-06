@@ -6,6 +6,7 @@ import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { SeedService } from "services/SeedService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -39,9 +40,9 @@ export function configure(aurelia: Aurelia): void {
 
       aurelia.container.get(ContractsService);
 
-      // const poolService = aurelia.container.get(PoolService);
+      const seedService = aurelia.container.get(SeedService);
 
-      // poolService.initialize();
+      seedService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

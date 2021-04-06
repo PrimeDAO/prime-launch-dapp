@@ -156,6 +156,11 @@ export class DateService {
     return this.createMomentFromTicks(ticks).toDate();
   }
 
+
+  public unixEpochToDate(seconds: number): Date | null {
+    return this.ticksToDate(seconds * 1000);
+  }
+
   public dateStringToTicks(dtString: string, params?: IFormatParameters | string): number {
     if (!dtString) {
       return 0;
