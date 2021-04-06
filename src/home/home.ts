@@ -7,10 +7,22 @@ import "./home.scss";
 export class Home {
 
   seeingMore = false;
+  bookmark: string;
 
   constructor(
     private router: Router,
   ) {
+  }
+
+  activate(params: { bookmark?: string}): void {
+    this.bookmark = params?.bookmark;
+  }
+
+  attached(): void {
+    if (this.bookmark) {
+      document.getElementById(this.bookmark).scrollIntoView();
+      this.bookmark = undefined;
+    }
   }
 
   navigate(href: string): void {
