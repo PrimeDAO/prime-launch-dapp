@@ -13,7 +13,7 @@ export class LaunchSummary {
     private router: Router,
   ) {}
 
-  gotoDetails(): void {
-    this.router.navigateToRoute("seed", { address: this.address });
+  gotoDashboard(): void {
+    this.router.navigate(`seedDashboard/${this.address}`);
   }
 }

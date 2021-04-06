@@ -104,11 +104,11 @@ export class App {
         title: "Liquid Launch",
       },
       {
-        moduleId: PLATFORM.moduleName("./seed/seed"),
+        moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
         nav: false,
-        name: "seed",
-        route: ["seed/:address"],
-        title: "SEED",
+        name: "seedDashboard",
+        route: ["seedDashboard/:address"],
+        title: "SEED Dashboard",
       },
       {
         moduleId: PLATFORM.moduleName("./newSeed/newSeed"),
