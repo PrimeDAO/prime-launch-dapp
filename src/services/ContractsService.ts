@@ -4,21 +4,16 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 
 const ContractAddresses = require("../contracts/contractAddresses.json") as INetworkContractAddresses;
-const ConfigurableRightsPool = require("../contracts/ConfigurableRightsPool.json");
-const CRPFactory = require("../contracts/CRPFactory.json");
-const WETHABI = require("../contracts/WETH.json");
-const BPOOL = require("../contracts/BPool.json");
-const STAKINGREWARDS = require("../contracts/StakingRewards.json");
+// const WETHABI = require("../contracts/WETH.json");
+const SeedFactoryABI = require("../contracts/SeedFactory.json");
+const SeedABI = require("../contracts/Seed.json");
 const ERC20ABI = require("../contracts/ERC20.json");
 
 export enum ContractNames {
-  ConfigurableRightsPool = "ConfigurableRightsPool"
-  , CRPFactory = "CRPFactory"
-  , BPOOL = "BPool"
-  , WETH = "WETH"
+  SEEDFACTORY
+  , SEED
+  // , WETH = "WETH"
   , PRIMETOKEN = "PrimeToken"
-  , STAKINGREWARDS = "StakingRewards"
-  //  , PrimeDAO = "Avatar"
   , IERC20 = "IERC20"
   ,
 }
@@ -39,23 +34,19 @@ export class ContractsService {
 
   private static ABIs = new Map<ContractNames, any>(
     [
-      [ContractNames.ConfigurableRightsPool, ConfigurableRightsPool.abi]
-      , [ContractNames.CRPFactory, CRPFactory.abi]
-      , [ContractNames.BPOOL, BPOOL.abi]
-      , [ContractNames.STAKINGREWARDS, STAKINGREWARDS.abi]
-      , [ContractNames.WETH, WETHABI.abi]
+      [ContractNames.SEEDFACTORY, SeedFactoryABI.abi]
+      , [ContractNames.SEED, SeedABI.abi]
       , [ContractNames.PRIMETOKEN, ERC20ABI.abi]
+      // , [ContractNames.WETH, WETHABI.abi]
       , [ContractNames.IERC20, ERC20ABI.abi]
       ,
     ],
   );
 
   private static Contracts = new Map<ContractNames, Contract>([
-    [ContractNames.ConfigurableRightsPool, null]
-    , [ContractNames.CRPFactory, null]
-    , [ContractNames.BPOOL, null]
-    , [ContractNames.STAKINGREWARDS, null]
-    , [ContractNames.WETH, null]
+    [ContractNames.SEEDFACTORY, null]
+    , [ContractNames.SEED, null]
+    // , [ContractNames.WETH, null]
     , [ContractNames.PRIMETOKEN, null]
     ,
   ]);
@@ -144,8 +135,8 @@ export class ContractsService {
       this.setInitializingContracts();
     }
 
-    const reuseContracts = // at least one random contract already exists
-      ContractsService.Contracts.get(ContractNames.ConfigurableRightsPool);
+    const reuseContracts = // at least one arbitrary contract already exists
+      ContractsService.Contracts.get(ContractNames.SEEDFACTORY);
 
     const signerOrProvider = this.createProvider();
 

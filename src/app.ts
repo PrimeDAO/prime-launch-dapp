@@ -8,20 +8,16 @@ import "./styles/styles.scss";
 import "./app.scss";
 import { Utils } from "services/utils";
 import tippy from "tippy.js";
-import { Pool } from "entities/pool";
-import { PoolService } from "services/PoolService";
 
 @autoinject
 export class App {
   constructor (
-    private eventAggregator: EventAggregator,
-    private poolService: PoolService) { }
+    private eventAggregator: EventAggregator) { }
 
   router: Router;
   onOff = false;
   modalMessage: string;
   initializing = true;
-  pools = new Array<Pool>();
   showingMobileMenu = false;
 
   errorHandler = (ex: unknown): boolean => {
@@ -53,19 +49,19 @@ export class App {
       this.onOff = false;
     });
 
-    if (!this.pools?.length) {
-      setTimeout(async () => {
-        try {
-          if (this.poolService.initializing) {
-            await this.poolService.ensureInitialized();
-          }
-          this.pools = this.poolService.poolsArray;
-          this.initializing = false;
-        } catch (ex) {
-          this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-        }
-      }, 0);
-    }
+    // if (!this.pools?.length) {
+    //   setTimeout(async () => {
+    //     try {
+    //       if (this.poolService.initializing) {
+    //         await this.poolService.ensureInitialized();
+    //       }
+    //       this.pools = this.poolService.poolsArray;
+    //       this.initializing = false;
+    //     } catch (ex) {
+    //       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+    //     }
+    //   }, 0);
+    // }
   }
 
   private configureRouter(config: RouterConfiguration, router: Router) {
