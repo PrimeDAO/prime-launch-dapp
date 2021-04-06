@@ -1,6 +1,6 @@
 <template>
-  <require from="./footer/footer">
-  </require>
+  <require from="./footer/footer"></require>
+  <require from="./headerButtons/headerButtons"></require>
   <banner></banner>
   <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
     <div class="appWrapper  ${showingMobileMenu ? 'showingMobileMenu' : ''}">
@@ -11,6 +11,7 @@
         <div class="networkFeedback">
           <networkfeedback></networkfeedback>
         </div>
+        <header-buttons></header-buttons>
         <div class="hConnectButton" show.to-view="!showingMobileMenu">
           <connectbutton></connectbutton>
         </div>

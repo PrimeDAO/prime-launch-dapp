@@ -1,20 +1,15 @@
 <template>
   <div class="connectButtonContainer ${accountAddress ? 'connected' : ''}">
-    <div class="link">
-      <a route-href="route: home">Launches</a>
-    </div>
-    <div class="link">
-      <a href="#" target="_blank" rel="noopener noreferrer">Docs</a>
-    </div>
     <div class="connectedButtons" if.to-view="accountAddress">
       <template if.to-view="!hideBalances">
         <div class="ethBalanceContainer">
-          <tokenbalance formatted="0.00a" token-address.to-view="primeAddress"></tokenbalance> PRIME<span class="separator">|</span>
+          <tokenbalance formatted="0.00a" token-address.to-view="primeAddress"></tokenbalance> PRIME
         </div>
+        <span class="separator">|</span>
         <!-- <div class="ethBalanceContainer">
           <tokenbalance formatted="0.00a" token-address.to-view="daiAddress"></tokenbalance> DAI<span class="separator">|</span>
         </div> -->
-        <div class="ethBalanceContainer">
+        <div class="ethBalanceContainer ETH">
           <ethbalance formatted="0.00a"></ethbalance> ETH
         </div>
       </template>

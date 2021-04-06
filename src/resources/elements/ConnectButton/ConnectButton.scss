@@ -2,6 +2,7 @@
 
 .connectButtonContainer {
   display: inline-block;
+  padding-left: 14px;
   padding-right: 1px;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -10,24 +11,6 @@
   background-color: rgb(33, 36, 41);
   border-color: transparent;
   z-index: 1000;
-
-  > .link {
-    display: inline-block;
-    margin-right: 6px;
-
-    > a {
-      color: $color-white;
-
-      &:hover {
-        color: $color-white;
-        text-decoration: underline;
-      }
-    }
-
-    &:last-child {
-      margin-right: 18px;
-    }
-  }
 
   .connectButton {
     display: inline-block;
@@ -54,23 +37,27 @@
     .ethBalanceContainer {
       display: inline-block;
       white-space: nowrap;
+
+      &.ETH {
+        margin-right: 0.5em;
+      }
     }
   }
 
   &.connected {
     background-color: rgb(64, 68, 79);
     border-color: rgba(21, 61, 111, 0.44);
-    padding-left: 14px;
+
+    .separator {
+      display: inline-block;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+      position: relative;
+      bottom: 1px;
+      color: $button1-color;
+    }
 
     .connectedButtons {
-      .separator {
-        display: inline-block;
-        margin-left: 8px;
-        position: relative;
-        bottom: 1px;
-        color: $button1-color;
-      }
-
       .connectButton {
         cursor: default;
         text-align: center;
@@ -108,29 +95,20 @@
           }
         }
       }
-      .ethBalanceContainer {
-        margin-right: 0.5rem;
-      }
     }
   }
 }
 
-@media screen and (max-width: 1300px) {
-}
-
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 912px) {
   .connectButtonContainer {
-    > .link {
-      display: none;
-    }
-
     &.connected {
       padding-left: 0;
       .connectedButtons {
         .connectButton {
           margin-left: 0;
         }
-        .ethBalanceContainer {
+        .ethBalanceContainer,
+        .separator {
           display: none;
         }
       }

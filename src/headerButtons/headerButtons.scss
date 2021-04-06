@@ -1,0 +1,18 @@
+@import "styles/colors.scss";
+
+.headerButtons {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10%;
+
+  > .link {
+    > a {
+      color: $color-white;
+
+      &:hover {
+        color: $color-white;
+        text-decoration: underline;
+      }
+    }
+  }
+}
