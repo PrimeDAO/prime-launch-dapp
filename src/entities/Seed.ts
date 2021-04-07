@@ -28,7 +28,14 @@ export class Seed {
   private initializedPromise: Promise<void>;
 
   @computedFrom("startTime")
-  get startsInDays(): number { return this.dateService.getDurationBetween(this.startTime, new Date()).asDays(); }
+  get startsInDays(): number {
+    return this.dateService.getDurationBetween(this.startTime, new Date()).asMilliseconds();
+  }
+
+  @computedFrom("startsInDays")
+  get isActive(): boolean {
+    return this.startsInDays > 0;
+  }
 
   constructor(
     private contractsService: ContractsService,

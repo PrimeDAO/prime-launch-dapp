@@ -20,7 +20,8 @@
       grid-area: title;
     }
 
-    .timeLeft {
+    .timeLeft,
+    .active {
       grid-area: timeLeft;
       font-size: 0.8em;
       align-self: center;
@@ -28,6 +29,18 @@
 
       > .icon {
         margin-right: 6px;
+      }
+    }
+
+    .active {
+      color: $color-green;
+
+      > .icon {
+        display: inline-block;
+        font-size: 0.5em;
+        margin-right: 0.7em;
+        position: relative;
+        bottom: 0.3em;
       }
     }
 
