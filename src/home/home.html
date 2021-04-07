@@ -32,40 +32,11 @@
       <div class="subtitle subtext">Participate in permissionless seed and liquid launches ahead of the curve.</div>
       <div class="launches">
         <div class="featured">
-          <div class="title heading3">Featured</div>
+          <div class="title heading3">Featured Launch</div>
           <div class="launch">
             <launch-summary address.to-view="1"></launch-summary>
           </div>
-          <div class="launchButton"><span class="arrow">&rarr;</span><a href="#" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>
-        </div>
-        <div class="upcoming">
-          <div class="title heading3">Upcoming</div>
-          <div class="launchGrid">
-            <div class="project header">PROJECT</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="starts header">STARTS</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="type header">TYPE</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="target header">TARGET</div>
-            <template repeat.for="seed of seeds">
-              <div class="launchRow project  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
-              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow starts  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
-              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow type  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
-              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow target  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.minSuccess | ethwei}</div>
-            </template>
-          </div>
-          <div if.to-view="!seeingMore" class="seeMore">
-            <div class="arrow">&darr;</div>
-            <div class="text" click.delegate="seeMore(true)">SEE MORE</div>
-          </div>
-          <div if.to-view="seeingMore" class="seeMore">
-            <div class="arrow">&uarr;</div>
-            <div class="text" click.delegate="seeMore(false)">SEE LESS</div>
-          </div>
+          <div class="launchButton"><span class="arrow">&rarr;</span><a href="seedDashboard/1" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>
         </div>
       </div>
     </div>

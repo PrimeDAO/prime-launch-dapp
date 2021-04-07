@@ -55,13 +55,13 @@
       }
 
       .launches {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-        column-gap: 20%;
+        .featured {
+          padding-left: 2em;
+          max-width: 20em;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
 
-        .featured,
-        .upcoming {
           > .title {
             text-transform: uppercase;
             margin-bottom: 20px;
@@ -76,51 +76,6 @@
 
           .launchButton {
             text-align: center;
-
-            > .arrow {
-              margin-right: 6px;
-            }
-          }
-        }
-
-        .upcoming {
-          .launchGrid {
-            display: grid;
-            grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr;
-            grid-template-rows: auto;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 0.8em;
-
-            .launchRow {
-              &.hideMore {
-                display: none;
-              }
-            }
-
-            .launchRow {
-              border-bottom: 1px solid $subtext-color;
-              white-space: nowrap;
-            }
-
-            .header {
-              border-bottom: 1px solid $color-darkblue;
-            }
-
-            .launchRow,
-            .header {
-              padding: 10px 0;
-            }
-
-            > .target {
-              text-align: right;
-            }
-          }
-
-          .seeMore {
-            display: flex;
-            color: $subtext-color;
-            cursor: pointer;
 
             > .arrow {
               margin-right: 6px;
