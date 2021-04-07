@@ -1,3 +1,4 @@
+import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
@@ -8,6 +9,7 @@ export interface ISeedConfiguration {
   beneficiary: Address;
 }
 
+@autoinject
 export class Seed {
   contract: any;
   address: Address;
@@ -19,6 +21,9 @@ export class Seed {
   cap: BigNumber;
   seedToken: Address;
   fundingToken: Address;
+
+  @computedFrom("startTime")
+  get startsInDays(): number { return this.dateService.getDurationBetween(this.startTime, new Date()).asDays(); }
 
   constructor(
     private contractsService: ContractsService,

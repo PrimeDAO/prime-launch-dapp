@@ -10,8 +10,8 @@ const SeedABI = require("../contracts/Seed.json");
 const ERC20ABI = require("../contracts/ERC20.json");
 
 export enum ContractNames {
-  SEEDFACTORY
-  , SEED
+  SEEDFACTORY = "SeedFactory"
+  , SEED = "Seed"
   // , WETH = "WETH"
   , PRIMETOKEN = "PrimeToken"
   , IERC20 = "IERC20"
