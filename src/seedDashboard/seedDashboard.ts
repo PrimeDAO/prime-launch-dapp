@@ -8,6 +8,7 @@ export class SeedDashboard {
   @bindable address: Address;
 
   seed: Seed;
+  loading = true;
 
   constructor(
     private seedService: SeedService,
@@ -20,5 +21,6 @@ export class SeedDashboard {
   async attached(): Promise<void> {
     await this.seedService.ensureInitialized();
     this.seed = this.seedService.seeds.get(this.address);
+    this.seed.ensureInitialized().then(() => { this.loading = false; });
   }
 }

@@ -31,7 +31,7 @@ export class App {
 
     window.addEventListener("error", this.errorHandler);
 
-    this.eventAggregator.subscribe("pools.loading", async (onOff: boolean) => {
+    this.eventAggregator.subscribe("seeds.loading", async (onOff: boolean) => {
       this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
       this.onOff = onOff;
     });

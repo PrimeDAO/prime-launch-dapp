@@ -3,6 +3,8 @@ import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address } from "services/EthereumService";
+import { EventConfigFailure } from "services/GeneralEvents";
+import { ConsoleLogService } from "services/ConsoleLogService";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -17,16 +19,20 @@ export class Seed {
   startTime: Date;
   endTime: Date;
   price: BigNumber;
-  minSuccess: BigNumber;
+  target: BigNumber;
   cap: BigNumber;
   seedToken: Address;
   fundingToken: Address;
+
+  public initializing = true;
+  private initializedPromise: Promise<void>;
 
   @computedFrom("startTime")
   get startsInDays(): number { return this.dateService.getDurationBetween(this.startTime, new Date()).asDays(); }
 
   constructor(
     private contractsService: ContractsService,
+    private consoleLogService: ConsoleLogService,
     private dateService: DateService,
   ) {}
 
@@ -35,15 +41,39 @@ export class Seed {
 
     this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
 
-    this.startTime = this.dateService.unixEpochToDate(await this.contract.startTime());
-    this.endTime = this.dateService.unixEpochToDate(await this.contract.endTime());
-    this.price = await this.contract.price();
-    const successMinimumAndCap = await this.contract.successMinimumAndCap();
-    this.minSuccess = successMinimumAndCap[0];
-    this.cap = successMinimumAndCap[1];
-    this.seedToken = await this.contract.seedToken();
-    this.fundingToken = await this.contract.fundingToken();
+    this.hydrate();
 
     return this;
+  }
+
+  private async hydrate(): Promise<void> {
+    return this.initializedPromise = new Promise(
+      // eslint-disable-next-line no-async-promise-executor
+      async (resolve: (value: void | PromiseLike<void>) => void,
+        reject: (reason?: any) => void): Promise<void> => {
+        setTimeout(async () => {
+          try {
+            this.startTime = this.dateService.unixEpochToDate(await this.contract.startTime());
+            this.endTime = this.dateService.unixEpochToDate(await this.contract.endTime());
+            this.price = await this.contract.price();
+            this.target = await this.contract.successMinimum();
+            this.cap = await this.contract.cap();
+            this.seedToken = await this.contract.seedToken();
+            this.fundingToken = await this.contract.fundingToken();
+            this.initializing = false;
+            resolve();
+          }
+          catch (error) {
+            this.consoleLogService.handleFailure(
+              new EventConfigFailure(`Seed: Error hydrating seed data ${error?.message}`));
+            this.initializing = false;
+            reject();
+          }
+        }, 100);
+      });
+  }
+
+  public ensureInitialized(): Promise<void> {
+    return this.initializedPromise;
   }
 }

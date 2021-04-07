@@ -6,11 +6,15 @@
     &.top,
     &.participate,
     &.nomiss,
-    &.launches,
+    &.launches {
+      padding-left: 4.5em;
+      padding-right: 4.5em;
+      margin-bottom: 5.75em;
+    }
+
     &.fairLaunch {
-      padding-left: 72px;
-      padding-right: 72px;
-      margin-bottom: 92px;
+      padding-right: 4.5em;
+      margin-bottom: 5.75em;
     }
 
     &.top {
@@ -94,7 +98,7 @@
         display: inline-block;
 
         // note this is inside of the launch-summary element
-        .launchSummary {
+        .launchSummaryContainer {
           width: 320px;
           padding-right: 30px;
         }
