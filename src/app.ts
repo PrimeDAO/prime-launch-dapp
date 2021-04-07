@@ -103,7 +103,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
         nav: false,
         name: "seedDashboard",
-        route: ["seedDashboard/:address"],
+        route: ["seed/:address"],
         title: "SEED Dashboard",
       },
       {

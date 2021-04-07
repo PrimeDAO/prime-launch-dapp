@@ -31,6 +31,6 @@ export class LaunchSummary {
   }
 
   gotoDashboard(): void {
-    this.router.navigate(`seedDashboard/${this.address}`);
+    this.router.navigate(`seed/${this.address}`);
   }
 }
