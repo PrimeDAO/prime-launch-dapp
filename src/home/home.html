@@ -49,13 +49,13 @@
             <div class="header divider">&nbsp;</div>
             <div class="target header">TARGET</div>
             <template repeat.for="seed of seeds">
-              <div class="launchRow project  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow starts  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow type  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow target  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.minSuccess | ethwei}</div>
+              <div class="launchRow project  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
+              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow starts  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
+              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow type  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
+              <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+              <div class="launchRow target  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.minSuccess | ethwei}</div>
             </template>
           </div>
           <div if.to-view="!seeingMore" class="seeMore">
