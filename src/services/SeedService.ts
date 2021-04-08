@@ -133,8 +133,8 @@ export class SeedService {
                 seed.price = toWei(`${i+1}000000`);
                 seed.target = toWei(`${i+1}000000`);
                 seed.cap = toWei(`${(i+1)*2}000000`);
-                seed.seedToken = (i % 2) ? this.contractsService.getContractAddress(ContractNames.PRIMETOKEN) : "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD";
-                seed.fundingToken = (i % 2) ? "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD" : this.contractsService.getContractAddress(ContractNames.PRIMETOKEN);
+                seed.seedTokenAddress = (i % 2) ? this.contractsService.getContractAddress(ContractNames.PRIMETOKEN) : "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD";
+                seed.fundingTokenAddress = (i % 2) ? "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD" : this.contractsService.getContractAddress(ContractNames.PRIMETOKEN);
                 seedsMap.set(seed.address, seed);
               }
               this.seeds = seedsMap;

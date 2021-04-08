@@ -1,3 +1,4 @@
+import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
@@ -5,6 +6,7 @@ import { BigNumber } from "ethers";
 import { Address } from "services/EthereumService";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import { TokenService } from "services/TokenService";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -21,11 +23,13 @@ export class Seed {
   price: BigNumber;
   target: BigNumber;
   cap: BigNumber;
-  seedToken: Address;
-  fundingToken: Address;
+  seedTokenAddress: Address;
+  fundingTokenAddress: Address;
 
   public initializing = true;
   private initializedPromise: Promise<void>;
+  private seedTokenInfo: ITokenInfo;
+  private fundingTokenInfo: ITokenInfo;
 
   @computedFrom("startTime")
   get startsInDays(): number {
@@ -41,6 +45,7 @@ export class Seed {
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
     private dateService: DateService,
+    private tokenService: TokenService,
   ) {}
 
   public async initialize(config: ISeedConfiguration): Promise<Seed> {
@@ -65,9 +70,12 @@ export class Seed {
             this.price = await this.contract.price();
             this.target = await this.contract.successMinimum();
             this.cap = await this.contract.cap();
-            this.seedToken = await this.contract.seedToken();
-            this.fundingToken = await this.contract.fundingToken();
+            this.seedTokenAddress = await this.contract.seedToken();
+            this.fundingTokenAddress = await this.contract.fundingToken();
             this.initializing = false;
+
+            this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
+            this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
             resolve();
           }
           catch (error) {
