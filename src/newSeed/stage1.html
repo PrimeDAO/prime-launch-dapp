@@ -1,5 +1,46 @@
 <template>
-  <div class="page animated-page stageContainer stage1 au-animate ">
-    Stage ${stageNumber}
+  <div class="page animated-page stageContainer stage1 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading3">General Information</div>
+      <div class="subtext">
+        Basic information and key documentation about your project.
+      </div>
+      <div>
+        <div class="infoInput">
+          <label for="projName"> Project Name</label>
+          <input id="projName" value.bind="seedConfig.general.projectName"></input>
+        </div>
+        <div class="infoInput">
+          <label for="projSite"> Project Website</label>
+          <input id="projSite"> </input>
+        </div>
+        <div class="infoInput">
+          <label for="projCat"> Project Category</label>
+          <input id="projCat"> </input>
+        </div>
+        <div class="infoInput">
+          <label for="whitePaper"> Whitepaper</label>
+          <input id="whitePaper"> </input>
+        </div>
+        <div class="infoInput">
+          <label for="gitLink"> Github Link</label>
+          <input id="gitLink"> </input>
+        </div>
+        <div class="otherLinks">
+          <div>
+            <label for="customLink"> Custom Link </label>
+            <input id="customLink" placeholder="E.g Twitter"></input>
+          </div>
+          <div>
+            <label for="url"> URL </label>
+            <input id="url" placeholder="https://"></input>
+          </div>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="button button1">CANCEL</div>
+        <div class="button button1" click.delegate="proceed()">PROCEED</div>
+      </div>
+    </div>
   </div>
 </template>

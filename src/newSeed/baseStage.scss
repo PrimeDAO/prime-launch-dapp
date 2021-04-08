@@ -1,0 +1,47 @@
+@import "styles/colors";
+.page.stageContainer {
+  &.stage1 {
+    .infoContainer {
+      background-color: $color-black-2;
+      padding: 2em;
+      width: 400px;
+      border-radius: 15px;
+      label {
+        display: block;
+      }
+      .subtext {
+        margin-bottom: 2em;
+      }
+      .infoInput {
+        margin-bottom: 2em;
+      }
+      .otherLinks {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: 2em;
+        > div:first-of-type {
+          margin-right: 2em;
+        }
+      }
+      .buttonContainer {
+        display: flex;
+        flex-wrap: wrap;
+        .button {
+          padding: 6px 18px;
+          background-color: $color-white;
+          color: $color-black;
+          // Put space between them
+          margin-right: 2em;
+        }
+        .button:first-of-type {
+          // Background color matches container
+          padding: 6px 1px;
+          background-color: $color-black-2;
+          border-color: $color-black-2;
+          color: $color-white;
+        }
+      }
+    }
+  }
+}
