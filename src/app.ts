@@ -82,7 +82,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./home/home"),
         nav: true,
         name: "home",
-        route: ["", "/", "home/:bookmark"],
+        route: ["", "/", "home/:bookmark?"],
         title: "Home",
       },
       {
