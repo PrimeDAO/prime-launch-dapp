@@ -55,17 +55,6 @@
       > .title {
         margin-bottom: 24px;
       }
-
-      > horizontal-scroller {
-        display: inline-block;
-        margin-bottom: 20px;
-
-        // note this is inside of the launch-summary element
-        .launchSummaryContainer {
-          width: 320px;
-          padding-right: 30px;
-        }
-      }
     }
 
     &.nomiss {
