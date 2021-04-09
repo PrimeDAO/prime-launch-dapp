@@ -100,6 +100,20 @@ export class App {
         title: "Liquid Launch",
       },
       {
+        moduleId: PLATFORM.moduleName("./launches/launches"),
+        nav: false,
+        name: "launches",
+        route: ["launches"],
+        title: "Launchs",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/documentation"),
+        nav: false,
+        name: "documentation",
+        route: ["documentation"],
+        title: "Documentation",
+      },
+      {
         moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
         nav: false,
         name: "seedDashboard",
