@@ -2,6 +2,12 @@
   <div class="page animated-page au-animate home">
     <div class="section featured">
       <div class="title heading heading0">Featured</div>
+      <div id="launches" class="section launches">
+        <div class="title heading heading2">Launches</div>
+        <horizontal-scroller item-count="seeds.length">
+          <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
+        </horizontal-scroller>
+      </div>
     </div>
     <div class="section launches">
       <div class="title heading heading0">Launches</div>

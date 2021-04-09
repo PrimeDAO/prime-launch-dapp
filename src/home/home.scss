@@ -4,7 +4,6 @@
     margin-bottom: 20px;
 
     &.top,
-    &.participate,
     &.nomiss,
     &.launches {
       padding-left: 4.5em;
@@ -52,43 +51,6 @@
       }
     }
 
-    &.participate {
-      margin-bottom: 92px;
-
-      .subtitle {
-        margin-bottom: 48px;
-      }
-
-      .launches {
-        .featured {
-          max-width: 20em;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          > .title {
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            color: $subtext-color;
-          }
-        }
-
-        .featured {
-          .launch {
-            margin-bottom: 20px;
-          }
-
-          .launchButton {
-            text-align: center;
-
-            > .arrow {
-              margin-right: 6px;
-            }
-          }
-        }
-      }
-    }
-
     &.launches {
       > .title {
         margin-bottom: 24px;
@@ -96,6 +58,7 @@
 
       > horizontal-scroller {
         display: inline-block;
+        margin-bottom: 20px;
 
         // note this is inside of the launch-summary element
         .launchSummaryContainer {

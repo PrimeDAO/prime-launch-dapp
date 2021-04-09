@@ -27,20 +27,6 @@
         </div>
       </div>
     </div>
-    <div class="section participate">
-      <div class="title heading heading2">Prime Launch</div>
-      <div class="subtitle subtext">Participate in permissionless seed and liquid launches ahead of the curve.</div>
-      <div class="launches">
-        <div class="featured">
-          <div class="title heading3">Featured Launch</div>
-          <div class="launch">
-            <launch-summary if.to-view="featuredSeed" address.to-view="featuredSeed"></launch-summary>
-            <div else>No launch is featured at this time</div>
-          </div>
-          <div if.to-view="featuredSeed" class="launchButton"><span class="arrow">&rarr;</span><a href="seed/${featuredSeed}">VIEW PROJECT</a></div>
-        </div>
-      </div>
-    </div>
     <div class="section nomiss">
       <div class="noMissColumn">
         <div class="title heading heading2">Never miss a launch</div>
@@ -54,11 +40,12 @@
         <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
       </div>
     </div>
-    <div id="launches" class="section launches">
+    <div class="section launches">
       <div class="title heading heading2">Upcoming launches</div>
       <horizontal-scroller item-count="seeds.length">
         <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
       </horizontal-scroller>
+      <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
     <div class="section fairLaunch">
       <div class="pic"><img src="#" /></div>
@@ -77,4 +64,5 @@
         <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
       </div>
     </div>
+  </div>
 </template>

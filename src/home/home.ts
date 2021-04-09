@@ -15,7 +15,6 @@ export class Home {
   seeingMore = false;
   bookmark: string;
   seeds: Array<Seed>;
-  featuredSeed: Address;
 
   constructor(
     private router: Router,
@@ -50,16 +49,9 @@ export class Home {
     }
 
     this.seeds = this.seedService.seedsArray;
-
-    // TODO:  get featured seed from somewhere....
-    this.featuredSeed = this.seeds?.[0].address;
   }
 
   navigate(href: string): void {
     this.router.navigate(href);
-  }
-
-  seeMore(yesNo: boolean): void {
-    this.seeingMore = yesNo;
   }
 }
