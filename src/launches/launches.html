@@ -1,10 +1,9 @@
 <template>
-  <require from="../launchSummary/launchSummary"></require>
   <div class="page animated-page au-animate launches">
     <div class="section featured">
       <div class="title heading heading2">Featured</div>
       <div class="launches">
-        <horizontal-scroller item-count="seeds.length">
+        <horizontal-scroller item-count.to-view="seeds.length">
           <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
         </horizontal-scroller>
       </div>

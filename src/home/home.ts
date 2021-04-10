@@ -6,7 +6,6 @@ import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { Address } from "services/EthereumService";
 
 @singleton(false)
 @autoinject
