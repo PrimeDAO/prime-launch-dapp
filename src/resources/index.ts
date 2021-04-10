@@ -20,6 +20,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/horizontal-scroller/horizontal-scroller"),
     PLATFORM.moduleName("./elements/timeLeft/timeLeft"),
     PLATFORM.moduleName("./elements/launchSummary/launchSummary"),
+    PLATFORM.moduleName("./elements/tokenPair/tokenPair"),
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
     PLATFORM.moduleName("./value-converters/date"),

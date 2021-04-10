@@ -11,6 +11,8 @@
     <div class="section launches">
       <div class="title heading heading2">Launches</div>
       <div class="launchGrid">
+        <div class="project header">PAIR</div>
+        <div class="header divider">&nbsp;</div>
         <div class="project header">PROJECT</div>
         <div class="header divider">&nbsp;</div>
         <div class="starts header">STARTS</div>
@@ -24,6 +26,10 @@
         <div class="cap header">MAX</div>
         <template repeat.for="seed of seeds">
           <template if.to-view="!seed.initializing">
+            <div class="launchRow pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
+              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+            </div>
+            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
             <div class="launchRow project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
             <div class="launchRow starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">

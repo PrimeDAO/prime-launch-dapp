@@ -15,7 +15,7 @@
     &.launches {
       .launchGrid {
         display: grid;
-        grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr 6% 1fr 6% 1fr;
+        grid-template-columns: 0.5fr 6% 1fr 6% 1fr 6% 1fr 6% 0.5fr 6% 1fr 6% 1fr;
         grid-template-rows: auto;
         align-items: center;
         margin-bottom: 20px;
