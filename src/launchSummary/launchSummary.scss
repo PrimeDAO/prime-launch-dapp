@@ -11,7 +11,7 @@
     row-gap: 12px;
     cursor: pointer;
 
-    .icon {
+    > .icon {
       grid-area: icon;
       padding-top: 5px;
     }
@@ -20,33 +20,14 @@
       grid-area: title;
     }
 
-    .timeLeft,
-    .active {
-      grid-area: timeLeft;
-      font-size: 0.8em;
-      align-self: center;
-      text-align: right;
-
-      > .icon {
-        margin-right: 6px;
-      }
-    }
-
-    .active {
-      color: $color-green;
-
-      > .icon {
-        display: inline-block;
-        font-size: 0.5em;
-        margin-right: 0.7em;
-        position: relative;
-        bottom: 0.3em;
-      }
-    }
-
     > .description {
       grid-area: description;
       color: $color-grey-2;
+    }
+
+    > .timeLeft {
+      grid-area: timeLeft;
+      text-align: right;
     }
 
     .tokensTarget {

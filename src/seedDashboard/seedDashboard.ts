@@ -1,5 +1,4 @@
 import { autoinject } from "aurelia-framework";
-import { DateService } from "services/DateService";
 import { SeedService } from "services/SeedService";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { Address } from "services/EthereumService";
@@ -12,11 +11,9 @@ export class SeedDashboard {
 
   seed: Seed;
   loading = true;
-  startsInDaysString: string;
 
   constructor(
     private seedService: SeedService,
-    private dateService: DateService,
   ) {}
 
 
@@ -29,7 +26,6 @@ export class SeedDashboard {
     this.seed = this.seedService.seeds.get(this.address);
     this.seed.ensureInitialized().then(() => {
       this.loading = false;
-      this.startsInDaysString = this.dateService.ticksToTimeSpanString(this.seed.startsInDays);
     });
   }
 }

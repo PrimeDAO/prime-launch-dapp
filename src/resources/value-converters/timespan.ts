@@ -9,9 +9,13 @@ export class TimespanValueConverter {
   /**
    * convert between milliseconds in the viewmodel and a string.
    */
-  public toView(value: number, resolution?: TimespanResolution): string | null {
+  public toView(value: number, resolution?: TimespanResolution, largest = false): string | null {
     if (typeof resolution === "string") {
       resolution = TimespanResolution[resolution as string];
+    }
+    if (resolution && largest) {
+      // eslint-disable-next-line no-bitwise
+      resolution |= TimespanResolution.largest;
     }
     return this.dateService.ticksToTimeSpanString(value, resolution);
   }

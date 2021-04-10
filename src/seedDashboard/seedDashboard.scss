@@ -5,17 +5,5 @@
       grid-template-columns: auto auto auto;
       grid-template-rows: auto;
     }
-
-    .active {
-      color: $color-green;
-
-      > .icon {
-        display: inline-block;
-        font-size: 0.5em;
-        margin-right: 0.7em;
-        position: relative;
-        bottom: 0.3em;
-      }
-    }
   }
 }

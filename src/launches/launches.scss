@@ -46,7 +46,9 @@
           text-align: right;
         }
 
-        > .whitelist {
+        > .whitelist,
+        > .starts,
+        > .type {
           text-align: center;
         }
       }

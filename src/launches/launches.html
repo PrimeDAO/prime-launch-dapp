@@ -27,15 +27,19 @@
           <template if.to-view="!seed.initializing">
             <div class="launchRow project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
+            <div class="launchRow starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
+              <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" hide-icons></time-left>
+            </div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
             <div class="launchRow type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
             <div class="launchRow whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">${seed.target | ethwei}</div>
+            <div class="launchRow target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">$ <formatted-number mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            </div>
             <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow cap  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">${seed.cap | ethwei}</div>
+            <div class="launchRow cap  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">$ <formatted-number mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            </div>
           </template>
           <template else>
           </template>

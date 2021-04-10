@@ -182,11 +182,20 @@ export class DateService {
   public ticksToTimeSpanString(
     ms: number,
     resolution: TimespanResolution = TimespanResolution.milliseconds): string | null {
+
     if ((ms === null) || (typeof ms === "undefined")) {
       return null;
     }
 
-    let firstResolution: TimespanResolution;
+    // eslint-disable-next-line no-bitwise
+    const largest = resolution & TimespanResolution.largest;
+
+    if (largest) {
+      resolution = resolution - TimespanResolution.largest;
+    }
+
+    let firstResolution = false;
+    let stop = false;
 
     const days = Math.floor(ms / 86400000);
     ms = ms % 86400000;
@@ -199,43 +208,61 @@ export class DateService {
 
     let result = "";
 
-    if (days && (resolution <= TimespanResolution.days)) {
+    if (days) {
+
       result = `${days} days`;
-      if (!firstResolution) {
-        firstResolution = TimespanResolution.days;
+
+      if (largest) {
+        stop = true;
+      } else {
+        firstResolution = true;
       }
     }
 
-    if ((hours ||
+    if (!stop && ((hours ||
       // show zero if not the first or is the res
-      (firstResolution > TimespanResolution.hours) ||
+      firstResolution ||
       (resolution === TimespanResolution.hours)) &&
-      (resolution <= TimespanResolution.hours)) {
+      (resolution <= TimespanResolution.hours))) {
+
       result += `${result.length ? ", " : ""}${hours} hours`;
-      if (!firstResolution) {
-        firstResolution = TimespanResolution.hours;
+
+      if (largest) {
+        stop = true;
+      } else {
+        firstResolution = true;
       }
     }
 
-    if ((minutes ||
+    if (!stop && ((minutes ||
       // show zero if not the first or is the res
-      (firstResolution > TimespanResolution.minutes) ||
+      firstResolution ||
       (resolution === TimespanResolution.minutes)) &&
-      (resolution <= TimespanResolution.minutes)) {
+      (resolution <= TimespanResolution.minutes))) {
+
       result += `${result.length ? ", " : ""}${minutes} minutes`;
-      if (!firstResolution) {
-        firstResolution = TimespanResolution.minutes;
+
+      if (largest) {
+        stop = true;
       }
+      // else {
+      //   firstResolution = true;
+      // }
     }
 
-    if (resolution <= TimespanResolution.seconds) {
+    if (!stop && (resolution <= TimespanResolution.seconds)) {
+
       result += `${result.length ? ", " : ""}${seconds} seconds`;
-      if (!firstResolution) {
-        firstResolution = TimespanResolution.seconds;
+
+      if (largest) {
+        stop = true;
       }
+      // else {
+      //   firstResolution = true;
+      // }
     }
 
-    if (ms && (resolution === TimespanResolution.milliseconds)) {
+    if (!stop && (ms && (resolution === TimespanResolution.milliseconds))) {
       result += `${result.length ? ", " : ""}${ms} milliseconds`;
     }
 
@@ -418,9 +445,13 @@ export interface IFormatParameters {
 }
 
 export enum TimespanResolution {
-  days = 5,
-  hours = 4,
-  minutes = 3,
-  seconds = 2,
-  milliseconds = 1,
+  /**
+   * show only the largest unit, down to the resolution or'd with this
+   */
+  largest = 0x20,
+  days = 0x10,
+  hours = 0x8,
+  minutes = 0x4,
+  seconds = 0x2,
+  milliseconds = 0x1,
 }

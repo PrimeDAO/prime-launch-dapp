@@ -1,6 +1,6 @@
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { DateService } from "./../services/DateService";
+import { DateService, TimespanResolution } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address } from "services/EthereumService";
@@ -25,21 +25,26 @@ export class Seed {
   cap: BigNumber;
   seedTokenAddress: Address;
   fundingTokenAddress: Address;
+  whitelisted: boolean;
 
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedTokenInfo: ITokenInfo;
   private fundingTokenInfo: ITokenInfo;
-  private whitelisted: boolean;
 
   @computedFrom("startTime")
-  get startsInDays(): number {
+  public get startsInMilliseconds(): number {
     return this.dateService.getDurationBetween(this.startTime, new Date()).asMilliseconds();
   }
 
-  @computedFrom("startsInDays")
+  @computedFrom("startsInMilliseconds")
   get isActive(): boolean {
-    return this.startsInDays > 0;
+    return this.startsInMilliseconds > 0;
+  }
+
+  @computedFrom("startsInMilliseconds")
+  get startsInDaysString(): string {
+    return this.dateService.ticksToTimeSpanString(this.startsInMilliseconds, TimespanResolution.minutes);
   }
 
   constructor(
@@ -66,18 +71,20 @@ export class Seed {
         reject: (reason?: any) => void): Promise<void> => {
         setTimeout(async () => {
           try {
-            this.startTime = this.dateService.unixEpochToDate(await this.contract.startTime());
-            this.endTime = this.dateService.unixEpochToDate(await this.contract.endTime());
+            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
+            this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
+            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
             this.price = await this.contract.price();
             this.target = await this.contract.successMinimum();
             this.cap = await this.contract.cap();
             this.seedTokenAddress = await this.contract.seedToken();
             this.whitelisted = await this.contract.isWhitelisted();
             this.fundingTokenAddress = await this.contract.fundingToken();
-            this.initializing = false;
 
             this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
             this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+            this.initializing = false;
             resolve();
           }
           catch (error) {
