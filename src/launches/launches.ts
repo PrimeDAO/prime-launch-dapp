@@ -12,6 +12,7 @@ import { EventConfigException } from "services/GeneralEvents";
 export class Launches {
 
   seeds: Array<Seed>;
+  seeingMore: boolean;
 
   constructor(
     private router: Router,
@@ -41,5 +42,9 @@ export class Launches {
 
   navigate(href: string): void {
     this.router.navigate(href);
+  }
+
+  seeMore(yesNo: boolean): void {
+    this.seeingMore = yesNo;
   }
 }

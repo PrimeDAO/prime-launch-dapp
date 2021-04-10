@@ -11,6 +11,44 @@
     </div>
     <div class="section launches">
       <div class="title heading heading2">Launches</div>
+      <div class="launchGrid">
+        <div class="project header">PROJECT</div>
+        <div class="header divider">&nbsp;</div>
+        <div class="starts header">STARTS</div>
+        <div class="header divider">&nbsp;</div>
+        <div class="type header">TYPE</div>
+        <div class="header divider">&nbsp;</div>
+        <div class="whitelist header">WHITELIST</div>
+        <div class="header divider">&nbsp;</div>
+        <div class="target header">TARGET</div>
+        <div class="header divider">&nbsp;</div>
+        <div class="cap header">MAX</div>
+        <template repeat.for="seed of seeds">
+          <template if.to-view="!seed.initializing">
+            <div class="launchRow project  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
+            <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+            <div class="launchRow starts  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
+            <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+            <div class="launchRow type  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
+            <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+            <div class="launchRow whitelist  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+            <div class="launchRow target  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.target | ethwei}</div>
+            <div class="launchRow divider ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
+            <div class="launchRow cap  ${(($index >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.cap | ethwei}</div>
+          </template>
+          <template else>
+          </template>
+        </template>
+      </div>
+      <div if.to-view="!seeingMore" class="seeMore">
+        <div class="arrow">&darr;</div>
+        <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
+      </div>
+      <div if.to-view="seeingMore" class="seeMore">
+        <div class="arrow">&uarr;</div>
+        <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
+      </div>
     </div>
   </div>
 </template>

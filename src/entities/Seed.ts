@@ -30,6 +30,7 @@ export class Seed {
   private initializedPromise: Promise<void>;
   private seedTokenInfo: ITokenInfo;
   private fundingTokenInfo: ITokenInfo;
+  private whitelisted: boolean;
 
   @computedFrom("startTime")
   get startsInDays(): number {
@@ -71,6 +72,7 @@ export class Seed {
             this.target = await this.contract.successMinimum();
             this.cap = await this.contract.cap();
             this.seedTokenAddress = await this.contract.seedToken();
+            this.whitelisted = await this.contract.isWhitelisted();
             this.fundingTokenAddress = await this.contract.fundingToken();
             this.initializing = false;
 

@@ -11,5 +11,55 @@
         margin-bottom: 24px;
       }
     }
+
+    &.launches {
+      .launchGrid {
+        display: grid;
+        grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr 6% 1fr 6% 1fr;
+        grid-template-rows: auto;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 0.8em;
+
+        .launchRow {
+          &.hideMore {
+            display: none;
+          }
+        }
+
+        .launchRow {
+          border-bottom: 1px solid $subtext-color;
+          white-space: nowrap;
+        }
+
+        .header {
+          border-bottom: 1px solid $color-darkblue;
+        }
+
+        .launchRow,
+        .header {
+          padding: 10px 0;
+        }
+
+        > .target,
+        > .cap {
+          text-align: right;
+        }
+
+        > .whitelist {
+          text-align: center;
+        }
+      }
+
+      .seeMore {
+        display: flex;
+        color: $subtext-color;
+        cursor: pointer;
+
+        > .arrow {
+          margin-right: 6px;
+        }
+      }
+    }
   }
 }
