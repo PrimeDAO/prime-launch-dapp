@@ -15,41 +15,53 @@
     &.launches {
       .launchGrid {
         display: grid;
-        grid-template-columns: 0.5fr 6% 1fr 6% 1fr 6% 1fr 6% 0.5fr 6% 1fr 6% 1fr;
+        grid-template-columns: 0.5fr 1fr 1fr 1fr 0.5fr 1fr 1fr;
         grid-template-rows: auto;
         align-items: center;
         margin-bottom: 20px;
         font-size: 0.8em;
 
-        .launchRow {
+        .row {
+          display: contents;
+
+          &:not(:first-child) {
+            cursor: pointer;
+          }
+
+          &:hover > div {
+            background-color: $color-grey-6;
+          }
+
+          &:first-of-type > div {
+            border-bottom: 1px solid $color-darkblue;
+          }
+
+          > div {
+            border-bottom: 1px solid $subtext-color;
+          }
+        }
+
+        .cell {
+          white-space: nowrap;
           &.hideMore {
             display: none;
           }
         }
 
-        .launchRow {
-          border-bottom: 1px solid $subtext-color;
-          white-space: nowrap;
-        }
-
-        .header {
-          border-bottom: 1px solid $color-darkblue;
-        }
-
-        .launchRow,
+        .cell,
         .header {
           padding: 10px 0;
-        }
 
-        > .target,
-        > .cap {
-          text-align: right;
-        }
+          &.target,
+          &.cap {
+            text-align: right;
+          }
 
-        > .whitelist,
-        > .starts,
-        > .type {
-          text-align: center;
+          &.whitelist,
+          &.starts,
+          &.type {
+            text-align: center;
+          }
         }
       }
 

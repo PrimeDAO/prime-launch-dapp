@@ -11,39 +11,38 @@
     <div class="section launches">
       <div class="title heading heading2">Launches</div>
       <div class="launchGrid">
-        <div class="project header">PAIR</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="project header">PROJECT</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="starts header">STARTS</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="type header">TYPE</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="whitelist header">WHITELIST</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="target header">TARGET</div>
-        <div class="header divider">&nbsp;</div>
-        <div class="cap header">MAX</div>
+        <div class="row">
+          <div class="project header">PAIR</div>
+          <div class="project header">PROJECT</div>
+          <div class="starts header">STARTS</div>
+          <div class="type header">TYPE</div>
+          <div class="whitelist header">WHITELIST</div>
+          <div class="target header">TARGET</div>
+          <div class="cap header">MAX</div>
+        </div>
         <template repeat.for="seed of seeds">
           <template if.to-view="!seed.initializing">
-            <div class="launchRow pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
-              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-            </div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
-              <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" hide-icons></time-left>
-            </div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">$ <formatted-number mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-            </div>
-            <div class="launchRow divider ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-            <div class="launchRow cap  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">$ <formatted-number mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            <div class="row">
+              <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">
+                <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+              </div>
+              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">PrimeDAO</div>
+              <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">
+                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" hide-icons></time-left>
+              </div>
+              <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">SEED</div>
+              <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+              <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">$ <formatted-number mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+              </div>
+              <div class="cell cap  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
+                click.delegate="navigate(`seed/${seed.address}`)">$ <formatted-number mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+              </div>
             </div>
           </template>
           <template else>
