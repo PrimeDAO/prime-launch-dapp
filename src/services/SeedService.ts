@@ -1,4 +1,3 @@
-import { toWei } from "./EthereumService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
 import { autoinject } from "aurelia-framework";
@@ -7,7 +6,6 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { DisposableCollection } from "services/DisposableCollection";
-import { DateService } from "services/DateService";
 
 // export interface ISeed {
 //   address: Address;
@@ -53,7 +51,6 @@ export class SeedService {
   public get seedsArray(): Array<Seed> {
     return Array.from(this.seeds?.values());
   }
-  private testData = false;
   public initializing = true;
   private initializedPromise: Promise<void>;
   private subscriptions: DisposableCollection = new DisposableCollection();
@@ -102,45 +99,20 @@ export class SeedService {
         if (!this.seeds?.size) {
           try {
             const seedsMap = new Map<Address, Seed>();
-            if (!this.testData) {
-              const filter = this.seedFactory.filters.SeedCreated();
-              this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
-                .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
-                  for (const event of txEvents) {
-                    /**
+            const filter = this.seedFactory.filters.SeedCreated();
+            this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
+              .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
+                for (const event of txEvents) {
+                  /**
                      * TODO: This should also pull the full seed configuration from whereever we are storing it
                      */
-                    await this.createSeedFromConfig(event)
-                      .then((seed) => { seedsMap.set(seed.address, seed); } );
-                  }
-                  this.seeds = seedsMap;
-                  this.initializing = false;
-                  resolve();
-                });
-            } else {
-              const dateService = this.container.get(DateService);
-
-              for (const i of [0, 1, 2, 3, 4, 5]) {
-                const seed = this.container.get(Seed);
-                seed.address = i.toString();
-                const today = dateService.today;
-                today.setHours((i + 1)*48, i + 1);
-                const tomorrow = dateService.tomorrow;
-                tomorrow.setHours((i + 1)*49, i + 2);
-                // seed.beneficiary = ;
-                seed.startTime = today;
-                seed.endTime = tomorrow;
-                seed.price = toWei(`${i+1}000000`);
-                seed.target = toWei(`${i+1}000000`);
-                seed.cap = toWei(`${(i+1)*2}000000`);
-                seed.seedTokenAddress = (i % 2) ? this.contractsService.getContractAddress(ContractNames.PRIMETOKEN) : "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD";
-                seed.fundingTokenAddress = (i % 2) ? "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD" : this.contractsService.getContractAddress(ContractNames.PRIMETOKEN);
-                seedsMap.set(seed.address, seed);
-              }
-              this.seeds = seedsMap;
-              this.initializing = false;
-              resolve();
-            }
+                  await this.createSeedFromConfig(event)
+                    .then((seed) => { seedsMap.set(seed.address, seed); } );
+                }
+                this.seeds = seedsMap;
+                this.initializing = false;
+                resolve();
+              });
           }
           catch (error) {
             this.seeds = new Map();

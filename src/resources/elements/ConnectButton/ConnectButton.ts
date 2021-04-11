@@ -63,7 +63,7 @@ export class ConnectButton {
     this.primeAddress = this.contractsService.getContractAddress(ContractNames.PRIMETOKEN);
     // this.bPrimeAddress = this.contractsService.getContractAddress(ContractNames.ConfigurableRightsPool);
     // this.wethAddress = this.contractsService.getContractAddress(ContractNames.WETH);
-    // this.daiAddress = this.contractsService.getContractAddress(ContractNames.DAI);
+    this.daiAddress = this.contractsService.getContractAddress(ContractNames.DAI);
   }
 
   public dispose(): void {
