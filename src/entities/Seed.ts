@@ -1,12 +1,14 @@
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { DateService, TimespanResolution } from "./../services/DateService";
+import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address } from "services/EthereumService";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
+import { EventAggregator } from "aurelia-event-aggregator";
+import { DisposableCollection } from "services/DisposableCollection";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -31,28 +33,30 @@ export class Seed {
   private initializedPromise: Promise<void>;
   private seedTokenInfo: ITokenInfo;
   private fundingTokenInfo: ITokenInfo;
+  subscriptions = new DisposableCollection();
+  _now = new Date();
 
-  @computedFrom("startTime")
+  @computedFrom("_now")
   public get startsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this.startTime, new Date()).asMilliseconds();
+    return this.dateService.getDurationBetween(this.startTime, this._now).asMilliseconds();
   }
 
-  @computedFrom("startsInMilliseconds")
-  get isActive(): boolean {
-    return this.startsInMilliseconds > 0;
-  }
-
-  @computedFrom("startsInMilliseconds")
-  get startsInDaysString(): string {
-    return this.dateService.ticksToTimeSpanString(this.startsInMilliseconds, TimespanResolution.minutes);
+  @computedFrom("_now")
+  public get isActive(): boolean {
+    return (this.startTime >= this._now) && (this._now < this.endTime);
   }
 
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
+    private eventAggregator: EventAggregator,
     private dateService: DateService,
     private tokenService: TokenService,
-  ) {}
+  ) {
+    this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: {now: Date}) => {
+      this._now = state.now;
+    }));
+  }
 
   public async initialize(config: ISeedConfiguration): Promise<Seed> {
     Object.assign(this, config);

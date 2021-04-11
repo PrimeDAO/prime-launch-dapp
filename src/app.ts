@@ -8,10 +8,14 @@ import "./styles/styles.scss";
 import "./app.scss";
 import { Utils } from "services/utils";
 import tippy from "tippy.js";
+import { BindingSignaler } from "aurelia-templating-resources";
+import { EthereumService } from "services/EthereumService";
 
 @autoinject
 export class App {
   constructor (
+    private signaler: BindingSignaler,
+    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator) { }
 
   router: Router;
@@ -19,6 +23,7 @@ export class App {
   modalMessage: string;
   initializing = true;
   showingMobileMenu = false;
+  intervalId: any;
 
   errorHandler = (ex: unknown): boolean => {
     this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an unexpected error occurred", ex));
@@ -49,19 +54,11 @@ export class App {
       this.onOff = false;
     });
 
-    // if (!this.pools?.length) {
-    //   setTimeout(async () => {
-    //     try {
-    //       if (this.poolService.initializing) {
-    //         await this.poolService.ensureInitialized();
-    //       }
-    //       this.pools = this.poolService.poolsArray;
-    //       this.initializing = false;
-    //     } catch (ex) {
-    //       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-    //     }
-    //   }, 0);
-    // }
+    this.intervalId = setInterval(async () => {
+      this.signaler.signal("secondPassed");
+      const blockDate = this.ethereumService.lastBlockDate;
+      this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
+    }, 1000);
   }
 
   private configureRouter(config: RouterConfiguration, router: Router) {
