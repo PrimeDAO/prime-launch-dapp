@@ -13,6 +13,15 @@
     }
   }
 
+  .timeLeft {
+    &.soon {
+      color: $color-red;
+    }
+
+    &.comingUp {
+      color: $color-orange;
+    }
+  }
   .active {
     color: $color-green;
 

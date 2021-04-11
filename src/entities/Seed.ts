@@ -71,7 +71,6 @@ export class Seed {
         reject: (reason?: any) => void): Promise<void> => {
         setTimeout(async () => {
           try {
-            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
             this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
             this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
             this.price = await this.contract.price();

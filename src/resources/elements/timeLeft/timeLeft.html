@@ -1,6 +1,6 @@
 <template>
   <div class="timeLeftContainer">
-    <div if.to-view="isActive" class="timeLeft"><span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${startsInMilliseconds | timespan:"days":true}</div>
+    <div if.to-view="isActive" class="timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'future' )}"><span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${startsInMilliseconds | timespan:"seconds":true}</div>
     <div else class="active"><span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE</div>
   </div>
 </template>
