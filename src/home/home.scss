@@ -4,12 +4,16 @@
     margin-bottom: 20px;
 
     &.top,
-    &.participate,
     &.nomiss,
     &.launches {
-      padding-left: 72px;
-      padding-right: 72px;
-      margin-bottom: 92px;
+      padding-left: 4.5em;
+      padding-right: 4.5em;
+      margin-bottom: 5.75em;
+    }
+
+    &.fairLaunch {
+      padding-right: 4.5em;
+      margin-bottom: 5.75em;
     }
 
     &.top {
@@ -47,104 +51,13 @@
       }
     }
 
-    &.participate {
-      margin-bottom: 92px;
-
-      .subtitle {
-        margin-bottom: 48px;
-      }
-
-      .launches {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-        column-gap: 20%;
-
-        .featured,
-        .upcoming {
-          > .title {
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            color: $subtext-color;
-          }
-        }
-
-        .featured {
-          .launch {
-            margin-bottom: 20px;
-          }
-
-          .launchButton {
-            text-align: center;
-
-            > .arrow {
-              margin-right: 6px;
-            }
-          }
-        }
-
-        .upcoming {
-          .launchGrid {
-            display: grid;
-            grid-template-columns: 1fr 6% 1fr 6% 1fr 6% 1fr;
-            grid-template-rows: auto;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 0.8em;
-
-            .launchRow {
-              &.hideMore {
-                display: none;
-              }
-            }
-
-            .launchRow {
-              border-bottom: 1px solid $subtext-color;
-              white-space: nowrap;
-            }
-
-            .header {
-              border-bottom: 1px solid $color-darkblue;
-            }
-
-            .launchRow,
-            .header {
-              padding: 10px 0;
-            }
-
-            > .target {
-              text-align: right;
-            }
-          }
-
-          .seeMore {
-            display: flex;
-            color: $subtext-color;
-            cursor: pointer;
-
-            > .arrow {
-              margin-right: 6px;
-            }
-          }
-        }
-      }
-    }
-
     &.launches {
       > .title {
         margin-bottom: 24px;
       }
 
-      > horizontal-scroller {
-        display: inline-block;
-        margin-left: -72px;
-        margin-right: -72px;
-
-        // note this is inside of the launch-summary element
-        .launchSummary {
-          width: 320px;
-          padding-right: 30px;
-        }
+      > .launchesButton {
+        text-align: center;
       }
     }
 

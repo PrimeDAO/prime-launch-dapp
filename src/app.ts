@@ -8,10 +8,14 @@ import "./styles/styles.scss";
 import "./app.scss";
 import { Utils } from "services/utils";
 import tippy from "tippy.js";
+import { BindingSignaler } from "aurelia-templating-resources";
+import { EthereumService } from "services/EthereumService";
 
 @autoinject
 export class App {
   constructor (
+    private signaler: BindingSignaler,
+    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator) { }
 
   router: Router;
@@ -19,6 +23,7 @@ export class App {
   modalMessage: string;
   initializing = true;
   showingMobileMenu = false;
+  intervalId: any;
 
   errorHandler = (ex: unknown): boolean => {
     this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an unexpected error occurred", ex));
@@ -31,7 +36,7 @@ export class App {
 
     window.addEventListener("error", this.errorHandler);
 
-    this.eventAggregator.subscribe("pools.loading", async (onOff: boolean) => {
+    this.eventAggregator.subscribe("seeds.loading", async (onOff: boolean) => {
       this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
       this.onOff = onOff;
     });
@@ -49,19 +54,11 @@ export class App {
       this.onOff = false;
     });
 
-    // if (!this.pools?.length) {
-    //   setTimeout(async () => {
-    //     try {
-    //       if (this.poolService.initializing) {
-    //         await this.poolService.ensureInitialized();
-    //       }
-    //       this.pools = this.poolService.poolsArray;
-    //       this.initializing = false;
-    //     } catch (ex) {
-    //       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-    //     }
-    //   }, 0);
-    // }
+    this.intervalId = setInterval(async () => {
+      this.signaler.signal("secondPassed");
+      const blockDate = this.ethereumService.lastBlockDate;
+      this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
+    }, 1000);
   }
 
   private configureRouter(config: RouterConfiguration, router: Router) {
@@ -82,7 +79,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./home/home"),
         nav: true,
         name: "home",
-        route: ["", "/", "home/:bookmark"],
+        route: ["", "/", "home/:bookmark?"],
         title: "Home",
       },
       {
@@ -100,10 +97,24 @@ export class App {
         title: "Liquid Launch",
       },
       {
+        moduleId: PLATFORM.moduleName("./launches/launches"),
+        nav: false,
+        name: "launches",
+        route: ["launches"],
+        title: "Launchs",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/documentation"),
+        nav: false,
+        name: "documentation",
+        route: ["documentation"],
+        title: "Documentation",
+      },
+      {
         moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
         nav: false,
         name: "seedDashboard",
-        route: ["seedDashboard/:address"],
+        route: ["seed/:address"],
         title: "SEED Dashboard",
       },
       {

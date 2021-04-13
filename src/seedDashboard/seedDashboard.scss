@@ -1,3 +1,219 @@
 @import "styles/colors.scss";
-.page.seedDashboard {
+.page.seedDashboardContainer {
+  .seedDashboard {
+    padding-left: 6em;
+    padding-right: 6em;
+
+    display: flex;
+    justify-content: space-between;
+
+    .leftColumn {
+      flex-basis: 45%;
+
+      .intro {
+        display: flex;
+
+        .leftSection {
+          display: flex;
+          flex-basis: 75%;
+          flex-direction: column;
+
+          .header {
+            display: flex;
+
+            .title {
+              margin-right: 1em;
+            }
+
+            .timeLeft {
+            }
+          }
+
+          .description {
+            color: $color-grey-4;
+          }
+        }
+
+        .rightSection {
+          flex-basis: 25%;
+          text-align: right;
+          align-self: center;
+          > div {
+            white-space: nowrap;
+          }
+
+          .label {
+            font-size: 0.8em;
+            color: $color-grey-4;
+            margin-bottom: 0.25em;
+          }
+
+          .timeLeft {
+            color: $color-orange;
+          }
+        }
+      }
+
+      .section1,
+      .section2,
+      .section3 {
+        background-color: $color-black-3;
+
+        .description {
+        }
+      }
+
+      .section1 {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "number description help"
+          "number subtext doit";
+      }
+
+      .section2,
+      .section3 {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "number description help"
+          "number form form"
+          "doit doit doit";
+      }
+
+      .number {
+        grid-area: number;
+      }
+      .description {
+        grid-area: description;
+      }
+      .subtext {
+        grid-area: subtext;
+      }
+      .help {
+        grid-area: help;
+        text-align: right;
+      }
+      .form {
+        grid-area: form;
+      }
+      .doit {
+        grid-area: doit;
+        text-align: right;
+      }
+    }
+
+    .rightColumn {
+      flex-basis: 45%;
+
+      .topSection {
+        .tokenId {
+          white-space: nowrap;
+          margin-bottom: 0.8em;
+
+          > div {
+            display: inline-block;
+          }
+        }
+
+        .progressBar {
+          width: 200px;
+          height: 1em;
+          border-radius: 10px;
+          background-color: $color-pink;
+          margin-bottom: 0.8em;
+        }
+
+        .raised {
+          display: flex;
+          margin-bottom: 4em;
+
+          .amount {
+            margin-right: 8px;
+            font-weight: bold;
+          }
+
+          .denomination {
+            font-size: 0.8em;
+            color: $color-grey-4;
+            align-self: flex-end;
+          }
+
+          .perc {
+            flex-grow: 2;
+            text-align: right;
+          }
+        }
+      }
+
+      .bottomSection {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto auto auto;
+        grid-template-areas:
+          "targetLabel maxLabel valuationLabel"
+          "target max valuation"
+          "tokensleftLabel seedpriceLabel tokenpriceLabel"
+          "tokensleft seedprice tokenprice";
+
+        .label {
+          font-size: 0.75em;
+          color: $color-grey-4;
+        }
+
+        .targetLabel {
+          grid-area: targetLabel;
+        }
+
+        .target {
+          grid-area: target;
+          margin-bottom: 1em;
+        }
+
+        .maxLabel {
+          grid-area: maxLabel;
+        }
+
+        .max {
+          grid-area: max;
+          margin-bottom: 1em;
+        }
+
+        .valuationLabel {
+          grid-area: valuationLabel;
+        }
+
+        .valuation {
+          grid-area: valuation;
+          margin-bottom: 1em;
+        }
+
+        .tokensleftLabel {
+          grid-area: tokensleftLabel;
+        }
+
+        .tokensleft {
+          grid-area: tokensleft;
+        }
+
+        .seedpriceLabel {
+          grid-area: seedpriceLabel;
+        }
+
+        .seedprice {
+          grid-area: seedprice;
+        }
+
+        .tokenpriceLabel {
+          grid-area: tokenpriceLabel;
+        }
+
+        .tokenprice {
+          grid-area: tokenprice;
+        }
+      }
+    }
+  }
 }

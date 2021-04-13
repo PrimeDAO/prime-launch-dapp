@@ -1,7 +1,7 @@
 import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import "./home.scss";
+import "./launches.scss";
 import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -9,11 +9,10 @@ import { EventConfigException } from "services/GeneralEvents";
 
 @singleton(false)
 @autoinject
-export class Home {
+export class Launches {
 
-  seeingMore = false;
-  bookmark: string;
   seeds: Array<Seed>;
+  seeingMore: boolean;
 
   constructor(
     private router: Router,
@@ -22,16 +21,7 @@ export class Home {
   ) {
   }
 
-  async activate(params: { bookmark?: string}): Promise<void> {
-    this.bookmark = params?.bookmark;
-  }
-
   async attached(): Promise<void> {
-    if (this.bookmark) {
-      document.getElementById(this.bookmark).scrollIntoView();
-      this.bookmark = undefined;
-    }
-
     if (!this.seeds?.length) {
       try {
         if (this.seedService.initializing) {
@@ -52,5 +42,9 @@ export class Home {
 
   navigate(href: string): void {
     this.router.navigate(href);
+  }
+
+  seeMore(yesNo: boolean): void {
+    this.seeingMore = yesNo;
   }
 }

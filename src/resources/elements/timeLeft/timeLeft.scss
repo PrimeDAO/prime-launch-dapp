@@ -1,0 +1,36 @@
+@import "styles/colors.scss";
+.timeLeftContainer {
+  display: inline-flex;
+  .timeLeft,
+  .active {
+    font-size: 0.8em;
+    align-self: center;
+    text-align: right;
+    white-space: nowrap;
+
+    > .icon {
+      margin-right: 6px;
+    }
+  }
+
+  .timeLeft {
+    &.soon {
+      color: $color-red;
+    }
+
+    &.comingUp {
+      color: $color-orange;
+    }
+  }
+  .active {
+    color: $color-green;
+
+    > .icon {
+      display: inline-block;
+      font-size: 0.5em;
+      margin-right: 0.7em;
+      position: relative;
+      bottom: 0.3em;
+    }
+  }
+}

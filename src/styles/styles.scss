@@ -163,6 +163,19 @@ html {
     color: $color-grey-3;
   }
 
+  .launches {
+    horizontal-scroller {
+      display: inline-block;
+      margin-bottom: 28px;
+
+      // note this is inside of the launch-summary element
+      .launchSummaryContainer {
+        width: 320px;
+        padding-right: 30px;
+      }
+    }
+  }
+
   #WEB3_CONNECT_MODAL_ID {
     div:first-of-type {
       z-index: 10002; // stay over everything except modal mask

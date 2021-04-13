@@ -1,31 +1,32 @@
 import { autoinject } from "aurelia-framework";
-import { SeedService } from "services/SeedService";
+import { Router } from "aurelia-router";
 import { bindable } from "aurelia-typed-observable-plugin";
-import { Address } from "services/EthereumService";
-import "./seedDashboard.scss";
 import { Seed } from "entities/Seed";
+import { Address } from "services/EthereumService";
+import { SeedService } from "services/SeedService";
+import "./launchSummary.scss";
 
 @autoinject
-export class SeedDashboard {
-  @bindable address: Address;
+export class LaunchSummary {
 
+  @bindable address: Address;
   seed: Seed;
   loading = true;
 
   constructor(
+    private router: Router,
     private seedService: SeedService,
   ) {}
-
-
-  async activate(params: { address: Address}): Promise<void> {
-    this.address = params.address;
-  }
 
   async attached(): Promise<void> {
     await this.seedService.ensureInitialized();
     this.seed = this.seedService.seeds.get(this.address);
     this.seed.ensureInitialized().then(() => {
       this.loading = false;
-    });
+    } );
+  }
+
+  gotoDashboard(): void {
+    this.router.navigate(`seed/${this.address}`);
   }
 }

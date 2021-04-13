@@ -1,0 +1,30 @@
+<template>
+  <div class="launchSummaryContainer" click.delegate="gotoDashboard()">
+    <div if.to-view="!loading" class="launchSummary">
+      <div class="icon"><img src="#" /></div>
+      <div class="title heading heading3">PrimeDAO</div>
+      <div class="timeLeft">
+        <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
+      </div>
+      <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+        pretium pretium tempor. Ut eget imperdiet neque. In volutpat
+        ante semper diam molestie, et aliquam.</div>
+      <div class="tokensTarget">
+        <div class="pair">
+          <div class="title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
+          <div class="tokens">
+            <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+          </div>
+        </div>
+        <div class="target">
+          <div class="title subtext">TARGET</div>
+          <div class="target">$ <formatted-number thousands-separated mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div else class="loading">
+      <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
+  </div>
+</template>

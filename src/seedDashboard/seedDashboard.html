@@ -1,5 +1,80 @@
 <template>
-  <div class="page animated-page au-animate seedDashboard">
-    Seed ${address}
+  <div class="page animated-page au-animate seedDashboardContainer">
+    <div if.to-view="!loading" class="seedDashboard">
+      <div class="leftColumn">
+        <div class="intro">
+          <div class="leftSection">
+            <div class="header">
+              <div class="title heading heading3">PrimeDAO</div>
+              <div class="timeLeft">
+                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
+              </div>
+            </div>
+            <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+              pretium pretium tempor. Ut eget imperdiet neque. In volutpat
+              ante semper diam molestie, et aliquam.</div>
+          </div>
+          <div class="rightSection">
+            <div class="label">TIME LEFT</div>
+            <div class="timeLeft">16:34hr</div>
+          </div>
+        </div>
+        <div class="secton section1">
+          <div class="number">1</div>
+          <div class="description">Check eligibility</div>
+          <div class="help">?</div>
+          <div class="subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+          <div class="doit"><button class="button1">CONNECT</button></div>
+        </div>
+        <div class="secton section2">
+          <div class="number">2</div>
+          <div class="description">Contribute</div>
+          <div class="help">?</div>
+          <div class="form">DAO = KOL</div>
+          <div class="doit"><button class="button1">SUBMIT</button></div>
+        </div>
+        <div class="secton section3">
+          <div class="number">3</div>
+          <div class="description">Claim tokens</div>
+          <div class="help">?</div>
+          <div class="form">KOL KOL</div>
+          <div class="doit"><button class="button1">SUBMIT</button></div>
+        </div>
+      </div>
+      <div class="rightColumn">
+        <div class="topSection">
+          <div class="tokenId">
+            <div class="icon"><img src.to-view="seed.seedTokenInfo.icon"></img></div>
+            <div class="name">${seed.seedTokenInfo.name}</div>
+            <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
+          </div>
+          <div class="progressBar">&nbsp;</div>
+          <div class="raised">
+            <div class="amount">$ 834,205</div>
+            <div class="denomination">USD raised</div>
+            <div class="perc">60%</div>
+          </div>
+        </div>
+        <div class="bottomSection">
+          <div class="label targetLabel">TARGET</div>
+          <div class="target">$ 1.5M</div>
+          <div class="label maxLabel">MAX</div>
+          <div class="max">$ 2.5M</div>
+          <div class="label valuationLabel">VALUATION</div>
+          <div class="valuation">$ 18M</div>
+          <div class="label tokensleftLabel">TOKENS LEFT</div>
+          <div class="tokensleft">76%</div>
+          <div class="label seedpriceLabel">SEED PRICE</div>
+          <div class="seedprice">$ 3.14</div>
+          <div class="tokenpriceLabel">
+            <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+          </div>
+          <div class="tokenprice">1 KOL = 10 DAI</div>
+        </div>
+      </div>
+    </div>
+    <div else class="loading">
+      <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
   </div>
 </template>

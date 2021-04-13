@@ -62,7 +62,7 @@ export class TokenService {
     private consoleLogService: ConsoleLogService,
     contractsService: ContractsService,
     private numberService: NumberService) {
-    this.erc20Abi = contractsService.getContractAbi(ContractNames.IERC20);
+    this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
   }
 
   // private async _getBalance(

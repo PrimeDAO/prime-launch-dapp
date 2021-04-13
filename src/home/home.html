@@ -1,6 +1,4 @@
 <template>
-  <require from="./launchSummary/launchSummary"></require>
-
   <div class="page animated-page au-animate home">
     <div class="section top">
       <div class="title heading heading0">Seamlessly fundraise for your moonshot</div>
@@ -27,48 +25,6 @@
         </div>
       </div>
     </div>
-    <div class="section participate">
-      <div class="title heading heading2">Prime Launch</div>
-      <div class="subtitle subtext">Participate in permissionless seed and liquid launches ahead of the curve.</div>
-      <div class="launches">
-        <div class="featured">
-          <div class="title heading3">Featured</div>
-          <div class="launch">
-            <launch-summary address.to-view="1"></launch-summary>
-          </div>
-          <div class="launchButton"><span class="arrow">&rarr;</span><a href="#" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>
-        </div>
-        <div class="upcoming">
-          <div class="title heading3">Upcoming</div>
-          <div class="launchGrid">
-            <div class="project header">PROJECT</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="starts header">STARTS</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="type header">TYPE</div>
-            <div class="header divider">&nbsp;</div>
-            <div class="target header">TARGET</div>
-            <template repeat.for="seed of seeds">
-              <div class="launchRow project  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">PrimeDAO</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow starts  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">in ${seed.startsInDays} days</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow type  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">SEED</div>
-              <div class="launchRow divider ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">&nbsp;</div>
-              <div class="launchRow target  ${((j >= 3) && !seeingMore) ? 'hideMore' : ''}">${seed.minSuccess | ethwei}</div>
-            </template>
-          </div>
-          <div if.to-view="!seeingMore" class="seeMore">
-            <div class="arrow">&darr;</div>
-            <div class="text" click.delegate="seeMore(true)">SEE MORE</div>
-          </div>
-          <div if.to-view="seeingMore" class="seeMore">
-            <div class="arrow">&uarr;</div>
-            <div class="text" click.delegate="seeMore(false)">SEE LESS</div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="section nomiss">
       <div class="noMissColumn">
         <div class="title heading heading2">Never miss a launch</div>
@@ -82,11 +38,12 @@
         <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
       </div>
     </div>
-    <div id="launches" class="section launches">
+    <div class="section launches">
       <div class="title heading heading2">Upcoming launches</div>
-      <horizontal-scroller item-count="20">
+      <horizontal-scroller item-count.to-view="seeds.length">
         <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
       </horizontal-scroller>
+      <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
     <div class="section fairLaunch">
       <div class="pic"><img src="#" /></div>
@@ -105,4 +62,5 @@
         <div class="learnMore"><a href="#" target="_blank" rel="noopener noreferrer">Learn More</a></div>
       </div>
     </div>
+  </div>
 </template>

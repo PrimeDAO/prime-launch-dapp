@@ -14,7 +14,8 @@ export enum ContractNames {
   , SEED = "Seed"
   // , WETH = "WETH"
   , PRIMETOKEN = "PrimeToken"
-  , IERC20 = "IERC20"
+  , DAI = "DAI"
+  , ERC20 = "ERC20"
   ,
 }
 
@@ -37,8 +38,9 @@ export class ContractsService {
       [ContractNames.SEEDFACTORY, SeedFactoryABI.abi]
       , [ContractNames.SEED, SeedABI.abi]
       , [ContractNames.PRIMETOKEN, ERC20ABI.abi]
+      , [ContractNames.DAI, ERC20ABI.abi]
       // , [ContractNames.WETH, WETHABI.abi]
-      , [ContractNames.IERC20, ERC20ABI.abi]
+      , [ContractNames.ERC20, ERC20ABI.abi]
       ,
     ],
   );
@@ -47,7 +49,8 @@ export class ContractsService {
     [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     // , [ContractNames.WETH, null]
-    , [ContractNames.PRIMETOKEN, null]
+    // , [ContractNames.PRIMETOKEN, null]
+    // , [ContractNames.DAI, null]
     ,
   ]);
 

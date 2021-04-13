@@ -1,0 +1,87 @@
+@import "styles/colors.scss";
+.page.launches {
+  .section {
+    &.featured,
+    &.launches {
+      padding-left: 4.5em;
+      padding-right: 4.5em;
+      margin-bottom: 5.75em;
+
+      > .title {
+        margin-bottom: 24px;
+      }
+    }
+
+    &.launches {
+      .launchGrid {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr 1fr 0.5fr 1fr 1fr;
+        grid-template-rows: auto;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 0.8em;
+
+        .row {
+          display: contents;
+
+          &:not(:first-child) {
+            cursor: pointer;
+          }
+
+          &:hover > div {
+            background-color: $color-grey-6;
+          }
+
+          &:first-of-type > div {
+            border-bottom: 1px solid $color-darkblue;
+          }
+
+          > div {
+            border-bottom: 1px solid $subtext-color;
+          }
+        }
+
+        .cell {
+          white-space: nowrap;
+          &.hideMore {
+            display: none;
+          }
+        }
+
+        .cell,
+        .header {
+          padding: 10px 0;
+
+          &.pair {
+            padding-left: 12px;
+          }
+
+          &.cap {
+            padding-right: 12px;
+          }
+
+          &.target,
+          &.cap {
+            text-align: right;
+          }
+
+          &.whitelist,
+          &.starts,
+          &.type {
+            text-align: center;
+          }
+        }
+      }
+
+      .seeMore {
+        display: flex;
+        color: $subtext-color;
+        cursor: pointer;
+
+        > .arrow {
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+}

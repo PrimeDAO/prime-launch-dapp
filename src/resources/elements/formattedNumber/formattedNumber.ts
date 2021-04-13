@@ -44,7 +44,7 @@ export class FormattedNumber {
     if ((this._value !== null) && (this._value !== undefined)) {
       text = this.numberService.toString(Number(this._value),
         {
-          precision: this.precision ? this.precision : (this.average ? 3 : undefined),
+          precision: this.precision ? this.precision : ((this.average && !this.mantissa) ? 3 : undefined),
           average: this.average,
           mantissa: this.mantissa !== undefined ? this.mantissa : undefined,
           thousandSeparated: this.thousandsSeparated,
