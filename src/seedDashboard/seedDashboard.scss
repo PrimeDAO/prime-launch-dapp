@@ -65,14 +65,6 @@
           padding: 0.5em;
           width: 2em;
           height: 2em;
-
-          .circledNumber {
-            background-color: $color-light-purple;
-            > .value {
-              color: $color-black;
-              font-weight: bold;
-            }
-          }
         }
 
         .description {
