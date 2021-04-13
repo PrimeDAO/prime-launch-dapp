@@ -5,16 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-msedge",
+      "type": "pwa-chrome",
       "request": "launch",
-      "name": "Launch Chromium against localhost",
+      "name": "Launch Chrome against localhost",
       "url": "http://localhost:3330",
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
-      "skipFiles": [
-        "${workspaceFolder}/src/node_modules/tslib/*.js",
-      ],
+      "skipFiles": ["${workspaceFolder}/src/node_modules/tslib/*.js"],
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${webRoot}/*"
+      },
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "pwa-msedge",
+      "request": "launch",
+      "name": "Launch Edge against localhost",
+      "url": "http://localhost:3330",
+      "webRoot": "${workspaceRoot}/src",
+      // "trace": true,
+      "smartStep": true,
+      "skipFiles": ["${workspaceFolder}/src/node_modules/tslib/*.js"],
       "sourceMapPathOverrides": {
         "webpack:///./src/*": "${webRoot}/*"
       },

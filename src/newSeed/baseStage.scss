@@ -7,17 +7,25 @@
       background-color: $color-black-2;
       padding: 2em;
       border-radius: 15px;
-      width: 80%;
-      font-size: 1.5rem;
+      width: 100%;
+      .title {
+        font-size: 1.5rem;
+      }
       label {
         display: block;
         padding-bottom: 0.5em;
+        font-weight: bolder;
       }
       .subtext {
-        margin-bottom: 2em;
+        margin-bottom: 4em;
       }
       .infoInput {
         margin-bottom: 2em;
+        input {
+          width: 30em;
+          height: 3em;
+          border-radius: 5px;
+        }
       }
       .otherLinks {
         display: flex;
@@ -156,7 +164,6 @@
         a {
           color: inherit;
           text-decoration: underline;
-          text-decoration-style: dotted;
           text-decoration-color: $color-bluegreen;
         }
       }
