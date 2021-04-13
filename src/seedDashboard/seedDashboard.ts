@@ -4,6 +4,8 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import { Address } from "services/EthereumService";
 import "./seedDashboard.scss";
 import { Seed } from "entities/Seed";
+import { Utils } from "services/utils";
+import { EventConfigException } from "services/GeneralEvents";
 
 @autoinject
 export class SeedDashboard {
@@ -13,6 +15,7 @@ export class SeedDashboard {
   loading = true;
 
   constructor(
+    private eventAggregator: EventAggregator,
     private seedService: SeedService,
   ) {}
 
@@ -22,10 +25,19 @@ export class SeedDashboard {
   }
 
   async attached(): Promise<void> {
-    await this.seedService.ensureInitialized();
-    this.seed = this.seedService.seeds.get(this.address);
-    this.seed.ensureInitialized().then(() => {
-      this.loading = false;
-    });
+      try {
+        this.seed = this.seedService.seeds.get(this.address);
+        if (this.seed.initializing) {
+          await Utils.sleep(200);
+          this.eventAggregator.publish("seeds.loading", true);
+          await this.seed.ensureInitialized();
+        }
+      } catch (ex) {
+        this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+      }
+      finally {
+        this.eventAggregator.publish("seeds.loading", false);
+      }
+    }
   }
 }
