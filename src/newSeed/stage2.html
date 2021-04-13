@@ -1,25 +1,33 @@
 <template>
   <div class="page animated-page stageContainer stage2 au-animate">
     <div class="infoContainer">
-      <div class="heading heading3">Project Details</div>
+      <div class="heading heading3 title">Project Details</div>
       <div class="subtext">Description of your project and team.</div>
-      <div with.bind="seedConfig.projectDetails">
+      <div>
         <div class="infoInput">
           <label for="projSummary"> Project Summary</label>
           <textarea
             id="projSummary"
-            value.bind="projectSummary"
+            value.bind="seedConfig.projectDetails.summary"
             maxlength="150"
           ></textarea>
         </div>
         <div class="infoInput">
           <label for="valueProp"> Value Proposition</label>
-          <textarea id="valueProp" value.bind="valueProp" maxlength="150">
+          <textarea
+            id="valueProp"
+            value.bind="seedConfig.projectDetails.proposition"
+            maxlength="150"
+          >
           </textarea>
         </div>
         <div class="infoInput">
           <label for="teamDesc"> Project Category</label>
-          <textarea id="teamDesc" value.bind="teamDesc" maxlength="150">
+          <textarea
+            id="teamDesc"
+            value.bind="seedConfig.projectDetails.category"
+            maxlength="150"
+          >
           </textarea>
         </div>
       </div>

@@ -9,6 +9,8 @@ export interface ISeedConfig {
   },
   projectDetails: {
     summary: string,
+    proposition: string,
+    category: string
   }
 
 }
@@ -22,6 +24,8 @@ export class SeedConfig implements ISeedConfig {
     github: string,
   };
   projectDetails: {
-    summary: string
+    summary: string,
+    proposition: string,
+    category: string
   }
 }

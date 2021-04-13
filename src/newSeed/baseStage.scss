@@ -62,16 +62,26 @@
       padding: 2em;
       width: 100%;
       border-radius: 15px;
-      font-size: 1.5rem;
+      .title {
+        font-size: 1.5rem;
+      }
       label {
         display: block;
         padding-bottom: 0.5em;
+        // TODO: Make font weightier
+        font-weight: bolder;
       }
       .subtext {
         margin-bottom: 2em;
       }
       .infoInput {
         margin-bottom: 2em;
+        textarea {
+          resize: none;
+          width: 30em;
+          height: 4em;
+          border-radius: 5px;
+        }
       }
       .otherLinks {
         display: flex;
@@ -85,6 +95,7 @@
       .buttonContainer {
         display: flex;
         flex-wrap: wrap;
+        padding-top: 4em;
         .button {
           padding: 6px 18px;
           background-color: $color-white;

@@ -5,11 +5,13 @@ export class Stage2 extends BaseStage {
     let message: string;
 
     if (!this.seedConfig?.projectDetails?.summary) {
-      message = "Enter a value for Project Name";
+      message = "Please Enter a summary of the Project";
     }
-    // else if (!this.seedConfig?.general?.whatever) {
-    //   message = "Enter a value for whatever";
-    // }
+    else if (!this.seedConfig?.projectDetails?.proposition) {
+      message = "Please enter a propostion";
+    } else if (!this.seedConfig.projectDetails.category) {
+      message = "Please provide a category";
+    }
 
     if (message) {
       this.validationError(message);
