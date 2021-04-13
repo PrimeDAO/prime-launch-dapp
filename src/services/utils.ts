@@ -60,4 +60,11 @@ export class Utils {
       return value;
     }
   }
+
+  // eslint-disable-next-line no-useless-escape
+  private static pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+
+  public static isValidUrl(str: string, emptyOk = true): boolean {
+    return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
+  }
 }
