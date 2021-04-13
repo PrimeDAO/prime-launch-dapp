@@ -6,6 +6,7 @@ import "./seedDashboard.scss";
 import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 @autoinject
 export class SeedDashboard {
@@ -25,19 +26,28 @@ export class SeedDashboard {
   }
 
   async attached(): Promise<void> {
-      try {
-        this.seed = this.seedService.seeds.get(this.address);
-        if (this.seed.initializing) {
+    try {
+      let waiting = false;
+      if (this.seedService.initializing) {
+        await Utils.sleep(200);
+        this.eventAggregator.publish("seeds.loading", true);
+        waiting = true;
+        await this.seedService.ensureInitialized();
+      }
+      this.seed = this.seedService.seeds.get(this.address);
+      if (this.seed.initializing) {
+        if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("seeds.loading", true);
-          await this.seed.ensureInitialized();
         }
-      } catch (ex) {
-        this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+        await this.seed.ensureInitialized();
       }
-      finally {
-        this.eventAggregator.publish("seeds.loading", false);
-      }
+    } catch (ex) {
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+    }
+    finally {
+      this.eventAggregator.publish("seeds.loading", false);
+      this.loading = false;
     }
   }
 }

@@ -17,6 +17,7 @@
           display: flex;
           flex-basis: 75%;
           flex-direction: column;
+          margin-bottom: 2em;
 
           .header {
             display: flex;
@@ -59,7 +60,37 @@
       .section3 {
         background-color: $color-black-3;
 
+        > .number {
+          grid-area: number;
+          padding: 0.5em;
+          width: 2em;
+          height: 2em;
+
+          .circledNumber {
+            background-color: $color-light-purple;
+            > .value {
+              color: $color-black;
+              font-weight: bold;
+            }
+          }
+        }
+
         .description {
+          grid-area: description;
+        }
+        .subtext {
+          grid-area: subtext;
+        }
+        .help {
+          grid-area: help;
+          text-align: right;
+        }
+        .form {
+          grid-area: form;
+        }
+        .doit {
+          grid-area: doit;
+          text-align: right;
         }
       }
 
@@ -81,27 +112,6 @@
           "number description help"
           "number form form"
           "doit doit doit";
-      }
-
-      .number {
-        grid-area: number;
-      }
-      .description {
-        grid-area: description;
-      }
-      .subtext {
-        grid-area: subtext;
-      }
-      .help {
-        grid-area: help;
-        text-align: right;
-      }
-      .form {
-        grid-area: form;
-      }
-      .doit {
-        grid-area: doit;
-        text-align: right;
       }
     }
 
@@ -214,6 +224,13 @@
           grid-area: tokenprice;
         }
       }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    i {
+      color: $color-lightblue;
     }
   }
 }
