@@ -10,14 +10,14 @@ export class Stage1 extends BaseStage {
     }
     else if (!this.seedConfig?.general?.projectWebsite) {
       message = "Plese enter the projec website";
-    } else if (!Utils.isValidUrl(this.seedConfig?.general?.projectWebsite)) {
+    } else if (!Utils.isValidUrl(this.seedConfig?.general?.projectWebsite, false)) {
       message = "Please enter a valid website url";
     }
     else if (!this.seedConfig?.general?.category) {
       message = "Enter a category";
     } else if (!this.seedConfig?.general?.whitepaper) {
       message = "We need your whitepaper address";
-    } else if (!Utils.isValidUrl(this.seedConfig?.general?.whitepaper)) {
+    } else if (!Utils.isValidUrl(this.seedConfig?.general?.whitepaper, false)) {
       message = "Please enter a valid website url";
     } else if (!this.seedConfig?.general?.github) {
       message = "Please put in a github link";
