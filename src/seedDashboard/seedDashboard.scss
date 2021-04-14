@@ -59,6 +59,13 @@
       .section2,
       .section3 {
         background-color: $color-black-3;
+        padding: 1.5em 1.5em;
+        border-radius: 0.5em;
+        align-items: baseline;
+
+        &:not(:last-child) {
+          margin-bottom: 1.5em;
+        }
 
         > .number {
           grid-area: number;
@@ -67,8 +74,29 @@
           height: 2em;
         }
 
+        .description,
+        .subtext {
+          padding-left: 1em;
+          padding-right: 1em;
+        }
+
+        .description {
+          padding-top: 1em;
+          padding-bottom: 0.5em;
+        }
+
+        .form {
+          padding-left: 1.5em;
+          padding-right: 1em;
+        }
+
+        .subtext {
+          padding-bottom: 1em;
+        }
+
         .description {
           grid-area: description;
+          font-size: 1.4em;
         }
         .subtext {
           grid-area: subtext;
@@ -83,6 +111,11 @@
         .doit {
           grid-area: doit;
           text-align: right;
+          button {
+            width: 120px;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+          }
         }
       }
 
@@ -98,7 +131,7 @@
       .section2,
       .section3 {
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto 1fr auto;
         grid-template-rows: auto;
         grid-template-areas:
           "number description help"
