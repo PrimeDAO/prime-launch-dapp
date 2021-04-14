@@ -70,17 +70,11 @@
         > .number {
           grid-area: number;
           padding: 0.5em;
-          width: 2em;
-          height: 2em;
-        }
-
-        .description,
-        .subtext {
-          padding-left: 1em;
-          padding-right: 1em;
         }
 
         .description {
+          padding-left: 1em;
+          padding-right: 1em;
           padding-top: 1em;
           padding-bottom: 0.5em;
         }
@@ -90,20 +84,22 @@
           padding-right: 1em;
         }
 
-        .subtext {
-          padding-bottom: 1em;
-        }
-
         .description {
           grid-area: description;
           font-size: 1.4em;
         }
         .subtext {
+          padding-left: 1.8em;
+          padding-right: 1.8em;
+          padding-bottom: 1em;
           grid-area: subtext;
         }
         .help {
+          justify-self: flex-end;
           grid-area: help;
           text-align: right;
+          width: 1.5em;
+          height: 1.5em;
         }
         .form {
           grid-area: form;
@@ -111,6 +107,7 @@
         .doit {
           grid-area: doit;
           text-align: right;
+          align-self: center;
           button {
             width: 120px;
             padding-left: 1.2em;
@@ -121,7 +118,7 @@
 
       .section1 {
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto 1fr auto;
         grid-template-rows: auto;
         grid-template-areas:
           "number description help"

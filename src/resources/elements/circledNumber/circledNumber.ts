@@ -5,4 +5,5 @@ import "./circledNumber.scss";
 @containerless
 export class CircledNumber {
   @bindable.number number: number;
+  @bindable.booleanAttr checkMark: boolean;
 }
