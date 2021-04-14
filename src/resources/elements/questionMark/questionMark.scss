@@ -1,15 +1,14 @@
 @import "styles/colors.scss";
-.circledNumber {
+.questionMark {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   text-align: center;
-  background-color: $color-light-purple;
-  width: 2em;
-  height: 2em;
+  background-color: $color-grey-5;
 
-  > .value {
+  > .mark {
     color: $color-black;
-    font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1em;
     display: inline-flex;
     align-items: center;
     height: 100%;
