@@ -1,0 +1,76 @@
+@import "styles/colors";
+// This styles are common to all the stages components
+
+.page.stageContainer {
+  &.stage1 {
+    .infoContainer {
+      background-color: $color-black-2;
+      padding: 2em;
+      border-radius: 1em;
+      width: 100%;
+      .title {
+        font-size: 1.5rem;
+      }
+      label {
+        display: block;
+        padding-bottom: 0.5em;
+        font-weight: bolder;
+      }
+      .subtext {
+        margin-bottom: 4em;
+      }
+      .infoInput {
+        margin-bottom: 2em;
+        input {
+          width: 30em;
+          height: 3em;
+          border-radius: 0.25em;
+        }
+      }
+      .otherLinks {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: 2em;
+        > div:first-of-type {
+          margin-right: 2em;
+          input {
+            width: 15em;
+            height: 3em;
+            border-radius: 0.25px;
+          }
+        }
+        input {
+          width: 20em;
+          height: 3em;
+          border-radius: 0.25px;
+          &::placeholder {
+            font-size: 1.5em;
+          }
+        }
+        .addLink {
+          display: grid;
+          justify-content: center;
+        }
+      }
+      .buttonContainer {
+        display: flex;
+        flex-wrap: wrap;
+        .button {
+          padding: 0.3em 1.12em;
+          background-color: $color-white;
+          color: $color-black;
+          // Put space between them
+          margin-right: 2em;
+        }
+        .button:first-of-type {
+          // Background color matches container
+          padding: 0.3em 1.12em;
+          background-color: $color-black-2;
+          border-color: $color-black-2;
+          color: $color-white;
+        }
+      }
+    }
+  }
+}

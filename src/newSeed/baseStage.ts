@@ -1,17 +1,20 @@
+import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject } from "aurelia-framework";
 import "./baseStage.scss";
 import { ISeedConfig } from "./seedConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 @autoinject
 export abstract class BaseStage {
-  seedConfig: ISeedConfig;
-  stageNumber: number;
-  maxStage: number;
+  protected seedConfig: ISeedConfig;
+  protected stageNumber: number;
+  protected maxStage: number;
 
   constructor(
-    private router: Router) {
+    protected router: Router,
+    protected eventAggregator: EventAggregator) {
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
@@ -32,5 +35,9 @@ export abstract class BaseStage {
     if (this.stageNumber > 1) {
       this.router.navigate(`stage${this.stageNumber - 1}`);
     }
+  }
+
+  validationError(message: string): void {
+    this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
   }
 }
