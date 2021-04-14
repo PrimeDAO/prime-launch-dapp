@@ -72,13 +72,9 @@
           padding: 0.5em;
         }
 
-        .description,
-        .subtext {
+        .description {
           padding-left: 1em;
           padding-right: 1em;
-        }
-
-        .description {
           padding-top: 1em;
           padding-bottom: 0.5em;
         }
@@ -88,15 +84,14 @@
           padding-right: 1em;
         }
 
-        .subtext {
-          padding-bottom: 1em;
-        }
-
         .description {
           grid-area: description;
           font-size: 1.4em;
         }
         .subtext {
+          padding-left: 1.8em;
+          padding-right: 1.8em;
+          padding-bottom: 1em;
           grid-area: subtext;
         }
         .help {
