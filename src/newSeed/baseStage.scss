@@ -6,7 +6,7 @@
     .infoContainer {
       background-color: $color-black-2;
       padding: 2em;
-      border-radius: 15px;
+      border-radius: 1em;
       width: 100%;
       .title {
         font-size: 1.5rem;
@@ -24,7 +24,7 @@
         input {
           width: 30em;
           height: 3em;
-          border-radius: 5px;
+          border-radius: 0.25em;
         }
       }
       .otherLinks {
@@ -37,13 +37,13 @@
           input {
             width: 15em;
             height: 3em;
-            border-radius: 5px;
+            border-radius: 0.25px;
           }
         }
         input {
           width: 20em;
           height: 3em;
-          border-radius: 5px;
+          border-radius: 0.25px;
           &::placeholder {
             font-size: 1.5em;
           }
@@ -57,7 +57,7 @@
         display: flex;
         flex-wrap: wrap;
         .button {
-          padding: 6px 18px;
+          padding: 0.3em 1.12em;
           background-color: $color-white;
           color: $color-black;
           // Put space between them
@@ -65,7 +65,7 @@
         }
         .button:first-of-type {
           // Background color matches container
-          padding: 6px 1px;
+          padding: 0.3em 1.12em;
           background-color: $color-black-2;
           border-color: $color-black-2;
           color: $color-white;
