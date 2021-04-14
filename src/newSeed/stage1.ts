@@ -12,7 +12,7 @@ export class Stage1 extends BaseStage {
       message = "Please enter a valid url for project website";
     }
     else if (!this.seedConfig?.general?.category) {
-      message = "Enter a category";
+      message = "Please Enter a category";
     } else if (!Utils.isValidUrl(this.seedConfig?.general?.whitepaper, false)) {
       message = "Please enter a valid url for whitepaper";
     } else if (!Utils.isValidUrl(this.seedConfig?.general?.github, false)) {
