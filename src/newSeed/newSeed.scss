@@ -1,0 +1,18 @@
+@import "styles/colors.scss";
+@import "styles/styles";
+.newSeedContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  justify-items: center;
+  .currentStageSidebar {
+    line-height: 4rem;
+    font-size: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    .currentstage {
+      cursor: pointer;
+    }
+    .active {
+      color: $color-bluegreen;
+    }
+  }
+}
