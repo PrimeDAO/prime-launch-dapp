@@ -34,6 +34,19 @@
         margin-bottom: 2em;
         > div:first-of-type {
           margin-right: 2em;
+          input {
+            width: 15em;
+            height: 3em;
+            border-radius: 5px;
+          }
+        }
+        input {
+          width: 20em;
+          height: 3em;
+          border-radius: 5px;
+          &::placeholder {
+            font-size: 1.5em;
+          }
         }
       }
       .buttonContainer {
