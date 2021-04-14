@@ -21,7 +21,7 @@ export class Stage1 extends BaseStage {
       message = "Please enter a valid website url";
     } else if (!this.seedConfig?.general?.github) {
       message = "Please put in a github link";
-    } else if (!Utils.isValidUrl(this.seedConfig?.general?.github)) {
+    } else if (!Utils.isValidUrl(this.seedConfig?.general?.github, false)) {
       message = "Please enter a valid website url";
     }
     if (message) {
