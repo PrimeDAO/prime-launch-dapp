@@ -5,6 +5,7 @@ export interface ISeedConfig {
     category: string,
     whitepaper: string,
     github: string,
+    customLinks: Array<{media:string, url:string}>
   },
   projectDetails: {
     summary: string,
@@ -21,6 +22,7 @@ export class SeedConfig implements ISeedConfig {
     category: string,
     whitepaper: string,
     github: string,
+    customLinks: Array<{media:string, url:string}>
   };
   projectDetails: {
     summary: string,
