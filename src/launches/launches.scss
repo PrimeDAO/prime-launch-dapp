@@ -12,6 +12,14 @@
       }
     }
 
+    &.featured {
+      > .title {
+        background: linear-gradient(220.2deg, #8668fc 0%, #a258a7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+
     &.launches {
       .launchGrid {
         display: grid;
