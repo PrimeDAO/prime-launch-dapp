@@ -1,4 +1,7 @@
 <template>
+  <require
+    from="../resources/elements/circledNumber/circledNumber.html"
+  ></require>
   <div class="newSeedContainer">
     <div class="currentStageSidebar">
       <template repeat.for="stage of router.navigation">
@@ -6,7 +9,14 @@
           class="currentstage ${stage.isActive ? 'active' : ''}"
           click.delegate="setStage(stage.config.route)"
         >
-          ${$index+1} ${stage.config.title}
+          <div class="stagesNumber">
+            <circled-number number.bind="$index + 1"></circled-number>
+            <div>${stage.config.title}</div>
+          </div>
+          <div
+            if.bind="$index + 2 <= router.navigation.length"
+            class="timeLine"
+          ></div>
         </div>
       </template>
     </div>

@@ -1,9 +1,63 @@
 <template>
-  <div class="page animated-page stageContainer stage2 au-animate ">
-    Stage ${stageNumber}
-    <a href="#" click.delegate="cancel()">Cancel</a>
-    <a href="#" click.delegate="next()">Next</a>
-    <a href="#" click.delegate="back()">Back</a>
+  <div class="page animated-page stageContainer stage2 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading3 title">Project Details</div>
+      <div class="subtext">Description of your project and team.</div>
+      <div>
+        <div class="infoInput">
+          <div class="labelContainer">
+            <label for="projSummary">Project Summary</label>
+            <label
+              for="projSummary"
+              value.from-view="seedConfig.projectDetails.summary"
+            >
+              ${seedConfig.projectDetails.summary.length}/150
+            </label>
+          </div>
+          <textarea
+            id="projSummary"
+            value.bind="seedConfig.projectDetails.summary"
+            maxlength="150"
+          ></textarea>
+        </div>
+        <div class="infoInput">
+          <div class="labelContainer">
+            <label for="valueProp">Value Proposition</label>
+            <label
+              for="valueProp"
+              value.from-view="seedConfig.projectDetails.proposition"
+              >${seedConfig.projectDetails.proposition.length}/150
+            </label>
+          </div>
+          <textarea
+            id="valueProp"
+            value.bind="seedConfig.projectDetails.proposition"
+            maxlength="150"
+          >
+          </textarea>
+        </div>
+        <div class="infoInput">
+          <div class="labelContainer">
+            <label for="category">Project Category</label>
+            <label
+              for="category"
+              value.from-view="seedConfig.projectDetails.category"
+            >
+              ${seedConfig.projectDetails.category.length}/150
+            </label>
+          </div>
+          <textarea
+            id="category"
+            value.bind="seedConfig.projectDetails.category"
+            maxlength="150"
+          >
+          </textarea>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="button button1" click.delegate="previous()">PREVIOUS</div>
+        <div class="button button1" click.delegate="back()">NEXT</div>
+      </div>
+    </div>
   </div>
-
 </template>
