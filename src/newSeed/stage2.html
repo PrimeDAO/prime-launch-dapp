@@ -6,7 +6,7 @@
       <div>
         <div class="infoInput">
           <div class="labelContainer">
-            <label for="projSummary"> Project Summary</label>
+            <label for="projSummary">Project Summary</label>
             <label
               for="projSummary"
               value.from-view="seedConfig.stage2.summary"
@@ -22,7 +22,7 @@
         </div>
         <div class="infoInput">
           <div class="labelContainer">
-            <label for="valueProp"> Value Proposition</label>
+            <label for="valueProp">Value Proposition</label>
             <label
               for="valueProp"
               value.from-view="seedConfig.stage2.proposition"
@@ -39,9 +39,9 @@
         </div>
         <div class="infoInput">
           <div class="labelContainer">
-            <label for="category"> Project Category</label>
+            <label for="category">Project Category</label>
             <label for="category" value.from-view="seedConfig.stage2.category">
-              ${seedConfig.stage2.category.length || 0}/150
+              ${seedConfig.stage2.category.length}/150
             </label>
           </div>
           <textarea
@@ -54,7 +54,7 @@
       </div>
       <div class="buttonContainer">
         <div class="button button1" click.delegate="previous()">PREVIOUS</div>
-        <div class="button button1" click.delegate="proceed()">NEXT</div>
+        <div class="button button1" click.delegate="back()">NEXT</div>
       </div>
     </div>
   </div>

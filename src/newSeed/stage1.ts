@@ -8,14 +8,14 @@ export class Stage1 extends BaseStage {
       message = "Please Enter a value for Project Name";
     }
     else if (!Utils.isValidUrl(this.seedConfig?.stage1?.projectWebsite, false)) {
-      message = "Please enter a valid url for project website";
+      message = "Please enter a valid url for Project Website";
     }
     else if (!this.seedConfig?.stage1?.category) {
-      message = "Please Enter a category";
+      message = "Please Enter a Category";
     } else if (!Utils.isValidUrl(this.seedConfig?.stage1?.whitepaper, false)) {
-      message = "Please enter a valid url for whitepaper";
+      message = "Please enter a valid url for Whitepaper";
     } else if (!Utils.isValidUrl(this.seedConfig?.stage1?.github, false)) {
-      message = "Please enter a valid url for github link";
+      message = "Please enter a valid url for Github Link";
     }
     if (message) {
       this.validationError(message);
