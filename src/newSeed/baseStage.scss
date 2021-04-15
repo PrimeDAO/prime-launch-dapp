@@ -77,7 +77,7 @@
       background-color: $color-black-2;
       padding: 2em;
       width: 100%;
-      border-radius: 15px;
+      border-radius: 1em;
       .title {
         font-size: 1.5rem;
       }
@@ -94,18 +94,15 @@
         margin-bottom: 2em;
         textarea {
           resize: none;
-          width: 25em;
+          width: 30em;
           height: 4em;
-          border-radius: 5px;
+          border-radius: 0.3em;
         }
-      }
-      .otherLinks {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        margin-bottom: 2em;
-        > div:first-of-type {
-          margin-right: 2em;
+        .labelContainer {
+          width: 25em;
+          display: flex;
+          justify-content: space-between;
+          flex-flow: row nowrap;
         }
       }
       .buttonContainer {
@@ -113,7 +110,7 @@
         flex-wrap: wrap;
         padding-top: 4em;
         .button {
-          padding: 6px 18px;
+          padding: 0.3em 1.12em;
           background-color: $color-white;
           color: $color-black;
           // Put space between them
@@ -121,7 +118,7 @@
         }
         .button:first-of-type {
           // Background color matches container
-          padding: 6px 1px;
+          padding: 0.3em 0.01em;
           background-color: $color-black-2;
           border-color: $color-black-2;
           color: $color-white;

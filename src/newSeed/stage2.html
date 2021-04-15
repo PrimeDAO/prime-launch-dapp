@@ -5,7 +5,15 @@
       <div class="subtext">Description of your project and team.</div>
       <div>
         <div class="infoInput">
-          <label for="projSummary"> Project Summary</label>
+          <div class="labelContainer">
+            <label for="projSummary"> Project Summary</label>
+            <label
+              for="projSummary"
+              value.from-view="seedConfig.projectDetails.summary"
+            >
+              ${seedConfig.projectDetails.summary.length || 0}/150
+            </label>
+          </div>
           <textarea
             id="projSummary"
             value.bind="seedConfig.projectDetails.summary"
@@ -13,8 +21,15 @@
           ></textarea>
         </div>
         <div class="infoInput">
-          <label for="valueProp"> Value Proposition</label>
-          <label for="valueProp" value.from-view="valueProp"> </label>
+          <div class="labelContainer">
+            <label for="valueProp"> Value Proposition</label>
+            <label
+              for="valueProp"
+              value.from-view="seedConfig.projectDetails.proposition"
+            >
+              ${seedConfig.projectDetails.proposition.length || 0}/150
+            </label>
+          </div>
           <textarea
             id="valueProp"
             value.bind="seedConfig.projectDetails.proposition"
@@ -23,9 +38,17 @@
           </textarea>
         </div>
         <div class="infoInput">
-          <label for="teamDesc"> Project Category</label>
+          <div class="labelContainer">
+            <label for="category"> Project Category</label>
+            <label
+              for="category"
+              value.from-view="seedConfig.projectDetails.category"
+            >
+              ${seedConfig.projectDetails.category.length || 0}/150
+            </label>
+          </div>
           <textarea
-            id="teamDesc"
+            id="category"
             value.bind="seedConfig.projectDetails.category"
             maxlength="150"
           >
