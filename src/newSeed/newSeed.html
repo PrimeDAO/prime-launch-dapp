@@ -10,10 +10,7 @@
           click.delegate="setStage(stage.config.route)"
         >
           <div class="stagesNumber">
-            <circled-number
-              number.bind="$index + 1"
-              check-mark.bind="seedConfig[`${stage.config.name}`]['verified']"
-            ></circled-number>
+            <circled-number number.bind="$index + 1"></circled-number>
             <div>${stage.config.title}</div>
           </div>
           <div

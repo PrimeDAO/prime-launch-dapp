@@ -1,5 +1,5 @@
 export interface ISeedConfig {
-  stage1: {
+  general: {
     projectName: string,
     projectWebsite: string,
     category: string,
@@ -7,7 +7,7 @@ export interface ISeedConfig {
     github: string,
     verified: boolean,
   },
-  stage2: {
+  projectDetails: {
     summary: string,
     proposition: string,
     category: string,
@@ -17,7 +17,7 @@ export interface ISeedConfig {
 }
 
 export class SeedConfig implements ISeedConfig {
-  stage1: {
+  general: {
     projectName: string
     projectWebsite: string,
     category: string,
@@ -25,7 +25,7 @@ export class SeedConfig implements ISeedConfig {
     github: string,
     verified: boolean
   };
-  stage2: {
+  projectDetails: {
     summary: string,
     proposition: string,
     category: string,
