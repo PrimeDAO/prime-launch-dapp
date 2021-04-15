@@ -16,6 +16,10 @@
             ></circled-number>
             <div>${stage.config.title}</div>
           </div>
+          <div
+            if.bind="$index + 2 <= router.navigation.length"
+            class="timeLine"
+          ></div>
         </div>
       </template>
     </div>
