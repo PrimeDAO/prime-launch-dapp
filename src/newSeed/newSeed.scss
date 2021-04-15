@@ -14,5 +14,17 @@
     .active {
       color: $color-bluegreen;
     }
+    .stagesNumber {
+      display: flex;
+      gap: 1em;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+    .timeLine {
+      width: 0.1em;
+      height: 1em;
+      background-color: $color-bluegreen;
+      margin-left: 1em;
+    }
   }
 }
