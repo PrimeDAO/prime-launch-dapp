@@ -5,13 +5,11 @@ export interface ISeedConfig {
     category: string,
     whitepaper: string,
     github: string,
-    verified: boolean,
   },
   projectDetails: {
     summary: string,
     proposition: string,
     category: string,
-    verified: boolean,
   }
 
 }
@@ -23,12 +21,10 @@ export class SeedConfig implements ISeedConfig {
     category: string,
     whitepaper: string,
     github: string,
-    verified: boolean
   };
   projectDetails: {
     summary: string,
     proposition: string,
     category: string,
-    verified: boolean
   }
 }
