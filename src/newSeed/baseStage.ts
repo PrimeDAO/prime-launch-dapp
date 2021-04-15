@@ -6,11 +6,16 @@ import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 
+export interface IStageState {
+  verified: boolean;
+}
+
 @autoinject
 export abstract class BaseStage {
   protected seedConfig: ISeedConfig;
   protected stageNumber: number;
   protected maxStage: number;
+  protected stageState: Array<IStageState>;
 
   constructor(
     protected router: Router,
