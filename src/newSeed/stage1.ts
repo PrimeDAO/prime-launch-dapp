@@ -2,9 +2,6 @@ import { BaseStage } from "./baseStage";
 // Let's import the utils helper
 import {Utils} from "../services/utils";
 export class Stage1 extends BaseStage {
-  activate(): void {
-    this.seedConfig.general.customLinks = [];
-  }
   proceed(): void {
     let message: string;
     if (!this.seedConfig?.general?.projectName) {
