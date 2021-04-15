@@ -17,4 +17,7 @@ export class Stage2 extends BaseStage {
           this.next();
         }
       }
+      previous(): void {
+          this.back();
+      }
 }
