@@ -1,7 +1,7 @@
 @import "styles/colors.scss";
 .appWrapper {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-template-rows: 76px 100fr 1fr;
   grid-template-areas:
     "logo header"
@@ -16,6 +16,8 @@
     // just for vertical alignment of the logo
     display: flex;
     padding-left: 24px;
+    margin-right: 50px;
+    cursor: pointer;
     img {
       margin-right: 10px;
     }
