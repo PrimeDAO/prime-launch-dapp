@@ -24,7 +24,7 @@
         input {
           width: 30em;
           height: 3em;
-          border-radius: 0.25em;
+          border-radius: 0.5em;
         }
       }
       .otherLinks {
@@ -42,7 +42,7 @@
         input {
           width: 20em;
           height: 3em;
-          border-radius: 0.25em;
+          border-radius: 0.5em;
           &::placeholder {
             font-size: 1.5em;
           }
@@ -65,6 +65,63 @@
         .button:first-of-type {
           // Background color matches container
           padding: 0.3em 1.12em;
+          background-color: $color-black-2;
+          border-color: $color-black-2;
+          color: $color-white;
+        }
+      }
+    }
+  }
+  &.stage2 {
+    .infoContainer {
+      background-color: $color-black-2;
+      padding: 2em;
+      width: 100%;
+      border-radius: 15px;
+      .title {
+        font-size: 1.5rem;
+      }
+      label {
+        display: block;
+        padding-bottom: 0.5em;
+        // TODO: Make font weightier
+        font-weight: bolder;
+      }
+      .subtext {
+        margin-bottom: 2em;
+      }
+      .infoInput {
+        margin-bottom: 2em;
+        textarea {
+          resize: none;
+          width: 25em;
+          height: 4em;
+          border-radius: 5px;
+        }
+      }
+      .otherLinks {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: 2em;
+        > div:first-of-type {
+          margin-right: 2em;
+        }
+      }
+      .buttonContainer {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 4em;
+        .button {
+          padding: 6px 18px;
+          background-color: $color-white;
+          color: $color-black;
+          // Put space between them
+          margin-right: 2em;
+        }
+        .button:first-of-type {
+          // Background color matches container
+          padding: 6px 1px;
           background-color: $color-black-2;
           border-color: $color-black-2;
           color: $color-white;

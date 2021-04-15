@@ -1,9 +1,41 @@
 <template>
-  <div class="page animated-page stageContainer stage2 au-animate ">
-    Stage ${stageNumber}
-    <a href="#" click.delegate="cancel()">Cancel</a>
-    <a href="#" click.delegate="next()">Next</a>
-    <a href="#" click.delegate="back()">Back</a>
+  <div class="page animated-page stageContainer stage2 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading3 title">Project Details</div>
+      <div class="subtext">Description of your project and team.</div>
+      <div>
+        <div class="infoInput">
+          <label for="projSummary"> Project Summary</label>
+          <textarea
+            id="projSummary"
+            value.bind="seedConfig.projectDetails.summary"
+            maxlength="150"
+          ></textarea>
+        </div>
+        <div class="infoInput">
+          <label for="valueProp"> Value Proposition</label>
+          <label for="valueProp" value.from-view="valueProp"> </label>
+          <textarea
+            id="valueProp"
+            value.bind="seedConfig.projectDetails.proposition"
+            maxlength="150"
+          >
+          </textarea>
+        </div>
+        <div class="infoInput">
+          <label for="teamDesc"> Project Category</label>
+          <textarea
+            id="teamDesc"
+            value.bind="seedConfig.projectDetails.category"
+            maxlength="150"
+          >
+          </textarea>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="button button1" click.delegate="back()">PREVIOUS</div>
+        <div class="button button1" click.delegate="proceed()">NEXT</div>
+      </div>
+    </div>
   </div>
-
 </template>
