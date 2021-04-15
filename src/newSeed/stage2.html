@@ -9,14 +9,14 @@
             <label for="projSummary"> Project Summary</label>
             <label
               for="projSummary"
-              value.from-view="seedConfig.projectDetails.summary"
+              value.from-view="seedConfig.stage2.summary"
             >
-              ${seedConfig.projectDetails.summary.length || 0}/150
+              ${seedConfig.stage2.summary.length || 0}/150
             </label>
           </div>
           <textarea
             id="projSummary"
-            value.bind="seedConfig.projectDetails.summary"
+            value.bind="seedConfig.stage2.summary"
             maxlength="150"
           ></textarea>
         </div>
@@ -25,14 +25,14 @@
             <label for="valueProp"> Value Proposition</label>
             <label
               for="valueProp"
-              value.from-view="seedConfig.projectDetails.proposition"
+              value.from-view="seedConfig.stage2.proposition"
             >
-              ${seedConfig.projectDetails.proposition.length || 0}/150
+              ${seedConfig.stage2.proposition.length || 0}/150
             </label>
           </div>
           <textarea
             id="valueProp"
-            value.bind="seedConfig.projectDetails.proposition"
+            value.bind="seedConfig.stage2.proposition"
             maxlength="150"
           >
           </textarea>
@@ -40,16 +40,13 @@
         <div class="infoInput">
           <div class="labelContainer">
             <label for="category"> Project Category</label>
-            <label
-              for="category"
-              value.from-view="seedConfig.projectDetails.category"
-            >
-              ${seedConfig.projectDetails.category.length || 0}/150
+            <label for="category" value.from-view="seedConfig.stage2.category">
+              ${seedConfig.stage2.category.length || 0}/150
             </label>
           </div>
           <textarea
             id="category"
-            value.bind="seedConfig.projectDetails.category"
+            value.bind="seedConfig.stage2.category"
             maxlength="150"
           >
           </textarea>
