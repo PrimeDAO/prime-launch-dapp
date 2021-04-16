@@ -6,13 +6,13 @@
     &.top,
     &.nomiss,
     &.launches {
-      padding-left: 4.5em;
-      padding-right: 4.5em;
+      margin-left: 4.5em;
+      margin-right: 4.5em;
       margin-bottom: 5.75em;
     }
 
     &.fairLaunch {
-      padding-right: 4.5em;
+      margin-right: 4.5em;
       margin-bottom: 5.75em;
     }
 
@@ -20,6 +20,7 @@
       width: 55%;
       .title {
         white-space: normal;
+        color: $color-light-purple;
       }
 
       > .subtitle {
@@ -54,6 +55,9 @@
     &.launches {
       > .title {
         margin-bottom: 24px;
+        background: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       > .launchesButton {
@@ -64,6 +68,15 @@
     &.nomiss {
       display: grid;
       grid-template-columns: auto auto;
+      background: linear-gradient(220.2deg, #8668fc 0%, #a258a7 100%);
+      height: 12em;
+      align-content: center;
+      padding-left: 4em;
+      padding-right: 4em;
+
+      .subtext {
+        color: $color-white;
+      }
 
       .emailColumn {
         .form {
@@ -72,6 +85,12 @@
           .emailInput {
             flex-grow: 2;
             margin-right: 10px;
+          }
+        }
+
+        .disclaimer {
+          a {
+            color: $color-white;
           }
         }
       }
