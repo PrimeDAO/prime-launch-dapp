@@ -1,9 +1,16 @@
+import { RouteConfig } from "aurelia-router";
 import { BaseStage } from "./baseStage";
 // Let's import the utils helper
 import {Utils} from "../services/utils";
 export class Stage1 extends BaseStage {
-  activate(): void {
+  activate(_params: unknown, routeConfig: RouteConfig): void {
+    super.activate(_params, routeConfig);
+
     this.seedConfig.general.customLinks = [];
+  }
+  // Add a link object to the link object arrays
+  addCustomLinks(): void {
+    this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
   }
   proceed(): void {
     let message: string;
