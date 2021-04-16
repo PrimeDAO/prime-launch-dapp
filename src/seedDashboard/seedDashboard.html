@@ -10,7 +10,7 @@
                 <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
               </div>
             </div>
-            <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+            <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
               pretium pretium tempor. Ut eget imperdiet neque. In volutpat
               ante semper diam molestie, et aliquam.</div>
           </div>
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="rightColumn">
-        <div class="topSection">
+        <div class="section topSection">
           <div class="tokenId">
             <div class="icon"><img src.to-view="seed.seedTokenInfo.icon"></img></div>
             <div class="name">${seed.seedTokenInfo.name}</div>
@@ -67,21 +67,31 @@
             <div class="perc">60%</div>
           </div>
         </div>
-        <div class="bottomSection">
+        <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class="target">$ 1.5M</div>
+          <div class=" value target">$ 1.5M</div>
           <div class="label maxLabel">MAX</div>
-          <div class="max">$ 2.5M</div>
+          <div class=" value max">$ 2.5M</div>
           <div class="label valuationLabel">VALUATION</div>
-          <div class="valuation">$ 18M</div>
+          <div class=" value valuation">$ 18M</div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
-          <div class="tokensleft">76%</div>
+          <div class=" value tokensleft">76%</div>
           <div class="label seedpriceLabel">SEED PRICE</div>
-          <div class="seedprice">$ 3.14</div>
+          <div class=" value seedprice">$ 3.14</div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
           </div>
-          <div class="tokenprice">1 KOL = 10 DAI</div>
+          <div class=" value tokenprice">1 KOL = 10 DAI</div>
+        </div>
+        <div class="section bottomSection">
+          <div class="title  heading heading3">About Kolektivo</div>
+          <div class="body subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
+          <div class="links">
+            <a repeat.for="link of links" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
+              <div class="icon ${iconClassForLinkType(link.name)}"></div>
+              <div class="name">${link.name}</div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
