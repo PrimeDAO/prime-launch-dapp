@@ -86,7 +86,7 @@
         <div class="section bottomSection">
           <div class="title  heading heading3">About Kolektivo</div>
           <div class="body subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-          <div class="links">
+          <div if.to-view="links.length" class="links">
             <a repeat.for="link of links" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
               <div class="icon ${iconClassForLinkType(link.name)}"></div>
               <div class="name">${link.name}</div>
