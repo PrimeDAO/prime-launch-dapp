@@ -69,11 +69,12 @@ export class SeedDashboard {
     ["discord", "fab fa-discord"],
     ["medium", "fab fa-medium-m"],
     ["github", "fab fa-github"],
-    ["website", "fa fa-external-link-alt"],
+    ["website", "fa fa-globe-americas"],
+    ["misc", "fa fa-external-link-alt"],
     ["pdf", "fas fa-file-pdf"],
   ]);
 
   iconClassForLinkType(type: string): string {
-    return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("website");
+    return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
   }
 }
