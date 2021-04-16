@@ -21,7 +21,9 @@ export class NewSeed {
        */
       this.stageState = (new Array<IStageState>(7));
       // Object.assign so every stage doesn't get the same object
-      this.stageState.fill(Object.assign({}, { verified: false }));
+      for (let i = 1; i < this.stageState.length; ++i) {
+        this.stageState[i] = { verified: false };
+      }
     }
   }
 
