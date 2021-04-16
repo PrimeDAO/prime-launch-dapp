@@ -265,9 +265,12 @@
           flex-wrap: wrap;
 
           a {
-            display: block;
             color: $subtext-color;
             margin-bottom: 1em;
+
+            &:hover {
+              text-decoration: none;
+            }
 
             .icon {
               text-align: center;
@@ -284,6 +287,9 @@
             .name {
               text-transform: capitalize;
               margin-right: 2em;
+              &:hover {
+                text-decoration: underline;
+              }
             }
           }
 
