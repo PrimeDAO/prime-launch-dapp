@@ -47,10 +47,11 @@
             font-size: 1.5em;
           }
         }
-        .addLink {
-          display: grid;
-          justify-content: center;
-        }
+      }
+      .addLink {
+        display: grid;
+        justify-content: center;
+        cursor: pointer;
       }
       .buttonContainer {
         display: flex;
