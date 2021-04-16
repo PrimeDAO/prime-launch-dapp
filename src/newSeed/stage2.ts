@@ -29,6 +29,7 @@ export class Stage2 extends BaseStage {
     } else {
       // For stage 1 write a verified true to stage 1
       this.stageState[1].verified = true;
+      console.log(this.stageState);
       this.next();
     }
   }

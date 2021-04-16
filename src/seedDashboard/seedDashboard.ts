@@ -50,4 +50,31 @@ export class SeedDashboard {
       this.loading = false;
     }
   }
+
+  links = [
+    { name: "twitter", url: "https://twitter.com" },
+    { name: "telegram", url: "https://telegram.org/" },
+    { name: "discord", url: "https://https://discord.com/" },
+    { name: "medium", url: "https://medium.com/" },
+    { name: "github", url: "https://github.com" },
+    { name: "daotalk", url: "https://daotalk.org/" },
+    { name: "website", url: "http://www.douglaskent.com" },
+    { name: "pdf", url: "http://www.africau.edu/images/default/sample.pdf" },
+    { name: "blob", url: "https://curvelabs.eu" },
+  ]
+
+  linkIcons = new Map<string, string>([
+    ["twitter", "fab fa-twitter"],
+    ["telegram", "fab fa-telegram-plane"],
+    ["discord", "fab fa-discord"],
+    ["medium", "fab fa-medium-m"],
+    ["github", "fab fa-github"],
+    ["website", "fa fa-globe-americas"],
+    ["misc", "fa fa-external-link-alt"],
+    ["pdf", "fas fa-file-pdf"],
+  ]);
+
+  iconClassForLinkType(type: string): string {
+    return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
+  }
 }
