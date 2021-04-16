@@ -49,8 +49,9 @@
         }
       }
       .addLink {
-        display: grid;
+        display: flex;
         justify-content: center;
+        flex-flow: row wrap;
         cursor: pointer;
       }
       .buttonContainer {

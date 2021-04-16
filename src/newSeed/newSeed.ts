@@ -21,6 +21,7 @@ export class NewSeed {
        */
       this.stageState = (new Array<IStageState>(7));
       this.stageState.fill({ verified: false });
+      console.log(this.stageState);
     }
   }
 

@@ -43,6 +43,8 @@ export class Stage1 extends BaseStage {
     if (message) {
       this.validationError(message);
     } else {
+      // For stage 1 write a verified true to stage 1
+      this.stageState[1].verified = true;
       this.next();
     }
   }

@@ -10,7 +10,11 @@
           click.delegate="setStage(stage.config.route)"
         >
           <div class="stagesNumber">
-            <circled-number number.bind="$index + 1"></circled-number>
+            <circled-number
+              number.bind="$index + 1"
+              check-mark.one-way="stageState[$index]['verified']"
+              index.bind="$index"
+            ></circled-number>
             <div>${stage.config.title}</div>
           </div>
           <div
