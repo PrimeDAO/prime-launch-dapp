@@ -23,7 +23,9 @@
           <input id="whitePaper" value.bind="seedConfig.general.whitepaper" />
         </div>
         <div class="infoInput">
-          <label for="gitLink">Github Link</label>
+          <label for="gitLink"
+            >Github Link<span class="optional">(optional)</span></label
+          >
           <input id="gitLink" value.bind="seedConfig.general.github" />
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
@@ -70,8 +72,10 @@
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="button button1" click.delegate="cancel()">CANCEL</div>
-        <div class="button button1" click.delegate="proceed()">NEXT</div>
+        <div class="stageButton" click.delegate="cancel()">CANCEL</div>
+        <div class="stageButton proceed" click.delegate="proceed()">
+          PROCEED
+        </div>
       </div>
     </div>
   </div>
