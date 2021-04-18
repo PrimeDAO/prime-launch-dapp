@@ -27,7 +27,7 @@
           <div class="help">
             <question-mark text="Check eligibility"></question-mark>
           </div>
-          <div class="subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+          <div class="subdescription subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
           <div class="doit"><button class="button1">CONNECT</button></div>
         </div>
         <div class="secton section2">
@@ -40,17 +40,23 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input></numeric-input> =
+              <numeric-input value.two-way="fundingTokenToPay"></numeric-input>
             </div>
-            <div class="units">
-              <div class="token">DAI</div>
-              <div class="subsection"></div>
+            <div class="units1">
+              <div class="container">
+                <div class="token">${seed.fundingTokenInfo.symbol}</div>
+                <div class="subsection subtext">Balance: 12.11</div>
+              </div>
             </div>
             <div class="equals">=</div>
-            <div class="input">
-              <numeric-input></numeric-input>
+            <div class="output">${seedTokenToReceive}</div>
+            <div class="units2">
+              <div class="container">
+                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="subsection subtext">$ 1629.04</div>
+              </div>
             </div>
-            <div class="units">DAI</div>
+            <div class="vestedMessage subtext">Tokens will be vested for x months with a cliff of x days</div>
           </div>
           <div class="doit"><button class="button1">SUBMIT</button></div>
         </div>
@@ -62,7 +68,26 @@
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
           </div>
-          <div class="form">KOL KOL</div>
+          <div class="form">
+            <div class="input">
+              <numeric-input value.two-way="seedTokenToPay"></numeric-input>
+            </div>
+            <div class="units1">
+              <div class="container">
+                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="subsection subtext">Claimable: 0</div>
+              </div>
+            </div>
+            <div class="equals">=</div>
+            <div class="output">${seedTokenToReceive}</div>
+            <div class="units2">
+              <div class="container">
+                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="subsection subtext">Locked</div>
+              </div>
+            </div>
+            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins</div>
+          </div>
           <div class="doit"><button class="button1">SUBMIT</button></div>
         </div>
       </div>

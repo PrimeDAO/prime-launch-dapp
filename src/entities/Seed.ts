@@ -17,24 +17,29 @@ export interface ISeedConfiguration {
 
 @autoinject
 export class Seed {
-  contract: any;
-  address: Address;
-  beneficiary: Address;
-  startTime: Date;
-  endTime: Date;
-  price: BigNumber;
-  target: BigNumber;
-  cap: BigNumber;
-  seedTokenAddress: Address;
-  fundingTokenAddress: Address;
-  whitelisted: boolean;
+  public contract: any;
+  public address: Address;
+  public beneficiary: Address;
+  public startTime: Date;
+  public endTime: Date;
+  public price: BigNumber;
+  public target: BigNumber;
+  public cap: BigNumber;
+  public whitelisted: boolean;
+
+  public seedTokenAddress: Address;
+  public seedTokenInfo: ITokenInfo;
+  public seedTokenContract: any;
+
+  public fundingTokenAddress: Address;
+  public fundingTokenInfo: ITokenInfo;
+  public fundingTokenContract: any;
 
   public initializing = true;
+
   private initializedPromise: Promise<void>;
-  private seedTokenInfo: ITokenInfo;
-  private fundingTokenInfo: ITokenInfo;
-  subscriptions = new DisposableCollection();
-  _now = new Date();
+  private subscriptions = new DisposableCollection();
+  private _now = new Date();
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -86,6 +91,9 @@ export class Seed {
 
             this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
             this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+            this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+            this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
             this.initializing = false;
             resolve();
