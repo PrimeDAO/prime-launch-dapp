@@ -7,6 +7,7 @@ import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class SeedDashboard {
@@ -14,6 +15,9 @@ export class SeedDashboard {
 
   seed: Seed;
   loading = true;
+  seedTokenToReceive = 1;
+  fundingTokenToPay: BigNumber;
+  seedTokenToPay: BigNumber;
 
   constructor(
     private eventAggregator: EventAggregator,

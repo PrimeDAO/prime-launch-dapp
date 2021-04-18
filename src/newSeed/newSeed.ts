@@ -20,7 +20,6 @@ export class NewSeed {
        * We have 6 stages.
        */
       this.stageState = (new Array<IStageState>(7));
-      // Object.assign so every stage doesn't get the same object
       for (let i = 1; i < this.stageState.length; ++i) {
         this.stageState[i] = { verified: false };
       }

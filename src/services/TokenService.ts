@@ -30,9 +30,9 @@ export interface ITokenInfo {
   id: string; // id on coingecko
   name: string; // token name,
   price: number;
-  priceChangePercentage_24h: number;
-  priceChangePercentage_7d: number;
-  priceChangePercentage_30d: number;
+  // priceChangePercentage_24h: number;
+  // priceChangePercentage_7d: number;
+  // priceChangePercentage_30d: number;
   symbol: string; // token symbol,
 }
 
@@ -127,9 +127,9 @@ export class TokenService {
               .then((response) => {
                 tokenInfo.price = response.data.market_data.current_price.usd;
                 tokenInfo.icon = response.data.image.thumb;
-                tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
-                tokenInfo.priceChangePercentage_7d = response.data.market_data.price_change_percentage_7d ?? 0;
-                tokenInfo.priceChangePercentage_30d = response.data.market_data.price_change_percentage_30d ?? 0;
+                // tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
+                // tokenInfo.priceChangePercentage_7d = response.data.market_data.price_change_percentage_7d ?? 0;
+                // tokenInfo.priceChangePercentage_30d = response.data.market_data.price_change_percentage_30d ?? 0;
               })
               .catch((error) => {
                 this.consoleLogService.handleFailure(
