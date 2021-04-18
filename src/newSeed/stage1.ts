@@ -5,13 +5,15 @@ import {Utils} from "../services/utils";
 export class Stage1 extends BaseStage {
   activate(_params: unknown, routeConfig: RouteConfig): void {
     super.activate(_params, routeConfig);
-    // Add one object to the array if empty
-    if (this.seedConfig.general.customLinks.length < 1) {
-      this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
-    }
   }
   // Add a link object to the link object arrays
   addCustomLinks(index: number): void {
+    if (index === -1) {
+      // Skip check
+      // Create a new custom link object
+      this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
+      return;
+    }
     // Only add after filling the previous
     if (!this.seedConfig.general.customLinks[index]["media"]) {
       // Current input as not been filled out
@@ -24,6 +26,11 @@ export class Stage1 extends BaseStage {
     }
     // Create a new custom link object
     this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
+  }
+  // Delet a row in the custom links array
+  deleteCustomLinks(index:number): void {
+    // Remove the indexed link
+    this.seedConfig.general.customLinks.splice(index, 1);
   }
   proceed(): void {
     let message: string;
@@ -40,11 +47,14 @@ export class Stage1 extends BaseStage {
     } else if (!Utils.isValidUrl(this.seedConfig.general.github, false)) {
       message = "Please enter a valid url for Github Link";
     }
+    else if (this.seedConfig.general.customLinks.length > 0 && (!this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1]?.media || !this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1].url )) {
+      message = "Please enter a value for the Custom Link";
+    }
     if (message) {
       this.validationError(message);
     } else {
       // For stage 1 write a verified true to stage 1
-      this.stageState[1].verified = true;
+      this.stageState[this.stageNumber].verified = true;
       this.next();
     }
   }

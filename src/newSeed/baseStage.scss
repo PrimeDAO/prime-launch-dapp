@@ -47,12 +47,25 @@
             font-size: 1.5em;
           }
         }
+        .addLinkContainer {
+          display: flex;
+          align-items: flex-end;
+          flex-flow: column;
+          .deleteLink {
+            cursor: pointer;
+            justify-self: flex-end;
+          }
+          .addLink {
+            cursor: pointer;
+            padding-right: 1em;
+          }
+        }
       }
-      .addLink {
+      .addSingleLink {
+        cursor: pointer;
         display: flex;
         justify-content: center;
-        flex-flow: row wrap;
-        cursor: pointer;
+        margin-bottom: 2em;
       }
       .buttonContainer {
         display: flex;

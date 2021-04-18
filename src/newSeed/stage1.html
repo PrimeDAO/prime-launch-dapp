@@ -29,34 +29,49 @@
         <template repeat.for="link of seedConfig.general.customLinks">
           <div class="otherLinks">
             <div class="sMedia">
-              <label for="customLink">Custom Link </label>
+              <label for="$index">Custom Link </label>
               <input
-                id="customLink"
+                id="$index"
                 placeholder="E.g Twitter"
                 value.bind="seedConfig.general.customLinks[$index]['media']"
               />
             </div>
-            <div>
-              <label for="url">URL</label>
-              <input
-                id="url"
-                placeholder="https://"
-                value.bind="seedConfig.general.customLinks[$index]['url']"
-              />
-            </div>
-            <div
-              class="addLink"
-              click.delegate="addCustomLinks($index)"
-              if.bind="$index == seedConfig.general.customLinks.length - 1"
-            >
-              <a>+ Add link</a>
+            <div class="addLinkContainer">
+              <div>
+                <label for="url`${index}`">URL</label>
+                <input
+                  id="$index"
+                  placeholder="https://"
+                  value.bind="seedConfig.general.customLinks[$index]['url']"
+                />
+                <span
+                  class="deleteLink"
+                  title="Delete this row"
+                  click.delegate="deleteCustomLinks($index)"
+                  ><i class="fas fa-trash"></i
+                ></span>
+              </div>
+              <div
+                class="addLink"
+                click.delegate="addCustomLinks($index)"
+                if.bind="$index == seedConfig.general.customLinks.length - 1"
+              >
+                <a>+ Add link</a>
+              </div>
             </div>
           </div>
         </template>
+        <div
+          if.bind="seedConfig.general.customLinks.length <= 0"
+          class="addSingleLink"
+          click.delegate="addCustomLinks(-1)"
+        >
+          <a>+ Add link</a>
+        </div>
       </div>
       <div class="buttonContainer">
         <div class="button button1" click.delegate="cancel()">CANCEL</div>
-        <div class="button button1" click.delegate="proceed()">PROCEED</div>
+        <div class="button button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

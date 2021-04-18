@@ -5,7 +5,7 @@ export interface IGeneral {
   category: string,
   whitepaper: string,
   github: string,
-  customLinks: Array<{ media: string, url: string }>
+  customLinks: Array<{media: string, url: string }>
 }
 
 export interface IProjectDetails {

@@ -12,8 +12,7 @@
           <div class="stagesNumber">
             <circled-number
               number.bind="$index + 1"
-              check-mark.one-way="stageState[$index]['verified']"
-              index.bind="$index"
+              check-mark.to-view="stageState[$index + 1].verified"
             ></circled-number>
             <div>${stage.config.title}</div>
           </div>
