@@ -45,12 +45,12 @@
       // Make these divs have paddings to align contents
       // TODO:
       padding-left: 1em;
-      padding-right: 40px;
+      padding-right: 1.5em;
       font-size: 20px;
     }
     .topSection {
-      padding-top: 10px;
-      padding-bottom: 40px;
+      padding-top: 0.4em;
+      padding-bottom: 1.5em;
       line-height: 1.3em;
     }
     .buttons {
@@ -62,9 +62,9 @@
     }
     .buttonContainer {
       text-align: center;
-      padding: 13px 28px;
+      padding: 1em 2em;
       font-size: 0.7em;
-      border-radius: 20px;
+      border-radius: 2em;
       cursor: pointer;
     }
     a {
