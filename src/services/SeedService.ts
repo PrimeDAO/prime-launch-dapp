@@ -67,7 +67,8 @@ export class SeedService {
     private container: Container,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.loadContracts();
+      await this.loadContracts();
+      this.getSeeds();
     }));
     /**
      * otherwise singleton is the default

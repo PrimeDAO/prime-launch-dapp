@@ -1,3 +1,5 @@
+import { DisposableCollection } from "./../services/DisposableCollection";
+import { EthereumService } from "./../services/EthereumService";
 import { autoinject } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import { bindable } from "aurelia-typed-observable-plugin";
@@ -13,23 +15,35 @@ import { BigNumber } from "ethers";
 export class SeedDashboard {
   @bindable address: Address;
 
+  subscriptions: DisposableCollection = new DisposableCollection();
+
   seed: Seed;
   loading = true;
   seedTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
   seedTokenToPay: BigNumber;
+  fundingTokenBalance: BigNumber;
 
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
-  ) {}
+    private ethereumService: EthereumService,
+  ) {
+    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
+      this.refresh();
+    }));
+  }
 
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
   }
 
-  async attached(): Promise<void> {
+  attached(): Promise<void> {
+    return this.refresh();
+  }
+
+  async refresh(): Promise<void> {
     try {
       let waiting = false;
       if (this.seedService.initializing) {
@@ -46,12 +60,19 @@ export class SeedDashboard {
         }
         await this.seed.ensureInitialized();
       }
+      await this.hydrateUserData();
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
     finally {
       this.eventAggregator.publish("seeds.loading", false);
       this.loading = false;
+    }
+  }
+
+  async hydrateUserData(): Promise<void> {
+    if (this.ethereumService.defaultAccountAddress) {
+      this.fundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
     }
   }
 
@@ -80,5 +101,9 @@ export class SeedDashboard {
 
   iconClassForLinkType(type: string): string {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
+  }
+
+  connect(): void {
+    this.ethereumService.ensureConnected();
   }
 }

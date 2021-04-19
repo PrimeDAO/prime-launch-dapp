@@ -63,6 +63,11 @@ export class Seed {
     }));
   }
 
+  /**
+   * note this is called when the contracts change
+   * @param config
+   * @returns
+   */
   public async initialize(config: ISeedConfiguration): Promise<Seed> {
     Object.assign(this, config);
 
