@@ -25,19 +25,6 @@
     }
     .infoInput {
       margin-bottom: 2em;
-      label {
-        display: block;
-        font-size: 1.1em;
-        line-height: 2em;
-        color: $color-white;
-      }
-      input {
-        width: 26em;
-        height: 2.7em;
-        background-color: #1b1722;
-        border: 1px solid $color-darkpink-2;
-        border-radius: 0.6em;
-      }
     }
     .buttonContainer {
       display: flex;
@@ -50,12 +37,31 @@
         font-size: 1em;
         line-height: 1em;
         letter-spacing: 0.04em;
+        display: grid;
+        justify-content: center;
+        align-items: center;
       }
       .stageButton.proceed {
         background-color: $color-white;
         border-radius: 2.2em;
         color: $color-black;
       }
+    }
+    label {
+      display: block;
+      font-size: 1.1em;
+      line-height: 2em;
+      color: $color-white;
+    }
+    input {
+      width: 26em;
+      height: 2.7em;
+      background-color: #1b1722;
+      border: 1px solid $color-darkpink-2;
+      border-radius: 0.6em;
+      font-size: 1.1em;
+      color: #989798;
+      font-weight: 200;
     }
   }
 }
@@ -76,24 +82,17 @@
         gap: 1em;
         margin-bottom: 2em;
         > div:first-of-type {
-          margin-right: 2em;
           input {
-            width: 15em;
-            height: 3em;
-          }
-        }
-        input {
-          width: 20em;
-          height: 3em;
-          border-radius: 0.5em;
-          &::placeholder {
-            font-size: 1.5em;
+            width: 11em;
           }
         }
         .addLinkContainer {
           display: flex;
           align-items: flex-end;
           flex-flow: column;
+          input {
+            width: 21em;
+          }
           .deleteLink {
             cursor: pointer;
             justify-self: flex-end;
@@ -118,15 +117,21 @@
       .infoInput {
         textarea {
           resize: none;
-          width: 30em;
-          height: 4em;
-          border-radius: 0.3em;
+          width: 22em;
+          height: 4.5em;
+          border-radius: 0.625em;
+          background-color: #1b1722;
+          font-weight: 200;
+          color: #989798;
         }
         .labelContainer {
           width: 25em;
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
+          font-size: 0.9em;
+          font-weight: 200;
+          color: #989798;
         }
       }
       .buttonContainer {

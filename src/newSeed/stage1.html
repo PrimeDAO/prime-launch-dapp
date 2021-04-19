@@ -43,14 +43,15 @@
                 <label for="url`${index}`">URL</label>
                 <input
                   id="$index"
-                  placeholder="https://"
+                  placeholder="https://..."
                   value.bind="seedConfig.general.customLinks[$index]['url']"
                 />
                 <span
                   class="deleteLink"
                   title="Delete this row"
                   click.delegate="deleteCustomLinks($index)"
-                  ><i class="fas fa-trash"></i
+                >
+                  <i class="fas fa-trash"></i
                 ></span>
               </div>
               <div
@@ -68,7 +69,7 @@
           class="addSingleLink"
           click.delegate="addCustomLinks(-1)"
         >
-          <a>+ Add link</a>
+          <a>+ Add Social Media link</a>
         </div>
       </div>
       <div class="buttonContainer">
