@@ -1,39 +1,50 @@
 @import "styles/colors.scss";
 @import "styles/styles";
 .page.launch {
-  display: grid;
-  grid-template-columns: 1fr minmax(352px, 400px) 0.2fr minmax(352px, 400px) 1fr;
-  grid-template-rows: auto 350px;
-  grid-template-areas:
-    "banner banner banner banner banner"
-    ". launch-box1 . launch-box2 .";
-  justify-items: center;
-  row-gap: 30px;
+  font-size: 1.7rem;
+  display: flex;
+  flex-flow: column wrap;
   .banner {
     grid-area: banner;
     text-align: center;
-    // TODO: Customize for mobile
+    padding-top: 3em;
+    padding-bottom: 3em;
+    .heading {
+      font-weight: bolder;
+      text-align: center;
+      color: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
+    }
   }
-  .launch-box1 {
-    grid-area: launch-box1;
+  .subtext {
+    font-family: Inter;
+    font-size: 0.85em;
+    color: $muted-text-color;
   }
-
-  .launch-box2 {
-    grid-area: launch-box2;
+  .launchBoxes {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    gap: 1em;
+    justify-content: center;
+    .title {
+      font-size: 1.4em;
+      line-height: 2.7em;
+      font-weight: bolder;
+    }
   }
   // ** For styling the container holding buttons
   .launch-box-container {
-    background-color: $color-black-2;
-    border-radius: 15px;
-    // Don't overflow width
-    // Try to make divs same height
-    height: 100%;
+    background-color: $color-black-3;
+    border-radius: 1em;
+    border: 1px solid $color-darkpink-2;
+    width: 20em;
+    height: 15em;
     display: grid;
     grid-template-rows: 2fr 1fr;
     > div {
       // Make these divs have paddings to align contents
       // TODO:
-      padding-left: 20px;
+      padding-left: 1em;
       padding-right: 40px;
       font-size: 20px;
     }
@@ -49,40 +60,36 @@
       align-items: center;
       justify-content: space-between;
     }
-    // .buttonContainer {
-    //   // TODO: Need params from figma and adjust global styles
-    //   //   @extend .button1;
-    //   text-align: center;
-    //   padding: 13px 28px;
-    //   background-color: #2e5aff;
-    //   font-size: 0.7em;
-    //   border-radius: 20px;
-    //   // TODO: Colors need to be updated in global style
-    //   &:hover {
-    //     cursor: pointer;
-    //   }
-    // }
+    .buttonContainer {
+      text-align: center;
+      padding: 13px 28px;
+      font-size: 0.7em;
+      border-radius: 20px;
+      cursor: pointer;
+    }
     a {
-      font-size: 0.8em;
-      text-decoration: underline;
-      text-decoration-color: #2e5aff;
-      text-decoration-thickness: 0.2em;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: Inter;
+      color: $color-white;
     }
     & .container-footer {
-      background-color: $color-grey-6;
-      border-bottom-right-radius: 15px;
-      border-bottom-left-radius: 15px;
+      background-color: $color-darkpink-2;
+      border-bottom-right-radius: 1em;
+      border-bottom-left-radius: 1em;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
-      padding-top: 30px;
-      padding-bottom: 30px;
-      font-size: 0.9em;
+      padding-top: 1.25em;
+      padding-bottom: 1.25em;
       & div {
-        @extend .subtext;
-        padding-left: 10px;
-        padding-right: 10px;
+        font-size: 0.7em;
+        font-weight: 600;
+        font-family: Inter;
+        color: $color-white;
+        padding-left: 0.4em;
+        padding-right: 0.4em;
       }
     }
   }
