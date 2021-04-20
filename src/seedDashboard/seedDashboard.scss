@@ -25,6 +25,7 @@
             .title {
               margin-right: 1em;
               margin-bottom: 0.5em;
+              font-size: 2em;
             }
 
             .timeLeft {
@@ -77,7 +78,7 @@
         }
 
         .form {
-          padding-left: 1.5em;
+          padding-left: 1em;
           padding-right: 1em;
 
           display: grid;
@@ -94,7 +95,7 @@
           .units1,
           .units2,
           .output {
-            font-size: 1.4em;
+            font-size: 1.1em;
             // width: 3.3em;
             height: 100%;
             border: 1px solid #403453;
@@ -105,7 +106,7 @@
           .input input {
             padding: 0;
             font-size: 1.4rem;
-            width: 112px;
+            width: 103px;
             text-align: center;
           }
 
@@ -116,7 +117,7 @@
             border-right-width: 0;
             display: flex;
             align-items: center;
-            width: 136px;
+            width: 120px;
             justify-content: center;
             padding: 4px 0px;
           }
@@ -125,7 +126,7 @@
           .units2 {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            padding: 4px 20px;
+            padding: 4px 16px;
             display: flex;
             align-items: center;
 
