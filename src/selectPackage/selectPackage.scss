@@ -4,7 +4,6 @@
   display: grid;
   grid-template-rows: 1fr 3fr;
   justify-content: center;
-  // TODO: em or px
   gap: 30px;
 
   .banner {
@@ -14,21 +13,16 @@
   .packages {
     display: grid;
     grid-template-columns: repeat(3, minmax(300px, 350px));
-    // TODO: em or px
     gap: 20px;
   }
 
   .packageContainer {
     background-color: $color-black-2;
     border-radius: 15px;
-    // Don't overflow width
-    // Try to make divs same height
     height: 100%;
     display: grid;
     grid-template-rows: 2fr 1fr;
     > div {
-      // Make these divs have paddings to align contents
-      // TODO:
       padding-left: 20px;
       padding-right: 40px;
       font-size: 20px;

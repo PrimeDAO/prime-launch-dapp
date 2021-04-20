@@ -23,5 +23,9 @@ export class SeedConfig implements ISeedConfig {
   public general = {
     customLinks: [],
   } as IGeneral;
-  public projectDetails = {} as IProjectDetails;
+  public projectDetails = {
+    summary: "",
+    proposition: "",
+    category: "",
+  } as IProjectDetails;
 }
