@@ -26,8 +26,6 @@ export class SeedDashboard {
   userIsEligible: boolean;
   userCanClaimAmount: BigNumber;
   userCanClaim: boolean;
-  userVestingDuration: number;
-  userVestingCliff: number;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -80,9 +78,7 @@ export class SeedDashboard {
       this.fundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
       this.userIsEligible = await this.seed.userIsWhitelisted(this.ethereumService.defaultAccountAddress);
       this.userCanClaimAmount = await this.seed.userClaimableAmount(this.ethereumService.defaultAccountAddress);
-      this.userCanClaim = BigNumber.from(this.userCanClaimAmount).gt(0);
-      this.userVestingDuration = await this.seed.vestingDuration;
-      this.userVestingCliff = await this.seed.vestingCliff;
+      this.userCanClaim = BigNumber.from(this.userCanClaimAmount).gt(0) && this.seed.minimumReached;
     }
   }
 

@@ -28,6 +28,7 @@ export class Seed {
   public whitelisted: boolean;
   public vestingDuration: number;
   public vestingCliff: number;
+  public minimumReached: boolean;
 
   public seedTokenAddress: Address;
   public seedTokenInfo: ITokenInfo;
@@ -97,6 +98,7 @@ export class Seed {
             this.fundingTokenAddress = await this.contract.fundingToken();
             this.vestingDuration = await this.contract.vestingDuration();
             this.vestingCliff = await this.contract.vestingCliff();
+            this.minimumReached = await this.contract.minimumReached();
 
             this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
             this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
