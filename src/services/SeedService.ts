@@ -5,7 +5,6 @@ import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { DisposableCollection } from "services/DisposableCollection";
 
 // export interface ISeed {
 //   address: Address;
@@ -53,7 +52,6 @@ export class SeedService {
   }
   public initializing = true;
   private initializedPromise: Promise<void>;
-  private subscriptions: DisposableCollection = new DisposableCollection();
   private seedFactory: any;
   /**
    * when the factory was created
@@ -66,22 +64,20 @@ export class SeedService {
     private eventAggregator: EventAggregator,
     private container: Container,
   ) {
-    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      await this.loadContracts();
-      this.getSeeds();
-    }));
     /**
      * otherwise singleton is the default
      */
     this.container.registerTransient(Seed);
   }
 
-  private async loadContracts(): Promise<void> {
-    this.seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
-  }
-
   public async initialize(): Promise<void> {
-    await this.loadContracts();
+    /**
+     * don't need to reload the seedfactory on account change because we never send txts to it.
+     */
+    this.seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    /**
+     * seeds will take care of themselves on account changes
+     */
     return this.getSeeds();
   }
 
@@ -107,9 +103,11 @@ export class SeedService {
                   /**
                      * TODO: This should also pull the full seed configuration from whereever we are storing it
                      */
+                  console.log("createSeedFromConfig");
                   await this.createSeedFromConfig(event)
                     .then((seed) => { seedsMap.set(seed.address, seed); } );
                 }
+                console.log("seeds");
                 this.seeds = seedsMap;
                 this.initializing = false;
                 resolve();

@@ -23,9 +23,6 @@ export class SeedDashboard {
   fundingTokenToPay: BigNumber;
   seedTokenToPay: BigNumber;
   fundingTokenBalance: BigNumber;
-  userIsEligible: boolean;
-  userCanClaimAmount: BigNumber;
-  userCanClaim: boolean;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -33,20 +30,22 @@ export class SeedDashboard {
     private ethereumService: EthereumService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.refresh();
+      this.hydrateUserData();
     }));
   }
 
+  @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
+  get userCanClaim(): boolean { return this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
   }
 
   attached(): Promise<void> {
-    return this.refresh();
+    return this.load();
   }
 
-  async refresh(): Promise<void> {
+  async load(): Promise<void> {
     try {
       let waiting = false;
       if (this.seedService.initializing) {
@@ -76,9 +75,6 @@ export class SeedDashboard {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.fundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-      this.userIsEligible = await this.seed.userIsWhitelisted(this.ethereumService.defaultAccountAddress);
-      this.userCanClaimAmount = await this.seed.userClaimableAmount(this.ethereumService.defaultAccountAddress);
-      this.userCanClaim = BigNumber.from(this.userCanClaimAmount).gt(0) && this.seed.minimumReached;
     }
   }
 

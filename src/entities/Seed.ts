@@ -3,7 +3,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address } from "services/EthereumService";
+import { Address, EthereumService } from "services/EthereumService";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
@@ -38,6 +38,10 @@ export class Seed {
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
 
+  public userIsWhitelisted: boolean;
+  public userClaimableAmount: BigNumber;
+  public userCanClaim: boolean;
+
   public initializing = true;
 
   private initializedPromise: Promise<void>;
@@ -60,9 +64,14 @@ export class Seed {
     private eventAggregator: EventAggregator,
     private dateService: DateService,
     private tokenService: TokenService,
+    private ethereumService: EthereumService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: {now: Date}) => {
       this._now = state.now;
+    }));
+
+    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
+      await this.loadContracts().then(() => { this.hydrateUser(); });
     }));
   }
 
@@ -74,14 +83,26 @@ export class Seed {
   public async initialize(config: ISeedConfiguration): Promise<Seed> {
     Object.assign(this, config);
 
-    this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
 
+    await this.loadContracts();
+    /**
+     * no, intentionally don't await
+     */
     this.hydrate();
 
     return this;
   }
 
+  private async loadContracts(): Promise<void> {
+    this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
+    if (this.seedTokenAddress) {
+      this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+    }
+  }
+
   private async hydrate(): Promise<void> {
+    this.initializing = true;
     return this.initializedPromise = new Promise(
       // eslint-disable-next-line no-async-promise-executor
       async (resolve: (value: void | PromiseLike<void>) => void,
@@ -106,6 +127,8 @@ export class Seed {
             this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
             this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
+            await this.hydrateUser();
+
             this.initializing = false;
             resolve();
           }
@@ -123,15 +146,13 @@ export class Seed {
     return this.initializedPromise;
   }
 
-  public userIsWhitelisted(account: Address): Promise<boolean> {
-    return !this.whitelisted || this.contract.checkWhitelisted(account);
-  }
+  private async hydrateUser(): Promise<void> {
+    const account = this.ethereumService.defaultAccountAddress;
 
-  public async userClaimableAmount(account: Address): Promise<BigNumber> {
-    return (await this.contract.calculateClaim(account))[1];
-  }
-
-  public async userCanClaim(account: Address): Promise<boolean> {
-    return BigNumber.from((await this.userClaimableAmount(account))).gt(0);
+    if (account) {
+      this.userIsWhitelisted = !this.whitelisted || this.contract.checkWhitelisted(account);
+      this.userClaimableAmount = (await this.contract.calculateClaim(account))[1];
+      this.userCanClaim = this.userClaimableAmount.gt(0);
+    }
   }
 }
