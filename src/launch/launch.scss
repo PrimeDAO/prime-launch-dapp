@@ -10,9 +10,13 @@
     padding-top: 3em;
     padding-bottom: 3em;
     .heading {
+      font-family: Aeonik;
       font-weight: bolder;
       text-align: center;
-      color: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
+      background: linear-gradient(200deg, #ff497a, #a258a7 85%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
   .subtext {
@@ -27,9 +31,8 @@
     gap: 1em;
     justify-content: center;
     .title {
-      font-size: 1.4em;
+      font-size: 1.5em;
       line-height: 2.7em;
-      font-weight: bolder;
     }
   }
   // ** For styling the container holding buttons
@@ -37,7 +40,7 @@
     background-color: $color-black-3;
     border-radius: 1em;
     border: 1px solid $color-darkpink-2;
-    width: 20em;
+    width: 18em;
     height: 15em;
     display: grid;
     grid-template-rows: 2fr 1fr;

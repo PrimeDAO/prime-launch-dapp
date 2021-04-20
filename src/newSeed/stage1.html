@@ -23,9 +23,7 @@
           <input id="whitePaper" value.bind="seedConfig.general.whitepaper" />
         </div>
         <div class="infoInput">
-          <label for="gitLink"
-            >Github Link<span class="optional">(optional)</span></label
-          >
+          <label for="gitLink">Github Link</label>
           <input id="gitLink" value.bind="seedConfig.general.github" />
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
@@ -51,16 +49,16 @@
                   title="Delete this row"
                   click.delegate="deleteCustomLinks($index)"
                 >
-                  <i class="fas fa-trash"></i>
+                  <i class="far fa-trash-alt"></i>
                 </span>
               </div>
-              <div
-                class="addLink"
-                click.delegate="addCustomLinks($index)"
-                if.bind="$index == seedConfig.general.customLinks.length - 1"
-              >
-                <a>+ Add link</a>
-              </div>
+            </div>
+            <div
+              class="addLink"
+              click.delegate="addCustomLinks($index)"
+              if.bind="$index == seedConfig.general.customLinks.length - 1"
+            >
+              <a>+ Add link</a>
             </div>
           </div>
         </template>
@@ -74,9 +72,7 @@
       </div>
       <div class="buttonContainer">
         <div class="stageButton" click.delegate="cancel()">CANCEL</div>
-        <div class="stageButton proceed" click.delegate="proceed()">
-          PROCEED
-        </div>
+        <div class="stageButton proceed" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

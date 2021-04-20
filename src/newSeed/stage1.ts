@@ -14,16 +14,6 @@ export class Stage1 extends BaseStage {
       this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
       return;
     }
-    // Only add after filling the previous
-    if (!this.seedConfig.general.customLinks[index]["media"]) {
-      // Current input as not been filled out
-      this.validationError("Please enter a value for Custom Link");
-      return;
-    } else if (!Utils.isValidUrl(this.seedConfig.general.customLinks[index]["url"], false)) {
-      // Current input as not been filled out
-      this.validationError("Please enter a valid url for URL");
-      return;
-    }
     // Create a new custom link object
     this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
   }
@@ -50,6 +40,18 @@ export class Stage1 extends BaseStage {
     else if (this.seedConfig.general.customLinks.length > 0 && (!this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1]?.media || !this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1].url )) {
       message = "Please enter a value for the Custom Link";
     }
+    // Validate the link
+    this.seedConfig.general.customLinks.forEach((link: {media:string, url:string}) => {
+      if (!link.media) {
+        // Current input as not been filled out
+        message = "Please enter a value for Custom Link";
+        return;
+      } else if (!Utils.isValidUrl(link.url, false)) {
+        // Current input as not been filled out
+        message = `Please enter a valid url for ${link.media}`;
+        return;
+      }
+    });
     if (message) {
       this.validationError(message);
     } else {

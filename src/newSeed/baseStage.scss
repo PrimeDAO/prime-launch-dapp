@@ -4,7 +4,6 @@
 @mixin stageTheme {
   * {
     font-size: 1rem;
-    font-family: inter;
   }
   .infoContainer {
     background-color: $color-black-3;
@@ -107,13 +106,14 @@
           .addLink {
             cursor: pointer;
             padding-right: 1em;
+            align-self: flex-start;
           }
         }
       }
       .addSingleLink {
         cursor: pointer;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         margin-bottom: 2em;
       }
     }
