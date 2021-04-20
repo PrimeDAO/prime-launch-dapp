@@ -10,13 +10,19 @@
           click.delegate="setStage(stage.config.route)"
         >
           <div class="stagesNumber">
-            <circled-number number.bind="$index + 1"></circled-number>
+            <circled-number
+              number.bind="$index + 1"
+              check-mark.to-view="stageState[$index + 1].verified"
+              active.bind="stage.isActive"
+            ></circled-number>
             <div>${stage.config.title}</div>
           </div>
           <div
             if.bind="$index + 2 <= router.navigation.length"
             class="timeLine"
-          ></div>
+          >
+            <div></div>
+          </div>
         </div>
       </template>
     </div>
