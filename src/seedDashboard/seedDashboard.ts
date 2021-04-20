@@ -1,6 +1,6 @@
 import { DisposableCollection } from "./../services/DisposableCollection";
 import { EthereumService } from "./../services/EthereumService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { Address } from "services/EthereumService";
@@ -23,6 +23,11 @@ export class SeedDashboard {
   fundingTokenToPay: BigNumber;
   seedTokenToPay: BigNumber;
   fundingTokenBalance: BigNumber;
+  userIsEligible: boolean;
+  userCanClaimAmount: BigNumber;
+  userCanClaim: boolean;
+  userVestingDuration: number;
+  userVestingCliff: number;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -73,6 +78,11 @@ export class SeedDashboard {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.fundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
+      this.userIsEligible = await this.seed.userIsWhitelisted(this.ethereumService.defaultAccountAddress);
+      this.userCanClaimAmount = await this.seed.userClaimableAmount(this.ethereumService.defaultAccountAddress);
+      this.userCanClaim = BigNumber.from(this.userCanClaimAmount).gt(0);
+      this.userVestingDuration = await this.seed.vestingDuration;
+      this.userVestingCliff = await this.seed.vestingCliff;
     }
   }
 
@@ -105,5 +115,14 @@ export class SeedDashboard {
 
   connect(): void {
     this.ethereumService.ensureConnected();
+  }
+
+  @computedFrom("ethereumService.defaultAccountAddress")
+  get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
+
+  claim(): void {
+    if (this.userCanClaim) {
+
+    }
   }
 }

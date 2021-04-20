@@ -26,6 +26,8 @@ export class Seed {
   public target: BigNumber;
   public cap: BigNumber;
   public whitelisted: boolean;
+  public vestingDuration: number;
+  public vestingCliff: number;
 
   public seedTokenAddress: Address;
   public seedTokenInfo: ITokenInfo;
@@ -93,6 +95,8 @@ export class Seed {
             this.seedTokenAddress = await this.contract.seedToken();
             this.whitelisted = await this.contract.isWhitelisted();
             this.fundingTokenAddress = await this.contract.fundingToken();
+            this.vestingDuration = await this.contract.vestingDuration();
+            this.vestingCliff = await this.contract.vestingCliff();
 
             this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
             this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
@@ -115,5 +119,17 @@ export class Seed {
 
   public ensureInitialized(): Promise<void> {
     return this.initializedPromise;
+  }
+
+  public userIsWhitelisted(account: Address): Promise<boolean> {
+    return !this.whitelisted || this.contract.checkWhitelisted(account);
+  }
+
+  public async userClaimableAmount(account: Address): Promise<BigNumber> {
+    return (await this.contract.calculateClaim(account))[1];
+  }
+
+  public async userCanClaim(account: Address): Promise<boolean> {
+    return BigNumber.from((await this.userClaimableAmount(account))).gt(0);
   }
 }

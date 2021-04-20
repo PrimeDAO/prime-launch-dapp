@@ -199,28 +199,36 @@
             width: 120px;
             padding-left: 1.2em;
             padding-right: 1.2em;
+
+            &.hide {
+              // reserve the space
+              color: $color-black-3;
+              background-color: $color-black-3;
+              border-color: $color-black-3;
+              cursor: unset;
+            }
           }
         }
       }
 
       .section1 {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: 1fr auto;
         grid-template-rows: auto;
         grid-template-areas:
-          "number description help"
-          "number subtext doit";
+          "description help"
+          "subtext doit";
       }
 
       .section2,
       .section3 {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: 1fr auto;
         grid-template-rows: auto;
         grid-template-areas:
-          "number description help"
-          "number form form"
-          "doit doit doit";
+          "description help"
+          "form form"
+          "doit doit";
       }
     }
 
