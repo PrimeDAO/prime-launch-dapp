@@ -41,11 +41,9 @@ export class Stage1 extends BaseStage {
       if (!link.media) {
         // Current input as not been filled out
         message = "Please enter a value for Custom Link";
-        return;
       } else if (!Utils.isValidUrl(link.url, false)) {
         // Current input as not been filled out
         message = `Please enter a valid url for ${link.media}`;
-        return;
       }
     });
     if (message) {
