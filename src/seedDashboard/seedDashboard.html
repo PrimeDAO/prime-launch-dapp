@@ -19,21 +19,21 @@
             <div class="timeLeft">16:34hr</div>
           </div>
         </div>
-        <div class="secton section1">
-          <div class="number">
+        <div if.to-view="!connected" class="secton section1">
+          <!-- <div class="number">
             <circled-number number.one-time="1"></circled-number>
-          </div>
+          </div> -->
           <div class="description">Check eligibility</div>
           <div class="help">
             <question-mark text="Check eligibility"></question-mark>
           </div>
-          <div class="subdescription subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-          <div class="doit"><button class="button1">CONNECT</button></div>
+          <div class="subdescription subtext">Connect your wallet to contribute and claim rewards.</div>
+          <div class="doit"><button class="button1" click.delegate="connect()">CONNECT</button></div>
         </div>
-        <div class="secton section2">
-          <div class="number">
+        <div if.to-view="connected && userIsEligible" class="secton section2">
+          <!-- <div class="number">
             <circled-number number.one-time="2"></circled-number>
-          </div>
+          </div> -->
           <div class="description">Contribute</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
@@ -45,7 +45,13 @@
             <div class="units1">
               <div class="container">
                 <div class="token">${seed.fundingTokenInfo.symbol}</div>
-                <div class="subsection subtext">Balance: 12.11</div>
+                <div class="subsection subtext">Balance: <formatted-number
+                    value.to-view="fundingTokenBalance | ethwei"
+                    average="false"
+                    mantissa="2"
+                    thousands-separated>
+                  </formatted-number>
+                </div>
               </div>
             </div>
             <div class="equals">=</div>
@@ -56,14 +62,14 @@
                 <div class="subsection subtext">$ 1629.04</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Tokens will be vested for x months with a cliff of x days</div>
+            <div class="vestedMessage subtext">Tokens will be vested for ${seed.vestingDuration} days and a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="button1">SUBMIT</button></div>
+          <div class="doit"><button class="submitButton button1">SUBMIT</button></div>
         </div>
-        <div class="secton section3">
-          <div class="number">
+        <div if.to-view="connected && userIsEligible" class="secton section3">
+          <!-- <div class="number">
             <circled-number number.one-time="3"></circled-number>
-          </div>
+          </div> -->
           <div class="description">Claim tokens</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
@@ -75,7 +81,12 @@
             <div class="units1">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">Claimable: 0</div>
+                <div class="subsection subtext">Claimable: <formatted-number
+                    value.to-view="userCanClaimAmount | ethwei"
+                    average="false"
+                    mantissa="2"
+                    thousands-separated>
+                </div>
               </div>
             </div>
             <div class="equals">=</div>
@@ -86,9 +97,12 @@
                 <div class="subsection subtext">Locked</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins</div>
+            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ' a long as the minimum is reached'}</div>
           </div>
-          <div class="doit"><button class="button1">SUBMIT</button></div>
+          <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
+        </div>
+        <div class="notWhitelisted" if.to-view="connected && !userIsEligible">
+          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
         </div>
       </div>
       <div class="rightColumn">
