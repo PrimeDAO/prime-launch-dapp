@@ -202,11 +202,8 @@
             padding-right: 1.2em;
 
             &.hide {
-              // reserve the space
-              color: $color-black-3;
-              background-color: $color-black-3;
-              border-color: $color-black-3;
-              cursor: unset;
+              // preserve the vertical space even while hidden
+              visibility: hidden;
             }
           }
         }
