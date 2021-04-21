@@ -1,127 +1,142 @@
 @import "styles/colors";
 // This styles are common to all the stages components
-
+// Theme for the stages
+@mixin stageTheme {
+  * {
+    font-size: 1rem;
+  }
+  .infoContainer {
+    background-color: $color-black-3;
+    border: 1px solid $color-darkpink-2;
+    border-radius: 1.5em;
+    padding: 2em;
+    min-width: 40rem;
+    .title {
+      font-size: 1.625em;
+      color: $color-white;
+      line-height: 2em;
+      font-weight: bold;
+    }
+    .subtext {
+      line-height: 1.5em;
+      font-size: 1em;
+      color: #dcdae5;
+      margin-bottom: 5em;
+    }
+    .infoInput {
+      margin-bottom: 2em;
+    }
+    .buttonContainer {
+      display: flex;
+      flex-flow: row wrap;
+      column-gap: 3em;
+      font-weight: bold;
+      margin-top: 5em;
+      .stageButton {
+        width: 7em;
+        height: 2.4em;
+        font-size: 1em;
+        line-height: 1em;
+        letter-spacing: 0.04em;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+      .stageButton.proceed {
+        background-color: $color-white;
+        border-radius: 2.2em;
+        color: $color-black;
+      }
+    }
+    label {
+      display: block;
+      font-size: 1.1em;
+      line-height: 2em;
+      color: $color-white;
+    }
+    input {
+      width: 26em;
+      height: 2.7em;
+      background-color: #1b1722;
+      border: 1px solid $color-darkpink-2;
+      border-radius: 0.6em;
+      font-size: 1.1em;
+      color: #989798;
+      font-weight: 200;
+    }
+    a {
+      color: #989798;
+      text-decoration: underline;
+    }
+  }
+}
 .page.stageContainer {
+  @include stageTheme();
   &.stage1 {
     .infoContainer {
-      background-color: $color-black-2;
-      padding: 2em;
-      border-radius: 1em;
       width: 100%;
-      .title {
-        font-size: 1.5rem;
-      }
-      label {
-        display: block;
-        padding-bottom: 0.5em;
-        font-weight: bolder;
-      }
-      .subtext {
-        margin-bottom: 4em;
-      }
       .infoInput {
-        margin-bottom: 2em;
-        input {
-          width: 30em;
-          height: 3em;
-          border-radius: 0.5em;
+        .optional {
+          padding-left: 0.3em;
+          font-weight: lighter;
         }
       }
       .otherLinks {
         display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
+        flex-flow: row wrap;
+        gap: 1em;
         margin-bottom: 2em;
         > div:first-of-type {
-          margin-right: 2em;
           input {
-            width: 15em;
-            height: 3em;
+            width: 11em;
           }
         }
-        input {
-          width: 20em;
-          height: 3em;
-          border-radius: 0.5em;
-          &::placeholder {
-            font-size: 1.5em;
+        .addLinkContainer {
+          display: flex;
+          align-items: flex-end;
+          flex-flow: column;
+          input {
+            width: 21em;
           }
-        }
-        .addLink {
-          display: grid;
-          justify-content: center;
+          .deleteLink {
+            cursor: pointer;
+            justify-self: flex-end;
+          }
+          .addLink {
+            cursor: pointer;
+            padding-right: 1em;
+            align-self: flex-start;
+          }
         }
       }
-      .buttonContainer {
+      .addSingleLink {
+        cursor: pointer;
         display: flex;
-        flex-wrap: wrap;
-        .button {
-          padding: 0.3em 1.12em;
-          background-color: $color-white;
-          color: $color-black;
-          // Put space between them
-          margin-right: 2em;
-        }
-        .button:first-of-type {
-          // Background color matches container
-          padding: 0.3em 1.12em;
-          background-color: $color-black-2;
-          border-color: $color-black-2;
-          color: $color-white;
-        }
+        justify-content: flex-start;
+        margin-bottom: 2em;
       }
     }
   }
   &.stage2 {
     .infoContainer {
-      background-color: $color-black-2;
-      padding: 2em;
-      width: 100%;
-      border-radius: 1em;
-      .title {
-        font-size: 1.5rem;
-      }
-      label {
-        display: block;
-        padding-bottom: 0.5em;
-        // TODO: Make font weightier
-        font-weight: bolder;
-      }
-      .subtext {
-        margin-bottom: 2em;
-      }
       .infoInput {
-        margin-bottom: 2em;
+        margin-bottom: 4em;
         textarea {
           resize: none;
-          width: 30em;
-          height: 4em;
-          border-radius: 0.3em;
+          width: 25em;
+          height: 4.5em;
+          border-radius: 0.625em;
+          background-color: #1b1722;
+          font-weight: 200;
+          color: #989798;
         }
         .labelContainer {
           width: 25em;
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
-        }
-      }
-      .buttonContainer {
-        display: flex;
-        flex-wrap: wrap;
-        padding-top: 4em;
-        .button {
-          padding: 0.3em 1.12em;
-          background-color: $color-white;
-          color: $color-black;
-          // Put space between them
-          margin-right: 2em;
-        }
-        .button:first-of-type {
-          // Background color matches container
-          padding: 0.3em 0.01em;
-          background-color: $color-black-2;
-          border-color: $color-black-2;
-          color: $color-white;
+          color: #989798;
         }
       }
     }

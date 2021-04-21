@@ -7,27 +7,24 @@
         <div class="infoInput">
           <div class="labelContainer">
             <label for="projSummary">Project Summary</label>
-            <label
-              for="projSummary"
-              value.from-view="seedConfig.projectDetails.summary"
-            >
+            <span value.from-view="seedConfig.projectDetails.summary">
               ${seedConfig.projectDetails.summary.length}/150
-            </label>
+            </span>
           </div>
-          <textarea
-            id="projSummary"
-            value.bind="seedConfig.projectDetails.summary"
-            maxlength="150"
-          ></textarea>
+          <div>
+            <textarea
+              id="projSummary"
+              value.bind="seedConfig.projectDetails.summary"
+              maxlength="150"
+            ></textarea>
+          </div>
         </div>
         <div class="infoInput">
           <div class="labelContainer">
             <label for="valueProp">Value Proposition</label>
-            <label
-              for="valueProp"
-              value.from-view="seedConfig.projectDetails.proposition"
+            <span value.from-view="seedConfig.projectDetails.proposition"
               >${seedConfig.projectDetails.proposition.length}/150
-            </label>
+            </span>
           </div>
           <textarea
             id="valueProp"
@@ -39,12 +36,9 @@
         <div class="infoInput">
           <div class="labelContainer">
             <label for="category">Project Category</label>
-            <label
-              for="category"
-              value.from-view="seedConfig.projectDetails.category"
-            >
+            <span value.from-view="seedConfig.projectDetails.category">
               ${seedConfig.projectDetails.category.length}/150
-            </label>
+            </span>
           </div>
           <textarea
             id="category"
@@ -55,8 +49,8 @@
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="button button1" click.delegate="previous()">PREVIOUS</div>
-        <div class="button button1" click.delegate="back()">NEXT</div>
+        <div class="stageButton" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

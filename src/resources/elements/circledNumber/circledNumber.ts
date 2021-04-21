@@ -6,4 +6,5 @@ import "./circledNumber.scss";
 export class CircledNumber {
   @bindable.number number: number;
   @bindable.booleanAttr checkMark: boolean;
+  @bindable.booleanAttr active: boolean;
 }
