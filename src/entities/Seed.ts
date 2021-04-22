@@ -3,12 +3,13 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService } from "services/EthereumService";
+import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
+import { NumberService } from "services/numberService";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -22,7 +23,7 @@ export class Seed {
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
-  public price: BigNumber;
+  public price: number;
   public target: BigNumber;
   public cap: BigNumber;
   public whitelisted: boolean;
@@ -64,6 +65,7 @@ export class Seed {
     private eventAggregator: EventAggregator,
     private dateService: DateService,
     private tokenService: TokenService,
+    private numberService: NumberService,
     private ethereumService: EthereumService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: {now: Date}) => {
@@ -111,7 +113,7 @@ export class Seed {
           try {
             this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
             this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-            this.price = await this.contract.price();
+            this.price = this.numberService.fromString(fromWei(await this.contract.price()));
             this.target = await this.contract.successMinimum();
             this.cap = await this.contract.cap();
             this.seedTokenAddress = await this.contract.seedToken();

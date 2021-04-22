@@ -103,11 +103,9 @@ export class SeedService {
                   /**
                      * TODO: This should also pull the full seed configuration from whereever we are storing it
                      */
-                  console.log("createSeedFromConfig");
                   await this.createSeedFromConfig(event)
                     .then((seed) => { seedsMap.set(seed.address, seed); } );
                 }
-                console.log("seeds");
                 this.seeds = seedsMap;
                 this.initializing = false;
                 resolve();
