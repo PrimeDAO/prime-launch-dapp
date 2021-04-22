@@ -19,10 +19,12 @@
             <div class="timeLeft">16:34hr</div>
           </div>
         </div>
+        <!--
+          ================ 
+          Section One
+          ================ 
+        -->
         <div if.to-view="!connected" class="secton section1">
-          <!-- <div class="number">
-            <circled-number number.one-time="1"></circled-number>
-          </div> -->
           <div class="description">Check eligibility</div>
           <div class="help">
             <question-mark text="Check eligibility"></question-mark>
@@ -30,62 +32,69 @@
           <div class="subdescription subtext">Connect your wallet to contribute and claim rewards.</div>
           <div class="doit"><button class="button1" click.delegate="connect()">CONNECT</button></div>
         </div>
-        <div if.to-view="connected && userIsEligible" class="secton section2">
-          <!-- <div class="number">
-            <circled-number number.one-time="2"></circled-number>
-          </div> -->
+        <!--
+          ================ 
+          Section Two
+          ================ 
+        -->
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
           <div class="description">Contribute</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="fundingTokenToPay"></numeric-input>
+              <numeric-input value.two-way="fundingTokenToPay" placeholder="0.0"></numeric-input>
             </div>
             <div class="units1">
               <div class="container">
                 <div class="token">${seed.fundingTokenInfo.symbol}</div>
-                <div class="subsection subtext">Balance: <formatted-number
-                    value.to-view="fundingTokenBalance | ethwei"
-                    average="false"
-                    mantissa="2"
-                    thousands-separated>
-                  </formatted-number>
+                <div class="subsection subtext">Balance: <tokenbalance
+                    token-address.to-view="seed.fundingTokenAddress">
+                  </tokenbalance>
                 </div>
               </div>
             </div>
             <div class="equals">=</div>
-            <div class="output">${seedTokenToReceive}</div>
+            <div class="output">${seedTokenReward}</div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">$ 1629.04</div>
+                <div class="subsection subtext">$
+                  <formatted-number
+                    value.to-view="seedTokenRewardPrice"
+                    average="false"
+                    mantissa="2"
+                    thousands-separated></formatted-number>
+                </div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Tokens will be vested for ${seed.vestingDuration} days and a cliff of ${seed.vestingCliff} days</div>
+            <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
           <div class="doit"><button class="submitButton button1">SUBMIT</button></div>
         </div>
-        <div if.to-view="connected && userIsEligible" class="secton section3">
-          <!-- <div class="number">
-            <circled-number number.one-time="3"></circled-number>
-          </div> -->
+        <!--
+          ================ 
+          Section Three
+          ================ 
+        -->
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section3">
           <div class="description">Claim tokens</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="seedTokenToPay"></numeric-input>
+              <numeric-input value.two-way="seedTokenToPay" placeholder="0.0"></numeric-input>
             </div>
             <div class="units1">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
-                    value.to-view="userCanClaimAmount | ethwei"
+                    value.to-view="seed.userClaimableAmount | ethwei"
                     average="false"
                     mantissa="2"
-                    thousands-separated>
+                    thousands-separated></formatted-number>
                 </div>
               </div>
             </div>
@@ -94,14 +103,14 @@
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">Locked</div>
+                <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ' a long as the minimum is reached'}</div>
+            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
         </div>
-        <div class="notWhitelisted" if.to-view="connected && !userIsEligible">
+        <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
         </div>
       </div>

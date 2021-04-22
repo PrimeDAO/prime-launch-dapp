@@ -1,5 +1,5 @@
 import { DisposableCollection } from "./../services/DisposableCollection";
-import { EthereumService } from "./../services/EthereumService";
+import { EthereumService, fromWei, toWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import { bindable } from "aurelia-typed-observable-plugin";
@@ -10,6 +10,7 @@ import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
+import { NumberService } from "services/numberService";
 
 @autoinject
 export class SeedDashboard {
@@ -22,31 +23,36 @@ export class SeedDashboard {
   seedTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
   seedTokenToPay: BigNumber;
-  fundingTokenBalance: BigNumber;
-  userIsEligible: boolean;
-  userCanClaimAmount: BigNumber;
-  userCanClaim: boolean;
 
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
+    private numberService: NumberService,
     private ethereumService: EthereumService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.refresh();
+      this.hydrateUserData();
     }));
   }
 
+  @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
+  get userCanClaim(): boolean { return this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
+
+  @computedFrom("seedTokenReward", "seed.seedTokenInfo.price")
+  get seedTokenRewardPrice(): number { return this.seedTokenReward * this.seed?.seedTokenInfo.price; }
+
+  @computedFrom("fundingTokenToPay", "seed.price")
+  get seedTokenReward(): number {return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.price; }
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
   }
 
   attached(): Promise<void> {
-    return this.refresh();
+    return this.load();
   }
 
-  async refresh(): Promise<void> {
+  async load(): Promise<void> {
     try {
       let waiting = false;
       if (this.seedService.initializing) {
@@ -75,10 +81,6 @@ export class SeedDashboard {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.fundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-      this.userIsEligible = await this.seed.userIsWhitelisted(this.ethereumService.defaultAccountAddress);
-      this.userCanClaimAmount = await this.seed.userClaimableAmount(this.ethereumService.defaultAccountAddress);
-      this.userCanClaim = BigNumber.from(this.userCanClaimAmount).gt(0) && this.seed.minimumReached;
     }
   }
 
