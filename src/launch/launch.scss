@@ -20,7 +20,6 @@
     }
   }
   .subtext {
-    // font-family: Inter;
     font-size: 0.85em;
     color: $muted-text-color;
   }
@@ -45,8 +44,6 @@
     display: grid;
     grid-template-rows: 2fr 1fr;
     > div {
-      // Make these divs have paddings to align contents
-      // TODO:
       padding-left: 1em;
       padding-right: 1.5em;
       font-size: 20px;
@@ -73,7 +70,6 @@
     a {
       font-weight: bold;
       text-decoration: none;
-      // font-family: Inter;
       color: $color-white;
     }
     & .container-footer {
@@ -89,7 +85,6 @@
       & div {
         font-size: 0.7em;
         font-weight: 600;
-        // font-family: Inter;
         color: $color-white;
         padding-left: 0.4em;
         padding-right: 0.4em;

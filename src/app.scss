@@ -11,7 +11,7 @@
 
   > .logo {
     grid-area: logo;
-    // background-color: $color-black;
+    background-color: $color-darkpink-3;
     align-items: center;
     // just for vertical alignment of the logo
     display: flex;
@@ -29,7 +29,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // background-color: $color-black;
     height: 76px;
     padding-right: 4rem;
 

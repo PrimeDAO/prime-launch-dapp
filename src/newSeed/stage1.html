@@ -33,7 +33,7 @@
               <input
                 id="$index"
                 placeholder="E.g Twitter"
-                value.bind="seedConfig.general.customLinks[$index]['media']"
+                value.bind="seedConfig.general.customLinks[$index].media"
               />
             </div>
             <div class="addLinkContainer">
@@ -42,7 +42,7 @@
                 <input
                   id="$index"
                   placeholder="https://..."
-                  value.bind="seedConfig.general.customLinks[$index]['url']"
+                  value.bind="seedConfig.general.customLinks[$index].url"
                 />
                 <span
                   class="deleteLink"
@@ -63,7 +63,7 @@
           </div>
         </template>
         <div
-          if.bind="seedConfig.general.customLinks.length <= 0"
+          if.to-view="seedConfig.general.customLinks.length <= 0"
           class="addSingleLink"
           click.delegate="addCustomLinks(-1)"
         >

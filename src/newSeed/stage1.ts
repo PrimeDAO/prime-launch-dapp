@@ -1,21 +1,17 @@
-import { RouteConfig } from "aurelia-router";
 import { BaseStage } from "./baseStage";
 // Let's import the utils helper
 import {Utils} from "../services/utils";
 export class Stage1 extends BaseStage {
-  activate(_params: unknown, routeConfig: RouteConfig): void {
-    super.activate(_params, routeConfig);
-  }
   // Add a link object to the link object arrays
   addCustomLinks(index: number): void {
     if (index === -1) {
       // Skip check
       // Create a new custom link object
       this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
-      return;
+    } else {
+      // Create a new custom link object
+      this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
     }
-    // Create a new custom link object
-    this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
   }
   // Delet a row in the custom links array
   deleteCustomLinks(index:number): void {
@@ -45,15 +41,14 @@ export class Stage1 extends BaseStage {
       if (!link.media) {
         // Current input as not been filled out
         message = "Please enter a value for Custom Link";
-        return;
       } else if (!Utils.isValidUrl(link.url, false)) {
         // Current input as not been filled out
         message = `Please enter a valid url for ${link.media}`;
-        return;
       }
     });
     if (message) {
       this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
     } else {
       // For stage 1 write a verified true to stage 1
       this.stageState[this.stageNumber].verified = true;
