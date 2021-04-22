@@ -6,5 +6,7 @@
   "[typescript]": {
     "editor.formatOnSave": false
   },
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "prettier.printWidth": 180,
+  "prettier.jsxBracketSameLine": true
 }
