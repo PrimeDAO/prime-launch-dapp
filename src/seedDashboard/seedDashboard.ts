@@ -1,5 +1,5 @@
 import { DisposableCollection } from "./../services/DisposableCollection";
-import { EthereumService, fromWei, toWei } from "./../services/EthereumService";
+import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import { bindable } from "aurelia-typed-observable-plugin";
@@ -53,8 +53,8 @@ export class SeedDashboard {
   }
 
   async load(): Promise<void> {
+    let waiting = false;
     try {
-      let waiting = false;
       if (this.seedService.initializing) {
         await Utils.sleep(200);
         this.eventAggregator.publish("seeds.loading", true);
@@ -66,6 +66,7 @@ export class SeedDashboard {
         if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("seeds.loading", true);
+          waiting = true;
         }
         await this.seed.ensureInitialized();
       }
@@ -74,7 +75,9 @@ export class SeedDashboard {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
     finally {
-      this.eventAggregator.publish("seeds.loading", false);
+      if (waiting) {
+        this.eventAggregator.publish("seeds.loading", false);
+      }
       this.loading = false;
     }
   }

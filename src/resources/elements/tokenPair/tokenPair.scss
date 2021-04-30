@@ -1,3 +1,15 @@
 @import "styles/colors.scss";
 .tokenPairContainer {
+  > img {
+    width: 19px;
+    border-radius: 9px;
+  }
+
+  > img:first-child {
+    margin-right: 2px;
+  }
+
+  // > img:nth-child(2) {
+  //   border: 1px solid $color-black;
+  // }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 import { autoinject } from "aurelia-framework";
 import { BigNumber, Contract, ethers } from "ethers";
 import axios from "axios";
@@ -113,11 +114,9 @@ export class TokenService {
       return axios.get(uri)
         .then(async (response) => {
           tokenInfo = response.data;
-          // TODO: remove these lint warnings
-          // eslint-disable-next-line require-atomic-updates
-          tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-          // eslint-disable-next-line require-atomic-updates
           tokenInfo.address = address;
+          tokenInfo.icon = "/genericToken.svg";
+          tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
           this.tokenInfos.set(address, tokenInfo);
 
           if (tokenInfo.id) {
@@ -125,11 +124,8 @@ export class TokenService {
 
             await axios.get(uri)
               .then((response) => {
-                tokenInfo.price = response.data.market_data.current_price.usd;
+                tokenInfo.price = response.data.market_data.current_price.usd ?? 0;
                 tokenInfo.icon = response.data.image.thumb;
-                // tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
-                // tokenInfo.priceChangePercentage_7d = response.data.market_data.price_change_percentage_7d ?? 0;
-                // tokenInfo.priceChangePercentage_30d = response.data.market_data.price_change_percentage_30d ?? 0;
               })
               .catch((error) => {
                 this.consoleLogService.handleFailure(
