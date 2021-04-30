@@ -83,40 +83,42 @@ html {
       font-size: 0.8125em;
     }
 
-    .button,
     .button1,
     .button2,
     .button3,
     .button4,
     .buttonBw {
       border-radius: $global-button-radius;
-      padding: 14px 28px;
-      font-family: "Inter";
-      font-size: 0.9em;
+      border: none;
+      padding: 8px 24px;
+      height: 38px;
+
+      font-family: Inter;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+
       color: $color-white;
-      background-color: transparent;
       cursor: pointer;
 
-      &:hover:not(:disabled) {
-        background-color: $color-black;
-        border-color: $color-black;
-        color: $color-white;
+      &:hover {
         text-decoration: none;
-      }
-
-      &.small {
-        padding: 3px 13px;
       }
 
       &:disabled {
         cursor: not-allowed;
+        opacity: 0.2;
       }
     }
 
     .button1 {
-      background-color: $button1-color;
-      border-color: $button1-color;
+      background: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
     }
+
     .button2 {
       background-color: $button2-color;
       border-color: $button2-color;
