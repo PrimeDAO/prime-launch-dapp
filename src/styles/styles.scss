@@ -133,9 +133,14 @@ html {
       color: $color-white;
       background-color: #8668fc;
     }
+    .buttonTr {
+      text-align: center;
+      align-self: center;
+    }
     .buttonBw {
+      text-align: center;
+      background-color: $color-white;
       color: $color-black;
-      border: 2px solid $color-green;
     }
   }
 

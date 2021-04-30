@@ -1,5 +1,87 @@
 <template>
+  <require from="../resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page stageContainer stage3 au-animate ">
-    Stage ${stageNumber}
+    <div class="infoContainer">
+      <div class="heading heading3 title">Token Details</div>
+      <div class="subtext">
+        Details about your token design and distribution.
+      </div>
+      <div>
+        <div class="infoInput ticker">
+          <div class="address">
+            <label for="fundingAddress">Funding Token Address (ETH)</label>
+            <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress"></input>
+          </div>
+          <div class="ticker">
+            <label for="ticker">Ticker</label>
+            <input id="fundingTicker" value.to-view="seedConfig.tokenDetails.fundingTicker" readonly> </input>
+          </div>
+        </div>
+        <div class="infoInput ticker">
+          <div class="address">
+            <label for="seedAddress">Seed Token Address (ETH)</label>
+            <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress"></input>
+          </div>
+          <div class="ticker">
+            <label for="ticker">Ticker</label>
+            <input id="seedTicker" value.to-view="seedConfig.tokenDetails.seedTicker" readonly> </input>
+          </div>
+        </div>
+        <div class="infoInput supply">
+          <div class="labeledQuestion">
+            <label for="maxSupply">Maximum Supply</label>
+            <div class="questionMark">
+              <question-mark text="Tick"></question-mark>
+            </div>
+          </div>
+          <numeric-input id="maxSupply" value.bind="seedConfig.tokenDetails.maxSupply"> </numeric-input>
+        </div>
+        <div class="infoInput supply">
+          <div class="labeledQuestion">
+            <label for="initSupply">Initial Circulating Supply </label>
+            <div class="questionMark">
+              <question-mark text="Tick"></question-mark>
+            </div>
+          </div>
+          <numeric-input id="initSupply" value.bind="seedConfig.tokenDetails.initSupply"> </numeric-input>
+        </div>
+        <div class="tokenDistribution">
+          <div class="labeledQuestion">
+            <label>Token Distribution</label>
+            <div class="questionMark">
+              <question-mark text="Tick"></question-mark>
+            </div>
+          </div>
+          <div class="columnHeaders" if.bind="seedConfig.tokenDetails.tokenDistrib.length > 0">
+              <div>Category</div>
+              <div>Amount</div>
+              <div>Lockup-up (m)</div>
+          </div>
+          <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
+            <div class="distribRow">
+              <div class="infoInput supply">
+                <input type="text" value.bind="distrib.category" class="textInput">
+              </div>
+              <div  class="infoInput supply" value.bind="distrib.amount">
+                <input type="number" value.bind="distrib.amount" placeholder="0" class="numberInput">
+              </div>
+              <div  class="infoInput supply numberInput" value.bind="distrib.lockup">
+                <input type="text" value.bind="distrib.lockup" placeholder="0" class="numberInput">
+              </div>
+            </div>
+            </template>
+            <div
+            class="addLink"
+            click.delegate="addTokenDistribution($index)"
+          >
+            <a>+ Add Row</a>
+          </div>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="button buttonTr stageButton" click.delegate="back()">PREVIOUS</div>
+        <div class="button buttonBw stageButton" click.delegate="proceed()">NEXT</div>
+      </div>
+    </div>
   </div>
 </template>

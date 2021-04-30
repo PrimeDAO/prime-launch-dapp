@@ -14,9 +14,20 @@ export interface IProjectDetails {
   category: string,
 }
 
+export interface ITokenDetails {
+  fundingAddress: string,
+  fundingTicker: string,
+  seedAddress: string,
+  seedTicker: string
+  maxSupply: number,
+  initSupply: number,
+  tokenDistrib: Array<{category: string, amount: number, lockup:number}>
+}
+
 export interface ISeedConfig {
   general: IGeneral,
   projectDetails: IProjectDetails,
+  tokenDetails: ITokenDetails,
 }
 
 export class SeedConfig implements ISeedConfig {
@@ -28,4 +39,7 @@ export class SeedConfig implements ISeedConfig {
     proposition: "",
     category: "",
   } as IProjectDetails;
+  public tokenDetails = {
+    tokenDistrib: [],
+  } as ITokenDetails;
 }

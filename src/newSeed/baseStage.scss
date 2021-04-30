@@ -1,81 +1,83 @@
 @import "styles/colors";
 // This styles are common to all the stages components
 // Theme for the stages
-@mixin stageTheme {
-  * {
-    font-size: 1rem;
+.infoContainer {
+  font-size: 1rem;
+  font-family: Inter;
+  background-color: $color-black-3;
+  border: 1px solid $color-darkpink-2;
+  border-radius: 1.5em;
+  padding: 2em;
+  min-width: 40rem;
+  .title {
+    font-size: 1.625em;
+    color: $color-white;
+    line-height: 2em;
+    font-weight: bold;
   }
-  .infoContainer {
-    background-color: $color-black-3;
-    border: 1px solid $color-darkpink-2;
-    border-radius: 1.5em;
-    padding: 2em;
-    min-width: 40rem;
-    .title {
-      font-size: 1.625em;
-      color: $color-white;
-      line-height: 2em;
-      font-weight: bold;
-    }
-    .subtext {
-      line-height: 1.5em;
+  .subtext {
+    line-height: 1.5em;
+    font-size: 1em;
+    color: #dcdae5;
+    margin-bottom: 5em;
+  }
+  .infoInput {
+    margin-bottom: 2em;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 3em;
+    font-weight: bold;
+    margin-top: 5em;
+    .stageButton {
+      width: 7em;
+      height: 2.4em;
       font-size: 1em;
-      color: #dcdae5;
-      margin-bottom: 5em;
+      line-height: 1em;
+      letter-spacing: 0.04em;
+      padding: 0;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
     }
-    .infoInput {
-      margin-bottom: 2em;
-    }
-    .buttonContainer {
-      display: flex;
-      flex-flow: row wrap;
-      column-gap: 3em;
-      font-weight: bold;
-      margin-top: 5em;
-      .stageButton {
-        width: 7em;
-        height: 2.4em;
-        font-size: 1em;
-        line-height: 1em;
-        letter-spacing: 0.04em;
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
-      .stageButton.proceed {
-        background-color: $color-white;
-        border-radius: 2.2em;
-        color: $color-black;
-      }
-    }
-    label {
-      display: block;
-      font-size: 1.1em;
-      line-height: 2em;
-      color: $color-white;
-    }
-    input {
-      width: 26em;
-      height: 2.7em;
-      background-color: #1b1722;
-      border: 1px solid $color-darkpink-2;
-      border-radius: 0.6em;
-      font-size: 1.1em;
-      color: #989798;
-      font-weight: 200;
-    }
-    a {
-      color: #989798;
-      text-decoration: underline;
+  }
+  label {
+    display: block;
+    font-size: 1.1em;
+    line-height: 2em;
+    color: $color-white;
+  }
+  input {
+    width: 26em;
+    height: 2.7em;
+    background-color: #1b1722;
+    border: 1px solid $color-darkpink-2;
+    border-radius: 0.6em;
+    font-size: 1.1em;
+    color: #989798;
+    font-weight: 200;
+    font-family: Inter;
+  }
+  a {
+    color: #989798;
+    text-decoration: underline;
+  }
+  .labeledQuestion {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+    .questionMark {
+      width: 1.3em;
+      height: 1.3em;
+      align-self: center;
     }
   }
 }
 .page.stageContainer {
-  @include stageTheme();
   &.stage1 {
     .infoContainer {
-      width: 100%;
       .infoInput {
         .optional {
           padding-left: 0.3em;
@@ -102,6 +104,9 @@
           .deleteLink {
             cursor: pointer;
             justify-self: flex-end;
+            i {
+              font-family: "Font Awesome\ 5 Free";
+            }
           }
           .addLink {
             cursor: pointer;
@@ -139,6 +144,51 @@
           color: #989798;
         }
       }
+    }
+  }
+  &.stage3 {
+    .infoInput.ticker {
+      display: flex;
+      flex-flow: row nowrap;
+      .address {
+        flex: 0.8;
+      }
+      .ticker {
+        input {
+          width: 5em;
+        }
+        flex: 0.2;
+      }
+    }
+    .infoInput.supply {
+      input {
+        width: 10em;
+      }
+    }
+    .tokenDistribution {
+      .columnHeaders {
+        display: flex;
+        justify-content: space-around;
+        flex-flow: row nowrap;
+        font-size: 0.9em;
+        font-weight: 200;
+        line-height: 2em;
+      }
+      .distribRow {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        justify-content: space-around;
+        input.numberInput {
+          text-align: right;
+        }
+        input.textInput {
+          text-align: center;
+        }
+      }
+    }
+    .addLink {
+      cursor: pointer;
     }
   }
 }

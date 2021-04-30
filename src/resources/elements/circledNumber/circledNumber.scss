@@ -3,7 +3,7 @@
   border-radius: 50%;
   text-align: center;
   background-color: #98979b;
-  width: 2.5em;
+  min-width: 2.5em;
   height: 2.5em;
   &.active {
     background-color: $color-light-purple;
