@@ -52,14 +52,14 @@ export class ConsoleLogService {
     let ex;
     if (!(config instanceof EventConfigException)) {
       ex = config as any;
-      message = `${ex.message ? ex.message : ex}`;
+      message = `${ex?.message ? ex.message : ex}`;
     } else {
       config = config as EventConfigException;
       ex = config.exception;
       message = config.message;
     }
 
-    this.logger.error(`${message}${ex.stack ? `\n${ex.stack}` : ""}`);
+    this.logger.error(`${message}${ex?.stack ? `\n${ex.stack}` : ""}`);
   }
 
   public handleFailure(config: EventConfig | string): void {
