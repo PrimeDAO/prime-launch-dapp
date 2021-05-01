@@ -154,9 +154,9 @@
         flex: 0.8;
       }
       .ticker {
-        input {
-          width: 5em;
-        }
+        flex: 0.2;
+      }
+      .tickerIcon {
         flex: 0.2;
       }
     }
@@ -179,7 +179,7 @@
         flex-flow: row nowrap;
         flex: 1;
         justify-content: space-around;
-        input.numberInput {
+        input {
           text-align: right;
         }
         input.textInput {

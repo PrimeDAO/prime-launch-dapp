@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 export interface IGeneral {
   projectName: string,
@@ -17,11 +18,13 @@ export interface IProjectDetails {
 export interface ITokenDetails {
   fundingAddress: string,
   fundingTicker: string,
+  fundingIcon: string,
   seedAddress: string,
-  seedTicker: string
-  maxSupply: number,
-  initSupply: number,
-  tokenDistrib: Array<{category: string, amount: number, lockup:number}>
+  seedTicker: string,
+  seedIcon: string,
+  maxSupply: BigNumber,
+  initSupply: BigNumber,
+  tokenDistrib: Array<{category: string, amount: BigNumber, lockup:BigNumber}>
 }
 
 export interface ISeedConfig {
