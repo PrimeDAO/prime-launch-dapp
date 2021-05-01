@@ -46,9 +46,7 @@ export class Stage3 extends BaseStage {
     }
   }
   getTokenInfo(): void {
-    return null;
-    // let tokenService = new TokenService();
-    // this.TokenService.getTokenInfo(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
+    // this.tokenService.getTokenInfo(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
     //   this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
     //   this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
     // }).catch(_err => {
