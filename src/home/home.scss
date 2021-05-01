@@ -43,6 +43,14 @@
           .title {
             display: flex;
             justify-content: space-between;
+            color: $color-white;
+
+            .header {
+              font-weight: bold;
+              font-size: 28px;
+              white-space: nowrap;
+              padding-right: 16px;
+            }
           }
         }
 
@@ -84,7 +92,12 @@
 
           .emailInput {
             flex-grow: 2;
-            margin-right: 10px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          .notifyButton {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
           }
         }
 
@@ -110,6 +123,7 @@
 
       .rightColumn {
         .subtext {
+          margin-bottom: 3em;
           div {
             margin-bottom: 1em;
           }
@@ -120,7 +134,7 @@
         }
 
         .launchButton {
-          margin-right: 8px;
+          margin-right: 24px;
         }
       }
     }

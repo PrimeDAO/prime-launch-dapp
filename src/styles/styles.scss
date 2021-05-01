@@ -14,16 +14,22 @@ html {
     padding-right: 4rem;
 
     input {
-      font-family: Aeonik;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 33px;
       border: $input-border;
-      width: 70px;
-      background-color: $color-black;
+      background: #1b1722;
       color: $color-white;
       border-radius: $input-border-radius;
       outline: none;
+      padding: 0 12px;
 
       &::placeholder {
-        color: $color-grey-4;
+        color: #dcdae5;
+        mix-blend-mode: normal;
+        opacity: 0.43;
       }
       &:focus::placeholder {
         color: transparent;
@@ -56,25 +62,36 @@ html {
     }
 
     .heading {
-      font-family: "Inter";
-      color: $color-white;
+      font-family: Aeonik;
+      font-style: normal;
+      font-weight: bold;
+
       white-space: nowrap;
 
       &.heading0 {
-        font-size: 3.5em;
+        font-size: 64px;
+        line-height: 65px;
         margin-bottom: 24px;
-        line-height: 54px;
       }
       &.heading1 {
-        font-size: 2em;
+        font-size: 48px;
+        line-height: 46px;
         margin-bottom: 8px;
       }
       &.heading2 {
-        font-size: 1.625em;
-        margin-bottom: 6px;
+        font-size: 36px;
+        line-height: 65px;
+        margin-bottom: 8px;
       }
       &.heading3 {
-        font-size: 1.25em;
+        font-size: 24px;
+        line-height: 29px;
+        margin-bottom: 6px;
+        color: #a258a7;
+      }
+      &.heading4 {
+        font-size: 14px;
+        color: #a258a7;
       }
     }
 
@@ -92,6 +109,7 @@ html {
       border: none;
       padding: 8px 24px;
       height: 38px;
+      outline: none;
 
       font-family: Inter;
       font-style: normal;
