@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 .page.seedDashboardContainer {
   .seedDashboard {
     padding-left: 6em;
@@ -21,11 +21,11 @@
 
           .header {
             display: flex;
+            align-items: center;
 
             .title {
               margin-right: 1em;
-              margin-bottom: 0.5em;
-              font-size: 2em;
+              margin-bottom: 0;
             }
 
             .timeLeft {
@@ -241,11 +241,17 @@
 
       .topSection {
         .tokenId {
-          white-space: nowrap;
+          display: flex;
           margin-bottom: 0.8em;
 
           > div {
-            display: inline-block;
+            margin-right: 4px;
+          }
+
+          .icon {
+            img {
+              @include tokenIcon;
+            }
           }
         }
 
@@ -253,7 +259,7 @@
           width: 200px;
           height: 1em;
           border-radius: 10px;
-          background-color: $color-pink;
+          background: $standard-gradient;
           margin-bottom: 0.8em;
         }
 

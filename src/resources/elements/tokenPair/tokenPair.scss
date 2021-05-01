@@ -1,8 +1,7 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 .tokenPairContainer {
   > img {
-    width: 19px;
-    border-radius: 9px;
+    @include tokenIcon;
   }
 
   > img:first-child {

@@ -2,6 +2,17 @@
 @import "./dialogs";
 @import "tippy.js/dist/tippy.css"; // TODO: use CDN?
 
+@mixin standardTextGradient {
+  background-image: $standard-gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin tokenIcon {
+  width: 19px;
+  border-radius: 9px;
+}
+
 html {
   body {
     font-size: 16px;
@@ -65,23 +76,26 @@ html {
       font-family: Aeonik;
       font-style: normal;
       font-weight: bold;
-
+      width: fit-content; // so gradients look right
       white-space: nowrap;
 
       &.heading0 {
         font-size: 64px;
         line-height: 65px;
         margin-bottom: 24px;
+        @include standardTextGradient;
       }
       &.heading1 {
         font-size: 48px;
         line-height: 46px;
-        margin-bottom: 8px;
+        margin-bottom: 24px;
+        @include standardTextGradient;
       }
       &.heading2 {
         font-size: 36px;
         line-height: 65px;
         margin-bottom: 8px;
+        @include standardTextGradient;
       }
       &.heading3 {
         font-size: 24px;
@@ -100,11 +114,7 @@ html {
       font-size: 0.8125em;
     }
 
-    .button1,
-    .button2,
-    .button3,
-    .button4,
-    .buttonBw {
+    .button1 {
       border-radius: $global-button-radius;
       border: none;
       padding: 8px 24px;
@@ -133,28 +143,7 @@ html {
     }
 
     .button1 {
-      background: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
-    }
-
-    .button2 {
-      background-color: $button2-color;
-      border-color: $button2-color;
-    }
-    .button3 {
-      background-color: $button3-color;
-      border-color: $button3-color;
-    }
-    .button4 {
-      color: $button4-color;
-      border: 2px solid $button4-color;
-    }
-    .button5 {
-      color: $color-white;
-      background-color: #8668fc;
-    }
-    .buttonBw {
-      color: $color-black;
-      border: 2px solid $color-green;
+      background: $standard-gradient;
     }
   }
 

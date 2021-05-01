@@ -61,13 +61,6 @@
     }
 
     &.launches {
-      > .title {
-        margin-bottom: 24px;
-        background: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
       > .launchesButton {
         text-align: center;
       }
