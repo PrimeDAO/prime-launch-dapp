@@ -35,6 +35,10 @@
       font-family: Inter;
     }
   }
+  .stageButton {
+    display: flex;
+    align-items: center;
+  }
   label {
     display: block;
     font-size: 1.1em;
