@@ -29,24 +29,14 @@
     .buttonContainer {
       display: flex;
       flex-flow: row wrap;
+      align-items: center;
       column-gap: 3em;
       font-weight: bold;
       margin-top: 5em;
-      .stageButton {
-        width: 7em;
-        height: 2.4em;
-        font-size: 1em;
-        line-height: 1em;
-        letter-spacing: 0.04em;
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
-      .stageButton.proceed {
-        background-color: $color-white;
-        border-radius: 2.2em;
-        color: $color-black;
+
+      .cancel {
+        color: $color-orange;
+        font-family: Inter;
       }
     }
     label {

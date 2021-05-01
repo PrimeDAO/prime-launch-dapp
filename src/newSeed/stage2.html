@@ -15,22 +15,19 @@
             <textarea
               id="projSummary"
               value.bind="seedConfig.projectDetails.summary"
-              maxlength="150"
-            ></textarea>
+              maxlength="150"></textarea>
           </div>
         </div>
         <div class="infoInput">
           <div class="labelContainer">
             <label for="valueProp">Value Proposition</label>
-            <span value.from-view="seedConfig.projectDetails.proposition"
-              >${seedConfig.projectDetails.proposition.length}/150
+            <span value.from-view="seedConfig.projectDetails.proposition">${seedConfig.projectDetails.proposition.length}/150
             </span>
           </div>
           <textarea
             id="valueProp"
             value.bind="seedConfig.projectDetails.proposition"
-            maxlength="150"
-          >
+            maxlength="150">
           </textarea>
         </div>
         <div class="infoInput">
@@ -43,14 +40,13 @@
           <textarea
             id="category"
             value.bind="seedConfig.projectDetails.category"
-            maxlength="150"
-          >
+            maxlength="150">
           </textarea>
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="stageButton" click.delegate="back()">PREVIOUS</div>
-        <div class="stageButton proceed" click.delegate="proceed()">NEXT</div>
+        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

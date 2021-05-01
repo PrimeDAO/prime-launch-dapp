@@ -33,8 +33,7 @@
               <input
                 id="$index"
                 placeholder="E.g Twitter"
-                value.bind="seedConfig.general.customLinks[$index].media"
-              />
+                value.bind="seedConfig.general.customLinks[$index].media" />
             </div>
             <div class="addLinkContainer">
               <div>
@@ -42,13 +41,11 @@
                 <input
                   id="$index"
                   placeholder="https://..."
-                  value.bind="seedConfig.general.customLinks[$index].url"
-                />
+                  value.bind="seedConfig.general.customLinks[$index].url" />
                 <span
                   class="deleteLink"
                   title="Delete this row"
-                  click.delegate="deleteCustomLinks($index)"
-                >
+                  click.delegate="deleteCustomLinks($index)">
                   <i class="far fa-trash-alt"></i>
                 </span>
               </div>
@@ -56,8 +53,7 @@
             <div
               class="addLink"
               click.delegate="addCustomLinks($index)"
-              if.bind="$index == seedConfig.general.customLinks.length - 1"
-            >
+              if.bind="$index == seedConfig.general.customLinks.length - 1">
               <a>+ Add link</a>
             </div>
           </div>
@@ -65,14 +61,13 @@
         <div
           if.to-view="seedConfig.general.customLinks.length <= 0"
           class="addSingleLink"
-          click.delegate="addCustomLinks(-1)"
-        >
+          click.delegate="addCustomLinks(-1)">
           <a>+ Add Social Media link</a>
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="stageButton" click.delegate="cancel()">CANCEL</div>
-        <div class="stageButton proceed" click.delegate="proceed()">NEXT</div>
+        <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>
