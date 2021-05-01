@@ -1,3 +1,14 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 .tokenPairContainer {
+  > img {
+    @include tokenIcon;
+  }
+
+  > img:first-child {
+    margin-right: 2px;
+  }
+
+  // > img:nth-child(2) {
+  //   border: 1px solid $color-black;
+  // }
 }

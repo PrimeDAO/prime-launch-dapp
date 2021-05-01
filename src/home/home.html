@@ -7,7 +7,7 @@
       <div class="buttons">
         <div class="contribute" click.delegate="navigate('launches')">
           <div class="title">
-            <div class="heading heading3">Contribute</div>
+            <div class="header">Contribute</div>
             <div cass="arrow">&#8599;</div>
           </div>
           <div class="icon"></div>
@@ -15,7 +15,7 @@
         </div>
         <div class="launch" click.delegate="navigate('launch')">
           <div class="title">
-            <div class="heading heading3">Apply for Launch</div>
+            <div class="header">Apply for Launch</div>
             <div cass="arrow">&#8599;</div>
           </div>
           <div class="icon"></div>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="section launches">
-      <div class="title heading heading2">Featured Launches</div>
+      <div class="title heading heading1">Featured Launches</div>
       <horizontal-scroller item-count.to-view="seeds.length">
         <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
       </horizontal-scroller>
@@ -32,21 +32,21 @@
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">
-        <div class="title heading heading2">Never miss a launch</div>
+        <div class="title heading heading1">Never miss a launch</div>
         <div class="subtitle subtext">Sign-up for our newsletter to stay ahead of the curve</div>
       </div>
       <div class="emailColumn">
         <div class="form">
           <input class="emailInput" placeholder="Enter your email"></input>
-          <button class="notifyButton button1">Notify Me</button>
+          <button class="notifyButton button1">Subscribe</button>
         </div>
         <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
       </div>
     </div>
     <div class="section fairLaunch">
-      <div class="pic"><img src="#" /></div>
+      <div class="pic"><img src="/spacex-OHOU-5UVIYQ-unsplash.png" /></div>
       <div class="rightColumn">
-        <div class="title heading heading2">The real fair launch</div>
+        <div class="title heading heading1">The real fair launch</div>
         <div class="subtitle subtext">
           <div>Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In
             malesuada enim in dolor euismod, id commodo mi consectetur. Curabitur

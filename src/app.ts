@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { EventConfigException } from "services/GeneralEvents";
+import { EventConfig, EventConfigException } from "services/GeneralEvents";
 import { Router, RouterConfiguration } from "aurelia-router";
 import { PLATFORM } from "aurelia-pal";
 import "./styles/styles.scss";
@@ -10,16 +10,19 @@ import { Utils } from "services/utils";
 import tippy from "tippy.js";
 import { BindingSignaler } from "aurelia-templating-resources";
 import { EthereumService } from "services/EthereumService";
+import { ConsoleLogService } from "services/ConsoleLogService";
 
 @autoinject
 export class App {
   constructor (
     private signaler: BindingSignaler,
     private ethereumService: EthereumService,
-    private eventAggregator: EventAggregator) { }
+    private eventAggregator: EventAggregator,
+    private consoleLogService: ConsoleLogService) { }
 
   router: Router;
   onOff = false;
+  onOffStack = 0;
   modalMessage: string;
   initializing = true;
   showingMobileMenu = false;
@@ -38,20 +41,20 @@ export class App {
 
     this.eventAggregator.subscribe("seeds.loading", async (onOff: boolean) => {
       this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
-      this.onOff = onOff;
+      this.handleOnOff(onOff);
     });
 
     this.eventAggregator.subscribe("transaction.sent", async () => {
       this.modalMessage = "Awaiting confirmation...";
-      this.onOff = true;
+      this.handleOnOff(true);
     });
 
     this.eventAggregator.subscribe("transaction.confirmed", async () => {
-      this.onOff = false;
+      this.handleOnOff(false);
     });
 
     this.eventAggregator.subscribe("transaction.failed", async () => {
-      this.onOff = false;
+      this.handleOnOff(false);
     });
 
     this.intervalId = setInterval(async () => {
@@ -59,6 +62,19 @@ export class App {
       const blockDate = this.ethereumService.lastBlockDate;
       this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
     }, 1000);
+  }
+
+  private handleOnOff(onOff: boolean): void {
+    this.onOffStack += onOff ? 1 : -1;
+    if (this.onOffStack < 0) {
+      this.onOffStack = 0;
+      this.consoleLogService.handleWarning(new EventConfig("underflow in onOffStack"));
+    }
+    if (this.onOffStack && !this.onOff) {
+      this.onOff = true;
+    } else if ((this.onOffStack === 0) && this.onOff) {
+      this.onOff = false;
+    }
   }
 
   private configureRouter(config: RouterConfiguration, router: Router) {

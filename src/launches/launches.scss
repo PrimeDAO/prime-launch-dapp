@@ -6,18 +6,6 @@
       padding-left: 4.5em;
       padding-right: 4.5em;
       margin-bottom: 5.75em;
-
-      > .title {
-        margin-bottom: 24px;
-      }
-    }
-
-    &.featured {
-      > .title {
-        background: linear-gradient(220.2deg, #8668fc 0%, #a258a7 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
     }
 
     &.launches {
@@ -77,6 +65,12 @@
           &.starts,
           &.type {
             text-align: center;
+          }
+        }
+
+        .cell {
+          &.pair {
+            padding: 6px 0;
           }
         }
       }

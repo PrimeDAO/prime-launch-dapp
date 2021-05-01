@@ -30,17 +30,9 @@
     column-gap: 3em;
     font-weight: bold;
     margin-top: 5em;
-    .stageButton {
-      width: 7em;
-      height: 2.4em;
-      font-size: 1em;
-      line-height: 1em;
-      letter-spacing: 0.04em;
-      padding: 0;
-      display: grid;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+    .cancel {
+      color: $color-orange;
+      font-family: Inter;
     }
   }
   label {
@@ -73,6 +65,16 @@
       height: 1.3em;
       align-self: center;
     }
+  }
+  textarea {
+    resize: none;
+    width: 25em;
+    height: 4.5em;
+    border-radius: 0.625em;
+    border: 1px solid $color-darkpink-2;
+    background-color: #1b1722;
+    font-weight: 200;
+    color: #989798;
   }
 }
 .page.stageContainer {
@@ -127,17 +129,8 @@
     .infoContainer {
       .infoInput {
         margin-bottom: 4em;
-        textarea {
-          resize: none;
-          width: 25em;
-          height: 4.5em;
-          border-radius: 0.625em;
-          background-color: #1b1722;
-          font-weight: 200;
-          color: #989798;
-        }
         .labelContainer {
-          width: 25em;
+          width: 21em;
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
