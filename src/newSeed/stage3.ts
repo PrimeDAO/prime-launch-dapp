@@ -27,9 +27,9 @@ export class Stage3 extends BaseStage {
   proceed(): void {
     let message: string;
     if (!this.seedConfig.tokenDetails.fundingTicker) {
-      message = "Please enter a valid contract address for the Funding Token Address";
+      message = "Please enter a valid address for the Funding Token Address";
     } else if (!this.seedConfig.tokenDetails.seedTicker) {
-      message = "Please enter a valid contract address for the Seed Token Address";
+      message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply.lte(0)) {
       message = "Please enter a non-zero number for Maximum Supply";
@@ -43,7 +43,7 @@ export class Stage3 extends BaseStage {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount.lte(0)) {
         message = `Please enter a non-zero number for category ${tokenDistrb.category} Amount`;
-      } else if (!tokenDistrb.lockup || tokenDistrb.lockup<= 0) {
+      } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for category ${tokenDistrb.category} Lock-up`;
       }
     });
