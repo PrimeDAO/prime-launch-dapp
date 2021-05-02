@@ -52,16 +52,16 @@ export class Stage3 extends BaseStage {
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
     if (type === "fund" && this.seedConfig.tokenDetails.fundingAddress) {
-      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
-        this.seedConfig.tokenDetails.fundingSymbol = (tokeInfo.symbol !== "N/A") ? tokeInfo.symbol : undefined;
-        this.seedConfig.tokenDetails.fundingIcon = (tokeInfo.symbol !== "N/A") ? tokeInfo.icon : undefined;
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
+        this.seedConfig.tokenDetails.fundingSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.fundingIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");
       });
     } else if (type === "seed" && this.seedConfig.tokenDetails.seedAddress) {
-      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokeInfo: ITokenInfo) => {
-        this.seedConfig.tokenDetails.seedSymbol = (tokeInfo.symbol !== "N/A") ? tokeInfo.symbol : undefined;
-        this.seedConfig.tokenDetails.seedIcon = (tokeInfo.symbol !== "N/A") ? tokeInfo.icon : undefined;
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
+        this.seedConfig.tokenDetails.seedSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.seedIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");
       });
