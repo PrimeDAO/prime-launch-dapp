@@ -12,7 +12,7 @@ export class Stage5 extends BaseStage {
     }
     // Check every stage to make sure they are validated
     this.stageState.forEach((stage: {verified: boolean}) => {
-
+        
     });
     if (message) {
       this.validationError(message);
