@@ -10,25 +10,29 @@
         <div class="infoInput ticker">
           <div class="address">
             <label for="fundingAddress">Funding Token Address (ETH)</label>
-            <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" onblur=""></input>
-          </div>
-          <div class="ticker">
-            ${seedConfig.tokenDetails.fundingTicker}
-          </div>
-          <div class="ticekrIcon">
-            <img src.bind="seedConfig.tokenDetails.fundingIcon" />
+            <div class="tickerContainer">
+              <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" blur.trigger="getTokenInfo('fund')"></input>
+              <div class="ticker">
+                ${seedConfig.tokenDetails.fundingTicker}
+              </div>
+              <div>
+                <img src.bind="seedConfig.tokenDetails.fundingIcon" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="infoInput ticker">
           <div class="address">
             <label for="seedAddress">Seed Token Address (ETH)</label>
-            <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress"></input>
-          </div>
-          <div class="ticker">
-            ${seedConfig.tokenDetails.seedTicker}
-          </div>
-          <div class="ticekrIcon">
-            <img srcset.bind="seedConfig.tokenDetails.seedIcon" />
+            <div class="tickerContainer">
+              <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress" blur.trigger="getTokenInfo('seed')"></input>
+              <div class="ticker">
+                ${seedConfig.tokenDetails.seedTicker}
+              </div>
+              <div>
+                <img srcset.bind="seedConfig.tokenDetails.seedIcon" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="infoInput supply">

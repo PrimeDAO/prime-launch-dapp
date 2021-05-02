@@ -144,17 +144,16 @@
     }
   }
   &.stage3 {
-    .infoInput.ticker {
+    .tickerContainer {
       display: flex;
-      flex-flow: row nowrap;
-      .address {
-        flex: 0.8;
-      }
+      align-items: center;
+      gap: 1em;
       .ticker {
-        flex: 0.2;
+        font-family: Inter;
+        color: #989798;
       }
-      .tickerIcon {
-        flex: 0.2;
+      img {
+        height: 2em;
       }
     }
     .infoInput.supply {

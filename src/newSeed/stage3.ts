@@ -1,8 +1,20 @@
+import { autoinject } from "aurelia-framework";
+import { Router } from "aurelia-router";
 import { BigNumber } from "ethers";
 import { BaseStage } from "newSeed/baseStage";
 import { Utils } from "services/utils";
+import { ITokenInfo, TokenService } from "services/TokenService";
+import { EventAggregator } from "aurelia-event-aggregator";
 
+@autoinject
 export class Stage3 extends BaseStage {
+  constructor(
+    eventAggregator: EventAggregator,
+    private tokenService: TokenService,
+    router: Router,
+  ) {
+    super(router, eventAggregator);
+  }
   addTokenDistribution(index:number): void {
     if (index === -1) {
       // Skip check
@@ -15,11 +27,10 @@ export class Stage3 extends BaseStage {
   }
   proceed(): void {
     let message: string;
-    if (!Utils.isValidUrl(this.seedConfig.tokenDetails.fundingAddress, false)) {
-      message = "Please enter a valid url for Project Funding Token Address";
-    }
-    else if (!Utils.isValidUrl(this.seedConfig.tokenDetails.seedAddress, false)) {
-      message = "Please enter a valid url for Seed Token Address";
+    if (!this.seedConfig.tokenDetails.fundingTicker) {
+      message = "Please enter a valid contract address for the Funding Token Address";
+    } else if (!this.seedConfig.tokenDetails.seedTicker) {
+      message = "Please enter a valid contract address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply.lte(0)) {
       message = "Please enter a non-zero number for Maximum Supply";
@@ -45,13 +56,27 @@ export class Stage3 extends BaseStage {
       this.next();
     }
   }
-  getTokenInfo(): void {
-    // this.tokenService.getTokenInfo(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
-    //   this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
-    //   this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
-    // }).catch(_err => {
-    //   // Use error message
-    // });
+  // TODO: Add a loading comp to the view while fetching
+  getTokenInfo(type: string): void {
+    if (type === "fund" && this.seedConfig.tokenDetails.fundingAddress) {
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
+        if (tokeInfo.symbol !== "N/A") {
+          this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
+          this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
+        }
+      }).catch(() => {
+        this.validationError("Could not get token info from the address supplied");
+      });
+    } else if (type === "seed" && this.seedConfig.tokenDetails.seedAddress) {
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokeInfo: ITokenInfo) => {
+        if (type === "seed" && tokeInfo.symbol !== "N/A"){
+          this.seedConfig.tokenDetails.seedTicker = tokeInfo.symbol;
+          this.seedConfig.tokenDetails.seedIcon = tokeInfo.icon;
+        }
+      }).catch(() => {
+        this.validationError("Could not get token info from the address supplied");
+      });
+    }
   }
 
 }
