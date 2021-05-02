@@ -2,7 +2,6 @@ import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { BigNumber } from "ethers";
 import { BaseStage } from "newSeed/baseStage";
-import { Utils } from "services/utils";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 
@@ -39,12 +38,12 @@ export class Stage3 extends BaseStage {
       message = "Please enter a non-zero number for Initial Supply";
     }
     // Check the token distribution
-    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: BigNumber, lockup: BigNumber}) => {
+    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: BigNumber, lockup: number}) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount.lte(0)) {
         message = `Please enter a non-zero number for category ${tokenDistrb.category} Amount`;
-      } else if (!tokenDistrb.lockup || tokenDistrb.lockup.lte(0)) {
+      } else if (!tokenDistrb.lockup || tokenDistrb.lockup<= 0) {
         message = `Please enter a non-zero number for category ${tokenDistrb.category} Lock-up`;
       }
     });
@@ -63,6 +62,9 @@ export class Stage3 extends BaseStage {
         if (tokeInfo.symbol !== "N/A") {
           this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
           this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
+        } else {
+          this.seedConfig.tokenDetails.fundingTicker = undefined;
+          this.seedConfig.tokenDetails.fundingIcon = undefined;
         }
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");
@@ -72,6 +74,9 @@ export class Stage3 extends BaseStage {
         if (type === "seed" && tokeInfo.symbol !== "N/A"){
           this.seedConfig.tokenDetails.seedTicker = tokeInfo.symbol;
           this.seedConfig.tokenDetails.seedIcon = tokeInfo.icon;
+        } else {
+          this.seedConfig.tokenDetails.seedTicker = undefined;
+          this.seedConfig.tokenDetails.seedIcon = undefined;
         }
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");

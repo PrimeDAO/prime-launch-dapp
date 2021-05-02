@@ -22,9 +22,25 @@ export interface ITokenDetails {
   seedAddress: string,
   seedTicker: string,
   seedIcon: string,
+  /**
+   * In wei
+   */
   maxSupply: BigNumber,
+  /**
+   * In wei
+   */
   initSupply: BigNumber,
-  tokenDistrib: Array<{category: string, amount: BigNumber, lockup:BigNumber}>
+  tokenDistrib: Array<{
+    category: string,
+    /**
+     * In wei
+     */
+    amount: BigNumber,
+    /**
+     * In days
+     */
+    lockup: number
+  }>
 }
 
 export interface ISeedConfig {
