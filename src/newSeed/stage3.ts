@@ -14,21 +14,15 @@ export class Stage3 extends BaseStage {
   ) {
     super(router, eventAggregator);
   }
-  addTokenDistribution(index:number): void {
-    if (index === -1) {
-      // Skip check
-      // Create a new custom link object
-      this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
-    } else {
-      // Create a new custom link object
-      this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
-    }
+  addTokenDistribution(): void {
+    // Create a new custom link object
+    this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
   proceed(): void {
     let message: string;
-    if (!this.seedConfig.tokenDetails.fundingTicker) {
+    if (!this.seedConfig.tokenDetails.fundingSymbol) {
       message = "Please enter a valid address for the Funding Token Address";
-    } else if (!this.seedConfig.tokenDetails.seedTicker) {
+    } else if (!this.seedConfig.tokenDetails.seedSymbol) {
       message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply.lte(0)) {
@@ -42,9 +36,9 @@ export class Stage3 extends BaseStage {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount.lte(0)) {
-        message = `Please enter a non-zero number for category ${tokenDistrb.category} Amount`;
+        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Amount`;
       } else if (!(tokenDistrb.lockup > 0)) {
-        message = `Please enter a non-zero number for category ${tokenDistrb.category} Lock-up`;
+        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
     if (message) {
@@ -59,25 +53,15 @@ export class Stage3 extends BaseStage {
   getTokenInfo(type: string): void {
     if (type === "fund" && this.seedConfig.tokenDetails.fundingAddress) {
       this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
-        if (tokeInfo.symbol !== "N/A") {
-          this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
-          this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
-        } else {
-          this.seedConfig.tokenDetails.fundingTicker = undefined;
-          this.seedConfig.tokenDetails.fundingIcon = undefined;
-        }
+        this.seedConfig.tokenDetails.fundingSymbol = (tokeInfo.symbol !== "N/A") ? tokeInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.fundingIcon = (tokeInfo.symbol !== "N/A") ? tokeInfo.icon : undefined;
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");
       });
     } else if (type === "seed" && this.seedConfig.tokenDetails.seedAddress) {
       this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokeInfo: ITokenInfo) => {
-        if (type === "seed" && tokeInfo.symbol !== "N/A"){
-          this.seedConfig.tokenDetails.seedTicker = tokeInfo.symbol;
-          this.seedConfig.tokenDetails.seedIcon = tokeInfo.icon;
-        } else {
-          this.seedConfig.tokenDetails.seedTicker = undefined;
-          this.seedConfig.tokenDetails.seedIcon = undefined;
-        }
+        this.seedConfig.tokenDetails.seedSymbol = (tokeInfo.symbol !== "N/A") ? tokeInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.seedIcon = (tokeInfo.symbol !== "N/A") ? tokeInfo.icon : undefined;
       }).catch(() => {
         this.validationError("Could not get token info from the address supplied");
       });

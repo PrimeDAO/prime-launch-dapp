@@ -13,7 +13,7 @@
             <div class="tickerContainer">
               <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" blur.trigger="getTokenInfo('fund')"></input>
               <div class="ticker">
-                ${seedConfig.tokenDetails.fundingTicker}
+                ${seedConfig.tokenDetails.fundingSymbol}
               </div>
               <div>
                 <img src.bind="seedConfig.tokenDetails.fundingIcon" />
@@ -27,10 +27,10 @@
             <div class="tickerContainer">
               <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress" blur.trigger="getTokenInfo('seed')"></input>
               <div class="ticker">
-                ${seedConfig.tokenDetails.seedTicker}
+                ${seedConfig.tokenDetails.seedSymbol}
               </div>
               <div>
-                <img srcset.bind="seedConfig.tokenDetails.seedIcon" />
+                <img src.bind="seedConfig.tokenDetails.seedIcon" />
               </div>
             </div>
           </div>
@@ -80,8 +80,7 @@
             </template>
             <div
             class="addLink"
-            click.delegate="addTokenDistribution($index)"
-          >
+            click.delegate="addTokenDistribution()">
             <a>+ Add Row</a>
           </div>
         </div>

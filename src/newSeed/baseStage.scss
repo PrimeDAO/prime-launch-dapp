@@ -2,7 +2,6 @@
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
-  font-size: 1rem;
   font-family: Inter;
   background-color: $color-black-3;
   border: 1px solid $color-darkpink-2;
@@ -30,15 +29,15 @@
     column-gap: 3em;
     font-weight: bold;
     margin-top: 5em;
+    .stageButton {
+      display: flex;
+      align-items: center;
+    }
     .cancel {
       cursor: pointer;
       color: $color-orange;
       font-family: Inter;
     }
-  }
-  .stageButton {
-    display: flex;
-    align-items: center;
   }
   label {
     display: block;
@@ -47,15 +46,13 @@
     color: $color-white;
   }
   input {
-    width: 26em;
+    width: 25em;
     height: 2.7em;
-    background-color: #1b1722;
     border: 1px solid $color-darkpink-2;
-    border-radius: 0.6em;
-    font-size: 1.1em;
+    border-radius: 16px;
+    font-size: 18px;
     color: #989798;
-    font-weight: 200;
-    font-family: Inter;
+    font-weight: normal;
   }
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -88,7 +85,7 @@
     border-radius: 0.625em;
     border: 1px solid $color-darkpink-2;
     background-color: #1b1722;
-    font-weight: 200;
+    font-weight: normal;
     color: #989798;
   }
 }
@@ -121,9 +118,6 @@
           .deleteLink {
             cursor: pointer;
             justify-self: flex-end;
-            i {
-              font-family: "Font Awesome\ 5 Free";
-            }
           }
           .addLink {
             cursor: pointer;
@@ -178,7 +172,7 @@
         justify-content: space-around;
         flex-flow: row nowrap;
         font-size: 0.9em;
-        font-weight: 200;
+        font-weight: normal;
         line-height: 2em;
       }
       .distribRow {
