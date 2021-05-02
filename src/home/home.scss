@@ -34,7 +34,10 @@
 
         .contribute,
         .launch {
-          border-left: 4px solid $color-darkblue;
+          border-left-width: 4px;
+          border-left-style: solid;
+          border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
+
           padding-left: 12px;
           padding-top: 6px;
           padding-bottom: 6px;
@@ -82,6 +85,7 @@
       .emailColumn {
         .form {
           display: flex;
+          margin-bottom: 4px;
 
           .emailInput {
             flex-grow: 2;
@@ -91,6 +95,8 @@
           .notifyButton {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
+            border-top-right-radius: $input-border-radius;
+            border-bottom-right-radius: $input-border-radius;
           }
         }
 
