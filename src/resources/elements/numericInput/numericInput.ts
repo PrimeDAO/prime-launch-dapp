@@ -1,9 +1,9 @@
 import {
   autoinject,
-  bindable,
   bindingMode,
   computedFrom,
 } from "aurelia-framework";
+import { bindable } from "aurelia-typed-observable-plugin";
 import { BigNumber } from "ethers";
 import { formatEther, parseEther } from "ethers/lib/utils";
 import { NumberService } from "services/numberService";
@@ -11,7 +11,7 @@ import { NumberService } from "services/numberService";
 @autoinject
 export class NumericInput {
 
-  @bindable({ defaultBindingMode: bindingMode.oneTime }) public decimal = true;
+  @bindable.booleanAttr public decimal = true;
   @bindable public css?: string;
   @bindable({ defaultBindingMode: bindingMode.oneTime }) public id?: string;
   /**
@@ -33,7 +33,7 @@ export class NumericInput {
   /**
    * if true then value is converted from wei to eth for editing
    */
-  @bindable({ defaultBindingMode: bindingMode.oneTime }) public isWei?: boolean = true;
+  @bindable.booleanAttr public isWei?: boolean = true;
   @bindable public placeholder = "";
 
   private element: HTMLInputElement;
