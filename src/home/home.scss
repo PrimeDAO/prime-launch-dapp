@@ -18,6 +18,13 @@
 
     &.top {
       width: 55%;
+
+      .moonshot {
+        position: absolute;
+        right: 0;
+        z-index: -1;
+      }
+
       .title {
         white-space: normal;
         color: $color-light-purple;
@@ -37,6 +44,8 @@
           border-left-width: 4px;
           border-left-style: solid;
           border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
+          border-top-right-radius: 6px;
+          border-bottom-right-radius: 6px;
 
           padding-left: 12px;
           padding-top: 6px;
