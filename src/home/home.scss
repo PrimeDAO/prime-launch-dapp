@@ -37,7 +37,9 @@
 
       .buttons {
         display: flex;
+        justify-content: space-between;
         cursor: pointer;
+        width: 710px;
 
         .contribute,
         .launch {
@@ -46,16 +48,16 @@
           border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
           border-top-right-radius: 6px;
           border-bottom-right-radius: 6px;
+          background-color: $BG02;
 
-          padding-left: 12px;
-          padding-top: 6px;
-          padding-bottom: 6px;
-          width: 200px;
+          padding: 18px;
+          padding-right: 24px;
 
           .title {
             display: flex;
             justify-content: space-between;
             color: $color-white;
+            margin-bottom: 16px;
 
             .header {
               font-weight: bold;
@@ -63,6 +65,18 @@
               white-space: nowrap;
               padding-right: 16px;
             }
+
+            .arrow {
+              font-size: 28px;
+            }
+          }
+
+          .subtitle {
+            color: $Neutral03;
+            font-size: 16px;
+            font-family: Aeonik;
+            mix-blend-mode: normal;
+            opacity: 0.8;
           }
         }
 
