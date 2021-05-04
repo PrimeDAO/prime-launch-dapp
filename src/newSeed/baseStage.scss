@@ -1,66 +1,90 @@
 @import "styles/colors";
 // This styles are common to all the stages components
 // Theme for the stages
-@mixin stageTheme {
-  * {
-    font-size: 1rem;
+.infoContainer {
+  font-family: Inter;
+  background-color: $color-black-3;
+  border: 1px solid $Border01;
+  border-radius: 1.5em;
+  padding: 2em;
+  min-width: 40rem;
+  .title {
+    font-size: 1.625em;
+    color: $color-white;
+    line-height: 2em;
+    font-weight: bold;
   }
-  .infoContainer {
-    background-color: $color-black-3;
-    border: 1px solid $color-darkpink-2;
-    border-radius: 1.5em;
-    padding: 2em;
-    min-width: 40rem;
-    .title {
-      font-size: 1.625em;
-      color: $color-white;
-      line-height: 2em;
-      font-weight: bold;
+  .subtext {
+    line-height: 1.5em;
+    font-size: 1em;
+    color: $muted-text-color;
+    margin-bottom: 5em;
+  }
+  .infoInput {
+    margin-bottom: 2em;
+    > textarea {
+      resize: none;
+      width: 25em;
+      height: 4.5em;
+      color: $Neutral02;
+      border: 1px solid $Border01;
     }
-    .subtext {
-      line-height: 1.5em;
-      font-size: 1em;
-      color: #dcdae5;
-      margin-bottom: 5em;
-    }
-    .infoInput {
-      margin-bottom: 2em;
-    }
-    .buttonContainer {
+  }
+  .buttonContainer {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 3em;
+    margin-top: 5em;
+    .stageButton {
       display: flex;
-      flex-flow: row wrap;
       align-items: center;
-      column-gap: 3em;
-      font-weight: bold;
-      margin-top: 5em;
-
-      .cancel {
-        color: $color-orange;
-        font-family: Inter;
-      }
     }
-    label {
-      display: block;
-      font-size: 1.1em;
-      line-height: 2em;
-      color: $color-white;
+    .cancel {
+      cursor: pointer;
+      color: $color-orange;
+      font-family: Inter;
     }
-    input {
-      width: 26em;
-      height: 2.7em;
-      border: 1px solid $color-darkpink-2;
-    }
-    a {
-      color: #989798;
-      text-decoration: underline;
+  }
+  label {
+    display: block;
+    font-size: 1.1em;
+    line-height: 2em;
+    color: $color-white;
+  }
+  input {
+    width: 25em;
+    height: 2.7em;
+    border: 1px solid $Border01;
+    color: $Neutral02;
+  }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  a {
+    color: $Neutral02;
+    text-decoration: underline;
+  }
+  .labeledQuestion {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+    .questionMark {
+      width: 1.3em;
+      height: 1.3em;
+      align-self: center;
     }
   }
 }
 .page.stageContainer {
-  @include stageTheme();
   &.stage1 {
     .infoContainer {
-      width: 100%;
       .infoInput {
         .optional {
           padding-left: 0.3em;
@@ -107,23 +131,58 @@
     .infoContainer {
       .infoInput {
         margin-bottom: 4em;
-        textarea {
-          resize: none;
-          width: 25em;
-          height: 4.5em;
-          border-radius: 0.625em;
-          background-color: #1b1722;
-          font-weight: 200;
-          color: #989798;
-        }
         .labelContainer {
-          width: 25em;
+          width: 21em;
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
-          color: #989798;
+          color: $Neutral02;
         }
       }
+    }
+  }
+  &.stage3 {
+    .tickerContainer {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      .ticker {
+        font-family: Inter;
+        color: $Neutral02;
+      }
+      img {
+        height: 2em;
+      }
+    }
+    .infoInput.supply {
+      input {
+        width: 10em;
+      }
+    }
+    .tokenDistribution {
+      .columnHeaders {
+        display: flex;
+        justify-content: space-around;
+        flex-flow: row nowrap;
+        font-size: 0.9em;
+        font-weight: normal;
+        line-height: 2em;
+      }
+      .distribRow {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        justify-content: space-around;
+        input {
+          text-align: right;
+        }
+        input.textInput {
+          text-align: center;
+        }
+      }
+    }
+    .addLink {
+      cursor: pointer;
     }
   }
 }
