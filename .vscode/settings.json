@@ -8,5 +8,5 @@
   },
   "files.eol": "\n",
   "editor.wordWrapColumn": 150,
-  "html.format.wrapLineLength": 0
+  "html.format.wrapLineLength": 100
 }
