@@ -4,7 +4,7 @@
 .infoContainer {
   font-family: Inter;
   background-color: $color-black-3;
-  border: 1px solid $color-darkpink-2;
+  border: 1px solid $Border01;
   border-radius: 1.5em;
   padding: 2em;
   min-width: 40rem;
@@ -17,7 +17,7 @@
   .subtext {
     line-height: 1.5em;
     font-size: 1em;
-    color: #dcdae5;
+    color: $muted-text-color;
     margin-bottom: 5em;
   }
   .infoInput {
@@ -47,8 +47,8 @@
   input {
     width: 25em;
     height: 2.7em;
-    border: 1px solid $color-darkpink-2;
-    color: #989798;
+    border: 1px solid $Border01;
+    color: $Neutral02;
   }
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -61,7 +61,7 @@
     -moz-appearance: textfield;
   }
   a {
-    color: #989798;
+    color: $Neutral02;
     text-decoration: underline;
   }
   .labeledQuestion {
@@ -79,10 +79,10 @@
     width: 25em;
     height: 4.5em;
     border-radius: 0.625em;
-    border: 1px solid $color-darkpink-2;
-    background-color: #1b1722;
+    border: 1px solid $Border01;
+    background-color: $BG01;
     font-weight: normal;
-    color: #989798;
+    color: $Neutral02;
   }
 }
 .page.stageContainer {
@@ -139,7 +139,7 @@
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
-          color: #989798;
+          color: $Neutral02;
         }
       }
     }
@@ -151,7 +151,7 @@
       gap: 1em;
       .ticker {
         font-family: Inter;
-        color: #989798;
+        color: $Neutral02;
       }
       img {
         height: 2em;
