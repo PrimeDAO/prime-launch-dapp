@@ -30,15 +30,38 @@ html {
       font-weight: normal;
       font-size: 16px;
       line-height: 33px;
-      border: $input-border;
-      background: #1b1722;
-      color: $color-white;
+      border: 1px solid $input-border;
+      background: $BG01;
+      color: $White;
       border-radius: $input-border-radius;
       outline: none;
       padding: 0 12px;
 
       &::placeholder {
-        color: #dcdae5;
+        color: $Neutral03;
+        mix-blend-mode: normal;
+        opacity: 0.43;
+      }
+      &:focus::placeholder {
+        color: transparent;
+      }
+    }
+
+    textarea {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 33px;
+      border-radius: 10px;
+      background-color: $BG01;
+      border: 1px solid $input-border;
+      color: $White;
+      outline: none;
+      padding: 0 12px;
+
+      &::placeholder {
+        color: $Neutral03;
         mix-blend-mode: normal;
         opacity: 0.43;
       }
