@@ -2,7 +2,6 @@ import { DisposableCollection } from "./../services/DisposableCollection";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
-import { bindable } from "aurelia-typed-observable-plugin";
 import { Address } from "services/EthereumService";
 import "./seedDashboard.scss";
 import { Seed } from "entities/Seed";
@@ -14,7 +13,7 @@ import { NumberService } from "services/numberService";
 
 @autoinject
 export class SeedDashboard {
-  @bindable address: Address;
+  address: Address;
 
   subscriptions: DisposableCollection = new DisposableCollection();
 
@@ -23,6 +22,9 @@ export class SeedDashboard {
   seedTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
   seedTokenToPay: BigNumber;
+  progressBar: HTMLElement;
+  bar: HTMLElement;
+  fractionComplete: number;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -46,10 +48,13 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
+    return this.load();
   }
 
-  attached(): Promise<void> {
-    return this.load();
+  attached(): void {
+    this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+      this.numberService.fromString(fromWei(this.seed.target));
+    this.bar.style.width = `${this.progressBar.clientWidth * this.fractionComplete}px`;
   }
 
   async load(): Promise<void> {
@@ -70,6 +75,7 @@ export class SeedDashboard {
         }
         await this.seed.ensureInitialized();
       }
+
       await this.hydrateUserData();
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));

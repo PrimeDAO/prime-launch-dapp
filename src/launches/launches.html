@@ -4,7 +4,7 @@
       <div class="title heading heading1">Featured</div>
       <div class="launches">
         <horizontal-scroller item-count.to-view="seeds.length">
-          <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
+          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
         </horizontal-scroller>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="page animated-page au-animate seedDashboardContainer">
-    <div if.to-view="!loading" class="seedDashboard">
+    <div show.to-view="!loading" class="seedDashboard">
       <div class="leftColumn">
         <div class="intro">
           <div class="leftSection">
@@ -121,28 +121,38 @@
             <div class="name">${seed.seedTokenInfo.name}</div>
             <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
           </div>
-          <div class="progressBar">&nbsp;</div>
+          <div ref="progressBar" class="progressBar">
+            <div ref="bar" class="bar">&nbsp;</div>
+          </div>
           <div class="raised">
-            <div class="amount">$ 834,205</div>
+            <div class="amount">$<formatted-number
+                value.to-view="amountRaised | ethwei"
+                thousands-separated></formatted-number>
+            </div>
             <div class="denomination">USD raised</div>
-            <div class="perc">60%</div>
+            <div class="perc">
+              <formatted-number
+                value.to-view="fractionComplete * 100"
+                average="false"
+                mantissa="2"></formatted-number>%
+            </div>
           </div>
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class=" value target">$ 1.5M</div>
+          <div class="value target">$ 1.5M</div>
           <div class="label maxLabel">MAX</div>
-          <div class=" value max">$ 2.5M</div>
+          <div class="value max">$ 2.5M</div>
           <div class="label valuationLabel">VALUATION</div>
-          <div class=" value valuation">$ 18M</div>
+          <div class="value valuation">$ 18M</div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
-          <div class=" value tokensleft">76%</div>
+          <div class="value tokensleft">76%</div>
           <div class="label seedpriceLabel">SEED PRICE</div>
-          <div class=" value seedprice">$ 3.14</div>
+          <div class="value seedprice">$ 3.14</div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
           </div>
-          <div class=" value tokenprice">1 KOL = 10 DAI</div>
+          <div class="value tokenprice">1 KOL = 10 DAI</div>
         </div>
         <div class="section bottomSection">
           <div class="title  heading heading3">About Kolektivo</div>

@@ -242,29 +242,42 @@
       .topSection {
         .tokenId {
           display: flex;
-          margin-bottom: 0.8em;
+          margin-bottom: 13px;
+          font-family: Inter;
+          font-weight: bold;
+          font-size: 24px;
+          line-height: 29px;
 
           > div {
-            margin-right: 4px;
+            margin-right: 10px;
           }
 
           .icon {
             img {
               @include tokenIcon;
+              width: 24px;
             }
           }
         }
 
         .progressBar {
-          width: 200px;
-          height: 1em;
+          background-color: $BG02;
+          width: 100%;
+          height: 23px;
           border-radius: 10px;
-          background: $standard-gradient;
-          margin-bottom: 0.8em;
+          margin-bottom: 13px;
+
+          .bar {
+            border-radius: 10px;
+            background: $Gradient01;
+          }
         }
 
         .raised {
           display: flex;
+          font-family: Inter;
+          font-size: 24px;
+          line-height: 29px;
 
           .amount {
             margin-right: 8px;
@@ -272,9 +285,9 @@
           }
 
           .denomination {
-            font-size: 0.8em;
-            color: $color-grey-4;
             align-self: flex-end;
+            font-size: 18px;
+            line-height: 22px;
           }
 
           .perc {
@@ -287,7 +300,7 @@
       .middleSection {
         display: grid;
         grid-template-columns: auto auto auto;
-        grid-template-rows: auto auto auto auto;
+        grid-template-rows: auto 40% auto auto;
         grid-template-areas:
           "targetLabel maxLabel valuationLabel"
           "target max valuation"
@@ -295,12 +308,20 @@
           "tokensleft seedprice tokenprice";
 
         .label {
-          font-size: 0.75em;
-          color: $color-grey-4;
+          font-size: 14px;
+          line-height: 24px;
+          font-weight: bold;
+          text-transform: uppercase;
+          color: $Neutral03;
+          opacity: 0.4;
         }
 
         .value {
-          color: $muted-text-color;
+          font-family: Inter;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 28px;
+          @include standardTextGradient;
         }
 
         .targetLabel {
@@ -309,7 +330,6 @@
 
         .target {
           grid-area: target;
-          margin-bottom: 1em;
         }
 
         .maxLabel {
@@ -318,7 +338,6 @@
 
         .max {
           grid-area: max;
-          margin-bottom: 1em;
         }
 
         .valuationLabel {
@@ -327,7 +346,6 @@
 
         .valuation {
           grid-area: valuation;
-          margin-bottom: 1em;
         }
 
         .tokensleftLabel {
@@ -352,6 +370,8 @@
 
         .tokenprice {
           grid-area: tokenprice;
+          font-size: 14px;
+          line-height: 17px;
         }
       }
 
