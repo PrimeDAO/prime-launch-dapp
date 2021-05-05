@@ -43,10 +43,16 @@ export interface ITokenDetails {
   }>
 }
 
+export interface IContactDetails {
+  contactEmail: string,
+  remarks: string
+}
+
 export interface ISeedConfig {
   general: IGeneral,
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
+  contactDetails: IContactDetails,
 }
 
 export class SeedConfig implements ISeedConfig {
@@ -61,4 +67,7 @@ export class SeedConfig implements ISeedConfig {
   public tokenDetails = {
     tokenDistrib: [],
   } as ITokenDetails;
+  public contactDetails={
+    remarks: "",
+  } as IContactDetails;
 }
