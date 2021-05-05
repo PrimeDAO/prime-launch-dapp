@@ -208,11 +208,11 @@
       .infoInput {
         margin-bottom: 4em;
         .labelContainer {
-          width: 25em;
+          width: 21em;
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
-          color: #989798;
+          color: $Neutral02;
         }
       }
       .inputFileLabel {
@@ -234,6 +234,50 @@
       input[type="file"] {
         display: none;
       }
+    }
+  }
+  &.stage3 {
+    .tickerContainer {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      .ticker {
+        font-family: Inter;
+        color: $Neutral02;
+      }
+      img {
+        height: 2em;
+      }
+    }
+    .infoInput.supply {
+      input {
+        width: 10em;
+      }
+    }
+    .tokenDistribution {
+      .columnHeaders {
+        display: flex;
+        justify-content: space-around;
+        flex-flow: row nowrap;
+        font-size: 0.9em;
+        font-weight: normal;
+        line-height: 2em;
+      }
+      .distribRow {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        justify-content: space-around;
+        input {
+          text-align: right;
+        }
+        input.textInput {
+          text-align: center;
+        }
+      }
+    }
+    .addLink {
+      cursor: pointer;
     }
   }
 }
