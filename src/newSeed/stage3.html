@@ -10,25 +10,29 @@
         <div class="infoInput ticker">
           <div class="address">
             <label for="fundingAddress">Funding Token Address (ETH)</label>
-            <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" onblur=""></input>
-          </div>
-          <div class="ticker">
-            ${seedConfig.tokenDetails.fundingTicker}
-          </div>
-          <div class="ticekrIcon">
-            <img src.bind="seedConfig.tokenDetails.fundingIcon" />
+            <div class="tickerContainer">
+              <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" blur.trigger="getTokenInfo('fund')"></input>
+              <div class="ticker">
+                ${seedConfig.tokenDetails.fundingSymbol}
+              </div>
+              <div>
+                <img src.bind="seedConfig.tokenDetails.fundingIcon" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="infoInput ticker">
           <div class="address">
             <label for="seedAddress">Seed Token Address (ETH)</label>
-            <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress"></input>
-          </div>
-          <div class="ticker">
-            ${seedConfig.tokenDetails.seedTicker}
-          </div>
-          <div class="ticekrIcon">
-            <img srcset.bind="seedConfig.tokenDetails.seedIcon" />
+            <div class="tickerContainer">
+              <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress" blur.trigger="getTokenInfo('seed')"></input>
+              <div class="ticker">
+                ${seedConfig.tokenDetails.seedSymbol}
+              </div>
+              <div>
+                <img src.bind="seedConfig.tokenDetails.seedIcon" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="infoInput supply">
@@ -59,7 +63,7 @@
           <div class="columnHeaders" if.bind="seedConfig.tokenDetails.tokenDistrib.length > 0">
               <div>Category</div>
               <div>Amount</div>
-              <div>Lockup-up (m)</div>
+              <div>Lockup-up (days)</div>
           </div>
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
             <div class="distribRow">
@@ -70,21 +74,20 @@
                 <numeric-input type="number" value.bind="distrib.amount" placeholder="0" class="numberInput"></numeric-input>
               </div>
               <div  class="infoInput supply numberInput" value.bind="distrib.lockup">
-                <numeric-input type="text" value.bind="distrib.lockup" placeholder="0" class="numberInput">
+                <input type="number" value.bind="distrib.lockup" placeholder="0" class="numberInput">
               </div>
             </div>
             </template>
             <div
             class="addLink"
-            click.delegate="addTokenDistribution($index)"
-          >
+            click.delegate="addTokenDistribution()">
             <a>+ Add Row</a>
           </div>
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="button buttonTr stageButton" click.delegate="back()">PREVIOUS</div>
-        <div class="button buttonBw stageButton" click.delegate="proceed()">NEXT</div>
+        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

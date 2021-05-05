@@ -3,7 +3,7 @@
     <div class="infoContainer">
       <div class="heading heading3 title">Project Details</div>
       <div class="subtext">Description of your project and team.</div>
-      <div>
+     
         <div class="infoInput">
           <div class="labelContainer">
             <label for="projSummary">Project Summary</label>
@@ -11,19 +11,17 @@
               ${seedConfig.projectDetails.summary.length}/150
             </span>
           </div>
-          <div>
             <textarea
               id="projSummary"
               value.bind="seedConfig.projectDetails.summary"
               maxlength="150"
             ></textarea>
-          </div>
         </div>
         <div class="infoInput">
           <div class="labelContainer">
             <label for="valueProp">Value Proposition</label>
-            <span value.from-view="seedConfig.projectDetails.proposition"
-              >${seedConfig.projectDetails.proposition.length}/150
+            <span value.from-view="seedConfig.projectDetails.proposition">
+              ${seedConfig.projectDetails.proposition.length}/150
             </span>
           </div>
           <textarea
@@ -47,12 +45,10 @@
           >
           </textarea>
         </div>
-      </div>
+     
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
-        <div class="stageButton proceed button1" click.delegate="proceed()">
-          NEXT
-        </div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

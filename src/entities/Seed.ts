@@ -30,6 +30,7 @@ export class Seed {
   public vestingDuration: number;
   public vestingCliff: number;
   public minimumReached: boolean;
+  public amountRaised: BigNumber;
 
   public seedTokenAddress: Address;
   public seedTokenInfo: ITokenInfo;
@@ -128,6 +129,8 @@ export class Seed {
 
             this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
             this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+
+            this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
 
             await this.hydrateUser();
 

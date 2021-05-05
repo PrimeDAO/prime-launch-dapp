@@ -1,25 +1,29 @@
+import { autoinject } from "aurelia-framework";
+import { Router } from "aurelia-router";
 import { BigNumber } from "ethers";
 import { BaseStage } from "newSeed/baseStage";
-import { Utils } from "services/utils";
+import { ITokenInfo, TokenService } from "services/TokenService";
+import { EventAggregator } from "aurelia-event-aggregator";
 
+@autoinject
 export class Stage3 extends BaseStage {
-  addTokenDistribution(index:number): void {
-    if (index === -1) {
-      // Skip check
-      // Create a new custom link object
-      this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
-    } else {
-      // Create a new custom link object
-      this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
-    }
+  constructor(
+    eventAggregator: EventAggregator,
+    private tokenService: TokenService,
+    router: Router,
+  ) {
+    super(router, eventAggregator);
+  }
+  addTokenDistribution(): void {
+    // Create a new custom link object
+    this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
   proceed(): void {
     let message: string;
-    if (!Utils.isValidUrl(this.seedConfig.tokenDetails.fundingAddress, false)) {
-      message = "Please enter a valid url for Project Funding Token Address";
-    }
-    else if (!Utils.isValidUrl(this.seedConfig.tokenDetails.seedAddress, false)) {
-      message = "Please enter a valid url for Seed Token Address";
+    if (!this.seedConfig.tokenDetails.fundingSymbol) {
+      message = "Please enter a valid address for the Funding Token Address";
+    } else if (!this.seedConfig.tokenDetails.seedSymbol) {
+      message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply.lte(0)) {
       message = "Please enter a non-zero number for Maximum Supply";
@@ -28,13 +32,13 @@ export class Stage3 extends BaseStage {
       message = "Please enter a non-zero number for Initial Supply";
     }
     // Check the token distribution
-    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: BigNumber, lockup: BigNumber}) => {
+    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: BigNumber, lockup: number}) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount.lte(0)) {
-        message = `Please enter a non-zero number for category ${tokenDistrb.category} Amount`;
-      } else if (!tokenDistrb.lockup || tokenDistrb.lockup.lte(0)) {
-        message = `Please enter a non-zero number for category ${tokenDistrb.category} Lock-up`;
+        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Amount`;
+      } else if (!(tokenDistrb.lockup > 0)) {
+        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
     if (message) {
@@ -45,13 +49,23 @@ export class Stage3 extends BaseStage {
       this.next();
     }
   }
-  getTokenInfo(): void {
-    // this.tokenService.getTokenInfo(this.seedConfig.tokenDetails.fundingAddress).then((tokeInfo: ITokenInfo) => {
-    //   this.seedConfig.tokenDetails.fundingTicker = tokeInfo.symbol;
-    //   this.seedConfig.tokenDetails.fundingIcon = tokeInfo.icon;
-    // }).catch(_err => {
-    //   // Use error message
-    // });
+  // TODO: Add a loading comp to the view while fetching
+  getTokenInfo(type: string): void {
+    if (type === "fund" && this.seedConfig.tokenDetails.fundingAddress) {
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
+        this.seedConfig.tokenDetails.fundingSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.fundingIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+      }).catch(() => {
+        this.validationError("Could not get token info from the address supplied");
+      });
+    } else if (type === "seed" && this.seedConfig.tokenDetails.seedAddress) {
+      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
+        this.seedConfig.tokenDetails.seedSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+        this.seedConfig.tokenDetails.seedIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+      }).catch(() => {
+        this.validationError("Could not get token info from the address supplied");
+      });
+    }
   }
 
 }

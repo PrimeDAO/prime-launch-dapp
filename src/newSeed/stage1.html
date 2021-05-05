@@ -55,7 +55,7 @@
             </div>
             <div
               class="addLink"
-              click.delegate="addCustomLinks($index)"
+              click.delegate="addCustomLinks()"
               if.bind="$index == seedConfig.general.customLinks.length - 1"
             >
               <a>+ Add link</a>
@@ -72,9 +72,7 @@
       </div>
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
-        <div class="stageButton proceed button1" click.delegate="proceed()">
-          NEXT
-        </div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

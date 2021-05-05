@@ -131,6 +131,11 @@ export class SeedService {
     return this.initializedPromise;
   }
 
+  public featuredSeeds(): Array<Seed> {
+    return [this.seedsArray[this.seedsArray.length - 3],
+      this.seedsArray[this.seedsArray.length - 2],
+      this.seedsArray[this.seedsArray.length - 1]];
+  }
   // public async deploySeed(params: IDeploySeedParams): Promise<TransactionReceipt> {
   //   const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
 

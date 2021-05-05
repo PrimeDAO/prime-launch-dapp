@@ -17,14 +17,30 @@ export interface IProjectDetails {
 
 export interface ITokenDetails {
   fundingAddress: string,
-  fundingTicker: string,
+  fundingSymbol: string,
   fundingIcon: string,
   seedAddress: string,
-  seedTicker: string,
+  seedSymbol: string,
   seedIcon: string,
+  /**
+   * In wei
+   */
   maxSupply: BigNumber,
+  /**
+   * In wei
+   */
   initSupply: BigNumber,
-  tokenDistrib: Array<{category: string, amount: BigNumber, lockup:BigNumber}>
+  tokenDistrib: Array<{
+    category: string,
+    /**
+     * In wei
+     */
+    amount: BigNumber,
+    /**
+     * In days
+     */
+    lockup: number
+  }>
 }
 
 export interface IContactDetails {

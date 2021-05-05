@@ -2,10 +2,9 @@
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
-  font-size: 1rem;
   font-family: Inter;
   background-color: $color-black-3;
-  border: 1px solid $color-darkpink-2;
+  border: 1px solid $Border01;
   border-radius: 1.5em;
   padding: 2em;
   min-width: 40rem;
@@ -18,19 +17,30 @@
   .subtext {
     line-height: 1.5em;
     font-size: 1em;
-    color: #dcdae5;
+    color: $muted-text-color;
     margin-bottom: 5em;
   }
   .infoInput {
     margin-bottom: 2em;
+    > textarea {
+      resize: none;
+      width: 25em;
+      height: 4.5em;
+      color: $Neutral02;
+      border: 1px solid $Border01;
+    }
   }
   .buttonContainer {
     display: flex;
     flex-flow: row wrap;
     column-gap: 3em;
-    font-weight: bold;
     margin-top: 5em;
+    .stageButton {
+      display: flex;
+      align-items: center;
+    }
     .cancel {
+      cursor: pointer;
       color: $color-orange;
       font-family: Inter;
     }
@@ -46,22 +56,27 @@
     color: $color-white;
   }
   input {
-    width: 22em;
-    height: 2.4em;
-    background-color: #1b1722;
-    border: 1px solid $color-darkpink-2;
-    border-radius: 0.6em;
-    font-size: 1.1em;
-    color: #989798;
-    font-weight: 200;
-    font-family: Inter;
+    width: 25em;
+    height: 2.7em;
+    border: 1px solid $Border01;
+    color: $Neutral02;
+  }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
   textarea {
     resize: none;
     width: 25em;
     height: 4.5em;
     border-radius: 0.625em;
-    border: 1px solid $color-darkpink-2;
+    border: 1px solid $Border01;
     background-color: #1b1722;
     font-size: 1em;
     font-family: Inter;
@@ -69,7 +84,7 @@
     color: #989798;
   }
   a {
-    color: #989798;
+    color: $Neutral02;
     text-decoration: underline;
   }
   .labeledQuestion {
@@ -112,9 +127,6 @@
           .deleteLink {
             cursor: pointer;
             justify-self: flex-end;
-            i {
-              font-family: "Font Awesome\ 5 Free";
-            }
           }
           .addLink {
             cursor: pointer;
@@ -140,23 +152,22 @@
           display: flex;
           justify-content: space-between;
           flex-flow: row nowrap;
-          color: #989798;
+          color: $Neutral02;
         }
       }
     }
   }
   &.stage3 {
-    .infoInput.ticker {
+    .tickerContainer {
       display: flex;
-      flex-flow: row nowrap;
-      .address {
-        flex: 0.8;
-      }
+      align-items: center;
+      gap: 1em;
       .ticker {
-        flex: 0.2;
+        font-family: Inter;
+        color: $Neutral02;
       }
-      .tickerIcon {
-        flex: 0.2;
+      img {
+        height: 2em;
       }
     }
     .infoInput.supply {
@@ -170,7 +181,7 @@
         justify-content: space-around;
         flex-flow: row nowrap;
         font-size: 0.9em;
-        font-weight: 200;
+        font-weight: normal;
         line-height: 2em;
       }
       .distribRow {
@@ -211,7 +222,7 @@
         height: 9em;
         border-radius: 50%;
         background-color: #1b1722;
-        border: 1px solid $color-darkpink-2;
+        border: 1px solid $Border01;
         cursor: pointer;
         span {
           font-size: 0.7em;

@@ -12,6 +12,7 @@ import { EventConfigException } from "services/GeneralEvents";
 export class Launches {
 
   seeds: Array<Seed>;
+  featuredSeeds: Array<Seed>;
   seeingMore: boolean;
 
   constructor(
@@ -38,6 +39,7 @@ export class Launches {
     }
 
     this.seeds = this.seedService.seedsArray;
+    this.featuredSeeds = this.seedService.featuredSeeds();
   }
 
   navigate(href: string): void {

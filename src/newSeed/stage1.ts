@@ -3,15 +3,9 @@ import { BaseStage } from "./baseStage";
 import {Utils} from "../services/utils";
 export class Stage1 extends BaseStage {
   // Add a link object to the link object arrays
-  addCustomLinks(index: number): void {
-    if (index === -1) {
-      // Skip check
-      // Create a new custom link object
-      this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
-    } else {
-      // Create a new custom link object
-      this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
-    }
+  addCustomLinks(): void {
+    // Create a new custom link object
+    this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
   }
   // Delet a row in the custom links array
   deleteCustomLinks(index:number): void {
