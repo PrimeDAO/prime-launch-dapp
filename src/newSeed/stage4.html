@@ -11,7 +11,7 @@
             <input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens" />
         </div>
         <div class="infoInput">
-          <label for="seedTokens">Amount of tokens to be added to SEED</label>
+          <label for="seedTokens">Price per token</label>
           <div class=" pptContainer">
             <numeric-input id="seedTokens" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
             <label>per 1</label>
@@ -36,12 +36,12 @@
           <question-mark text="Tick"></question-mark>
         </div>
       </div>
-      <div class="infoInput maxTarget">
+      <div class="infoInput maxTarget maxTargetLabel">
         <div>
           <label for="vestingMonths">Tokens vested for</label>
           <div class="vestingPeriod">
             <numeric-input id="vestingMonths" value.bind="seedConfig.seedDetails.vestingMonths"></numeric-input>
-            <div>months</div>
+            <div>days</div>
           </div>
         </div>
         <div>
@@ -51,6 +51,67 @@
             <div>days</div>
           </div>
         </div>
+      </div>
+      <div class="infoInput maxTarget">
+        <div>
+          <label for="startDate">Start Date</label>
+          <div class="vestingDates">
+            <numeric-input id="startDate" value.bind="seedConfig.seedDetails.startDate"></numeric-input>
+            <div><i class="far fa-calendar-alt"></i></div>
+          </div>
+        </div>
+        <div>
+          <label for="startTime">Start Time</label>
+          <div class="vestingDates">
+            <numeric-input id="startTime" value.bind="seedConfig.seedDetails.startTime"></numeric-input>
+            <div><i class="far fa-clock"></i></div>
+          </div>
+        </div>
+        <div class="questionMark">
+          <question-mark text="Tick"></question-mark>
+        </div>
+      </div>
+      <div class="infoInput maxTarget">
+        <div>
+          <label for="endDate">End Date</label>
+          <div class="vestingDates">
+            <numeric-input id="endDate" value.bind="seedConfig.seedDetails.endDate"></numeric-input>
+            <div><i class="far fa-calendar-alt"></i></div>
+          </div>
+        </div>
+        <div>
+          <label for="endTime">Start Time</label>
+          <div class="vestingDates">
+            <numeric-input id="endTime" value.bind="seedConfig.seedDetails.endTime"></numeric-input>
+            <div><i class="far fa-clock"></i></div>
+          </div>
+        </div>
+        <div class="questionMark">
+          <question-mark text="Tick"></question-mark>
+        </div>
+      </div>
+      <div class="infoInput maxTarget">
+        <div>
+          <label for="controller">Controller</label>
+          <input id="controller" value.bind="seedConfig.seedDetails.controller"></numeric-input>
+        </div>
+        <div>
+          <label for="seedMax">Rights</label>
+          <select>
+            <option value="" disabled selected>Select an Option</option>
+            <option>dsfwn</option>
+          </select>
+        </div>
+      </div>
+      <div class="infoInput">
+        <div class="labeledQuestion">
+          <label for="whitelist">Whitelist</label>
+          <div class="questionMark">
+            <question-mark text="Tick"></question-mark>
+          </div>
+        </div>
+        <input type="checkbox" />
+        <input type="file" />
       </div>
     </div>
   </div>
