@@ -1,5 +1,57 @@
 <template>
   <div class="page animated-page stageContainer stage4 au-animate ">
-    Stage ${stageNumber}
+    <div class="infoContainer">
+      <div class="heading heading3 title">SEED Details</div>
+      <div class="subtext">
+        Use the SEED guide to select suitable details or get in touch.
+      </div>
+      <div>
+        <div class="infoInput">
+            <label for="seedTokens">Amount of tokens to be added to SEED</label>
+            <input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens" />
+        </div>
+        <div class="infoInput">
+          <label for="seedTokens">Amount of tokens to be added to SEED</label>
+          <div class=" pptContainer">
+            <numeric-input id="seedTokens" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
+            <label>per 1</label>
+            <select>
+              <option>DAI</option>
+            </select>
+          </div>
+        </div>
+        <div class="infoInput maxTarget">
+          <div>
+            <label for="seedTarget">SEED Target</label>
+            <numeric-input id="seedTarget" value.bind="seedConfig.seedDetails.seedTarget"></numeric-input>
+          </div>
+          <div>
+            <label for="seedMax">SEED Max</label>
+            <numeric-input id="seedMax" value.bind="seedConfig.seedDetails.seedMax"></numeric-input>
+          </div>
+      </div>
+      <div class="labeledQuestion">
+        <label for="vestingPeriod">Vesting Set-up</label>
+        <div class="questionMark">
+          <question-mark text="Tick"></question-mark>
+        </div>
+      </div>
+      <div class="infoInput maxTarget">
+        <div>
+          <label for="vestingMonths">Tokens vested for</label>
+          <div class="vestingPeriod">
+            <numeric-input id="vestingMonths" value.bind="seedConfig.seedDetails.vestingMonths"></numeric-input>
+            <div>months</div>
+          </div>
+        </div>
+        <div>
+          <label for="vestingDays">with a cliff of</label>
+          <div class="vestingPeriod">
+            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingDays"></numeric-input>
+            <div>days</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
