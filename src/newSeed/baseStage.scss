@@ -24,10 +24,17 @@
     margin-bottom: 2em;
     > textarea {
       resize: none;
-      width: 25em;
+      width: 23em;
       height: 4.5em;
       color: $Neutral02;
       border: 1px solid $Border01;
+    }
+    .labelContainer {
+      width: 24em;
+      display: flex;
+      justify-content: space-between;
+      flex-flow: row nowrap;
+      color: $Neutral02;
     }
   }
   .buttonContainer {
@@ -71,18 +78,6 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
-  textarea {
-    resize: none;
-    width: 25em;
-    height: 4.5em;
-    border-radius: 0.625em;
-    border: 1px solid $Border01;
-    background-color: #1b1722;
-    font-size: 1em;
-    font-family: Inter;
-    font-weight: 200;
-    color: #989798;
-  }
   a {
     color: $Neutral02;
     text-decoration: underline;
@@ -98,6 +93,7 @@
     }
   }
 }
+
 .page.stageContainer {
   &.stage1 {
     .infoContainer {
@@ -143,20 +139,7 @@
       }
     }
   }
-  &.stage2 {
-    .infoContainer {
-      .infoInput {
-        margin-bottom: 4em;
-        .labelContainer {
-          width: 24em;
-          display: flex;
-          justify-content: space-between;
-          flex-flow: row nowrap;
-          color: $Neutral02;
-        }
-      }
-    }
-  }
+
   &.stage3 {
     .tickerContainer {
       display: flex;
@@ -203,81 +186,23 @@
       cursor: pointer;
     }
   }
+
   &.stage5 {
     .infoContainer {
-      .infoInput {
-        margin-bottom: 4em;
-        .labelContainer {
-          width: 21em;
-          display: flex;
-          justify-content: space-between;
-          flex-flow: row nowrap;
-          color: $Neutral02;
-        }
-      }
-      .inputFileLabel {
+      .logo {
         display: flex;
-        align-items: center;
-        width: 9em;
-        height: 9em;
-        border-radius: 50%;
-        background-color: #1b1722;
-        border: 1px solid $Border01;
-        cursor: pointer;
-        span {
-          font-size: 0.7em;
-          font-weight: 100;
-          text-align: center;
-          line-height: 1em;
+        flex-flow: row wrap;
+        gap: 1em;
+        & input {
+          width: 20em;
         }
       }
-      input[type="file"] {
-        display: none;
-      }
-    }
-  }
-  &.stage3 {
-    .tickerContainer {
-      display: flex;
-      align-items: center;
-      gap: 1em;
-      .ticker {
-        font-family: Inter;
+      .fileNote {
+        display: flex;
+        align-items: flex-end;
         color: $Neutral02;
+        line-height: 1.5em;
       }
-      img {
-        height: 2em;
-      }
-    }
-    .infoInput.supply {
-      input {
-        width: 10em;
-      }
-    }
-    .tokenDistribution {
-      .columnHeaders {
-        display: flex;
-        justify-content: space-around;
-        flex-flow: row nowrap;
-        font-size: 0.9em;
-        font-weight: normal;
-        line-height: 2em;
-      }
-      .distribRow {
-        display: flex;
-        flex-flow: row nowrap;
-        flex: 1;
-        justify-content: space-around;
-        input {
-          text-align: right;
-        }
-        input.textInput {
-          text-align: center;
-        }
-      }
-    }
-    .addLink {
-      cursor: pointer;
     }
   }
 }

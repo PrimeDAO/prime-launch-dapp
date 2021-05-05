@@ -17,23 +17,21 @@
               ${seedConfig.contactDetails.remarks.length}/250
             </span>
           </div>
-          <div>
-            <textarea
+          <textarea
               id="remarks"
               value.bind="seedConfig.contactDetails.remarks"
               maxlength="250"
-            ></textarea>
-          </div>
+          ></textarea>
         </div>
-        <div class="infoInput">
-          <label for="logo">Project Logo</label>
-          <label class="inputFileLabel">
-            <i class="far fa-upload-alt"></i>
-            <span>
-              Drop file to upload or browse
-            </span>
-            <input id="logo" type="file" class="inputFile">
-          </label>
+        <div class="infoInput logo">
+          <div>
+            <label for="logo">Project Logo</label>
+            <input id="logo" type="text">
+          </div>
+          <div class="fileNote">
+            Max. 5 MB <br> JPG, GIF, PNG or BMP formats<br>
+            Recommended size: 400 x 400 px
+          </div>
         </div>
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">
