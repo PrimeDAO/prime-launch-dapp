@@ -43,6 +43,27 @@ export interface ITokenDetails {
   }>
 }
 
+export interface ISeedDetails {
+  /**
+   * In Wei ??
+   */
+  seedTokens: BigNumber,
+  pricePerToken: BigNumber,
+  baseCurrency: string,
+  seedTarget: BigNumber,
+  seedMax: BigNumber,
+  vestingMonths: number,
+  vestingDays: number,
+  startDate: string,
+  startTime: string,
+  endDate: string,
+  endTime: string,
+  controller: string,
+  rights: string,
+  whitelist: { isWhitelist: boolean, whitelistFile: string }
+
+}
+
 export interface IContactDetails {
   contactEmail: string,
   remarks: string
@@ -70,4 +91,5 @@ export class SeedConfig implements ISeedConfig {
   public contactDetails={
     remarks: "",
   } as IContactDetails;
+  public seedDetails = {} as ISeedDetails;
 }
