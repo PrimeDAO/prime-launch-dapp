@@ -1,5 +1,28 @@
 <template>
   <div class="page animated-page stageContainer stage6 au-animate ">
-    Stage ${stageNumber}
+    <div class="infoContainer">
+      <div class="heading heading3 title">Thank you!</div>
+      <div class="subtext">
+        Nam dapibus nisl vitae elit fringilla rutrum. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium.
+      </div>
+     <div class="linksContainer">
+       <div>
+        <i class="fas fa-arrow-right"></i>
+        <a>Go to useful link</a>
+       </div>
+       <div>
+        <i class="fas fa-arrow-right"></i>
+        <a>Read our FAQ</a>
+       </div>
+       <div>
+        <i class="fas fa-arrow-right"></i>
+        <a>Have some fun while waiting…</a>
+       </div>
+     </div>
+      <div class="buttonContainer">
+        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
+      </div>
+    </div>
   </div>
 </template>

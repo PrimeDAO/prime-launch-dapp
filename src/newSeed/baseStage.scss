@@ -185,4 +185,27 @@
       cursor: pointer;
     }
   }
+
+  &.stage6 {
+    & .subtext {
+      width: 30em;
+    }
+    & .linksContainer {
+      width: 30em;
+      display: flex;
+      flex-flow: column;
+      gap: 2em;
+      margin-bottom: 13em;
+      > div {
+          > a {
+          text-decoration: none;
+          color: $Neutral03;
+          cursor: pointer;
+        }
+        > i {
+          color: $Secondary02;
+        }
+      }
+    }
+  }
 }
