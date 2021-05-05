@@ -9,11 +9,14 @@ export class Stage5 extends BaseStage {
       message = "Please enter a value for Contact Email";
     } else if (!this.seedConfig.contactDetails.remarks) {
       message = "Please enter a value for Additional Remarks";
+    } else {
+      // Check every stage to make sure they are validated
+      this.stageState.forEach((stage: {verified: boolean}, index: number) => {
+        if (!stage.verified) {
+          message = `Please review stage ${index}`;
+        }
+      });
     }
-    // Check every stage to make sure they are validated
-    this.stageState.forEach((stage: {verified: boolean}) => {
-        
-    });
     if (message) {
       this.validationError(message);
       this.stageState[this.stageNumber].verified = false;
