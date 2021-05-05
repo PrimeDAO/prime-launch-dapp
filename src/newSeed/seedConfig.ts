@@ -52,8 +52,8 @@ export interface ISeedDetails {
   baseCurrency: string,
   seedTarget: BigNumber,
   seedMax: BigNumber,
-  vestingMonths: number,
   vestingDays: number,
+  vestingCliff: number,
   startDate: string,
   startTime: string,
   endDate: string,
@@ -61,7 +61,8 @@ export interface ISeedDetails {
   controller: string,
   rights: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
-
+  geoBlock: boolean,
+  legalDisclainer: boolean
 }
 
 export interface IContactDetails {
