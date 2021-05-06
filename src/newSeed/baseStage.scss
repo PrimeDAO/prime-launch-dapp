@@ -91,7 +91,8 @@
     display: none;
   }
   input[type="date"]::-webkit-calendar-picker-indicator {
-    
+  //  color: white;
+  //  width: 12px; 
 }
 
   select {
@@ -106,9 +107,10 @@
     padding-left: 0.5em;
     padding-right: 0.5em;
   }
+
   a {
     color: $Neutral02;
-    text-decoration: underline;
+    text-decoration: none;
   }
   .labeledQuestion {
     display: flex;
@@ -272,6 +274,11 @@
           border-bottom-right-radius: 10px;
         }
       }
+      .vestingDatesContainer {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+      }
       .vestingDates {
         width: 11em;
         display: flex;
@@ -279,7 +286,7 @@
         flex: 1;
         gap: 0em;
         input {
-          width: 7em;
+          width: 9em;
           border-top-right-radius: 0em;
           border-bottom-right-radius: 0em;
           border-right: 0px;
@@ -338,7 +345,7 @@
     }
     .checkboxContainer {
       width: 3.7em;
-      height: 1.9em;
+      height: 2em;
       border: 1px solid #2a2a2a;
       border-radius: 23px;
       position: relative;
