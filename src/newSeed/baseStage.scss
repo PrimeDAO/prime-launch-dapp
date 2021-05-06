@@ -337,8 +337,8 @@
       }
     }
     .checkboxContainer {
-      width: 3.6em;
-      height: 1.8em;
+      width: 3.7em;
+      height: 1.9em;
       border: 1px solid #2a2a2a;
       border-radius: 23px;
       position: relative;
@@ -379,6 +379,7 @@
           background: white;
           border-radius: 50%;
           transition: all 0.3s ease;
+          border: 2px solid black;
         }
       }
     }
