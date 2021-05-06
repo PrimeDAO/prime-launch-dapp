@@ -8,15 +8,17 @@
       <div>
         <div class="infoInput">
             <label for="seedTokens">Amount of tokens to be added to SEED</label>
-            <input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens" />
+            <numeric-input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
         </div>
         <div class="infoInput">
           <label for="seedTokens">Price per token</label>
           <div class=" pptContainer">
             <numeric-input id="seedTokens" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
             <label>per 1</label>
-            <select>
-              <option>DAI</option>
+            <select value.bind="seedConfig.seedDetails.baseCurrency">
+              <option value="DAI">DAI</option>
+              <option value="WETH">WETH</option>
+              <option value="USDC">USDC</option>
             </select>
           </div>
         </div>
@@ -38,16 +40,16 @@
       </div>
       <div class="infoInput maxTarget maxTargetLabel">
         <div>
-          <label for="vestingMonths">Tokens vested for</label>
+          <label for="vestingDays">Tokens vested for</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingMonths" value.bind="seedConfig.seedDetails.vestingMonths"></numeric-input>
+            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingDays"></numeric-input>
             <div>days</div>
           </div>
         </div>
         <div>
           <label for="vestingDays">with a cliff of</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingDays"></numeric-input>
+            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingCliff"></numeric-input>
             <div>days</div>
           </div>
         </div>
@@ -56,14 +58,16 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <numeric-input id="startDate" value.bind="seedConfig.seedDetails.startDate"></numeric-input>
+            <numeric-input id="startDate" value.bind="seedConfig.seedDetails.startDate"
+              placeholder="29 - 01 - 2021" class="vestingDateInput"></numeric-input>
             <div><i class="far fa-calendar-alt"></i></div>
           </div>
         </div>
         <div>
           <label for="startTime">Start Time</label>
           <div class="vestingDates">
-            <numeric-input id="startTime" value.bind="seedConfig.seedDetails.startTime"></numeric-input>
+            <input id="startTime" type="time"
+            value.bind="seedConfig.seedDetails.startTime" placeholder="13:37 (UTC)"></numeric-input>
             <div><i class="far fa-clock"></i></div>
           </div>
         </div>
@@ -75,14 +79,16 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <numeric-input id="endDate" value.bind="seedConfig.seedDetails.endDate"></numeric-input>
+            <numeric-input id="endDate" value.bind="seedConfig.seedDetails.endDate"
+            class="vestingDateInput" placeholder="31 - 01 - 2021"></numeric-input>
             <div><i class="far fa-calendar-alt"></i></div>
           </div>
         </div>
         <div>
           <label for="endTime">Start Time</label>
           <div class="vestingDates">
-            <numeric-input id="endTime" value.bind="seedConfig.seedDetails.endTime"></numeric-input>
+            <input id="endTime" value.bind="seedConfig.seedDetails.endTime"
+             placeholder="00:00 (UTC)" type="time"></numeric-input>
             <div><i class="far fa-clock"></i></div>
           </div>
         </div>
@@ -97,21 +103,49 @@
         </div>
         <div>
           <label for="seedMax">Rights</label>
-          <select>
+          <select value.bind="seedConfig.seedDetails.rights">
             <option value="" disabled selected>Select an Option</option>
-            <option>dsfwn</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
           </select>
         </div>
       </div>
-      <div class="infoInput">
+      <div class="infoInput whitelistContainer">
         <div class="labeledQuestion">
           <label for="whitelist">Whitelist</label>
           <div class="questionMark">
             <question-mark text="Tick"></question-mark>
           </div>
         </div>
-        <input type="checkbox" />
-        <input type="file" />
+        <input id="whitelist" type="checkbox" value.bind="seedConfig.seedDetails.whitelist.isWhitelist" />
+        <div>
+          <label class="inputFileLabel">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>
+              Drop .csv file to upload or browse
+            </span>
+            <input id="whitelistFile" type="file" accept=".pdf"
+            class="inputFile" value.bind="seedConfig.seedDetails.whitelist.whitelistFile" onchange.trigger="readFile()">
+          </label>
+        </div>
+      </div>
+      <div class="infoInput">
+        <div class="labeledQuestion">
+          <label for="geoBlock">Geoblock</label>
+          <div class="questionMark">
+            <question-mark text="Tick"></question-mark>
+          </div>
+        </div>
+        <input type="checkbox" value.bind="seedConfig.seedDetails.whitelist.geoBlock" />
+      </div>
+      <div class="infoInput">
+        <div class="labeledQuestion">
+          <label for="disclaimer">Legal Disclaimer</label>
+          <div class="questionMark">
+            <question-mark text="Tick"></question-mark>
+          </div>
+        </div>
+        <input type="checkbox" value.bind="seedConfig.seedDetails.whitelist.geoBlock" />
       </div>
     </div>
   </div>

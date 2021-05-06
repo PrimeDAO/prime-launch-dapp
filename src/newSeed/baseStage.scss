@@ -86,6 +86,10 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+  }
   select {
     width: 14em;
     height: 2.9em;
@@ -97,6 +101,7 @@
     font-size: 1.1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+    -webkit-appearance: none;
   }
   a {
     color: $Neutral02;
@@ -287,10 +292,49 @@
           border-top-right-radius: 10px;
           border-bottom-right-radius: 10px;
           cursor: pointer;
+          i {
+            font-size: 1.4em;
+          }
+        }
+        .vestingDateInput {
+          pointer-events: none;
         }
       }
     }
-
+    .whitelistContainer {
+      .inputFileLabel {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        align-items: center;
+        width: 16em;
+        height: 4.5em;
+        border-radius: 0.6em;
+        background-color: #1b1722;
+        border: 1px solid $Border01;
+        cursor: pointer;
+        span {
+          font-size: 0.7em;
+          font-weight: 100;
+          text-align: center;
+          line-height: 1em;
+        }
+        i {
+          font-size: 3.4em;
+          -webkit-text-fill-color: $color-grey-5;
+        }
+        span {
+          width: 8em;
+          -webkit-text-fill-color: $muted-text-color;
+          font-size: 1em;
+          text-align: left;
+          line-height: 1.24em;
+        }
+      }
+      input[type="file"] {
+        display: none;
+      }
+    }
   }
 
   &.stage5 {
