@@ -90,6 +90,10 @@
     background: none;
     display: none;
   }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    
+}
+
   select {
     width: 14em;
     height: 2.9em;
@@ -101,7 +105,6 @@
     font-size: 1.1em;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    -webkit-appearance: none;
   }
   a {
     color: $Neutral02;
@@ -217,7 +220,7 @@
       .pptContainer {
         display: flex;
         flex-flow: row wrap;
-        gap: 2em;
+        gap: 1.5em;
         > select {
           width: 6em;
         }
@@ -282,7 +285,7 @@
           border-right: 0px;
         }
         > div {
-          width: 4em;
+          width: 3em;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -291,13 +294,11 @@
           border-left: 0px;
           border-top-right-radius: 10px;
           border-bottom-right-radius: 10px;
+          z-index: 1;
           cursor: pointer;
           i {
             font-size: 1.4em;
           }
-        }
-        .vestingDateInput {
-          // pointer-events: none;
         }
       }
     }
@@ -338,7 +339,7 @@
     .checkboxContainer {
       width: 3.6em;
       height: 1.8em;
-      border: 1px solid white;
+      border: 1px solid #2a2a2a;
       border-radius: 23px;
       position: relative;
       display: flex;
