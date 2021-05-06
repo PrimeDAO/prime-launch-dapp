@@ -74,7 +74,7 @@ export class Utils {
   }
 
   public static isValidFile(file: string): boolean {
-    const re = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i;
+    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
     return re.test(String(file).toLowerCase());
   }
 }
