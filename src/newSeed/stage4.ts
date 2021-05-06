@@ -1,9 +1,45 @@
 import { BaseStage } from "newSeed/baseStage";
 
 export class Stage4 extends BaseStage {
-  readFile(event:any): void {
-    if (event.target.files[0]) {
-      this.seedConfig.seedDetails.whitelist.whitelistFile = event.target.files[0];
+  proceed(): void {
+    let message: string;
+
+    // if (!this.seedConfig.seedDetails.seedTokens || this.seedConfig.seedDetails.seedTokens.lte(0)) {
+    //   message = "Please enter a value for the Amount of tokens to be added to SEED";
+    // } else if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken.lte(0)) {
+    //   message = "Please enter a value for the Price per token";
+    // } else if (!this.seedConfig.seedDetails.seedTarget || this.seedConfig.seedDetails.seedTarget.lte(0)) {
+    //   message = "Please enter a non-zero value for the SEED Target";
+    // } else if (!this.seedConfig.seedDetails.seedMax || this.seedConfig.seedDetails.seedMax.lte(0)) {
+    //   message = "Please enter a non-zero number for the SEED Max";
+    // } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
+    //   message = "Please enter a non-zero value for the Tokens vested for";
+    // } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
+    //   message = "Please enter a non-zero value for the with a cliff of";
+    // } else if (!this.seedConfig.seedDetails.startDate) {
+    //   message = "Please select a Start Date";
+    // } else if (!this.seedConfig.seedDetails.startTime) {
+    //   message = "Please enter a value for the Start Time";
+    // } else if (!this.seedConfig.seedDetails.endDate) {
+    //   message = "Please select a End Date";
+    // } else if (!this.seedConfig.seedDetails.endTime) {
+    //   message = "Please enter a value for the End Time";
+    // } else if (!this.seedConfig.seedDetails.controller) {
+    //   message = "Please enter a value for Controller";
+    // } else if (!this.seedConfig.seedDetails.rights) {
+    //   message = "Please select a Rights";
+    // }
+    if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
+      message = "Please upload a .csv file or uncheck Whitelist";
+    } else if (!this.seedConfig.seedDetails.legalDisclaimer) {
+      message = "Please accept the Legal Disclaimer";
+    }
+    if (message) {
+      this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
+      this.next();
     }
   }
 }

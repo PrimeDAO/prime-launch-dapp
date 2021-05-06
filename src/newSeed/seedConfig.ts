@@ -59,7 +59,7 @@ export interface ISeedDetails {
   rights: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
   geoBlock: boolean,
-  legalDisclainer: boolean
+  legalDisclaimer: boolean
 }
 
 export interface IContactDetails {
@@ -90,5 +90,13 @@ export class SeedConfig implements ISeedConfig {
   public contactDetails={
     remarks: "",
   } as IContactDetails;
-  public seedDetails = {} as ISeedDetails;
+  public seedDetails = {
+    baseCurrency: "DAI",
+    whitelist: {
+      isWhitelist: false,
+      whitelistFile: undefined,
+    },
+    geoBlock: false,
+    legalDisclaimer: false,
+  } as ISeedDetails;
 }

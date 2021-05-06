@@ -297,7 +297,7 @@
           }
         }
         .vestingDateInput {
-          pointer-events: none;
+          // pointer-events: none;
         }
       }
     }
@@ -320,7 +320,7 @@
           line-height: 1em;
         }
         i {
-          font-size: 3.4em;
+          font-size: 2.8em;
           -webkit-text-fill-color: $color-grey-5;
         }
         span {
@@ -333,6 +333,52 @@
       }
       input[type="file"] {
         display: none;
+      }
+    }
+    .checkboxContainer {
+      width: 3.6em;
+      height: 1.8em;
+      border: 1px solid white;
+      border-radius: 23px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 2em;
+      background: $Gradient01;
+      .yes {
+        position: absolute;
+        left: 0.15em;
+        color: black;
+      }
+      .no {
+        position: absolute;
+        right: 0.2em;
+        color: black;
+      }
+      .checkbox {
+        width: 1.8em;
+        height: 1.8em;
+        display: flex;
+        align-items: center;
+        > input {
+          width: 1.8em;
+          height: 1.8em;
+          visibility: hidden;
+          position: absolute;
+          &:checked + label {
+            left: 1.7em;
+          }
+        }
+        & label {
+          display: block;
+          width: 1.4em;
+          height: 1.4em;
+          position: absolute;
+          left: 0.15em;
+          background: white;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+        }
       }
     }
   }
