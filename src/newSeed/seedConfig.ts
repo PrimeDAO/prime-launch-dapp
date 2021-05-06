@@ -45,7 +45,8 @@ export interface ITokenDetails {
 
 export interface IContactDetails {
   contactEmail: string,
-  remarks: string
+  remarks: string,
+  logo: string,
 }
 
 export interface ISeedConfig {
