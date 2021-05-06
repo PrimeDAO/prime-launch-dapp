@@ -44,9 +44,6 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
-  /**
-   * In Wei ??
-   */
   seedTokens: BigNumber,
   pricePerToken: BigNumber,
   baseCurrency: string,
@@ -75,6 +72,7 @@ export interface ISeedConfig {
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
+  seedDetails: ISeedDetails,
 }
 
 export class SeedConfig implements ISeedConfig {
