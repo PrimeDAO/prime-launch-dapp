@@ -8,7 +8,8 @@
       <div>
         <div class="infoInput">
           <label for="email">Contact Email</label>
-          <input id="email" type="email" value.bind="seedConfig.contactDetails.contactEmail" />
+          <input id="email" type="email" placeholder="name@mail.com"
+            value.bind="seedConfig.contactDetails.contactEmail"/>
         </div>
         <div class="infoInput">
           <div class="labelContainer">
@@ -26,7 +27,8 @@
         <div class="infoInput logo">
           <div>
             <label for="logo">Project Logo</label>
-            <input id="logo" type="text" value.bind="seedConfig.contactDetails.logo">
+            <input id="logo" type="text" placeholder="Valid Uri to project logo"
+              value.bind="seedConfig.contactDetails.logo">
           </div>
           <div class="fileNote">
             Max. 5 MB <br> JPG, GIF, PNG or BMP formats<br>
