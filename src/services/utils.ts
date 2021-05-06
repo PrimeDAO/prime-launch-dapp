@@ -67,14 +67,4 @@ export class Utils {
   public static isValidUrl(str: string, emptyOk = true): boolean {
     return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
   }
-
-  public static isValidEmail(email: string): boolean {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
-  public static isValidFile(file: string): boolean {
-    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
-    return re.test(String(file).toLowerCase());
-  }
 }
