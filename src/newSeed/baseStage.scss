@@ -13,12 +13,13 @@
     color: $color-white;
     line-height: 2em;
     font-weight: bold;
+    margin-bottom: 1em !important;
   }
   .subtext {
     line-height: 1.5em;
     font-size: 1em;
     color: $muted-text-color;
-    margin-bottom: 5em;
+    margin-bottom: 3em;
   }
   .infoInput {
     margin-bottom: 2em;
@@ -201,6 +202,9 @@
           text-decoration: none;
           color: $Neutral03;
           cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
         }
         > i {
           color: $Secondary02;
