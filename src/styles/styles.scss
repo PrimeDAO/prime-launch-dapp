@@ -89,7 +89,7 @@ html {
       color: $color-darkblue;
       text-decoration: none;
       white-space: nowrap;
-
+      cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
