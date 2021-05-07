@@ -66,7 +66,6 @@
     font-size: 1.1em;
     line-height: 2em;
     color: $color-white;
-    font-weight: bold;
     @include standardTextGradient;
   }
   input {
@@ -90,10 +89,6 @@
     background: none;
     display: none;
   }
-  input[type="date"]::-webkit-calendar-picker-indicator {
-  //  color: white;
-  //  width: 12px; 
-}
 
   select {
     width: 14em;
@@ -286,7 +281,7 @@
         flex: 1;
         gap: 0em;
         input {
-          width: 9em;
+          width: 7em;
           border-top-right-radius: 0em;
           border-bottom-right-radius: 0em;
           border-right: 0px;
@@ -357,11 +352,13 @@
         position: absolute;
         left: 0.15em;
         color: black;
+        font-weight: 700;
       }
       .no {
         position: absolute;
-        right: 0.2em;
+        right: 0.15em;
         color: black;
+        font-weight: 700;
       }
       .checkbox {
         width: 1.8em;
@@ -387,6 +384,7 @@
           border-radius: 50%;
           transition: all 0.3s ease;
           border: 2px solid black;
+          cursor: pointer;
         }
       }
     }

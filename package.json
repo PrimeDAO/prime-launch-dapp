@@ -36,6 +36,7 @@
     "axios": "^0.21.1",
     "ethers": "^5.0.14",
     "json-to-graphql-query": "^2.0.0",
+    "litepicker": "^2.0.11",
     "moment-timezone": "^0.5.31",
     "numbro": "^2.3.2",
     "rxjs": "^6.6.3",

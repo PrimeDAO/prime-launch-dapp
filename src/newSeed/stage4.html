@@ -58,9 +58,9 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <input id="startDate" type="date" value.bind="seedConfig.seedDetails.startDate"
-              placeholder="29 - 01 - 2021" class="vestingDateInput">
-            <div><i class="far fa-calendar-alt"></i></div>
+            <input id="startDate" value.bind="seedConfig.seedDetails.startDate"
+              placeholder="DD-MM-YYY" class="vestingDateInput">
+            <div><i class="far fa-calendar-alt" ref="startDate"></i></div>
           </div>
         </div>
         <div>
@@ -81,9 +81,9 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <input id="endDate" type="date" value.bind="seedConfig.seedDetails.endDate"
-            class="vestingDateInput" placeholder="31 - 01 - 2021">
-            <div><i class="far fa-calendar-alt"></i></div>
+            <input id="endDate" value.bind="seedConfig.seedDetails.endDate"
+            class="vestingDateInput" placeholder="DD-MM-YYY">
+            <div><i class="far fa-calendar-alt" ref="endDate"></i></div>
           </div>
         </div>
         <div>
