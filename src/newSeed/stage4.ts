@@ -10,14 +10,14 @@ export class Stage4 extends BaseStage {
       minDate: Date.now(),
     });
     startDatePicker.on("selected", (date1: Date) => {
-      this.seedConfig.seedDetails.startDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, "-");
+      this.seedConfig.seedDetails.startDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, " - ");
     });
     const endDatePicker = new Litepicker({
       element: this.endDate,
       minDate: Date.now(),
     });
     endDatePicker.on("selected", (date1: Date) => {
-      this.seedConfig.seedDetails.endDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, "-");
+      this.seedConfig.seedDetails.endDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, " - ");
     });
   }
   proceed(): void {
