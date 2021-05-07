@@ -28,13 +28,13 @@ export class Stage5 extends BaseStage {
       this.validationError(message);
       this.stageState[this.stageNumber].verified = false;
     } else {
-      this.stageState[this.stageNumber].verified = true;
       // Check every stage to make sure they are validated
-      this.stageState.forEach((stage: {verified: boolean}, index: number) => {
-        if (!stage.verified && index !== 6) {
-          message = `Please review stage ${index}`;
+      this.stageState[this.stageNumber].verified = true;
+      for (let i = 1; i < this.stageState.length - 1; ++i) {
+        if (!this.stageState[i].verified) {
+          message = `Please review stage ${i}`;
         }
-      });
+      }
       if (message) {
         this.validationError(message);
         return;
