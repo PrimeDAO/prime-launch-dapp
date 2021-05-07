@@ -20,9 +20,10 @@ export class Stage5 extends BaseStage {
       message = "Please enter a valid email address for Contact Email";
     } else if (!this.seedConfig.contactDetails.remarks) {
       message = "Please enter a value for Additional Remarks";
-    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)
-                || !this.isValidFile(this.seedConfig.contactDetails.logo)) {
-      message = "Please enter a valid file type for Project Logo";
+    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
+      message = "Please supply a valid image file type for Project Logo";
+    } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
+      message = "Please enter a valid url for Project Logo";
     }
     if (message) {
       this.validationError(message);
