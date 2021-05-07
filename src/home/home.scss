@@ -95,7 +95,7 @@
     &.nomiss {
       display: grid;
       grid-template-columns: auto auto;
-      background: linear-gradient(220.2deg, #8668fc 0%, #a258a7 100%);
+      background-color: $BG02;
       height: 12em;
       align-content: center;
       padding-left: 4em;
