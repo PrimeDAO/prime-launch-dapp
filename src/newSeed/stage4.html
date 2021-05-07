@@ -11,7 +11,7 @@
             <numeric-input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
         </div>
         <div class="infoInput">
-          <label for="ppt">Price per token</label>
+          <label for="ppt">Price per Token</label>
           <div class=" pptContainer">
             <numeric-input id="ppt" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
             <label>per 1</label>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <div>
-          <label for="endTime">Start Time</label>
+          <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
               <input id="endTime" value.bind="seedConfig.seedDetails.endTime"
@@ -98,20 +98,6 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="infoInput maxTarget">
-        <div>
-          <label for="controller">Controller</label>
-          <input id="controller" value.bind="seedConfig.seedDetails.controller"></numeric-input>
-        </div>
-        <div>
-          <label for="seedMax">Rights</label>
-          <select value.bind="seedConfig.seedDetails.rights">
-            <option value="" disabled selected>Select an Option...</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-          </select>
         </div>
       </div>
       <div class="infoInput whitelistContainer">
@@ -133,7 +119,7 @@
           <label class="inputFileLabel">
             <i class="fas fa-cloud-upload-alt"></i>
             <span>
-              ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Drop .csv file to upload or browse'}
+              ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
             </span>
             <input id="whitelistFile" type="file" accept=".pdf"
             class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">

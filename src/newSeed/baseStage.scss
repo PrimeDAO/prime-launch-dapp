@@ -348,15 +348,15 @@
       align-items: center;
       margin-bottom: 2em;
       background: $Gradient01;
-      .yes {
+      i.yes {
         position: absolute;
-        left: 0.15em;
+        left: 0.6em;
         color: black;
         font-weight: 700;
       }
-      .no {
+      i.no {
         position: absolute;
-        right: 0.15em;
+        right: 0.6em;
         color: black;
         font-weight: 700;
       }
