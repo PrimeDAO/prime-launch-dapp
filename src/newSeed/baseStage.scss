@@ -24,10 +24,17 @@
     margin-bottom: 2em;
     > textarea {
       resize: none;
-      width: 25em;
+      width: 23em;
       height: 4.5em;
       color: $Neutral02;
       border: 1px solid $Border01;
+    }
+    .labelContainer {
+      width: 24em;
+      display: flex;
+      justify-content: space-between;
+      flex-flow: row nowrap;
+      color: $Neutral02;
     }
   }
   .buttonContainer {
@@ -44,6 +51,10 @@
       color: $color-orange;
       font-family: Inter;
     }
+  }
+  .stageButton {
+    display: flex;
+    align-items: center;
   }
   label {
     display: block;
@@ -82,6 +93,7 @@
     }
   }
 }
+
 .page.stageContainer {
   &.stage1 {
     .infoContainer {
@@ -127,20 +139,7 @@
       }
     }
   }
-  &.stage2 {
-    .infoContainer {
-      .infoInput {
-        margin-bottom: 4em;
-        .labelContainer {
-          width: 21em;
-          display: flex;
-          justify-content: space-between;
-          flex-flow: row nowrap;
-          color: $Neutral02;
-        }
-      }
-    }
-  }
+
   &.stage3 {
     .tickerContainer {
       display: flex;
@@ -175,14 +174,38 @@
         justify-content: space-around;
         input {
           text-align: right;
+          height: 2.3em;
         }
         input.textInput {
           text-align: center;
+          height: 2.3em;
         }
       }
     }
     .addLink {
       cursor: pointer;
+    }
+  }
+
+  &.stage5 {
+    .infoContainer {
+      & textarea {
+        height: 7em;
+      }
+      .logo {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        & input {
+          width: 20em;
+        }
+      }
+      .fileNote {
+        display: flex;
+        align-items: flex-end;
+        color: $Neutral02;
+        line-height: 1.5em;
+      }
     }
   }
 }
