@@ -1,11 +1,7 @@
 @import "styles/colors";
+@import "styles/styles.scss";
 // This styles are common to all the stages components
 // Theme for the stages
-@mixin standardTextGradient {
-  background-image: $Gradient01;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 .infoContainer {
   font-family: Inter;
   background-color: $color-black-3;

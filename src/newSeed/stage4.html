@@ -58,8 +58,8 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <input id="startDate" value.bind="seedConfig.seedDetails.startDate"
-              placeholder="DD-MM-YYY" class="vestingDateInput" disabled>
+            <input id="startDate" value.bind="seedConfig.seedDetails.startDate.date"
+              placeholder="DD-MM-YYYY" class="vestingDateInput" disabled>
             <div><i class="far fa-calendar-alt" ref="startDate"></i></div>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <div class="vestingDatesContainer">
             <div class="vestingDates">
               <input id="startTime" type="time"
-              value.bind="seedConfig.seedDetails.startTime" placeholder="13:37 (UTC)"></numeric-input>
+              value.bind="seedConfig.seedDetails.startDate.time" placeholder="00:00 (UTC)"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -81,7 +81,7 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <input id="endDate" value.bind="seedConfig.seedDetails.endDate"
+            <input id="endDate" value.bind="seedConfig.seedDetails.endDate.date"
             class="vestingDateInput" placeholder="DD-MM-YYY" disabled>
             <div><i class="far fa-calendar-alt" ref="endDate"></i></div>
           </div>
@@ -90,7 +90,7 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="endTime" value.bind="seedConfig.seedDetails.endTime"
+              <input id="endTime" value.bind="seedConfig.seedDetails.endDate.time"
                placeholder="00:00 (UTC)" type="time"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>

@@ -51,10 +51,17 @@ export interface ISeedDetails {
   seedMax: BigNumber,
   vestingDays: number,
   vestingCliff: number,
-  startDate: string,
-  startTime: string,
-  endDate: string,
-  endTime: string,
+  startDate: {
+    /**
+     * Dates are in ISO format
+     */
+    date: string,
+    time: string
+  },
+  endDate: {
+    date: string,
+    time: string
+  },
   controller: string,
   rights: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
@@ -93,6 +100,14 @@ export class SeedConfig implements ISeedConfig {
   } as IContactDetails;
   public seedDetails = {
     baseCurrency: "DAI",
+    startDate: {
+      date: undefined,
+      time: undefined,
+    },
+    endDate: {
+      date: undefined,
+      time: undefined,
+    },
     whitelist: {
       isWhitelist: false,
       whitelistFile: undefined,

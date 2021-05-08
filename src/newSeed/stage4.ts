@@ -9,15 +9,18 @@ export class Stage4 extends BaseStage {
       element: this.startDate,
       minDate: Date.now(),
     });
-    startDatePicker.on("selected", (date1: Date) => {
-      this.seedConfig.seedDetails.startDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, "-");
+    // const dateService = new DateService();
+    startDatePicker.on("selected", (date: Date) => {
+      this.seedConfig.seedDetails.startDate.date = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
+      // this.seedConfig.seedDetails.startDate.date = new Date(date.toDateString()).toUTCString();
     });
     const endDatePicker = new Litepicker({
       element: this.endDate,
       minDate: Date.now(),
     });
-    endDatePicker.on("selected", (date1: Date) => {
-      this.seedConfig.seedDetails.endDate = new Date(date1.toDateString()).toLocaleDateString().replace(/\//g, "-");
+    endDatePicker.on("selected", (date: Date) => {
+      this.seedConfig.seedDetails.endDate.date = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
+      // this.seedConfig.seedDetails.endDate.date = dateService.toISOString(date);
     });
   }
   proceed(): void {
@@ -36,11 +39,11 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
     } else if (!this.seedConfig.seedDetails.startDate) {
       message = "Please select a Start Date";
-    } else if (!this.seedConfig.seedDetails.startTime) {
+    } else if (!this.seedConfig.seedDetails.startDate.time) {
       message = "Please enter a value for the Start Time";
     } else if (!this.seedConfig.seedDetails.endDate) {
       message = "Please select an End Date";
-    } else if (!this.seedConfig.seedDetails.endTime) {
+    } else if (!this.seedConfig.seedDetails.endDate.time) {
       message = "Please enter a value for the End Time";
     } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
       message = "Please upload a .csv file or uncheck Whitelist";
