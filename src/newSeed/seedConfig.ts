@@ -43,10 +43,36 @@ export interface ITokenDetails {
   }>
 }
 
+export interface ISeedDetails {
+  seedTokens: BigNumber,
+  pricePerToken: BigNumber,
+  baseCurrency: string,
+  seedTarget: BigNumber,
+  seedMax: BigNumber,
+  vestingDays: number,
+  vestingCliff: number,
+  startDate: {
+    /**
+     * Dates are in ISO format
+     */
+    date: string,
+    time: string
+  },
+  endDate: {
+    date: string,
+    time: string
+  },
+  controller: string,
+  rights: string,
+  whitelist: { isWhitelist: boolean, whitelistFile: string }
+  geoBlock: boolean,
+  legalDisclaimer: boolean
+}
+
 export interface IContactDetails {
   contactEmail: string,
   remarks: string,
-  logo: string,
+  logo: string
 }
 
 export interface ISeedConfig {
@@ -54,6 +80,7 @@ export interface ISeedConfig {
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
+  seedDetails: ISeedDetails,
 }
 
 export class SeedConfig implements ISeedConfig {
@@ -71,4 +98,21 @@ export class SeedConfig implements ISeedConfig {
   public contactDetails={
     remarks: "",
   } as IContactDetails;
+  public seedDetails = {
+    baseCurrency: "DAI",
+    startDate: {
+      date: undefined,
+      time: undefined,
+    },
+    endDate: {
+      date: undefined,
+      time: undefined,
+    },
+    whitelist: {
+      isWhitelist: false,
+      whitelistFile: undefined,
+    },
+    geoBlock: false,
+    legalDisclaimer: false,
+  } as ISeedDetails;
 }
