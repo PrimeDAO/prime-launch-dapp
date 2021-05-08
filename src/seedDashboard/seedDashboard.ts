@@ -40,11 +40,11 @@ export class SeedDashboard {
   @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
   get userCanClaim(): boolean { return this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
 
+  @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
+  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.fundingTokensPerSeedToken; }
+
   @computedFrom("seedTokenReward", "seed.seedTokenInfo.price")
   get seedTokenRewardPrice(): number { return this.seedTokenReward * this.seed?.seedTokenInfo.price; }
-
-  @computedFrom("fundingTokenToPay", "seed.price")
-  get seedTokenReward(): number {return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.price; }
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
@@ -127,9 +127,13 @@ export class SeedDashboard {
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
 
+  buy(): void {
+    this.seed.buy(this.fundingTokenToPay);
+  }
+
   claim(): void {
     if (this.userCanClaim) {
-
+      this.seed.claim();
     }
   }
 }

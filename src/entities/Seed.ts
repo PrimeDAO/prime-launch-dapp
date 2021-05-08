@@ -10,6 +10,7 @@ import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
+import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -23,13 +24,39 @@ export class Seed {
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
-  public price: number;
+  /**
+   * The number of fundingTokens required to receive one seedToken,
+   * ie, the price of one seed token in units of funding tokens.
+   */
+  public fundingTokensPerSeedToken: number;
+  /**
+   * The $ price of fundingTokensPerSeedToken
+   */
+  public fundingTokenPricePerSeedToken: number;
+  /**
+   * in terms of fundingToken
+   */
   public target: BigNumber;
+  public targetPrice: number;
+  /**
+   * in terms of fundingToken
+   */
   public cap: BigNumber;
+  public capPrice: number;
   public whitelisted: boolean;
+  /**
+   * the number of days of which seed tokens vest
+   */
   public vestingDuration: number;
+  /**
+   * the initial period in days of the vestingDuration during which seed tokens may not
+   * be redeemd
+   */
   public vestingCliff: number;
   public minimumReached: boolean;
+  /**
+   * the amount of the fundingToken in the seed
+   */
   public amountRaised: BigNumber;
 
   public seedTokenAddress: Address;
@@ -66,6 +93,7 @@ export class Seed {
     private eventAggregator: EventAggregator,
     private dateService: DateService,
     private tokenService: TokenService,
+    private transactionsService: TransactionsService,
     private numberService: NumberService,
     private ethereumService: EthereumService,
   ) {
@@ -112,17 +140,8 @@ export class Seed {
         reject: (reason?: any) => void): Promise<void> => {
         setTimeout(async () => {
           try {
-            this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
-            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-            this.price = this.numberService.fromString(fromWei(await this.contract.price()));
-            this.target = await this.contract.successMinimum();
-            this.cap = await this.contract.cap();
             this.seedTokenAddress = await this.contract.seedToken();
-            this.whitelisted = await this.contract.isWhitelisted();
             this.fundingTokenAddress = await this.contract.fundingToken();
-            this.vestingDuration = await this.contract.vestingDuration();
-            this.vestingCliff = await this.contract.vestingCliff();
-            this.minimumReached = await this.contract.minimumReached();
 
             this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
             this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
@@ -132,6 +151,24 @@ export class Seed {
 
             this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
 
+            this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
+            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
+            this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
+            this.fundingTokenPricePerSeedToken = this.fundingTokensPerSeedToken * (this.fundingTokenInfo.price ?? 0);
+            /**
+             * in terms of fundingTken
+             */
+            this.target = await this.contract.successMinimum();
+            this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
+            /**
+             * in terms of fundingTken
+             */
+            this.cap = await this.contract.cap();
+            this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
+            this.whitelisted = await this.contract.isWhitelisted();
+            this.vestingDuration = await this.contract.vestingDuration();
+            this.vestingCliff = await this.contract.vestingCliff();
+            this.minimumReached = await this.contract.minimumReached();
             await this.hydrateUser();
 
             this.initializing = false;
@@ -155,9 +192,29 @@ export class Seed {
     const account = this.ethereumService.defaultAccountAddress;
 
     if (account) {
-      this.userIsWhitelisted = !this.whitelisted || this.contract.checkWhitelisted(account);
+      this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       this.userClaimableAmount = (await this.contract.calculateClaim(account))[1];
       this.userCanClaim = this.userClaimableAmount.gt(0);
     }
+  }
+
+  public buy(amount: BigNumber): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.buy(amount))
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  public claim(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.claimLock(this.ethereumService.defaultAccountAddress))
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateUser();
+          return receipt;
+        }
+      });
   }
 }
