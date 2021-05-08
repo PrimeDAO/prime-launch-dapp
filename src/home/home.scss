@@ -23,6 +23,10 @@
         position: absolute;
         right: 0;
         z-index: -1;
+
+        img {
+          mix-blend-mode: lighten;
+        }
       }
 
       .title {
