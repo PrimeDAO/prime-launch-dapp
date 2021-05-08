@@ -1,4 +1,4 @@
-@import "styles/colors";
+@import "styles/styles.scss";
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
@@ -62,11 +62,13 @@
     font-size: 1.1em;
     line-height: 2em;
     color: $color-white;
+    @include standardTextGradient;
   }
   input {
     width: 23em;
     height: 2.7em;
     border: 1px solid $Border01;
+    border-radius: 10px;
     color: $Neutral02;
   }
   /* Chrome, Safari, Edge, Opera */
@@ -79,6 +81,24 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+  }
+
+  select {
+    width: 14em;
+    height: 2.9em;
+    border: 1px solid $Border01;
+    border-radius: 10px;
+    color: $Neutral02;
+    background-color: $global-background-color;
+    font-family: Inter;
+    font-size: 1.1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
   a {
     color: $Neutral02;
   }
@@ -86,11 +106,11 @@
     display: flex;
     flex-flow: row nowrap;
     gap: 1em;
-    .questionMark {
-      width: 1.3em;
-      height: 1.3em;
-      align-self: center;
-    }
+  }
+  .questionMark {
+    width: 1.3em;
+    height: 1.3em;
+    align-self: center;
   }
 }
 
@@ -184,6 +204,184 @@
     }
     .addLink {
       cursor: pointer;
+    }
+  }
+
+  &.stage4 {
+    .infoInput {
+      .pptContainer {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1.5em;
+        > select {
+          width: 6em;
+        }
+        > label {
+          align-self: center;
+          -webkit-text-fill-color: $White;
+          font-weight: normal;
+        }
+      }
+      &.maxTarget {
+        input {
+          width: 14em;
+        }
+        display: flex;
+        flex-flow: row wrap;
+        flex: 1;
+        gap: 2em;
+        &.maxTargetLabel label {
+          font-size: 0.9em;
+          line-height: 3em;
+          -webkit-text-fill-color: $White;
+          font-weight: normal;
+        }
+        .questionMark {
+          width: 1.3em;
+          height: 1.3em;
+          align-self: center;
+          justify-self: center;
+        }
+      }
+      .vestingPeriod {
+        width: 11em;
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        gap: 0em;
+        input {
+          width: 5em;
+          border-top-right-radius: 0em;
+          border-bottom-right-radius: 0em;
+        }
+        > div {
+          width: 5em;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: $Border01;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+      }
+      .vestingDatesContainer {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+      }
+      .vestingDates {
+        width: 11em;
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        gap: 0em;
+        input {
+          width: 7em;
+          border-top-right-radius: 0em;
+          border-bottom-right-radius: 0em;
+          border-right: 0px;
+        }
+        > div {
+          width: 3em;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: $BG01;
+          border: 1px solid $Border01;
+          border-left: 0px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          z-index: 1;
+          cursor: pointer;
+          i {
+            font-size: 1.4em;
+          }
+        }
+      }
+    }
+    .whitelistContainer {
+      .inputFileLabel {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        align-items: center;
+        width: 16em;
+        height: 4.5em;
+        border-radius: 0.6em;
+        background-color: #1b1722;
+        border: 1px solid $Border01;
+        cursor: pointer;
+        span {
+          font-size: 0.7em;
+          font-weight: 100;
+          text-align: center;
+          line-height: 1em;
+        }
+        i {
+          font-size: 2.8em;
+          -webkit-text-fill-color: $color-grey-5;
+        }
+        span {
+          width: 8em;
+          -webkit-text-fill-color: $muted-text-color;
+          font-size: 1em;
+          text-align: left;
+          line-height: 1.24em;
+        }
+      }
+      input[type="file"] {
+        display: none;
+      }
+    }
+    .checkboxContainer {
+      width: 3.7em;
+      height: 2em;
+      border: 1px solid #2a2a2a;
+      border-radius: 23px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 2em;
+      background: $Gradient01;
+      i.yes {
+        position: absolute;
+        left: 0.6em;
+        color: black;
+        font-weight: 700;
+      }
+      i.no {
+        position: absolute;
+        right: 0.6em;
+        color: black;
+        font-weight: 700;
+      }
+      .checkbox {
+        width: 1.8em;
+        height: 1.8em;
+        display: flex;
+        align-items: center;
+        > input {
+          width: 1.8em;
+          height: 1.8em;
+          visibility: hidden;
+          position: absolute;
+          &:checked + label {
+            left: 1.7em;
+          }
+        }
+        & label {
+          display: block;
+          width: 1.4em;
+          height: 1.4em;
+          position: absolute;
+          left: 0.15em;
+          background: white;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          border: 2px solid black;
+          cursor: pointer;
+        }
+      }
     }
   }
 
