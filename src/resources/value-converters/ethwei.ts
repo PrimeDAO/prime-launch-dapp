@@ -1,12 +1,10 @@
-﻿import { autoinject } from "aurelia-framework";
-import { formatEther, parseEther } from "ethers/lib/utils";
+﻿import { formatEther, parseEther } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 /**
  * Convert between Wei (as BigNumber) in viewmodel and eth (as string) in view.
  * Note that even if the viewmodel supplies a number, modified values are saved back
  * to the viewmodel as BigNumber.
  */
-@autoinject
 export class EthweiValueConverter {
 
   /**
