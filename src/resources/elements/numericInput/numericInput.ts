@@ -17,13 +17,14 @@ export class NumericInput {
   /**
    * what to display when there is no value
    */
-  @bindable public defaultText = "";
+  @bindable.string public defaultText = "";
   /**
    * handle should return falsey to accept the key.  Only fired on key strokes that have
    * already passed the default character filter.
    */
   @bindable public handleChange: ({ keyCode: number }) => boolean;
   @bindable public autocomplete = "off";
+  @bindable.booleanAttr public disabled = false;
   /**
    * Assumed to be in Wei and will be converted to ETH for the user and back to Wei for parent component.
    * Else value us set to  whatever string the user types.
@@ -35,7 +36,7 @@ export class NumericInput {
    */
   @bindable.booleanAttr public isWei?: boolean = true;
   @bindable.booleanAttr public outputAsString?: boolean = false;
-  @bindable public placeholder = "";
+  @bindable.string public placeholder = "";
 
   private element: HTMLInputElement;
 
@@ -97,6 +98,9 @@ export class NumericInput {
 
   public attached(): void {
     this.element.addEventListener("keydown", (e) => { this.keydown(e); });
+    if (this.disabled) {
+      this.element.disabled = true;
+    }
     // this.hydrateFromDefaultValue();
   }
 

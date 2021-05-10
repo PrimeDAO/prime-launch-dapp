@@ -58,10 +58,18 @@ export class Seed {
    * the amount of the fundingToken in the seed
    */
   public amountRaised: BigNumber;
+  /**
+   * $ value of the total supply of the seed token
+   */
+  public valuation: number;
 
   public seedTokenAddress: Address;
   public seedTokenInfo: ITokenInfo;
   public seedTokenContract: any;
+  /**
+   * number of tokens in this seed contract
+   */
+  public seedTokenCurrentBalance: BigNumber;
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
@@ -169,6 +177,9 @@ export class Seed {
             this.vestingDuration = await this.contract.vestingDuration();
             this.vestingCliff = await this.contract.vestingCliff();
             this.minimumReached = await this.contract.minimumReached();
+            this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
+              * (this.seedTokenInfo.price ?? 0);
+            this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
             await this.hydrateUser();
 
             this.initializing = false;
