@@ -3,7 +3,8 @@
   display: inline-flex;
   .timeLeft,
   .active {
-    font-size: 0.8em;
+    font-size: 12px;
+    font-family: Inter;
     align-self: center;
     text-align: right;
     white-space: nowrap;
@@ -15,15 +16,15 @@
 
   .timeLeft {
     &.soon {
-      color: $color-red;
+      color: $AlertRed;
     }
 
     &.comingUp {
-      color: $color-orange;
+      color: $AlertOrange;
     }
   }
   .active {
-    color: $color-green;
+    color: $AlertGreen;
 
     > .icon {
       display: inline-block;

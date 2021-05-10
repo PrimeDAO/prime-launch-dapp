@@ -14,10 +14,12 @@
               pretium pretium tempor. Ut eget imperdiet neque. In volutpat
               ante semper diam molestie, et aliquam.</div>
           </div>
-          <div class="rightSection">
+          <!-- <div class="rightSection">
             <div class="label">TIME LEFT</div>
-            <div class="timeLeft">16:34hr</div>
-          </div>
+            <div class="timeLeft">
+              toot
+            </div>
+          </div> -->
         </div>
         <!--
           ================ 
@@ -62,16 +64,18 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">$
                   <formatted-number
+                    if.to-view="seedTokenRewardPrice"
                     value.to-view="seedTokenRewardPrice"
                     average="false"
                     mantissa="2"
                     thousands-separated></formatted-number>
+                  <span else>N/A</span>
                 </div>
               </div>
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1">SUBMIT</button></div>
+          <div class="doit"><button class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -140,19 +144,35 @@
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class="value target">$ 1.5M</div>
+          <div class="value target">$ <formatted-number
+              value.to-view="seed.targetPrice"
+              thousands-separated></formatted-number>
+          </div>
           <div class="label maxLabel">MAX</div>
-          <div class="value max">$ 2.5M</div>
+          <div class="value max">$ <formatted-number
+              value.to-view="seed.capPrice"
+              thousands-separated></formatted-number>
+          </div>
           <div class="label valuationLabel">VALUATION</div>
           <div class="value valuation">$ 18M</div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
-          <div class="value tokensleft">76%</div>
+          <div class="value tokensleft">
+            <formatted-number
+              value.to-view="seed.cap | ethwei"
+              thousands-separated></formatted-number>%
+          </div>
           <div class="label seedpriceLabel">SEED PRICE</div>
-          <div class="value seedprice">$ 3.14</div>
+          <div class="value seedprice">$ <formatted-number
+              if.to-view="seed.fundingTokenPricePerSeedToken"
+              value.to-view="seed.fundingTokenPricePerSeedToken"
+              thousands-separated></formatted-number>
+            <span else>N/A</span>
+          </div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
           </div>
-          <div class="value tokenprice">1 KOL = 10 DAI</div>
+          <div class="value tokenprice">1 <div class="symbol">${seed.seedTokenInfo.symbol}</div> = ${seed.fundingTokensPerSeedToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
+          </div>
         </div>
         <div class="section bottomSection">
           <div class="title  heading heading3">About Kolektivo</div>

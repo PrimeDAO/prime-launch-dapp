@@ -28,8 +28,8 @@
               margin-bottom: 0;
             }
 
-            .timeLeft {
-            }
+            // > .timeLeft {
+            // }
           }
         }
 
@@ -47,9 +47,11 @@
             margin-bottom: 0.25em;
           }
 
-          .timeLeft {
-            color: $color-orange;
-          }
+          // > .timeLeft {
+          //   color: $color-orange;
+          //   font-size: 26px;
+          //   font-weight: bold;
+          // }
         }
       }
 
@@ -372,6 +374,11 @@
           grid-area: tokenprice;
           font-size: 14px;
           line-height: 17px;
+
+          .symbol {
+            display: inline-block;
+            font-weight: 100;
+          }
         }
       }
 
