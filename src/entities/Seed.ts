@@ -228,4 +228,12 @@ export class Seed {
         }
       });
   }
+
+  public fundingTokenAllowance(): Promise<BigNumber> {
+    return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+  }
+
+  public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.fundingTokenContract.approve(this.address, amount));
+  }
 }

@@ -27,7 +27,7 @@ export class SeedDashboard {
   fractionComplete: number;
 
   userFundingTokenBalance: BigNumber;
-  // userSeedTokenBalance: BigNumber;
+  userFundingTokenAllowance: BigNumber;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -53,8 +53,8 @@ export class SeedDashboard {
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
   get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
 
-  // @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
-  get lockRequired(): boolean { return true; }
+  @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
+  get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
@@ -101,7 +101,7 @@ export class SeedDashboard {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.userFundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-      // this.userSeedTokenBalance = await this.seed.seedTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
+      this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
     }
   }
 
@@ -145,6 +145,12 @@ export class SeedDashboard {
 
   handleMaxClaim(): void {
     this.seedTokenToReceive = this.seed.userClaimableAmount;
+  }
+
+  unlockFundingTokens(): void {
+    if (this.seed.unlockFundingTokens(this.fundingTokenToPay)) {
+      this.hydrateUserData();
+    }
   }
 
   buy(): void {

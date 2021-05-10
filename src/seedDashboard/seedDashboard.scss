@@ -146,10 +146,20 @@
 
           .input {
             grid-area: input;
+
+            .maxButton {
+              text-align: center;
+              font-size: 13px;
+            }
           }
 
           .units1 {
             grid-area: units1;
+
+            .unlockButton {
+              text-align: center;
+              font-size: 13px;
+            }
           }
 
           .units2 {

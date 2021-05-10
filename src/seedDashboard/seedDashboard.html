@@ -46,7 +46,12 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+              <div class="fundingInput">
+                <numeric-input value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div class="maxButton">
+                  <a href="#" click.delegate="handleMaxBuy()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
@@ -55,10 +60,17 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
+                <div if.to-view="lockRequired" class="unlockButton">
+                  <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
+                </div>
               </div>
             </div>
             <div class="equals">=</div>
-            <div class="output">${seedTokenReward}</div>
+            <div class="output">
+              <formatted-number
+                value.to-view="seedTokenReward"
+                average="true"></formatted-number>
+            </div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
