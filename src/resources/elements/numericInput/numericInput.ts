@@ -34,6 +34,7 @@ export class NumericInput {
    * if true then value is converted from wei to eth for editing
    */
   @bindable.booleanAttr public isWei?: boolean = true;
+  @bindable.booleanAttr public outputAsString?: boolean = false;
   @bindable public placeholder = "";
 
   private element: HTMLInputElement;
@@ -56,7 +57,11 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
-          this.value = this.isWei ? parseEther(newValue) : newValue;
+          let value: BigNumber | string = this.isWei ? parseEther(newValue) : newValue;
+          if (this.outputAsString) {
+            value = value.toString();
+          }
+          this.value = value;
         }
       } catch {
         this.value = undefined;
