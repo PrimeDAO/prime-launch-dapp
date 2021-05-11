@@ -1,4 +1,3 @@
-import { BigNumber } from "ethers";
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 export interface IGeneral {
   projectName: string,
@@ -25,17 +24,17 @@ export interface ITokenDetails {
   /**
    * In wei
    */
-  maxSupply: BigNumber,
+  maxSupply: string,
   /**
    * In wei
    */
-  initSupply: BigNumber,
+  initSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
      * In wei
      */
-    amount: BigNumber,
+    amount: string,
     /**
      * In days
      */
@@ -44,24 +43,15 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
-  seedTokens: BigNumber,
-  pricePerToken: BigNumber,
+  seedTokens: string,
+  pricePerToken: string,
   baseCurrency: string,
-  seedTarget: BigNumber,
-  seedMax: BigNumber,
+  seedTarget: string,
+  seedMax: string,
   vestingDays: number,
   vestingCliff: number,
-  startDate: {
-    /**
-     * Dates are in ISO format
-     */
-    date: string,
-    time: string
-  },
-  endDate: {
-    date: string,
-    time: string
-  },
+  startDate: string,
+  endDate: string,
   controller: string,
   rights: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
@@ -100,14 +90,6 @@ export class SeedConfig implements ISeedConfig {
   } as IContactDetails;
   public seedDetails = {
     baseCurrency: "DAI",
-    startDate: {
-      date: undefined,
-      time: undefined,
-    },
-    endDate: {
-      date: undefined,
-      time: undefined,
-    },
     whitelist: {
       isWhitelist: false,
       whitelistFile: undefined,

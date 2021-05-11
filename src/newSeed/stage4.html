@@ -8,12 +8,15 @@
       <div>
         <div class="infoInput">
             <label for="seedTokens">Amount of tokens to be added to SEED</label>
-            <numeric-input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
+            <numeric-input output-as-string="true"  id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
         </div>
         <div class="infoInput">
           <label for="ppt">Price per Token</label>
           <div class=" pptContainer">
-            <numeric-input id="ppt" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
+            <numeric-input output-as-string="true" 
+              id="ppt" 
+              value.bind="seedConfig.seedDetails.pricePerToken">
+            </numeric-input>
             <label>per 1</label>
             <select value.bind="seedConfig.seedDetails.baseCurrency">
               <option value="DAI">DAI</option>
@@ -25,11 +28,19 @@
         <div class="infoInput maxTarget">
           <div>
             <label for="seedTarget">SEED Target</label>
-            <numeric-input id="seedTarget" value.bind="seedConfig.seedDetails.seedTarget"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="seedTarget" 
+              value.bind="seedConfig.seedDetails.seedTarget">
+            </numeric-input>
           </div>
           <div>
             <label for="seedMax">SEED Max</label>
-            <numeric-input id="seedMax" value.bind="seedConfig.seedDetails.seedMax"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="seedMax" 
+              value.bind="seedConfig.seedDetails.seedMax">
+            </numeric-input>
           </div>
       </div>
       <div class="labeledQuestion">
@@ -42,14 +53,21 @@
         <div>
           <label for="vestingDays">Tokens vested for</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingDays"></numeric-input>
+            <numeric-input output-as-string="true" 
+              id="vestingDays" 
+              value.bind="seedConfig.seedDetails.vestingDays">
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
         <div>
           <label for="vestingCliff">with a cliff of</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingCliff" value.bind="seedConfig.seedDetails.vestingCliff"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="vestingCliff" 
+              value.bind="seedConfig.seedDetails.vestingCliff">
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
@@ -58,9 +76,9 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <input id="startDate" value.bind="seedConfig.seedDetails.startDate.date"
+            <input id="startDate" value.bind="startDate.date"
               placeholder="DD-MM-YYYY" class="vestingDateInput" disabled>
-            <div><i class="far fa-calendar-alt" ref="startDate"></i></div>
+            <div><i class="far fa-calendar-alt" ref="startDateRef"></i></div>
           </div>
         </div>
         <div>
@@ -68,7 +86,7 @@
           <div class="vestingDatesContainer">
             <div class="vestingDates">
               <input id="startTime" type="time"
-              value.bind="seedConfig.seedDetails.startDate.time" placeholder="00:00 (GMT)"></numeric-input>
+              value.bind="startDate.time" placeholder="00:00 (GMT)"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -81,16 +99,16 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <input id="endDate" value.bind="seedConfig.seedDetails.endDate.date"
+            <input id="endDate" value.bind="endDate.date"
             class="vestingDateInput" placeholder="DD-MM-YYY" disabled>
-            <div><i class="far fa-calendar-alt" ref="endDate"></i></div>
+            <div><i class="far fa-calendar-alt" ref="endDateRef"></i></div>
           </div>
         </div>
         <div>
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="endTime" value.bind="seedConfig.seedDetails.endDate.time"
+              <input id="endTime" value.bind="endDate.time"
                placeholder="00:00 (GMT)" type="time"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
