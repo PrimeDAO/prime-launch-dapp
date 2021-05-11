@@ -81,10 +81,11 @@
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
             <input 
-              id="startDate" value.bind="startDate.date"
+              id="startDate"
               placeholder="DD-MM-YYYY" 
-              class="vestingDateInput" disabled/>
-            <div><i class="far fa-calendar-alt" ref="startDateRef"></i></div>
+              class="vestingDateInput"
+              ref="startDateRef"/>
+            <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
           </div>
         </div>
         <div>
@@ -93,7 +94,7 @@
             <div class="vestingDates">
               <input 
                 id="startTime" type="time"
-                value.bind="startDate.time" 
+                value.bind="startTime" 
                 placeholder="00:00 (GMT)" />
               <div><i class="far fa-clock"></i></div>
             </div>
@@ -108,10 +109,11 @@
           <label for="endDate">End Date</label>
           <div class="vestingDates">
             <input 
-              id="endDate" value.bind="endDate.date"
+              id="endDate"
               class="vestingDateInput" 
-              placeholder="DD-MM-YYY" disabled/>
-            <div><i class="far fa-calendar-alt" ref="endDateRef"></i></div>
+              placeholder="DD-MM-YYY"
+              ref="endDateRef"/>
+            <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
           </div>
         </div>
         <div>
@@ -119,7 +121,7 @@
           <div class="vestingDatesContainer">
             <div class="vestingDates">
               <input 
-                id="endTime" value.bind="endDate.time"
+                id="endTime" value.bind="endTime"
                 placeholder="00:00 (GMT)" type="time"/>
               <div><i class="far fa-clock"></i></div>
             </div>

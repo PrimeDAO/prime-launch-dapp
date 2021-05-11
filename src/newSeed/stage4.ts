@@ -1,36 +1,39 @@
+import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 
 export class Stage4 extends BaseStage {
   protected startDateRef: HTMLElement | HTMLInputElement;
   protected endDateRef: HTMLElement | HTMLInputElement;
-  protected startDate: { date: string, time: string };
-  protected endDate: { date: string, time: string };
+  protected startDate: Date;
+  startTime: string;
+  endDate: Date;
+  endTime: string;
+  dateService = new DateService();
+  startDatePicker: Litepicker;
+  endDatePicker: Litepicker;
 
   attached(): void {
-    if (!this.startDate) {
-      this.startDate = { date: undefined, time: undefined };
+    if (!this.startDatePicker) {
+      this.startDatePicker = new Litepicker({
+        element: this.startDateRef,
+        minDate: Date.now(),
+        autoRefresh: true,
+      });
+      this.startDatePicker.on("selected", (date: Date) => {
+        this.startDate = date;
+      });
     }
-    if (!this.endDate) {
-      this.endDate = { date: undefined, time: undefined };
+    if (!this.endDatePicker) {
+      this.endDatePicker = new Litepicker({
+        element: this.endDateRef,
+        minDate: Date.now(),
+        autoRefresh: true,
+      });
+      this.endDatePicker.on("selected", (date: Date) => {
+        this.endDate = date;
+      });
     }
-    const startDatePicker = new Litepicker({
-      element: this.startDateRef,
-      minDate: Date.now(),
-    });
-    // const dateService = new DateService();
-    startDatePicker.on("selected", (date: Date) => {
-      this.startDate.date = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
-      // this.seedConfig.seedDetails.startDate.date = new Date(date.toDateString()).toUTCString();
-    });
-    const endDatePicker = new Litepicker({
-      element: this.endDateRef,
-      minDate: Date.now(),
-    });
-    endDatePicker.on("selected", (date: Date) => {
-      this.endDate.date = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
-      // this.seedConfig.seedDetails.endDate.date = dateService.toISOString(date);
-    });
   }
   proceed(): void {
     let message: string;
@@ -46,13 +49,13 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero value for  \"Tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
-    } else if (!this.startDate.date) {
+    } else if (!this.startDate) {
       message = "Please select a Start Date";
-    } else if (!this.startDate.time) {
+    } else if (!this.startTime) {
       message = "Please enter a value for the Start Time";
-    } else if (!this.endDate.date) {
+    } else if (!this.endDate) {
       message = "Please select an End Date";
-    } else if (!this.endDate.time) {
+    } else if (!this.endTime) {
       message = "Please enter a value for the End Time";
     } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
       message = "Please upload a .csv file or uncheck Whitelist";
@@ -64,8 +67,14 @@ export class Stage4 extends BaseStage {
       this.stageState[this.stageNumber].verified = false;
     } else {
       // Set the ISO time
-      this.seedConfig.seedDetails.startDate = this.startDate.date + "T" + this.startDate.time + "Z";
-      this.seedConfig.seedDetails.endDate = this.endDate.date + "T" + this.endDate.time + "Z";
+      // Get the start and end time
+      const startTimes = this.startTime.split(":");
+      const endTimes = this.endTime.split(":");
+      this.startDate.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
+      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.startDate);
+      this.endDate.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
+      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.endDate);
+      console.log(this.seedConfig.seedDetails.endDate);
       this.stageState[this.stageNumber].verified = true;
       this.next();
     }
