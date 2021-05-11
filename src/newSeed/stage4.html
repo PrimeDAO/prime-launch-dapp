@@ -8,12 +8,16 @@
       <div>
         <div class="infoInput">
             <label for="seedTokens">Amount of tokens to be added to SEED</label>
-            <numeric-input output-as-string="true"  id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
+            <numeric-input 
+              output-as-string="true"  id="seedTokens" type="text" 
+              value.bind="seedConfig.seedDetails.seedTokens">
+            </numeric-input>
         </div>
         <div class="infoInput">
           <label for="ppt">Price per Token</label>
           <div class=" pptContainer">
-            <numeric-input output-as-string="true" 
+            <numeric-input 
+              output-as-string="true" 
               id="ppt" 
               value.bind="seedConfig.seedDetails.pricePerToken">
             </numeric-input>
@@ -76,8 +80,10 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <input id="startDate" value.bind="startDate.date"
-              placeholder="DD-MM-YYYY" class="vestingDateInput" disabled>
+            <input 
+              id="startDate" value.bind="startDate.date"
+              placeholder="DD-MM-YYYY" 
+              class="vestingDateInput" disabled/>
             <div><i class="far fa-calendar-alt" ref="startDateRef"></i></div>
           </div>
         </div>
@@ -85,8 +91,10 @@
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="startTime" type="time"
-              value.bind="startDate.time" placeholder="00:00 (GMT)"></numeric-input>
+              <input 
+                id="startTime" type="time"
+                value.bind="startDate.time" 
+                placeholder="00:00 (GMT)" />
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -99,8 +107,10 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <input id="endDate" value.bind="endDate.date"
-            class="vestingDateInput" placeholder="DD-MM-YYY" disabled>
+            <input 
+              id="endDate" value.bind="endDate.date"
+              class="vestingDateInput" 
+              placeholder="DD-MM-YYY" disabled/>
             <div><i class="far fa-calendar-alt" ref="endDateRef"></i></div>
           </div>
         </div>
@@ -108,8 +118,9 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="endTime" value.bind="endDate.time"
-               placeholder="00:00 (GMT)" type="time"></numeric-input>
+              <input 
+                id="endTime" value.bind="endDate.time"
+                placeholder="00:00 (GMT)" type="time"/>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -129,7 +140,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="whitelist" type="checkbox" checked.bind="seedConfig.seedDetails.whitelist.isWhitelist"/>
+            <input 
+              id="whitelist" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.whitelist.isWhitelist"/>
             <label for="whitelist"/>
           </div>
         </div>
@@ -139,8 +152,10 @@
             <span>
               ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
             </span>
-            <input id="whitelistFile" type="file" accept=".pdf"
-            class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
+            <input 
+              id="whitelistFile" type="file" accept=".pdf"
+              class="inputFile" 
+              files.bind="seedConfig.seedDetails.whitelist.whitelistFile"/>
           </label>
         </div>
       </div>
@@ -155,7 +170,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="geoBlock" type="checkbox" checked.bind="seedConfig.seedDetails.geoBlock"/>
+            <input 
+              id="geoBlock" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.geoBlock"/>
             <label for="geoBlock"/>
           </div>
         </div>
@@ -171,7 +188,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="legalDisclaimer" type="checkbox" checked.bind="seedConfig.seedDetails.legalDisclaimer"/>
+            <input 
+              id="legalDisclaimer" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.legalDisclaimer"/>
             <label for="legalDisclaimer"/>
           </div>
         </div>

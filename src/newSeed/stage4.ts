@@ -10,6 +10,8 @@ export class Stage4 extends BaseStage {
   attached(): void {
     if (!this.startDate) {
       this.startDate = { date: undefined, time: undefined };
+    }
+    if (!this.endDate) {
       this.endDate = { date: undefined, time: undefined };
     }
     const startDatePicker = new Litepicker({
