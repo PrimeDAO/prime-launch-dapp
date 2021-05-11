@@ -100,10 +100,15 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input
-                disabled.to-view="!seed.userClaimableAmount || seed.userClaimableAmount.eq(0)"
-                value.bind="seedTokenToReceive"
-                placeholder="0.0"></numeric-input>
+              <div class="seedRequest">
+                <numeric-input
+                  disabled.to-view="!userCanClaim"
+                  value.bind="seedTokenToReceive"
+                  placeholder="0.0"></numeric-input>
+                <div class="maxButton" if.to-view="userCanClaim">
+                  <a href="#" click.delegate="handleMaxClaim()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
