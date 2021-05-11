@@ -139,7 +139,7 @@
             <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
           </div>
           <div ref="progressBar" class="progressBar">
-            <div ref="bar" class="bar">&nbsp;</div>
+            <div ref="bar" class="bar ${fractionComplete >= 1 ? 'complete' : ''}">&nbsp;</div>
           </div>
           <div class="raised">
             <div class="amount">$<formatted-number
@@ -148,12 +148,14 @@
                 thousands-separated></formatted-number>
             </div>
             <div class="denomination">USD raised</div>
+            <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
             <div class="perc">
               <formatted-number
                 value.to-view="fractionComplete * 100"
                 average="false"
                 mantissa="2"></formatted-number>%
             </div>
+            <!-- <div else class="perc filled">Filled</div> -->
           </div>
         </div>
         <div class="section middleSection">

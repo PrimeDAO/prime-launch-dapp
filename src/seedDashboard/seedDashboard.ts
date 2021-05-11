@@ -64,7 +64,7 @@ export class SeedDashboard {
   attached(): void {
     this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
       this.numberService.fromString(fromWei(this.seed.target));
-    this.bar.style.width = `${this.progressBar.clientWidth * this.fractionComplete}px`;
+    this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
   }
 
   async load(): Promise<void> {

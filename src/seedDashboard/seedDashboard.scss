@@ -282,6 +282,10 @@
           .bar {
             border-radius: 10px;
             background: $Gradient01;
+
+            &.complete {
+              background: $Gradient07;
+            }
           }
         }
 
@@ -305,6 +309,11 @@
           .perc {
             flex-grow: 2;
             text-align: right;
+
+            &.filled {
+              font-size: 18px;
+              line-height: 22px;
+            }
           }
         }
       }
