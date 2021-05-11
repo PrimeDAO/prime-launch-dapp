@@ -46,7 +46,12 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="fundingTokenToPay" placeholder="0.0"></numeric-input>
+              <div class="fundingInput">
+                <numeric-input value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div class="maxButton">
+                  <a href="#" click.delegate="handleMaxBuy()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
@@ -55,10 +60,17 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
+                <div if.to-view="lockRequired" class="unlockButton">
+                  <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
+                </div>
               </div>
             </div>
             <div class="equals">=</div>
-            <div class="output">${seedTokenReward}</div>
+            <div class="output">
+              <formatted-number
+                value.to-view="seedTokenReward"
+                average="true"></formatted-number>
+            </div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
@@ -67,7 +79,6 @@
                     if.to-view="seedTokenRewardPrice"
                     value.to-view="seedTokenRewardPrice"
                     average="false"
-                    mantissa="2"
                     thousands-separated></formatted-number>
                   <span else>N/A</span>
                 </div>
@@ -89,7 +100,10 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="seedTokenToPay" placeholder="0.0"></numeric-input>
+              <numeric-input
+                disabled.to-view="!seed.userClaimableAmount || seed.userClaimableAmount.eq(0)"
+                value.bind="seedTokenToReceive"
+                placeholder="0.0"></numeric-input>
             </div>
             <div class="units1">
               <div class="container">
@@ -97,13 +111,12 @@
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
                     average="false"
-                    mantissa="2"
                     thousands-separated></formatted-number>
                 </div>
               </div>
             </div>
-            <div class="equals">=</div>
-            <div class="output">${seedTokenToReceive}</div>
+            <div class="equals">&nbsp;</div>
+            <div class="output">1</div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
@@ -126,45 +139,58 @@
             <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
           </div>
           <div ref="progressBar" class="progressBar">
-            <div ref="bar" class="bar">&nbsp;</div>
+            <div ref="bar" class="bar ${fractionComplete >= 1 ? 'complete' : ''}">&nbsp;</div>
           </div>
           <div class="raised">
             <div class="amount">$<formatted-number
                 value.to-view="amountRaised | ethwei"
+                average="false"
                 thousands-separated></formatted-number>
             </div>
             <div class="denomination">USD raised</div>
+            <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
             <div class="perc">
               <formatted-number
                 value.to-view="fractionComplete * 100"
                 average="false"
                 mantissa="2"></formatted-number>%
             </div>
+            <!-- <div else class="perc filled">Filled</div> -->
           </div>
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
           <div class="value target">$ <formatted-number
               value.to-view="seed.targetPrice"
+              average="false"
               thousands-separated></formatted-number>
           </div>
           <div class="label maxLabel">MAX</div>
           <div class="value max">$ <formatted-number
               value.to-view="seed.capPrice"
+              average="false"
               thousands-separated></formatted-number>
           </div>
           <div class="label valuationLabel">VALUATION</div>
-          <div class="value valuation">$ 18M</div>
+          <div class="value valuation">$ <formatted-number
+              if.to-view="seed.valuation"
+              value.to-view="seed.valuation"
+              average="false"
+              thousands-separated></formatted-number>
+            <span else>N/A</span>
+          </div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
           <div class="value tokensleft">
             <formatted-number
-              value.to-view="seed.cap | ethwei"
+              value.to-view="seed.seedTokensLeft | ethwei"
+              average="false"
               thousands-separated></formatted-number>%
           </div>
           <div class="label seedpriceLabel">SEED PRICE</div>
           <div class="value seedprice">$ <formatted-number
               if.to-view="seed.fundingTokenPricePerSeedToken"
               value.to-view="seed.fundingTokenPricePerSeedToken"
+              average="false"
               thousands-separated></formatted-number>
             <span else>N/A</span>
           </div>

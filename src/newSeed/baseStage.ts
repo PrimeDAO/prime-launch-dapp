@@ -1,5 +1,5 @@
 import { EventConfigFailure } from "../services/GeneralEvents";
-import { autoinject } from "aurelia-framework";
+import { autoinject, singleton } from "aurelia-framework";
 import "./baseStage.scss";
 import { ISeedConfig } from "./seedConfig";
 import { RouteConfig } from "aurelia-router";
@@ -10,6 +10,7 @@ export interface IStageState {
   verified: boolean;
 }
 
+@singleton(false)
 @autoinject
 export abstract class BaseStage {
   protected seedConfig: ISeedConfig;

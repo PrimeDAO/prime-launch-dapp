@@ -1,4 +1,3 @@
-import { DisposableCollection } from "./../services/DisposableCollection";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
@@ -10,6 +9,7 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
+import { DisposableCollection } from "services/DisposableCollection";
 
 @autoinject
 export class SeedDashboard {
@@ -19,12 +19,15 @@ export class SeedDashboard {
 
   seed: Seed;
   loading = true;
-  seedTokenToReceive = 1;
+  // seedTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
-  seedTokenToPay: BigNumber;
+  seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
   fractionComplete: number;
+
+  userFundingTokenBalance: BigNumber;
+  userFundingTokenAllowance: BigNumber;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -46,6 +49,13 @@ export class SeedDashboard {
   @computedFrom("seedTokenReward", "seed.seedTokenInfo.price")
   get seedTokenRewardPrice(): number { return this.seedTokenReward * this.seed?.seedTokenInfo.price; }
 
+  /** TODO: don't use current balance */
+  @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
+  get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
+
+  @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
+  get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
+
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
     return this.load();
@@ -54,7 +64,7 @@ export class SeedDashboard {
   attached(): void {
     this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
       this.numberService.fromString(fromWei(this.seed.target));
-    this.bar.style.width = `${this.progressBar.clientWidth * this.fractionComplete}px`;
+    this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
   }
 
   async load(): Promise<void> {
@@ -76,7 +86,7 @@ export class SeedDashboard {
         await this.seed.ensureInitialized();
       }
 
-      await this.hydrateUserData();
+      // await this.hydrateUserData();
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -90,6 +100,8 @@ export class SeedDashboard {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
+      this.userFundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
+      this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
     }
   }
 
@@ -127,13 +139,35 @@ export class SeedDashboard {
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
 
+  handleMaxBuy() : void {
+    this.fundingTokenToPay = this.userFundingTokenBalance;
+  }
+
+  handleMaxClaim(): void {
+    this.seedTokenToReceive = this.seed.userClaimableAmount;
+  }
+
+  unlockFundingTokens(): void {
+    if (this.seed.unlockFundingTokens(this.fundingTokenToPay)) {
+      this.hydrateUserData();
+    }
+  }
+
   buy(): void {
-    this.seed.buy(this.fundingTokenToPay);
+    if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+      this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+    } else {
+      this.seed.buy(this.fundingTokenToPay);
+    }
   }
 
   claim(): void {
     if (this.userCanClaim) {
-      this.seed.claim();
+      if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
+        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
+      } else {
+        this.seed.claim();
+      }
     }
   }
 }
