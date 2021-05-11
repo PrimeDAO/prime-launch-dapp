@@ -7,19 +7,19 @@
             <div class="header">
               <div class="title heading heading2">PrimeDAO</div>
               <div class="timeLeft">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
+                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" is-ended.to-view="seed.isEnded"></time-left>
               </div>
             </div>
             <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
               pretium pretium tempor. Ut eget imperdiet neque. In volutpat
               ante semper diam molestie, et aliquam.</div>
           </div>
-          <!-- <div class="rightSection">
-            <div class="label">TIME LEFT</div>
-            <div class="timeLeft">
-              toot
-            </div>
-          </div> -->
+          <div class="rightSection">
+            <template if.to-view="seed.isActive">
+              <div class="label">TIME LEFT</div>
+              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"seconds"}</div>
+            </template>
+          </div>
         </div>
         <!--
           ================ 

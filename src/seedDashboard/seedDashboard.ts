@@ -29,6 +29,8 @@ export class SeedDashboard {
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
+  msRemainingInPeriodCountdown: number;
+
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,

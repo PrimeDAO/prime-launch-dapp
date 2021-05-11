@@ -87,12 +87,22 @@ export class Seed {
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this.startTime, this._now).asMilliseconds();
+    return this.dateService.getDurationBetween(this._now, this.startTime).asMilliseconds();
+  }
+
+  @computedFrom("_now")
+  public get endsInMilliseconds(): number {
+    return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
 
   @computedFrom("_now")
   public get isActive(): boolean {
     return (this.startTime >= this._now) && (this._now < this.endTime);
+  }
+
+  @computedFrom("_now")
+  public get hasEnded(): boolean {
+    return this._now >= this.endTime;
   }
 
   constructor(
