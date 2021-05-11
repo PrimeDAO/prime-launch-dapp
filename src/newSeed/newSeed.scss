@@ -1,18 +1,41 @@
 @import "styles/colors.scss";
-@import "styles/styles";
 .newSeedContainer {
   display: grid;
   grid-template-columns: 1fr 2fr;
   justify-items: center;
+  background-color: $color-darkpink-3;
+  padding-top: 7rem;
   .currentStageSidebar {
-    line-height: 4rem;
-    font-size: 1.5rem;
-    padding: 1.5rem 1.25rem;
+    line-height: 2rem;
+    font-size: 1.125rem;
+    font-family: Inter;
+    font-weight: 300;
+    color: #98979b;
+    padding: 5rem 1rem;
     .currentstage {
       cursor: pointer;
     }
     .active {
-      color: $color-bluegreen;
+      color: $color-light-purple;
+    }
+    .stagesNumber {
+      display: flex;
+      gap: 1em;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+    .timeLine {
+      width: 2.5rem;
+      height: 1.3rem;
+      display: grid;
+      justify-content: center;
+      padding-top: 0.15em;
+      padding-bottom: 0.15em;
+      .ruler {
+        width: 0.13rem;
+        height: 1.3rem;
+        background-color: #98979b;
+      }
     }
   }
 }

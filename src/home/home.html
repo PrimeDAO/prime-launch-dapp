@@ -1,54 +1,55 @@
 <template>
   <div class="page animated-page au-animate home">
     <div class="section top">
+      <div class="moonshot">
+        <img src="/nasa-pd4lo70LdbI-unsplash.png" />
+      </div>
       <div class="title heading heading0">Seamlessly fundraise for your moonshot</div>
       <div class="subtitle">Prime Launch is a platform for fair token launches in a
         completely permissionless fashion.</div>
       <div class="buttons">
-        <div class="contribute" click.delegate="navigate('contribute')">
+        <div class="contribute" click.delegate="navigate('launches')">
           <div class="title">
-            <div class="heading heading3">Contribute</div>
-            <div cass="arrow">&#8599;</div>
+            <div class="header">Contribute</div>
+            <div class="arrow">&#8599;</div>
           </div>
           <div class="icon"></div>
-          <div class="subtitle subtext">Donec facilisis tortor ut augue lacinia, at
-            viverra est semper. Sed sapien metus</div>
+          <div class="subtitle">View all available pools and contribute to launches</div>
         </div>
         <div class="launch" click.delegate="navigate('launch')">
           <div class="title">
-            <div class="heading heading3">Launch</div>
-            <div cass="arrow">&#8599;</div>
+            <div class="header">Apply for Launch</div>
+            <div class="arrow">&#8599;</div>
           </div>
           <div class="icon"></div>
-          <div class="subtitle subtext">Donec facilisis tortor ut augue lacinia, at
-            viverra est semper. Sed sapien metus</div>
+          <div class="subtitle">Start the registration process to launch your moonshot</div>
         </div>
-      </div>
-    </div>
-    <div class="section nomiss">
-      <div class="noMissColumn">
-        <div class="title heading heading2">Never miss a launch</div>
-        <div class="subtitle subtext">Sign-up for our newsletter to stay ahead of the curve</div>
-      </div>
-      <div class="emailColumn">
-        <div class="form">
-          <input class="emailInput" placeholder="Enter your email"></input>
-          <button class="notifyButton button1">Notify Me</button>
-        </div>
-        <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
       </div>
     </div>
     <div class="section launches">
-      <div class="title heading heading2">Upcoming launches</div>
+      <div class="title heading heading1">Featured Launches</div>
       <horizontal-scroller item-count.to-view="seeds.length">
         <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
       </horizontal-scroller>
       <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
+    <div class="section nomiss">
+      <div class="noMissColumn">
+        <div class="title heading heading1">Never miss a launch</div>
+        <div class="subtitle subtext">Sign-up for our newsletter to stay ahead of the curve</div>
+      </div>
+      <div class="emailColumn">
+        <div class="form">
+          <input class="emailInput" placeholder="Enter your email"></input>
+          <button class="notifyButton button1">Subscribe</button>
+        </div>
+        <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
+      </div>
+    </div>
     <div class="section fairLaunch">
-      <div class="pic"><img src="#" /></div>
+      <div class="pic"><img src="/spacex-OHOU-5UVIYQ-unsplash.png" /></div>
       <div class="rightColumn">
-        <div class="title heading heading2">The real fair launch</div>
+        <div class="title heading heading1">The real fair launch</div>
         <div class="subtitle subtext">
           <div>Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In
             malesuada enim in dolor euismod, id commodo mi consectetur. Curabitur

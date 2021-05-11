@@ -6,20 +6,32 @@
     &.top,
     &.nomiss,
     &.launches {
-      padding-left: 4.5em;
-      padding-right: 4.5em;
+      margin-left: 4.5em;
+      margin-right: 4.5em;
       margin-bottom: 5.75em;
     }
 
     &.fairLaunch {
-      padding-right: 4.5em;
+      margin-right: 4.5em;
       margin-bottom: 5.75em;
     }
 
     &.top {
       width: 55%;
+
+      .moonshot {
+        position: absolute;
+        right: 0;
+        z-index: -1;
+
+        img {
+          mix-blend-mode: lighten;
+        }
+      }
+
       .title {
         white-space: normal;
+        color: $color-light-purple;
       }
 
       > .subtitle {
@@ -29,19 +41,46 @@
 
       .buttons {
         display: flex;
+        justify-content: space-between;
         cursor: pointer;
+        width: 710px;
 
         .contribute,
         .launch {
-          border-left: 4px solid $color-darkblue;
-          padding-left: 12px;
-          padding-top: 6px;
-          padding-bottom: 6px;
-          width: 200px;
+          border-left-width: 4px;
+          border-left-style: solid;
+          border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
+          border-top-right-radius: 6px;
+          border-bottom-right-radius: 6px;
+          background-color: $BG02;
+
+          padding: 18px;
+          padding-right: 24px;
 
           .title {
             display: flex;
             justify-content: space-between;
+            color: $color-white;
+            margin-bottom: 16px;
+
+            .header {
+              font-weight: bold;
+              font-size: 28px;
+              white-space: nowrap;
+              padding-right: 16px;
+            }
+
+            .arrow {
+              font-size: 28px;
+            }
+          }
+
+          .subtitle {
+            color: $Neutral03;
+            font-size: 16px;
+            font-family: Aeonik;
+            mix-blend-mode: normal;
+            opacity: 0.8;
           }
         }
 
@@ -52,10 +91,6 @@
     }
 
     &.launches {
-      > .title {
-        margin-bottom: 24px;
-      }
-
       > .launchesButton {
         text-align: center;
       }
@@ -64,14 +99,37 @@
     &.nomiss {
       display: grid;
       grid-template-columns: auto auto;
+      background-color: $BG02;
+      height: 12em;
+      align-content: center;
+      padding-left: 4em;
+      padding-right: 4em;
+
+      .subtext {
+        color: $color-white;
+      }
 
       .emailColumn {
         .form {
           display: flex;
+          margin-bottom: 4px;
 
           .emailInput {
             flex-grow: 2;
-            margin-right: 10px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          .notifyButton {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: $input-border-radius;
+            border-bottom-right-radius: $input-border-radius;
+          }
+        }
+
+        .disclaimer {
+          a {
+            color: $color-white;
           }
         }
       }
@@ -91,6 +149,7 @@
 
       .rightColumn {
         .subtext {
+          margin-bottom: 3em;
           div {
             margin-bottom: 1em;
           }
@@ -101,7 +160,7 @@
         }
 
         .launchButton {
-          margin-right: 8px;
+          margin-right: 24px;
         }
       }
     }

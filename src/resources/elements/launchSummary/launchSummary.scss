@@ -10,6 +10,9 @@
       "icon tokensTarget tokensTarget";
     row-gap: 12px;
     cursor: pointer;
+    background-color: $BG02;
+    border-radius: 6px;
+    padding: 12px;
 
     > .icon {
       grid-area: icon;
@@ -18,11 +21,16 @@
 
     > .title {
       grid-area: title;
+      font-weight: bold;
+      font-size: 22px;
     }
 
     > .description {
       grid-area: description;
-      color: $color-grey-2;
+      font-family: Inter;
+      font-size: 12px;
+      line-height: 140%;
+      color: $Neutral03;
     }
 
     > .timeLeft {
@@ -40,14 +48,6 @@
         .title {
           font-size: 0.8em;
           margin-bottom: 8px;
-        }
-      }
-
-      .pair {
-        .tokens {
-          img {
-            margin-right: 6px;
-          }
         }
       }
     }

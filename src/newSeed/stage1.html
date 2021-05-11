@@ -1,48 +1,78 @@
 <template>
   <div class="page animated-page stageContainer stage1 au-animate">
     <div class="infoContainer">
-        <div class="heading heading3 title">General Information</div>
-        <div class="subtext">
-          Basic information and key documentation about your project.
-        </div>
+      <div class="heading heading3 title">General Information</div>
+      <div class="subtext">
+        Basic information and key documentation about your project.
+      </div>
       <div>
         <div class="infoInput">
           <label for="projName">Project Name</label>
-          <input id="projName" value.bind="seedConfig.general.projectName"></input>
+          <input id="projName" value.bind="seedConfig.general.projectName" />
         </div>
         <div class="infoInput">
           <label for="projSite">Project Website</label>
-          <input id="projSite" value.bind="seedConfig.general.projectWebsite"> </input>
+          <input id="projSite" value.bind="seedConfig.general.projectWebsite" />
         </div>
         <div class="infoInput">
           <label for="projCat">Project Category</label>
-          <input id="projCat" value.bind="seedConfig.general.category"> </input>
+          <input id="projCat" value.bind="seedConfig.general.category" />
         </div>
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
-          <input id="whitePaper"  value.bind="seedConfig.general.whitepaper"> </input>
+          <input id="whitePaper" value.bind="seedConfig.general.whitepaper" />
         </div>
         <div class="infoInput">
           <label for="gitLink">Github Link</label>
-          <input id="gitLink"  value.bind="seedConfig.general.github"> </input>
+          <input id="gitLink" value.bind="seedConfig.general.github" />
         </div>
-        <div class="otherLinks">
-          <div class="sMedia">
-            <label for="customLink">Custom Link </label>
-            <input id="customLink" placeholder="E.g Twitter"></input>
+        <template repeat.for="link of seedConfig.general.customLinks">
+          <div class="otherLinks">
+            <div class="sMedia">
+              <label for="$index">Custom Link </label>
+              <input
+                id="$index"
+                placeholder="E.g Twitter"
+                value.bind="seedConfig.general.customLinks[$index].media"
+              />
+            </div>
+            <div class="addLinkContainer">
+              <div>
+                <label for="url`${index}`">URL</label>
+                <input
+                  id="$index"
+                  placeholder="https://..."
+                  value.bind="seedConfig.general.customLinks[$index].url"
+                />
+                <span
+                  class="deleteLink"
+                  title="Delete this row"
+                  click.delegate="deleteCustomLinks($index)"
+                >
+                  <i class="far fa-trash-alt"></i>
+                </span>
+              </div>
+            </div>
+            <div
+              class="addLink"
+              click.delegate="addCustomLinks()"
+              if.bind="$index == seedConfig.general.customLinks.length - 1"
+            >
+              <a>+ Add link</a>
+            </div>
           </div>
-          <div>
-            <label for="url">URL</label>
-            <input id="url" placeholder="https://"></input>
-          </div>
-          <div class="addLink">
-            <a>+ Add link</a>
-          </div>
+        </template>
+        <div
+          if.to-view="seedConfig.general.customLinks.length <= 0"
+          class="addSingleLink"
+          click.delegate="addCustomLinks(-1)"
+        >
+          <a>+ Add Social Media link</a>
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="button button1" click.delegate="cancel()">CANCEL</div>
-        <div class="button button1" click.delegate="proceed()">PROCEED</div>
+        <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
       </div>
     </div>
   </div>

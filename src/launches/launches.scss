@@ -6,10 +6,6 @@
       padding-left: 4.5em;
       padding-right: 4.5em;
       margin-bottom: 5.75em;
-
-      > .title {
-        margin-bottom: 24px;
-      }
     }
 
     &.launches {
@@ -69,6 +65,12 @@
           &.starts,
           &.type {
             text-align: center;
+          }
+        }
+
+        .cell {
+          &.pair {
+            padding: 6px 0;
           }
         }
       }

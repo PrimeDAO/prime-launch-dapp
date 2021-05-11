@@ -106,7 +106,7 @@ To run the Webpack Bundle Analyzer, do `npm run analyze` (production build).
 
 ### <a name="env"></a> Environment Variables
 
-Make sure you have in your environment (or in a .env file) the following:
+Make sure you have in your environment (or in a ".env" file) the following:
 
 ```
 IPFS_DEPLOY_PINATA__SECRET_API_KEY=
@@ -117,13 +117,15 @@ ETHPLORER_KEY=
 ETHERSCAN_KEY=
 ```
 
+When building for production, the build will look for variables in ".env.production".
+
 ## Deploy to IPFS
 
 To deploy the dApp to IPFS you must first create your build in the `dist` folder using one of the [build commands above](#build).
 
 Then the fastest way to deploy the site on ipfs is using [Pinata](https://pinata.cloud/). Pinata will automatically deploy the code to IPFS, generating a hash of the code, and the "pin" the hash so that it remains in a cache and doesn't eventually fall out of easy sight of the cloud of IPFS nodes.
 
-Make sure you added your Pinata `IPFS_DEPLOY_PINATA__API_KEY` and `IPFS_DEPLOY_PINATA__SECRET_API_KEY` in your environment or a .env file.
+Make sure you added your Pinata `IPFS_DEPLOY_PINATA__API_KEY` and `IPFS_DEPLOY_PINATA__SECRET_API_KEY` in your environment or a ".env" file.
 
 Install IPFS: [https://docs.ipfs.io/install/ipfs-desktop/](https://docs.ipfs.io/install/ipfs-desktop/)
 

@@ -1,16 +1,16 @@
 <template bindable="title, subTitle1, btnText, poweredBy">
   <div class="launch-box-container">
     <div class="topSection">
-      <div class="heading heading3">${title}</div>
+      <div class="heading heading3 title">${title}</div>
       <div class="subtext">${subTitle1}</div>
     </div>
     <div class="buttons">
-      <div class="buttonContainer button1">
-        <a route-href="route: selectPackage">${btnText}</a>
+      <div class="buttonContainer">
+        <a class="button1" route-href="route: newSeed">${btnText}</a>
       </div>
-      <div>
+      <!-- <div>
         <a>Learn more</a>
-      </div>
+      </div> -->
     </div>
     <div class="container-footer">
       <div>POWERED BY</div>

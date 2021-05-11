@@ -128,6 +128,7 @@ export class EthereumService {
 
     // comment out to run DISCONNECTED
     this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[this.targetedNetwork]);
+    this.readOnlyProvider.pollingInterval = 15000;
 
     if (!this.blockSubscribed) {
       this.readOnlyProvider.on("block", (blockNumber: number) => this.handleNewBlock(blockNumber));

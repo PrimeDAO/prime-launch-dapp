@@ -1,16 +1,22 @@
 import { EventConfigFailure } from "../services/GeneralEvents";
-import { autoinject } from "aurelia-framework";
+import { autoinject, singleton } from "aurelia-framework";
 import "./baseStage.scss";
 import { ISeedConfig } from "./seedConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 
+export interface IStageState {
+  verified: boolean;
+}
+
+@singleton(false)
 @autoinject
 export abstract class BaseStage {
   protected seedConfig: ISeedConfig;
   protected stageNumber: number;
   protected maxStage: number;
+  protected stageState: Array<IStageState>;
 
   constructor(
     protected router: Router,

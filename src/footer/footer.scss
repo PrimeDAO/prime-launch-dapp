@@ -2,6 +2,8 @@
 
 .footerContainer {
   color: $subtext-color;
+  font-family: Inter;
+  font-size: 14px;
 
   .sections {
     display: flex;
@@ -14,11 +16,7 @@
       }
 
       .title {
-        color: $color-white;
         margin-bottom: 24px;
-        font-size: 20px;
-        white-space: nowrap;
-        text-transform: uppercase;
       }
 
       &.about {
@@ -28,12 +26,17 @@
       }
 
       a {
+        display: inline-block;
         color: $subtext-color;
+        font-size: 14px;
+        margin-bottom: 12px;
       }
     }
   }
   > hr {
     margin-bottom: 30px;
+    background-color: $Border01;
+    height: 0.1rem;
   }
   .bottom {
     display: flex;

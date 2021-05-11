@@ -1,7 +1,7 @@
 @import "styles/colors.scss";
 .appWrapper {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-template-rows: 76px 100fr 1fr;
   grid-template-areas:
     "logo header"
@@ -11,11 +11,13 @@
 
   > .logo {
     grid-area: logo;
-    background-color: $color-black;
+    background-color: $color-darkpink-3;
     align-items: center;
     // just for vertical alignment of the logo
     display: flex;
-    padding-left: 24px;
+    padding-left: 5rem;
+    margin-right: 50px;
+    cursor: pointer;
     img {
       margin-right: 10px;
     }
@@ -27,8 +29,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $color-black;
     height: 76px;
+    padding-right: 4rem;
 
     .networkfeedback {
       color: $color-white;
@@ -131,7 +133,7 @@
   .mainContent {
     grid-area: mainContent;
     color: $color-white;
-    background-color: $color-black;
+    // background-color: $color-black;
 
     .page {
       padding: 24px 20px;

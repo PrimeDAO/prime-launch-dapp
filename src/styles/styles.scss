@@ -2,6 +2,17 @@
 @import "./dialogs";
 @import "tippy.js/dist/tippy.css"; // TODO: use CDN?
 
+@mixin standardTextGradient {
+  background-image: $Gradient01;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin tokenIcon {
+  width: 19px;
+  border-radius: 9px;
+}
+
 html {
   body {
     font-size: 16px;
@@ -10,17 +21,49 @@ html {
     color: $color-white;
     font-family: Aeonik;
     min-height: 100vh;
+    padding-left: 4rem;
+    padding-right: 4rem;
 
     input {
-      border: $input-border;
-      width: 70px;
-      background-color: $color-black;
-      color: $color-white;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 33px;
+      border: 1px solid $input-border;
+      background: $BG01;
+      color: $White;
       border-radius: $input-border-radius;
       outline: none;
+      padding: 0 12px;
 
       &::placeholder {
-        color: $color-grey-4;
+        color: $Neutral03;
+        mix-blend-mode: normal;
+        opacity: 0.43;
+      }
+      &:focus::placeholder {
+        color: transparent;
+      }
+    }
+
+    textarea {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 33px;
+      border-radius: 10px;
+      background-color: $BG01;
+      border: 1px solid $input-border;
+      color: $White;
+      outline: none;
+      padding: 0 12px;
+
+      &::placeholder {
+        color: $Neutral03;
+        mix-blend-mode: normal;
+        opacity: 0.43;
       }
       &:focus::placeholder {
         color: transparent;
@@ -46,32 +89,46 @@ html {
       color: $color-darkblue;
       text-decoration: none;
       white-space: nowrap;
-
+      cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
     }
 
     .heading {
-      font-family: "Cera Pro";
-      color: $color-white;
+      font-family: Aeonik;
+      font-style: normal;
+      font-weight: bold;
+      width: fit-content; // so gradients look right
       white-space: nowrap;
 
       &.heading0 {
-        font-size: 3.5em;
+        font-size: 64px;
+        line-height: 65px;
         margin-bottom: 24px;
-        line-height: 54px;
+        @include standardTextGradient;
       }
       &.heading1 {
-        font-size: 2em;
-        margin-bottom: 8px;
+        font-size: 48px;
+        line-height: 46px;
+        margin-bottom: 24px;
+        @include standardTextGradient;
       }
       &.heading2 {
-        font-size: 1.625em;
-        margin-bottom: 6px;
+        font-size: 36px;
+        line-height: 65px;
+        margin-bottom: 8px;
+        @include standardTextGradient;
       }
       &.heading3 {
-        font-size: 1.25em;
+        font-size: 24px;
+        line-height: 29px;
+        margin-bottom: 6px;
+        color: #a258a7;
+      }
+      &.heading4 {
+        font-size: 14px;
+        color: #a258a7;
       }
     }
 
@@ -80,60 +137,36 @@ html {
       font-size: 0.8125em;
     }
 
-    .button,
-    .button1,
-    .button2,
-    .button3,
-    .button4,
-    .buttonBw {
+    .button1 {
       border-radius: $global-button-radius;
-      padding: 6px 48px;
-      padding-bottom: 8px;
-      font-family: "Cera Pro";
-      font-size: 0.9em;
-      color: $color-white;
-      border: 2px solid $color-white;
+      border: none;
+      padding: 14px 28px;
       outline: none;
-      box-shadow: 3px 3px 8px #00000029;
-      white-space: nowrap;
-      background-color: transparent;
+
+      font-family: Inter;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+
+      color: $color-white;
       cursor: pointer;
 
-      &:hover:not(:disabled) {
-        background-color: $color-black;
-        border-color: $color-black;
-        color: $color-white;
+      &:hover {
         text-decoration: none;
-      }
-
-      &.small {
-        padding: 3px 13px;
       }
 
       &:disabled {
         cursor: not-allowed;
+        opacity: 0.2;
       }
     }
 
     .button1 {
-      background-color: $button1-color;
-      border-color: $button1-color;
-    }
-    .button2 {
-      background-color: $button2-color;
-      border-color: $button2-color;
-    }
-    .button3 {
-      background-color: $button3-color;
-      border-color: $button3-color;
-    }
-    .button4 {
-      color: $button4-color;
-      border: 2px solid $button4-color;
-    }
-    .buttonBw {
-      color: $color-black;
-      border: 2px solid $color-green;
+      background: $Gradient01;
     }
   }
 

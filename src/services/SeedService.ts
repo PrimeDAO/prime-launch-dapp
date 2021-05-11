@@ -5,7 +5,6 @@ import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { DisposableCollection } from "services/DisposableCollection";
 
 // export interface ISeed {
 //   address: Address;
@@ -53,7 +52,6 @@ export class SeedService {
   }
   public initializing = true;
   private initializedPromise: Promise<void>;
-  private subscriptions: DisposableCollection = new DisposableCollection();
   private seedFactory: any;
   /**
    * when the factory was created
@@ -66,21 +64,20 @@ export class SeedService {
     private eventAggregator: EventAggregator,
     private container: Container,
   ) {
-    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.loadContracts();
-    }));
     /**
      * otherwise singleton is the default
      */
     this.container.registerTransient(Seed);
   }
 
-  private async loadContracts(): Promise<void> {
-    this.seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
-  }
-
   public async initialize(): Promise<void> {
-    await this.loadContracts();
+    /**
+     * don't need to reload the seedfactory on account change because we never send txts to it.
+     */
+    this.seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    /**
+     * seeds will take care of themselves on account changes
+     */
     return this.getSeeds();
   }
 
@@ -134,6 +131,11 @@ export class SeedService {
     return this.initializedPromise;
   }
 
+  public featuredSeeds(): Array<Seed> {
+    return [this.seedsArray[this.seedsArray.length - 3],
+      this.seedsArray[this.seedsArray.length - 2],
+      this.seedsArray[this.seedsArray.length - 1]];
+  }
   // public async deploySeed(params: IDeploySeedParams): Promise<TransactionReceipt> {
   //   const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
 

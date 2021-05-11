@@ -63,6 +63,7 @@ export class TokenBalance {
         // tslint:disable-next-line:no-empty
         // eslint-disable-next-line no-empty
       } catch (ex) {
+        console.log(`error getting token balance: ${ex}`);
       } finally {
         this.checking = false;
       }
