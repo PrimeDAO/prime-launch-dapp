@@ -38,12 +38,12 @@ export class Seed {
    * in terms of fundingToken
    */
   public target: BigNumber;
-  public targetPrice: number;
+  // public targetPrice: number;
   /**
    * in terms of fundingToken
    */
   public cap: BigNumber;
-  public capPrice: number;
+  // public capPrice: number;
   public whitelisted: boolean;
   /**
    * the number of days of which seed tokens vest
@@ -188,12 +188,12 @@ export class Seed {
              * in terms of fundingTken
              */
       this.target = await this.contract.successMinimum();
-      this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
+      // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
       /**
              * in terms of fundingTken
              */
       this.cap = await this.contract.cap();
-      this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
+      // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.isWhitelisted();
       this.vestingDuration = await this.contract.vestingDuration();
       this.vestingCliff = await this.contract.vestingCliff();

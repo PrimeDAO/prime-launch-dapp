@@ -165,16 +165,12 @@
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class="value target">$ <formatted-number
-              value.to-view="seed.targetPrice"
-              average="false"
-              thousands-separated></formatted-number>
+          <div class="value target">
+            <formatted-number value.to-view="seed.target | ethwei" mantissa="2"></formatted-number>
           </div>
           <div class="label maxLabel">MAX</div>
-          <div class="value max">$ <formatted-number
-              value.to-view="seed.capPrice"
-              average="false"
-              thousands-separated></formatted-number>
+          <div class="value max">
+            <formatted-number value.to-view="seed.cap | ethwei" mantissa="2"></formatted-number>
           </div>
           <div class="label valuationLabel">VALUATION</div>
           <div class="value valuation">$ <formatted-number
@@ -187,9 +183,7 @@
           <div class="label tokensleftLabel">TOKENS LEFT</div>
           <div class="value tokensleft">
             <formatted-number
-              value.to-view="seed.seedTokensLeft | ethwei"
-              average="false"
-              thousands-separated></formatted-number>%
+              value.to-view="seedTokensLeft | ethwei"></formatted-number>%
           </div>
           <div class="label seedpriceLabel">SEED PRICE</div>
           <div class="value seedprice">$ <formatted-number
