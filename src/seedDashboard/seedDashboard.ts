@@ -55,6 +55,9 @@ export class SeedDashboard {
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
   get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
 
+  @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
+  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
