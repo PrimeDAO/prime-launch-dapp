@@ -29,8 +29,6 @@ export class SeedDashboard {
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
-  msRemainingInPeriodCountdown: number;
-
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
@@ -43,7 +41,7 @@ export class SeedDashboard {
   }
 
   @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
-  get userCanClaim(): boolean { return this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
+  get userCanClaim(): boolean { return this.seed.hasEnded && this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.fundingTokensPerSeedToken; }

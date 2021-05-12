@@ -7,7 +7,7 @@
             <div class="header">
               <div class="title heading heading2">PrimeDAO</div>
               <div class="timeLeft">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" is-ended.to-view="seed.isEnded"></time-left>
+                <time-left seed.to-view="seed"></time-left>
               </div>
             </div>
             <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
@@ -39,7 +39,7 @@
           Section Two
           ================ 
         -->
-        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
+        <div if.to-view="connected && seed.userIsWhitelisted && seed.isActive" class="secton section2">
           <div class="description">Contribute</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>

@@ -55,6 +55,7 @@ export class Seed {
    */
   public vestingCliff: number;
   public minimumReached: boolean;
+  public maximumReached: boolean;
   /**
    * the amount of the fundingToken in the seed
    */
@@ -96,14 +97,25 @@ export class Seed {
     return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
 
+  /**
+   * effectively, can the user contribute
+   */
   @computedFrom("_now")
   public get isActive(): boolean {
-    return (this.startTime >= this._now) && (this._now < this.endTime);
+    return !this.maximumReached && ((this.startTime >= this._now) && (this._now < this.endTime));
+  }
+
+  /**
+   * is it no longer possible to contribute
+   */
+  @computedFrom("_now")
+  public get hasEnded(): boolean {
+    return this.maximumReached || (this._now >= this.endTime);
   }
 
   @computedFrom("_now")
-  public get hasEnded(): boolean {
-    return this._now >= this.endTime;
+  public get hasNotStarted(): boolean {
+    return (this._now < this.startTime);
   }
 
   constructor(
@@ -186,6 +198,7 @@ export class Seed {
       this.vestingDuration = await this.contract.vestingDuration();
       this.vestingCliff = await this.contract.vestingCliff();
       this.minimumReached = await this.contract.minimumReached();
+      this.maximumReached = this.amountRaised.gte(this.cap);
       this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
               * (this.seedTokenInfo.price ?? 0);
       this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
@@ -200,7 +213,7 @@ export class Seed {
     }
   }
 
-  public ensureInitialized(): Promise<boolean> {
+  public ensureInitialized(): Promise<void> {
     return this.initializedPromise;
   }
 
