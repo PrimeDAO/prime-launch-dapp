@@ -63,17 +63,11 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
-    return this.load();
   }
 
-  attached(): void {
-    this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-      this.numberService.fromString(fromWei(this.seed.target));
-    this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
-  }
-
-  async load(): Promise<void> {
+  async attached(): Promise<void> {
     let waiting = false;
+
     try {
       if (this.seedService.initializing) {
         await Utils.sleep(200);
@@ -81,17 +75,22 @@ export class SeedDashboard {
         waiting = true;
         await this.seedService.ensureInitialized();
       }
-      this.seed = this.seedService.seeds.get(this.address);
-      if (this.seed.initializing) {
+      const seed = this.seedService.seeds.get(this.address);
+      if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("seeds.loading", true);
           waiting = true;
         }
-        await this.seed.ensureInitialized();
+        await seed.ensureInitialized();
       }
+      this.seed = seed;
 
       await this.hydrateUserData();
+      this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+        this.numberService.fromString(fromWei(this.seed.target));
+
+      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
