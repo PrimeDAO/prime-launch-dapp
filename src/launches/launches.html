@@ -31,7 +31,7 @@
                 click.delegate="navigate(`seed/${seed.address}`)">PrimeDAO</div>
               <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
                 click.delegate="navigate(`seed/${seed.address}`)">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" hide-icons></time-left>
+                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" is-ended.to-view="seed.isEnded" hide-icons></time-left>
               </div>
               <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}"
                 click.delegate="navigate(`seed/${seed.address}`)">SEED</div>

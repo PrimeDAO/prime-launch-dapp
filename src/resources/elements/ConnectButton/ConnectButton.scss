@@ -17,15 +17,15 @@
     padding: 0.6rem 0.9rem;
     border-radius: 0.75rem;
     white-space: nowrap;
-    color: rgb(109, 168, 255);
-    background-color: rgb(33, 36, 41);
-    border: 1px solid rgba(21, 61, 111, 0.44);
+    color: $Secondary05;
+    background-color: $global-background-color;
+    border: $BG05;
     cursor: pointer;
     font-weight: 500;
 
     &:hover,
     &:focus {
-      color: rgb(83, 153, 255);
+      color: $Secondary06;
     }
   }
 
@@ -45,8 +45,8 @@
   }
 
   &.connected {
-    background-color: rgb(64, 68, 79);
-    border-color: rgba(21, 61, 111, 0.44);
+    background-color: $BG05;
+    border-color: $BG05;
 
     .separator {
       display: inline-block;
@@ -54,7 +54,7 @@
       margin-right: 0.5em;
       position: relative;
       bottom: 1px;
-      color: #64b0c8;
+      color: $Secondary06;
     }
 
     .connectedButtons {
@@ -71,7 +71,7 @@
             margin-right: 6px;
           }
           i {
-            color: rgb(109, 168, 255);
+            color: $Secondary05;
           }
           &.confirming {
             cursor: pointer;

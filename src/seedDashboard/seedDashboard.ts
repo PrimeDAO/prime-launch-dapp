@@ -29,6 +29,8 @@ export class SeedDashboard {
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
+  msRemainingInPeriodCountdown: number;
+
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
@@ -52,6 +54,9 @@ export class SeedDashboard {
   /** TODO: don't use current balance */
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
   get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
+
+  @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
+  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }

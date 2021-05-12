@@ -7,19 +7,19 @@
             <div class="header">
               <div class="title heading heading2">PrimeDAO</div>
               <div class="timeLeft">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
+                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive" is-ended.to-view="seed.isEnded"></time-left>
               </div>
             </div>
             <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
               pretium pretium tempor. Ut eget imperdiet neque. In volutpat
               ante semper diam molestie, et aliquam.</div>
           </div>
-          <!-- <div class="rightSection">
-            <div class="label">TIME LEFT</div>
-            <div class="timeLeft">
-              toot
-            </div>
-          </div> -->
+          <div class="rightSection">
+            <template if.to-view="seed.isActive">
+              <div class="label">TIME LEFT</div>
+              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"minutes"}</div>
+            </template>
+          </div>
         </div>
         <!--
           ================ 
@@ -60,7 +60,7 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
-                <div if.to-view="lockRequired" class="unlockButton">
+                <div if.to-view="userCanPay && lockRequired" class="unlockButton">
                   <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
                 </div>
               </div>
@@ -100,10 +100,15 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input
-                disabled.to-view="!seed.userClaimableAmount || seed.userClaimableAmount.eq(0)"
-                value.bind="seedTokenToReceive"
-                placeholder="0.0"></numeric-input>
+              <div class="seedRequest">
+                <numeric-input
+                  disabled.to-view="!userCanClaim"
+                  value.bind="seedTokenToReceive"
+                  placeholder="0.0"></numeric-input>
+                <div class="maxButton" if.to-view="userCanClaim">
+                  <a href="#" click.delegate="handleMaxClaim()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
