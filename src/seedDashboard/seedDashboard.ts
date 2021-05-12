@@ -91,7 +91,7 @@ export class SeedDashboard {
         await this.seed.ensureInitialized();
       }
 
-      // await this.hydrateUserData();
+      await this.hydrateUserData();
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
