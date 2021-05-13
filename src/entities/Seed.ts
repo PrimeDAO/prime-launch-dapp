@@ -205,8 +205,8 @@ export class Seed {
       this.vestingCliff = await this.contract.vestingCliff();
       this.minimumReached = await this.contract.minimumReached();
       this.maximumReached = this.amountRaised.gte(this.cap);
-      this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
-              * (this.seedTokenInfo.price ?? 0);
+      this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
+              * (this.fundingTokenInfo.price ?? 0);
       this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
       await this.hydrateUser();
 
