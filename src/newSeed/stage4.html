@@ -92,10 +92,10 @@
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input 
+              <numeric-input 
                 id="startTime" type="time"
                 value.bind="startTime" 
-                placeholder="HH:MM (GMT)" />
+                placeholder="HH:MM (GMT)" ></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -120,9 +120,9 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input 
+              <numeric-input 
                 id="endTime" value.bind="endTime"
-                placeholder="HH:MM (GMT)" type="time"/>
+                placeholder="HH:MM (GMT)" type="time"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
