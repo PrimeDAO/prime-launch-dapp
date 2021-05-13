@@ -15,7 +15,7 @@
               ante semper diam molestie, et aliquam.</div>
           </div>
           <div class="rightSection">
-            <template if.to-view="seed.isActive">
+            <template if.to-view="seed.isLive">
               <div class="label">TIME LEFT</div>
               <div class="timeLeft">${seed.endsInMilliseconds | timespan:"minutes"}</div>
             </template>
@@ -47,8 +47,8 @@
           <div class="form">
             <div class="input">
               <div class="fundingInput">
-                <numeric-input disabled.to-view="!seed.isActive" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
-                <div if.to-view="seed.isActive" class="maxButton">
+                <numeric-input disabled.to-view="!seed.canContribute" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div if.to-view="seed.canContribute" class="maxButton">
                   <a href="#" click.delegate="handleMaxBuy()">MAX</a>
                 </div>
               </div>
@@ -121,7 +121,7 @@
               </div>
             </div>
             <div
-              if.to-view="!seed.isActive"
+              if.to-view="seed.isLive && !seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>

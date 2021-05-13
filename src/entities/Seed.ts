@@ -93,31 +93,33 @@ export class Seed {
     return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
 
-  /**
-   * effectively, can the user contribute
-   */
-  @computedFrom("_now")
-  public get isActive(): boolean {
-    return !this.maximumReached && ((this._now >= this.startTime) && (this._now < this.endTime));
-  }
-
-  /**
-   * is it no longer possible to contribute
-   */
-  @computedFrom("_now")
-  public get hasEnded(): boolean {
-    return this.maximumReached || (this._now >= this.endTime);
-  }
-
   @computedFrom("_now")
   public get hasNotStarted(): boolean {
     return (this._now < this.startTime);
   }
+  /**
+   * we are between the start and end dates.
+   */
+  @computedFrom("_now")
+  public get isLive(): boolean {
+    return ((this._now >= this.startTime) && (this._now < this.endTime));
+  }
+  /**
+   * we are after the end date.
+   */
+  @computedFrom("_now")
+  public get isDead(): boolean {
+    return (this._now >= this.endTime);
+  }
 
+  @computedFrom("_now")
+  public get canContribute(): boolean {
+    return this.isLive && !this.maximumReached;
+  }
   /**
    * it is theoretically possible to claim
    */
-  @computedFrom("maximumReached", "minimumReached", "_now_")
+  @computedFrom("_now_")
   get claimingIsOpen(): boolean { return this.maximumReached || (this.minimumReached && (this._now >= this.endTime)); }
 
   constructor(
