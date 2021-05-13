@@ -44,10 +44,7 @@ export class SeedDashboard {
   get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.fundingTokensPerSeedToken; }
-
-  @computedFrom("seedTokenReward", "seed.seedTokenInfo.price")
-  get seedTokenRewardPrice(): number { return this.seedTokenReward * this.seed?.seedTokenInfo.price; }
+  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
 
   /** TODO: don't use current balance */
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")

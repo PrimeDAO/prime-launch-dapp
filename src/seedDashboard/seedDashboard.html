@@ -74,14 +74,6 @@
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">$
-                  <formatted-number
-                    if.to-view="seedTokenRewardPrice"
-                    value.to-view="seedTokenRewardPrice"
-                    average="false"
-                    thousands-separated></formatted-number>
-                  <span else>N/A</span>
-                </div>
               </div>
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
@@ -128,7 +120,7 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in ${seed.endsInMilliseconds | timespan:"seconds":true} ${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
+            <div class="vestedMessage subtext">Claiming opens in ${seed.endsInMilliseconds | timespan:"seconds":true} ${seed.minimumReached ? '' : ', as long as the target is reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
         </div>
