@@ -43,7 +43,7 @@
 
           .label {
             font-size: 0.8em;
-            color: $color-grey-4;
+            color: $Neutral03;
             margin-bottom: 0.25em;
           }
 
@@ -58,7 +58,7 @@
       .section1,
       .section2,
       .section3 {
-        background-color: $color-black-3;
+        background-color: $BG02;
         padding: 1.5em 1.5em;
         border-radius: 0.5em;
         align-items: baseline;
@@ -135,7 +135,7 @@
             .container {
               .token {
                 font-weight: 800;
-                color: $color-grey-4;
+                color: $Neutral02;
               }
 
               .subsection {
@@ -415,7 +415,7 @@
           flex-wrap: wrap;
 
           a {
-            color: $subtext-color;
+            color: $Neutral02;
             margin-bottom: 1em;
 
             &:hover {
@@ -427,8 +427,8 @@
               margin-right: 0.25em;
               font-size: 0.75em;
               border-radius: 50%;
-              color: $color-black;
-              background-color: $subtext-color;
+              color: $BG01;
+              background-color: $Neutral02;
               padding: 0.4em;
               width: 1em;
               height: 1em;

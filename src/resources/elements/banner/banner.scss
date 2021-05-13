@@ -24,7 +24,6 @@
   border-radius: 0px 0px 10px 10px;
   -moz-border-radius: 0px 0px 10px 10px;
   -webkit-border-radius: 0px 0px 10px 10px;
-  border: 0px solid #000000;
   pointer-events: auto;
 
   .message {
@@ -35,7 +34,7 @@
 
   button.close {
     flex-shrink: 2;
-    color: $color-white;
+    color: $White;
     cursor: pointer;
     background-color: transparent;
     border: none;
@@ -46,37 +45,37 @@
 }
 
 .bannerContainer.warning .body {
-  color: $color-orange;
-  background-color: $color-black;
-  border-color: $color-white;
+  color: $Shade01;
+  background-color: $BG02;
+  border-color: $Border01;
   border-left-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
 }
 
 .bannerContainer.failure .body {
-  color: $color-red;
-  background-color: $color-black;
-  border-color: $color-white;
+  color: $AlertRed;
+  background-color: $BG02;
+  border-color: $Border01;
   border-left-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 1px;
 }
 
 .bannerContainer.info .body {
-  color: $color-white;
-  background-color: $color-green;
+  color: $White;
+  background-color: $BG02;
 }
 
 .bannerContainer.info .body a {
   margin-left: 0.5rem;
-  color: $color-yellow;
+  color: $White;
   text-transform: uppercase;
 }
 
 .bannerContainer.info .body .copy-to-clip-button {
   margin-left: 0.5rem;
-  color: $color-yellow;
+  color: $Shade02;
 }
 
 // .bannerContainer.info button.close {
@@ -84,7 +83,7 @@
 // }
 
 // .bannerContainer button.close span {
-//   color: $color-white;
+//   color: $White;
 // }
 
 // .bannerContainer.warning button.close {

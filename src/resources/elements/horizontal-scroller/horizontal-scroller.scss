@@ -21,11 +21,11 @@
 
   .leftButton,
   .rightButton {
-    background-color: $color-darkblue;
+    background: $Gradient01;
     opacity: 0.8;
     border-radius: 26px;
     cursor: pointer;
-    color: $color-white;
+    color: $White;
     font-size: 22.5px;
     text-decoration: none;
     width: 32px;
@@ -49,7 +49,7 @@
 
   .leftButton:hover,
   .rightButton:hover {
-    background-color: $color-lightblue;
+    background-color: $Secondary07;
   }
 
   .leftButton {

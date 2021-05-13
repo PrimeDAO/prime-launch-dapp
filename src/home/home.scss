@@ -31,11 +31,11 @@
 
       .title {
         white-space: normal;
-        color: $color-light-purple;
+        color: $Shade06;
       }
 
       > .subtitle {
-        color: $color-grey-2;
+        color: $Neutral03;
         margin-bottom: 86px;
       }
 
@@ -60,7 +60,7 @@
           .title {
             display: flex;
             justify-content: space-between;
-            color: $color-white;
+            color: $White;
             margin-bottom: 16px;
 
             .header {
@@ -106,7 +106,7 @@
       padding-right: 4em;
 
       .subtext {
-        color: $color-white;
+        color: $White;
       }
 
       .emailColumn {
@@ -122,14 +122,14 @@
           .notifyButton {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            border-top-right-radius: $input-border-radius;
-            border-bottom-right-radius: $input-border-radius;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
           }
         }
 
         .disclaimer {
           a {
-            color: $color-white;
+            color: $White;
           }
         }
       }

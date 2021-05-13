@@ -3,14 +3,14 @@
 // Theme for the stages
 .infoContainer {
   font-family: Inter;
-  background-color: $color-black-3;
+  background-color: $BG02;
   border: 1px solid $Border01;
   border-radius: 1.5em;
   padding: 2em;
   min-width: 40rem;
   .title {
     font-size: 1.625em;
-    color: $color-white;
+    color: $White;
     line-height: 2em;
     font-weight: bold;
     margin-bottom: 1em !important;
@@ -18,7 +18,7 @@
   .subtext {
     line-height: 1.5em;
     font-size: 1em;
-    color: $muted-text-color;
+    color: $Neutral03;
     margin-bottom: 3em;
   }
   .infoInput {
@@ -49,7 +49,7 @@
     }
     .cancel {
       cursor: pointer;
-      color: $color-orange;
+      color: $Shade01;
       font-family: Inter;
     }
   }
@@ -61,7 +61,7 @@
     display: block;
     font-size: 1.1em;
     line-height: 2em;
-    color: $color-white;
+    color: $White;
     @include standardTextGradient;
   }
   input {
@@ -92,7 +92,7 @@
     border: 1px solid $Border01;
     border-radius: 10px;
     color: $Neutral02;
-    background-color: $global-background-color;
+    background-color: $BG01;
     font-family: Inter;
     font-size: 1.1em;
     padding-left: 0.5em;
@@ -319,11 +319,11 @@
         }
         i {
           font-size: 2.8em;
-          -webkit-text-fill-color: $color-grey-5;
+          -webkit-text-fill-color: $Neutral02;
         }
         span {
           width: 8em;
-          -webkit-text-fill-color: $muted-text-color;
+          -webkit-text-fill-color: $Neutral03;
           font-size: 1em;
           text-align: left;
           line-height: 1.24em;
