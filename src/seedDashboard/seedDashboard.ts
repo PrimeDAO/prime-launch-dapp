@@ -10,6 +10,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { getThemeColors } from "web3modal";
 
 @autoinject
 export class SeedDashboard {
@@ -157,7 +158,9 @@ export class SeedDashboard {
   }
 
   buy(): void {
-    if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+    if (!this.fundingTokenToPay?.gt(0)) {
+      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
+    } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else {
       this.seed.buy(this.fundingTokenToPay);
@@ -166,7 +169,9 @@ export class SeedDashboard {
 
   claim(): void {
     if (this.userCanClaim) {
-      if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
+      if (!this.seedTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
         this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
         this.seed.claim();
