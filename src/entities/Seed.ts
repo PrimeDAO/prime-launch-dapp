@@ -31,10 +31,6 @@ export class Seed {
    */
   public fundingTokensPerSeedToken: number;
   /**
-   * The $ price of fundingTokensPerSeedToken
-   */
-  public fundingTokenPricePerSeedToken: number;
-  /**
    * in terms of fundingToken
    */
   public target: BigNumber;
@@ -189,7 +185,6 @@ export class Seed {
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
       this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
-      this.fundingTokenPricePerSeedToken = this.fundingTokensPerSeedToken * (this.fundingTokenInfo.price ?? 0);
       /**
              * in terms of fundingTken
              */
