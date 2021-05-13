@@ -101,10 +101,11 @@ export class SeedService {
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
                   /**
-                     * TODO: This should also pull the full seed configuration from whereever we are storing it
-                     */
-                  await this.createSeedFromConfig(event)
-                    .then((seed) => { seedsMap.set(seed.address, seed); } );
+                    * TODO: This should also pull the full seed configuration from whereever we are storing it
+                    */
+                  const seed = this.createSeedFromConfig(event);
+                  seedsMap.set(seed.address, seed);
+                  seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
                 this.initializing = false;
@@ -122,9 +123,9 @@ export class SeedService {
     );
   }
 
-  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Promise<Seed> {
+  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {
     const seed = this.container.get(Seed);
-    return seed.initialize({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
+    return seed.create({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
   }
 
   public ensureInitialized(): Promise<void> {

@@ -10,6 +10,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { getThemeColors } from "web3modal";
 
 @autoinject
 export class SeedDashboard {
@@ -29,8 +30,6 @@ export class SeedDashboard {
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
-  msRemainingInPeriodCountdown: number;
-
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
@@ -42,18 +41,19 @@ export class SeedDashboard {
     }));
   }
 
-  @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
-  get userCanClaim(): boolean { return this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
+  @computedFrom("seed.userClaimableAmount", "seed.claimingIsOpen")
+  get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.fundingTokensPerSeedToken; }
-
-  @computedFrom("seedTokenReward", "seed.seedTokenInfo.price")
-  get seedTokenRewardPrice(): number { return this.seedTokenReward * this.seed?.seedTokenInfo.price; }
+  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
 
   /** TODO: don't use current balance */
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
-  get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
+  get seedTokensLeft(): number {
+    return (!(this.seed?.cap.gt(0) ?? false)) ? undefined :
+      (this.numberService.fromString(fromWei(this.seed.seedTokenCurrentBalance)) /
+      this.numberService.fromString(fromWei(this.seed.cap))) * 100;
+  }
 
   @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
@@ -63,17 +63,11 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
-    return this.load();
   }
 
-  attached(): void {
-    this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-      this.numberService.fromString(fromWei(this.seed.target));
-    this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
-  }
-
-  async load(): Promise<void> {
+  async attached(): Promise<void> {
     let waiting = false;
+
     try {
       if (this.seedService.initializing) {
         await Utils.sleep(200);
@@ -81,17 +75,22 @@ export class SeedDashboard {
         waiting = true;
         await this.seedService.ensureInitialized();
       }
-      this.seed = this.seedService.seeds.get(this.address);
-      if (this.seed.initializing) {
+      const seed = this.seedService.seeds.get(this.address);
+      if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("seeds.loading", true);
           waiting = true;
         }
-        await this.seed.ensureInitialized();
+        await seed.ensureInitialized();
       }
+      this.seed = seed;
 
-      // await this.hydrateUserData();
+      await this.hydrateUserData();
+      this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+        this.numberService.fromString(fromWei(this.seed.target));
+
+      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -159,7 +158,9 @@ export class SeedDashboard {
   }
 
   buy(): void {
-    if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+    if (!this.fundingTokenToPay?.gt(0)) {
+      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
+    } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else {
       this.seed.buy(this.fundingTokenToPay);
@@ -168,7 +169,9 @@ export class SeedDashboard {
 
   claim(): void {
     if (this.userCanClaim) {
-      if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
+      if (!this.seedTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
         this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
         this.seed.claim();

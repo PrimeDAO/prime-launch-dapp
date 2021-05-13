@@ -4,12 +4,11 @@
     padding-left: 6em;
     padding-right: 6em;
 
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 50% 40%;
+    column-gap: 10%;
 
     .leftColumn {
-      flex-basis: 45%;
-
       .intro {
         display: flex;
 
@@ -73,25 +72,19 @@
         }
 
         .description {
-          padding-left: 1em;
-          padding-right: 1em;
-          padding-top: 1em;
-          padding-bottom: 0.5em;
+          padding-top: 16px;
+          padding-bottom: 8px;
         }
 
         .form {
-          padding-left: 1em;
-          padding-right: 1em;
-
           display: grid;
-          grid-template-columns: auto auto auto auto auto;
+          grid-template-columns: auto auto 1fr auto auto;
           grid-template-rows: auto auto;
           grid-template-areas:
             "input units1 equals output units2"
             "vestedMessage vestedMessage vestedMessage vestedMessage vestedMessage";
-          row-gap: 0.75em;
+          row-gap: 12px;
           align-items: center;
-          justify-self: center;
 
           .input,
           .units1,
@@ -169,8 +162,6 @@
           .equals {
             grid-area: equals;
             text-align: center;
-            padding-left: 2em;
-            padding-right: 2em;
           }
 
           .output {
@@ -245,8 +236,6 @@
     }
 
     .rightColumn {
-      flex-basis: 45%;
-
       .section:not(:last-child) {
         margin-bottom: 4em;
       }
@@ -448,13 +437,6 @@
           }
         }
       }
-    }
-  }
-
-  .loading {
-    text-align: center;
-    i {
-      color: $Secondary07;
     }
   }
 }

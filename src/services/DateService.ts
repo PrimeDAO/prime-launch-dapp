@@ -369,7 +369,7 @@ export class DateService {
   }
 
   public getDurationBetween(end: Date, start: Date): moment.Duration {
-    return moment.duration(end.valueOf() - start.valueOf());
+    return (end && start) ? moment.duration(end.valueOf() - start.valueOf()) : moment.duration(0);
   }
 
   /**
