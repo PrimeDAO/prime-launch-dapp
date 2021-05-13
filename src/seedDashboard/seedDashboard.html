@@ -176,14 +176,6 @@
           <div class="value tokensleft">
             <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft"></formatted-number><span else>N/A</span>%
           </div>
-          <div class="label seedpriceLabel">SEED PRICE</div>
-          <div class="value seedprice">$ <formatted-number
-              if.to-view="seed.fundingTokenPricePerSeedToken"
-              value.to-view="seed.fundingTokenPricePerSeedToken"
-              average="false"
-              thousands-separated></formatted-number>
-            <span else>N/A</span>
-          </div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
           </div>
