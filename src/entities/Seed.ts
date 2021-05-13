@@ -89,7 +89,7 @@ export class Seed {
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this._now, this.startTime).asMilliseconds();
+    return this.dateService.getDurationBetween(this.startTime, this._now).asMilliseconds();
   }
 
   @computedFrom("_now")
@@ -102,7 +102,7 @@ export class Seed {
    */
   @computedFrom("_now")
   public get isActive(): boolean {
-    return !this.maximumReached && ((this.startTime >= this._now) && (this._now < this.endTime));
+    return !this.maximumReached && ((this._now >= this.startTime) && (this._now < this.endTime));
   }
 
   /**
@@ -117,6 +117,12 @@ export class Seed {
   public get hasNotStarted(): boolean {
     return (this._now < this.startTime);
   }
+
+  /**
+   * it is theoretically possible to claim
+   */
+  @computedFrom("maximumReached", "minimumReached", "_now_")
+  get claimingIsOpen(): boolean { return this.maximumReached || (this.minimumReached && (this._now >= this.endTime)); }
 
   constructor(
     private contractsService: ContractsService,

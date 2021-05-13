@@ -40,8 +40,8 @@ export class SeedDashboard {
     }));
   }
 
-  @computedFrom("seed.userClaimableAmount", "seed.minimumReached")
-  get userCanClaim(): boolean { return this.seed.hasEnded && this.seed?.userClaimableAmount?.gt(0) && this.seed?.minimumReached; }
+  @computedFrom("seed.userClaimableAmount", "seed.claimingIsOpen")
+  get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) * this.seed?.fundingTokensPerSeedToken; }
@@ -51,7 +51,11 @@ export class SeedDashboard {
 
   /** TODO: don't use current balance */
   @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
-  get seedTokensLeft(): BigNumber { return this.seed?.seedTokenCurrentBalance?.div(this.seed.cap); }
+  get seedTokensLeft(): number {
+    return (!(this.seed?.cap.gt(0) ?? false)) ? undefined :
+      (this.numberService.fromString(fromWei(this.seed.seedTokenCurrentBalance)) /
+      this.numberService.fromString(fromWei(this.seed.cap))) * 100;
+  }
 
   @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }

@@ -39,7 +39,7 @@
           Section Two
           ================ 
         -->
-        <div if.to-view="connected && seed.userIsWhitelisted && seed.isActive" class="secton section2">
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
           <div class="description">Contribute</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
@@ -47,8 +47,8 @@
           <div class="form">
             <div class="input">
               <div class="fundingInput">
-                <numeric-input value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
-                <div class="maxButton">
+                <numeric-input disabled.to-view="!seed.isActive" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div if.to-view="seed.isActive" class="maxButton">
                   <a href="#" click.delegate="handleMaxBuy()">MAX</a>
                 </div>
               </div>
@@ -128,7 +128,7 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
+            <div class="vestedMessage subtext">Claiming opens in ${seed.endsInMilliseconds | timespan:"seconds":true} ${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
         </div>
@@ -182,8 +182,7 @@
           </div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
           <div class="value tokensleft">
-            <formatted-number
-              value.to-view="seedTokensLeft | ethwei"></formatted-number>%
+            <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft"></formatted-number><span else>N/A</span>%
           </div>
           <div class="label seedpriceLabel">SEED PRICE</div>
           <div class="value seedprice">$ <formatted-number

@@ -7,12 +7,13 @@ export class TimeLeft {
 
   @bindable seed: Seed;
   @bindable.booleanAttr hideIcons: boolean;
+  @bindable.booleanAttr largest: boolean;
 
-  @computedFrom("startsInMilliseconds")
+  @computedFrom("seed.startsInMilliseconds", "seed.hasNotStarted")
   get proximity(): number {
     const soon = 86400000;
     const comingUp = soon * 5;
-    if (this.seed.hasNotStarted) {
+    if (this.seed?.hasNotStarted) {
       if (this.seed.startsInMilliseconds > comingUp) {
         return 3; // future
       } else if (this.seed.startsInMilliseconds <= soon) {
