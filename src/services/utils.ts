@@ -67,4 +67,13 @@ export class Utils {
   public static isValidUrl(str: string, emptyOk = true): boolean {
     return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
   }
+
+  public static waitUntilTrue(test: () => Promise<boolean> | boolean, timeOut = 1000): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const timerId = setInterval(async () => {
+        if (await test()) { return resolve(); }
+      }, 100);
+      setTimeout(() => { clearTimeout(timerId); return reject(new Error("Test timed out..")); }, timeOut);
+    });
+  }
 }

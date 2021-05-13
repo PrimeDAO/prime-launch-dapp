@@ -11,6 +11,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
+import { Utils } from "services/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -37,12 +38,12 @@ export class Seed {
    * in terms of fundingToken
    */
   public target: BigNumber;
-  public targetPrice: number;
+  // public targetPrice: number;
   /**
    * in terms of fundingToken
    */
   public cap: BigNumber;
-  public capPrice: number;
+  // public capPrice: number;
   public whitelisted: boolean;
   /**
    * the number of days of which seed tokens vest
@@ -54,6 +55,7 @@ export class Seed {
    */
   public vestingCliff: number;
   public minimumReached: boolean;
+  public maximumReached: boolean;
   /**
    * the amount of the fundingToken in the seed
    */
@@ -91,9 +93,36 @@ export class Seed {
   }
 
   @computedFrom("_now")
-  public get isActive(): boolean {
-    return (this.startTime >= this._now) && (this._now < this.endTime);
+  public get endsInMilliseconds(): number {
+    return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
+
+  /**
+   * effectively, can the user contribute
+   */
+  @computedFrom("_now")
+  public get isActive(): boolean {
+    return !this.maximumReached && ((this._now >= this.startTime) && (this._now < this.endTime));
+  }
+
+  /**
+   * is it no longer possible to contribute
+   */
+  @computedFrom("_now")
+  public get hasEnded(): boolean {
+    return this.maximumReached || (this._now >= this.endTime);
+  }
+
+  @computedFrom("_now")
+  public get hasNotStarted(): boolean {
+    return (this._now < this.startTime);
+  }
+
+  /**
+   * it is theoretically possible to claim
+   */
+  @computedFrom("maximumReached", "minimumReached", "_now_")
+  get claimingIsOpen(): boolean { return this.maximumReached || (this.minimumReached && (this._now >= this.endTime)); }
 
   constructor(
     private contractsService: ContractsService,
@@ -114,14 +143,17 @@ export class Seed {
     }));
   }
 
+  public create(config: ISeedConfiguration): Seed {
+    this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
+    return Object.assign(this, config);
+  }
+
   /**
    * note this is called when the contracts change
    * @param config
    * @returns
    */
-  public async initialize(config: ISeedConfiguration): Promise<Seed> {
-    Object.assign(this, config);
-
+  public async initialize(): Promise<Seed> {
 
     await this.loadContracts();
     /**
@@ -142,57 +174,49 @@ export class Seed {
 
   private async hydrate(): Promise<void> {
     this.initializing = true;
-    return this.initializedPromise = new Promise(
-      // eslint-disable-next-line no-async-promise-executor
-      async (resolve: (value: void | PromiseLike<void>) => void,
-        reject: (reason?: any) => void): Promise<void> => {
-        setTimeout(async () => {
-          try {
-            this.seedTokenAddress = await this.contract.seedToken();
-            this.fundingTokenAddress = await this.contract.fundingToken();
+    try {
+      this.seedTokenAddress = await this.contract.seedToken();
+      this.fundingTokenAddress = await this.contract.fundingToken();
 
-            this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
-            this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+      this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
-            this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
-            this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+      this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-            this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
+      this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
 
-            this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
-            this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-            this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
-            this.fundingTokenPricePerSeedToken = this.fundingTokensPerSeedToken * (this.fundingTokenInfo.price ?? 0);
-            /**
+      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
+      this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
+      this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
+      this.fundingTokenPricePerSeedToken = this.fundingTokensPerSeedToken * (this.fundingTokenInfo.price ?? 0);
+      /**
              * in terms of fundingTken
              */
-            this.target = await this.contract.successMinimum();
-            this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
-            /**
+      this.target = await this.contract.successMinimum();
+      // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
+      /**
              * in terms of fundingTken
              */
-            this.cap = await this.contract.cap();
-            this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
-            this.whitelisted = await this.contract.isWhitelisted();
-            this.vestingDuration = await this.contract.vestingDuration();
-            this.vestingCliff = await this.contract.vestingCliff();
-            this.minimumReached = await this.contract.minimumReached();
-            this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
+      this.cap = await this.contract.cap();
+      // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
+      this.whitelisted = await this.contract.isWhitelisted();
+      this.vestingDuration = await this.contract.vestingDuration();
+      this.vestingCliff = await this.contract.vestingCliff();
+      this.minimumReached = await this.contract.minimumReached();
+      this.maximumReached = this.amountRaised.gte(this.cap);
+      this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
               * (this.seedTokenInfo.price ?? 0);
-            this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
-            await this.hydrateUser();
+      this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
+      await this.hydrateUser();
 
-            this.initializing = false;
-            resolve();
-          }
-          catch (error) {
-            this.consoleLogService.handleFailure(
-              new EventConfigFailure(`Seed: Error hydrating seed data ${error?.message}`));
-            this.initializing = false;
-            reject();
-          }
-        }, 100);
-      });
+      this.initializing = false;
+    }
+    catch (error) {
+      this.consoleLogService.handleFailure(
+        new EventConfigFailure(`Seed: Error hydrating seed data ${error?.message}`));
+      this.initializing = false;
+    }
   }
 
   public ensureInitialized(): Promise<void> {

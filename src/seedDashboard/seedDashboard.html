@@ -7,19 +7,19 @@
             <div class="header">
               <div class="title heading heading2">PrimeDAO</div>
               <div class="timeLeft">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
+                <time-left seed.to-view="seed"></time-left>
               </div>
             </div>
             <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
               pretium pretium tempor. Ut eget imperdiet neque. In volutpat
               ante semper diam molestie, et aliquam.</div>
           </div>
-          <!-- <div class="rightSection">
-            <div class="label">TIME LEFT</div>
-            <div class="timeLeft">
-              toot
-            </div>
-          </div> -->
+          <div class="rightSection">
+            <template if.to-view="seed.isActive">
+              <div class="label">TIME LEFT</div>
+              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"minutes"}</div>
+            </template>
+          </div>
         </div>
         <!--
           ================ 
@@ -47,8 +47,8 @@
           <div class="form">
             <div class="input">
               <div class="fundingInput">
-                <numeric-input value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
-                <div class="maxButton">
+                <numeric-input disabled.to-view="!seed.isActive" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div if.to-view="seed.isActive" class="maxButton">
                   <a href="#" click.delegate="handleMaxBuy()">MAX</a>
                 </div>
               </div>
@@ -60,7 +60,7 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
-                <div if.to-view="lockRequired" class="unlockButton">
+                <div if.to-view="userCanPay && lockRequired" class="unlockButton">
                   <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
                 </div>
               </div>
@@ -74,14 +74,6 @@
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">$
-                  <formatted-number
-                    if.to-view="seedTokenRewardPrice"
-                    value.to-view="seedTokenRewardPrice"
-                    average="false"
-                    thousands-separated></formatted-number>
-                  <span else>N/A</span>
-                </div>
               </div>
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
@@ -100,10 +92,15 @@
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input
-                disabled.to-view="!seed.userClaimableAmount || seed.userClaimableAmount.eq(0)"
-                value.bind="seedTokenToReceive"
-                placeholder="0.0"></numeric-input>
+              <div class="seedRequest">
+                <numeric-input
+                  disabled.to-view="!userCanClaim"
+                  value.bind="seedTokenToReceive"
+                  placeholder="0.0"></numeric-input>
+                <div class="maxButton" if.to-view="userCanClaim">
+                  <a href="#" click.delegate="handleMaxClaim()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
@@ -123,7 +120,7 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
+            <div if.to-view="seed.isActive" class="vestedMessage subtext">Claiming opens in ${seed.endsInMilliseconds | timespan:"seconds":true} ${seed.minimumReached ? '' : ', as long as the target is reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
         </div>
@@ -160,16 +157,12 @@
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class="value target">$ <formatted-number
-              value.to-view="seed.targetPrice"
-              average="false"
-              thousands-separated></formatted-number>
+          <div class="value target">
+            <formatted-number value.to-view="seed.target | ethwei" mantissa="2"></formatted-number>
           </div>
           <div class="label maxLabel">MAX</div>
-          <div class="value max">$ <formatted-number
-              value.to-view="seed.capPrice"
-              average="false"
-              thousands-separated></formatted-number>
+          <div class="value max">
+            <formatted-number value.to-view="seed.cap | ethwei" mantissa="2"></formatted-number>
           </div>
           <div class="label valuationLabel">VALUATION</div>
           <div class="value valuation">$ <formatted-number
@@ -181,10 +174,7 @@
           </div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
           <div class="value tokensleft">
-            <formatted-number
-              value.to-view="seed.seedTokensLeft | ethwei"
-              average="false"
-              thousands-separated></formatted-number>%
+            <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft"></formatted-number><span else>N/A</span>%
           </div>
           <div class="label seedpriceLabel">SEED PRICE</div>
           <div class="value seedprice">$ <formatted-number
