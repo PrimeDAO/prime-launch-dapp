@@ -120,7 +120,9 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div if.to-view="seed.isActive" class="vestedMessage subtext">Claiming opens in ${seed.endsInMilliseconds | timespan:"seconds":true} ${seed.minimumReached ? '' : ', as long as the target is reached'}</div>
+            <div
+              if.to-view="!seed.isActive"
+              class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
         </div>
