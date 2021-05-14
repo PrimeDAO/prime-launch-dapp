@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
-      <div class="heading heading3 title">SEED Details</div>
+      <div class="heading heading2 title">SEED Details</div>
       <div class="subtext">
         Use the SEED guide to select suitable details or get in touch.
       </div>
@@ -115,16 +115,18 @@
             <label for="whitelist"/>
           </div>
         </div>
-        <div>
-          <label class="inputFileLabel">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span>
-              ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
-            </span>
-            <input id="whitelistFile" type="file" accept=".pdf"
-            class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
-          </label>
-        </div>
+        <template if.to-view="seedConfig.seedDetails.whitelist.isWhitelist">
+          <div>
+            <label class="inputFileLabel">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>
+                ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
+              </span>
+              <input id="whitelistFile" type="file" accept=".pdf"
+              class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
+            </label>
+          </div>
+        </template>
       </div>
       <div class="infoInput">
         <div class="labeledQuestion">

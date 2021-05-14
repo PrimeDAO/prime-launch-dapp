@@ -5,24 +5,26 @@
   display: flex;
   flex-flow: column wrap;
   .banner {
-    grid-area: banner;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
     padding-top: 3em;
     padding-bottom: 3em;
     .heading {
       font-family: Aeonik;
-      font-weight: bolder;
-      text-align: center;
-      background: linear-gradient(200deg, #ff497a, #a258a7 85%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      > div {
+        padding-top: .3em;
+        padding-bottom: .3em;
+      }
     }
   }
   .subtext {
+    font-family: Inter;
+    font-weight: normal;
     font-size: 0.85em;
     color: $Neutral03;
-    opacity: 0.4;
   }
   .launchBoxes {
     display: flex;
@@ -35,11 +37,10 @@
       line-height: 2.7em;
     }
   }
-  // ** For styling the container holding buttons
+
   .launch-box-container {
     background-color: $color-black-3;
-    border-radius: 1em;
-    border: 1px solid $Border01;
+    border-radius: 25px;
     width: 18em;
     height: 15em;
     display: grid;
@@ -64,12 +65,12 @@
     .buttonContainer {
       text-align: center;
       padding: 1em 2em;
-      font-size: 0.7em;
+      font-size: 0.5em;
       border-radius: 2em;
       cursor: pointer;
     }
     a {
-      font-weight: bold;
+      font-weight: normal;
       text-decoration: none;
       color: $color-white;
     }
@@ -85,12 +86,11 @@
       padding-bottom: 1.25em;
       & div {
         font-size: 0.7em;
-        font-weight: 600;
-        color: $color-white;
+        font-weight: normal;
+        color: $Neutral03;
         padding-left: 0.4em;
         padding-right: 0.4em;
       }
     }
   }
 }
-// **

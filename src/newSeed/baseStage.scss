@@ -10,10 +10,6 @@
   min-width: 40rem;
   .title {
     font-size: 1.625em;
-    color: $color-white;
-    line-height: 2em;
-    font-weight: bold;
-    margin-bottom: 1em !important;
   }
   .subtext {
     line-height: 1.5em;
@@ -51,6 +47,7 @@
       cursor: pointer;
       color: $color-orange;
       font-family: Inter;
+      font-weight: bold;
     }
   }
   .stageButton {
@@ -60,9 +57,9 @@
   label {
     display: block;
     font-size: 1.1em;
+    font-weight: bold;
     line-height: 2em;
-    color: $color-white;
-    @include standardTextGradient;
+    color: $Secondary02;
   }
   input {
     width: 23em;
