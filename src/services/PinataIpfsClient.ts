@@ -32,8 +32,7 @@ export class PinataIpfsClient implements IIpfsClient {
 
   public async addAndPinData(data: string, name?: string): Promise<Hash> {
     const params = new FormData();
-    const buffer = Buffer.from(data);
-    params.append("file", buffer);
+    params.append("file", Buffer.from(data));
     if (name) {
       params.append("pinataMetadata", JSON.stringify({ name }));
     }
