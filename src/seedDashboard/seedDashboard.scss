@@ -204,11 +204,6 @@
             width: 120px;
             padding-left: 1.2em;
             padding-right: 1.2em;
-
-            &.hide {
-              // preserve the vertical space even while hidden
-              visibility: hidden;
-            }
           }
         }
       }
@@ -241,6 +236,7 @@
         grid-template-rows: auto;
         grid-template-areas:
           "description help"
+          "vestedMessage vestedMessage"
           "doit doit";
         row-gap: 0.5em;
       }

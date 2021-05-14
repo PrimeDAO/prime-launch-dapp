@@ -78,7 +78,7 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1 ${seed.canContribute ? '' : 'hide'}" click.delegate="buy()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.canContribute" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -94,10 +94,10 @@
             <div class="input">
               <div class="seedRequest">
                 <numeric-input
-                  disabled.to-view="!userCanClaim"
+                  disabled.to-view="!seed.claimingIsOpen || !seed.userCanClaim"
                   value.bind="seedTokenToReceive"
                   placeholder="0.0"></numeric-input>
-                <div class="maxButton" if.to-view="userCanClaim">
+                <div class="maxButton" if.to-view="seed.claimingIsOpen && seed.userCanClaim">
                   <a href="#" click.delegate="handleMaxClaim()">MAX</a>
                 </div>
               </div>
@@ -124,7 +124,7 @@
               if.to-view="seed.isLive && !seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
-          <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -136,7 +136,8 @@
           <div class="help">
             <question-mark text="Retrieve tokens"></question-mark>
           </div>
-          <div class="doit"><button class="submitButton button1 ${userCanRetrieve ? '' : 'hide'}" click.delegate="retrieve()">RETRIEVE</button>
+          <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div>
+          <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">

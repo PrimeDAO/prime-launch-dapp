@@ -40,9 +40,6 @@ export class SeedDashboard {
     }));
   }
 
-  @computedFrom("seed.userClaimableAmount", "seed.claimingIsOpen")
-  get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
-
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
   get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
 
@@ -170,7 +167,7 @@ export class SeedDashboard {
   }
 
   claim(): void {
-    if (this.userCanClaim) {
+    if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
       if (!this.seedTokenToReceive?.gt(0)) {
         this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
       } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
