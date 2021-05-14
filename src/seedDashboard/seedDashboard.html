@@ -78,7 +78,7 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+          <div class="doit"><button class="submitButton button1 ${seed.canContribute ? '' : 'hide'}"" click.delegate=" buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 

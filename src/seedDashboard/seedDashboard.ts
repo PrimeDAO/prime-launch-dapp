@@ -10,7 +10,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { getThemeColors } from "web3modal";
 
 @autoinject
 export class SeedDashboard {
