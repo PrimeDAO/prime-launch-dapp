@@ -11,7 +11,10 @@
           <div class="address">
             <label for="fundingAddress">Funding Token Address (ETH)</label>
             <div class="tickerContainer">
-              <input id="fundingAddress" value.bind="seedConfig.tokenDetails.fundingAddress" blur.trigger="getTokenInfo('fund')"></input>
+              <input id="fundingAddress" 
+                value.bind="seedConfig.tokenDetails.fundingAddress" 
+                blur.trigger="getTokenInfo('fund')">
+              </input>
               <div class="ticker">
                 ${seedConfig.tokenDetails.fundingSymbol}
               </div>
@@ -25,7 +28,10 @@
           <div class="address">
             <label for="seedAddress">Seed Token Address (ETH)</label>
             <div class="tickerContainer">
-              <input id="seedAddress" value.bind="seedConfig.tokenDetails.seedAddress" blur.trigger="getTokenInfo('seed')"></input>
+              <input id="seedAddress" 
+                value.bind="seedConfig.tokenDetails.seedAddress" 
+                blur.trigger="getTokenInfo('seed')">
+              </input>
               <div class="ticker">
                 ${seedConfig.tokenDetails.seedSymbol}
               </div>
@@ -42,7 +48,11 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-          <numeric-input id="maxSupply" value.bind="seedConfig.tokenDetails.maxSupply"> </numeric-input>
+          <numeric-input 
+            output-as-string="true" 
+            id="maxSupply" 
+            value.bind="seedConfig.tokenDetails.maxSupply"> 
+          </numeric-input>
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
@@ -51,7 +61,11 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-          <numeric-input id="initSupply" value.bind="seedConfig.tokenDetails.initSupply"> </numeric-input>
+          <numeric-input 
+            output-as-string="true" 
+            id="initSupply" 
+            value.bind="seedConfig.tokenDetails.initSupply"> 
+          </numeric-input>
         </div>
         <div class="tokenDistribution">
           <div class="labeledQuestion">
@@ -71,7 +85,11 @@
                 <input type="text" value.bind="distrib.category" class="textInput">
               </div>
               <div  class="infoInput supply" value.bind="distrib.amount">
-                <numeric-input type="number" value.bind="distrib.amount" placeholder="0" class="numberInput"></numeric-input>
+                <numeric-input 
+                  output-as-string="true" 
+                  type="number" value.bind="distrib.amount" 
+                  placeholder="0" class="numberInput">
+                </numeric-input>
               </div>
               <div  class="infoInput supply numberInput" value.bind="distrib.lockup">
                 <input type="number" value.bind="distrib.lockup" placeholder="0" class="numberInput">
