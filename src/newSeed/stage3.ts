@@ -1,6 +1,5 @@
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import { BigNumber } from "ethers";
 import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -25,17 +24,17 @@ export class Stage3 extends BaseStage {
     } else if (!this.seedConfig.tokenDetails.seedSymbol) {
       message = "Please enter a valid address for the Seed Token Address";
     }
-    else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply.lte(0)) {
+    else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply === "0") {
       message = "Please enter a non-zero number for Maximum Supply";
     }
-    else if (!this.seedConfig.tokenDetails.initSupply || this.seedConfig.tokenDetails.initSupply.lte(0)) {
+    else if (!this.seedConfig.tokenDetails.initSupply || this.seedConfig.tokenDetails.initSupply === "0") {
       message = "Please enter a non-zero number for Initial Supply";
     }
     // Check the token distribution
-    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: BigNumber, lockup: number}) => {
+    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: string, lockup: number}) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
-      } else if (!tokenDistrb.amount || tokenDistrb.amount.lte(0)) {
+      } else if (!tokenDistrb.amount || tokenDistrb.amount === "0") {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Amount`;
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
