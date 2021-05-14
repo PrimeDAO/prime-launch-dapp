@@ -46,11 +46,11 @@
             margin-bottom: 0.25em;
           }
 
-          // > .timeLeft {
-          //   color: $color-orange;
-          //   font-size: 26px;
-          //   font-weight: bold;
-          // }
+          .timeLeft {
+            color: $AlertOrange;
+            font-size: 22px;
+            font-weight: bold;
+          }
         }
       }
 

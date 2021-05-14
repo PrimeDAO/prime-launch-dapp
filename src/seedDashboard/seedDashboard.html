@@ -15,10 +15,10 @@
               ante semper diam molestie, et aliquam.</div>
           </div>
           <div class="rightSection">
-            <template if.to-view="seed.isLive">
-              <div class="label">TIME LEFT</div>
-              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"minutes"}</div>
-            </template>
+            <span if.to-view="seed.isLive && !seed.minimumReached">
+              <div class="label">MAX TIME LEFT</div>
+              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
+            </span>
           </div>
         </div>
         <!--
