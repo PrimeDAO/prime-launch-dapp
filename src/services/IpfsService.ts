@@ -45,4 +45,13 @@ export class IpfsService {
   public async getObjectFromHash(hash: Hash) : Promise<any> {
     return JSON.parse(await this.ipfs.get(hash));
   }
+
+  /**
+   * saves and pin the given data
+   * @param str
+   * @returns the resulting hash
+   */
+  public async saveString(str: string): Promise<Hash> {
+    return this.ipfs.addAndPinData(str);
+  }
 }
