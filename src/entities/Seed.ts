@@ -31,10 +31,6 @@ export class Seed {
    */
   public fundingTokensPerSeedToken: number;
   /**
-   * The $ price of fundingTokensPerSeedToken
-   */
-  public fundingTokenPricePerSeedToken: number;
-  /**
    * in terms of fundingToken
    */
   public target: BigNumber;
@@ -97,31 +93,33 @@ export class Seed {
     return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
 
-  /**
-   * effectively, can the user contribute
-   */
-  @computedFrom("_now")
-  public get isActive(): boolean {
-    return !this.maximumReached && ((this._now >= this.startTime) && (this._now < this.endTime));
-  }
-
-  /**
-   * is it no longer possible to contribute
-   */
-  @computedFrom("_now")
-  public get hasEnded(): boolean {
-    return this.maximumReached || (this._now >= this.endTime);
-  }
-
   @computedFrom("_now")
   public get hasNotStarted(): boolean {
     return (this._now < this.startTime);
   }
+  /**
+   * we are between the start and end dates.
+   */
+  @computedFrom("_now")
+  public get isLive(): boolean {
+    return ((this._now >= this.startTime) && (this._now < this.endTime));
+  }
+  /**
+   * we are after the end date.
+   */
+  @computedFrom("_now")
+  public get isDead(): boolean {
+    return (this._now >= this.endTime);
+  }
 
+  @computedFrom("_now")
+  public get canContribute(): boolean {
+    return this.isLive && !this.maximumReached;
+  }
   /**
    * it is theoretically possible to claim
    */
-  @computedFrom("maximumReached", "minimumReached", "_now_")
+  @computedFrom("_now_")
   get claimingIsOpen(): boolean { return this.maximumReached || (this.minimumReached && (this._now >= this.endTime)); }
 
   constructor(
@@ -189,7 +187,6 @@ export class Seed {
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
       this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
-      this.fundingTokenPricePerSeedToken = this.fundingTokensPerSeedToken * (this.fundingTokenInfo.price ?? 0);
       /**
              * in terms of fundingTken
              */
@@ -205,8 +202,8 @@ export class Seed {
       this.vestingCliff = await this.contract.vestingCliff();
       this.minimumReached = await this.contract.minimumReached();
       this.maximumReached = this.amountRaised.gte(this.cap);
-      this.valuation = this.numberService.fromString(fromWei(await this.seedTokenContract.totalSupply()))
-              * (this.seedTokenInfo.price ?? 0);
+      this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
+              * (this.fundingTokenInfo.price ?? 0);
       this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
       await this.hydrateUser();
 

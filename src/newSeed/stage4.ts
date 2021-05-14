@@ -3,9 +3,9 @@ import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 
 export class Stage4 extends BaseStage {
-  protected startDateRef: HTMLElement | HTMLInputElement;
-  protected endDateRef: HTMLElement | HTMLInputElement;
-  protected startDate: Date;
+  startDateRef: HTMLElement | HTMLInputElement;
+  endDateRef: HTMLElement | HTMLInputElement;
+  startDate: Date;
   startTime: string;
   endDate: Date;
   endTime: string;
@@ -53,10 +53,16 @@ export class Stage4 extends BaseStage {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
       message = "Please enter a value for the Start Time";
+    } else if (!(Number.parseInt(this.startTime.split(":")[0]) < 25)
+      || !(Number.parseInt(this.startTime.split(":")[1]) < 61)) {
+      message = "Please enter a valid value for Start Time";
     } else if (!this.endDate) {
       message = "Please select an End Date";
     } else if (!this.endTime) {
       message = "Please enter a value for the End Time";
+    } else if (!(Number.parseInt(this.endTime.split(":")[0]) < 25)
+      || !(Number.parseInt(this.endTime.split(":")[1]) < 61)) {
+      message = "Please enter a valid value for End Time";
     } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
       message = "Please upload a .csv file or uncheck Whitelist";
     } else if (!this.seedConfig.seedDetails.legalDisclaimer) {
@@ -74,7 +80,6 @@ export class Stage4 extends BaseStage {
       this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.startDate);
       this.endDate.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
       this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.endDate);
-      console.log(this.seedConfig.seedDetails.endDate);
       this.stageState[this.stageNumber].verified = true;
       this.next();
     }

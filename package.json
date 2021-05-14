@@ -35,6 +35,7 @@
     "aurelia-typed-observable-plugin": "^0.4.2",
     "axios": "^0.21.1",
     "ethers": "^5.0.14",
+    "form-data": "^4.0.0",
     "json-to-graphql-query": "^2.0.0",
     "litepicker": "^2.0.11",
     "moment-timezone": "^0.5.31",

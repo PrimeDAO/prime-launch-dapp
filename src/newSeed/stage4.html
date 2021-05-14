@@ -82,7 +82,7 @@
           <div class="vestingDates">
             <input 
               id="startDate"
-              placeholder="DD-MM-YYYY" 
+              placeholder="YYYY-MM-DD" 
               class="vestingDateInput"
               ref="startDateRef"/>
             <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
@@ -92,10 +92,10 @@
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input 
+              <numeric-input 
                 id="startTime" type="time"
                 value.bind="startTime" 
-                placeholder="00:00 (GMT)" />
+                placeholder="HH:MM (GMT)" ></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -111,7 +111,7 @@
             <input 
               id="endDate"
               class="vestingDateInput" 
-              placeholder="DD-MM-YYY"
+              placeholder="YYYY-MM-DD"
               ref="endDateRef"/>
             <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
           </div>
@@ -120,9 +120,9 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input 
+              <numeric-input 
                 id="endTime" value.bind="endTime"
-                placeholder="00:00 (GMT)" type="time"/>
+                placeholder="HH:MM (GMT)" type="time"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
