@@ -3,8 +3,8 @@ import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 
 export class Stage4 extends BaseStage {
-  protected startDateRef: HTMLElement | HTMLInputElement;
-  protected endDateRef: HTMLElement | HTMLInputElement;
+  startDateRef: HTMLElement | HTMLInputElement;
+  endDateRef: HTMLElement | HTMLInputElement;
   startDate: Date;
   startTime: string;
   endDate: Date;
