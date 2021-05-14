@@ -11,7 +11,7 @@
 
   > .logo {
     grid-area: logo;
-    background-color: $color-darkpink-3;
+    background-color: $BG01;
     align-items: center;
     // just for vertical alignment of the logo
     display: flex;
@@ -33,11 +33,11 @@
     padding-right: 4rem;
 
     .networkfeedback {
-      color: $color-white;
+      color: $White;
       margin-left: 10px;
       text-align: left;
       .testnet {
-        color: $color-red;
+        color: $Shade01;
       }
     }
 
@@ -132,8 +132,7 @@
 
   .mainContent {
     grid-area: mainContent;
-    color: $color-white;
-    // background-color: $color-black;
+    color: $White;
 
     .page {
       padding: 24px 20px;
