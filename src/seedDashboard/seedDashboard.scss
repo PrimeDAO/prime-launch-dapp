@@ -56,7 +56,8 @@
 
       .section1,
       .section2,
-      .section3 {
+      .section3,
+      .section4 {
         background-color: $BG02;
         padding: 28px 28px;
         border-radius: 8px;
@@ -230,6 +231,16 @@
         grid-template-areas:
           "description help"
           "form form"
+          "doit doit";
+        row-gap: 0.5em;
+      }
+
+      .section4 {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "description help"
           "doit doit";
         row-gap: 0.5em;
       }

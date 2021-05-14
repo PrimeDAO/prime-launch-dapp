@@ -40,7 +40,7 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
-          <div class="description">Contribute</div>
+          <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
           </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1 ${seed.canContribute ? '' : 'hide'}"" click.delegate=" buy()">SUBMIT</button></div>
+          <div class="doit"><button class="submitButton button1 ${seed.canContribute ? '' : 'hide'}" click.delegate="buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -86,7 +86,7 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section3">
-          <div class="description">Claim tokens</div>
+          <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
           </div>
@@ -125,6 +125,19 @@
               class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
           <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
+        </div>
+        <!--
+          ================ 
+          Section Four
+          ================ 
+        -->
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section4">
+          <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
+          <div class="help">
+            <question-mark text="Retrieve tokens"></question-mark>
+          </div>
+          <div class="doit"><button class="submitButton button1 ${userCanRetrieve ? '' : 'hide'}" click.delegate="retrieve()">RETRIEVE</button>
+          </div>
         </div>
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.

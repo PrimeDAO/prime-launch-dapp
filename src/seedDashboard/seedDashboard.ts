@@ -43,6 +43,9 @@ export class SeedDashboard {
   @computedFrom("seed.userClaimableAmount", "seed.claimingIsOpen")
   get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
 
+  @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
+  get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
+
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
 
@@ -175,6 +178,12 @@ export class SeedDashboard {
       } else {
         this.seed.claim();
       }
+    }
+  }
+
+  retrieve(): void {
+    if (this.userCanRetrieve) {
+      this.seed.retrieveFundingTokens();
     }
   }
 }

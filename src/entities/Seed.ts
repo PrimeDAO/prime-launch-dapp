@@ -12,6 +12,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
+import { timeStamp } from "node:console";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -25,6 +26,14 @@ export class Seed {
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
+  /**
+   * a state set by the admin (creator) of the Seed
+   */
+  public isPaused: boolean;
+  /**
+   * a state set by the admin (creator) of the Seed
+   */
+  public isClosed: boolean;
   /**
    * The number of fundingTokens required to receive one seedToken,
    * ie, the price of one seed token in units of funding tokens.
@@ -76,12 +85,14 @@ export class Seed {
   public userIsWhitelisted: boolean;
   public userClaimableAmount: BigNumber;
   public userCanClaim: boolean;
+  public userCurrentFundingContributions: BigNumber;
 
   public initializing = true;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
+
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -99,13 +110,15 @@ export class Seed {
   }
   /**
    * we are between the start and end dates.
+   * Doesn't mean you can do anything.
    */
   @computedFrom("_now")
   public get isLive(): boolean {
-    return ((this._now >= this.startTime) && (this._now < this.endTime));
+    return (this._now >= this.startTime) && (this._now < this.endTime);
   }
   /**
    * we are after the end date.
+   * No implications about whether you can do anything.
    */
   @computedFrom("_now")
   public get isDead(): boolean {
@@ -114,13 +127,16 @@ export class Seed {
 
   @computedFrom("_now")
   public get canContribute(): boolean {
-    return this.isLive && !this.maximumReached;
+    return this.isLive && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
    * it is theoretically possible to claim
    */
   @computedFrom("_now_")
-  get claimingIsOpen(): boolean { return this.maximumReached || (this.minimumReached && (this._now >= this.endTime)); }
+  get claimingIsOpen(): boolean { return (this.maximumReached || (this.minimumReached && (this._now >= this.endTime)) && !this.isPaused && !this.isClosed); }
+
+  @computedFrom("_now_")
+  get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
 
   constructor(
     private contractsService: ContractsService,
@@ -196,6 +212,8 @@ export class Seed {
              * in terms of fundingTken
              */
       this.cap = await this.contract.cap();
+      this.isPaused = await this.contract.paused();
+      this.isClosed = await this.contract.closed();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.isWhitelisted();
       this.vestingDuration = await this.contract.vestingDuration();
@@ -227,6 +245,8 @@ export class Seed {
       this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       this.userClaimableAmount = (await this.contract.calculateClaim(account))[1];
       this.userCanClaim = this.userClaimableAmount.gt(0);
+      const lock = await this.contract.tokenLocks(account);
+      this.userCurrentFundingContributions = lock ? lock.fundingAmount : BigNumber.from(0);
     }
   }
 
@@ -256,5 +276,9 @@ export class Seed {
 
   public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.fundingTokenContract.approve(this.address, amount));
+  }
+
+  public retrieveFundingTokens(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.fundingTokenContract.retrieveFundingTokens(this.address));
   }
 }
