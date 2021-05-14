@@ -8,12 +8,19 @@
       <div>
         <div class="infoInput">
             <label for="seedTokens">Amount of tokens to be added to SEED</label>
-            <numeric-input id="seedTokens" type="text" value.bind="seedConfig.seedDetails.seedTokens"></numeric-input>
+            <numeric-input 
+              output-as-string="true"  id="seedTokens" type="text" 
+              value.bind="seedConfig.seedDetails.seedTokens">
+            </numeric-input>
         </div>
         <div class="infoInput">
           <label for="ppt">Price per Token</label>
           <div class=" pptContainer">
-            <numeric-input id="ppt" value.bind="seedConfig.seedDetails.pricePerToken"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="ppt" 
+              value.bind="seedConfig.seedDetails.pricePerToken">
+            </numeric-input>
             <label>per 1</label>
             <select value.bind="seedConfig.seedDetails.baseCurrency">
               <option value="DAI">DAI</option>
@@ -25,11 +32,19 @@
         <div class="infoInput maxTarget">
           <div>
             <label for="seedTarget">SEED Target</label>
-            <numeric-input id="seedTarget" value.bind="seedConfig.seedDetails.seedTarget"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="seedTarget" 
+              value.bind="seedConfig.seedDetails.seedTarget">
+            </numeric-input>
           </div>
           <div>
             <label for="seedMax">SEED Max</label>
-            <numeric-input id="seedMax" value.bind="seedConfig.seedDetails.seedMax"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="seedMax" 
+              value.bind="seedConfig.seedDetails.seedMax">
+            </numeric-input>
           </div>
       </div>
       <div class="labeledQuestion">
@@ -42,14 +57,21 @@
         <div>
           <label for="vestingDays">Tokens vested for</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingDays" value.bind="seedConfig.seedDetails.vestingDays"></numeric-input>
+            <numeric-input output-as-string="true" 
+              id="vestingDays" 
+              value.bind="seedConfig.seedDetails.vestingDays">
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
         <div>
           <label for="vestingCliff">with a cliff of</label>
           <div class="vestingPeriod">
-            <numeric-input id="vestingCliff" value.bind="seedConfig.seedDetails.vestingCliff"></numeric-input>
+            <numeric-input 
+              output-as-string="true" 
+              id="vestingCliff" 
+              value.bind="seedConfig.seedDetails.vestingCliff">
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
@@ -58,17 +80,22 @@
         <div>
           <label for="startDate">Start Date</label>
           <div class="vestingDates">
-            <input id="startDate" value.bind="seedConfig.seedDetails.startDate.date"
-              placeholder="DD-MM-YYYY" class="vestingDateInput" disabled>
-            <div><i class="far fa-calendar-alt" ref="startDate"></i></div>
+            <input 
+              id="startDate"
+              placeholder="YYYY-MM-DD" 
+              class="vestingDateInput"
+              ref="startDateRef"/>
+            <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
           </div>
         </div>
         <div>
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="startTime" type="time"
-              value.bind="seedConfig.seedDetails.startDate.time" placeholder="00:00 (GMT)"></numeric-input>
+              <numeric-input 
+                id="startTime" type="time"
+                value.bind="startTime" 
+                placeholder="HH:MM (GMT)" ></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -81,17 +108,21 @@
         <div>
           <label for="endDate">End Date</label>
           <div class="vestingDates">
-            <input id="endDate" value.bind="seedConfig.seedDetails.endDate.date"
-            class="vestingDateInput" placeholder="DD-MM-YYY" disabled>
-            <div><i class="far fa-calendar-alt" ref="endDate"></i></div>
+            <input 
+              id="endDate"
+              class="vestingDateInput" 
+              placeholder="YYYY-MM-DD"
+              ref="endDateRef"/>
+            <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
           </div>
         </div>
         <div>
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <input id="endTime" value.bind="seedConfig.seedDetails.endDate.time"
-               placeholder="00:00 (GMT)" type="time"></numeric-input>
+              <numeric-input 
+                id="endTime" value.bind="endTime"
+                placeholder="HH:MM (GMT)" type="time"></numeric-input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -111,7 +142,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="whitelist" type="checkbox" checked.bind="seedConfig.seedDetails.whitelist.isWhitelist"/>
+            <input 
+              id="whitelist" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.whitelist.isWhitelist"/>
             <label for="whitelist"/>
           </div>
         </div>
@@ -121,8 +154,10 @@
             <span>
               ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
             </span>
-            <input id="whitelistFile" type="file" accept=".pdf"
-            class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
+            <input 
+              id="whitelistFile" type="file" accept=".pdf"
+              class="inputFile" 
+              files.bind="seedConfig.seedDetails.whitelist.whitelistFile"/>
           </label>
         </div>
       </div>
@@ -137,7 +172,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="geoBlock" type="checkbox" checked.bind="seedConfig.seedDetails.geoBlock"/>
+            <input 
+              id="geoBlock" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.geoBlock"/>
             <label for="geoBlock"/>
           </div>
         </div>
@@ -153,7 +190,9 @@
           <i class="fas fa-check yes"></i>
           <i class="fas fa-times no"></i>
           <div class="checkbox">
-            <input id="legalDisclaimer" type="checkbox" checked.bind="seedConfig.seedDetails.legalDisclaimer"/>
+            <input 
+              id="legalDisclaimer" type="checkbox" 
+              checked.bind="seedConfig.seedDetails.legalDisclaimer"/>
             <label for="legalDisclaimer"/>
           </div>
         </div>
