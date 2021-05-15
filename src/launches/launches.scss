@@ -25,15 +25,15 @@
           }
 
           &:hover > div {
-            background-color: $color-grey-6;
+            background-color: $BG02;
           }
 
           &:first-of-type > div {
-            border-bottom: 1px solid $color-darkblue;
+            border-bottom: 1px solid $Border03;
           }
 
           > div {
-            border-bottom: 1px solid $subtext-color;
+            border-bottom: 1px solid $Border03;
           }
         }
 
@@ -77,7 +77,7 @@
 
       .seeMore {
         display: flex;
-        color: $subtext-color;
+        color: $Neutral02;
         cursor: pointer;
 
         > .arrow {

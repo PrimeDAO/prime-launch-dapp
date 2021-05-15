@@ -10,7 +10,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { getThemeColors } from "web3modal";
 
 @autoinject
 export class SeedDashboard {
@@ -41,8 +40,8 @@ export class SeedDashboard {
     }));
   }
 
-  @computedFrom("seed.userClaimableAmount", "seed.claimingIsOpen")
-  get userCanClaim(): boolean { return this.seed.claimingIsOpen && this.seed?.userClaimableAmount?.gt(0); }
+  @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
+  get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
@@ -168,7 +167,7 @@ export class SeedDashboard {
   }
 
   claim(): void {
-    if (this.userCanClaim) {
+    if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
       if (!this.seedTokenToReceive?.gt(0)) {
         this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
       } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
@@ -176,6 +175,12 @@ export class SeedDashboard {
       } else {
         this.seed.claim();
       }
+    }
+  }
+
+  retrieve(): void {
+    if (this.userCanRetrieve) {
+      this.seed.retrieveFundingTokens();
     }
   }
 }

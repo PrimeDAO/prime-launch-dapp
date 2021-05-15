@@ -17,8 +17,8 @@ html {
   body {
     font-size: 16px;
     margin: 0;
-    background-color: $global-background-color;
-    color: $color-white;
+    background-color: $BG01;
+    color: $White;
     font-family: Aeonik;
     min-height: 100vh;
     padding-left: 4rem;
@@ -30,10 +30,10 @@ html {
       font-weight: normal;
       font-size: 16px;
       line-height: 33px;
-      border: 1px solid $input-border;
+      border: 1px solid $Neutral02;
       background: $BG01;
       color: $White;
-      border-radius: $input-border-radius;
+      border-radius: 6px;
       outline: none;
       padding: 0 12px;
 
@@ -55,7 +55,7 @@ html {
       line-height: 33px;
       border-radius: 10px;
       background-color: $BG01;
-      border: 1px solid $input-border;
+      border: 1px solid $Neutral02;
       color: $White;
       outline: none;
       padding: 0 12px;
@@ -72,21 +72,21 @@ html {
 
     .clearInput {
       background-color: transparent;
-      color: $color-black;
+      color: $BG01;
 
       &::placeholder {
-        color: $color-black;
+        color: $BG01;
       }
     }
 
     hr {
       height: 1px;
       border: none;
-      background-color: $divider-color;
+      background-color: $Neutral02;
     }
 
     a {
-      color: $color-darkblue;
+      color: $White;
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
@@ -133,12 +133,12 @@ html {
     }
 
     .subtext {
-      color: $subtext-color;
+      color: $Neutral02;
       font-size: 0.8125em;
     }
 
     .button1 {
-      border-radius: $global-button-radius;
+      border-radius: 50px;
       border: none;
       padding: 14px 28px;
       outline: none;
@@ -152,7 +152,7 @@ html {
       letter-spacing: 0.6px;
       text-transform: uppercase;
 
-      color: $color-white;
+      color: $White;
       cursor: pointer;
 
       &:hover {
@@ -189,11 +189,11 @@ html {
 
   .copy-to-clip-button,
   .copy-to-clip-button:focus {
-    color: $color-white;
+    color: $White;
   }
 
   .copy-to-clip-button:hover {
-    color: $color-grey-3;
+    color: $Neutral02;
   }
 
   .launches {
