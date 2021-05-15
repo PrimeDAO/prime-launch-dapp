@@ -6,10 +6,10 @@
   min-width: 2.5em;
   height: 2.5em;
   &.active {
-    background-color: $color-light-purple;
+    background-color: $Shade06;
   }
   > .value {
-    color: $color-black;
+    color: $BG01;
     font-family: Inter;
     font-weight: 900;
     font-size: 1.5em;

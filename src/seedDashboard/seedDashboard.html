@@ -15,10 +15,10 @@
               ante semper diam molestie, et aliquam.</div>
           </div>
           <div class="rightSection">
-            <template if.to-view="seed.isLive">
-              <div class="label">TIME LEFT</div>
-              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"minutes"}</div>
-            </template>
+            <span if.to-view="seed.isLive && !seed.minimumReached">
+              <div class="label">MAX TIME LEFT</div>
+              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
+            </span>
           </div>
         </div>
         <!--
@@ -40,7 +40,7 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
-          <div class="description">Contribute</div>
+          <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
           </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.canContribute" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -86,7 +86,7 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section3">
-          <div class="description">Claim tokens</div>
+          <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
           </div>
@@ -94,10 +94,10 @@
             <div class="input">
               <div class="seedRequest">
                 <numeric-input
-                  disabled.to-view="!userCanClaim"
+                  disabled.to-view="!seed.claimingIsOpen || !seed.userCanClaim"
                   value.bind="seedTokenToReceive"
                   placeholder="0.0"></numeric-input>
-                <div class="maxButton" if.to-view="userCanClaim">
+                <div class="maxButton" if.to-view="seed.claimingIsOpen && seed.userCanClaim">
                   <a href="#" click.delegate="handleMaxClaim()">MAX</a>
                 </div>
               </div>
@@ -124,7 +124,21 @@
               if.to-view="seed.isLive && !seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
-          <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
+        </div>
+        <!--
+          ================ 
+          Section Four
+          ================ 
+        -->
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section4">
+          <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
+          <div class="help">
+            <question-mark text="Retrieve tokens"></question-mark>
+          </div>
+          <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
+          <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
+          </div>
         </div>
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.

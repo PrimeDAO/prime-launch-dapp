@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   justify-items: center;
-  background-color: $color-darkpink-3;
+  background-color: $BG01;
   padding-top: 7rem;
   .currentStageSidebar {
     line-height: 2rem;
@@ -16,7 +16,7 @@
       cursor: pointer;
     }
     .active {
-      color: $color-light-purple;
+      color: $Shade06;
     }
     .stagesNumber {
       display: flex;

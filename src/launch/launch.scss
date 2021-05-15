@@ -37,7 +37,7 @@
   }
   // ** For styling the container holding buttons
   .launch-box-container {
-    background-color: $color-black-3;
+    background-color: $BG02;
     border-radius: 1em;
     border: 1px solid $Border01;
     width: 18em;
@@ -71,7 +71,7 @@
     a {
       font-weight: bold;
       text-decoration: none;
-      color: $color-white;
+      color: $White;
     }
     & .container-footer {
       background-color: $Border01;
@@ -86,7 +86,7 @@
       & div {
         font-size: 0.7em;
         font-weight: 600;
-        color: $color-white;
+        color: $White;
         padding-left: 0.4em;
         padding-right: 0.4em;
       }

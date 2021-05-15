@@ -181,7 +181,8 @@ export class DateService {
 
   public ticksToTimeSpanString(
     ms: number,
-    resolution: TimespanResolution = TimespanResolution.milliseconds): string | null {
+    resolution: TimespanResolution = TimespanResolution.milliseconds,
+    abbrev = false): string | null {
 
     if ((ms === null) || (typeof ms === "undefined")) {
       return null;
@@ -210,7 +211,7 @@ export class DateService {
 
     if (days) {
 
-      result = `${days} ${days > 1 ? "days" : "day"}`;
+      result = `${days} ${abbrev ? "d" : (days > 1 ? "days" : "day")}`;
 
       if (largest) {
         stop = true;
@@ -225,7 +226,7 @@ export class DateService {
       (resolution === TimespanResolution.hours)) &&
       (resolution <= TimespanResolution.hours))) {
 
-      result += `${result.length ? ", " : ""}${hours} ${hours > 1 ? "hours" : "hour"}`;
+      result += `${result.length ? ", " : ""}${hours}${abbrev ? "h" : (hours > 1 ? " hours" : " hour")}`;
 
       if (largest) {
         stop = true;
@@ -240,7 +241,7 @@ export class DateService {
       (resolution === TimespanResolution.minutes)) &&
       (resolution <= TimespanResolution.minutes))) {
 
-      result += `${result.length ? ", " : ""}${minutes} ${minutes > 1 ? "minutes" : "minutes"}`;
+      result += `${result.length ? ", " : ""}${minutes}${abbrev ? "m" : (minutes > 1 ? " minutes" : " minutes")}`;
 
       if (largest) {
         stop = true;
@@ -252,7 +253,7 @@ export class DateService {
 
     if (!stop && (resolution <= TimespanResolution.seconds)) {
 
-      result += `${result.length ? ", " : ""}${seconds} ${seconds > 1 ? "seconds" : "second"}`;
+      result += `${result.length ? ", " : ""}${seconds}${abbrev ? "s" : (seconds > 1 ? " seconds" : " second")}`;
 
       if (largest) {
         stop = true;
@@ -263,7 +264,7 @@ export class DateService {
     }
 
     if (!stop && (ms && (resolution === TimespanResolution.milliseconds))) {
-      result += `${result.length ? ", " : ""}${ms} ${ms > 1 ? "milliseconds" : "millisecond"}`;
+      result += `${result.length ? ", " : ""}${ms}${abbrev ? "ms" : (ms > 1 ? " milliseconds" : " millisecond")}`;
     }
 
     return result;
