@@ -16,7 +16,6 @@ export class Stage4 extends BaseStage {
   endDatePicker: Litepicker;
 
   attached(): void {
-    console.log(this.startDateUi);
     if (!this.startDatePicker) {
       this.startDatePicker = new Litepicker({
         element: this.startDateRef,
