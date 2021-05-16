@@ -1,6 +1,7 @@
 import { BaseStage } from "./baseStage";
 // Let's import the utils helper
-import {Utils} from "../services/utils";
+import { Utils } from "../services/utils";
+
 export class Stage1 extends BaseStage {
   // Add a link object to the link object arrays
   addCustomLinks(): void {
@@ -13,6 +14,25 @@ export class Stage1 extends BaseStage {
     this.seedConfig.general.customLinks.splice(index, 1);
   }
   proceed(): void {
+    const message: string = this.validateInputs();
+    if (message) {
+      this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      // For stage 1 write a verified true to stage 1
+      this.stageState[this.stageNumber].verified = true;
+      this.next();
+    }
+  }
+
+  detached(): void {
+    const message = this.validateInputs();
+    if (message) {
+      this.stageState[this.stageNumber].verified = false;
+    }
+  }
+
+  validateInputs(): string {
     let message: string;
     if (!this.seedConfig.general.projectName) {
       message = "Please enter a value for Project Name";
@@ -40,13 +60,6 @@ export class Stage1 extends BaseStage {
         message = `Please enter a valid url for ${link.media}`;
       }
     });
-    if (message) {
-      this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      // For stage 1 write a verified true to stage 1
-      this.stageState[this.stageNumber].verified = true;
-      this.next();
-    }
+    return message;
   }
 }

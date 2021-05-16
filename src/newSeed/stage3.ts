@@ -18,6 +18,24 @@ export class Stage3 extends BaseStage {
     this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
   proceed(): void {
+    const message: string = this.validateInputs();
+    if (message) {
+      this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
+      this.next();
+    }
+  }
+
+  detached(): void {
+    const message = this.validateInputs();
+    if (message) {
+      this.stageState[this.stageNumber].verified = false;
+    }
+  }
+
+  validateInputs(): string {
     let message: string;
     if (!this.seedConfig.tokenDetails.fundingSymbol) {
       message = "Please enter a valid address for the Funding Token Address";
@@ -40,13 +58,7 @@ export class Stage3 extends BaseStage {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
-    if (message) {
-      this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      this.stageState[this.stageNumber].verified = true;
-      this.next();
-    }
+    return message;
   }
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {

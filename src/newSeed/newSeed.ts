@@ -35,7 +35,7 @@ export class NewSeed {
       { route: ["stage3"], nav: true, moduleId: PLATFORM.moduleName("./stage3"), name: "stage3", title: "Token Details", settings: { seedConfig: this.seedConfig, stageState: this.stageState, stageNumber: 3, maxStage: 6 } },
       { route: ["stage4"], nav: true, moduleId: PLATFORM.moduleName("./stage4"), name: "stage4", title: "SEED Details", settings: { seedConfig: this.seedConfig, stageState: this.stageState, stageNumber: 4, maxStage: 6 } },
       { route: ["stage5"], nav: true, moduleId: PLATFORM.moduleName("./stage5"), name: "stage5", title: "Contact Details", settings: { seedConfig: this.seedConfig, stageState: this.stageState, stageNumber: 5, maxStage: 6 } },
-      { route: ["stage6"], nav: true, moduleId: PLATFORM.moduleName("./stage6"), name: "stage6", title: "Thank You!", settings: { seedConfig: this.seedConfig, stageState: this.stageState, stageNumber: 6, maxStage: 6 } },
+      // { route: ["stage6"], nav: true, moduleId: PLATFORM.moduleName("./stage6"), name: "stage6", title: "Thank You!", settings: { seedConfig: this.seedConfig, stageState: this.stageState, stageNumber: 6, maxStage: 6 } },
     ];
 
     config.map(routes);

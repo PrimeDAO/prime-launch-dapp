@@ -84,6 +84,7 @@
               id="startDate"
               placeholder="YYYY-MM-DD" 
               class="vestingDateInput"
+              value.bind="startDateUi"
               ref="startDateRef"/>
             <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
           </div>
@@ -92,10 +93,10 @@
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <numeric-input 
+              <input 
                 id="startTime" type="time"
                 value.bind="startTime" 
-                placeholder="HH:MM (GMT)" ></numeric-input>
+                placeholder="HH:MM (GMT)" ></input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -120,9 +121,9 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <numeric-input 
+              <input 
                 id="endTime" value.bind="endTime"
-                placeholder="HH:MM (GMT)" type="time"></numeric-input>
+                placeholder="HH:MM (GMT)" type="time"></input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
