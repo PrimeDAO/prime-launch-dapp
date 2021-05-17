@@ -52,7 +52,9 @@ export abstract class BaseStage {
     }
   }
 
-  abstract validateInputs(): string;
+  validateInputs(): string {
+    return null;
+  }
 
   validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
