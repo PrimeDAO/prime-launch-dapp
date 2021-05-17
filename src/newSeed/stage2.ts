@@ -16,6 +16,8 @@ export class Stage2 extends BaseStage {
     const message = this.validateInputs();
     if (message) {
       this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
     }
   }
 
