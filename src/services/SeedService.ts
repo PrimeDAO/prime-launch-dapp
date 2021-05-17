@@ -7,6 +7,7 @@ import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
+import axios from "axios";
 
 // export interface ISeed {
 //   address: Address;
@@ -45,6 +46,11 @@ export interface ISeedCreatedEventArgs {
 //   isWhitelisted: boolean;
 // }
 
+interface IFeaturedSeedsConfig {
+  [network: string]: { seeds: Array<Address> } ;
+}
+
+
 @autoinject
 export class SeedService {
 
@@ -55,6 +61,7 @@ export class SeedService {
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
+  private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
    * when the factory was created
    */
@@ -74,6 +81,14 @@ export class SeedService {
   }
 
   public async initialize(): Promise<void> {
+    if (!this.featuredSeedsJson) {
+      // eslint-disable-next-line require-atomic-updates
+      this.featuredSeedsJson = (process.env.NODE_ENV === "development") ?
+        require("../configurations/featuredSeeds.json") :
+        await axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
+          .then((response) => response.data);
+    }
+
     /**
      * don't need to reload the seedfactory on account change because we never send txts to it.
      */
@@ -138,10 +153,10 @@ export class SeedService {
 
   private _featuredSeeds: Array<Seed>;
 
-  @computedFrom("_featuredSeeds", "seeds")
+  @computedFrom("seeds", "featuredSeedsJson")
   public get featuredSeeds(): Array<Seed> {
 
-    if (!this.seeds) {
+    if (!this.seeds || !this.featuredSeedsJson) {
       return [];
     }
 
@@ -149,10 +164,8 @@ export class SeedService {
       return this._featuredSeeds;
     }
     else {
-      const featuredSeedsJson = require("../configurations/featuredSeeds.json");
-
       return this._featuredSeeds =
-        featuredSeedsJson[this.ethereumService.targetedNetwork].seeds.map( (address: Address) => this.seeds.get(address))
+        this.featuredSeedsJson[this.ethereumService.targetedNetwork].seeds.map( (address: Address) => this.seeds.get(address))
           .filter((seed: Seed) => !!seed);
     }
   }
