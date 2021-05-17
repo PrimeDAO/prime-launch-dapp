@@ -1,6 +1,8 @@
+import { EthereumService } from "./EthereumService";
+import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -60,9 +62,10 @@ export class SeedService {
 
   constructor(
     private contractsService: ContractsService,
-    // private transactionsService: TransactionsService,
+    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
     private container: Container,
+    private consoleLogService: ConsoleLogService,
   ) {
     /**
      * otherwise singleton is the default
@@ -105,6 +108,7 @@ export class SeedService {
                     */
                   const seed = this.createSeedFromConfig(event);
                   seedsMap.set(seed.address, seed);
+                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
                   seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
@@ -132,10 +136,25 @@ export class SeedService {
     return this.initializedPromise;
   }
 
-  public featuredSeeds(): Array<Seed> {
-    return [this.seedsArray[this.seedsArray.length - 3],
-      this.seedsArray[this.seedsArray.length - 2],
-      this.seedsArray[this.seedsArray.length - 1]];
+  private _featuredSeeds: Array<Seed>;
+
+  @computedFrom("_featuredSeeds", "seeds")
+  public get featuredSeeds(): Array<Seed> {
+
+    if (!this.seeds) {
+      return [];
+    }
+
+    if (this._featuredSeeds) {
+      return this._featuredSeeds;
+    }
+    else {
+      const featuredSeedsJson = require("../configurations/featuredSeeds.json");
+
+      return this._featuredSeeds =
+        featuredSeedsJson[this.ethereumService.targetedNetwork].seeds.map( (address: Address) => this.seeds.get(address))
+          .filter((seed: Seed) => !!seed);
+    }
   }
   // public async deploySeed(params: IDeploySeedParams): Promise<TransactionReceipt> {
   //   const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);

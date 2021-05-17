@@ -47,7 +47,7 @@ export class Home {
       }
     }
 
-    this.seeds = this.seedService.featuredSeeds();
+    this.seeds = this.seedService.featuredSeeds;
   }
 
   navigate(href: string): void {

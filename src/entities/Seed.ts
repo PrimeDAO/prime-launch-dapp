@@ -4,7 +4,6 @@ import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address, EthereumService, fromWei } from "services/EthereumService";
-import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -12,7 +11,6 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
-import { timeStamp } from "node:console";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -228,8 +226,7 @@ export class Seed {
       this.initializing = false;
     }
     catch (error) {
-      this.consoleLogService.handleFailure(
-        new EventConfigFailure(`Seed: Error hydrating seed data ${error?.message}`));
+      this.consoleLogService.logMessage(`Seed: Error hydrating seed data ${error?.message}`, "error");
       this.initializing = false;
     }
   }

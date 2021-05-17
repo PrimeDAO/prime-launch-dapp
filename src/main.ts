@@ -25,7 +25,9 @@ export function configure(aurelia: Aurelia): void {
   ;
 
   if (process.env.NODE_ENV === "development") {
-    aurelia.use.developmentLogging();
+    aurelia.use.developmentLogging("info"); // info and above
+  } else {
+    aurelia.use.developmentLogging("warning"); // only errors and warnings
   }
 
   if (environment.testing) {

@@ -1,6 +1,5 @@
 import { EventAggregator } from "aurelia-event-aggregator";
-import { autoinject } from "aurelia-framework";
-import { LogManager } from "aurelia-framework";
+import { autoinject, LogManager } from "aurelia-framework";
 import { EventConfig, EventConfigException, EventConfigTransaction, EventMessageType } from "./GeneralEvents";
 import { DisposableCollection } from "./DisposableCollection";
 
@@ -36,18 +35,23 @@ export class ConsoleLogService {
   }
 
   private handleSuccess(config: EventConfig | string) {
-    this.logger.debug(this.getMessage(config));
+    this.logMessage(this.getMessage(config), "debug");
   }
 
   private handleTransaction(config: EventConfigTransaction | string) {
     if (typeof config === "string") {
-      this.logger.debug(config);
+      this.logMessage(config, "debug");
     } else {
-      this.logger.debug(`${config.message}: ${config.address}`);
+      this.logMessage(`${config.message}: ${config.address}`, "debug");
     }
   }
 
-  public handleException(config: EventConfigException | any): void {
+
+  private getMessage(config: EventConfig | string): string {
+    return (typeof config === "string") ? config : config.message;
+  }
+
+  private handleException(config: EventConfigException | any): void {
     let message;
     let ex;
     if (!(config instanceof EventConfigException)) {
@@ -59,40 +63,54 @@ export class ConsoleLogService {
       message = config.message;
     }
 
-    this.logger.error(`${message}${ex?.stack ? `\n${ex.stack}` : ""}`);
+    this.logMessage(`${message}${ex?.stack ? `\n${ex.stack}` : ""}`, "error");
   }
 
-  public handleFailure(config: EventConfig | string): void {
-    this.logger.error(this.getMessage(config));
+  private handleFailure(config: EventConfig | string): void {
+    this.logMessage(this.getMessage(config), "error");
   }
 
-  public handleWarning(config: EventConfig | string): void {
-    this.logger.warn(this.getMessage(config));
+  private handleWarning(config: EventConfig | string): void {
+    this.logMessage(this.getMessage(config), "warn");
   }
 
-  public handleMessage(config: EventConfig | string): void {
+  private handleMessage(config: EventConfig | string): void {
     if (typeof config === "string") {
-      this.logger.info(this.getMessage(config));
+      this.logMessage(this.getMessage(config), "info");
     } else {
       switch (config.type) {
         case EventMessageType.Info:
-          this.logger.info(this.getMessage(config));
+          this.logMessage(this.getMessage(config), "info");
           break;
         case EventMessageType.Warning:
-          this.logger.warn(this.getMessage(config));
+          this.logMessage(this.getMessage(config), "warn");
           break;
         case EventMessageType.Failure:
         case EventMessageType.Exception:
-          this.logger.error(this.getMessage(config));
+          this.logMessage(this.getMessage(config), "error");
           break;
         case EventMessageType.Debug:
-          this.logger.debug(this.getMessage(config));
+          this.logMessage(this.getMessage(config), "debug");
           break;
       }
     }
   }
 
-  private getMessage(config: EventConfig | string): string {
-    return (typeof config === "string") ? config : config.message;
+  public logMessage(msg: string, level = "info"): void {
+    switch (level) {
+      case "info":
+      default:
+        this.logger.info(msg);
+        break;
+      case "warn":
+        this.logger.warn(msg);
+        break;
+      case "error":
+        this.logger.error(msg);
+        break;
+      case "debug":
+        this.logger.debug(msg);
+        break;
+    }
   }
 }

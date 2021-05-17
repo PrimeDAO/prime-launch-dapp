@@ -58,30 +58,17 @@ Prime Pool relies on solidity contract addresses and ABIs that it obtains from t
 npm run fetchContracts
 ```
 
-## <a name="poolConfig"></a> Pool Configuration
+## Featured Seeds List
 
-Prime Pool refers to a list of pools that it will display to its users, looking at runtime for this list in the master branch of this repository at [/src/poolConfigurations/pools.json](https://github.com/PrimeDAO/prime-pool-dapp/blob/master/src/poolConfigurations/pools.json).
+Prime Launch refers to a list of Seeds that it will display as "Featured" to its users, looking at runtime for this list in the master branch of this repository at [/src/configurations/featuredSeeds.json](https://github.com/PrimeDAO/prime-launch-dapp/blob/master/src/configurations/featuredSeeds.json).
 
-Notes on a few of the pool entries:
-
-| Property      | Description |
-| ----------- | ----------- |
-| description   | Appears on the All Pools page. Plain text only. |
-| story      | Appears on the "Overview" tab of the [*] Pool page.  You can use HTML, and divs may have the classes `para` and `header`. |
-| icon      | Appears on the All Pools and [*] Pool page.  Must be SVG. Use single quotes, not double. |
-| addresses | Address of the `ConfigurableRightsPool` |
-| preview | If true, the pool will appear only as an unclickable button on the All Pools page |
-
-## <a name="dependencies"></a> Dependencies
+## <Pool name="dependencies"></Pool> Dependencies
 
 Various code dependencies include:
 
 * ethplorer<span>.</span>io, at api.ethplorer.io, for token information
 * coingecko, at api.coingecko.com/api/v3/coins,  for token information
 * the Balancer subgraph, at api.thegraph.com/subgraphs/name/balancer-labs/balancer, for pool information
-* the PrimeDAO API, at api.primedao.io/circulatingSupply, for the total supply of PRIME
-* [d3](https://d3js.org/) for the pool donut graph
-* [lightweight-charts](https://github.com/tradingview/lightweight-charts) for the pool marketcap sparkline graph
 * [Web3Modal](https://github.com/Web3Modal/web3modal) for selecting wallet providers
 * [ethers.js](https://docs.ethers.io/v5/) for interacting with ethereum and wallet providers
 * [Rivet](https://rivet.cloud/) for the mainnet provider
@@ -109,8 +96,8 @@ To run the Webpack Bundle Analyzer, do `npm run analyze` (production build).
 Make sure you have in your environment (or in a ".env" file) the following:
 
 ```
-IPFS_DEPLOY_PINATA__SECRET_API_KEY=
-IPFS_DEPLOY_PINATA__API_KEY=
+DEPLOY_PINATA__SECRET_API_KEY=
+DEPLOY_PINATA__API_KEY=
 RIVET_ID=
 INFURA_ID=
 ETHPLORER_KEY=
@@ -125,7 +112,7 @@ To deploy the dApp to IPFS you must first create your build in the `dist` folder
 
 Then the fastest way to deploy the site on ipfs is using [Pinata](https://pinata.cloud/). Pinata will automatically deploy the code to IPFS, generating a hash of the code, and the "pin" the hash so that it remains in a cache and doesn't eventually fall out of easy sight of the cloud of IPFS nodes.
 
-Make sure you added your Pinata `IPFS_DEPLOY_PINATA__API_KEY` and `IPFS_DEPLOY_PINATA__SECRET_API_KEY` in your environment or a ".env" file.
+Make sure you added your Pinata `DEPLOY_PINATA__API_KEY` and `DEPLOY_PINATA__SECRET_API_KEY` in your environment or a ".env" file.
 
 Install IPFS: [https://docs.ipfs.io/install/ipfs-desktop/](https://docs.ipfs.io/install/ipfs-desktop/)
 
