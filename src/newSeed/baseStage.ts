@@ -27,6 +27,15 @@ export abstract class BaseStage {
     Object.assign(this, routeConfig.settings);
   }
 
+  detached(): void {
+    const message = this.validateInputs();
+    if (message) {
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
+    }
+  }
+
   cancel(): void {
     this.router.parent.navigate("selectPackage");
   }
@@ -42,6 +51,8 @@ export abstract class BaseStage {
       this.router.navigate(`stage${this.stageNumber - 1}`);
     }
   }
+
+  abstract validateInputs(): string;
 
   validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));

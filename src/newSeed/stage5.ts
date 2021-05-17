@@ -13,18 +13,7 @@ export class Stage5 extends BaseStage {
     return re.test(String(file).toLowerCase());
   }
   submit(): void {
-    let message: string;
-    // Validate current stage
-    // TODO: Check if there is an email validator
-    if (!this.isValidEmail(this.seedConfig.contactDetails.contactEmail, false)) {
-      message = "Please enter a valid email address for Contact Email";
-    } else if (!this.seedConfig.contactDetails.remarks) {
-      message = "Please enter a value for Additional Remarks";
-    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
-      message = "Please supply a valid image file type for Project Logo";
-    } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
-      message = "Please enter a valid url for Project Logo";
-    }
+    let message = this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState[this.stageNumber].verified = false;
@@ -42,5 +31,21 @@ export class Stage5 extends BaseStage {
       }
       // TODO: Submit schema
     }
+  }
+
+  validateInputs(): string {
+    let message: string;
+    // Validate current stage
+    // TODO: Check if there is an email validator
+    if (!this.isValidEmail(this.seedConfig.contactDetails.contactEmail, false)) {
+      message = "Please enter a valid email address for Contact Email";
+    } else if (!this.seedConfig.contactDetails.remarks) {
+      message = "Please enter a value for Additional Remarks";
+    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
+      message = "Please supply a valid image file type for Project Logo";
+    } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
+      message = "Please enter a valid url for Project Logo";
+    }
+    return message;
   }
 }

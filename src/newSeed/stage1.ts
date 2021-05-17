@@ -25,15 +25,6 @@ export class Stage1 extends BaseStage {
     }
   }
 
-  detached(): void {
-    const message = this.validateInputs();
-    if (message) {
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      this.stageState[this.stageNumber].verified = true;
-    }
-  }
-
   validateInputs(): string {
     let message: string;
     if (!this.seedConfig.general.projectName) {

@@ -4,4 +4,8 @@ export class Stage6 extends BaseStage {
   close(): void {
     this.router.navigate("/");
   }
+
+  validateInputs(): string {
+    return "";
+  }
 }
