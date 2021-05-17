@@ -1,4 +1,4 @@
-@import "styles/styles.scss";
+@import "styles/colors.scss";
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
@@ -10,10 +10,6 @@
   min-width: 40rem;
   .title {
     font-size: 1.625em;
-    color: $White;
-    line-height: 2em;
-    font-weight: bold;
-    margin-bottom: 1em !important;
   }
   .subtext {
     line-height: 1.5em;
@@ -51,6 +47,7 @@
       cursor: pointer;
       color: $Shade01;
       font-family: Inter;
+      font-weight: bold;
     }
   }
   .stageButton {
@@ -60,9 +57,9 @@
   label {
     display: block;
     font-size: 1.1em;
+    font-weight: bold;
     line-height: 2em;
-    color: $White;
-    @include standardTextGradient;
+    color: $Secondary02;
   }
   input {
     width: 23em;
@@ -85,6 +82,22 @@
     background: none;
     display: none;
   }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: $Neutral02;
+    transition: background-color 100s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
+    box-shadow: 0 0 0px 3.7em $BG01 inset;
+  }
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover, 
+  textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: $Neutral02;
+    transition: background-color 100s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
+    box-shadow: 0 0 0px 3.7em $BG01 inset;
+  }
 
   select {
     width: 14em;
@@ -98,7 +111,7 @@
     padding-left: 0.5em;
     padding-right: 0.5em;
   }
-
+  
   a {
     color: $Neutral02;
   }
@@ -305,6 +318,7 @@
         flex-flow: row wrap;
         justify-content: space-around;
         align-items: center;
+        overflow-wrap: break-word;
         width: 16em;
         height: 4.5em;
         border-radius: 0.6em;

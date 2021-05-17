@@ -27,6 +27,15 @@ export abstract class BaseStage {
     Object.assign(this, routeConfig.settings);
   }
 
+  detached(): void {
+    const message = this.validateInputs();
+    if (message) {
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
+    }
+  }
+
   cancel(): void {
     this.router.parent.navigate("selectPackage");
   }
@@ -41,6 +50,10 @@ export abstract class BaseStage {
     if (this.stageNumber > 1) {
       this.router.navigate(`stage${this.stageNumber - 1}`);
     }
+  }
+
+  validateInputs(): string {
+    return null;
   }
 
   validationError(message: string): void {

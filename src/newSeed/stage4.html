@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
-      <div class="heading heading3 title">SEED Details</div>
+      <div class="heading heading2 title">SEED Details</div>
       <div class="subtext">
         Use the SEED guide to select suitable details or get in touch.
       </div>
@@ -84,6 +84,7 @@
               id="startDate"
               placeholder="YYYY-MM-DD" 
               class="vestingDateInput"
+              value.bind="startDateUi"
               ref="startDateRef"/>
             <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
           </div>
@@ -92,10 +93,10 @@
           <label for="startTime">Start Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <numeric-input 
+              <input 
                 id="startTime" type="time"
                 value.bind="startTime" 
-                placeholder="HH:MM (GMT)" ></numeric-input>
+                placeholder="HH:MM (GMT)" ></input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -120,9 +121,9 @@
           <label for="endTime">End Time</label>
           <div class="vestingDatesContainer">
             <div class="vestingDates">
-              <numeric-input 
+              <input 
                 id="endTime" value.bind="endTime"
-                placeholder="HH:MM (GMT)" type="time"></numeric-input>
+                placeholder="HH:MM (GMT)" type="time"></input>
               <div><i class="far fa-clock"></i></div>
             </div>
             <div class="questionMark">
@@ -148,18 +149,18 @@
             <label for="whitelist"/>
           </div>
         </div>
-        <div>
-          <label class="inputFileLabel">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span>
-              ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
-            </span>
-            <input 
-              id="whitelistFile" type="file" accept=".pdf"
-              class="inputFile" 
-              files.bind="seedConfig.seedDetails.whitelist.whitelistFile"/>
-          </label>
-        </div>
+        <template if.to-view="seedConfig.seedDetails.whitelist.isWhitelist">
+          <div>
+            <label class="inputFileLabel">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>
+                ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
+              </span>
+              <input id="whitelistFile" type="file" accept=".pdf"
+              class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
+            </label>
+          </div>
+        </template>
       </div>
       <div class="infoInput">
         <div class="labeledQuestion">
