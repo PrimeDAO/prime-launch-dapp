@@ -202,13 +202,13 @@ export class Seed {
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
       this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
       /**
-             * in terms of fundingTken
-             */
+       * in units of fundingToken
+       */
       this.target = await this.contract.successMinimum();
       // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
       /**
-             * in terms of fundingTken
-             */
+       * in units of fundingToken
+       */
       this.cap = await this.contract.cap();
       this.isPaused = await this.contract.paused();
       this.isClosed = await this.contract.closed();
