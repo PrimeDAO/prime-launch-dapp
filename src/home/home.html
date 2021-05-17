@@ -27,11 +27,13 @@
       </div>
     </div>
     <div class="section launches">
-      <div class="title heading heading1">Featured Launches</div>
-      <horizontal-scroller item-count.to-view="seeds.length">
-        <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
-      </horizontal-scroller>
-      <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
+      <template if.to-view="featuredSeeds.length">
+        <div class="title heading heading1">Featured Launches</div>
+        <horizontal-scroller item-count.to-view="featuredSeeds.length">
+          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
+        </horizontal-scroller>
+        <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
+      </template>
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">
