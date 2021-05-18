@@ -22,9 +22,9 @@ export class Stage3 extends BaseStage {
     const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
+      this.stageState.verified = false;
     } else {
-      this.stageState[this.stageNumber].verified = true;
+      this.stageState.verified = true;
       this.next();
     }
   }

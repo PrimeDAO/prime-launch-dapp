@@ -1,14 +1,16 @@
 import { EventConfigFailure } from "../services/GeneralEvents";
-import { autoinject, singleton } from "aurelia-framework";
+import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
 import { ISeedConfig } from "./seedConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { Hash } from "services/EthereumService";
 
 export interface IStageState {
   verified: boolean;
   title: string;
+  seedHash?: Hash;
 }
 
 @singleton(false)
@@ -17,7 +19,9 @@ export abstract class BaseStage {
   protected seedConfig: ISeedConfig;
   protected stageNumber: number;
   protected maxStage: number;
-  protected stageState: Array<IStageState>;
+  protected stageStates: Array<IStageState>;
+  @computedFrom("stageStates", "stageNumber")
+  protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
 
   constructor(
     protected router: Router,
@@ -30,11 +34,7 @@ export abstract class BaseStage {
 
   detached(): void {
     const message = this.validateInputs();
-    if (message) {
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      this.stageState[this.stageNumber].verified = true;
-    }
+    this.stageState.verified = !message;
   }
 
   cancel(): void {

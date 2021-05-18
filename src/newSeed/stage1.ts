@@ -17,10 +17,10 @@ export class Stage1 extends BaseStage {
     const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
+      this.stageState.verified = false;
     } else {
       // For stage 1 write a verified true to stage 1
-      this.stageState[this.stageNumber].verified = true;
+      this.stageState.verified = true;
       this.next();
     }
   }

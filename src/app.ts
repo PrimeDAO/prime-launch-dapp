@@ -44,6 +44,12 @@ export class App {
       this.handleOnOff(onOff);
     });
 
+    this.eventAggregator.subscribe("seed.creating", async (onOff: boolean) => {
+      this.modalMessage = "Thank you for your patience while we initiate the creation of a new seed...";
+      this.handleOnOff(onOff);
+    });
+
+
     this.eventAggregator.subscribe("transaction.sent", async () => {
       this.modalMessage = "Awaiting confirmation...";
       this.handleOnOff(true);

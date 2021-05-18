@@ -44,7 +44,7 @@ export class Stage4 extends BaseStage {
     const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
+      this.stageState.verified = false;
     } else {
       // Set the ISO time
       // Get the start and end time
@@ -56,7 +56,7 @@ export class Stage4 extends BaseStage {
       temp = new Date(this.endDate.toDateString());
       temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
       this.seedConfig.seedDetails.endDate = this.dateService.toISOString(temp);
-      this.stageState[this.stageNumber].verified = true;
+      this.stageState.verified = true;
       this.next();
     }
   }
