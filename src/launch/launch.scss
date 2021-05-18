@@ -68,12 +68,15 @@
       padding: 1em 2em;
       font-size: 0.5em;
       border-radius: 2em;
-      cursor: pointer;
     }
     a {
       font-weight: normal;
       text-decoration: none;
       color: $White;
+      cursor: pointer;
+      &.disabled {
+        pointer-events: none;
+      }
     }
     & .container-footer {
       background-color: $Border01;
