@@ -1,6 +1,6 @@
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
-import { EthereumService } from "./EthereumService";
+import { EthereumService, Hash } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
