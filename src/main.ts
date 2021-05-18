@@ -25,7 +25,9 @@ export function configure(aurelia: Aurelia): void {
   ;
 
   if (process.env.NODE_ENV === "development") {
-    aurelia.use.developmentLogging();
+    aurelia.use.developmentLogging(); // everything
+  } else {
+    aurelia.use.developmentLogging("warning"); // only errors and warnings
   }
 
   if (environment.testing) {
@@ -47,7 +49,7 @@ export function configure(aurelia: Aurelia): void {
       seedService.initialize();
 
       const ipfsService = aurelia.container.get(IpfsService);
-      ipfsService.ipfs = aurelia.container.get(PinataIpfsClient);
+      ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

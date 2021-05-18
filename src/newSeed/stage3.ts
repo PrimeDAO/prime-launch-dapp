@@ -3,6 +3,7 @@ import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { Utils } from "services/utils";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -18,10 +19,21 @@ export class Stage3 extends BaseStage {
     this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
   proceed(): void {
+    const message: string = this.validateInputs();
+    if (message) {
+      this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      this.stageState[this.stageNumber].verified = true;
+      this.next();
+    }
+  }
+
+  validateInputs(): string {
     let message: string;
-    if (!this.seedConfig.tokenDetails.fundingSymbol) {
+    if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
-    } else if (!this.seedConfig.tokenDetails.seedSymbol) {
+    } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
       message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply === "0") {
@@ -40,13 +52,7 @@ export class Stage3 extends BaseStage {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
-    if (message) {
-      this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      this.stageState[this.stageNumber].verified = true;
-      this.next();
-    }
+    return message;
   }
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {

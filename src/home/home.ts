@@ -13,7 +13,7 @@ export class Home {
 
   seeingMore = false;
   bookmark: string;
-  seeds: Array<Seed>;
+  featuredSeeds: Array<Seed>;
 
   constructor(
     private router: Router,
@@ -32,7 +32,7 @@ export class Home {
       this.bookmark = undefined;
     }
 
-    if (!this.seeds?.length) {
+    if (!this.featuredSeeds?.length) {
       try {
         if (this.seedService.initializing) {
           await Utils.sleep(200);
@@ -47,7 +47,7 @@ export class Home {
       }
     }
 
-    this.seeds = this.seedService.featuredSeeds();
+    this.featuredSeeds = this.seedService.featuredSeeds;
   }
 
   navigate(href: string): void {

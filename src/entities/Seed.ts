@@ -4,7 +4,6 @@ import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address, EthereumService, fromWei } from "services/EthereumService";
-import { EventConfigFailure } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -12,7 +11,6 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
-import { timeStamp } from "node:console";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -204,13 +202,13 @@ export class Seed {
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
       this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
       /**
-             * in terms of fundingTken
-             */
+       * in units of fundingToken
+       */
       this.target = await this.contract.successMinimum();
       // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
       /**
-             * in terms of fundingTken
-             */
+       * in units of fundingToken
+       */
       this.cap = await this.contract.cap();
       this.isPaused = await this.contract.paused();
       this.isClosed = await this.contract.closed();
@@ -228,8 +226,7 @@ export class Seed {
       this.initializing = false;
     }
     catch (error) {
-      this.consoleLogService.handleFailure(
-        new EventConfigFailure(`Seed: Error hydrating seed data ${error?.message}`));
+      this.consoleLogService.logMessage(`Seed: Error hydrating seed data ${error?.message}`, "error");
       this.initializing = false;
     }
   }

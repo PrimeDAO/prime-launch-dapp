@@ -34,7 +34,7 @@ export default class ElementGenerator {
   message: string;
 
   constructor() {
-    this.message = 'primelaunch.eth';
+    this.message = 'PrimeLaunch';
   }
 }
 `

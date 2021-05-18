@@ -44,16 +44,24 @@ export interface ITokenDetails {
 
 export interface ISeedDetails {
   seedTokens: string,
+  /**
+   * The price of one seed token in units of funding tokens
+   * In wei.
+   */
   pricePerToken: string,
   baseCurrency: string,
+  /**
+   * In wei
+   */
   seedTarget: string,
+  /**
+   * In wei
+   */
   seedMax: string,
   vestingDays: number,
   vestingCliff: number,
   startDate: string,
   endDate: string,
-  controller: string,
-  rights: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
   geoBlock: boolean,
   legalDisclaimer: boolean

@@ -68,7 +68,7 @@ export class App {
     this.onOffStack += onOff ? 1 : -1;
     if (this.onOffStack < 0) {
       this.onOffStack = 0;
-      this.consoleLogService.handleWarning(new EventConfig("underflow in onOffStack"));
+      this.consoleLogService.logMessage("underflow in onOffStack", "warn");
     }
     if (this.onOffStack && !this.onOff) {
       this.onOff = true;
@@ -79,7 +79,7 @@ export class App {
 
   private configureRouter(config: RouterConfiguration, router: Router) {
 
-    config.title = "primelaunch.eth";
+    config.title = "PrimeLaunch";
     config.options.pushState = true;
     // const isIpfs = (window as any).IS_IPFS;
     // if (isIpfs) {

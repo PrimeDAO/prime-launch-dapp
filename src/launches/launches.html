@@ -3,9 +3,11 @@
     <div class="section featured">
       <div class="title heading heading1">Featured</div>
       <div class="launches">
-        <horizontal-scroller item-count.to-view="seeds.length">
-          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
-        </horizontal-scroller>
+        <template if.to-view="featuredSeeds.length">
+          <horizontal-scroller item-count.to-view="featuredSeeds.length">
+            <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
+          </horizontal-scroller>
+        </template>
       </div>
     </div>
     <div class="section launches">

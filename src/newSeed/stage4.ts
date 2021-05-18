@@ -6,8 +6,10 @@ export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
   startDate: Date;
+  startDateUi: string;
   startTime: string;
   endDate: Date;
+  endDateUi: string;
   endTime: string;
   dateService = new DateService();
   startDatePicker: Litepicker;
@@ -22,6 +24,7 @@ export class Stage4 extends BaseStage {
       });
       this.startDatePicker.on("selected", (date: Date) => {
         this.startDate = date;
+        this.startDateUi = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
       });
     }
     if (!this.endDatePicker) {
@@ -32,10 +35,33 @@ export class Stage4 extends BaseStage {
       });
       this.endDatePicker.on("selected", (date: Date) => {
         this.endDate = date;
+        this.endDateUi = new Date(date.toDateString()).toLocaleDateString().replace(/\//g, "-");
       });
     }
   }
+
   proceed(): void {
+    const message: string = this.validateInputs();
+    if (message) {
+      this.validationError(message);
+      this.stageState[this.stageNumber].verified = false;
+    } else {
+      // Set the ISO time
+      // Get the start and end time
+      const startTimes = this.startTime.split(":");
+      const endTimes = this.endTime.split(":");
+      let temp = new Date(this.startDate.toDateString());
+      temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
+      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(temp);
+      temp = new Date(this.endDate.toDateString());
+      temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
+      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(temp);
+      this.stageState[this.stageNumber].verified = true;
+      this.next();
+    }
+  }
+
+  validateInputs(): string {
     let message: string;
     if (!this.seedConfig.seedDetails.seedTokens || this.seedConfig.seedDetails.seedTokens === "0") {
       message = "Please enter a value for the Amount of tokens to be added to SEED";
@@ -68,20 +94,6 @@ export class Stage4 extends BaseStage {
     } else if (!this.seedConfig.seedDetails.legalDisclaimer) {
       message = "Please accept the Legal Disclaimer";
     }
-    if (message) {
-      this.validationError(message);
-      this.stageState[this.stageNumber].verified = false;
-    } else {
-      // Set the ISO time
-      // Get the start and end time
-      const startTimes = this.startTime.split(":");
-      const endTimes = this.endTime.split(":");
-      this.startDate.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.startDate);
-      this.endDate.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.endDate);
-      this.stageState[this.stageNumber].verified = true;
-      this.next();
-    }
+    return message;
   }
 }

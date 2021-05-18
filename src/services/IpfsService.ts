@@ -2,8 +2,8 @@ import { Hash } from "services/EthereumService";
 
 export interface IIpfsClient {
   get(hash: Hash): Promise<string>;
-  pinHash(hash: Hash): Promise<void>;
-  addAndPinData(data: string): Promise<Hash>;
+  pinHash(hash: Hash, name?: string): Promise<void>;
+  addAndPinData(data: string, name?: string): Promise<Hash>;
 }
 
 export interface IAlchemyProposalParams {
@@ -17,7 +17,11 @@ export class IpfsService {
   /**
    * must be initialize externally prior to using the service
    */
-  public ipfs: IIpfsClient;
+  private ipfs: IIpfsClient;
+
+  public initialize(ipfs: IIpfsClient): void {
+    this.ipfs = ipfs;
+  }
 
   /**
  * save data of an Alchemy proposal to IPFS, return the IPFS hash
@@ -51,7 +55,7 @@ export class IpfsService {
    * @param str
    * @returns the resulting hash
    */
-  public async saveString(str: string): Promise<Hash> {
-    return this.ipfs.addAndPinData(str);
+  public async saveString(str: string, name?: string): Promise<Hash> {
+    return this.ipfs.addAndPinData(str, name);
   }
 }

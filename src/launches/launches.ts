@@ -39,7 +39,7 @@ export class Launches {
     }
 
     this.seeds = this.seedService.seedsArray;
-    this.featuredSeeds = this.seedService.featuredSeeds();
+    this.featuredSeeds = this.seedService.featuredSeeds;
   }
 
   navigate(href: string): void {
