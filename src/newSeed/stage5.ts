@@ -30,7 +30,7 @@ export class Stage5 extends BaseStage {
       this.stageState[this.stageNumber].verified = true;
       for (let i = 1; i < this.stageState.length - 1; ++i) {
         if (!this.stageState[i].verified) {
-          message = `Please review the ${this.stageState[i].title} stage`;
+          message = `Please review step ${i} - ${this.stageState[i].title}`;
         }
       }
       if (message) {

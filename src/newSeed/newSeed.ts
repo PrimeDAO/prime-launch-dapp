@@ -41,6 +41,10 @@ export class NewSeed {
           verified: false,
           title: "Contact Details",
         },
+        {
+          verified: false,
+          title: "Thank you!",
+        },
       ];
     }
   }
