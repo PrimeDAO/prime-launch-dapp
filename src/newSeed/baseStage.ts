@@ -8,6 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 
 export interface IStageState {
   verified: boolean;
+  title: string;
 }
 
 @singleton(false)

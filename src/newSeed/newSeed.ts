@@ -19,10 +19,33 @@ export class NewSeed {
        * stageState is 1-based, indexed by stage number
        * We have 6 stages.
        */
-      this.stageState = (new Array<IStageState>(7));
-      for (let i = 1; i < this.stageState.length; ++i) {
-        this.stageState[i] = { verified: false };
-      }
+      this.stageState = [
+        undefined,
+        {
+          verified: false,
+          title: "General Information",
+        },
+        {
+          verified: false,
+          title: "Project Details",
+        },
+        {
+          verified: false,
+          title: "Token Details",
+        },
+        {
+          verified: false,
+          title: "SEED Details",
+        },
+        {
+          verified: false,
+          title: "Contact Details",
+        },
+        {
+          verified: false,
+          title: "Thank you!",
+        },
+      ];
     }
   }
 
