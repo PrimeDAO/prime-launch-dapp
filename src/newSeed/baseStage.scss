@@ -83,7 +83,7 @@
     display: none;
   }
   input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
@@ -91,7 +91,7 @@
     box-shadow: 0 0 0px 3.7em $BG01 inset;
   }
   textarea:-webkit-autofill,
-  textarea:-webkit-autofill:hover, 
+  textarea:-webkit-autofill:hover,
   textarea:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
@@ -111,7 +111,7 @@
     padding-left: 0.5em;
     padding-right: 0.5em;
   }
-  
+
   a {
     color: $Neutral02;
   }
@@ -420,19 +420,18 @@
       }
     }
   }
-  
+
   &.stage6 {
-    & .subtext {
-      width: 30em;
-    }
+  }
+
+  &.stage7 {
     & .linksContainer {
       width: 30em;
       display: flex;
       flex-flow: column;
       gap: 2em;
-      margin-bottom: 13em;
       > div {
-          > a {
+        > a {
           color: $Neutral03;
         }
         > i {
