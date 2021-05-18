@@ -30,7 +30,7 @@ export class Stage5 extends BaseStage {
       this.stageState[this.stageNumber].verified = true;
       for (let i = 1; i < this.stageState.length - 1; ++i) {
         if (!this.stageState[i].verified) {
-          message = `Please review stage ${i}`;
+          message = `Please review step ${i} - ${this.stageState[i].title}`;
         }
       }
       if (message) {
@@ -51,8 +51,6 @@ export class Stage5 extends BaseStage {
     // TODO: Check if there is an email validator
     if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail, false)) {
       message = "Please enter a valid email address for Contact Email";
-    } else if (!this.seedConfig.contactDetails.remarks) {
-      message = "Please enter a value for Additional Remarks";
     } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
       message = "Please supply a valid image file type for Project Logo";
     } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
