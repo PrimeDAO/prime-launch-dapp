@@ -60,8 +60,7 @@ export class TokenService {
   constructor(
     private ethereumService: EthereumService,
     private consoleLogService: ConsoleLogService,
-    contractsService: ContractsService,
-    private numberService: NumberService) {
+    contractsService: ContractsService) {
     this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
   }
 
@@ -106,7 +105,7 @@ export class TokenService {
 
   public async getTokenInfoFromAddress(address: Address): Promise<ITokenInfo> {
 
-    let tokenInfo = this.tokenInfos.get(address);
+    let tokenInfo = this.tokenInfos.get(address.toLowerCase());
 
     if (!tokenInfo) {
       const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
@@ -116,7 +115,7 @@ export class TokenService {
           tokenInfo.address = address;
           tokenInfo.icon = "/genericToken.svg";
           tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-          this.tokenInfos.set(address, tokenInfo);
+          this.tokenInfos.set(address.toLowerCase(), tokenInfo);
 
           if (tokenInfo.id) {
             const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;

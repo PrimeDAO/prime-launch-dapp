@@ -9,10 +9,10 @@
       <div>
         <div class="infoInput ticker">
           <div class="address">
-            <label for="fundingAddress">Funding Token Address (ETH)</label>
+            <label for="fundingAddress">Funding Token Address</label>
             <div class="tickerContainer">
-              <input id="fundingAddress" 
-                value.bind="seedConfig.tokenDetails.fundingAddress" 
+              <input id="fundingAddress"
+                value.bind="seedConfig.tokenDetails.fundingAddress"
                 blur.trigger="getTokenInfo('fund')">
               </input>
               <div class="ticker">
@@ -26,10 +26,10 @@
         </div>
         <div class="infoInput ticker">
           <div class="address">
-            <label for="seedAddress">Seed Token Address (ETH)</label>
+            <label for="seedAddress">Seed Token Address</label>
             <div class="tickerContainer">
-              <input id="seedAddress" 
-                value.bind="seedConfig.tokenDetails.seedAddress" 
+              <input id="seedAddress"
+                value.bind="seedConfig.tokenDetails.seedAddress"
                 blur.trigger="getTokenInfo('seed')">
               </input>
               <div class="ticker">
@@ -48,10 +48,10 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-          <numeric-input 
-            output-as-string="true" 
-            id="maxSupply" 
-            value.bind="seedConfig.tokenDetails.maxSupply"> 
+          <numeric-input
+            output-as-string="true"
+            id="maxSupply"
+            value.bind="seedConfig.tokenDetails.maxSupply">
           </numeric-input>
         </div>
         <div class="infoInput supply">
@@ -61,10 +61,10 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-          <numeric-input 
-            output-as-string="true" 
-            id="initSupply" 
-            value.bind="seedConfig.tokenDetails.initSupply"> 
+          <numeric-input
+            output-as-string="true"
+            id="initSupply"
+            value.bind="seedConfig.tokenDetails.initSupply">
           </numeric-input>
         </div>
         <div class="tokenDistribution">
@@ -75,28 +75,28 @@
             </div>
           </div>
           <div class="columnHeaders" if.bind="seedConfig.tokenDetails.tokenDistrib.length > 0">
-              <div>Category</div>
-              <div>Amount</div>
-              <div>Lockup-up (days)</div>
+            <div>Category</div>
+            <div>Amount</div>
+            <div>Lockup-up (days)</div>
           </div>
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
             <div class="distribRow">
               <div class="infoInput supply">
                 <input type="text" value.bind="distrib.category" class="textInput">
               </div>
-              <div  class="infoInput supply" value.bind="distrib.amount">
-                <numeric-input 
-                  output-as-string="true" 
-                  type="number" value.bind="distrib.amount" 
+              <div class="infoInput supply" value.bind="distrib.amount">
+                <numeric-input
+                  output-as-string="true"
+                  type="number" value.bind="distrib.amount"
                   placeholder="0" class="numberInput">
                 </numeric-input>
               </div>
-              <div  class="infoInput supply numberInput" value.bind="distrib.lockup">
+              <div class="infoInput supply numberInput" value.bind="distrib.lockup">
                 <input type="number" value.bind="distrib.lockup" placeholder="0" class="numberInput">
               </div>
             </div>
-            </template>
-            <div
+          </template>
+          <div
             class="addLink"
             click.delegate="addTokenDistribution()">
             <a>+ Add Row</a>

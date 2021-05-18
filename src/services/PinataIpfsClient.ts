@@ -1,4 +1,3 @@
-import FormData from "form-data";
 import axios from "axios";
 import { IIpfsClient } from "services/IpfsService";
 import { Hash } from "services/EthereumService";
@@ -7,8 +6,8 @@ export class PinataIpfsClient implements IIpfsClient {
 
   private httpRequestConfig = {
     headers: {
-      pinata_api_key: process.env.PINATA_SECRET_API_KEY,
-      pinata_secret_api_key: process.env.PINATA_API_KEY,
+      pinata_api_key: process.env.PINATA_API_KEY,
+      pinata_secret_api_key: process.env.PINATA_SECRET_API_KEY,
     },
   };
 
@@ -21,9 +20,7 @@ export class PinataIpfsClient implements IIpfsClient {
       if (response.status !== 200) {
         throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);
       } else {
-        const data = response.data;
-        const result = await data.json();
-        return result;
+        return response.data;
       }
     } catch (ex) {
       throw new Error(ex);
@@ -31,21 +28,21 @@ export class PinataIpfsClient implements IIpfsClient {
   }
 
   public async addAndPinData(data: string, name?: string): Promise<Hash> {
-    const params = new FormData();
-    params.append("file", Buffer.from(data));
+    const body = {
+      pinataContent: data,
+    };
+
     if (name) {
-      params.append("pinataMetadata", JSON.stringify({ name }));
+      body["pinataMetadata"] = JSON.stringify({ name });
     }
 
     try {
-      const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", { body: params }, this.httpRequestConfig);
+      const response = await axios.post("https://api.pinata.cloud/pinning/pinJSONToIPFS", body, this.httpRequestConfig);
 
       if (response.status !== 200) {
         throw Error(`An error occurred adding these data to ipfs: ${response.statusText}`);
       } else {
-        const data = response.data;
-        const json = await data.json();
-        return json.Hash;
+        return response.data.IpfsHash;
       }
     } catch (ex) {
       throw new Error(ex);
@@ -53,14 +50,16 @@ export class PinataIpfsClient implements IIpfsClient {
   }
 
   public async pinHash(hash: Hash, name?: string): Promise<void> {
-    const params = new FormData();
-    params.append("hashToPin", hash);
+    const body = {
+      hashToPin: hash,
+    };
+
     if (name) {
-      params.append("pinataMetadata", JSON.stringify({ name }));
+      body["pinataMetadata"] = JSON.stringify({ name });
     }
 
     try {
-      const response = await axios.post("https://api.pinata.cloud/pinning/pinByHash", { body: params }, this.httpRequestConfig);
+      const response = await axios.post("https://api.pinata.cloud/pinning/pinByHash", body, this.httpRequestConfig);
 
       if (response.status !== 200) {
         throw Error(`An error occurred pinning the file ${hash}: ${response.statusText}`);

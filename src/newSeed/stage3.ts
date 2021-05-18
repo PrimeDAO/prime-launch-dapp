@@ -3,6 +3,7 @@ import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { Utils } from "services/utils";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -30,9 +31,9 @@ export class Stage3 extends BaseStage {
 
   validateInputs(): string {
     let message: string;
-    if (!this.seedConfig.tokenDetails.fundingSymbol) {
+    if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
-    } else if (!this.seedConfig.tokenDetails.seedSymbol) {
+    } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
       message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply === "0") {
