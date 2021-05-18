@@ -74,6 +74,10 @@ export interface IContactDetails {
 }
 
 export interface ISeedConfig {
+  /**
+   * semantic version of this interface. This value must be updated upon any released changes.
+   */
+  version: string;
   general: IGeneral,
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
@@ -82,6 +86,7 @@ export interface ISeedConfig {
 }
 
 export class SeedConfig implements ISeedConfig {
+  public version = "1.0.0";
   public general = {
     customLinks: [],
   } as IGeneral;
