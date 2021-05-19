@@ -63,14 +63,12 @@ export class Stage4 extends BaseStage {
 
   validateInputs(): string {
     let message: string;
-    if (!this.seedConfig.seedDetails.seedTokens || this.seedConfig.seedDetails.seedTokens === "0") {
-      message = "Please enter a value for the Amount of tokens to be added to SEED";
-    } else if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
-      message = "Please enter a value for the Price per token";
-    } else if (!this.seedConfig.seedDetails.seedTarget || this.seedConfig.seedDetails.seedTarget === "0") {
-      message = "Please enter a non-zero value for the SEED Target";
-    } else if (!this.seedConfig.seedDetails.seedMax || this.seedConfig.seedDetails.seedMax === "0") {
-      message = "Please enter a non-zero number for the SEED Max";
+    if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
+      message = "Please enter a value for Funding Tokens per Seed Token";
+    } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
+      message = "Please enter a non-zero value for the Funding Target";
+    } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
+      message = "Please enter a non-zero number for the Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
       message = "Please enter a non-zero value for  \"Tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
