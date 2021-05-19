@@ -4,6 +4,8 @@
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 10%;
+  align-items: center;
+  font-family: "Inter";
 
   > .link {
     > a {

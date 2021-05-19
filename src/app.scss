@@ -8,6 +8,7 @@
     "mainContent mainContent"
     "footer footer";
   height: 100vh;
+  font-family: "Inter";
 
   > .logo {
     grid-area: logo;
@@ -15,7 +16,7 @@
     align-items: center;
     // just for vertical alignment of the logo
     display: flex;
-    padding-left: 5rem;
+    padding-left: 8rem;
     margin-right: 50px;
     cursor: pointer;
     img {
@@ -27,30 +28,26 @@
     grid-area: header;
     text-align: right;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 76px;
     padding-right: 4rem;
 
-    .networkfeedback {
-      color: $White;
-      margin-left: 10px;
-      text-align: left;
-      .testnet {
-        color: $Shade01;
-      }
+    > div {
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 3em;
     }
-
     /**
      * header connectButton
      */
-    > .hConnectButton {
+    .hConnectButton {
       padding-right: 20px;
       padding-top: 12px;
       padding-bottom: 12px;
     }
 
-    > .mobilemenuButton {
+    .mobilemenuButton {
       display: none;
       padding-right: 24px;
       position: relative;

@@ -5,17 +5,16 @@
   <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
     <div class="appWrapper  ${showingMobileMenu ? 'showingMobileMenu' : ''}">
       <div class="logo" click.delegate="navigate('home')">
-        <img src="/logo.svg" /> PrimeLAUNCH
+        <img src="/primeLaunchLogo.svg" />
       </div>
       <div class="appHeader">
-        <div class="networkFeedback">
-          <networkfeedback></networkfeedback>
+        <div>
+          <header-buttons></header-buttons>
+          <div class="hConnectButton" show.to-view="!showingMobileMenu">
+            <connectbutton></connectbutton>
+          </div>
+          <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
         </div>
-        <header-buttons></header-buttons>
-        <div class="hConnectButton" show.to-view="!showingMobileMenu">
-          <connectbutton></connectbutton>
-        </div>
-        <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
       </div>
       <div class="sidebarContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
         <div class="sidebar">

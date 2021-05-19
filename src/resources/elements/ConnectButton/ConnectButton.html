@@ -16,7 +16,7 @@
       <div class="connectButton">
         <div if.to-view="txPhase !== 'None'" click.delegate="gotoTx()" class.bind="'pending' + ((txPhase==='Confirming')
           ? ' confirming' : '')">
-          <div class="phase">${txPhase}</div><i class="spinner fas fa-circle-notch fa-spin"></i>
+          <div class="phase">${txPhase}</div><img src="/connectAvatar.svg">
         </div>
         <div else class="balances">
           <etherscanlink
