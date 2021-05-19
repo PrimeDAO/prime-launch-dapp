@@ -24,11 +24,11 @@ export interface ITokenDetails {
   /**
    * In wei
    */
-  maxSupply: string,
+  // maxSupply: string,
   /**
    * In wei
    */
-  initSupply: string,
+  // initSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
@@ -43,7 +43,6 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
-  seedTokens: string,
   /**
    * The price of one seed token in units of funding tokens
    * In wei.
@@ -53,11 +52,11 @@ export interface ISeedDetails {
   /**
    * In wei
    */
-  seedTarget: string,
+  fundingTarget: string,
   /**
    * In wei
    */
-  seedMax: string,
+  fundingMax: string,
   vestingDays: number,
   vestingCliff: number,
   startDate: string,
