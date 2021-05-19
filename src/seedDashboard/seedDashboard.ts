@@ -162,7 +162,8 @@ export class SeedDashboard {
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else {
-      this.seed.buy(this.fundingTokenToPay);
+      throw new Error("Need to fix this to pass seed tokens");
+      // this.seed.buy(this.fundingTokenToPay);
     }
   }
 

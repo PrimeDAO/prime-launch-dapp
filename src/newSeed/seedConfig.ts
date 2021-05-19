@@ -24,11 +24,11 @@ export interface ITokenDetails {
   /**
    * In wei
    */
-  maxSupply: string,
+  // maxSupply: string,
   /**
    * In wei
    */
-  initSupply: string,
+  // initSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
