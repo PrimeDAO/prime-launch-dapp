@@ -1,7 +1,7 @@
 <template>
   <div class="launchSummaryContainer" click.delegate="gotoDashboard()">
     <div if.to-view="!loading" class="launchSummary">
-      <div class="icon"><img src="#" /></div>
+      <div class="icon"><img src="/genericToken.svg" /></div>
       <div class="title">PrimeDAO</div>
       <div class="timeLeft">
         <time-left seed.to-view="seed" largest></time-left>
@@ -18,7 +18,7 @@
         </div>
         <div class="target">
           <div class="title subtext">TARGET</div>
-          <div class="target">$ <formatted-number thousands-separated mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+          <div class="target seedTarget">$ <formatted-number thousands-separated mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
           </div>
         </div>
       </div>
