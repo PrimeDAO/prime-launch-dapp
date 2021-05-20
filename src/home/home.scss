@@ -22,6 +22,9 @@
 
     &.nomiss {
       border-radius: 6px;
+      & .title {
+        margin-bottom: 0px;
+      }
     }
 
     &.fairLaunch {
