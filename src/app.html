@@ -8,13 +8,14 @@
         <img src="/primeLaunchLogo.svg" />
       </div>
       <div class="appHeader">
-        <div>
+        <div class="networkFeedback">
+          <networkfeedback></networkfeedback>
+        </div>
           <header-buttons></header-buttons>
           <div class="hConnectButton" show.to-view="!showingMobileMenu">
             <connectbutton></connectbutton>
           </div>
           <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
-        </div>
       </div>
       <div class="sidebarContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
         <div class="sidebar">
