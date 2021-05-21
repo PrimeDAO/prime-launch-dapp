@@ -17,10 +17,8 @@ export interface IProjectDetails {
 export interface ITokenDetails {
   fundingAddress: string,
   fundingSymbol: string,
-  fundingIcon: string,
   seedAddress: string,
   seedSymbol: string,
-  seedIcon: string,
   /**
    * In wei
    */
