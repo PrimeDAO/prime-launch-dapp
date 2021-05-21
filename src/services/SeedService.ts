@@ -176,28 +176,25 @@ export class SeedService {
   }
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
 
-    if (process.env.NODE_ENV === "development") {
+    const seedConfigString = JSON.stringify(config);
+    // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-      const seedConfigString = JSON.stringify(config);
-      // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
+    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}-${(new Date()).toISOString()}`);
+    // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
+    // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
 
-      return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}-${(new Date()).toISOString()}`);
-      // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
-      // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
-
-      // return this.transactionsService.send(factoryContract.deploySeed(
-      //   params.admin,
-      //   params.seedToken,
-      //   params.fundingToken,
-      //   params.successMinimumAndCap,
-      //   params.price,
-      //   params.startTime,
-      //   params.endTime,
-      //   params.vestingDuration,
-      //   params.vestingCliff,
-      //   params.isWhitelisted,
-      //   params.fee,
-      // ));
-    }
+    // return this.transactionsService.send(factoryContract.deploySeed(
+    //   params.admin,
+    //   params.seedToken,
+    //   params.fundingToken,
+    //   params.successMinimumAndCap,
+    //   params.price,
+    //   params.startTime,
+    //   params.endTime,
+    //   params.vestingDuration,
+    //   params.vestingCliff,
+    //   params.isWhitelisted,
+    //   params.fee,
+    // ));
   }
 }
