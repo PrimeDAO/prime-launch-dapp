@@ -118,18 +118,6 @@ export class SeedDashboard {
     }
   }
 
-  links = [
-    { name: "twitter", url: "https://twitter.com" },
-    { name: "telegram", url: "https://telegram.org/" },
-    { name: "discord", url: "https://https://discord.com/" },
-    { name: "medium", url: "https://medium.com/" },
-    { name: "github", url: "https://github.com" },
-    { name: "daotalk", url: "https://daotalk.org/" },
-    { name: "website", url: "http://www.douglaskent.com" },
-    { name: "pdf", url: "http://www.africau.edu/images/default/sample.pdf" },
-    { name: "blob", url: "https://curvelabs.eu" },
-  ]
-
   linkIcons = new Map<string, string>([
     ["twitter", "fab fa-twitter"],
     ["telegram", "fab fa-telegram-plane"],

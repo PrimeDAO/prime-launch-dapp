@@ -23,7 +23,7 @@ export class PinataIpfsClient implements IIpfsClient {
   public async get(hash: Hash): Promise<string> {
 
     try {
-      const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${hash}`, this.httpRequestConfig);
+      const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${hash}`);
 
       if (response.status !== 200) {
         throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);

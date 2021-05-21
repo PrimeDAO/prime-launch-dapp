@@ -48,7 +48,6 @@ export interface ISeedDetails {
    * In wei.
    */
   pricePerToken: string,
-  baseCurrency: string,
   /**
    * In wei
    */
@@ -101,7 +100,6 @@ export class SeedConfig implements ISeedConfig {
     remarks: "",
   } as IContactDetails;
   public seedDetails = {
-    baseCurrency: "DAI",
     whitelist: {
       isWhitelist: false,
       whitelistFile: undefined,
