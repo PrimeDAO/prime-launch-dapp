@@ -230,6 +230,9 @@ export class Seed {
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
       this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
+      /**
+       * TODO: unstub this
+       */
       this.metadataHash = "QmarQL5q4i87TtTewuor5FLKVZ6FLd8qAs4qk2824UN184"; // await this.contract.metadata();
 
       await this.hydateMetadata();
