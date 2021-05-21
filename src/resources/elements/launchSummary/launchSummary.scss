@@ -11,11 +11,15 @@
     row-gap: 12px;
     background-color: $BG02;
     border-radius: 6px;
-    padding: 12px;
+    padding: 11px;
 
     > .icon {
       grid-area: icon;
       padding-top: 5px;
+      img {
+        width: 22px;
+        border-radius: 12px;
+      }
     }
 
     > .title {
