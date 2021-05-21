@@ -1,5 +1,8 @@
 <template>
-  <div class="launchSummaryContainer" click.delegate="gotoDashboard()">
+  <div
+    class="launchSummaryContainer ${canGoToDashboard ? 'hot' : '' }"
+    ref="container"
+    click.delegate="gotoDashboard()">
     <div if.to-view="!loading" class="launchSummary">
       <div class="icon"><img src="#" /></div>
       <div class="title">PrimeDAO</div>

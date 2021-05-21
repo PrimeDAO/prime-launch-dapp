@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { EventConfig, EventConfigException } from "services/GeneralEvents";
+import { EventConfigException } from "services/GeneralEvents";
 import { Router, RouterConfiguration } from "aurelia-router";
 import { PLATFORM } from "aurelia-pal";
 import "./styles/styles.scss";

@@ -9,7 +9,6 @@
       "icon description description"
       "icon tokensTarget tokensTarget";
     row-gap: 12px;
-    cursor: pointer;
     background-color: $BG02;
     border-radius: 6px;
     padding: 12px;
@@ -54,8 +53,13 @@
   }
   .loading {
     text-align: center;
+    padding-top: 32px;
     i {
       color: $Secondary07;
     }
+  }
+
+  &.hot {
+    cursor: pointer;
   }
 }

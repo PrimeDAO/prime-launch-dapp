@@ -21,7 +21,9 @@
           display: contents;
 
           &:not(:first-child) {
-            cursor: pointer;
+            .cell.hot {
+              cursor: pointer;
+            }
           }
 
           &:hover > div {

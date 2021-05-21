@@ -136,6 +136,11 @@ export class Seed {
   @computedFrom("_now_")
   get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
 
+  @computedFrom("seedTokenCurrentBalance")
+  get hasSeedTokens():boolean {
+    return !!this.seedTokenCurrentBalance?.gt(0);
+  }
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,

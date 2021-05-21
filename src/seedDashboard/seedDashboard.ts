@@ -10,6 +10,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { Redirect } from "aurelia-router";
 
 @autoinject
 export class SeedDashboard {
@@ -59,6 +60,15 @@ export class SeedDashboard {
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
+
+  public canActivate(params: { address: Address }): Redirect | boolean | undefined {
+    const seed = this.seedService.seeds?.get(params.address);
+    /**
+     * main interest here is literally to prevent access to seeds that don't
+     * yet have seed tokens
+     */
+    return seed?.hasSeedTokens;
+  }
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
