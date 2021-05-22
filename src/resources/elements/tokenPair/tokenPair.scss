@@ -4,11 +4,13 @@
     @include tokenIcon;
     width: 32px;
     height: 32px;
+    border-radius: 16px;
+    border: 2px solid $BG02;
   }
 
   > img:nth-child(2) {
     position: relative;
-    right: 1em;
+    right: 10px;
   }
 
   // > img:nth-child(2) {
