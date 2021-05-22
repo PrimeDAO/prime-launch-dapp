@@ -2,24 +2,27 @@
 .launchSummaryContainer {
   .launchSummary {
     display: grid;
-    grid-template-columns: 28px 2fr 1fr;
+    grid-template-columns: 46px 2fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
+    "icon . timeLeft"
       "icon title timeLeft"
       "icon description description"
-      "icon tokensTarget tokensTarget";
-    row-gap: 12px;
+      "tokensTarget tokensTarget tokensTarget";
+    gap: 12px;
+    cursor: pointer;
     background-color: $BG02;
     border-radius: 6px;
-    padding: 11px;
+    padding: 10px;
 
     > .icon {
-      grid-area: icon;
-      padding-top: 5px;
-      img {
-        width: 22px;
+      > img {
+        width: 3rem;
+        height: 3rem;
         border-radius: 12px;
       }
+      grid-area: icon;
+      padding-top: 5px;
     }
 
     > .title {
@@ -34,24 +37,38 @@
       font-size: 12px;
       line-height: 140%;
       color: $Neutral03;
+      margin-bottom: 2em;
     }
 
     > .timeLeft {
       grid-area: timeLeft;
+      height: fit-content;
+      background: rgba(255, 73, 122, 0.1);
+      border-radius: 87px;
+      padding: 3px;
+      color: #ff497a;
       text-align: right;
     }
 
     .tokensTarget {
       grid-area: tokensTarget;
       display: flex;
-      justify-content: space-between;
+      gap: 3em;
 
       .pair,
       .target {
         .title {
           font-size: 0.8em;
+          font-family: "Aeonik";
+          font-weight: bold;
           margin-bottom: 8px;
         }
+      }
+
+      .seedTarget {
+        font-family: "Aeonik";
+        font-weight: bold;
+        font-size: 1.5em;
       }
     }
   }

@@ -1,14 +1,29 @@
 @import "styles/colors.scss";
+
+@mixin standardTextGradient {
+  background-image: $Gradient01;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .page.home {
   .section {
     margin-bottom: 20px;
 
     &.top,
     &.nomiss,
-    &.launches {
+    &.launches,
+    &.fairLaunch {
       margin-left: 4.5em;
       margin-right: 4.5em;
       margin-bottom: 5.75em;
+    }
+
+    &.nomiss {
+      border-radius: 6px;
+      & .title {
+        margin-bottom: 0px;
+      }
     }
 
     &.fairLaunch {
@@ -23,6 +38,7 @@
         position: absolute;
         right: 0;
         z-index: -1;
+        background-color: $BG01;
 
         img {
           mix-blend-mode: lighten;
@@ -32,9 +48,15 @@
       .title {
         white-space: normal;
         color: $Shade06;
+        padding-bottom: .1em;
+        max-width: 46rem;
       }
 
       > .subtitle {
+        font-family: "Inter";
+        font-weight: bold;
+        font-size: 1.3rem;
+        max-width: 35rem;
         color: $Neutral03;
         margin-bottom: 86px;
       }
@@ -53,6 +75,7 @@
           border-top-right-radius: 6px;
           border-bottom-right-radius: 6px;
           background-color: $BG02;
+          width: 335px;
 
           padding: 18px;
           padding-right: 24px;
@@ -65,6 +88,7 @@
 
             .header {
               font-weight: bold;
+              font-family: "Aeonik";
               font-size: 28px;
               white-space: nowrap;
               padding-right: 16px;
@@ -78,7 +102,7 @@
           .subtitle {
             color: $Neutral03;
             font-size: 16px;
-            font-family: Aeonik;
+            font-family: "Inter";
             mix-blend-mode: normal;
             opacity: 0.8;
           }
@@ -93,6 +117,7 @@
     &.launches {
       > .launchesButton {
         text-align: center;
+        padding: 2em;
       }
     }
 
@@ -102,22 +127,29 @@
       background-color: $BG02;
       height: 12em;
       align-content: center;
-      padding-left: 4em;
-      padding-right: 4em;
+      justify-content: space-around;
+      padding: 2em;
+
+      & .title {
+        font-family: "Aeonik";
+        line-height: unset;
+      }
 
       .subtext {
-        color: $White;
+        color: $Neutral03;
       }
 
       .emailColumn {
         .form {
           display: flex;
           margin-bottom: 4px;
+          width: 28em;
 
           .emailInput {
             flex-grow: 2;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
+            border: 0px;
           }
           .notifyButton {
             border-top-left-radius: 0;
@@ -129,7 +161,8 @@
 
         .disclaimer {
           a {
-            color: $White;
+            color: $Neutral03;
+            text-decoration: underline;
           }
         }
       }
@@ -139,17 +172,21 @@
       display: grid;
       grid-template-columns: auto auto;
       column-gap: 10%;
+      font-family: Inter;
 
       .pic {
         img {
-          width: 350px;
-          height: 350px;
+          width: 450px;
+          height: 430px;
         }
       }
 
       .rightColumn {
+        width: 32em;
         .subtext {
           margin-bottom: 3em;
+          font-size: 1em;
+          line-height: 1.5em;
           div {
             margin-bottom: 1em;
           }
@@ -157,6 +194,10 @@
         .launchButton,
         .learnMore {
           display: inline-block;
+        }
+
+        .learnMore {
+          @include standardTextGradient();
         }
 
         .launchButton {
