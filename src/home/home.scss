@@ -9,11 +9,11 @@
 .page.home {
   .section {
     margin-bottom: 20px;
-    padding-left: 2em;
 
     &.top,
     &.nomiss,
-    &.launches {
+    &.launches,
+    &.fairLaunch {
       margin-left: 4.5em;
       margin-right: 4.5em;
       margin-bottom: 5.75em;
@@ -172,8 +172,6 @@
       display: grid;
       grid-template-columns: auto auto;
       column-gap: 10%;
-      padding-left: 6em;
-      padding-right: 6em;
       font-family: Inter;
 
       .pic {
