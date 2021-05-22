@@ -11,16 +11,12 @@
       </div>
       <div class="description">${seed.metadata.projectDetails.proposition}</div>
       <div class="tokensTarget">
-        <div class="pair">
-          <div class="title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
-          <div class="tokens">
-            <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-          </div>
+        <div class="tokensTitle title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
+        <div class="targetTitle title subtext">TARGET</div>
+        <div class="tokens">
+          <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
         </div>
-        <div class="target">
-          <div class="title subtext">TARGET</div>
-          <div class="target seedTarget">$ <formatted-number thousands-separated mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-          </div>
+        <div class="targetValue">$ <formatted-number thousands-separated mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
         </div>
       </div>
     </div>
