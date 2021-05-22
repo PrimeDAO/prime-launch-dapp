@@ -9,7 +9,6 @@
 .page.home {
   .section {
     margin-bottom: 20px;
-    font-family: "Inter";
     padding-left: 2em;
 
     &.top,
@@ -175,6 +174,7 @@
       column-gap: 10%;
       padding-left: 6em;
       padding-right: 6em;
+      font-family: Inter;
 
       .pic {
         img {
