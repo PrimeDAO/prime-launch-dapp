@@ -1,14 +1,15 @@
 <template>
-  <div class="launchSummaryContainer" click.delegate="gotoDashboard()">
+  <div
+    class="launchSummaryContainer ${canGoToDashboard ? 'hot' : '' }"
+    ref="container"
+    click.delegate="gotoDashboard()">
     <div if.to-view="!loading" class="launchSummary">
-      <div class="icon"><img src="/genericToken.svg" /></div>
-      <div class="title">PrimeDAO</div>
+      <div class="icon"><img src="${seed.metadata.contactDetails.logo}" /></div>
+      <div class="title">${seed.metadata.general.projectName}</div>
       <div class="timeLeft">
         <time-left seed.to-view="seed" largest></time-left>
       </div>
-      <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-        pretium pretium tempor. Ut eget imperdiet neque. In volutpat
-        ante semper diam molestie, et aliquam.</div>
+      <div class="description">${seed.metadata.projectDetails.proposition}</div>
       <div class="tokensTarget">
         <div class="pair">
           <div class="title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>

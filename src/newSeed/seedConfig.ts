@@ -17,18 +17,16 @@ export interface IProjectDetails {
 export interface ITokenDetails {
   fundingAddress: string,
   fundingSymbol: string,
-  fundingIcon: string,
   seedAddress: string,
   seedSymbol: string,
-  seedIcon: string,
   /**
    * In wei
    */
-  maxSupply: string,
+  // maxSupply: string,
   /**
    * In wei
    */
-  initSupply: string,
+  // initSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
@@ -43,21 +41,19 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
-  seedTokens: string,
   /**
    * The price of one seed token in units of funding tokens
    * In wei.
    */
   pricePerToken: string,
-  baseCurrency: string,
   /**
    * In wei
    */
-  seedTarget: string,
+  fundingTarget: string,
   /**
    * In wei
    */
-  seedMax: string,
+  fundingMax: string,
   vestingDays: number,
   vestingCliff: number,
   startDate: string,
@@ -102,7 +98,6 @@ export class SeedConfig implements ISeedConfig {
     remarks: "",
   } as IContactDetails;
   public seedDetails = {
-    baseCurrency: "DAI",
     whitelist: {
       isWhitelist: false,
       whitelistFile: undefined,

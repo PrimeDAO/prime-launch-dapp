@@ -1,21 +1,29 @@
+import { autoinject } from "aurelia-framework";
+import { EthereumService } from "./EthereumService";
 import axios from "axios";
 import { IIpfsClient } from "services/IpfsService";
 import { Hash } from "services/EthereumService";
 
+@autoinject
 export class PinataIpfsClient implements IIpfsClient {
 
-  private httpRequestConfig = {
-    headers: {
-      pinata_api_key: process.env.PINATA_API_KEY,
-      pinata_secret_api_key: process.env.PINATA_SECRET_API_KEY,
-    },
-  };
+  private httpRequestConfig;
 
+  constructor(ethereumService: EthereumService) {
+    this.httpRequestConfig = {
+      headers: {
+        pinata_api_key:
+        (ethereumService.targetedNetwork === "mainnet") ? process.env.PINATA_API_KEY : process.env.PINATA_API_KEY_TEST,
+        pinata_secret_api_key:
+        (ethereumService.targetedNetwork === "mainnet") ? process.env.PINATA_SECRET_API_KEY : process.env.PINATA_SECRET_API_KEY_TEST,
+      },
+    };
+  }
 
   public async get(hash: Hash): Promise<string> {
 
     try {
-      const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${hash}`, this.httpRequestConfig);
+      const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${hash}`);
 
       if (response.status !== 200) {
         throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);

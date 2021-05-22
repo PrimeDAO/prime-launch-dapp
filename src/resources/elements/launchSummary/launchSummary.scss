@@ -19,6 +19,7 @@
       > img {
         width: 3em;
         height: 3em;
+        border-radius: 50%;
       }
       grid-area: icon;
       padding-top: 5px;
@@ -73,8 +74,13 @@
   }
   .loading {
     text-align: center;
+    padding-top: 32px;
     i {
       color: $Secondary07;
     }
+  }
+
+  &.hot {
+    cursor: pointer;
   }
 }

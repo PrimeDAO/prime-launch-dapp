@@ -47,8 +47,7 @@
       display: flex;
       align-items: center;
 
-      i {
-        font-size: 26px;
+      img {
         margin-right: 6px;
       }
     }
@@ -56,12 +55,7 @@
     .governedBy {
       display: flex;
       align-items: center;
-
-      img {
-        width: 24px;
-        margin-left: 8px;
-        margin-right: 8px;
-      }
+      gap: 1em;
     }
     .socialLinks {
       display: flex;

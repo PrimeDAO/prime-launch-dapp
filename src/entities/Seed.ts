@@ -1,9 +1,10 @@
+import { IpfsService } from "./../services/IpfsService";
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -11,6 +12,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/numberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
+import { ISeedConfig } from "newSeed/seedConfig";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -86,11 +88,12 @@ export class Seed {
   public userCurrentFundingContributions: BigNumber;
 
   public initializing = true;
+  public metadata: ISeedConfig;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
-
+  private metadataHash: Hash;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -136,6 +139,11 @@ export class Seed {
   @computedFrom("_now_")
   get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
 
+  @computedFrom("seedTokenCurrentBalance")
+  get hasSeedTokens():boolean {
+    return !!this.seedTokenCurrentBalance?.gt(0);
+  }
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
@@ -145,6 +153,7 @@ export class Seed {
     private transactionsService: TransactionsService,
     private numberService: NumberService,
     private ethereumService: EthereumService,
+    private ipfsService: IpfsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: {now: Date}) => {
       this._now = state.now;
@@ -221,6 +230,13 @@ export class Seed {
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
       this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
+      /**
+       * TODO: unstub this
+       */
+      this.metadataHash = "QmarQL5q4i87TtTewuor5FLKVZ6FLd8qAs4qk2824UN184"; // await this.contract.metadata();
+
+      await this.hydateMetadata();
+
       await this.hydrateUser();
 
       this.initializing = false;
@@ -245,6 +261,10 @@ export class Seed {
       const lock = await this.contract.tokenLocks(account);
       this.userCurrentFundingContributions = lock ? lock.fundingAmount : BigNumber.from(0);
     }
+  }
+
+  private async hydateMetadata(): Promise<void> {
+    this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {

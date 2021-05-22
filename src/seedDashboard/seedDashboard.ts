@@ -10,6 +10,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { Redirect } from "aurelia-router";
 
 @autoinject
 export class SeedDashboard {
@@ -60,6 +61,15 @@ export class SeedDashboard {
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
+  public canActivate(params: { address: Address }): Redirect | boolean | undefined {
+    const seed = this.seedService.seeds?.get(params.address);
+    /**
+     * main interest here is literally to prevent access to seeds that don't
+     * yet have seed tokens
+     */
+    return seed?.hasSeedTokens;
+  }
+
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
   }
@@ -108,18 +118,6 @@ export class SeedDashboard {
     }
   }
 
-  links = [
-    { name: "twitter", url: "https://twitter.com" },
-    { name: "telegram", url: "https://telegram.org/" },
-    { name: "discord", url: "https://https://discord.com/" },
-    { name: "medium", url: "https://medium.com/" },
-    { name: "github", url: "https://github.com" },
-    { name: "daotalk", url: "https://daotalk.org/" },
-    { name: "website", url: "http://www.douglaskent.com" },
-    { name: "pdf", url: "http://www.africau.edu/images/default/sample.pdf" },
-    { name: "blob", url: "https://curvelabs.eu" },
-  ]
-
   linkIcons = new Map<string, string>([
     ["twitter", "fab fa-twitter"],
     ["telegram", "fab fa-telegram-plane"],
@@ -162,7 +160,8 @@ export class SeedDashboard {
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else {
-      this.seed.buy(this.fundingTokenToPay);
+      throw new Error("Need to fix this to pass seed tokens");
+      // this.seed.buy(this.fundingTokenToPay);
     }
   }
 

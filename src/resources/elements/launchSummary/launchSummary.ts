@@ -1,10 +1,11 @@
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { Seed } from "entities/Seed";
 import { Address } from "services/EthereumService";
 import { SeedService } from "services/SeedService";
 import "./launchSummary.scss";
+import tippy from "tippy.js";
 
 @autoinject
 export class LaunchSummary {
@@ -12,6 +13,7 @@ export class LaunchSummary {
   @bindable address: Address;
   seed: Seed;
   loading = true;
+  container: HTMLElement;
 
   constructor(
     private router: Router,
@@ -23,10 +25,20 @@ export class LaunchSummary {
     this.seed = this.seedService.seeds.get(this.address);
     this.seed.ensureInitialized().then(() => {
       this.loading = false;
+      // if (!this.canGoToDashboard) {
+      //   tippy(this.container);
+      // }
     } );
   }
 
+  @computedFrom("seed.hasSeedTokens")
+  get canGoToDashboard(): boolean {
+    return this.seed?.hasSeedTokens;
+  }
+
   gotoDashboard(): void {
-    this.router.navigate(`seed/${this.address}`);
+    if (this.canGoToDashboard) {
+      this.router.navigate(`seed/${this.address}`);
+    }
   }
 }
