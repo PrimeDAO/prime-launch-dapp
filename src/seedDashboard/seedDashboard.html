@@ -3,21 +3,15 @@
     <div show.to-view="!loading" class="seedDashboard">
       <div class="leftColumn">
         <div class="intro">
-          <div class="leftSection">
-            <div class="header">
-              <div class="title heading heading2">PrimeDAO</div>
-              <div class="timeLeft">
-                <time-left seed.to-view="seed"></time-left>
-              </div>
-            </div>
-            <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-              pretium pretium tempor. Ut eget imperdiet neque. In volutpat
-              ante semper diam molestie, et aliquam.</div>
+          <div class="title heading heading2">${seed.metadata.general.projectName}</div>
+          <div class="countdown">
+            <time-left seed.to-view="seed"></time-left>
           </div>
-          <div class="rightSection">
+          <div class="description subtext">${seed.metadata.projectDetails.proposition}</div>
+          <div class="timeLeft">
             <span if.to-view="seed.isLive && !seed.minimumReached">
               <div class="label">MAX TIME LEFT</div>
-              <div class="timeLeft">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
+              <div class="timer">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
             </span>
           </div>
         </div>
@@ -199,12 +193,12 @@
           </div>
         </div>
         <div class="section bottomSection">
-          <div class="title  heading heading3">About Kolektivo</div>
-          <div class="body subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-          <div if.to-view="links.length" class="links">
-            <a repeat.for="link of links" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
-              <div class="icon ${iconClassForLinkType(link.name)}"></div>
-              <div class="name">${link.name}</div>
+          <div class="title  heading heading3">About ${seed.metadata.general.projectName}</div>
+          <div class="body subtext">${seed.metadata.projectDetails.summary}</div>
+          <div if.to-view="seed.metadata.general.customLinks.length" class="links">
+            <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
+              <div class="icon ${iconClassForLinkType(link.media)}"></div>
+              <div class="name">${link.media}</div>
             </a>
           </div>
         </div>

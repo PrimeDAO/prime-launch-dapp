@@ -10,33 +10,37 @@
 
     .leftColumn {
       .intro {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+          "title countdown countdown"
+          "description description timeleft";
+        align-items: center;
+        column-gap: 8px;
+        row-gap: 20px;
 
-        .leftSection {
-          display: flex;
-          flex-basis: 75%;
-          flex-direction: column;
-          margin-bottom: 2em;
-
-          .header {
-            display: flex;
-            align-items: center;
-
-            .title {
-              margin-right: 1em;
-              margin-bottom: 0;
-            }
-
-            // > .timeLeft {
-            // }
-          }
+        .title {
+          grid-area: title;
+          margin-bottom: 0;
+          white-space: normal;
+          line-height: 42px;
         }
 
-        .rightSection {
-          flex-basis: 25%;
+        .countdown {
+          grid-area: countdown;
+          text-align: right;
+        }
+
+        .description {
+          grid-area: description;
+        }
+
+        .timeLeft {
+          grid-area: timeleft;
           text-align: right;
           align-self: center;
-          > div {
+          > span {
             white-space: nowrap;
           }
 
@@ -46,7 +50,7 @@
             margin-bottom: 0.25em;
           }
 
-          .timeLeft {
+          .timer {
             color: $AlertOrange;
             font-size: 22px;
             font-weight: bold;
