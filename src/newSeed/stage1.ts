@@ -30,14 +30,14 @@ export class Stage1 extends BaseStage {
     if (!this.seedConfig.general.projectName) {
       message = "Please enter a value for Project Name";
     }
-    else if (!Utils.isValidUrl(this.seedConfig.general.projectWebsite, false)) {
+    else if (!Utils.isValidUrl(this.seedConfig.general.projectWebsite)) {
       message = "Please enter a valid url for Project Website";
     }
     else if (!this.seedConfig.general.category) {
       message = "Please enter a Category";
-    } else if (!Utils.isValidUrl(this.seedConfig.general.whitepaper, false)) {
+    } else if (!Utils.isValidUrl(this.seedConfig.general.whitepaper)) {
       message = "Please enter a valid url for Whitepaper";
-    } else if (!Utils.isValidUrl(this.seedConfig.general.github, false)) {
+    } else if (!Utils.isValidUrl(this.seedConfig.general.github)) {
       message = "Please enter a valid url for Github Link";
     }
     else if (this.seedConfig.general.customLinks.length > 0 && (!this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1]?.media || !this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1].url )) {

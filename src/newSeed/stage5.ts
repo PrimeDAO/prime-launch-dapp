@@ -34,7 +34,7 @@ export class Stage5 extends BaseStage {
     let message: string;
     // Validate current stage
     // TODO: Check if there is an email validator
-    if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail, false)) {
+    if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail)) {
       message = "Please enter a valid email address for Contact Email";
     } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
       message = "Please supply a valid image file type for Project Logo";
