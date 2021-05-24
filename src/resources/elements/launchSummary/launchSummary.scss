@@ -1,5 +1,12 @@
 @import "styles/colors.scss";
 .launchSummaryContainer {
+  display: inline-block;
+  cursor: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
   .launchSummary {
     display: grid;
     grid-template-columns: 38px 2fr 1fr;
