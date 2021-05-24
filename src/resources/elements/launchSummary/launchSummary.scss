@@ -74,11 +74,17 @@
 
       > .tokens {
         grid-area: tokens;
+
+        .tokenPairContainer > img {
+          width: 26px;
+          height: 26px;
+          border-radius: 13px;
+        }
       }
 
       .targetValue {
         grid-area: targetValue;
-        font-size: 1.5em;
+        font-size: 26px;
         font-weight: bold;
       }
     }
