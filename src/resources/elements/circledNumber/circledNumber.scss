@@ -3,7 +3,7 @@
   border-radius: 50%;
   text-align: center;
   background-color: $Neutral02;
-  width: 2.6em;
+  min-width: 2.6em;
   height: 2.5em;
   &.active {
     background-color: $Secondary02;
