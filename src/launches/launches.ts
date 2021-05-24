@@ -42,12 +42,6 @@ export class Launches {
     this.featuredSeeds = this.seedService.featuredSeeds;
   }
 
-  navigate(seed: Seed): void {
-    if (seed.hasSeedTokens) {
-      this.router.navigate(`seed/${seed.address}`);
-    }
-  }
-
   seeMore(yesNo: boolean): void {
     this.seeingMore = yesNo;
   }

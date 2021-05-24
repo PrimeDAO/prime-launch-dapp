@@ -19,6 +19,11 @@
 
         .row {
           display: contents;
+          cursor: none;
+
+          &:hover {
+            text-decoration: none;
+          }
 
           &:not(:first-child) {
             .cell.hot {
