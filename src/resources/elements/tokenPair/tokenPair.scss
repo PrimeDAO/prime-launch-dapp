@@ -2,13 +2,14 @@
 .tokenPairContainer {
   > img {
     @include tokenIcon;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    border: 2px solid $BG02;
   }
 
-  > img:first-child {
-    margin-right: 2px;
+  > img:nth-child(2) {
+    position: relative;
+    right: 10px;
   }
-
-  // > img:nth-child(2) {
-  //   border: 1px solid $color-black;
-  // }
 }

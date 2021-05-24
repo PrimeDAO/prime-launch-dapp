@@ -76,11 +76,11 @@ export class Utils {
   // eslint-disable-next-line no-useless-escape
   private static pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
 
-  public static isValidUrl(str: string, emptyOk = true): boolean {
+  public static isValidUrl(str: string, emptyOk = false): boolean {
     return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
   }
 
-  public static isValidEmail(email: string, emptyOk: boolean): boolean {
+  public static isValidEmail(email: string, emptyOk = false): boolean {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return (emptyOk && (!email || !email.trim())) || (email && re.test(String(email).toLowerCase()));
   }
