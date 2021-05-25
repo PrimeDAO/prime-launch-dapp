@@ -4,7 +4,6 @@
   <div class="newSeedContainer">
     <div class="currentStageSidebar">
       <template repeat.for="stage of router.navigation">
-        ${stageStates[$index + 1].verified}
         <div
           class="currentstage ${stage.isActive ? 'active' : ''}"
           click.delegate="setStage(stage.config.route)">
