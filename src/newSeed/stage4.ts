@@ -1,6 +1,7 @@
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
+import { Utils } from "services/utils";
 
 export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
@@ -89,8 +90,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
       message = "Please upload a .csv file or uncheck Whitelist";
-    } else if (!this.seedConfig.seedDetails.legalDisclaimer) {
-      message = "Please accept the Legal Disclaimer";
+    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
+      message = "Please enter a valid url for Legal Disclaimer";
     }
     return message;
   }

@@ -177,16 +177,10 @@
               <question-mark text="Tick"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer">
-            <i class="fas fa-check yes"></i>
-            <i class="fas fa-times no"></i>
-            <div class="checkbox">
-              <input
-                id="legalDisclaimer" type="checkbox"
-                checked.bind="seedConfig.seedDetails.legalDisclaimer" />
-              <label for="legalDisclaimer" />
-            </div>
-          </div>
+          <input
+            id="disclaimer"
+            value.bind="seedConfig.seedDetails.legalDisclaimer"
+            placeholder="(Optional) url to a disclaimer" />
         </div>
         <div class="buttonContainer">
           <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
