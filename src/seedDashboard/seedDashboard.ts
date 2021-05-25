@@ -126,6 +126,7 @@ export class SeedDashboard {
     ["github", "fab fa-github"],
     ["website", "fa fa-globe-americas"],
     ["misc", "fa fa-external-link-alt"],
+    ["home", "fas fa-home"],
     ["pdf", "fas fa-file-pdf"],
   ]);
 
