@@ -10,13 +10,13 @@
     font-size: 1.125rem;
     font-family: Inter;
     font-weight: 300;
-    color: #98979b;
+    color: $Neutral02;
     padding: 5rem 1rem;
     .currentstage {
       cursor: pointer;
     }
     .active {
-      color: $Shade06;
+      color: $Secondary02;
     }
     .stagesNumber {
       display: flex;
@@ -25,16 +25,16 @@
       align-items: center;
     }
     .timeLine {
-      width: 2.5rem;
-      height: 1.3rem;
+      width: 2.6em;
+      height: 1.3em;
       display: grid;
       justify-content: center;
       padding-top: 0.15em;
       padding-bottom: 0.15em;
       .ruler {
-        width: 0.13rem;
-        height: 1.3rem;
-        background-color: #98979b;
+        width: 0.23em;
+        height: 1.3em;
+        background-color: $Neutral02;
       }
     }
   }

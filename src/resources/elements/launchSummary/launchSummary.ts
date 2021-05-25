@@ -5,7 +5,6 @@ import { Seed } from "entities/Seed";
 import { Address } from "services/EthereumService";
 import { SeedService } from "services/SeedService";
 import "./launchSummary.scss";
-import tippy from "tippy.js";
 
 @autoinject
 export class LaunchSummary {
@@ -34,11 +33,5 @@ export class LaunchSummary {
   @computedFrom("seed.hasSeedTokens")
   get canGoToDashboard(): boolean {
     return this.seed?.hasSeedTokens;
-  }
-
-  gotoDashboard(): void {
-    if (this.canGoToDashboard) {
-      this.router.navigate(`seed/${this.address}`);
-    }
   }
 }

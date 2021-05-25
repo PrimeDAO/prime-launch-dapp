@@ -12,7 +12,7 @@ export class Stage5 extends BaseStage {
     let message = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageStates[this.stageNumber].verified = false;
+      this.stageState.verified = false;
     } else {
       // Check every stage to make sure they are validated
       this.stageState.verified = true;

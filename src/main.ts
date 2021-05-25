@@ -9,6 +9,7 @@ import { ContractsService } from "services/ContractsService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { SeedService } from "services/SeedService";
 import { IpfsService } from "services/IpfsService";
+import { GeoBlockService } from "services/GeoBlockService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -50,6 +51,9 @@ export function configure(aurelia: Aurelia): void {
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
+
+      const geoBlockService = aurelia.container.get(GeoBlockService);
+      geoBlockService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

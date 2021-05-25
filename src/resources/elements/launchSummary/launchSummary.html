@@ -1,8 +1,8 @@
 <template>
-  <div
+  <a
     class="launchSummaryContainer ${canGoToDashboard ? 'hot' : '' }"
     ref="container"
-    click.delegate="gotoDashboard()">
+    href.to-view="canGoToDashboard ? `seed/${address}` : 'router.currentInstruction.fragment'">
     <div if.to-view="!loading" class="launchSummary">
       <div class="icon"><img src="${seed.metadata.contactDetails.logo}" /></div>
       <div class="title">${seed.metadata.general.projectName}</div>
@@ -23,5 +23,5 @@
     <div else class="loading">
       <i class="fas fa-circle-notch fa-spin"></i>
     </div>
-  </div>
+  </a>
 </template>

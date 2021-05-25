@@ -2,9 +2,8 @@
 .tokenPairContainer {
   > img {
     @include tokenIcon;
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
+    width: 19px;
+    border-radius: 12px;
     border: 2px solid $BG02;
   }
 
