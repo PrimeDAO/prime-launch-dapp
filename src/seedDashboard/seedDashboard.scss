@@ -4,61 +4,67 @@
     padding-left: 6em;
     padding-right: 6em;
 
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 50% 40%;
+    column-gap: 10%;
 
     .leftColumn {
-      flex-basis: 45%;
-
       .intro {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+          "title countdown countdown"
+          "description description timeleft";
+        align-items: center;
+        column-gap: 8px;
+        row-gap: 20px;
 
-        .leftSection {
-          display: flex;
-          flex-basis: 75%;
-          flex-direction: column;
-          margin-bottom: 2em;
-
-          .header {
-            display: flex;
-            align-items: center;
-
-            .title {
-              margin-right: 1em;
-              margin-bottom: 0;
-            }
-
-            .timeLeft {
-            }
-          }
+        .title {
+          grid-area: title;
+          margin-bottom: 0;
+          white-space: normal;
+          line-height: 42px;
         }
 
-        .rightSection {
-          flex-basis: 25%;
+        .countdown {
+          grid-area: countdown;
+          text-align: right;
+        }
+
+        .description {
+          grid-area: description;
+        }
+
+        .timeLeft {
+          grid-area: timeleft;
           text-align: right;
           align-self: center;
-          > div {
+          > span {
             white-space: nowrap;
           }
 
           .label {
             font-size: 0.8em;
-            color: $color-grey-4;
+            color: $Neutral03;
             margin-bottom: 0.25em;
           }
 
-          .timeLeft {
-            color: $color-orange;
+          .timer {
+            color: $AlertOrange;
+            font-size: 22px;
+            font-weight: bold;
           }
         }
       }
 
       .section1,
       .section2,
-      .section3 {
-        background-color: $color-black-3;
-        padding: 1.5em 1.5em;
-        border-radius: 0.5em;
+      .section3,
+      .section4 {
+        background-color: $BG02;
+        padding: 28px 28px;
+        border-radius: 8px;
         align-items: baseline;
 
         &:not(:last-child) {
@@ -71,25 +77,19 @@
         }
 
         .description {
-          padding-left: 1em;
-          padding-right: 1em;
-          padding-top: 1em;
-          padding-bottom: 0.5em;
+          padding-top: 16px;
+          padding-bottom: 8px;
         }
 
         .form {
-          padding-left: 1em;
-          padding-right: 1em;
-
           display: grid;
-          grid-template-columns: auto auto auto auto auto;
+          grid-template-columns: auto auto 1fr auto auto;
           grid-template-rows: auto auto;
           grid-template-areas:
             "input units1 equals output units2"
             "vestedMessage vestedMessage vestedMessage vestedMessage vestedMessage";
-          row-gap: 0.75em;
+          row-gap: 12px;
           align-items: center;
-          justify-self: center;
 
           .input,
           .units1,
@@ -133,7 +133,7 @@
             .container {
               .token {
                 font-weight: 800;
-                color: $color-grey-4;
+                color: $Neutral02;
               }
 
               .subsection {
@@ -144,10 +144,20 @@
 
           .input {
             grid-area: input;
+
+            .maxButton {
+              text-align: center;
+              font-size: 13px;
+            }
           }
 
           .units1 {
             grid-area: units1;
+
+            .unlockButton {
+              text-align: center;
+              font-size: 13px;
+            }
           }
 
           .units2 {
@@ -157,8 +167,6 @@
           .equals {
             grid-area: equals;
             text-align: center;
-            padding-left: 2em;
-            padding-right: 2em;
           }
 
           .output {
@@ -200,11 +208,6 @@
             width: 120px;
             padding-left: 1.2em;
             padding-right: 1.2em;
-
-            &.hide {
-              // preserve the vertical space even while hidden
-              visibility: hidden;
-            }
           }
         }
       }
@@ -230,11 +233,20 @@
           "doit doit";
         row-gap: 0.5em;
       }
+
+      .section4 {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "description help"
+          "vestedMessage vestedMessage"
+          "doit doit";
+        row-gap: 0.5em;
+      }
     }
 
     .rightColumn {
-      flex-basis: 45%;
-
       .section:not(:last-child) {
         margin-bottom: 4em;
       }
@@ -256,6 +268,8 @@
             img {
               @include tokenIcon;
               width: 24px;
+              position: relative;
+              top: 2px;
             }
           }
         }
@@ -270,6 +284,10 @@
           .bar {
             border-radius: 10px;
             background: $Gradient01;
+
+            &.complete {
+              background: $Gradient07;
+            }
           }
         }
 
@@ -293,6 +311,11 @@
           .perc {
             flex-grow: 2;
             text-align: right;
+
+            &.filled {
+              font-size: 18px;
+              line-height: 22px;
+            }
           }
         }
       }
@@ -304,8 +327,8 @@
         grid-template-areas:
           "targetLabel maxLabel valuationLabel"
           "target max valuation"
-          "tokensleftLabel seedpriceLabel tokenpriceLabel"
-          "tokensleft seedprice tokenprice";
+          "tokensleftLabel tokenpriceLabel tokenpriceLabel"
+          "tokensleft tokenprice tokenprice";
 
         .label {
           font-size: 14px;
@@ -356,14 +379,6 @@
           grid-area: tokensleft;
         }
 
-        .seedpriceLabel {
-          grid-area: seedpriceLabel;
-        }
-
-        .seedprice {
-          grid-area: seedprice;
-        }
-
         .tokenpriceLabel {
           grid-area: tokenpriceLabel;
         }
@@ -372,6 +387,11 @@
           grid-area: tokenprice;
           font-size: 14px;
           line-height: 17px;
+
+          .symbol {
+            display: inline-block;
+            font-weight: 100;
+          }
         }
       }
 
@@ -389,7 +409,7 @@
           flex-wrap: wrap;
 
           a {
-            color: $subtext-color;
+            color: $Neutral02;
             margin-bottom: 1em;
 
             &:hover {
@@ -401,8 +421,8 @@
               margin-right: 0.25em;
               font-size: 0.75em;
               border-radius: 50%;
-              color: $color-black;
-              background-color: $subtext-color;
+              color: $BG01;
+              background-color: $Neutral02;
               padding: 0.4em;
               width: 1em;
               height: 1em;
@@ -422,13 +442,6 @@
           }
         }
       }
-    }
-  }
-
-  .loading {
-    text-align: center;
-    i {
-      color: $color-lightblue;
     }
   }
 }

@@ -11,7 +11,7 @@
 
   > .logo {
     grid-area: logo;
-    background-color: $color-darkpink-3;
+    background-color: $BG01;
     align-items: center;
     // just for vertical alignment of the logo
     display: flex;
@@ -32,15 +32,6 @@
     height: 76px;
     padding-right: 4rem;
 
-    .networkfeedback {
-      color: $color-white;
-      margin-left: 10px;
-      text-align: left;
-      .testnet {
-        color: $color-red;
-      }
-    }
-
     /**
      * header connectButton
      */
@@ -58,6 +49,14 @@
       img {
         width: 32px;
         height: 32px;
+      }
+    }
+    .networkfeedback {
+      color: $White;
+      margin-left: 10px;
+      text-align: left;
+      .testnet {
+        color: $Shade01;
       }
     }
   }
@@ -132,8 +131,7 @@
 
   .mainContent {
     grid-area: mainContent;
-    color: $color-white;
-    // background-color: $color-black;
+    color: $White;
 
     .page {
       padding: 24px 20px;

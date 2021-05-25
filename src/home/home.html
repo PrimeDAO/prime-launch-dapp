@@ -27,11 +27,13 @@
       </div>
     </div>
     <div class="section launches">
-      <div class="title heading heading1">Featured Launches</div>
-      <horizontal-scroller item-count.to-view="seeds.length">
-        <launch-summary repeat.for="seed of seeds" address.to-view="seed.address"></launch-summary>
-      </horizontal-scroller>
-      <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
+      <template if.to-view="featuredSeeds.length">
+        <div class="title heading heading1">Featured Launches</div>
+        <horizontal-scroller item-count.to-view="featuredSeeds.length">
+          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
+        </horizontal-scroller>
+        <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
+      </template>
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">
@@ -40,8 +42,8 @@
       </div>
       <div class="emailColumn">
         <div class="form">
-          <input class="emailInput" placeholder="Enter your email"></input>
-          <button class="notifyButton button1">Subscribe</button>
+          <input class="emailInput" placeholder="Enter your email" value.bind="subscriberEmail"></input>
+          <button class="notifyButton button1" click.delegate="subscribe()">Subscribe</button>
         </div>
         <div class="disclaimer subtext">We care about the protection of your data. Read our <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</div>
       </div>

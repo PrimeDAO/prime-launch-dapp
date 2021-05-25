@@ -1,24 +1,20 @@
-@import "styles/styles.scss";
+@import "styles/colors.scss";
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
   font-family: Inter;
-  background-color: $color-black-3;
+  background-color: $BG02;
   border: 1px solid $Border01;
   border-radius: 1.5em;
   padding: 2em;
   min-width: 40rem;
   .title {
     font-size: 1.625em;
-    color: $color-white;
-    line-height: 2em;
-    font-weight: bold;
-    margin-bottom: 1em !important;
   }
   .subtext {
     line-height: 1.5em;
     font-size: 1em;
-    color: $muted-text-color;
+    color: $Neutral03;
     margin-bottom: 3em;
   }
   .infoInput {
@@ -49,8 +45,9 @@
     }
     .cancel {
       cursor: pointer;
-      color: $color-orange;
+      color: $Shade01;
       font-family: Inter;
+      font-weight: bold;
     }
   }
   .stageButton {
@@ -60,9 +57,9 @@
   label {
     display: block;
     font-size: 1.1em;
+    font-weight: bold;
     line-height: 2em;
-    color: $color-white;
-    @include standardTextGradient;
+    color: $Secondary02;
   }
   input {
     width: 23em;
@@ -85,6 +82,22 @@
     background: none;
     display: none;
   }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: $Neutral02;
+    transition: background-color 100s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
+    box-shadow: 0 0 0px 3.7em $BG01 inset;
+  }
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: $Neutral02;
+    transition: background-color 100s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
+    box-shadow: 0 0 0px 3.7em $BG01 inset;
+  }
 
   select {
     width: 14em;
@@ -92,7 +105,7 @@
     border: 1px solid $Border01;
     border-radius: 10px;
     color: $Neutral02;
-    background-color: $global-background-color;
+    background-color: $BG01;
     font-family: Inter;
     font-size: 1.1em;
     padding-left: 0.5em;
@@ -210,11 +223,8 @@
   &.stage4 {
     .infoInput {
       .pptContainer {
-        display: flex;
-        flex-flow: row wrap;
-        gap: 1.5em;
-        > select {
-          width: 6em;
+        input {
+          width: 3em;
         }
         > label {
           align-self: center;
@@ -224,7 +234,7 @@
       }
       &.maxTarget {
         input {
-          width: 14em;
+          width: 8.5em;
         }
         display: flex;
         flex-flow: row wrap;
@@ -305,6 +315,7 @@
         flex-flow: row wrap;
         justify-content: space-around;
         align-items: center;
+        overflow-wrap: break-word;
         width: 16em;
         height: 4.5em;
         border-radius: 0.6em;
@@ -319,11 +330,11 @@
         }
         i {
           font-size: 2.8em;
-          -webkit-text-fill-color: $color-grey-5;
+          -webkit-text-fill-color: $Neutral02;
         }
         span {
           width: 8em;
-          -webkit-text-fill-color: $muted-text-color;
+          -webkit-text-fill-color: $Neutral03;
           font-size: 1em;
           text-align: left;
           line-height: 1.24em;
@@ -406,19 +417,18 @@
       }
     }
   }
-  
+
   &.stage6 {
-    & .subtext {
-      width: 30em;
-    }
+  }
+
+  &.stage7 {
     & .linksContainer {
       width: 30em;
       display: flex;
       flex-flow: column;
       gap: 2em;
-      margin-bottom: 13em;
       > div {
-          > a {
+        > a {
           color: $Neutral03;
         }
         > i {

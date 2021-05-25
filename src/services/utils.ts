@@ -1,3 +1,6 @@
+import { getAddress } from "ethers/lib/utils";
+import { Address } from "services/EthereumService";
+
 export class Utils {
   public static sleep(milliseconds: number): Promise<any> {
     return new Promise((resolve: (args: any[]) => void): any => setTimeout(resolve, milliseconds));
@@ -61,10 +64,30 @@ export class Utils {
     }
   }
 
+  public static waitUntilTrue(test: () => Promise<boolean> | boolean, timeOut = 1000): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const timerId = setInterval(async () => {
+        if (await test()) { return resolve(); }
+      }, 100);
+      setTimeout(() => { clearTimeout(timerId); return reject(new Error("Test timed out..")); }, timeOut);
+    });
+  }
+
   // eslint-disable-next-line no-useless-escape
   private static pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
 
-  public static isValidUrl(str: string, emptyOk = true): boolean {
+  public static isValidUrl(str: string, emptyOk = false): boolean {
     return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
+  }
+
+  public static isValidEmail(email: string, emptyOk = false): boolean {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return (emptyOk && (!email || !email.trim())) || (email && re.test(String(email).toLowerCase()));
+  }
+
+  public static isAddress(address: Address, emptyOk = false): boolean {
+    try {
+      return (emptyOk && (!address || !address.trim())) || (address && !!getAddress(address));
+    } catch (e) { return false; }
   }
 }

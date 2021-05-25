@@ -1,10 +1,16 @@
+import { ISeedConfig } from "./../newSeed/seedConfig";
+import { IpfsService } from "./IpfsService";
+import { EthereumService, Hash } from "./EthereumService";
+import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
+import axios from "axios";
+import TransactionsService from "services/TransactionsService";
 
 // export interface ISeed {
 //   address: Address;
@@ -29,7 +35,7 @@ export interface ISeedCreatedEventArgs {
 /**
  * see SeedFactory contract for docs of these params
  */
-// export interface IDeploySeedParams {
+// interface IDeploySeedParams {
 //   admin: Address;
 //   seedToken: Address;
 //   fundingToken: Address;
@@ -43,6 +49,11 @@ export interface ISeedCreatedEventArgs {
 //   isWhitelisted: boolean;
 // }
 
+interface IFeaturedSeedsConfig {
+  [network: string]: { seeds: Array<Address> } ;
+}
+
+
 @autoinject
 export class SeedService {
 
@@ -53,6 +64,7 @@ export class SeedService {
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
+  private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
    * when the factory was created
    */
@@ -60,9 +72,12 @@ export class SeedService {
 
   constructor(
     private contractsService: ContractsService,
-    // private transactionsService: TransactionsService,
+    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
     private container: Container,
+    private consoleLogService: ConsoleLogService,
+    private transactionsService: TransactionsService,
+    private ipfsService: IpfsService,
   ) {
     /**
      * otherwise singleton is the default
@@ -71,6 +86,14 @@ export class SeedService {
   }
 
   public async initialize(): Promise<void> {
+    if (!this.featuredSeedsJson) {
+      // eslint-disable-next-line require-atomic-updates
+      this.featuredSeedsJson = (process.env.NODE_ENV === "development") ?
+        require("../configurations/featuredSeeds.json") :
+        await axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
+          .then((response) => response.data);
+    }
+
     /**
      * don't need to reload the seedfactory on account change because we never send txts to it.
      */
@@ -101,10 +124,12 @@ export class SeedService {
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
                   /**
-                     * TODO: This should also pull the full seed configuration from whereever we are storing it
-                     */
-                  await this.createSeedFromConfig(event)
-                    .then((seed) => { seedsMap.set(seed.address, seed); } );
+                    * TODO: This should also pull the full seed configuration from whereever we are storing it
+                    */
+                  const seed = this.createSeedFromConfig(event);
+                  seedsMap.set(seed.address, seed);
+                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
+                  seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
                 this.initializing = false;
@@ -122,35 +147,54 @@ export class SeedService {
     );
   }
 
-  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Promise<Seed> {
+  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {
     const seed = this.container.get(Seed);
-    return seed.initialize({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
+    return seed.create({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
   }
 
   public ensureInitialized(): Promise<void> {
     return this.initializedPromise;
   }
 
-  public featuredSeeds(): Array<Seed> {
-    return [this.seedsArray[this.seedsArray.length - 3],
-      this.seedsArray[this.seedsArray.length - 2],
-      this.seedsArray[this.seedsArray.length - 1]];
-  }
-  // public async deploySeed(params: IDeploySeedParams): Promise<TransactionReceipt> {
-  //   const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+  private _featuredSeeds: Array<Seed>;
 
-  //   return this.transactionsService.send(factoryContract.deploySeed(
-  //     params.admin,
-  //     params.seedToken,
-  //     params.fundingToken,
-  //     params.successMinimumAndCap,
-  //     params.price,
-  //     params.startTime,
-  //     params.endTime,
-  //     params.vestingDuration,
-  //     params.vestingCliff,
-  //     params.isWhitelisted,
-  //     params.fee,
-  //   ));
-  // }
+  @computedFrom("seeds", "featuredSeedsJson")
+  public get featuredSeeds(): Array<Seed> {
+
+    if (!this.seeds || !this.featuredSeedsJson) {
+      return [];
+    }
+
+    if (this._featuredSeeds) {
+      return this._featuredSeeds;
+    }
+    else {
+      return this._featuredSeeds =
+        this.featuredSeedsJson[this.ethereumService.targetedNetwork].seeds.map( (address: Address) => this.seeds.get(address))
+          .filter((seed: Seed) => !!seed);
+    }
+  }
+  public async deploySeed(config: ISeedConfig): Promise<Hash> {
+
+    const seedConfigString = JSON.stringify(config);
+    // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
+
+    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}-${(new Date()).toISOString()}`);
+    // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
+    // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+
+    // return this.transactionsService.send(factoryContract.deploySeed(
+    //   params.admin,
+    //   params.seedToken,
+    //   params.fundingToken,
+    //   params.successMinimumAndCap,
+    //   params.price,
+    //   params.startTime,
+    //   params.endTime,
+    //   params.vestingDuration,
+    //   params.vestingCliff,
+    //   params.isWhitelisted,
+    //   params.fee,
+    // ));
+  }
 }

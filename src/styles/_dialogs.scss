@@ -1,8 +1,8 @@
 @import "./colors";
 
 .dialog {
-  color: $color-white;
-  background-color: $color-black;
+  color: $White;
+  background-color: $BG01;
 }
 
 // .dialog ux-dialog-header {
@@ -71,7 +71,7 @@
 // ux-dialog.connections .disclaimer .checks label {
 //   padding-left: 1.75rem;
 //   font-weight: 500;
-//   color: $color-black-2;
+//   color: $BG02;
 // }
 
 // ux-dialog.connections .disclaimer .title {

@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page stageContainer stage5 au-animate">
     <div class="infoContainer">
-      <div class="heading heading3 title">Contact Details</div>
+      <div class="heading heading2 title">Contact Details</div>
       <div class="subtext">
         Please provide your contact details and project logo.
       </div>
@@ -9,7 +9,7 @@
         <div class="infoInput">
           <label for="email">Contact Email</label>
           <input id="email" type="email" placeholder="Valid email address"
-            value.bind="seedConfig.contactDetails.contactEmail"/>
+            value.bind="seedConfig.contactDetails.contactEmail" />
         </div>
         <div class="infoInput">
           <div class="labelContainer">
@@ -19,10 +19,9 @@
             </span>
           </div>
           <textarea
-              id="remarks"
-              value.bind="seedConfig.contactDetails.remarks"
-              maxlength="250"
-          ></textarea>
+            id="remarks"
+            value.bind="seedConfig.contactDetails.remarks"
+            maxlength="250"></textarea>
         </div>
         <div class="infoInput logo">
           <div>
@@ -35,17 +34,14 @@
             Recommended size: 400 x 400 px
           </div>
         </div>
-      <div class="buttonContainer">
-        <div class="stageButton cancel" click.delegate="back()">
-          PREVIOUS
-        </div>
-        <div
-          class="stageButton proceed button1"
-          click.delegate="submit()"
-        >
-          SUBMIT
+        <div class="buttonContainer">
+          <div class="stageButton cancel" click.delegate="back()">
+            PREVIOUS
+          </div>
+          <div
+            class="stageButton proceed button1"
+            click.delegate="proceed()">NEXT</div>
         </div>
       </div>
     </div>
-  </div>
 </template>

@@ -1,0 +1,12 @@
+{
+  "kovan": {
+    "seeds": [
+      "0xe3112d31A3776c388eF8592A4bAFed0E1EbC5D14",
+      "0x18ae27A136826dce2E54E1A22C940cBf2F5A313D",
+      "0xf4bAE84c7a5b7b70C9af54f403E83A7bB367A4Be"
+    ]
+  },
+  "mainnet": {
+    "seeds": []
+  }
+}

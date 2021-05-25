@@ -1,4 +1,3 @@
-import { BigNumber } from "ethers";
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 export interface IGeneral {
   projectName: string,
@@ -18,24 +17,22 @@ export interface IProjectDetails {
 export interface ITokenDetails {
   fundingAddress: string,
   fundingSymbol: string,
-  fundingIcon: string,
   seedAddress: string,
   seedSymbol: string,
-  seedIcon: string,
   /**
    * In wei
    */
-  maxSupply: BigNumber,
+  // maxSupply: string,
   /**
    * In wei
    */
-  initSupply: BigNumber,
+  // initSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
      * In wei
      */
-    amount: BigNumber,
+    amount: string,
     /**
      * In days
      */
@@ -44,26 +41,23 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
-  seedTokens: BigNumber,
-  pricePerToken: BigNumber,
-  baseCurrency: string,
-  seedTarget: BigNumber,
-  seedMax: BigNumber,
+  /**
+   * The price of one seed token in units of funding tokens
+   * In wei.
+   */
+  pricePerToken: string,
+  /**
+   * In wei
+   */
+  fundingTarget: string,
+  /**
+   * In wei
+   */
+  fundingMax: string,
   vestingDays: number,
   vestingCliff: number,
-  startDate: {
-    /**
-     * Dates are in ISO format
-     */
-    date: string,
-    time: string
-  },
-  endDate: {
-    date: string,
-    time: string
-  },
-  controller: string,
-  rights: string,
+  startDate: string,
+  endDate: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
   geoBlock: boolean,
   legalDisclaimer: boolean
@@ -76,6 +70,10 @@ export interface IContactDetails {
 }
 
 export interface ISeedConfig {
+  /**
+   * semantic version of this interface. This value must be updated upon any released changes.
+   */
+  version: string;
   general: IGeneral,
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
@@ -84,6 +82,7 @@ export interface ISeedConfig {
 }
 
 export class SeedConfig implements ISeedConfig {
+  public version = "1.0.0";
   public general = {
     customLinks: [],
   } as IGeneral;
@@ -99,15 +98,6 @@ export class SeedConfig implements ISeedConfig {
     remarks: "",
   } as IContactDetails;
   public seedDetails = {
-    baseCurrency: "DAI",
-    startDate: {
-      date: undefined,
-      time: undefined,
-    },
-    endDate: {
-      date: undefined,
-      time: undefined,
-    },
     whitelist: {
       isWhitelist: false,
       whitelistFile: undefined,

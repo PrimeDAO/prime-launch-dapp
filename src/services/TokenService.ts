@@ -5,7 +5,6 @@ import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { Address, EthereumService, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { EventConfigFailure } from "services/GeneralEvents";
 import { TransactionResponse } from "services/TransactionsService";
 import { NumberService } from "services/numberService";
 import { toBigNumberJs } from "services/BigNumberService";
@@ -61,8 +60,7 @@ export class TokenService {
   constructor(
     private ethereumService: EthereumService,
     private consoleLogService: ConsoleLogService,
-    contractsService: ContractsService,
-    private numberService: NumberService) {
+    contractsService: ContractsService) {
     this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
   }
 
@@ -107,7 +105,7 @@ export class TokenService {
 
   public async getTokenInfoFromAddress(address: Address): Promise<ITokenInfo> {
 
-    let tokenInfo = this.tokenInfos.get(address);
+    let tokenInfo = this.tokenInfos.get(address.toLowerCase());
 
     if (!tokenInfo) {
       const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
@@ -117,7 +115,7 @@ export class TokenService {
           tokenInfo.address = address;
           tokenInfo.icon = "/genericToken.svg";
           tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-          this.tokenInfos.set(address, tokenInfo);
+          this.tokenInfos.set(address.toLowerCase(), tokenInfo);
 
           if (tokenInfo.id) {
             const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;
@@ -128,16 +126,14 @@ export class TokenService {
                 tokenInfo.icon = response.data.image.thumb;
               })
               .catch((error) => {
-                this.consoleLogService.handleFailure(
-                  new EventConfigFailure(`PriceService: Error fetching token price ${error?.message}`));
+                this.consoleLogService.logMessage(`PriceService: Error fetching token price ${error?.message}`, "error");
               });
           }
 
           return tokenInfo;
         })
         .catch((error) => {
-          this.consoleLogService.handleFailure(
-            new EventConfigFailure(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`));
+          this.consoleLogService.logMessage(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
           // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
           // TODO:  restore the exception?
           tokenInfo = { address, name: "N/A", symbol: "N/A", id: null } as unknown as ITokenInfo;
@@ -170,8 +166,7 @@ export class TokenService {
             this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
         })
         .catch((error) => {
-          this.consoleLogService.handleFailure(
-            new EventConfigFailure(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`));
+          this.consoleLogService.logMessage(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`, "warn");
         });
     }
 
@@ -180,8 +175,7 @@ export class TokenService {
       if (id) {
         return id;
       } else {
-        this.consoleLogService.handleWarning(
-          new EventConfigFailure(`TokenService: Error fetching token info: token not found, or more than one match found (${name}/${symbol})`));
+        this.consoleLogService.logMessage(`TokenService: Error fetching token info: token not found, or more than one match found (${name}/${symbol})`, "warn");
       }
     }
     return "";
@@ -205,8 +199,7 @@ export class TokenService {
         });
       })
       .catch((error) => {
-        this.consoleLogService.handleFailure(
-          new EventConfigFailure(`TokenService: Error fetching token holders: ${error?.response?.data?.error?.message ?? error?.message}`));
+        this.consoleLogService.logMessage(`TokenService: Error fetching token holders: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
         // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
         // TODO:  restore the exception?
         return [];

@@ -1,23 +1,26 @@
 import { computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
+import { Seed } from "entities/Seed";
 import "./timeLeft.scss";
 
 export class TimeLeft {
 
-  @bindable.number startsInMilliseconds: number;
-  @bindable.booleanAttr isActive: boolean;
+  @bindable seed: Seed;
   @bindable.booleanAttr hideIcons: boolean;
+  @bindable.booleanAttr largest: boolean;
 
-  @computedFrom("startsInMilliseconds")
+  @computedFrom("seed.startsInMilliseconds", "seed.hasNotStarted")
   get proximity(): number {
     const soon = 86400000;
     const comingUp = soon * 5;
-    if (this.startsInMilliseconds > comingUp) {
-      return 3; // future
-    } else if (this.startsInMilliseconds <= soon) {
-      return 1; // soon
-    } else {
-      return 2; // comingUp
+    if (this.seed?.hasNotStarted) {
+      if (this.seed.startsInMilliseconds > comingUp) {
+        return 3; // future
+      } else if (this.seed.startsInMilliseconds <= soon) {
+        return 1; // soon
+      } else {
+        return 2; // comingUp
+      }
     }
   }
 }

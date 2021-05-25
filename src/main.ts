@@ -1,3 +1,4 @@
+import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
@@ -7,6 +8,8 @@ import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { SeedService } from "services/SeedService";
+import { IpfsService } from "services/IpfsService";
+import { GeoBlockService } from "services/GeoBlockService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -23,7 +26,9 @@ export function configure(aurelia: Aurelia): void {
   ;
 
   if (process.env.NODE_ENV === "development") {
-    aurelia.use.developmentLogging();
+    aurelia.use.developmentLogging(); // everything
+  } else {
+    aurelia.use.developmentLogging("warning"); // only errors and warnings
   }
 
   if (environment.testing) {
@@ -43,6 +48,12 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
 
       seedService.initialize();
+
+      const ipfsService = aurelia.container.get(IpfsService);
+      ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
+
+      const geoBlockService = aurelia.container.get(GeoBlockService);
+      geoBlockService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

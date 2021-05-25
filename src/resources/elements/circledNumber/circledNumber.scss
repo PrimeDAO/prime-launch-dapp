@@ -2,14 +2,14 @@
 .circledNumber {
   border-radius: 50%;
   text-align: center;
-  background-color: #98979b;
-  min-width: 2.5em;
+  background-color: $Neutral02;
+  min-width: 2.6em;
   height: 2.5em;
   &.active {
-    background-color: $color-light-purple;
+    background-color: $Secondary02;
   }
   > .value {
-    color: $color-black;
+    color: $BG01;
     font-family: Inter;
     font-weight: 900;
     font-size: 1.5em;

@@ -1,4 +1,4 @@
-<template bindable="title, subTitle1, btnText, poweredBy">
+<template bindable="title, subTitle1, btnText, poweredBy, logo, disabled">
   <div class="launch-box-container">
     <div class="topSection">
       <div class="heading heading3 title">${title}</div>
@@ -6,7 +6,7 @@
     </div>
     <div class="buttons">
       <div class="buttonContainer">
-        <a class="button1" route-href="route: newSeed">${btnText}</a>
+        <a class="button1 ${disabled}" route-href="route: newSeed">${btnText}</a>
       </div>
       <!-- <div>
         <a>Learn more</a>
@@ -14,7 +14,7 @@
     </div>
     <div class="container-footer">
       <div>POWERED BY</div>
-      <img alt="icon" />
+      <img alt="icon" src.bind="logo"/>
       <div>${poweredBy}</div>
     </div>
   </div>

@@ -3,20 +3,16 @@
     <div show.to-view="!loading" class="seedDashboard">
       <div class="leftColumn">
         <div class="intro">
-          <div class="leftSection">
-            <div class="header">
-              <div class="title heading heading2">PrimeDAO</div>
-              <div class="timeLeft">
-                <time-left starts-in-milliseconds.to-view="seed.startsInMilliseconds" is-active.to-view="seed.isActive"></time-left>
-              </div>
-            </div>
-            <div class="description subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-              pretium pretium tempor. Ut eget imperdiet neque. In volutpat
-              ante semper diam molestie, et aliquam.</div>
+          <div class="title heading heading2">${seed.metadata.general.projectName}</div>
+          <div class="countdown">
+            <time-left seed.to-view="seed"></time-left>
           </div>
-          <div class="rightSection">
-            <div class="label">TIME LEFT</div>
-            <div class="timeLeft">16:34hr</div>
+          <div class="description subtext">${seed.metadata.projectDetails.proposition}</div>
+          <div class="timeLeft">
+            <span if.to-view="seed.isLive && !seed.minimumReached">
+              <div class="label">MAX TIME LEFT</div>
+              <div class="timer">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
+            </span>
           </div>
         </div>
         <!--
@@ -38,13 +34,18 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
-          <div class="description">Contribute</div>
+          <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="fundingTokenToPay" placeholder="0.0"></numeric-input>
+              <div class="fundingInput">
+                <numeric-input disabled.to-view="!seed.canContribute" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <div if.to-view="seed.canContribute" class="maxButton">
+                  <a href="#" click.delegate="handleMaxBuy()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
@@ -53,25 +54,25 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
+                <div if.to-view="userCanPay && lockRequired" class="unlockButton">
+                  <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
+                </div>
               </div>
             </div>
             <div class="equals">=</div>
-            <div class="output">${seedTokenReward}</div>
+            <div class="output">
+              <formatted-number
+                value.to-view="seedTokenReward"
+                average="true"></formatted-number>
+            </div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
-                <div class="subsection subtext">$
-                  <formatted-number
-                    value.to-view="seedTokenRewardPrice"
-                    average="false"
-                    mantissa="2"
-                    thousands-separated></formatted-number>
-                </div>
               </div>
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
           </div>
-          <div class="doit"><button class="submitButton button1">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.canContribute" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -79,13 +80,21 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted" class="secton section3">
-          <div class="description">Claim tokens</div>
+          <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
           </div>
           <div class="form">
             <div class="input">
-              <numeric-input value.two-way="seedTokenToPay" placeholder="0.0"></numeric-input>
+              <div class="seedRequest">
+                <numeric-input
+                  disabled.to-view="!seed.claimingIsOpen || !seed.userCanClaim"
+                  value.bind="seedTokenToReceive"
+                  placeholder="0.0"></numeric-input>
+                <div class="maxButton" if.to-view="seed.claimingIsOpen && seed.userCanClaim">
+                  <a href="#" click.delegate="handleMaxClaim()">MAX</a>
+                </div>
+              </div>
             </div>
             <div class="units1">
               <div class="container">
@@ -93,22 +102,37 @@
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
                     average="false"
-                    mantissa="2"
                     thousands-separated></formatted-number>
                 </div>
               </div>
             </div>
-            <div class="equals">=</div>
-            <div class="output">${seedTokenToReceive}</div>
+            <div class="equals">&nbsp;</div>
+            <div class="output">1</div>
             <div class="units2">
               <div class="container">
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Claiming opens in 2 days, 3 hours, 12 mins${seed.minimumReached ? '' : ', as long as the minimum is reached'}</div>
+            <div
+              if.to-view="seed.isLive && !seed.claimingIsOpen"
+              class="vestedMessage subtext">Claiming will open whenever the MAX is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
-          <div class="doit"><button class="submitButton button1 ${userCanClaim ? '' : 'hide'}" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
+        </div>
+        <!--
+          ================ 
+          Section Four
+          ================ 
+        -->
+        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section4">
+          <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
+          <div class="help">
+            <question-mark text="Retrieve tokens"></question-mark>
+          </div>
+          <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
+          <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
+          </div>
         </div>
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
@@ -122,45 +146,63 @@
             <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
           </div>
           <div ref="progressBar" class="progressBar">
-            <div ref="bar" class="bar">&nbsp;</div>
+            <div ref="bar" class="bar ${fractionComplete >= 1 ? 'complete' : ''}">&nbsp;</div>
           </div>
           <div class="raised">
             <div class="amount">$<formatted-number
                 value.to-view="amountRaised | ethwei"
+                average="false"
                 thousands-separated></formatted-number>
             </div>
             <div class="denomination">USD raised</div>
+            <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
             <div class="perc">
               <formatted-number
                 value.to-view="fractionComplete * 100"
                 average="false"
                 mantissa="2"></formatted-number>%
             </div>
+            <!-- <div else class="perc filled">Filled</div> -->
           </div>
         </div>
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
-          <div class="value target">$ 1.5M</div>
+          <div class="value target">
+            <formatted-number value.to-view="seed.target | ethwei" mantissa="2"></formatted-number>
+          </div>
           <div class="label maxLabel">MAX</div>
-          <div class="value max">$ 2.5M</div>
+          <div class="value max">
+            <formatted-number value.to-view="seed.cap | ethwei" mantissa="2"></formatted-number>
+          </div>
           <div class="label valuationLabel">VALUATION</div>
-          <div class="value valuation">$ 18M</div>
+          <div class="value valuation">$ <formatted-number
+              if.to-view="seed.valuation"
+              value.to-view="seed.valuation"
+              average="false"
+              thousands-separated></formatted-number>
+            <span else>N/A</span>
+          </div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
-          <div class="value tokensleft">76%</div>
-          <div class="label seedpriceLabel">SEED PRICE</div>
-          <div class="value seedprice">$ 3.14</div>
+          <div class="value tokensleft">
+            <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft"></formatted-number><span else>N/A</span>%
+          </div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
           </div>
-          <div class="value tokenprice">1 KOL = 10 DAI</div>
+          <div class="value tokenprice">1 <div class="symbol">${seed.seedTokenInfo.symbol}</div> = ${seed.fundingTokensPerSeedToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
+          </div>
         </div>
         <div class="section bottomSection">
-          <div class="title  heading heading3">About Kolektivo</div>
-          <div class="body subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-          <div if.to-view="links.length" class="links">
-            <a repeat.for="link of links" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
-              <div class="icon ${iconClassForLinkType(link.name)}"></div>
-              <div class="name">${link.name}</div>
+          <div class="title  heading heading3">About ${seed.metadata.general.projectName}</div>
+          <div class="body subtext">${seed.metadata.projectDetails.summary}</div>
+          <div if.to-view="seed.metadata.general.customLinks.length" class="links">
+            <a href.to-view="seed.metadata.general.projectWebsite" target="_blank" rel="noopener noreferrer">
+              <div class="icon ${iconClassForLinkType('home')}"></div>
+              <div class="name">${seed.metadata.general.projectName}</div>
+            </a>
+            <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
+              <div class="icon ${iconClassForLinkType(link.media)}"></div>
+              <div class="name">${link.media}</div>
             </a>
           </div>
         </div>

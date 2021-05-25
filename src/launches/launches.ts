@@ -39,11 +39,7 @@ export class Launches {
     }
 
     this.seeds = this.seedService.seedsArray;
-    this.featuredSeeds = this.seedService.featuredSeeds();
-  }
-
-  navigate(href: string): void {
-    this.router.navigate(href);
+    this.featuredSeeds = this.seedService.featuredSeeds;
   }
 
   seeMore(yesNo: boolean): void {
