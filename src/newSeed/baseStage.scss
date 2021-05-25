@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 // This styles are common to all the stages components
 // Theme for the stages
 .infoContainer {
@@ -183,7 +183,10 @@
         color: $Neutral02;
       }
       img {
-        height: 2em;
+        @include tokenIcon;
+        width: 24px;
+        position: relative;
+        top: 1px;
       }
     }
     .infoInput.supply {
