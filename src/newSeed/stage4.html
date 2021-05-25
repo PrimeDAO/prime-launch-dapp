@@ -75,7 +75,8 @@
                 placeholder="YYYY-MM-DD"
                 class="vestingDateInput"
                 value.bind="startDate | date"
-                ref="startDateRef" />
+                ref="startDateRef" 
+                autocomplete="off" disabled/>
               <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
             </div>
           </div>
@@ -86,7 +87,8 @@
                 <input
                   id="startTime" type="time"
                   value.bind="startTime"
-                  placeholder="HH:MM (GMT)" step="60"></input>
+                  placeholder="HH:MM (GMT)" step="60"
+                  autocomplete="off"></input>
                 <div><i class="far fa-clock"></i></div>
               </div>
               <div class="questionMark">
@@ -104,7 +106,8 @@
                 class="vestingDateInput"
                 value.bind="endDate | date"
                 placeholder="YYYY-MM-DD"
-                ref="endDateRef" />
+                ref="endDateRef" 
+                autocomplete="off" disabled/>
               <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
           </div>
@@ -114,7 +117,8 @@
               <div class="vestingDates">
                 <input
                   id="endTime" value.bind="endTime"
-                  placeholder="HH:MM (GMT)" type="time" step="60"></input>
+                  placeholder="HH:MM (GMT)" type="time"
+                  autocomplete="off"></input>
                 <div><i class="far fa-clock"></i></div>
               </div>
               <div class="questionMark">
