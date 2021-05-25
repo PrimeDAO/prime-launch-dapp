@@ -37,6 +37,7 @@ export class NumericInput {
   @bindable.booleanAttr public isWei?: boolean = true;
   @bindable.booleanAttr public outputAsString?: boolean = false;
   @bindable.string public placeholder = "";
+  @bindable public maxlength = Math.pow(10, 10);
 
   private element: HTMLInputElement;
 

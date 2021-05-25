@@ -278,6 +278,55 @@
         display: flex;
         flex-flow: row nowrap;
         gap: 1em;
+        .vestingTime {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          input {
+            width: 2em;
+            &.timeHour {
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 0px;
+              border-right-color: $BG01;
+              text-align: right;
+            }
+            &.timeMin {
+              border-top-left-radius: 0px;
+              border-top-right-radius: 0px;
+              border-bottom-left-radius: 0px;
+              border-bottom-right-radius: 0px;
+              border-left-color: $BG01;
+              border-right-color: $BG01;
+              text-align: left;
+            }
+          }
+          .timeDivider {
+            background-color: $BG01;
+            height: 2.7em;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid $Border01;
+            border-bottom: 1px solid $Border01;
+            font-weight: bold;
+            color: $Neutral02;
+          }
+          .timeLogo {
+            width: 2em;
+            height: 2.7em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: $BG01;
+            border: 1px solid $Border01;
+            border-left: 0px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 1;
+            i {
+              font-size: 1.4em;
+            }
+          }
+        }
       }
       .vestingDates {
         width: 11em;
