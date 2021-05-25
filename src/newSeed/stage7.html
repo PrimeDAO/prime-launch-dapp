@@ -5,11 +5,21 @@
       <div class="subtext">
         <p>We've created a Seed configured according to your specifications.</p>
         <p>You may inspect the Seed configuration, stored in the JSON format, in IPFS,
-          <a href="https://gateway.pinata.cloud/ipfs/${stageState.seedHash}" target="_blank" rel="noopener noreferrer">here</a>.
+          <a href="https://gateway.pinata.cloud/ipfs/${wizardState.seedHash}" target="_blank" rel="noopener noreferrer">here</a>.
         </p>
-        <p>Reminder: When the new Seed is approved and its creation has been executed, then it will automatically appear here in Prime Launch. However, to enable the Seed to become usable, you will need to transfer the required seed token funds to the contract address.
-          The required seed token funds include the amount to be disbursed plus the amount to be paid in fees
-          to the beneficiary.</p>
+        <p>Reminder: When the new Seed is approved and its creation has been executed, then it will automatically appear here in Prime Launch.
+          To enable the Seed to become usable, someone must transfer
+          <formatted-number
+            value.to-view="wizardState.requiredSeedDeposit"
+            thousands-separated></formatted-number>
+          ${wizardState.seedTokenSymbol} to the Seed contract.
+          This amount includes
+          <formatted-number
+            value.to-view="wizardState.requiredSeedFee"
+            thousands-separated></formatted-number>
+          ${wizardState.seedTokenSymbol}
+          in fees that are paid as seed tokens are claimed.
+        </p>
       </div>
       <div class="linksContainer">
         <div>

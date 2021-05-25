@@ -3,7 +3,7 @@ import { PLATFORM } from "aurelia-pal";
 import { singleton } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "./seedConfig";
 import { Router, RouterConfiguration } from "aurelia-router";
-import { IStageState } from "newSeed/baseStage";
+import { IStageState, IWizardState } from "newSeed/baseStage";
 
 @singleton(false)
 export class NewSeed {
@@ -11,10 +11,12 @@ export class NewSeed {
 
   seedConfig: ISeedConfig;
   stageStates: Array<IStageState>;
+  wizardState: IWizardState;
 
   constructor() {
     if (!this.seedConfig) {
       this.seedConfig = new SeedConfig();
+      this.wizardState = {};
       /**
        * stageStates is 1-based, indexed by stage number
        * We have 7 stages.
@@ -65,7 +67,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 1,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage2"],
@@ -77,7 +80,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 2,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage3"],
@@ -89,7 +93,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 3,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage4"],
@@ -101,7 +106,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 4,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage5"],
@@ -113,7 +119,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 5,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage6"],
@@ -125,7 +132,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 6,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
       {
         route: ["stage7"],
@@ -137,7 +145,8 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 7,
-          maxStage: 7 },
+          maxStage: 7,
+          wizardState: this.wizardState },
       },
     ];
 

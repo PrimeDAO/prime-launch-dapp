@@ -31,6 +31,8 @@ export class Stage3 extends BaseStage {
       this.stageState.verified = false;
     } else {
       this.stageState.verified = true;
+      this.wizardState.seedTokenSymbol = this.seedSymbol;
+      this.wizardState.fundingTokenSymbol = this.fundingSymbol;
       this.next();
     }
   }
