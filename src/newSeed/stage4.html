@@ -74,7 +74,7 @@
                 id="startDate"
                 placeholder="YYYY-MM-DD"
                 class="vestingDateInput"
-                value.bind="startDateUi"
+                value.bind="startDate | date"
                 ref="startDateRef" />
               <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
             </div>
@@ -102,6 +102,7 @@
               <input
                 id="endDate"
                 class="vestingDateInput"
+                value.bind="endDate | date"
                 placeholder="YYYY-MM-DD"
                 ref="endDateRef" />
               <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
