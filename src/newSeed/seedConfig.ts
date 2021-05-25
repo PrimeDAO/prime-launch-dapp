@@ -60,7 +60,7 @@ export interface ISeedDetails {
   endDate: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
   geoBlock: boolean,
-  legalDisclaimer: boolean
+  legalDisclaimer: string
 }
 
 export interface IContactDetails {
@@ -103,6 +103,5 @@ export class SeedConfig implements ISeedConfig {
       whitelistFile: undefined,
     },
     geoBlock: false,
-    legalDisclaimer: false,
   } as ISeedDetails;
 }
