@@ -34,6 +34,14 @@ export class Stage4 extends BaseStage {
     });
   }
 
+  toggleCheckbox(name: string): void {
+    if (name === "whitelist") {
+      this.seedConfig.seedDetails.whitelist.isWhitelist = !this.seedConfig.seedDetails.whitelist.isWhitelist;
+    } else {
+      this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
+    }
+  }
+
   proceed(): void {
     const message: string = this.validateInputs();
     if (message) {

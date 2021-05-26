@@ -132,7 +132,7 @@
               <question-mark text="The whitelist is list of comma/whitespace-separated addresses representing accounts that are allowed to purchase Seed tokens"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer">
+          <div class="checkboxContainer" click.delegate="toggleCheckbox('whitelist')">
             <i class="fas fa-check yes"></i>
             <i class="fas fa-times no"></i>
             <div class="checkbox">
@@ -162,7 +162,7 @@
               <question-mark text="Geoblock allows Seed hosts to block entire geographic locations from contributing to the Seed"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer">
+          <div class="checkboxContainer" click.delegate="toggleCheckbox('geoBlock')">
             <i class="fas fa-check yes"></i>
             <i class="fas fa-times no"></i>
             <div class="checkbox">
