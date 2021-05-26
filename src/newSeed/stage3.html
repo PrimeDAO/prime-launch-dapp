@@ -16,10 +16,10 @@
                 blur.trigger="getTokenInfo('fund')">
               </input>
               <div class="ticker">
-                ${seedConfig.tokenDetails.fundingSymbol}
+                ${fundingSymbol}
               </div>
-              <div>
-                <img src.bind="seedConfig.tokenDetails.fundingIcon" />
+              <div if.to-view="fundingIcon">
+                <img src.bind="fundingIcon" />
               </div>
             </div>
           </div>
@@ -33,10 +33,10 @@
                 blur.trigger="getTokenInfo('seed')">
               </input>
               <div class="ticker">
-                ${seedConfig.tokenDetails.seedSymbol}
+                ${seedSymbol}
               </div>
-              <div>
-                <img src.bind="seedConfig.tokenDetails.seedIcon" />
+              <div if.to-view="seedIcon">
+                <img src.bind="seedIcon" />
               </div>
             </div>
           </div>
