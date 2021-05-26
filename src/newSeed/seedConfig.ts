@@ -11,7 +11,7 @@ export interface IGeneral {
 export interface IProjectDetails {
   summary: string,
   proposition: string,
-  category: string,
+  teamDescription: string,
 }
 
 export interface ITokenDetails {
@@ -87,7 +87,7 @@ export class SeedConfig implements ISeedConfig {
   public projectDetails = {
     summary: "",
     proposition: "",
-    category: "",
+    teamDescription: "",
   } as IProjectDetails;
   public tokenDetails = {
     tokenDistrib: [],
