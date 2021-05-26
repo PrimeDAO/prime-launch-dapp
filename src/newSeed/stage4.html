@@ -75,7 +75,8 @@
                 placeholder="YYYY-MM-DD"
                 class="vestingDateInput"
                 value.bind="startDate | date"
-                ref="startDateRef" />
+                ref="startDateRef" 
+                autocomplete="off" disabled/>
               <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
             </div>
           </div>
@@ -104,7 +105,8 @@
                 class="vestingDateInput"
                 value.bind="endDate | date"
                 placeholder="YYYY-MM-DD"
-                ref="endDateRef" />
+                ref="endDateRef" 
+                autocomplete="off" disabled/>
               <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
           </div>
