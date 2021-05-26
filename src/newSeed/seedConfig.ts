@@ -18,13 +18,13 @@ export interface ITokenDetails {
   fundingAddress: string,
   seedAddress: string,
   /**
-   * In wei
+   * In wei, maximum ever total supply of seed tokens
    */
-  // maxSupply: string,
+  maxSeedSupply: string,
   /**
-   * In wei
+   * In wei,
    */
-  // initSupply: string,
+  initialSeedSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**

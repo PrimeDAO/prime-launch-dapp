@@ -44,12 +44,12 @@ export class Stage3 extends BaseStage {
     } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
       message = "Please enter a valid address for the Seed Token Address";
     }
-    // else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply === "0") {
-    //   message = "Please enter a non-zero number for Maximum Supply";
-    // }
-    // else if (!this.seedConfig.tokenDetails.initSupply || this.seedConfig.tokenDetails.initSupply === "0") {
-    //   message = "Please enter a non-zero number for Initial Supply";
-    // }
+    else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
+      message = "Please enter a non-zero number for Maximum Supply";
+    }
+    else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
+      message = "Please enter a non-zero number for Initial Supply";
+    }
     // Check the token distribution
     this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: string, lockup: number}) => {
       if (!tokenDistrb.category) {
