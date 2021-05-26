@@ -11,20 +11,20 @@ export interface IGeneral {
 export interface IProjectDetails {
   summary: string,
   proposition: string,
-  category: string,
+  teamDescription: string,
 }
 
 export interface ITokenDetails {
   fundingAddress: string,
   seedAddress: string,
   /**
-   * In wei
+   * In wei, maximum ever total supply of seed tokens
    */
-  // maxSupply: string,
+  maxSeedSupply: string,
   /**
-   * In wei
+   * In wei,
    */
-  // initSupply: string,
+  initialSeedSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
@@ -87,7 +87,7 @@ export class SeedConfig implements ISeedConfig {
   public projectDetails = {
     summary: "",
     proposition: "",
-    category: "",
+    teamDescription: "",
   } as IProjectDetails;
   public tokenDetails = {
     tokenDistrib: [],

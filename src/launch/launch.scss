@@ -47,8 +47,8 @@
     display: grid;
     grid-template-rows: 2fr 1fr;
     > div {
-      padding-left: 1em;
-      padding-right: 1.5em;
+      padding-left: 40px;
+      padding-right: 32px;
       font-size: 20px;
     }
     .topSection {
@@ -65,12 +65,11 @@
     }
     .buttonContainer {
       text-align: center;
-      padding: 1em 2em;
       font-size: 0.5em;
       border-radius: 2em;
     }
     a {
-      font-weight: normal;
+      font-weight: bold;
       text-decoration: none;
       color: $White;
       cursor: pointer;
@@ -88,12 +87,11 @@
       justify-content: flex-end;
       padding-top: 1.25em;
       padding-bottom: 1.25em;
-      & div {
+      > div {
         font-size: 0.7em;
         font-weight: normal;
         color: $Neutral03;
-        padding-left: 0.4em;
-        padding-right: 0.4em;
+        padding-right: 1.1em;
       }
     }
   }
