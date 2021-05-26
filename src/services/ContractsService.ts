@@ -16,7 +16,7 @@ export enum ContractNames {
   , PRIMETOKEN = "PrimeToken"
   , DAI = "DAI"
   , ERC20 = "ERC20"
-  ,
+  , PrimeDAO = "Avatar"
 }
 
 export interface IStandardEvent<TArgs> {

@@ -6,6 +6,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { fromWei, toWei } from "services/EthereumService";
 import { NumberService } from "services/numberService";
+import { ContractNames, ContractsService } from "services/ContractsService";
 
 @autoinject
 export class Stage6 extends BaseStage {
@@ -13,19 +14,21 @@ export class Stage6 extends BaseStage {
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
+    private contractsService: ContractsService,
     private seedService: SeedService,
     private numberService: NumberService) {
     super(router, eventAggregator);
   }
 
   attached(): void {
-    // this.seedConfig.seedDetails.fundingMax = toWei("100").toString();
-    // this.seedConfig.seedDetails.pricePerToken = toWei(".5").toString();
-    // this.wizardState.seedTokenSymbol = "PRIME";
+    this.seedConfig.seedDetails.fundingMax = toWei("100").toString();
+    this.seedConfig.seedDetails.pricePerToken = toWei(".5").toString();
+    this.wizardState.seedTokenSymbol = "PRIME";
     const distributableSeeds = this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax))
       / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken));
     this.wizardState.requiredSeedFee = distributableSeeds * this.seedFee;
     this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredSeedFee;
+    this.wizardState.primeDaoAddress = this.contractsService.getContractAddress(ContractNames.PrimeDAO);
   }
 
   async submit(): Promise<void> {

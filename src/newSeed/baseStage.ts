@@ -5,7 +5,7 @@ import { ISeedConfig } from "./seedConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { Hash } from "services/EthereumService";
+import { Address, Hash } from "services/EthereumService";
 
 export interface IStageState {
   verified: boolean;
@@ -18,6 +18,7 @@ export interface IWizardState {
   seedTokenSymbol?: string;
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
+  primeDaoAddress?: Address;
 }
 
 @singleton(false)
