@@ -57,6 +57,17 @@ export class Stage4 extends BaseStage {
 
   validateInputs(): string {
     let message: string;
+    // Split the start and endt time
+    let startTimes = [];
+    let endTimes = [];
+    const re = /^[-+]?(\d+)$/;
+    if (this.startTime) {
+      startTimes = this.startTime.split(":");
+    }
+    if (this.endTime) {
+      endTimes = this.endTime.split(":");
+    }
+
     if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
       message = "Please enter a value for Funding Tokens per Seed Token";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
@@ -71,15 +82,25 @@ export class Stage4 extends BaseStage {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
       message = "Please enter a value for the Start Time";
-    } else if (!(Number.parseInt(this.startTime.split(":")[0]) < 25)
-      || !(Number.parseInt(this.startTime.split(":")[1]) < 61)) {
+    } else if (!re.test(startTimes[0]) || !re.test(startTimes[1]) || startTimes.length > 2) {
+      message = "Please enter a valid value for Start Time";
+    } else if (!(Number.parseInt(startTimes[0]) >= 0)
+      || !(Number.parseInt(startTimes[0]) < 24)) {
+      message = "Please enter a valid value for Start Time";
+    } else if (!(Number.parseInt(startTimes[1]) >= 0)
+      || !(Number.parseInt(startTimes[1]) < 60)) {
       message = "Please enter a valid value for Start Time";
     } else if (!this.endDate) {
       message = "Please select an End Date";
     } else if (!this.endTime) {
       message = "Please enter a value for the End Time";
-    } else if (!(Number.parseInt(this.endTime.split(":")[0]) < 25)
-      || !(Number.parseInt(this.endTime.split(":")[1]) < 61)) {
+    } else if (!re.test(endTimes[0]) || !re.test(endTimes[1]) || endTimes.length > 2) {
+      message = "Please enter a valid value for End Time";
+    } else if (!(Number.parseInt(endTimes[0]) >= 0)
+      || !(Number.parseInt(endTimes[0]) < 24)) {
+      message = "Please enter a valid value for End Time";
+    } else if (!(Number.parseInt(endTimes[1]) >= 0)
+      || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
