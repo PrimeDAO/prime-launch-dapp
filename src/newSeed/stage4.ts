@@ -60,6 +60,7 @@ export class Stage4 extends BaseStage {
     // Split the start and endt time
     let startTimes = [];
     let endTimes = [];
+    const re = /^[-+]?(\d+|Infinity)$/;
     if (this.startTime) {
       startTimes = this.startTime.split(":");
     }
@@ -81,6 +82,8 @@ export class Stage4 extends BaseStage {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
       message = "Please enter a value for the Start Time";
+    } else if (!re.test(startTimes[0]) || !re.test(startTimes[1]) || startTimes.length > 2) {
+      message = "Please enter a valid value for Start Time";
     } else if (!(Number.parseInt(startTimes[0]) >= 0)
       || !(Number.parseInt(startTimes[0]) < 24)) {
       message = "Please enter a valid value for Start Time";
@@ -91,6 +94,8 @@ export class Stage4 extends BaseStage {
       message = "Please select an End Date";
     } else if (!this.endTime) {
       message = "Please enter a value for the End Time";
+    } else if (!re.test(endTimes[0]) || !re.test(endTimes[1]) || endTimes.length > 2) {
+      message = "Please enter a valid value for End Time";
     } else if (!(Number.parseInt(endTimes[0]) >= 0)
       || !(Number.parseInt(endTimes[0]) < 24)) {
       message = "Please enter a valid value for End Time";
