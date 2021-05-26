@@ -16,8 +16,8 @@ export interface IWizardState {
   seedHash?: Hash;
   fundingTokenSymbol?: string;
   seedTokenSymbol?: string;
-  requiredSeedDeposit: number;
-  requiredSeedFee: number;
+  requiredSeedDeposit?: number;
+  requiredSeedFee?: number;
 }
 
 @singleton(false)
