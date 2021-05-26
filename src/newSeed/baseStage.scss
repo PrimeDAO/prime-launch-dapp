@@ -8,6 +8,11 @@
   border-radius: 1.5em;
   padding: 2em;
   min-width: 40rem;
+
+  a {
+    font-family: Aeonik;
+  }
+
   .title {
     font-size: 1.625em;
   }
@@ -196,12 +201,10 @@
     }
     .tokenDistribution {
       .columnHeaders {
-        display: flex;
-        justify-content: space-around;
-        flex-flow: row nowrap;
         font-size: 0.9em;
         font-weight: normal;
         line-height: 2em;
+        text-align: left;
       }
       .distribRow {
         display: flex;

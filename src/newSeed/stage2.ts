@@ -18,8 +18,8 @@ export class Stage2 extends BaseStage {
       message = "Please enter a value for Project Summary";
     } else if (!this.seedConfig.projectDetails.proposition) {
       message = "Please enter a value for Value Proposition";
-    } else if (!this.seedConfig.projectDetails.category) {
-      message = "Please enter a value for Project Category";
+    } else if (!this.seedConfig.projectDetails.teamDescription) {
+      message = "Please enter a value for Team Description";
     }
     return message;
   }

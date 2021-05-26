@@ -91,6 +91,8 @@ export class Stage4 extends BaseStage {
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
+    } else if (this.endDate < this.startDate) {
+      message = "Please select an End Date greater than the Start Date";
     } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
       message = "Please upload a .csv file or uncheck Whitelist";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
