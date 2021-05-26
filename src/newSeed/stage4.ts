@@ -60,7 +60,7 @@ export class Stage4 extends BaseStage {
     // Split the start and endt time
     let startTimes = [];
     let endTimes = [];
-    const re = /^[-+]?(\d+|Infinity)$/;
+    const re = /^[-+]?(\d+)$/;
     if (this.startTime) {
       startTimes = this.startTime.split(":");
     }
