@@ -16,17 +16,15 @@ export interface IProjectDetails {
 
 export interface ITokenDetails {
   fundingAddress: string,
-  fundingSymbol: string,
   seedAddress: string,
-  seedSymbol: string,
   /**
-   * In wei
+   * In wei, maximum ever total supply of seed tokens
    */
-  // maxSupply: string,
+  maxSeedSupply: string,
   /**
-   * In wei
+   * In wei,
    */
-  // initSupply: string,
+  initialSeedSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
@@ -60,7 +58,7 @@ export interface ISeedDetails {
   endDate: string,
   whitelist: { isWhitelist: boolean, whitelistFile: string }
   geoBlock: boolean,
-  legalDisclaimer: boolean
+  legalDisclaimer: string
 }
 
 export interface IContactDetails {
@@ -103,6 +101,5 @@ export class SeedConfig implements ISeedConfig {
       whitelistFile: undefined,
     },
     geoBlock: false,
-    legalDisclaimer: false,
   } as ISeedDetails;
 }

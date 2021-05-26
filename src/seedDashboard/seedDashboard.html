@@ -63,7 +63,7 @@
             <div class="output">
               <formatted-number
                 value.to-view="seedTokenReward"
-                average="true"></formatted-number>
+                average></formatted-number>
             </div>
             <div class="units2">
               <div class="container">
@@ -101,7 +101,6 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
-                    average="false"
                     thousands-separated></formatted-number>
                 </div>
               </div>
@@ -151,15 +150,14 @@
           <div class="raised">
             <div class="amount">$<formatted-number
                 value.to-view="amountRaised | ethwei"
-                average="false"
                 thousands-separated></formatted-number>
             </div>
             <div class="denomination">USD raised</div>
             <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
             <div class="perc">
               <formatted-number
+                average
                 value.to-view="fractionComplete * 100"
-                average="false"
                 mantissa="2"></formatted-number>%
             </div>
             <!-- <div else class="perc filled">Filled</div> -->
@@ -168,23 +166,22 @@
         <div class="section middleSection">
           <div class="label targetLabel">TARGET</div>
           <div class="value target">
-            <formatted-number value.to-view="seed.target | ethwei" mantissa="2"></formatted-number>
+            <formatted-number value.to-view="seed.target | ethwei" mantissa="2" average></formatted-number>
           </div>
           <div class="label maxLabel">MAX</div>
           <div class="value max">
-            <formatted-number value.to-view="seed.cap | ethwei" mantissa="2"></formatted-number>
+            <formatted-number value.to-view="seed.cap | ethwei" mantissa="2" average></formatted-number>
           </div>
           <div class="label valuationLabel">VALUATION</div>
           <div class="value valuation">$ <formatted-number
               if.to-view="seed.valuation"
               value.to-view="seed.valuation"
-              average="false"
               thousands-separated></formatted-number>
             <span else>N/A</span>
           </div>
           <div class="label tokensleftLabel">TOKENS LEFT</div>
           <div class="value tokensleft">
-            <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft"></formatted-number><span else>N/A</span>%
+            <formatted-number if.to-view="seedTokensLeft" value.to-view="seedTokensLeft" average></formatted-number><span else>N/A</span>%
           </div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>

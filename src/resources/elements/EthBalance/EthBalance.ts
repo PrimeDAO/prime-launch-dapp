@@ -9,7 +9,6 @@ import { BigNumber } from "ethers";
 @customElement("ethbalance")
 export class EthBalance {
   @bindable public placement = "top";
-  @bindable public formatted;
 
   private balance: BigNumber = null;
   private subscriptions = new DisposableCollection();

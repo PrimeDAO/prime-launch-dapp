@@ -7,6 +7,12 @@ import { Utils } from "services/utils";
 
 @autoinject
 export class Stage3 extends BaseStage {
+  private fundingSymbol: string;
+  private seedSymbol: string;
+
+  private fundingIcon: string;
+  private seedIcon: string;
+
   constructor(
     eventAggregator: EventAggregator,
     private tokenService: TokenService,
@@ -25,6 +31,8 @@ export class Stage3 extends BaseStage {
       this.stageState.verified = false;
     } else {
       this.stageState.verified = true;
+      this.wizardState.seedTokenSymbol = this.seedSymbol;
+      this.wizardState.fundingTokenSymbol = this.fundingSymbol;
       this.next();
     }
   }
@@ -36,12 +44,12 @@ export class Stage3 extends BaseStage {
     } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
       message = "Please enter a valid address for the Seed Token Address";
     }
-    // else if (!this.seedConfig.tokenDetails.maxSupply || this.seedConfig.tokenDetails.maxSupply === "0") {
-    //   message = "Please enter a non-zero number for Maximum Supply";
-    // }
-    // else if (!this.seedConfig.tokenDetails.initSupply || this.seedConfig.tokenDetails.initSupply === "0") {
-    //   message = "Please enter a non-zero number for Initial Supply";
-    // }
+    else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
+      message = "Please enter a non-zero number for Maximum Supply";
+    }
+    else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
+      message = "Please enter a non-zero number for Initial Supply";
+    }
     // Check the token distribution
     this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: string, lockup: number}) => {
       if (!tokenDistrb.category) {
@@ -56,18 +64,30 @@ export class Stage3 extends BaseStage {
   }
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
-    if (type === "fund" && this.seedConfig.tokenDetails.fundingAddress) {
-      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
-        this.seedConfig.tokenDetails.fundingSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
-      }).catch(() => {
-        this.validationError("Could not get token info from the address supplied");
-      });
-    } else if (type === "seed" && this.seedConfig.tokenDetails.seedAddress) {
-      this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
-        this.seedConfig.tokenDetails.seedSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
-      }).catch(() => {
-        this.validationError("Could not get token info from the address supplied");
-      });
+    if (type === "fund") {
+      if (this.seedConfig.tokenDetails.fundingAddress) {
+        this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
+          this.fundingSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+          this.fundingIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+        }).catch(() => {
+          this.validationError("Could not get token info from the address supplied");
+        });
+      } else {
+        this.fundingSymbol = undefined;
+        this.fundingIcon = undefined;
+      }
+    } else if (type === "seed") {
+      if (this.seedConfig.tokenDetails.seedAddress) {
+        this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
+          this.seedSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
+          this.seedIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+        }).catch(() => {
+          this.validationError("Could not get token info from the address supplied");
+        });
+      } else {
+        this.seedSymbol = undefined;
+        this.seedIcon = undefined;
+      }
     }
   }
 

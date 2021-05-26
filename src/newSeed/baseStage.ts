@@ -10,7 +10,14 @@ import { Hash } from "services/EthereumService";
 export interface IStageState {
   verified: boolean;
   title: string;
+}
+
+export interface IWizardState {
   seedHash?: Hash;
+  fundingTokenSymbol?: string;
+  seedTokenSymbol?: string;
+  requiredSeedDeposit?: number;
+  requiredSeedFee?: number;
 }
 
 @singleton(false)
@@ -20,8 +27,12 @@ export abstract class BaseStage {
   protected stageNumber: number;
   protected maxStage: number;
   protected stageStates: Array<IStageState>;
+  protected wizardState: IWizardState;
+
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
+
+  protected readonly seedFee = .01;
 
   constructor(
     protected router: Router,

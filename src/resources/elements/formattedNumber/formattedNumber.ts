@@ -16,7 +16,7 @@ export class FormattedNumber {
    */
   //  @bindable public format?: string;
   @bindable public precision?: string | number;
-  @bindable.booleanAttr public average = true;
+  @bindable.booleanAttr public average = false;
   @bindable public mantissa?: string | number;
   @bindable public value: number | string;
   @bindable public placement = "top";
@@ -45,8 +45,8 @@ export class FormattedNumber {
       text = this.numberService.toString(Number(this._value),
         {
           precision: this.precision ? this.precision : ((this.average && !this.mantissa) ? 3 : undefined),
-          average: this.average,
-          mantissa: this.mantissa !== undefined ? this.mantissa : undefined,
+          average: !this.thousandsSeparated && this.average,
+          mantissa: this.mantissa,
           thousandSeparated: this.thousandsSeparated,
         },
       );
