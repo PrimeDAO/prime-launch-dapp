@@ -58,8 +58,14 @@ export class Stage4 extends BaseStage {
   validateInputs(): string {
     let message: string;
     // Split the start and endt time
-    const startTimes = this.startTime.split(":");
-    const endTimes = this.endTime.split(":");
+    let startTimes = [];
+    let endTimes = [];
+    if (this.startTime) {
+      startTimes = this.startTime.split(":");
+    }
+    if (this.endTime) {
+      endTimes = this.endTime.split(":");
+    }
 
     if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
       message = "Please enter a value for Funding Tokens per Seed Token";
