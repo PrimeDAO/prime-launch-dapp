@@ -38,7 +38,7 @@ export class Stage4 extends BaseStage {
     if (name === "whitelist") {
       this.seedConfig.seedDetails.whitelist.isWhitelist = !this.seedConfig.seedDetails.whitelist.isWhitelist;
     } else {
-      this.seedConfig.seedDetails[name] = !this.seedConfig.seedDetails.geoBlock;
+      this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
     }
   }
 
