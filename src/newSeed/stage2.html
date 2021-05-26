@@ -3,64 +3,61 @@
     <div class="infoContainer">
       <div class="heading heading2 title">Project Details</div>
       <div class="subtext">Description of your project and team.</div>
-     
-        <div class="infoInput">
-          <div class="labelContainer">
-            <div class="labeledQuestion">
-              <label for="projSummary">Project Summary</label>
-              <div class="questionMark">
-                <question-mark text="Describe your project. This will be visible to users on Home, Launches and Seed Dashboard pages as an introduction to your project."></question-mark>
-              </div>
+
+      <div class="infoInput">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="projSummary">Project Summary</label>
+            <div class="questionMark">
+              <question-mark text="Describe your project. This will be visible to users on Home, Launches and Seed Dashboard pages as an introduction to your project"></question-mark>
             </div>
-            <span value.from-view="seedConfig.projectDetails.summary">
-              ${seedConfig.projectDetails.summary.length}/150
-            </span>
           </div>
-            <textarea
-              id="projSummary"
-              value.bind="seedConfig.projectDetails.summary"
-              maxlength="150"
-            ></textarea>
+          <span value.from-view="seedConfig.projectDetails.summary">
+            ${seedConfig.projectDetails.summary.length}/150
+          </span>
         </div>
-        <div class="infoInput">
-          <div class="labelContainer">
-            <div class="labeledQuestion">
-              <label for="valueProp">Value Proposition</label>
-              <div class="questionMark">
-                <question-mark text="Why should someone contribute to your project? This will be visible on top of the Seed Dasboard."></question-mark>
-              </div>
+        <textarea
+          id="projSummary"
+          value.bind="seedConfig.projectDetails.summary"
+          maxlength="150"></textarea>
+      </div>
+      <div class="infoInput">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="valueProp">Value Proposition</label>
+            <div class="questionMark">
+              <question-mark text="Why should someone contribute to your project? This will be visible on top of the Seed Dasboard"></question-mark>
             </div>
-            <span value.from-view="seedConfig.projectDetails.proposition">
-              ${seedConfig.projectDetails.proposition.length}/150
-            </span>
           </div>
-          <textarea
-            id="valueProp"
-            value.bind="seedConfig.projectDetails.proposition"
-            maxlength="150"
-          >
+          <span value.from-view="seedConfig.projectDetails.proposition">
+            ${seedConfig.projectDetails.proposition.length}/150
+          </span>
+        </div>
+        <textarea
+          id="valueProp"
+          value.bind="seedConfig.projectDetails.proposition"
+          maxlength="150">
           </textarea>
-        </div>
-        <div class="infoInput">
-          <div class="labelContainer">
-            <div class="labeledQuestion">
-              <label for="teamDesc">Team Description</label>
-              <div class="questionMark">
-                <question-mark text="Describe the team behind the project. Provide responsibilities and any useful background."></question-mark>
-              </div>
+      </div>
+      <div class="infoInput">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="teamDesc">Team Description</label>
+            <div class="questionMark">
+              <question-mark text="Describe the team behind the project. Provide responsibilities and any useful background"></question-mark>
             </div>
-            <span value.from-view="seedConfig.projectDetails.teamDescription">
-              ${seedConfig.projectDetails.teamDescription.length}/150
-            </span>
           </div>
-          <textarea
-            id="category"
-            value.bind="seedConfig.projectDetails.teamDescription"
-            maxlength="150"
-          >
-          </textarea>
+          <span value.from-view="seedConfig.projectDetails.teamDescription">
+            ${seedConfig.projectDetails.teamDescription.length}/150
+          </span>
         </div>
-     
+        <textarea
+          id="category"
+          value.bind="seedConfig.projectDetails.teamDescription"
+          maxlength="150">
+          </textarea>
+      </div>
+
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
         <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
