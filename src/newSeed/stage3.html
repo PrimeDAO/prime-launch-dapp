@@ -9,7 +9,12 @@
       <div>
         <div class="infoInput ticker">
           <div class="address">
-            <label for="fundingAddress">Funding Token Address</label>
+            <div class="labeledQuestion">
+              <label for="fundingAddress">Funding Token Address</label>
+              <div class="questionMark">
+                <question-mark text="The Ethereum address of the Funding Tokens, the tokens that Contributors send to the seed."></question-mark>
+              </div>
+            </div>
             <div class="tickerContainer">
               <input id="fundingAddress"
                 value.bind="seedConfig.tokenDetails.fundingAddress"
@@ -26,7 +31,12 @@
         </div>
         <div class="infoInput ticker">
           <div class="address">
-            <label for="seedAddress">Seed Token Address</label>
+            <div class="labeledQuestion">
+              <label for="seedAddress">Seed Token Address</label>
+              <div class="questionMark">
+                <question-mark text="The Ethereum address of the Seed Tokens, the tokens that are being distributed via the seed."></question-mark>
+              </div>
+            </div>
             <div class="tickerContainer">
               <input id="seedAddress"
                 value.bind="seedConfig.tokenDetails.seedAddress"
@@ -71,7 +81,7 @@
           <div class="labeledQuestion">
             <label>Seed Token Global Distribution</label>
             <div class="questionMark">
-              <question-mark text="Tick"></question-mark>
+              <question-mark text="The distribution of tokens between different stakeholders groups of the Seed token."></question-mark>
             </div>
           </div>
           <div class="columnHeaders" if.bind="seedConfig.tokenDetails.tokenDistrib.length > 0">
