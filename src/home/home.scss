@@ -55,7 +55,7 @@
       > .subtitle {
         font-family: "Inter";
         font-weight: bold;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         max-width: 35rem;
         color: $Neutral03;
         margin-bottom: 86px;
@@ -119,6 +119,10 @@
         text-align: center;
         padding: 2em;
       }
+      & .heading3 {
+        font-size: 48px;
+        margin-bottom: 53px;
+      }
     }
 
     &.nomiss {
@@ -173,6 +177,11 @@
       grid-template-columns: auto auto;
       column-gap: 10%;
       font-family: Inter;
+
+      & .heading3 {
+        font-size: 48px;
+        margin-bottom: 23px;
+      }
 
       .pic {
         img {
