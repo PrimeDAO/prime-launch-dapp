@@ -1,12 +1,10 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
-  display: inline-flex;
   .timeLeft,
   .active {
     font-size: 12px;
     font-family: Inter;
     align-self: center;
-    text-align: right;
     white-space: nowrap;
 
     > .icon {
