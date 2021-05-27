@@ -1,6 +1,12 @@
 import { BaseStage } from "newSeed/baseStage";
+import { Utils } from "services/utils";
 
 export class Stage2 extends BaseStage {
+  private isValidFile(file: string): boolean {
+    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
+    return re.test(String(file).toLowerCase());
+  }
+
   proceed(): void {
     const message: string = this.validateInputs();
     if (message) {
@@ -20,6 +26,10 @@ export class Stage2 extends BaseStage {
       message = "Please enter a value for Value Proposition";
     } else if (!this.seedConfig.projectDetails.teamDescription) {
       message = "Please enter a value for Team Description";
+    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
+      message = "Please supply a valid image file type for Project Logo";
+    } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
+      message = "Please enter a valid url for Project Logo";
     }
     return message;
   }

@@ -3,11 +3,6 @@ import { Utils } from "services/utils";
 
 export class Stage5 extends BaseStage {
 
-  isValidFile(file: string): boolean {
-    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
-    return re.test(String(file).toLowerCase());
-  }
-
   proceed(): void {
     let message = this.validateInputs();
     if (message) {
@@ -36,10 +31,6 @@ export class Stage5 extends BaseStage {
     // TODO: Check if there is an email validator
     if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail)) {
       message = "Please enter a valid email address for Contact Email";
-    } else if (!Utils.isValidUrl(this.seedConfig.contactDetails.logo)) {
-      message = "Please supply a valid image file type for Project Logo";
-    } else if (!this.isValidFile(this.seedConfig.contactDetails.logo)) {
-      message = "Please enter a valid url for Project Logo";
     }
     return message;
   }

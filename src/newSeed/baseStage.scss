@@ -178,6 +178,23 @@
     }
   }
 
+  &.stage2 {
+    .logo {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      & input {
+        width: 20em;
+      }
+    }
+    .fileNote {
+      display: flex;
+      align-items: flex-end;
+      color: $Neutral02;
+      line-height: 1.5em;
+    }
+  }
+
   &.stage3 {
     .tickerContainer {
       display: flex;
@@ -408,20 +425,6 @@
     .infoContainer {
       & textarea {
         height: 7em;
-      }
-      .logo {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
-        & input {
-          width: 20em;
-        }
-      }
-      .fileNote {
-        display: flex;
-        align-items: flex-end;
-        color: $Neutral02;
-        line-height: 1.5em;
       }
     }
   }
