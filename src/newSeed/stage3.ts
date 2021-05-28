@@ -39,7 +39,7 @@ export class Stage3 extends BaseStage {
     }
   }
 
-  validateInputs(): Promise<string> {
+  validateInputs(): string {
     let message: string;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
@@ -62,7 +62,7 @@ export class Stage3 extends BaseStage {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
-    return Promise.resolve(message);
+    return message;
   }
 
   // TODO: Add a loading comp to the view while fetching

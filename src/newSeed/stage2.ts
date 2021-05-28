@@ -18,7 +18,7 @@ export class Stage2 extends BaseStage {
     }
   }
 
-  validateInputs(): Promise<string> {
+  validateInputs(): string {
     let message: string;
     if (!this.seedConfig.projectDetails.summary) {
       message = "Please enter a value for Project Summary";
@@ -31,6 +31,6 @@ export class Stage2 extends BaseStage {
     } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please enter a valid url for Project Logo";
     }
-    return Promise.resolve(message);
+    return message;
   }
 }

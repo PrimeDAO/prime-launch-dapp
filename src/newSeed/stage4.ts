@@ -72,7 +72,7 @@ export class Stage4 extends BaseStage {
     }
   }
 
-  async validateInputs(): Promise<string> {
+  validateInputs(): string {
     let message: string;
     // Split the start and endt time
     let startTimes = [];
@@ -123,7 +123,7 @@ export class Stage4 extends BaseStage {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid url for Whitelist";
-      // won't alidate this for now
+      // won't validate this for now
     // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
     //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {

@@ -65,7 +65,7 @@ export abstract class BaseStage {
     }
   }
 
-  protected validateInputs(): Promise<string> {
+  protected validateInputs(): string {
     return null;
   }
 

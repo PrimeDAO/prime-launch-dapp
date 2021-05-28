@@ -25,13 +25,13 @@ export class Stage5 extends BaseStage {
     }
   }
 
-  validateInputs(): Promise<string> {
+  validateInputs(): string {
     let message: string;
     // Validate current stage
     // TODO: Check if there is an email validator
     if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail)) {
       message = "Please enter a valid email address for Contact Email";
     }
-    return Promise.resolve(message);
+    return message;
   }
 }

@@ -25,7 +25,7 @@ export class Stage1 extends BaseStage {
     }
   }
 
-  validateInputs(): Promise<string> {
+  validateInputs(): string {
     let message: string;
     if (!this.seedConfig.general.projectName) {
       message = "Please enter a value for Project Name";
@@ -53,6 +53,6 @@ export class Stage1 extends BaseStage {
         message = `Please enter a valid url for ${link.media}`;
       }
     });
-    return Promise.resolve(message);
+    return message;
   }
 }
