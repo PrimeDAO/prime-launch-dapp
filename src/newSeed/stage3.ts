@@ -20,12 +20,14 @@ export class Stage3 extends BaseStage {
   ) {
     super(router, eventAggregator);
   }
+
   addTokenDistribution(): void {
     // Create a new custom link object
     this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
-  proceed(): void {
-    const message: string = this.validateInputs();
+
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -37,7 +39,7 @@ export class Stage3 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
@@ -60,8 +62,9 @@ export class Stage3 extends BaseStage {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
     });
-    return message;
+    return Promise.resolve(message);
   }
+
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
     if (type === "fund") {

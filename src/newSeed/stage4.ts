@@ -1,8 +1,13 @@
+import { autoinject } from "aurelia-framework";
+import { WhiteListService } from "./../services/WhiteListService";
+import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
+import { EventAggregator } from "aurelia-event-aggregator";
 
+@autoinject
 export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
@@ -13,6 +18,14 @@ export class Stage4 extends BaseStage {
   dateService = new DateService();
   startDatePicker: Litepicker;
   endDatePicker: Litepicker;
+
+  constructor(
+    eventAggregator: EventAggregator,
+    private whiteListService: WhiteListService,
+    router: Router,
+  ) {
+    super(router, eventAggregator);
+  }
 
   attached(): void {
     this.startDatePicker = new Litepicker({
@@ -38,8 +51,8 @@ export class Stage4 extends BaseStage {
     this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
   }
 
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -59,7 +72,7 @@ export class Stage4 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  async validateInputs(): Promise<string> {
     let message: string;
     // Split the start and endt time
     let startTimes = [];
@@ -110,6 +123,9 @@ export class Stage4 extends BaseStage {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid url for Whitelist";
+      // won't alidate this for now
+    // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+    //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }

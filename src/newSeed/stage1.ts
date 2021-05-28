@@ -13,8 +13,8 @@ export class Stage1 extends BaseStage {
     // Remove the indexed link
     this.seedConfig.general.customLinks.splice(index, 1);
   }
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -25,7 +25,7 @@ export class Stage1 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!this.seedConfig.general.projectName) {
       message = "Please enter a value for Project Name";
@@ -53,6 +53,6 @@ export class Stage1 extends BaseStage {
         message = `Please enter a valid url for ${link.media}`;
       }
     });
-    return message;
+    return Promise.resolve(message);
   }
 }

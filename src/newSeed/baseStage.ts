@@ -44,32 +44,32 @@ export abstract class BaseStage {
     Object.assign(this, routeConfig.settings);
   }
 
-  detached(): void {
-    const message = this.validateInputs();
+  async detached(): Promise<void> {
+    const message = await this.validateInputs();
     this.stageState.verified = !message;
   }
 
-  cancel(): void {
+  protected cancel(): void {
     this.router.parent.navigate("selectPackage");
   }
 
-  next(): void {
+  protected next(): void {
     if (this.stageNumber < this.maxStage) {
       this.router.navigate(`stage${this.stageNumber + 1}`);
     }
   }
 
-  back(): void {
+  protected back(): void {
     if (this.stageNumber > 1) {
       this.router.navigate(`stage${this.stageNumber - 1}`);
     }
   }
 
-  validateInputs(): string {
+  protected validateInputs(): Promise<string> {
     return null;
   }
 
-  validationError(message: string): void {
+  protected validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
   }
 }

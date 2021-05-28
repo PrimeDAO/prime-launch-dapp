@@ -3,8 +3,8 @@ import { Utils } from "services/utils";
 
 export class Stage5 extends BaseStage {
 
-  proceed(): void {
-    let message = this.validateInputs();
+  async proceed(): Promise<void> {
+    let message = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -25,13 +25,13 @@ export class Stage5 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     // Validate current stage
     // TODO: Check if there is an email validator
     if (!Utils.isValidEmail(this.seedConfig.contactDetails.contactEmail)) {
       message = "Please enter a valid email address for Contact Email";
     }
-    return message;
+    return Promise.resolve(message);
   }
 }

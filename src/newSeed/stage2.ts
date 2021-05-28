@@ -7,8 +7,8 @@ export class Stage2 extends BaseStage {
     return re.test(String(file).toLowerCase());
   }
 
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -18,7 +18,7 @@ export class Stage2 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!this.seedConfig.projectDetails.summary) {
       message = "Please enter a value for Project Summary";
@@ -31,6 +31,6 @@ export class Stage2 extends BaseStage {
     } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please enter a valid url for Project Logo";
     }
-    return message;
+    return Promise.resolve(message);
   }
 }
