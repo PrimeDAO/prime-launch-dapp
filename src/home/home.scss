@@ -145,6 +145,8 @@
       }
 
       .subtext {
+        font-size: 16px;
+        font-family: Inter;
         color: $Neutral03;
       }
 
@@ -169,8 +171,10 @@
         }
 
         .disclaimer {
+          color: $Neutral02;
+          font-size: 12px;
           a {
-            color: $Neutral03;
+            color: $Neutral02;
             text-decoration: underline;
           }
         }
