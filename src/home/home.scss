@@ -16,7 +16,7 @@
     &.fairLaunch {
       margin-left: 4.5em;
       margin-right: 4.5em;
-      margin-bottom: 5.75em;
+      margin-bottom: 8em;
     }
 
     &.nomiss {
@@ -32,6 +32,7 @@
     }
 
     &.top {
+      margin-top: 141px;
       width: 55%;
 
       .moonshot {
@@ -215,6 +216,7 @@
 
         .learnMore {
           @include standardTextGradient();
+          font-weight: bold;
         }
 
         .launchButton {
