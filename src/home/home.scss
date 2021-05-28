@@ -55,7 +55,7 @@
       > .subtitle {
         font-family: "Inter";
         font-weight: bold;
-        font-size: 1.4rem;
+        font-size: 24px;
         max-width: 35rem;
         color: $Neutral03;
         margin-bottom: 86px;
@@ -119,9 +119,13 @@
         text-align: center;
         padding: 2em;
       }
-      & .heading3 {
+      & .heading1 {
+        background-image: none;
+        -webkit-background-clip: unset;
+        background-clip: unset;
+        -webkit-text-fill-color: $Secondary02;
         font-size: 48px;
-        margin-bottom: 53px;
+        line-height: 46px;
       }
     }
 
@@ -178,9 +182,13 @@
       column-gap: 10%;
       font-family: Inter;
 
-      & .heading3 {
+      & .heading1 {
+        background-image: none;
+        -webkit-background-clip: unset;
+        background-clip: unset;
+        -webkit-text-fill-color: $Secondary02;
         font-size: 48px;
-        margin-bottom: 23px;
+        line-height: 46px;
       }
 
       .pic {
