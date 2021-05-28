@@ -4,16 +4,20 @@
   color: $Neutral02;
   font-family: Inter;
   font-size: 14px;
+  margin-right: 4.5em;
+  margin-left: 4.5em;
 
   .sections {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13rem;
+
+    .footerLinks {
+      display: flex;
+    }
 
     .section {
       margin-bottom: 48px;
-
-      &:not(:last-child) {
-        margin-right: 15%;
-      }
 
       .title {
         margin-bottom: 24px;
@@ -21,7 +25,9 @@
 
       &.about {
         .body {
-          margin-bottom: 16px;
+          margin-bottom: 42px;
+          width: 22rem;
+          line-height: 140%;
         }
       }
 
@@ -29,12 +35,13 @@
         display: inline-block;
         color: $Neutral02;
         font-size: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 24px;
+        margin-right: 40px;
       }
     }
   }
   > hr {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     background-color: $Border01;
     height: 0.1rem;
   }
