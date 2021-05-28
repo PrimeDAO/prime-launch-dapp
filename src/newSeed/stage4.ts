@@ -34,12 +34,8 @@ export class Stage4 extends BaseStage {
     });
   }
 
-  toggleCheckbox(name: string): void {
-    if (name === "whitelist") {
-      this.seedConfig.seedDetails.whitelist.isWhitelist = !this.seedConfig.seedDetails.whitelist.isWhitelist;
-    } else {
-      this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
-    }
+  toggleGeoBlocking(): void {
+    this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
   }
 
   proceed(): void {
@@ -112,8 +108,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
-      message = "Please upload a .csv file or uncheck Whitelist";
+    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
+      message = "Please enter a valid url for Whitelist";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }

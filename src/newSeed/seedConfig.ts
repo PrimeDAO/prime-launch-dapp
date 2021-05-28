@@ -57,7 +57,7 @@ export interface ISeedDetails {
   vestingCliff: number,
   startDate: string,
   endDate: string,
-  whitelist: { isWhitelist: boolean, whitelistFile: string }
+  whitelist: string,
   geoBlock: boolean,
   legalDisclaimer: string
 }
@@ -96,10 +96,6 @@ export class SeedConfig implements ISeedConfig {
     remarks: "",
   } as IContactDetails;
   public seedDetails = {
-    whitelist: {
-      isWhitelist: false,
-      whitelistFile: undefined,
-    },
     geoBlock: false,
   } as ISeedDetails;
 }
