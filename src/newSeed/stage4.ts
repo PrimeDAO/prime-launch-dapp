@@ -63,10 +63,10 @@ export class Stage4 extends BaseStage {
       const endTimes = this.endTime.split(":");
       let temp = this.startDate;
       temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       temp = this.endDate;
       temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       this.stageState.verified = true;
       this.next();
     }
