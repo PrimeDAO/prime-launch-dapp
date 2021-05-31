@@ -14,23 +14,20 @@
 
   .timeLeft {
     &.soon {
-      color: $Primary01;
-      background-color: $CountdownStateSoon;
+      color: $AlertRed;
     }
 
     &.comingUp {
-      color: $AlertRed;
-      background-color: $CountdownStateComingup;
+      color: $AlertOrange;
     }
 
     &.farOff {
-      color: $AlertOrange;
-      background-color: $CountdownStateFaroff;
+      color: $White;
     }
   }
+
   .active {
     color: $AlertGreen;
-    background-color: $CountdownStateLive;
 
     > .icon {
       display: inline-block;
@@ -38,6 +35,32 @@
       margin-right: 0.7em;
       position: relative;
       bottom: 0.3em;
+    }
+  }
+
+  &.contained {
+    .timeLeft,
+    .active {
+      border-radius: 87px;
+      padding: 2px 9px;
+    }
+
+    .timeLeft {
+      &.soon {
+        background-color: $CountdownStateSoon;
+      }
+
+      &.comingUp {
+        background-color: $CountdownStateComingup;
+      }
+
+      &.farOff {
+        background-color: $CountdownStateFaroff;
+      }
+    }
+
+    .active {
+      background-color: $CountdownStateLive;
     }
   }
 }

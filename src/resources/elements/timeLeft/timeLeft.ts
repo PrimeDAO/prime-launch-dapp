@@ -8,6 +8,7 @@ export class TimeLeft {
   @bindable seed: Seed;
   @bindable.booleanAttr hideIcons: boolean;
   @bindable.booleanAttr largest: boolean;
+  @bindable.booleanAttr contained: boolean;
 
   @computedFrom("seed.startsInMilliseconds", "seed.hasNotStarted")
   get proximity(): number {
