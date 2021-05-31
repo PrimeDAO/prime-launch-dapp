@@ -14,12 +14,12 @@
 
   .timeLeft {
     &.soon {
-      color: $AlertRed;
+      color: $Primary01;
       background-color: $CountdownStateSoon;
     }
 
     &.comingUp {
-      color: $AlertOrange;
+      color: $AlertRed;
       background-color: $CountdownStateComingup;
     }
 
