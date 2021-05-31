@@ -15,14 +15,22 @@
   .timeLeft {
     &.soon {
       color: $AlertRed;
+      background-color: $CountdownStateSoon;
     }
 
     &.comingUp {
       color: $AlertOrange;
+      background-color: $CountdownStateComingup;
+    }
+
+    &.farOff {
+      color: $AlertOrange;
+      background-color: $CountdownStateFaroff;
     }
   }
   .active {
     color: $AlertGreen;
+    background-color: $CountdownStateLive;
 
     > .icon {
       display: inline-block;

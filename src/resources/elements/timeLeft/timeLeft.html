@@ -1,6 +1,6 @@
 <template>
   <div class="timeLeftContainer">
-    <div if.to-view="seed.hasNotStarted" class="timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'future' )}"><span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${seed.startsInMilliseconds | timespan:"minutes":largest}</div>
+    <div if.to-view="seed.hasNotStarted" class="timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}"><span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${seed.startsInMilliseconds | timespan:"minutes":largest}</div>
     <div if.to-view="seed.isLive && !seed.claimingIsOpen" class="active"><span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE</div>
     <div if.to-view="seed.claimingIsOpen" class="active"><span if.to-view="!hideIcons" class="icon fa fa-circle"></span>COMPLETED</div>
     <div if.to-view="seed.isDead && !seed.claimingIsOpen" class="active"><span if.to-view="!hideIcons" class="icon fa fa-circle"></span>INCOMPLETE</div>
