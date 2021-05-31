@@ -11,6 +11,7 @@ import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { Redirect } from "aurelia-router";
+import { GeoBlockService } from "services/GeoBlockService";
 
 @autoinject
 export class SeedDashboard {
@@ -30,11 +31,14 @@ export class SeedDashboard {
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
+  geoBlocked: boolean;
+
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
     private numberService: NumberService,
     private ethereumService: EthereumService,
+    private geoBlockService: GeoBlockService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -72,6 +76,7 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
+    this.geoBlocked = false; // this.geoBlockService.blackisted;
   }
 
   async attached(): Promise<void> {

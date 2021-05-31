@@ -7,10 +7,13 @@ import "./questionMark.scss";
 export class QuestionMark {
   @bindable.string text: string;
   @bindable.string placement = "top";
+  @bindable.booleanAttr allowHtml = false;
 
   questionMark: HTMLElement;
 
   attached(): void {
-    tippy(this.questionMark);
+    tippy(this.questionMark, {
+      allowHTML: this.allowHtml,
+    });
   }
 }

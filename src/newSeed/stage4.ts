@@ -1,8 +1,13 @@
+import { autoinject } from "aurelia-framework";
+import { WhiteListService } from "./../services/WhiteListService";
+import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
+import { EventAggregator } from "aurelia-event-aggregator";
 
+@autoinject
 export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
@@ -13,6 +18,14 @@ export class Stage4 extends BaseStage {
   dateService = new DateService();
   startDatePicker: Litepicker;
   endDatePicker: Litepicker;
+
+  constructor(
+    eventAggregator: EventAggregator,
+    private whiteListService: WhiteListService,
+    router: Router,
+  ) {
+    super(router, eventAggregator);
+  }
 
   attached(): void {
     this.startDatePicker = new Litepicker({
@@ -34,16 +47,12 @@ export class Stage4 extends BaseStage {
     });
   }
 
-  toggleCheckbox(name: string): void {
-    if (name === "whitelist") {
-      this.seedConfig.seedDetails.whitelist.isWhitelist = !this.seedConfig.seedDetails.whitelist.isWhitelist;
-    } else {
-      this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
-    }
+  toggleGeoBlocking(): void {
+    this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
   }
 
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -112,8 +121,11 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
-      message = "Please upload a .csv file or uncheck Whitelist";
+    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
+      message = "Please enter a valid url for Whitelist";
+      // won't validate this for now
+    // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+    //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }

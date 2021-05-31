@@ -12,6 +12,7 @@ export interface IProjectDetails {
   summary: string,
   proposition: string,
   teamDescription: string,
+  logo: string
 }
 
 export interface ITokenDetails {
@@ -56,15 +57,14 @@ export interface ISeedDetails {
   vestingCliff: number,
   startDate: string,
   endDate: string,
-  whitelist: { isWhitelist: boolean, whitelistFile: string }
+  whitelist: string,
   geoBlock: boolean,
   legalDisclaimer: string
 }
 
 export interface IContactDetails {
   contactEmail: string,
-  remarks: string,
-  logo: string
+  remarks: string
 }
 
 export interface ISeedConfig {
@@ -96,10 +96,6 @@ export class SeedConfig implements ISeedConfig {
     remarks: "",
   } as IContactDetails;
   public seedDetails = {
-    whitelist: {
-      isWhitelist: false,
-      whitelistFile: undefined,
-    },
     geoBlock: false,
   } as ISeedDetails;
 }

@@ -129,53 +129,15 @@
             </div>
           </div>
         </div>
-        <div class="infoInput whitelistContainer">
+        <div class="infoInput">
           <div class="labeledQuestion">
             <label for="whitelist">Whitelist</label>
             <div class="questionMark">
-              <question-mark text="The whitelist is list of comma/whitespace-separated addresses representing accounts that are allowed to purchase Seed tokens"></question-mark>
+              <question-mark text="The whitelist file contains a list of addresses separated by commas or whitespace. The addresses define the set of accounts that will be allowed to purchase Seed tokens here in PrimeLAUNCH"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer" click.delegate="toggleCheckbox('whitelist')">
-            <i class="fas fa-check yes"></i>
-            <i class="fas fa-times no"></i>
-            <div class="checkbox">
-              <input
-                id="whitelist" type="checkbox"
-                checked.bind="seedConfig.seedDetails.whitelist.isWhitelist" />
-              <label for="whitelist" />
-            </div>
-          </div>
-          <template if.to-view="seedConfig.seedDetails.whitelist.isWhitelist">
-            <div>
-              <label class="inputFileLabel">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <span>
-                  ${seedConfig.seedDetails.whitelist.whitelistFile[0].name || 'Upload a .csv file'}
-                </span>
-                <input id="whitelistFile" type="file" accept=".pdf"
-                  class="inputFile" files.bind="seedConfig.seedDetails.whitelist.whitelistFile">
-              </label>
-            </div>
-          </template>
-        </div>
-        <div class="infoInput">
-          <div class="labeledQuestion">
-            <label for="geoBlock">Geoblock</label>
-            <div class="questionMark">
-              <question-mark text="Geoblock allows Seed hosts to block entire geographic locations from contributing to the Seed"></question-mark>
-            </div>
-          </div>
-          <div class="checkboxContainer" click.delegate="toggleCheckbox('geoBlock')">
-            <i class="fas fa-check yes"></i>
-            <i class="fas fa-times no"></i>
-            <div class="checkbox">
-              <input
-                id="geoBlock" type="checkbox"
-                checked.bind="seedConfig.seedDetails.geoBlock" />
-              <label for="geoBlock" />
-            </div>
-          </div>
+          <input id="whitelist" value.bind="seedConfig.seedDetails.whitelist"
+            placeholder="(Optional) url to a whitelist" />
         </div>
         <div class="infoInput">
           <div class="labeledQuestion">
@@ -185,6 +147,40 @@
             id="disclaimer"
             value.bind="seedConfig.seedDetails.legalDisclaimer"
             placeholder="(Optional) url to a disclaimer" />
+        </div>
+        <div class="infoInput">
+          <div class="labeledQuestion">
+            <label for="geoBlock">Geoblock</label>
+            <div class="questionMark">
+              <question-mark allow-html text="Geoblock allows Seed hosts to prevent entire geographic locations from contributing to the Seed.<p>Disallowed Countries:
+                      <p>
+                      Afghanistan,
+                      Cuba,
+                      Ethiopia,
+                      Guyana,
+                      Iran,
+                      Iraq,
+                      Koria,
+                      Sudan,
+                      Syria,
+                      United States,
+                      United States Minor Outlying Islands,
+                      Venezuela,
+                      Yemen
+                      </p>
+                    </p>"></question-mark>
+            </div>
+          </div>
+          <div class="checkboxContainer" click.delegate="toggleGeoBlocking()">
+            <i class="fas fa-check yes"></i>
+            <i class="fas fa-times no"></i>
+            <div class="checkbox">
+              <input
+                id="geoBlock" type="checkbox"
+                checked.bind="seedConfig.seedDetails.geoBlock" />
+              <label for="geoBlock" />
+            </div>
+          </div>
         </div>
         <div class="buttonContainer">
           <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
