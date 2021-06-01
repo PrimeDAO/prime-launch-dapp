@@ -42,13 +42,11 @@
       line-height: 140%;
       color: $Neutral03;
       margin-bottom: 32px;
+      white-space: normal;
     }
 
     > .countdown {
       grid-area: timeLeft;
-      border-radius: 87px;
-      background-color: $BG04;
-      padding: 2px 8px;
     }
 
     .tokensTarget {

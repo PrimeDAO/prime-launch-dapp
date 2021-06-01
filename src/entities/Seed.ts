@@ -233,7 +233,7 @@ export class Seed {
       /**
        * TODO: unstub this
        */
-      this.metadataHash = "QmarQL5q4i87TtTewuor5FLKVZ6FLd8qAs4qk2824UN184"; // await this.contract.metadata();
+      this.metadataHash = "QmTjbjSUK7ZQUWm3u7UM8Db8tZoKm3ay4Bo9GMPjRFojs7"; // await this.contract.metadata();
 
       await this.hydateMetadata();
 
