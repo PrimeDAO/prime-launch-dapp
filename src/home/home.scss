@@ -1,16 +1,7 @@
-@import "styles/colors.scss";
-
-@mixin standardTextGradient {
-  background-image: $Gradient01;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+@import "styles/styles.scss";
 
 .page.home {
   .section {
-    margin-bottom: 20px;
-
-    &.top,
     &.nomiss,
     &.launches,
     &.fairLaunch {
@@ -51,8 +42,8 @@
       .title {
         white-space: normal;
         color: $Shade06;
-        padding-bottom: .1em;
-        max-width: 46rem;
+        padding-bottom: 0.1em;
+        max-width: 645px;
       }
 
       > .subtitle {
@@ -61,7 +52,7 @@
         font-size: 24px;
         max-width: 35rem;
         color: $Neutral03;
-        margin-bottom: 86px;
+        margin-bottom: 200px;
       }
 
       .buttons {
@@ -139,7 +130,7 @@
       height: 12em;
       align-content: center;
       justify-content: space-around;
-      padding: 2em;
+      padding: 6px 0;
 
       & .title {
         font-family: "Aeonik";
@@ -208,9 +199,9 @@
       .rightColumn {
         width: 32em;
         .subtext {
-          margin-bottom: 3em;
-          font-size: 1em;
-          line-height: 1.5em;
+          margin-bottom: 48px;
+          font-size: 16px;
+          line-height: 24px;
           div {
             margin-bottom: 1em;
           }

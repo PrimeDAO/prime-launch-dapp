@@ -1,8 +1,13 @@
+import { autoinject } from "aurelia-framework";
+import { WhiteListService } from "./../services/WhiteListService";
+import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
+import { EventAggregator } from "aurelia-event-aggregator";
 
+@autoinject
 export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
@@ -13,6 +18,14 @@ export class Stage4 extends BaseStage {
   dateService = new DateService();
   startDatePicker: Litepicker;
   endDatePicker: Litepicker;
+
+  constructor(
+    eventAggregator: EventAggregator,
+    private whiteListService: WhiteListService,
+    router: Router,
+  ) {
+    super(router, eventAggregator);
+  }
 
   attached(): void {
     this.startDatePicker = new Litepicker({
@@ -34,16 +47,12 @@ export class Stage4 extends BaseStage {
     });
   }
 
-  toggleCheckbox(name: string): void {
-    if (name === "whitelist") {
-      this.seedConfig.seedDetails.whitelist.isWhitelist = !this.seedConfig.seedDetails.whitelist.isWhitelist;
-    } else {
-      this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
-    }
+  toggleGeoBlocking(): void {
+    this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
   }
 
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -54,10 +63,10 @@ export class Stage4 extends BaseStage {
       const endTimes = this.endTime.split(":");
       let temp = this.startDate;
       temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       temp = this.endDate;
       temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       this.stageState.verified = true;
       this.next();
     }
@@ -83,9 +92,11 @@ export class Stage4 extends BaseStage {
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a non-zero number for the Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
-      message = "Please enter a non-zero value for  \"Tokens vested for\" ";
+      message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
+    } else if (!(this.seedConfig.seedDetails.vestingCliff < this.seedConfig.seedDetails.vestingDays)) {
+      message = "Plese enter a value of \"with a cliff of\" lesser than \"Seed tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
@@ -112,8 +123,11 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.seedConfig.seedDetails.whitelist.isWhitelist && !this.seedConfig.seedDetails.whitelist.whitelistFile) {
-      message = "Please upload a .csv file or uncheck Whitelist";
+    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
+      message = "Please enter a valid url for Whitelist";
+      // won't validate this for now
+    // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+    //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }

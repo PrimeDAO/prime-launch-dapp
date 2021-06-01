@@ -13,8 +13,8 @@ export class Stage1 extends BaseStage {
     // Remove the indexed link
     this.seedConfig.general.customLinks.splice(index, 1);
   }
-  proceed(): void {
-    const message: string = this.validateInputs();
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;

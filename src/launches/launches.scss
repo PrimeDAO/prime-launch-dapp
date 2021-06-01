@@ -1,11 +1,8 @@
 @import "styles/colors.scss";
 .page.launches {
   .section {
-    &.featured,
-    &.launches {
-      padding-left: 4.5em;
-      padding-right: 4.5em;
-      margin-bottom: 5.75em;
+    &.featured {
+      margin-bottom: 92px;
     }
 
     &.launches {

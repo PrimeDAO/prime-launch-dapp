@@ -18,14 +18,18 @@ export class GeoBlockService {
   ]);
 
   public async initialize(): Promise<void> {
-    // this.blackisted = !this.blacklist.has(await this.getCountry());
+    const country = await this.getCountry();
+    this.blackisted = country ? this.blacklist.has(country) : true;
   }
 
   private getCountry(): Promise<string> {
-    // 0d88a37a243d8d0c9b7795eb5dfd40ad
     return axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`)
       .then((response) => {
-        return response.data.country_code;
+        if (response.data?.success){
+          return response.data.country_code;
+        } else {
+          return null;
+        }
       });
   }
 
