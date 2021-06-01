@@ -185,6 +185,7 @@
 
         .learnMore {
           @include standardTextGradient();
+          font-weight: bold;
         }
 
         .launchButton {
