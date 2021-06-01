@@ -99,6 +99,9 @@
     }
 
     &.launches {
+      > .heading1 {
+        -webkit-text-fill-color: $Secondary02;
+      }
       > .launchesButton {
         text-align: center;
         padding: 2em;
@@ -170,6 +173,9 @@
 
       .rightColumn {
         width: 32em;
+        > .heading1 {
+          -webkit-text-fill-color: $Secondary02;
+        }
         .subtext {
           margin-bottom: 48px;
           font-size: 16px;
