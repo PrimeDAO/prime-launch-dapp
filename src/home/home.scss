@@ -124,8 +124,11 @@
         line-height: unset;
       }
 
-      .subtext {
-        color: $Neutral02;
+      .noMissColumn {
+        .subtext {
+          color: $Neutral03;
+          font-size: 18px;
+        }
       }
 
       .emailColumn {
