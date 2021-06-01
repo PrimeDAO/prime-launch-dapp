@@ -5,7 +5,7 @@
       <div class="subtext">We're ready to initiate the process of creating a new Seed!
         After you click the SUBMIT button we're going to:
         <ol>
-          <li>Save to IPFS the Seed registration information you just entered</li>
+          <li>Save to IPFS the Seed registration information you just entered.</li>
           <li>Create a transaction for a Gnosis Safe multisig wallet that PrimeDAO will use to approve and execute the creation of the seed</li>
           <li>Give you a URL pointing to IPFS that you can use to review the saved Seed information</li>
           <li>Upon multisig approval, the new Seed will be created and automatically appear here in PrimeLAUNCH</li>
@@ -20,6 +20,8 @@
               thousands-separated></formatted-number>
             ${wizardState.seedTokenSymbol}
             in fees that are paid as seed tokens are claimed.
+
+            <p if.to-view="!!seedConfig.seedDetails.whitelist">Further, as you will be the admistrator of the new Seed, you must add the whitelisted accounts to the Seed.</p>
           </li>
           <li>Fees will be sent to
             <etherscanlink
