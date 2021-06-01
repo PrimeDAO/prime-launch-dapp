@@ -111,8 +111,10 @@
       background-color: $BG02;
       height: 12em;
       align-content: center;
-      justify-content: space-around;
-      padding: 6px 0;
+      justify-content: space-between;
+      padding: 6px 40px;
+      margin-left: -40px;
+      margin-right: -40px;
 
       & .title {
         font-family: "Aeonik";
@@ -144,6 +146,7 @@
         }
 
         .disclaimer {
+          text-align: right;
           a {
             color: $Neutral03;
             text-decoration: underline;
