@@ -133,7 +133,7 @@
           <div class="labeledQuestion">
             <label for="whitelist">Whitelist</label>
             <div class="questionMark">
-              <question-mark text="The whitelist file contains a list of addresses separated by commas or whitespace. The addresses define the set of accounts that will be allowed to purchase Seed tokens here in PrimeLAUNCH"></question-mark>
+              <question-mark text="Whitelisted addresses are allowed to purchase Seed tokens. The whitelist file must contain a list of addresses separated by commas or whitespace. "></question-mark>
             </div>
           </div>
           <input id="whitelist" value.bind="seedConfig.seedDetails.whitelist"
@@ -142,6 +142,9 @@
         <div class="infoInput">
           <div class="labeledQuestion">
             <label for="disclaimer">Legal Disclaimer</label>
+            <div class="questionMark">
+              <question-mark text="The user must accept the disclaimer, if supplied, in order to use the Seed.  The disclaimer must be formatted as plain text or markdown."></question-mark>
+            </div>
           </div>
           <input
             id="disclaimer"
