@@ -1,9 +1,6 @@
 @import "styles/styles.scss";
 .page.seedDashboardContainer {
   .seedDashboard {
-    padding-left: 6em;
-    padding-right: 6em;
-
     display: grid;
     grid-template-columns: 50% 40%;
     column-gap: 10%;

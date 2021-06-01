@@ -63,10 +63,10 @@ export class Stage4 extends BaseStage {
       const endTimes = this.endTime.split(":");
       let temp = this.startDate;
       temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       temp = this.endDate;
       temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(temp);
+      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
       this.stageState.verified = true;
       this.next();
     }
@@ -92,9 +92,11 @@ export class Stage4 extends BaseStage {
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a non-zero number for the Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
-      message = "Please enter a non-zero value for  \"Tokens vested for\" ";
+      message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
+    } else if (!(this.seedConfig.seedDetails.vestingCliff < this.seedConfig.seedDetails.vestingDays)) {
+      message = "Plese enter a value of \"with a cliff of\" lesser than \"Seed tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
