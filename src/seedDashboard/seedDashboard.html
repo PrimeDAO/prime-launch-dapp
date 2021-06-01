@@ -20,7 +20,7 @@
           Section One
           ================ 
         -->
-        <div if.to-view="!connected" class="secton section1">
+        <div if.to-view="!connected && !geoBlocked" class="secton section1">
           <div class="description">Check eligibility</div>
           <div class="help">
             <question-mark text="Check eligibility"></question-mark>
@@ -33,7 +33,7 @@
           Section Two
           ================ 
         -->
-        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section2">
+        <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="secton section2">
           <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Contribute"></question-mark>
@@ -79,7 +79,7 @@
           Section Three
           ================ 
         -->
-        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section3">
+        <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="secton section3">
           <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Claim tokens"></question-mark>
@@ -124,7 +124,7 @@
           Section Four
           ================ 
         -->
-        <div if.to-view="connected && seed.userIsWhitelisted" class="secton section4">
+        <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="secton section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Retrieve tokens"></question-mark>
@@ -133,7 +133,10 @@
           <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
-        <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted">
+        <div class="notWhitelisted" if.to-view="geoBlocked">
+          Sorry, you are located in a country that is not able to participate.
+        </div>
+        <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
         </div>
       </div>

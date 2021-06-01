@@ -20,12 +20,14 @@ export class Stage3 extends BaseStage {
   ) {
     super(router, eventAggregator);
   }
+
   addTokenDistribution(): void {
     // Create a new custom link object
     this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
-  proceed(): void {
-    const message: string = this.validateInputs();
+
+  async proceed(): Promise<void> {
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
       this.stageState.verified = false;
@@ -62,6 +64,7 @@ export class Stage3 extends BaseStage {
     });
     return message;
   }
+
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
     if (type === "fund") {
