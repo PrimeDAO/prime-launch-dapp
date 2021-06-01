@@ -2,10 +2,12 @@
   <div class="page animated-page au-animate documentsContainer">
     <div class="sidebar">
       <template repeat.for="doc of router.navigation">
-        <a href.to-view="doc.href"
-          class="document ${doc.isActive ? 'active' : ''}">
-          ${doc.title}
-        </a>
+        <div>
+          <a href.to-view="doc.href"
+            class="document ${doc.isActive ? 'active' : ''}">
+            ${doc.title}
+          </a>
+        </div>
       </template>
     </div>
     <div class="documentContainer">

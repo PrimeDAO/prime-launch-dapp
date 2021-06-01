@@ -1,2 +1,37 @@
+@import "styles/styles.scss";
 .documentsContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-items: center;
+
+    .sidebar {
+        line-height: 200.02%;
+        font-family: Inter;
+        font-size: 16px;
+
+        a {
+            text-decoration: none;
+        }
+
+        .active {
+            color: $Secondary02;
+        }
+    }
+    .docsContainer {
+        background-color: $BG02;
+        border-radius: 6px;
+        padding: 2em;
+        max-width: 40rem;
+
+        > .heading3 {
+            font-size: 36px;
+        }
+
+        .document {
+            font-family: Inter;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 140%;
+        }
+    }
 }
