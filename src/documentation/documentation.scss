@@ -1,8 +1,14 @@
 @import "styles/styles.scss";
 .documentsContainer {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-items: center;
+    display: flex;
+    flex-flow: column;
+    gap: 61px;
+
+    .documentBody {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        justify-items: center;
+    }
 
     .sidebar {
         line-height: 200.02%;
@@ -11,6 +17,7 @@
 
         a {
             text-decoration: none;
+            display: block;
         }
 
         .active {
