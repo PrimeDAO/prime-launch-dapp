@@ -1,2 +1,42 @@
+@import "styles/styles.scss";
 .documentsContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 61px;
+
+    .documentBody {
+        display: grid;
+        grid-template-columns: .7fr 2fr;
+    }
+
+    .sidebar {
+        line-height: 200.02%;
+        font-family: Inter;
+        font-size: 16px;
+
+        a {
+            text-decoration: none;
+            display: block;
+        }
+
+        .active {
+            color: $Secondary02;
+        }
+    }
+    .docsContainer {
+        max-width: 40rem;
+
+        > .heading3 {
+            line-height: 200%;
+            font-size: 36px;
+        }
+
+        .document {
+            font-family: Inter;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 140%;
+            color: $Neutral03;
+        }
+    }
 }
