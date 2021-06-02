@@ -1,5 +1,6 @@
 import {
   DialogCancellableOpenResult,
+  DialogCloseResult,
   DialogOpenPromise,
   DialogService as AureliaDialogService,
   DialogSettings,
@@ -29,11 +30,18 @@ export class DialogService {
       }, settings));
   }
 
-  public alert(message: string): DialogOpenPromise<DialogCancellableOpenResult> {
-    return this.open(Alert, { message }, { keyboard: true });
+  public alert(message: string): Promise<DialogCloseResult> {
+    return this.open(Alert, { message }, { keyboard: true })
+      .whenClosed(
+        (result: DialogCloseResult) => result,
+        // not sure if this works for alert
+        (error: string) => { return { output: error, wasCancelled: false }; });
   }
 
-  public disclaimer(disclaimerUrl: string): DialogOpenPromise<DialogCancellableOpenResult> {
-    return this.open(Disclaimer, { disclaimerUrl }, { keyboard: true });
+  public disclaimer(disclaimerUrl: string): Promise<DialogCloseResult> {
+    return this.open(Disclaimer, { disclaimerUrl }, { keyboard: true })
+      .whenClosed(
+        (result: DialogCloseResult) => result,
+        (error: string) => { return { output: error, wasCancelled: false }; });
   }
 }

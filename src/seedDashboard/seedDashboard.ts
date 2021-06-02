@@ -1,3 +1,4 @@
+import { DialogService } from "./../services/DialogService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
@@ -10,7 +11,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { NumberService } from "services/numberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { Redirect } from "aurelia-router";
 import { GeoBlockService } from "services/GeoBlockService";
 
 @autoinject
@@ -39,6 +39,7 @@ export class SeedDashboard {
     private numberService: NumberService,
     private ethereumService: EthereumService,
     private geoBlockService: GeoBlockService,
+    private dialogService: DialogService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -65,7 +66,25 @@ export class SeedDashboard {
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
-  public canActivate(params: { address: Address }): Redirect | boolean | undefined {
+  @computedFrom("seed", "ethereumService.defaultAccountAddress")
+  private get seedDisclaimerStatusKey() {
+    return `seed-disclaimer-${this.seed?.address}-${this.ethereumService.defaultAccountAddress}`;
+  }
+
+  @computedFrom("ethereumService.defaultAccountAddress")
+  private get primeDisclaimerStatusKey() {
+    return `disclaimer-${this.ethereumService.defaultAccountAddress}`;
+  }
+
+  private get seedDisclaimed(): boolean {
+    return localStorage.getItem(this.seedDisclaimerStatusKey) === "true";
+  }
+
+  private get primeDisclaimed(): boolean {
+    return localStorage.getItem(this.primeDisclaimerStatusKey) === "true";
+  }
+
+  public async canActivate(params: { address: Address }): Promise<boolean> {
     const seed = this.seedService.seeds?.get(params.address);
     /**
      * main interest here is literally to prevent access to seeds that don't
@@ -143,8 +162,34 @@ export class SeedDashboard {
     this.ethereumService.ensureConnected();
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress")
+  @computedFrom("ethereumService.defaultAccountAddress", "seedDisclaimed", "primeDisclaimed")
   get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
+
+  async disclaimSeed(): Promise<boolean> {
+
+    let disclaimed = false;
+
+    if (!this.seed.metadata.seedDetails.legalDisclaimer || this.seedDisclaimed) {
+      disclaimed = true;
+    } else {
+      // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
+      const response = await this.dialogService.disclaimer(this.seed.metadata.seedDetails.legalDisclaimer);
+
+      if (typeof response.output === "string") {
+      // then an error occurred
+        this.eventAggregator.publish("handleFailure", response.output);
+        disclaimed = false;
+      } else if (response.wasCancelled) {
+        disclaimed = false;
+      } else {
+        if (response.output) {
+          localStorage.setItem(this.seedDisclaimerStatusKey, "true");
+        }
+        disclaimed = response.output as boolean;
+      }
+    }
+    return disclaimed;
+  }
 
   handleMaxBuy() : void {
     this.fundingTokenToPay = this.userFundingTokenBalance;
@@ -160,12 +205,12 @@ export class SeedDashboard {
     }
   }
 
-  buy(): void {
+  async buy(): Promise<void> {
     if (!this.fundingTokenToPay?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
-    } else {
+    } else if (await this.disclaimSeed()) {
       throw new Error("Need to fix this to pass seed tokens");
       // this.seed.buy(this.fundingTokenToPay);
     }
