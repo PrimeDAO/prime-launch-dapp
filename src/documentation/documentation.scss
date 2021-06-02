@@ -6,7 +6,7 @@
 
     .documentBody {
         display: grid;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: .7fr 2fr;
     }
 
     .sidebar {
@@ -24,12 +24,7 @@
         }
     }
     .docsContainer {
-        background-color: $BG02;
-        border-radius: 6px;
-        padding-left: 95px;
-        padding-right: 95px;
-        padding-top: 36px;
-        padding-bottom: 36px;
+        background-color: $BG01;
         max-width: 40rem;
 
         > .heading3 {
