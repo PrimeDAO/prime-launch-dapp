@@ -30,7 +30,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./value-converters/secondsDays"),
     PLATFORM.moduleName("./value-converters/smallHexString"),
 
-    // PLATFORM.moduleName("./dialogs/alert/alert"),
+    PLATFORM.moduleName("./dialogs/disclaimer/disclaimer"),
     // PLATFORM.moduleName("./bindingBehaviors/asyncBinding"),
   ]);
 }

@@ -6,6 +6,7 @@ import {
 } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
 import { Alert } from "../resources/dialogs/alert/alert";
+import { Disclaimer } from "../resources/dialogs/disclaimer/disclaimer";
 
 @autoinject
 export class DialogService {
@@ -30,5 +31,9 @@ export class DialogService {
 
   public alert(message: string): DialogOpenPromise<DialogCancellableOpenResult> {
     return this.open(Alert, { message }, { keyboard: true });
+  }
+
+  public disclaimer(disclaimerUrl: string): DialogOpenPromise<DialogCancellableOpenResult> {
+    return this.open(Disclaimer, { disclaimerUrl }, { keyboard: true });
   }
 }

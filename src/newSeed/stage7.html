@@ -19,6 +19,7 @@
             thousands-separated></formatted-number>
           ${wizardState.seedTokenSymbol}
           in fees that are paid as seed tokens are claimed.
+        <div if.to-view="!!seedConfig.seedDetails.whitelist">Further, as you will be the admistrator of the new Seed, you must add the whitelisted accounts to the Seed.</div>
         </p>
         <p>Fees will be sent to
           <etherscanlink
@@ -39,6 +40,9 @@
           <i class="fas fa-arrow-right"></i>
           <a>Have some fun while waiting…</a>
         </div> -->
+        <div class="closeButton">
+          <a class="button1" href="/">Close</a>
+        </div>
       </div>
     </div>
   </div>
