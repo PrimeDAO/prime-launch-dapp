@@ -99,6 +99,9 @@
     }
 
     &.launches {
+      > .heading1 {
+        -webkit-text-fill-color: $Secondary02;
+      }
       > .launchesButton {
         text-align: center;
         padding: 2em;
@@ -121,8 +124,11 @@
         line-height: unset;
       }
 
-      .subtext {
-        color: $Neutral03;
+      .noMissColumn {
+        .subtext {
+          color: $Neutral03;
+          font-size: 18px;
+        }
       }
 
       .emailColumn {
@@ -148,7 +154,7 @@
         .disclaimer {
           text-align: right;
           a {
-            color: $Neutral03;
+            color: $Neutral02;
             text-decoration: underline;
           }
         }
@@ -170,6 +176,9 @@
 
       .rightColumn {
         width: 32em;
+        > .heading1 {
+          -webkit-text-fill-color: $Secondary02;
+        }
         .subtext {
           margin-bottom: 48px;
           font-size: 16px;
@@ -185,6 +194,7 @@
 
         .learnMore {
           @include standardTextGradient();
+          font-weight: bold;
         }
 
         .launchButton {
