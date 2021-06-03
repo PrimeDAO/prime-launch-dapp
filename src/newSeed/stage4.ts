@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { WhiteListService } from "./../services/WhiteListService";
 import { Router } from "aurelia-router";
@@ -95,7 +96,7 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff === "0") {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
-    } else if (Number.parseInt(this.seedConfig.seedDetails.vestingCliff) > Number.parseInt(this.seedConfig.seedDetails.vestingDays)) {
+    } else if (BigNumber.from(this.seedConfig.seedDetails.vestingCliff).gt(BigNumber.from(this.seedConfig.seedDetails.vestingDays))) {
       message = "Plese enter a value of \"with a cliff of\" lesser than \"Seed tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
