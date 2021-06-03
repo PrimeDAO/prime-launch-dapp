@@ -1,8 +1,8 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
-import "../../../styles/styles.scss";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import "../dialogs.scss";
 const marked = require("marked");
 
 @autoinject
