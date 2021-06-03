@@ -1,6 +1,9 @@
 @import "styles/styles.scss";
 
-ux-dialog-container {
+/**
+ * specify "body" to force this css to take precedence over Aurelia's
+ **/
+body > ux-dialog-container {
   overflow: hidden;
   top: 10vh;
   right: 10vw;
