@@ -71,17 +71,8 @@ export class SeedDashboard {
     return `seed-disclaimer-${this.seed?.address}-${this.ethereumService.defaultAccountAddress}`;
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress")
-  private get primeDisclaimerStatusKey() {
-    return `disclaimer-${this.ethereumService.defaultAccountAddress}`;
-  }
-
   private get seedDisclaimed(): boolean {
-    return localStorage.getItem(this.seedDisclaimerStatusKey) === "true";
-  }
-
-  private get primeDisclaimed(): boolean {
-    return localStorage.getItem(this.primeDisclaimerStatusKey) === "true";
+    return this.ethereumService.defaultAccountAddress && (localStorage.getItem(this.seedDisclaimerStatusKey) === "true");
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -165,7 +156,7 @@ export class SeedDashboard {
     this.ethereumService.ensureConnected();
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress", "seedDisclaimed", "primeDisclaimed")
+  @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
 
   async disclaimSeed(): Promise<boolean> {
