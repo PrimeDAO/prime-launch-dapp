@@ -137,7 +137,8 @@ html {
       font-size: 0.8125em;
     }
 
-    .button1 {
+    .button1,
+    .button2 {
       border-radius: 50px;
       border: none;
       padding: 14px 28px;
@@ -167,6 +168,11 @@ html {
 
     .button1 {
       background: $Gradient01;
+    }
+
+    .button2 {
+      @include standardTextGradient;
+      border: solid 1px $Secondary02;
     }
   }
 

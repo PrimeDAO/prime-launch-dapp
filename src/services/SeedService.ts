@@ -179,7 +179,7 @@ export class SeedService {
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}-${(new Date()).toISOString()}`);
+    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
     // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
 

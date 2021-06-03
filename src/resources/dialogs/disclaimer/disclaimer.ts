@@ -11,7 +11,6 @@ export class Disclaimer {
   okButton: HTMLElement;
   disclaimer: string;
   loading = true;
-  error: string;
 
   constructor(
     private controller: DialogController,
@@ -23,7 +22,8 @@ export class Disclaimer {
   }
 
   public async attached(): Promise<void> {
-    this.disclaimer = await axios.get(this.model.dislaimerUrl)
+    let errorMsg: string;
+    this.disclaimer = await axios.get(this.model.disclaimerUrl)
       .then((response) => {
         if (response.data) {
           return response.data;
@@ -32,35 +32,39 @@ export class Disclaimer {
           return null;
         }
       })
-      .catch((error) => {
-        if (error.response) {
+      .catch((err) => {
+        if (err.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          this.error = `Error: ${error.response.data} status: ${error.response.status}`;
-          this.consoleLogService.logMessage(error.response.data, "error");
-          this.consoleLogService.logMessage(error.response.status, "error");
-          this.consoleLogService.logMessage(error.response.headers, "error");
-        } else if (error.request) {
+          errorMsg = `Error fetching disclaimer: HTTP status ${err.response.status} at ${this.model.disclaimerUrl}`;
+          this.consoleLogService.logMessage(err.response.data, "error");
+          this.consoleLogService.logMessage(err.response.status, "error");
+          this.consoleLogService.logMessage(err.response.headers, "error");
+        } else if (err.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          this.error = error.request;
-          this.consoleLogService.logMessage(error.request, "error");
+          errorMsg = `Error fetching disclaimer: ${err.message} at ${this.model.disclaimerUrl}`;
+          this.consoleLogService.logMessage(err.message, "error");
         } else {
           // Something happened in setting up the request that triggered an Error
-          this.error = error.message;
-          this.consoleLogService.logMessage(error.message, "error");
+          errorMsg = `Error fetching disclaimer: ${err.message} at ${this.model.disclaimerUrl}`;
+          this.consoleLogService.logMessage(err.message, "error");
         }
         return null;
       });
 
-    this.loading = false;
+    if (!this.disclaimer) {
+      this.controller.close(false, errorMsg);
+    } else {
+      this.loading = false;
 
-    // attach-focus doesn't work
-    this.okButton.focus();
+      // attach-focus doesn't work
+      this.okButton.focus();
+    }
   }
 }
 
 interface IDisclaimerModel {
-  dislaimerUrl: string;
+  disclaimerUrl: string;
 }
