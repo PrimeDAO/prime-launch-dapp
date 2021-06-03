@@ -125,6 +125,8 @@ export class SeedDashboard {
 
       this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
 
+      //this.disclaimSeed();
+
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }

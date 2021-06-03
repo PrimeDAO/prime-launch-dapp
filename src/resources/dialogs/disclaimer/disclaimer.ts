@@ -12,6 +12,7 @@ export class Disclaimer {
   okButton: HTMLElement;
   disclaimer: string;
   loading = true;
+  checked = false
 
   constructor(
     private controller: DialogController,
