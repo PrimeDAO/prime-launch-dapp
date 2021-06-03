@@ -1,4 +1,3 @@
-import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { WhiteListService } from "./../services/WhiteListService";
 import { Router } from "aurelia-router";
@@ -7,6 +6,7 @@ import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -94,6 +94,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero number for the Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays === "0") {
       message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
+    } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
+      message = "Please enter a value for Funding Target smaller than Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff === "0") {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
     } else if (BigNumber.from(this.seedConfig.seedDetails.vestingCliff).gt(BigNumber.from(this.seedConfig.seedDetails.vestingDays))) {
