@@ -1,38 +1,53 @@
 @import "styles/styles.scss";
 
-.dialog {
-  color: $White;
-  background-color: $BG02;
-}
+ux-dialog-container {
+  overflow: hidden;
+  top: 10vh;
+  right: 10vw;
+  bottom: 10vh;
+  left: 10vw;
 
-.dialog ux-dialog-header {
-  @include standardTextGradient;
-  font-weight: bold;
-  font-size: 20px;
-  // overflow: visible;
-  // max-height: 80%;
-  // max-width: 80%;
-}
-
-ux-dialog {
-  // border-radius: 0 !important;
-  // border-width: 0 !important;
-
-  &.disclaimer {
-    ux-dialog-body {
-      overflow: auto;
-      max-height: 70vh;
-      max-width: 80vw;
+  > div {
+    margin: 0 !important;
+    padding: 0;
+    height: 100%;
+    > div {
+      height: 100%;
     }
   }
-}
 
-ux-dialog-container {
-  > div {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    // > div {
-    //   min-width: 10rem;
-    // }
+  ux-dialog {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: $White;
+    background-color: $BG02;
+    border: 1px solid;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    min-width: 160px;
+
+    ux-dialog-header {
+      @include standardTextGradient;
+      border: none;
+    }
+
+    ux-dialog-body {
+      border-top: 1px solid $White;
+      overflow: auto;
+      flex-grow: 2;
+    }
+    ux-dialog-footer {
+      border-top: 1px solid $White;
+    }
+
+    &.disclaimer {
+      // ux-dialog-body {
+      //   max-height: 60vh;
+      // }
+    }
   }
 }
