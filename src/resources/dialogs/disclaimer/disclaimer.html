@@ -1,7 +1,7 @@
 <template>
   <ux-dialog class="dialog disclaimer">
     <ux-dialog-header>
-      <div class="heading heading2">Disclaimer</div>
+      <div class="heading heading2">${model.title}</div>
     </ux-dialog-header>
     <ux-dialog-body innerhtml.to-view="disclaimerHtml | sanitizeHTML"></ux-dialog-body>
     <ux-dialog-footer>

@@ -38,8 +38,8 @@ export class DialogService {
         (error: string) => { return { output: error, wasCancelled: false }; });
   }
 
-  public disclaimer(disclaimerUrl: string): Promise<DialogCloseResult> {
-    return this.open(Disclaimer, { disclaimerUrl }, { keyboard: true })
+  public disclaimer(disclaimerUrl: string, title: string): Promise<DialogCloseResult> {
+    return this.open(Disclaimer, { disclaimerUrl, title }, { keyboard: true })
       .whenClosed(
         (result: DialogCloseResult) => result,
         (error: string) => { return { output: error, wasCancelled: false }; });

@@ -72,4 +72,5 @@ export class Disclaimer {
 
 interface IDisclaimerModel {
   disclaimerUrl: string;
+  title: string;
 }
