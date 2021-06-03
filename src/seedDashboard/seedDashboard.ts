@@ -71,17 +71,8 @@ export class SeedDashboard {
     return `seed-disclaimer-${this.seed?.address}-${this.ethereumService.defaultAccountAddress}`;
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress")
-  private get primeDisclaimerStatusKey() {
-    return `disclaimer-${this.ethereumService.defaultAccountAddress}`;
-  }
-
   private get seedDisclaimed(): boolean {
-    return localStorage.getItem(this.seedDisclaimerStatusKey) === "true";
-  }
-
-  private get primeDisclaimed(): boolean {
-    return localStorage.getItem(this.primeDisclaimerStatusKey) === "true";
+    return this.ethereumService.defaultAccountAddress && (localStorage.getItem(this.seedDisclaimerStatusKey) === "true");
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -124,6 +115,9 @@ export class SeedDashboard {
         this.numberService.fromString(fromWei(this.seed.target));
 
       this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
+
+      //this.disclaimSeed();
+
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -162,7 +156,7 @@ export class SeedDashboard {
     this.ethereumService.ensureConnected();
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress", "seedDisclaimed", "primeDisclaimed")
+  @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
 
   async disclaimSeed(): Promise<boolean> {
@@ -173,7 +167,10 @@ export class SeedDashboard {
       disclaimed = true;
     } else {
       // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
-      const response = await this.dialogService.disclaimer(this.seed.metadata.seedDetails.legalDisclaimer);
+      const response = await this.dialogService.disclaimer(
+        this.seed.metadata.seedDetails.legalDisclaimer,
+        `${this.seed.metadata.general.projectName} Disclaimer`,
+      );
 
       if (typeof response.output === "string") {
       // then an error occurred

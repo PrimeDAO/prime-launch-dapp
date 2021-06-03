@@ -8,6 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { formatEther, parseEther } from "ethers/lib/utils";
+import { DisclaimerService } from "services/DisclaimerService";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -61,7 +62,9 @@ export interface IChainEventInfo {
 
 @autoinject
 export class EthereumService {
-  constructor(private eventAggregator: EventAggregator) { }
+  constructor(
+    private eventAggregator: EventAggregator,
+    private disclaimerService: DisclaimerService) { }
 
   private static ProviderEndpoints = {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
@@ -90,7 +93,7 @@ export class EthereumService {
       options: {
         rpc: {
           1: EthereumService.ProviderEndpoints[Networks.Mainnet],
-          // 4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
+          4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
         },
       },
@@ -168,9 +171,13 @@ export class EthereumService {
     return account;
   }
 
-  private fireAccountsChangedHandler(account: Address) {
-    console.info(`account changed: ${account}`);
-    this.eventAggregator.publish("Network.Changed.Account", account);
+  private async fireAccountsChangedHandler(account: Address) {
+    if (account && !(await this.disclaimerService.confirmCanConnect(account))) {
+      this.disconnect({ code: -1, message: "User declined the PrimeLAUNCH disclaimer" });
+    } else {
+      console.info(`account changed: ${account}`);
+      this.eventAggregator.publish("Network.Changed.Account", account);
+    }
   }
   private fireChainChangedHandler(info: IChainEventInfo) {
     console.info(`chain changed: ${info.chainId}`);
@@ -273,11 +280,11 @@ export class EthereumService {
     this.disconnect(error);
   }
 
-  private async disconnect(error) {
+  public disconnect(error: { code: number; message: string }): void {
     this.web3Modal?.clearCachedProvider(); // so web3Modal will let the user reconnect
-    this.web3ModalProvider?.off("accountsChanged", this.handleAccountsChanged);
-    this.web3ModalProvider?.off("chainChanged", this.handleChainChanged);
-    this.web3ModalProvider?.off("disconnect", this.handleDisconnect);
+    this.web3ModalProvider?.removeListener("accountsChanged", this.handleAccountsChanged);
+    this.web3ModalProvider?.removeListener("chainChanged", this.handleChainChanged);
+    this.web3ModalProvider?.removeListener("disconnect", this.handleDisconnect);
     this.defaultAccount = undefined;
     this.defaultAccountAddress = undefined;
     this.fireAccountsChangedHandler(null);
