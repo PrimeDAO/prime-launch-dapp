@@ -4,7 +4,6 @@ import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { Utils } from "services/utils";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -42,19 +41,19 @@ export class Stage3 extends BaseStage {
 
   validateInputs(): string {
     let message: string;
-    if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
-      message = "Please enter a valid address for the Funding Token Address";
-    } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
-      message = "Please enter a valid address for the Seed Token Address";
-    }
-    else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
-      message = "Please enter a non-zero number for Maximum Seed Token Supply";
-    }
-    else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
-      message = "Please enter a non-zero number for Initial Circulating Seed Token Supply";
-    }
+    // if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
+    //   message = "Please enter a valid address for the Funding Token Address";
+    // } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
+    //   message = "Please enter a valid address for the Seed Token Address";
+    // }
+    // else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
+    //   message = "Please enter a non-zero number for Maximum Seed Token Supply";
+    // }
+    // else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
+    //   message = "Please enter a non-zero number for Initial Circulating Seed Token Supply";
+    // }
     // Check the token distribution
-    const totalDistribAmount = BigNumber.from(0);
+    let totalDistribAmount = BigNumber.from("0");
     this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { category: string, amount: string, lockup: number }) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
@@ -63,12 +62,11 @@ export class Stage3 extends BaseStage {
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
-      totalDistribAmount.add(BigNumber.from(tokenDistrb.amount));
+      totalDistribAmount = totalDistribAmount.add(BigNumber.from(tokenDistrb.amount));
     });
-    if (totalDistribAmount > BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply)) {
-      message = "Please make sure that the total Amount in the Global Distribution be less than the Maximum Supply";
+    if (!message && totalDistribAmount.gt(BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply))) {
+      message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
     }
-
     return message;
   }
 
