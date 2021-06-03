@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
@@ -53,7 +54,7 @@ export class Stage3 extends BaseStage {
       message = "Please enter a non-zero number for Initial Supply";
     }
     // Check the token distribution
-    let totalDistribAmount = 0;
+    const totalDistribAmount = BigNumber.from(0);
     this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { category: string, amount: string, lockup: number }) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
@@ -62,9 +63,9 @@ export class Stage3 extends BaseStage {
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
-      totalDistribAmount += Number.parseInt(tokenDistrb.amount);
+      totalDistribAmount.add(BigNumber.from(tokenDistrb.amount));
     });
-    if (totalDistribAmount > Number.parseInt(this.seedConfig.tokenDetails.maxSeedSupply)) {
+    if (totalDistribAmount > BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "Please make sure that the total Amount in the Global Distribution be less than the Maximum Supply";
     }
 
