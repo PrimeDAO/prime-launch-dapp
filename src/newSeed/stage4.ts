@@ -91,6 +91,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero value for the Funding Target";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a non-zero number for the Funding Max";
+    } else if (Number.parseInt(this.seedConfig.seedDetails.fundingTarget) > Number.parseInt(this.seedConfig.seedDetails.fundingMax)) {
+      message = "Please enter a value for Funding Target smaller Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
       message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
