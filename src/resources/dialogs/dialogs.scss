@@ -6,6 +6,7 @@ ux-dialog-container {
   right: 10vw;
   bottom: 10vh;
   left: 10vw;
+  padding-bottom: 4px; // for some reason is needed to make room for the footer
 
   > div {
     margin: 0 !important;
@@ -21,18 +22,30 @@ ux-dialog-container {
     display: flex;
     flex-direction: column;
     color: $White;
-    background-color: $BG02;
-    border: 1px solid;
-    border-left-width: 4px;
-    border-left-style: solid;
-    border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
+    padding-left: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 4px;
+    // border-top: 1px solid $Secondary02;
+    // border-bottom: 1px solid $Secondary02;
+    // border-right: 1px solid $Secondary02;
+    border-radius: 6px;
     min-width: 160px;
 
+    ux-dialog-header,
+    ux-dialog-body,
+    ux-dialog-footer {
+      background-color: $BG02;
+    }
+
     ux-dialog-header {
-      @include standardTextGradient;
       border: none;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      .heading {
+        @include standardTextGradient;
+      }
     }
 
     ux-dialog-body {
@@ -42,12 +55,18 @@ ux-dialog-container {
     }
     ux-dialog-footer {
       border-top: 1px solid $White;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
     }
 
     &.disclaimer {
-      // ux-dialog-body {
-      //   max-height: 60vh;
-      // }
+    }
+
+    &.alert {
     }
   }
+}
+
+ux-dialog-overlay {
+  background-color: $BG01;
 }
