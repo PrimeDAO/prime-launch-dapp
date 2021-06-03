@@ -1,11 +1,7 @@
 <template>
   <ux-dialog class="dialog disclaimer">
-    <ux-dialog-header>
-      SEED Disclaimer
-    </ux-dialog-header>
-    <ux-dialog-body with.bind="model">
-      <div class="body">${disclaimer}</div>
-    </ux-dialog-body>
+    <ux-dialog-header>SEED Disclaimer</ux-dialog-header>
+    <ux-dialog-body innerhtml.to-view="disclaimerHtml | sanitizeHTML"></ux-dialog-body>
     <ux-dialog-footer>
       <button class="button2" click.trigger="controller.cancel(false)">Decline</button>
       <button class="button1" ref="okButton" click.trigger="controller.ok(true)">Accept</button>

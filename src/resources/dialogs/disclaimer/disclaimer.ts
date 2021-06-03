@@ -3,6 +3,7 @@ import { autoinject } from "aurelia-framework";
 import "../../../styles/styles.scss";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
+const marked = require("marked");
 
 @autoinject
 export class Disclaimer {
@@ -62,6 +63,10 @@ export class Disclaimer {
       // attach-focus doesn't work
       this.okButton.focus();
     }
+  }
+
+  get disclaimerHtml(): string {
+    return this.disclaimer ? marked(this.disclaimer) : "";
   }
 }
 

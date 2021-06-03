@@ -1,19 +1,38 @@
-@import "./colors";
+@import "./styles.scss";
 
 .dialog {
   color: $White;
-  background-color: $BG01;
+  background-color: $BG02;
 }
 
 .dialog ux-dialog-header {
-  font-weight: 500;
-  font-size: 1.2rem;
-}
-ux-dialog {
-  border-radius: 0 !important;
-  border-width: 0 !important;
+  @include standardTextGradient;
+  font-weight: bold;
+  font-size: 20px;
+  // overflow: visible;
+  // max-height: 80%;
+  // max-width: 80%;
 }
 
-ux-dialog-container > div > div {
-  min-width: 10rem;
+ux-dialog {
+  // border-radius: 0 !important;
+  // border-width: 0 !important;
+
+  &.disclaimer {
+    ux-dialog-body {
+      overflow: auto;
+      max-height: 70vh;
+      max-width: 80vw;
+    }
+  }
+}
+
+ux-dialog-container {
+  > div {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    // > div {
+    //   min-width: 10rem;
+    // }
+  }
 }
