@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
@@ -49,7 +50,7 @@ export class Stage3 extends BaseStage {
       message = "Please enter a non-zero number for Maximum Supply";
     } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
       message = "Please enter a non-zero number for Initial Supply";
-    } else if (Number.parseInt(this.seedConfig.tokenDetails.initialSeedSupply) > Number.parseInt(this.seedConfig.tokenDetails.maxSeedSupply)) {
+    } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply))) {
       message = "Please enter a value for Initial Supply smaller than Maximum Supply";
     }
     // Check the token distribution
