@@ -48,10 +48,10 @@ export class Stage3 extends BaseStage {
       message = "Please enter a valid address for the Seed Token Address";
     }
     else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
-      message = "Please enter a non-zero number for Maximum Supply";
+      message = "Please enter a non-zero number for Maximum Seed Token Supply";
     }
     else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
-      message = "Please enter a non-zero number for Initial Supply";
+      message = "Please enter a non-zero number for Initial Circulating Seed Token Supply";
     }
     // Check the token distribution
     const totalDistribAmount = BigNumber.from(0);

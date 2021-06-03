@@ -23,7 +23,7 @@ export class GeoBlockService {
   }
 
   private getCountry(): Promise<string> {
-    return axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`)
+    return axios.get(`https://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`)
       .then((response) => {
         if (response.data?.success){
           return response.data.country_code;
