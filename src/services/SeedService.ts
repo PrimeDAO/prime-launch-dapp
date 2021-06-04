@@ -90,8 +90,8 @@ export class SeedService {
       // eslint-disable-next-line require-atomic-updates
       this.featuredSeedsJson = (process.env.NODE_ENV === "development") ?
         require("../configurations/featuredSeeds.json") :
-        await axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
-          .then((response) => response.data);
+        (await axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
+          .then((response) => response.data));
     }
 
     /**
