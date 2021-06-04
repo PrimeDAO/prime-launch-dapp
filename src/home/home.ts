@@ -13,7 +13,7 @@ export class Home {
 
   seeingMore = false;
   bookmark: string;
-  featuredSeeds: Array<Seed> = [];
+  featuredSeeds: Array<Seed>;
   subscriberEmail: string;
 
   constructor(

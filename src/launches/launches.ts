@@ -11,8 +11,8 @@ import { EventConfigException } from "services/GeneralEvents";
 @autoinject
 export class Launches {
 
-  seeds: Array<Seed> = [];
-  featuredSeeds: Array<Seed> = [];
+  seeds: Array<Seed>;
+  featuredSeeds: Array<Seed>;
   seeingMore: boolean;
 
   constructor(

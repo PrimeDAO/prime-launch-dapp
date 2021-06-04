@@ -88,10 +88,12 @@ export class SeedService {
   public async initialize(): Promise<void> {
     if (!this.featuredSeedsJson) {
       // eslint-disable-next-line require-atomic-updates
-      this.featuredSeedsJson = (process.env.NODE_ENV === "development") ?
-        require("../configurations/featuredSeeds.json") :
-        (await axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
-          .then((response) => response.data));
+      if (process.env.NODE_ENV === "development") {
+        this.featuredSeedsJson = require("../configurations/featuredSeeds.json");
+      } else {
+        axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
+          .then((response) => this.featuredSeedsJson = response.data);
+      }
     }
 
     /**
@@ -158,10 +160,10 @@ export class SeedService {
 
   private _featuredSeeds: Array<Seed>;
 
-  @computedFrom("seeds", "featuredSeedsJson")
+  @computedFrom("seeds.size", "featuredSeedsJson")
   public get featuredSeeds(): Array<Seed> {
 
-    if (!this.seeds || !this.featuredSeedsJson) {
+    if (!this.seeds?.size || !this.featuredSeedsJson) {
       return [];
     }
 
