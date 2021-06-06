@@ -63,9 +63,9 @@ export class Stage3 extends BaseStage {
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
-      totalDistribAmount = totalDistribAmount.add(BigNumber.from(tokenDistrb.amount));
+      totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
     });
-    if (!message && totalDistribAmount.gt(BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply))) {
+    if (!message && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
     }
     return message;
