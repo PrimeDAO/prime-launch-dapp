@@ -98,7 +98,7 @@ export class Stage4 extends BaseStage {
       message = "Please enter a value for Funding Target smaller than Funding Max";
     } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff === "0") {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
-    } else if (BigNumber.from(this.seedConfig.seedDetails.vestingCliff).gt(BigNumber.from(this.seedConfig.seedDetails.vestingDays))) {
+    } else if (BigNumber.from(this.seedConfig.seedDetails.vestingCliff).gt(this.seedConfig.seedDetails.vestingDays)) {
       message = "Plese enter a value of \"with a cliff of\" lesser than \"Seed tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
