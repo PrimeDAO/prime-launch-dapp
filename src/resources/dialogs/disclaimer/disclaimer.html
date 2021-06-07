@@ -1,14 +1,13 @@
 <template>
   <ux-dialog class="dialog disclaimer">
     <ux-dialog-header>
-      SEED Disclaimer
+      <div class="heading heading2">${model.title}</div>
     </ux-dialog-header>
-    <ux-dialog-body with.bind="model">
-      <div class="body">${disclaimer}</div>
-    </ux-dialog-body>
+    <ux-dialog-body innerhtml.to-view="disclaimerHtml | sanitizeHTML"></ux-dialog-body>
     <ux-dialog-footer>
+      <label><input type="checkbox" checked.bind="checked">I acknowledge that I have fully read and understood this disclaimer</label>
       <button class="button2" click.trigger="controller.cancel(false)">Decline</button>
-      <button class="button1" ref="okButton" click.trigger="controller.ok(true)">Accept</button>
+      <button class="button1" disabled.to-view="!checked" ref="okButton" click.trigger="controller.ok(true)">Accept</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

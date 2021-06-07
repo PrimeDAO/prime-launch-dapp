@@ -1,8 +1,9 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
-import "../../../styles/styles.scss";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import "../dialogs.scss";
+const marked = require("marked");
 
 @autoinject
 export class Disclaimer {
@@ -11,6 +12,7 @@ export class Disclaimer {
   okButton: HTMLElement;
   disclaimer: string;
   loading = true;
+  checked = false
 
   constructor(
     private controller: DialogController,
@@ -63,8 +65,13 @@ export class Disclaimer {
       this.okButton.focus();
     }
   }
+
+  get disclaimerHtml(): string {
+    return this.disclaimer ? marked(this.disclaimer) : "";
+  }
 }
 
 interface IDisclaimerModel {
   disclaimerUrl: string;
+  title: string;
 }

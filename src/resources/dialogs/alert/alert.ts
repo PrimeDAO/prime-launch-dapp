@@ -1,6 +1,6 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
-import "../../../styles/styles.scss";
+import "../dialogs.scss";
 
 @autoinject
 export class Alert {

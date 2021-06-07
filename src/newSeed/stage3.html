@@ -53,7 +53,7 @@
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
-            <label for="maxSeedSupply">Maximum Supply</label>
+            <label for="maxSeedSupply">Maximum Seed Token Supply</label>
             <div class="questionMark">
               <question-mark text="The maximum total number of Seed tokens"></question-mark>
             </div>
@@ -66,7 +66,7 @@
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
-            <label for="initialSeedSupply">Initial Circulating Supply </label>
+            <label for="initialSeedSupply">Initial Circulating Seed Token Supply </label>
             <div class="questionMark">
               <question-mark text="The number of Seed tokens that will be in circulation at the time that Seed contributions have ended"></question-mark>
             </div>
@@ -94,7 +94,7 @@
                 <div if.to-view="$index === 0" class="columnHeaders">Amount</div>
                 <numeric-input
                   output-as-string="true"
-                  type="number" value.bind="distrib.amount"
+                  value.bind="distrib.amount"
                   placeholder="0" class="numberInput">
                 </numeric-input>
               </div>

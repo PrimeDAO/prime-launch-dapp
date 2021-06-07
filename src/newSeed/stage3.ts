@@ -54,7 +54,8 @@ export class Stage3 extends BaseStage {
       message = "Please enter a value for Initial Supply smaller than Maximum Supply";
     }
     // Check the token distribution
-    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: {category: string, amount: string, lockup: number}) => {
+    let totalDistribAmount = BigNumber.from("0");
+    this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { category: string, amount: string, lockup: number }) => {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount === "0") {
@@ -62,7 +63,11 @@ export class Stage3 extends BaseStage {
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
       }
+      totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
     });
+    if (!message && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
+      message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
+    }
     return message;
   }
 

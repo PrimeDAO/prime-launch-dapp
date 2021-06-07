@@ -6,6 +6,7 @@ import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -91,11 +92,13 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero value for the Funding Target";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a non-zero number for the Funding Max";
-    } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays <= 0) {
+    } else if (!this.seedConfig.seedDetails.vestingDays || this.seedConfig.seedDetails.vestingDays === "0") {
       message = "Please enter a non-zero value for  \"Seed tokens vested for\" ";
-    } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff <= 0) {
+    } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
+      message = "Please enter a value for Funding Target smaller than Funding Max";
+    } else if (!this.seedConfig.seedDetails.vestingCliff || this.seedConfig.seedDetails.vestingCliff === "0") {
       message = "Please enter a non-zero value for \"with a cliff of\" ";
-    } else if (!(this.seedConfig.seedDetails.vestingCliff < this.seedConfig.seedDetails.vestingDays)) {
+    } else if (BigNumber.from(this.seedConfig.seedDetails.vestingCliff).gt(this.seedConfig.seedDetails.vestingDays)) {
       message = "Plese enter a value of \"with a cliff of\" lesser than \"Seed tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
