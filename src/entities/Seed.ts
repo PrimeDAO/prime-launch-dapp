@@ -225,7 +225,7 @@ export class Seed {
       this.isPaused = await this.contract.paused();
       this.isClosed = await this.contract.closed();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
-      this.whitelisted = false; // await this.contract.permissionedSeed();
+      this.whitelisted = await this.contract.permissionedSeed();
       this.vestingDuration = (await this.contract.vestingDuration()) * 86400;
       this.vestingCliff = (await this.contract.vestingCliff()) * 86400;
       this.minimumReached = await this.contract.minimumReached();
