@@ -53,8 +53,8 @@ export interface ISeedDetails {
    * In wei
    */
   fundingMax: string,
-  vestingDays: string,
-  vestingCliff: string,
+  vestingDays: number,
+  vestingCliff: number,
   startDate: string,
   endDate: string,
   whitelist: string,
