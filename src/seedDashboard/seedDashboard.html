@@ -127,7 +127,7 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="secton section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="Retrieve tokens"></question-mark>
+            <question-mark text="If a seed round does not reach its target, you will be able to come here and retrieve all the funding tokens that you have contributed"></question-mark>
           </div>
           <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
           <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
