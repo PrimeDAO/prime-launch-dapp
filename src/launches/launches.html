@@ -1,13 +1,11 @@
 <template>
   <div class="page animated-page au-animate launches">
-    <div class="section featured">
+    <div if.to-view="featuredSeeds.length" class="section featured">
       <div class="title heading heading1">Featured</div>
       <div class="launches">
-        <template if.to-view="featuredSeeds.length">
-          <horizontal-scroller item-count.to-view="featuredSeeds.length">
-            <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
-          </horizontal-scroller>
-        </template>
+        <horizontal-scroller item-count.to-view="featuredSeeds.length">
+          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
+        </horizontal-scroller>
       </div>
     </div>
     <div class="section launches">

@@ -208,8 +208,7 @@ export class SeedDashboard {
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else if (await this.disclaimSeed()) {
-      throw new Error("Need to fix this to pass seed tokens");
-      // this.seed.buy(this.fundingTokenToPay);
+      this.seed.buy(this.fundingTokenToPay);
     }
   }
 
@@ -220,7 +219,7 @@ export class SeedDashboard {
       } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
         this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
-        this.seed.claim();
+        this.seed.claim(this.seedTokenToReceive);
       }
     }
   }

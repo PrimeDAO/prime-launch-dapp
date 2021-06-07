@@ -1,3 +1,4 @@
+import { ConsoleLogService } from "services/ConsoleLogService";
 import { autoinject } from "aurelia-framework";
 import { EthereumService } from "./EthereumService";
 import axios from "axios";
@@ -9,7 +10,8 @@ export class PinataIpfsClient implements IIpfsClient {
 
   private httpRequestConfig;
 
-  constructor(ethereumService: EthereumService) {
+  constructor(ethereumService: EthereumService,
+    private consoleLogService: ConsoleLogService) {
     this.httpRequestConfig = {
       headers: {
         pinata_api_key:
@@ -31,7 +33,8 @@ export class PinataIpfsClient implements IIpfsClient {
         return response.data;
       }
     } catch (ex) {
-      throw new Error(ex);
+      this.consoleLogService.logMessage(ex.message, "warning");
+      return null;
     }
   }
 
