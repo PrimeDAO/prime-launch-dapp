@@ -6,6 +6,13 @@
       "0xf4bAE84c7a5b7b70C9af54f403E83A7bB367A4Be"
     ]
   },
+  "rinkeby": {
+    "seeds": [
+      "0x0E3eB8F9E9e11eC2EDCa14fF57Ef10bA741182eA",
+      "0x343D0E08a624B097c96e552895c41d15934f9d4e",
+      "0xD4f9e3A69685397d27dDb3063aA886bCe645D666"
+    ]
+  },
   "mainnet": {
     "seeds": []
   }
