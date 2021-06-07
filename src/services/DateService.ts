@@ -211,7 +211,7 @@ export class DateService {
 
     if (days) {
 
-      result = `${days} ${abbrev ? "d" : (days > 1 ? "days" : "day")}`;
+      result = `${days}${abbrev ? "d" : (days > 1 ? "days" : "day")}`;
 
       if (largest) {
         stop = true;
