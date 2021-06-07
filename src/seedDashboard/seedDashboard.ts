@@ -86,7 +86,7 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
-    this.geoBlocked = false; // this.geoBlockService.blackisted;
+    this.geoBlocked = this.geoBlockService.blackisted;
   }
 
   async attached(): Promise<void> {
