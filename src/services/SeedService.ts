@@ -171,9 +171,11 @@ export class SeedService {
       return this._featuredSeeds;
     }
     else {
-      return this._featuredSeeds =
-        this.featuredSeedsJson[this.ethereumService.targetedNetwork].seeds.map( (address: Address) => this.seeds.get(address))
-          .filter((seed: Seed) => !!seed);
+      const network = this.featuredSeedsJson[this.ethereumService.targetedNetwork];
+      return network ? this._featuredSeeds = network.seeds
+        .map( (address: Address) => this.seeds.get(address))
+        .filter((seed: Seed) => !!seed)
+        : [];
     }
   }
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
