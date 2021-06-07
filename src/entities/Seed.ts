@@ -49,14 +49,17 @@ export class Seed {
    */
   public cap: BigNumber;
   // public capPrice: number;
+  /**
+   * seed has a whitelist
+   */
   public whitelisted: boolean;
   /**
-   * the number of days of which seed tokens vest
+   * the number of seconds of over which seed tokens vest
    */
   public vestingDuration: number;
   /**
-   * the initial period in days of the vestingDuration during which seed tokens may not
-   * be redeemd
+   * the initial period in seconds of the vestingDuration during which seed tokens may not
+   * be claimed
    */
   public vestingCliff: number;
   public minimumReached: boolean;
@@ -213,18 +216,18 @@ export class Seed {
       /**
        * in units of fundingToken
        */
-      this.target = await this.contract.successMinimum();
+      this.target = await this.contract.softCap();
       // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
       /**
        * in units of fundingToken
        */
-      this.cap = await this.contract.cap();
+      this.cap = await this.contract.hardCap();
       this.isPaused = await this.contract.paused();
       this.isClosed = await this.contract.closed();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
-      this.whitelisted = await this.contract.isWhitelisted();
-      this.vestingDuration = await this.contract.vestingDuration();
-      this.vestingCliff = await this.contract.vestingCliff();
+      this.whitelisted = false; // await this.contract.permissionedSeed();
+      this.vestingDuration = (await this.contract.vestingDuration()) * 86400;
+      this.vestingCliff = (await this.contract.vestingCliff()) * 86400;
       this.minimumReached = await this.contract.minimumReached();
       this.maximumReached = this.amountRaised.gte(this.cap);
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
@@ -256,15 +259,18 @@ export class Seed {
 
     if (account) {
       this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
-      this.userClaimableAmount = (await this.contract.calculateClaim(account))[1];
+      this.userClaimableAmount = (await this.contract.calculateClaim.call(account))[1];
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      const lock = await this.contract.tokenLocks(account);
+      const lock = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock ? lock.fundingAmount : BigNumber.from(0);
     }
   }
 
   private async hydateMetadata(): Promise<void> {
     this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
+    if (!this.metadata) {
+      this.eventAggregator.publish("handleException", new Error(`seed lacks metadata, is unusable: ${this.address}`));
+    }
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
@@ -277,8 +283,8 @@ export class Seed {
       });
   }
 
-  public claim(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.contract.claimLock(this.ethereumService.defaultAccountAddress))
+  public claim(amount: BigNumber): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
       .then((receipt) => {
         if (receipt) {
           this.hydrateUser();
