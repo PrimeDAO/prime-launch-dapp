@@ -70,7 +70,7 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration} days with a cliff of ${seed.vestingCliff} days</div>
+            <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
           </div>
           <div class="doit"><button if.to-view="seed.canContribute" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
         </div>

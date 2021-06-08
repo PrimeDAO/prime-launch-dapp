@@ -94,6 +94,8 @@ export class TokenService {
         symbol: "N/A",
       };
 
+      this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
+
       if (["mainnet", "kovan"].includes(this.ethereumService.targetedNetwork)) {
         const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
         // eslint-disable-next-line require-atomic-updates
