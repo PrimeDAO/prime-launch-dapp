@@ -47,6 +47,9 @@ export abstract class BaseStage {
   async detached(): Promise<void> {
     const message = await this.validateInputs();
     this.stageState.verified = !message;
+    if (!message) {
+      this.persistData();
+    }
   }
 
   protected cancel(): void {
@@ -67,6 +70,10 @@ export abstract class BaseStage {
 
   protected validateInputs(): string {
     return null;
+  }
+
+  protected persistData(): boolean {
+    return false;
   }
 
   protected validationError(message: string): void {

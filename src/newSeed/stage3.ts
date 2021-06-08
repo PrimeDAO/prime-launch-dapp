@@ -33,11 +33,16 @@ export class Stage3 extends BaseStage {
       this.validationError(message);
       this.stageState.verified = false;
     } else {
-      this.stageState.verified = true;
-      this.wizardState.seedTokenSymbol = this.seedSymbol;
-      this.wizardState.fundingTokenSymbol = this.fundingSymbol;
+      this.persistData();
       this.next();
     }
+  }
+
+  persistData(): boolean {
+    this.stageState.verified = true;
+    this.wizardState.seedTokenSymbol = this.seedSymbol;
+    this.wizardState.fundingTokenSymbol = this.fundingSymbol;
+    return true;
   }
 
   validateInputs(): string {
