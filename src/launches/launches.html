@@ -26,7 +26,7 @@
               <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">
                 <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
               </div>
-              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">PrimeDAO</div>
+              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
               <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">
                 <time-left seed.to-view="seed" hide-icons largest></time-left>
               </div>

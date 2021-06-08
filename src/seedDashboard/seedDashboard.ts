@@ -53,10 +53,10 @@ export class SeedDashboard {
   get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
 
   /** TODO: don't use current balance */
-  @computedFrom("seed.seedTokenCurrentBalance", "seed.cap")
-  get seedTokensLeft(): number {
+  @computedFrom("seed.seedRemainder", "seed.cap")
+  get percentSeedTokensLeft(): number {
     return (!(this.seed?.cap.gt(0) ?? false)) ? undefined :
-      (this.numberService.fromString(fromWei(this.seed.seedTokenCurrentBalance)) /
+      (this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
       this.numberService.fromString(fromWei(this.seed.cap))) * 100;
   }
 
@@ -86,7 +86,7 @@ export class SeedDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
-    this.geoBlocked = false; // this.geoBlockService.blackisted;
+    this.geoBlocked = this.geoBlockService.blackisted;
   }
 
   async attached(): Promise<void> {

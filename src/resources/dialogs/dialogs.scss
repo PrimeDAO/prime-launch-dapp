@@ -55,7 +55,17 @@ body > ux-dialog-container {
       border-top: 1px solid $White;
       overflow: auto;
       flex-grow: 2;
+
+      &.loading {
+        text-align: center;
+        padding-top: 32px;
+        i {
+          color: $Secondary07;
+          font-size: 28px;
+        }
+      }
     }
+
     ux-dialog-footer {
       border-top: 1px solid $White;
       border-bottom-left-radius: 6px;

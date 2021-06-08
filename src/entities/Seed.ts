@@ -19,6 +19,15 @@ export interface ISeedConfiguration {
   beneficiary: Address;
 }
 
+interface IFunderPortfolio {
+  seedAmount: BigNumber;
+  totalClaimed: BigNumber;
+  fundingAmount: BigNumber;
+  fee: BigNumber;
+  feeClaimed: BigNumber;
+}
+
+
 @autoinject
 export class Seed {
   public contract: any;
@@ -79,14 +88,21 @@ export class Seed {
   /**
    * number of tokens in this seed contract
    */
-  public seedTokenCurrentBalance: BigNumber;
+  public seedRemainder: BigNumber;
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
 
   public userIsWhitelisted: boolean;
+  /**
+   * claimable seed tokens
+   */
   public userClaimableAmount: BigNumber;
+  /**
+   * pending (locked) seed tokens
+   */
+  public userPendingAmount: BigNumber;
   public userCanClaim: boolean;
   public userCurrentFundingContributions: BigNumber;
 
@@ -142,9 +158,9 @@ export class Seed {
   @computedFrom("_now_")
   get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
 
-  @computedFrom("seedTokenCurrentBalance")
+  @computedFrom("seedRemainder")
   get hasSeedTokens():boolean {
-    return !!this.seedTokenCurrentBalance?.gt(0);
+    return !!this.seedRemainder?.gt(0);
   }
 
   constructor(
@@ -232,7 +248,7 @@ export class Seed {
       this.maximumReached = this.amountRaised.gte(this.cap);
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
-      this.seedTokenCurrentBalance = await this.seedTokenContract.balanceOf(this.address);
+      this.seedRemainder = await this.contract.seedRemainder();
       /**
        * TODO: unstub this
        */
@@ -259,10 +275,12 @@ export class Seed {
 
     if (account) {
       this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
-      this.userClaimableAmount = (await this.contract.calculateClaim.call(account))[1];
+      const lock: IFunderPortfolio = await this.contract.funders(account);
+      // this crashes if there is no lock
+      this.userClaimableAmount = BigNumber.from(0); // await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      const lock = await this.contract.funders(account);
-      this.userCurrentFundingContributions = lock ? lock.fundingAmount : BigNumber.from(0);
+      this.userCurrentFundingContributions = lock.fundingAmount;
+      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed);
     }
   }
 

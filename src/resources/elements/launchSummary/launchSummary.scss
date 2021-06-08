@@ -1,7 +1,7 @@
 @import "styles/colors.scss";
 .launchSummaryContainer {
   display: inline-block;
-  cursor: none;
+  cursor: default;
 
   &:hover {
     text-decoration: none;

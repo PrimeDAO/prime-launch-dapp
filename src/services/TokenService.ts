@@ -88,7 +88,7 @@ export class TokenService {
       tokenInfo = {
         address,
         icon: "/genericToken.svg",
-        id: "N/A",
+        id: "",
         name: "Unknown",
         price: 0,
         symbol: "N/A",

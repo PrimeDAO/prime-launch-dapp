@@ -24,16 +24,21 @@
               output-as-string="true"
               id="fundingTarget"
               value.bind="seedConfig.seedDetails.fundingTarget"
-              placeholder="in Funding tokens">
+              placeholder="100">
             </numeric-input>
           </div>
           <div>
-            <label for="fundingMax">Funding Max</label>
+            <div class="labeledQuestion">
+              <label for="fundingMax">Funding Max</label>
+              <div class="questionMark">
+                <question-mark text="Numbers in funding tokens"></question-mark>
+              </div>
+            </div>
             <numeric-input
               output-as-string="true"
               id="fundingMax"
               value.bind="seedConfig.seedDetails.fundingMax"
-              placeholder="in Funding tokens">
+              placeholder="1000">
             </numeric-input>
           </div>
         </div>
@@ -47,21 +52,22 @@
           <div>
             <label for="vestingDays">Seed tokens vested for</label>
             <div class="vestingPeriod">
-              <numeric-input output-as-string="true"
+              <input
+                placeholder="100.2"
                 id="vestingDays"
-                value.bind="seedConfig.seedDetails.vestingDays">
-              </numeric-input>
+                value.bind="seedConfig.seedDetails.vestingDays | secondsDays">
+              </input>
               <div>days</div>
             </div>
           </div>
           <div>
             <label for="vestingCliff">with a cliff of</label>
             <div class="vestingPeriod">
-              <numeric-input
-                output-as-string="true"
+              <input
+                placeholder="20.8"
                 id="vestingCliff"
-                value.bind="seedConfig.seedDetails.vestingCliff">
-              </numeric-input>
+                value.bind="seedConfig.seedDetails.vestingCliff | secondsDays">
+              </input>
               <div>days</div>
             </div>
           </div>

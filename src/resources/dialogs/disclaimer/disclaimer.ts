@@ -28,8 +28,10 @@ export class Disclaimer {
     this.disclaimer = await axios.get(this.model.disclaimerUrl)
       .then((response) => {
         if (response.data) {
+          this.loading = false;
           return response.data;
         } else {
+          this.loading = false;
           this.consoleLogService.logMessage("Disclaimer: something went wrong", "error");
           return null;
         }
@@ -53,14 +55,13 @@ export class Disclaimer {
           errorMsg = `Error fetching disclaimer: ${err.message} at ${this.model.disclaimerUrl}`;
           this.consoleLogService.logMessage(err.message, "error");
         }
+        this.loading = false;
         return null;
       });
 
     if (!this.disclaimer) {
       this.controller.close(false, errorMsg);
     } else {
-      this.loading = false;
-
       // attach-focus doesn't work
       this.okButton.focus();
     }
