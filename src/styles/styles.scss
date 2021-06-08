@@ -220,4 +220,8 @@ html {
       z-index: 10002; // stay over everything except modal mask
     }
   }
+
+  .tippy-content {
+    text-align: center;
+  }
 }
