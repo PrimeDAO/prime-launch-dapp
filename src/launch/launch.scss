@@ -22,8 +22,14 @@
   .subtext {
     font-family: Inter;
     font-weight: normal;
-    font-size: 0.85em;
+    font-size: 18px;
     color: $Neutral03;
+  }
+
+  .banner > .subtext {
+    font-weight: bold;
+    text-align: center;
+    width: 615px;
   }
   .launchBoxes {
     display: flex;
