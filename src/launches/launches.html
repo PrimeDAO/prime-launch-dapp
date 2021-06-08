@@ -37,8 +37,8 @@
               </div>
               <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
               </div>
-              <div>
-                <etherscanlink class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}" address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
+              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
+                <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
               </div>
       </div>
 </template>
