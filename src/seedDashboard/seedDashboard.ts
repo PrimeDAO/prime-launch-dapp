@@ -52,8 +52,14 @@ export class SeedDashboard {
       return 0;
     }
 
-    return this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-           this.numberService.fromString(fromWei(this.seed.target));
+    const fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+      this.numberService.fromString(fromWei(this.seed.target));
+
+    setTimeout(() => {
+      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+    }, 0);
+
+    return fraction;
   }
 
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
@@ -79,7 +85,7 @@ export class SeedDashboard {
   get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
-  get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
+  get lockRequired(): boolean { return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("seed", "ethereumService.defaultAccountAddress")
   private get seedDisclaimerStatusKey() {
@@ -126,10 +132,6 @@ export class SeedDashboard {
       this.seed = seed;
 
       await this.hydrateUserData();
-
-      setTimeout(() => {
-        this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
-      }, 0);
 
       //this.disclaimSeed();
 
@@ -204,7 +206,9 @@ export class SeedDashboard {
   }
 
   handleMaxBuy() : void {
-    this.fundingTokenToPay = this.userFundingTokenBalance;
+    const maxFundable = this.seed.cap.sub(this.seed.amountRaised);
+    this.fundingTokenToPay =
+      maxFundable.lt(this.userFundingTokenBalance) ? maxFundable : this.userFundingTokenBalance;
   }
 
   handleMaxClaim(): void {
@@ -212,9 +216,12 @@ export class SeedDashboard {
   }
 
   unlockFundingTokens(): void {
-    if (this.seed.unlockFundingTokens(this.fundingTokenToPay)) {
-      this.hydrateUserData();
-    }
+    this.seed.unlockFundingTokens(this.fundingTokenToPay)
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateUserData();
+        }
+      });
   }
 
   async buy(): Promise<void> {
@@ -227,7 +234,12 @@ export class SeedDashboard {
     } else if (this.lockRequired) {
       this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.seed.fundingTokenInfo.symbol} to the Seed contract`);
     } else if (await this.disclaimSeed()) {
-      this.seed.buy(this.fundingTokenToPay);
+      this.seed.buy(this.fundingTokenToPay)
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
     }
   }
 
@@ -245,7 +257,12 @@ export class SeedDashboard {
 
   retrieve(): void {
     if (this.userCanRetrieve) {
-      this.seed.retrieveFundingTokens();
+      this.seed.retrieveFundingTokens()
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
     }
   }
 }

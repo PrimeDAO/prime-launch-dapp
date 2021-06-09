@@ -72,7 +72,6 @@ export class Seed {
    */
   public vestingCliff: number;
   public minimumReached: boolean;
-  public maximumReached: boolean;
   /**
    * the amount of the fundingToken in the seed
    */
@@ -172,6 +171,12 @@ export class Seed {
     return (this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.sub(this.feeRemainder)?.gte(this.seedRemainder) : false;
   }
 
+  @computedFrom("amountRaised")
+  get maximumReached(): boolean {
+    return this.amountRaised.gte(this.cap);
+  }
+
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
@@ -233,9 +238,6 @@ export class Seed {
       this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      this.amountRaised = await this.contract.fundingCollected();
-      this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
-
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
       this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
@@ -254,21 +256,18 @@ export class Seed {
       this.whitelisted = await this.contract.permissionedSeed();
       this.vestingDuration = (await this.contract.vestingDuration());
       this.vestingCliff = (await this.contract.vestingCliff());
-      this.minimumReached = await this.contract.minimumReached();
-      this.maximumReached = this.amountRaised.gte(this.cap);
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
-      this.seedRemainder = await this.contract.seedRemainder();
-      this.seedAmountRequired = await this.contract.seedAmountRequired();
-      this.feeRemainder = await this.contract.feeRemainder();
-      /**
-       * TODO: unstub this
-       */
-      this.metadataHash = "Qmd155C1EdRuD1NCjxRt5Drqa2kSybvV5zVxtF9YMNewVB"; // await this.contract.metadata();
+      this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
 
-      await this.hydateMetadata();
+      this.metadataHash = Utils.toAscii((await this.contract.metadata()).slice(2));
+      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+
+      await this.hydrateTokensState();
 
       await this.hydrateUser();
+
+      await this.hydrateMetadata();
 
       this.initializing = false;
     }
@@ -288,25 +287,33 @@ export class Seed {
     if (account) {
       this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       const lock: IFunderPortfolio = await this.contract.funders(account);
-      // this crashes if there is no lock
-      this.userClaimableAmount = BigNumber.from(0); // await this.contract.callStatic.calculateClaim(account);
-      this.userCanClaim = this.userClaimableAmount.gt(0);
       this.userCurrentFundingContributions = lock.fundingAmount;
+      this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
+      this.userCanClaim = this.userClaimableAmount.gt(0);
       this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed);
     }
   }
 
-  private async hydateMetadata(): Promise<void> {
+  private async hydrateMetadata(): Promise<void> {
     this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
     if (!this.metadata) {
       this.eventAggregator.publish("handleException", new Error(`seed lacks metadata, is unusable: ${this.address}`));
     }
   }
 
+  private async hydrateTokensState(): Promise<void> {
+    this.minimumReached = await this.contract.minimumReached();
+    this.amountRaised = await this.contract.fundingCollected();
+    this.seedRemainder = await this.contract.seedRemainder();
+    this.seedAmountRequired = await this.contract.seedAmountRequired();
+    this.feeRemainder = await this.contract.feeRemainder();
+  }
+
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.buy(amount))
-      .then((receipt) => {
+      .then(async (receipt) => {
         if (receipt) {
+          this.hydrateTokensState();
           this.hydrateUser();
           return receipt;
         }
@@ -317,6 +324,7 @@ export class Seed {
     return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
       .then((receipt) => {
         if (receipt) {
+          this.hydrateTokensState();
           this.hydrateUser();
           return receipt;
         }
@@ -332,6 +340,13 @@ export class Seed {
   }
 
   public retrieveFundingTokens(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.contract.retrieveFundingTokens());
+    return this.transactionsService.send(() => this.contract.retrieveFundingTokens())
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
   }
 }

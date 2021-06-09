@@ -118,7 +118,7 @@
               </div>
             </div>
             <div
-              if.to-view="seed.isLive && !seed.claimingIsOpen"
+              if.to-view="seed.isLive && seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open whenever the max is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
           <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
@@ -144,6 +144,11 @@
           Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
         </div>
       </div>
+      <!--
+          ================ 
+          Right Column
+          ================ 
+        -->
       <div class="rightColumn">
         <div class="section topSection">
           <div class="tokenId">
@@ -152,7 +157,7 @@
             <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
           </div>
           <div ref="progressBar" class="progressBar">
-            <div ref="bar" class="bar ${fractionComplete >= 1 ? 'complete' : ''}">&nbsp;</div>
+            <div ref="bar" class="bar ${(fractionComplete >= 1) ? 'complete' : ''}">&nbsp;</div>
           </div>
           <div class="raised">
             <div class="amount">$<formatted-number
