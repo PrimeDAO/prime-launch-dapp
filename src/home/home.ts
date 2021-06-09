@@ -14,7 +14,6 @@ export class Home {
   seeingMore = false;
   bookmark: string;
   featuredSeeds: Array<Seed>;
-  subscriberEmail: string;
 
   constructor(
     private router: Router,
@@ -53,14 +52,5 @@ export class Home {
 
   navigate(href: string): void {
     this.router.navigate(href);
-  }
-
-  subscribe(): void {
-    if (!Utils.isValidEmail(this.subscriberEmail)) {
-      this.eventAggregator.publish("handleValidationError", "Please enter a valid email address");
-    } else {
-      window.open(`mailto:renc@curvelabs.eu?subject=Sign-up%20for%20Prime%20Launch%20Newsletter&body=My%20email%20address: ${this.subscriberEmail}`, "#", "noopener noreferrer");
-      this.eventAggregator.publish("handleInfo", "Thanks for signing up for our newsletter!");
-    }
   }
 }
