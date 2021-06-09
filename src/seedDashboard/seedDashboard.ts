@@ -26,7 +26,6 @@ export class SeedDashboard {
   seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
-  fractionComplete: number;
 
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
@@ -46,18 +45,34 @@ export class SeedDashboard {
     }));
   }
 
+  @computedFrom("seed.amountRaised", "seed.target")
+  get fractionComplete(): number {
+
+    if (!this.seed?.target) {
+      return 0;
+    }
+
+    return this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+           this.numberService.fromString(fromWei(this.seed.target));
+  }
+
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
   get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
+  get seedTokenReward(): number {
+    return (this.seed?.fundingTokensPerSeedToken > 0) ?
+      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken
+      : 0;
+  }
 
   /** TODO: don't use current balance */
-  @computedFrom("seed.seedRemainder", "seed.cap")
+  @computedFrom("seed.seedRemainder", "seed.seedAmountRequired")
   get percentSeedTokensLeft(): number {
-    return (!(this.seed?.cap.gt(0) ?? false)) ? undefined :
-      (this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
-      this.numberService.fromString(fromWei(this.seed.cap))) * 100;
+    return this.seed?.seedAmountRequired?.gt(0) ?
+      ((this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
+        this.numberService.fromString(fromWei(this.seed.seedAmountRequired))) * 100)
+      : 0;
   }
 
   @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
@@ -81,7 +96,7 @@ export class SeedDashboard {
      * main interest here is literally to prevent access to seeds that don't
      * yet have seed tokens
      */
-    return seed?.hasSeedTokens;
+    return seed?.hasEnoughSeedTokens;
   }
 
   async activate(params: { address: Address}): Promise<void> {
@@ -111,10 +126,10 @@ export class SeedDashboard {
       this.seed = seed;
 
       await this.hydrateUserData();
-      this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-        this.numberService.fromString(fromWei(this.seed.target));
 
-      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
+      setTimeout(() => {
+        this.bar.style.width = `${this.progressBar.clientWidth * Math.min(this.fractionComplete, 1.0)}px`;
+      }, 0);
 
       //this.disclaimSeed();
 
@@ -207,6 +222,10 @@ export class SeedDashboard {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+    } else if (this.fundingTokenToPay.add(this.seed.amountRaised).gt(this.seed.cap)) {
+      this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);
+    } else if (this.lockRequired) {
+      this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.seed.fundingTokenInfo.symbol} to the Seed contract`);
     } else if (await this.disclaimSeed()) {
       this.seed.buy(this.fundingTokenToPay);
     }

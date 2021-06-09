@@ -30,8 +30,8 @@ export class LaunchSummary {
     } );
   }
 
-  @computedFrom("seed.hasSeedTokens")
+  @computedFrom("seed.hasEnoughSeedTokens")
   get canGoToDashboard(): boolean {
-    return this.seed?.hasSeedTokens;
+    return this.seed?.hasEnoughSeedTokens;
   }
 }

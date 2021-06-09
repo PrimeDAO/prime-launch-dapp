@@ -108,7 +108,7 @@
             <div class="equals">&nbsp;</div>
             <div class="output">
               <formatted-number
-                value.to-view="seed.userPendingAmount"
+                value.to-view="seed.userPendingAmount | ethwei"
                 average></formatted-number>
             </div>
             <div class="units2">
@@ -165,13 +165,13 @@
               <formatted-number
                 average
                 value.to-view="fractionComplete * 100"
-                mantissa="2"></formatted-number>%
+                mantissa="2"></formatted-number>% of Target
             </div>
             <!-- <div else class="perc filled">Filled</div> -->
           </div>
         </div>
         <div class="section middleSection">
-          <div class="label targetLabel">TARGET</div>
+          <div class="label targetLabel">FUNDING TARGET</div>
           <div class="value target">
             <formatted-number value.to-view="seed.target | ethwei" mantissa="2" average></formatted-number>
           </div>
@@ -186,9 +186,9 @@
               thousands-separated></formatted-number>
             <span else>N/A</span>
           </div>
-          <div class="label tokensleftLabel">TOKENS LEFT</div>
+          <div class="label tokensleftLabel">SEED TOKENS LEFT</div>
           <div class="value tokensleft">
-            <formatted-number if.to-view="percentSeedTokensLeft" value.to-view="percentSeedTokensLeft" average></formatted-number><span else>N/A</span>%
+            <formatted-number value.to-view="percentSeedTokensLeft" average></formatted-number>%
           </div>
           <div class="tokenpriceLabel">
             <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>

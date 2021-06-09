@@ -86,9 +86,18 @@ export class Seed {
   public seedTokenInfo: ITokenInfo;
   public seedTokenContract: any;
   /**
+   * balance of seed tokens in this contract
+   */
+  public seedTokenBalance: BigNumber;
+  /**
    * number of tokens in this seed contract
    */
   public seedRemainder: BigNumber;
+  /**
+   * amount to be distributed, according to the funding cap and prices
+   */
+  public seedAmountRequired: BigNumber;
+  public feeRemainder: BigNumber;
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
@@ -158,9 +167,9 @@ export class Seed {
   @computedFrom("_now_")
   get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
 
-  @computedFrom("seedRemainder")
-  get hasSeedTokens():boolean {
-    return !!this.seedRemainder?.gt(0);
+  @computedFrom("seedTokenBalance", "seedRemainder", "feeRemainder")
+  get hasEnoughSeedTokens():boolean {
+    return (this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.sub(this.feeRemainder)?.gte(this.seedRemainder) : false;
   }
 
   constructor(
@@ -224,7 +233,8 @@ export class Seed {
       this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
+      this.amountRaised = await this.contract.fundingCollected();
+      this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
@@ -249,6 +259,8 @@ export class Seed {
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
       this.seedRemainder = await this.contract.seedRemainder();
+      this.seedAmountRequired = await this.contract.seedAmountRequired();
+      this.feeRemainder = await this.contract.feeRemainder();
       /**
        * TODO: unstub this
        */
@@ -320,6 +332,6 @@ export class Seed {
   }
 
   public retrieveFundingTokens(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.fundingTokenContract.retrieveFundingTokens(this.address));
+    return this.transactionsService.send(() => this.contract.retrieveFundingTokens());
   }
 }

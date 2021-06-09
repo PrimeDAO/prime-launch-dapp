@@ -116,7 +116,7 @@ export class ContractsService {
     return this.initializingContracts;
   }
 
-  private createProvider() {
+  public createProvider(): any {
     let signerOrProvider;
     if (this.accountAddress) {
       signerOrProvider = Signer.isSigner(this.accountAddress) ? this.accountAddress : this.networkInfo.provider.getSigner(this.accountAddress);
