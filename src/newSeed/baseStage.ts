@@ -72,8 +72,8 @@ export abstract class BaseStage {
     return null;
   }
 
-  protected persistData(): boolean {
-    return false;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected persistData(): void {
   }
 
   protected validationError(message: string): void {
