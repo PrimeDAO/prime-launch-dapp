@@ -58,6 +58,7 @@ export class Stage4 extends BaseStage {
       this.validationError(message);
       this.stageState.verified = false;
     } else {
+      this.stageState.verified = true;
       this.next();
     }
   }

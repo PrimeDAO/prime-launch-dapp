@@ -45,7 +45,7 @@ export abstract class BaseStage {
   }
 
   async detached(): Promise<void> {
-    const message = await this.validateInputs();
+    const message = this.validateInputs();
     this.stageState.verified = !message;
     if (!message) {
       this.persistData();
