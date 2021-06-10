@@ -11,9 +11,7 @@ export class Stage2 extends BaseStage {
     const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState.verified = false;
     } else {
-      this.stageState.verified = true;
       this.next();
     }
   }
@@ -31,6 +29,7 @@ export class Stage2 extends BaseStage {
     } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please enter a valid url for Project Logo";
     }
+    this.stageState.verified = !message;
     return message;
   }
 }

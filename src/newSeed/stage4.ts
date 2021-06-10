@@ -56,7 +56,6 @@ export class Stage4 extends BaseStage {
     const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState.verified = false;
     } else {
       this.next();
     }
@@ -136,6 +135,7 @@ export class Stage4 extends BaseStage {
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }
+    this.stageState.verified = !message;
     return message;
   }
 }
