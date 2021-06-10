@@ -90,4 +90,19 @@ export class Utils {
       return (emptyOk && (!address || !address.trim())) || (address && !!getAddress(address));
     } catch (e) { return false; }
   }
+
+  /**
+   * Convert string of individual UTF-8 bytes into a regular UTF-8 string
+   * @param str1 individual UTF-8 bytes as a string
+   * @returns
+   */
+  public static toAscii(str1: string): string {
+    const hex = str1.toString();
+    let str = "";
+    for (let n = 0; n < hex.length; n += 2) {
+      str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+    }
+    return str;
+  }
+
 }
