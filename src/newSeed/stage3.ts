@@ -31,13 +31,14 @@ export class Stage3 extends BaseStage {
     const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState.verified = false;
     } else {
-      this.stageState.verified = true;
-      this.wizardState.seedTokenSymbol = this.seedSymbol;
-      this.wizardState.fundingTokenSymbol = this.fundingSymbol;
       this.next();
     }
+  }
+
+  persistData(): void {
+    this.wizardState.seedTokenSymbol = this.seedSymbol;
+    this.wizardState.fundingTokenSymbol = this.fundingSymbol;
   }
 
   validateInputs(): string {
@@ -68,6 +69,7 @@ export class Stage3 extends BaseStage {
     if (!message && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
     }
+    this.stageState.verified = !message;
     return message;
   }
 

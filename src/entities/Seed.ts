@@ -32,6 +32,7 @@ interface IFunderPortfolio {
 export class Seed {
   public contract: any;
   public address: Address;
+  public seedInitialized: boolean;
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
@@ -96,6 +97,11 @@ export class Seed {
    * amount to be distributed, according to the funding cap and prices
    */
   public seedAmountRequired: BigNumber;
+  /**
+   * Is the seed contract initialized and have enough seed tokens to pay its obligations
+   */
+  public hasEnoughSeedTokens: boolean;
+
   public feeRemainder: BigNumber;
 
   public fundingTokenAddress: Address;
@@ -153,22 +159,29 @@ export class Seed {
     return (this._now >= this.endTime);
   }
 
-  @computedFrom("_now")
-  public get canContribute(): boolean {
-    return this.isLive && !this.maximumReached && !this.isPaused && !this.isClosed;
+  @computedFrom("isLive", "maximumReached", "isPaused", "isClosed", "hasEnoughSeedTokens")
+  public get contributingIsOpen(): boolean {
+    return this.isLive && this.hasEnoughSeedTokens && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
-   * it is theoretically possible to claim
+   * Really means "complete".  But does not imply that the vesting cliff has actually ended.
+   * Not paused or closed.
    */
-  @computedFrom("_now_")
-  get claimingIsOpen(): boolean { return (this.maximumReached || (this.minimumReached && (this._now >= this.endTime)) && !this.isPaused && !this.isClosed); }
+  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  get claimingIsOpen(): boolean {
+    return this.hasEnoughSeedTokens && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
+  }
+  /**
+   * didn't reach the target and not paused or closed
+   */
+  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  get incomplete(): boolean {
+    return this.isDead && this.hasEnoughSeedTokens && !this.minimumReached && !this.isPaused && !this.isClosed;
+  }
 
   @computedFrom("_now_")
-  get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
-
-  @computedFrom("seedTokenBalance", "seedRemainder", "feeRemainder")
-  get hasEnoughSeedTokens():boolean {
-    return (this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.sub(this.feeRemainder)?.gte(this.seedRemainder) : false;
+  get retrievingIsOpen(): boolean {
+    return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
   @computedFrom("amountRaised")
@@ -229,6 +242,7 @@ export class Seed {
   private async hydrate(): Promise<void> {
     this.initializing = true;
     try {
+      this.seedInitialized = await this.contract.initialized();
       this.seedTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
 
@@ -258,7 +272,6 @@ export class Seed {
       this.vestingCliff = (await this.contract.vestingCliff());
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
-      this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
 
       this.metadataHash = Utils.toAscii((await this.contract.metadata()).slice(2));
       this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
@@ -290,7 +303,7 @@ export class Seed {
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed);
+      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
     }
   }
 
@@ -307,6 +320,9 @@ export class Seed {
     this.seedRemainder = await this.contract.seedRemainder();
     this.seedAmountRequired = await this.contract.seedAmountRequired();
     this.feeRemainder = await this.contract.feeRemainder();
+    this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
+    this.hasEnoughSeedTokens =
+      this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {

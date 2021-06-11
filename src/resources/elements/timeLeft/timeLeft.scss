@@ -1,7 +1,6 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
-  .timeLeft,
-  .active {
+  > div {
     font-size: 12px;
     font-family: Inter;
     align-self: center;
@@ -10,57 +9,103 @@
     > .icon {
       margin-right: 6px;
     }
-  }
 
-  .timeLeft {
-    &.soon {
-      color: $AlertRed;
+    &.timeLeft {
+      &.soon {
+        color: $AlertRed;
+      }
+
+      &.comingUp {
+        color: $AlertOrange;
+      }
+
+      &.farOff {
+        color: $White;
+      }
     }
 
-    &.comingUp {
-      color: $AlertOrange;
+    &.live {
+      color: $AlertGreen;
     }
 
-    &.farOff {
-      color: $White;
+    &.complete {
+      color: #18bab0;
     }
-  }
 
-  .active {
-    color: $AlertGreen;
+    &.incomplete {
+      color: #da6511;
+    }
 
-    > .icon {
-      display: inline-block;
-      font-size: 0.5em;
-      margin-right: 0.7em;
-      position: relative;
-      bottom: 0.3em;
+    &.uninitialized {
+      color: #717171;
+    }
+
+    &.paused {
+      color: #ff52cf;
+    }
+
+    &.closed {
+      color: #848484;
+    }
+
+    &.live,
+    &.complete,
+    &.incomplete,
+    &.paused,
+    &.closed,
+    &.uninitialized {
+      > .icon {
+        display: inline-block;
+        font-size: 0.5em;
+        margin-right: 0.7em;
+        position: relative;
+        bottom: 0.3em;
+      }
     }
   }
 
   &.contained {
-    .timeLeft,
-    .active {
+    > div {
       border-radius: 87px;
       padding: 2px 9px;
-    }
 
-    .timeLeft {
-      &.soon {
-        background-color: $CountdownStateSoon;
+      &.timeLeft {
+        &.soon {
+          background-color: $CountdownStateSoon;
+        }
+
+        &.comingUp {
+          background-color: $CountdownStateComingup;
+        }
+
+        &.farOff {
+          background-color: $CountdownStateFaroff;
+        }
       }
 
-      &.comingUp {
-        background-color: $CountdownStateComingup;
+      &.live {
+        background-color: $CountdownStateLive;
       }
 
-      &.farOff {
-        background-color: $CountdownStateFaroff;
+      &.complete {
+        background-color: #2b3239;
       }
-    }
 
-    .active {
-      background-color: $CountdownStateLive;
+      &.incomplete {
+        background-color: #3e2c27;
+      }
+
+      &.uninitialized {
+        background-color: #000000;
+      }
+
+      &.paused {
+        background-color: #38263e;
+      }
+
+      &.closed {
+        background-color: #2d3131;
+      }
     }
   }
 }

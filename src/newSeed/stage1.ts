@@ -14,13 +14,10 @@ export class Stage1 extends BaseStage {
     this.seedConfig.general.customLinks.splice(index, 1);
   }
   async proceed(): Promise<void> {
-    const message: string = await this.validateInputs();
+    const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState.verified = false;
     } else {
-      // For stage 1 write a verified true to stage 1
-      this.stageState.verified = true;
       this.next();
     }
   }
@@ -53,6 +50,7 @@ export class Stage1 extends BaseStage {
         message = `Please enter a valid url for ${link.media}`;
       }
     });
+    this.stageState.verified = !message;
     return message;
   }
 }
