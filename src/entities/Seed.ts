@@ -32,6 +32,7 @@ interface IFunderPortfolio {
 export class Seed {
   public contract: any;
   public address: Address;
+  public seedInitialized: boolean;
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
@@ -72,7 +73,6 @@ export class Seed {
    */
   public vestingCliff: number;
   public minimumReached: boolean;
-  public maximumReached: boolean;
   /**
    * the amount of the fundingToken in the seed
    */
@@ -86,9 +86,23 @@ export class Seed {
   public seedTokenInfo: ITokenInfo;
   public seedTokenContract: any;
   /**
+   * balance of seed tokens in this contract
+   */
+  public seedTokenBalance: BigNumber;
+  /**
    * number of tokens in this seed contract
    */
   public seedRemainder: BigNumber;
+  /**
+   * amount to be distributed, according to the funding cap and prices
+   */
+  public seedAmountRequired: BigNumber;
+  /**
+   * Is the seed contract initialized and have enough seed tokens to pay its obligations
+   */
+  public hasEnoughSeedTokens: boolean;
+
+  public feeRemainder: BigNumber;
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
@@ -145,23 +159,36 @@ export class Seed {
     return (this._now >= this.endTime);
   }
 
-  @computedFrom("_now")
-  public get canContribute(): boolean {
-    return this.isLive && !this.maximumReached && !this.isPaused && !this.isClosed;
+  @computedFrom("isLive", "maximumReached", "isPaused", "isClosed", "hasEnoughSeedTokens")
+  public get contributingIsOpen(): boolean {
+    return this.isLive && this.hasEnoughSeedTokens && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
-   * it is theoretically possible to claim
+   * Really means "complete".  But does not imply that the vesting cliff has actually ended.
+   * Not paused or closed.
    */
-  @computedFrom("_now_")
-  get claimingIsOpen(): boolean { return (this.maximumReached || (this.minimumReached && (this._now >= this.endTime)) && !this.isPaused && !this.isClosed); }
-
-  @computedFrom("_now_")
-  get retrievingIsOpen(): boolean { return !this.minimumReached && !this.isPaused && !this.isClosed; }
-
-  @computedFrom("seedRemainder")
-  get hasSeedTokens():boolean {
-    return !!this.seedRemainder?.gt(0);
+  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  get claimingIsOpen(): boolean {
+    return this.hasEnoughSeedTokens && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
   }
+  /**
+   * didn't reach the target and not paused or closed
+   */
+  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  get incomplete(): boolean {
+    return this.isDead && this.hasEnoughSeedTokens && !this.minimumReached && !this.isPaused && !this.isClosed;
+  }
+
+  @computedFrom("_now_")
+  get retrievingIsOpen(): boolean {
+    return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
+  }
+
+  @computedFrom("amountRaised")
+  get maximumReached(): boolean {
+    return this.amountRaised.gte(this.cap);
+  }
+
 
   constructor(
     private contractsService: ContractsService,
@@ -215,6 +242,7 @@ export class Seed {
   private async hydrate(): Promise<void> {
     this.initializing = true;
     try {
+      this.seedInitialized = await this.contract.initialized();
       this.seedTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
 
@@ -223,8 +251,6 @@ export class Seed {
 
       this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
-
-      this.amountRaised = await this.fundingTokenContract.balanceOf(this.address);
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
@@ -242,21 +268,19 @@ export class Seed {
       this.isClosed = await this.contract.closed();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.permissionedSeed();
-      this.vestingDuration = (await this.contract.vestingDuration()) * 86400;
-      this.vestingCliff = (await this.contract.vestingCliff()) * 86400;
-      this.minimumReached = await this.contract.minimumReached();
-      this.maximumReached = this.amountRaised.gte(this.cap);
+      this.vestingDuration = (await this.contract.vestingDuration());
+      this.vestingCliff = (await this.contract.vestingCliff());
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
-      this.seedRemainder = await this.contract.seedRemainder();
-      /**
-       * TODO: unstub this
-       */
-      this.metadataHash = "Qmd155C1EdRuD1NCjxRt5Drqa2kSybvV5zVxtF9YMNewVB"; // await this.contract.metadata();
 
-      await this.hydateMetadata();
+      this.metadataHash = Utils.toAscii((await this.contract.metadata()).slice(2));
+      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+
+      await this.hydrateTokensState();
 
       await this.hydrateUser();
+
+      await this.hydrateMetadata();
 
       this.initializing = false;
     }
@@ -276,25 +300,36 @@ export class Seed {
     if (account) {
       this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       const lock: IFunderPortfolio = await this.contract.funders(account);
-      // this crashes if there is no lock
-      this.userClaimableAmount = BigNumber.from(0); // await this.contract.callStatic.calculateClaim(account);
-      this.userCanClaim = this.userClaimableAmount.gt(0);
       this.userCurrentFundingContributions = lock.fundingAmount;
-      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed);
+      this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
+      this.userCanClaim = this.userClaimableAmount.gt(0);
+      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
     }
   }
 
-  private async hydateMetadata(): Promise<void> {
+  private async hydrateMetadata(): Promise<void> {
     this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
     if (!this.metadata) {
       this.eventAggregator.publish("handleException", new Error(`seed lacks metadata, is unusable: ${this.address}`));
     }
   }
 
+  private async hydrateTokensState(): Promise<void> {
+    this.minimumReached = await this.contract.minimumReached();
+    this.amountRaised = await this.contract.fundingCollected();
+    this.seedRemainder = await this.contract.seedRemainder();
+    this.seedAmountRequired = await this.contract.seedAmountRequired();
+    this.feeRemainder = await this.contract.feeRemainder();
+    this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
+    this.hasEnoughSeedTokens =
+      this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.buy(amount))
-      .then((receipt) => {
+      .then(async (receipt) => {
         if (receipt) {
+          this.hydrateTokensState();
           this.hydrateUser();
           return receipt;
         }
@@ -305,6 +340,7 @@ export class Seed {
     return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
       .then((receipt) => {
         if (receipt) {
+          this.hydrateTokensState();
           this.hydrateUser();
           return receipt;
         }
@@ -320,6 +356,13 @@ export class Seed {
   }
 
   public retrieveFundingTokens(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.fundingTokenContract.retrieveFundingTokens(this.address));
+    return this.transactionsService.send(() => this.contract.retrieveFundingTokens())
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
   }
 }

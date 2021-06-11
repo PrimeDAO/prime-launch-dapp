@@ -26,7 +26,6 @@ export class SeedDashboard {
   seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
-  fractionComplete: number;
 
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
@@ -46,25 +45,47 @@ export class SeedDashboard {
     }));
   }
 
+  @computedFrom("seed.amountRaised", "seed.target")
+  get fractionComplete(): number {
+
+    if (!this.seed?.target) {
+      return 0;
+    }
+
+    const fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+      this.numberService.fromString(fromWei(this.seed.target));
+
+    setTimeout(() => {
+      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+    }, 0);
+
+    return fraction;
+  }
+
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
   get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number { return (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken; }
+  get seedTokenReward(): number {
+    return (this.seed?.fundingTokensPerSeedToken > 0) ?
+      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken
+      : 0;
+  }
 
   /** TODO: don't use current balance */
-  @computedFrom("seed.seedRemainder", "seed.cap")
+  @computedFrom("seed.seedRemainder", "seed.seedAmountRequired")
   get percentSeedTokensLeft(): number {
-    return (!(this.seed?.cap.gt(0) ?? false)) ? undefined :
-      (this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
-      this.numberService.fromString(fromWei(this.seed.cap))) * 100;
+    return this.seed?.seedAmountRequired?.gt(0) ?
+      ((this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
+        this.numberService.fromString(fromWei(this.seed.seedAmountRequired))) * 100)
+      : 0;
   }
 
   @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
-  get lockRequired(): boolean { return !!this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
+  get lockRequired(): boolean { return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("seed", "ethereumService.defaultAccountAddress")
   private get seedDisclaimerStatusKey() {
@@ -81,7 +102,7 @@ export class SeedDashboard {
      * main interest here is literally to prevent access to seeds that don't
      * yet have seed tokens
      */
-    return seed?.hasSeedTokens;
+    return seed?.hasEnoughSeedTokens;
   }
 
   async activate(params: { address: Address}): Promise<void> {
@@ -111,10 +132,6 @@ export class SeedDashboard {
       this.seed = seed;
 
       await this.hydrateUserData();
-      this.fractionComplete = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-        this.numberService.fromString(fromWei(this.seed.target));
-
-      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(.5, 1.0)}px`;
 
       //this.disclaimSeed();
 
@@ -189,7 +206,9 @@ export class SeedDashboard {
   }
 
   handleMaxBuy() : void {
-    this.fundingTokenToPay = this.userFundingTokenBalance;
+    const maxFundable = this.seed.cap.sub(this.seed.amountRaised);
+    this.fundingTokenToPay =
+      maxFundable.lt(this.userFundingTokenBalance) ? maxFundable : this.userFundingTokenBalance;
   }
 
   handleMaxClaim(): void {
@@ -197,9 +216,12 @@ export class SeedDashboard {
   }
 
   unlockFundingTokens(): void {
-    if (this.seed.unlockFundingTokens(this.fundingTokenToPay)) {
-      this.hydrateUserData();
-    }
+    this.seed.unlockFundingTokens(this.fundingTokenToPay)
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateUserData();
+        }
+      });
   }
 
   async buy(): Promise<void> {
@@ -207,8 +229,17 @@ export class SeedDashboard {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+    } else if (this.fundingTokenToPay.add(this.seed.amountRaised).gt(this.seed.cap)) {
+      this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);
+    } else if (this.lockRequired) {
+      this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.seed.fundingTokenInfo.symbol} to the Seed contract`);
     } else if (await this.disclaimSeed()) {
-      this.seed.buy(this.fundingTokenToPay);
+      this.seed.buy(this.fundingTokenToPay)
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
     }
   }
 
@@ -226,7 +257,12 @@ export class SeedDashboard {
 
   retrieve(): void {
     if (this.userCanRetrieve) {
-      this.seed.retrieveFundingTokens();
+      this.seed.retrieveFundingTokens()
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
     }
   }
 }

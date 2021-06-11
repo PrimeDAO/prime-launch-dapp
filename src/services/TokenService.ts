@@ -61,7 +61,7 @@ export class TokenService {
   constructor(
     private ethereumService: EthereumService,
     private consoleLogService: ConsoleLogService,
-    contractsService: ContractsService) {
+    private contractsService: ContractsService) {
     this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
     this.queue = new Subject<() => Promise<void>>();
     // this will initiate the execution of the promises
@@ -93,6 +93,8 @@ export class TokenService {
         price: 0,
         symbol: "N/A",
       };
+
+      this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
 
       if (["mainnet", "kovan"].includes(this.ethereumService.targetedNetwork)) {
         const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
@@ -188,7 +190,7 @@ export class TokenService {
     return new ethers.Contract(
       tokenAddress,
       this.erc20Abi,
-      this.ethereumService.readOnlyProvider) as unknown as Contract & IErc20Token;
+      this.contractsService.createProvider()) as unknown as Contract & IErc20Token;
   }
 
   public getHolders(tokenAddress: Address): Promise<Array<ITokenHolder>> {

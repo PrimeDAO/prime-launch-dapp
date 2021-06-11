@@ -45,8 +45,10 @@ export abstract class BaseStage {
   }
 
   async detached(): Promise<void> {
-    const message = await this.validateInputs();
-    this.stageState.verified = !message;
+    const message = this.validateInputs();
+    if (!message) {
+      this.persistData();
+    }
   }
 
   protected cancel(): void {
@@ -67,6 +69,10 @@ export abstract class BaseStage {
 
   protected validateInputs(): string {
     return null;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected persistData(): void {
   }
 
   protected validationError(message: string): void {

@@ -53,24 +53,25 @@ export class Stage4 extends BaseStage {
   }
 
   async proceed(): Promise<void> {
-    const message: string = await this.validateInputs();
+    const message: string = this.validateInputs();
     if (message) {
       this.validationError(message);
-      this.stageState.verified = false;
     } else {
-      // Set the ISO time
-      // Get the start and end time
-      const startTimes = this.startTime.split(":");
-      const endTimes = this.endTime.split(":");
-      let temp = this.startDate;
-      temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-      this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-      temp = this.endDate;
-      temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-      this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-      this.stageState.verified = true;
       this.next();
     }
+  }
+
+  persistData(): void {
+    // Set the ISO time
+    // Get the start and end time
+    const startTimes = this.startTime.split(":");
+    const endTimes = this.endTime.split(":");
+    let temp = this.startDate;
+    temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
+    this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    temp = this.endDate;
+    temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
+    this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
   }
 
   validateInputs(): string {
@@ -134,6 +135,7 @@ export class Stage4 extends BaseStage {
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid url for Legal Disclaimer";
     }
+    this.stageState.verified = !message;
     return message;
   }
 }

@@ -24,7 +24,7 @@ export class NumericInput {
    */
   @bindable public handleChange: ({ keyCode: number }) => boolean;
   @bindable public autocomplete = "off";
-  @bindable.booleanAttr public disabled = false;
+  @bindable.booleanAttr public disabled;
   /**
    * Assumed to be in Wei and will be converted to ETH for the user and back to Wei for parent component.
    * Else value us set to  whatever string the user types.
@@ -98,9 +98,6 @@ export class NumericInput {
 
   public attached(): void {
     this.element.addEventListener("keydown", (e) => { this.keydown(e); });
-    if (this.disabled) {
-      this.element.disabled = true;
-    }
     // this.hydrateFromDefaultValue();
   }
 
