@@ -2,6 +2,8 @@
 .launchSummaryContainer {
   display: inline-block;
   cursor: default;
+  width: 320px;
+  padding-right: 30px;
 
   &:hover {
     text-decoration: none;
@@ -100,5 +102,12 @@
 
   &.hot {
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1085px) {
+  .launchSummaryContainer {
+    .launchSummary {
+    }
   }
 }
