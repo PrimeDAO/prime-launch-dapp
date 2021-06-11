@@ -1,4 +1,4 @@
-import { autoinject, computedFrom } from "aurelia-framework";
+import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { Seed } from "entities/Seed";
@@ -28,10 +28,5 @@ export class LaunchSummary {
       //   tippy(this.container);
       // }
     } );
-  }
-
-  @computedFrom("seed.hasEnoughSeedTokens")
-  get canGoToDashboard(): boolean {
-    return this.seed?.hasEnoughSeedTokens;
   }
 }

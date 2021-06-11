@@ -189,6 +189,10 @@ export class Seed {
     return this.amountRaised.gte(this.cap);
   }
 
+  @computedFrom("hasEnoughSeedTokens", "isPaused", "isClosed")
+  get canGoToDashboard(): boolean {
+    return this.hasEnoughSeedTokens && !this.isPaused && !this.isClosed;
+  }
 
   constructor(
     private contractsService: ContractsService,
