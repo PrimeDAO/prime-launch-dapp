@@ -10,6 +10,8 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { SeedService } from "services/SeedService";
 import { IpfsService } from "services/IpfsService";
 import { GeoBlockService } from "services/GeoBlockService";
+import { HTMLSanitizer } from "aurelia-templating-resources";
+import DOMPurify from "dompurify";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -24,6 +26,7 @@ export function configure(aurelia: Aurelia): void {
     //   // PLATFORM.moduleName("dashboard/dashboard"),
     // ])
   ;
+  aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
   if (process.env.NODE_ENV === "development") {
     aurelia.use.developmentLogging(); // everything
