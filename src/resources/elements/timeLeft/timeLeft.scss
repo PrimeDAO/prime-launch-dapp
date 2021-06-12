@@ -1,15 +1,27 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
-  > div {
+  > div.mainStatus > div,
+  > div.adminStatus > div {
     font-size: 12px;
     font-family: Inter;
     align-self: center;
     white-space: nowrap;
 
     > .icon {
-      margin-right: 6px;
+      margin-right: 5px;
     }
 
+    &:not(.timeLeft) {
+      > .icon {
+        display: inline-block;
+        font-size: 6px;
+        position: relative;
+        bottom: 2px;
+      }
+    }
+  }
+
+  > div.mainStatus > div {
     &.timeLeft {
       &.soon {
         color: $AlertRed;
@@ -39,7 +51,9 @@
     &.uninitialized {
       color: #717171;
     }
+  }
 
+  > div.adminStatus > div {
     &.paused {
       color: #ff52cf;
     }
@@ -47,44 +61,36 @@
     &.closed {
       color: #848484;
     }
-
-    &.live,
-    &.complete,
-    &.incomplete,
-    &.paused,
-    &.closed,
-    &.uninitialized {
-      > .icon {
-        display: inline-block;
-        font-size: 0.5em;
-        margin-right: 0.7em;
-        position: relative;
-        bottom: 0.3em;
-      }
-    }
   }
 
   &.contained {
-    > div {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 6px;
+
+    > div.mainStatus > div,
+    > div.adminStatus > div {
       border-radius: 87px;
       padding: 2px 9px;
+    }
 
+    > div.mainStatus > div {
       &.timeLeft {
         &.soon {
-          background-color: $CountdownStateSoon;
+          background-color: #3e2638;
         }
 
         &.comingUp {
-          background-color: $CountdownStateComingup;
+          background-color: #3e3038;
         }
 
         &.farOff {
-          background-color: $CountdownStateFaroff;
+          background-color: #3e263c;
         }
       }
 
       &.live {
-        background-color: $CountdownStateLive;
+        background-color: #2b3139;
       }
 
       &.complete {
@@ -96,9 +102,11 @@
       }
 
       &.uninitialized {
-        background-color: #000000;
+        background-color: $Black;
       }
+    }
 
+    > div.adminStatus > div {
       &.paused {
         background-color: #38263e;
       }

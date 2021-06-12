@@ -56,3 +56,23 @@
     right: 0;
   }
 }
+
+@media screen and (max-width: 1072px) {
+  .scrollerContainer {
+    display: block;
+    position: unset;
+
+    .scroller {
+      flex-direction: column;
+
+      > div:not(:last-of-type) {
+        margin-bottom: 24px;
+      }
+    }
+
+    .rightButton,
+    .leftButton {
+      display: none;
+    }
+  }
+}
