@@ -202,19 +202,6 @@ html {
     color: $Neutral02;
   }
 
-  .launches {
-    horizontal-scroller {
-      display: inline-block;
-      margin-bottom: 28px;
-
-      // note this is inside of the launch-summary element
-      .launchSummaryContainer {
-        width: 320px;
-        padding-right: 30px;
-      }
-    }
-  }
-
   #WEB3_CONNECT_MODAL_ID {
     div:first-of-type {
       z-index: 10002; // stay over everything except modal mask
@@ -223,5 +210,14 @@ html {
 
   .tippy-content {
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  html {
+    body {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   }
 }

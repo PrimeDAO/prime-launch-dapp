@@ -23,17 +23,17 @@
         </div>
         <template repeat.for="seed of seeds">
           <template if.to-view="!seed.initializing">
-            <a href.to-view="seed.hasEnoughSeedTokens ? `seed/${seed.address}` : 'launches'" class="row">
-              <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }">
+            <a href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'" class="row">
+              <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
                 <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
               </div>
-              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-              <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }">
+              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+              <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
                 <time-left seed.to-view="seed" hide-icons largest></time-left>
               </div>
-              <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }">SEED</div>
-              <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-              <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasEnoughSeedTokens ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+              <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+              <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+              <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
               </div>
               <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
               </div>
