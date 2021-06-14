@@ -245,17 +245,7 @@
 
         .emailColumn {
           .form {
-            display: flex;
             flex-direction: column;
-            // margin-bottom: 4px;
-            width: 100%;
-
-            .notifyButton {
-              border-top-left-radius: 0;
-              border-bottom-left-radius: 0;
-              border-top-right-radius: 6px;
-              border-bottom-right-radius: 6px;
-            }
           }
         }
       }

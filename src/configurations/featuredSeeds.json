@@ -8,9 +8,9 @@
   },
   "rinkeby": {
     "seeds": [
-      "0xf285D2FC41cAfdAF90b76BA897B241fadC23856f",
-      "0x71d5caFAeB5Bb61652F4B15a7Ae6AC48dA6d5FC2",
-      "0xf3804b890272156748b9492dc8E99fA16eC9E5b9"
+      "0xb20B98e224042DfeB10C2b71798a152B667bB3e9",
+      "0xEe9B6aA9341fefD9b690BEc5B54e9d56f60a1902",
+      "0xAe6ba5A8515Dd8b0Ff8823A5A5885BdcBf119044"
     ]
   },
   "mainnet": {
