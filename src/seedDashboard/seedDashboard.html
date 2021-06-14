@@ -101,6 +101,7 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
+                    mantissa="2"
                     thousands-separated></formatted-number>
                 </div>
               </div>
@@ -118,8 +119,8 @@
               </div>
             </div>
             <div
-              if.to-view="seed.isLive && seed.claimingIsOpen"
-              class="vestedMessage subtext">Claiming will open whenever the max is reached, or in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
+              if.to-view="seed.isLive && !seed.claimingIsOpen"
+              class="vestedMessage subtext">Claiming will open ${seed.vestingCliff | secondsDays} days after either the max is reached, or else after when the Seed campaign ends ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ', if by then the target has been reached'}</div>
           </div>
           <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
