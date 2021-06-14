@@ -35,7 +35,7 @@
               <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
               <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
               </div>
-              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.hasSeedTokens ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
               </div>
               <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
                 <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
