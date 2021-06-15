@@ -131,7 +131,7 @@
       }
 
       .noMissColumn {
-        .subtext {
+        .subtitle.subtext {
           color: $Neutral03;
           font-size: 18px;
         }
@@ -150,7 +150,7 @@
         }
 
         .disclaimer {
-          text-align: right;
+          text-align: center;
           a {
             color: $Neutral02;
             text-decoration: underline;
@@ -212,6 +212,7 @@
         > .title {
           white-space: normal;
           text-align: center;
+          width: auto; // so text-align:center works
         }
       }
 
@@ -249,15 +250,15 @@
       &.nomiss {
         grid-template-columns: auto;
         height: unset;
-        // align-content: center;
-        // justify-content: space-between;
+        justify-content: space-around;
         padding: 0;
         margin-left: 0;
         margin-right: 0;
 
         .noMissColumn {
-          > .subtitle {
+          > .subtitle.subtext {
             text-align: center;
+            color: $Neutral02;
             margin-bottom: 12px;
           }
         }
@@ -265,9 +266,6 @@
         .emailColumn {
           .form {
             flex-direction: column;
-          }
-          .disclaimer {
-            text-align: center;
           }
         }
       }
