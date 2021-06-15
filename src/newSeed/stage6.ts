@@ -4,7 +4,7 @@ import { Router } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { fromWei, toWei } from "services/EthereumService";
+import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/numberService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 

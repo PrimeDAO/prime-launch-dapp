@@ -5,6 +5,8 @@ import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
+import { fromWei } from "services/EthereumService";
+import { NumberService } from "services/numberService";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -17,6 +19,7 @@ export class Stage3 extends BaseStage {
   constructor(
     eventAggregator: EventAggregator,
     private tokenService: TokenService,
+    private numberService: NumberService,
     router: Router,
   ) {
     super(router, eventAggregator);
@@ -49,6 +52,9 @@ export class Stage3 extends BaseStage {
       message = "Please enter a valid address for the Seed Token Address";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
+    } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
+      this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
+      message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
     } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
       message = "Please enter a number greater than zero for Initial Supply";
     } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
