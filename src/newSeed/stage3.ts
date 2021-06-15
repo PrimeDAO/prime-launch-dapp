@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { BaseStage } from "newSeed/baseStage";
@@ -49,7 +49,7 @@ export class Stage3 extends BaseStage {
       message = "Please enter a valid address for the Seed Token Address";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a non-zero number for Maximum Supply";
-    } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken && BigNumber.from(this.seedConfig.seedDetails.fundingMax).gt(BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply).mul(this.seedConfig.seedDetails.pricePerToken))) {
+    } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken && BigNumber.from(this.seedConfig.seedDetails.fundingMax).gt(BigNumber.from(this.seedConfig.tokenDetails.maxSeedSupply).mul(utils.parseUnits(utils.formatEther(this.seedConfig.seedDetails.pricePerToken), 0)))) {
       message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
     } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
       message = "Please enter a non-zero number for Initial Supply";

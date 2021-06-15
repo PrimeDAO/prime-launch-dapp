@@ -9,11 +9,12 @@
         <div class="infoInput">
           <label for="ppt">Funding Tokens per Seed Token</label>
           <div class="pptContainer">
-            <input
-              type="number"
+            <numeric-input
+              output-as-string="true"
               id="ppt"
               value.bind="seedConfig.seedDetails.pricePerToken"
-              placeholder="1.5" />
+              placeholder="1.5">
+            </numeric-input>
           </div>
         </div>
         <div class="infoInput maxTarget">
