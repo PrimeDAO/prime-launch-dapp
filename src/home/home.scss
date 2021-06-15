@@ -43,6 +43,7 @@
         max-width: 35rem;
         color: $Neutral03;
         margin-bottom: 200px;
+        white-space: normal;
       }
 
       .buttons {
@@ -206,22 +207,24 @@
   .page.home {
     .section {
       &.launches,
-      &.fairLaunch,
-      &.nomiss {
-        .title {
+      &.fairLaunch .rightColumn,
+      &.nomiss .noMissColumn {
+        > .title {
           white-space: normal;
+          text-align: center;
         }
       }
 
       &.top {
+        width: unset;
         .moonshot {
           right: unset;
         }
 
         .buttons {
-          display: flex;
           justify-content: unset;
           flex-direction: column;
+          width: 100%;
 
           .contribute {
             margin-bottom: 24px;
@@ -234,27 +237,56 @@
         }
       }
 
+      &.launches {
+        .scrollerContainer {
+          margin-bottom: 0;
+          .launchSummaryContainer {
+            margin-bottom: 20px;
+          }
+        }
+      }
+
       &.nomiss {
         grid-template-columns: auto;
         height: unset;
         // align-content: center;
         // justify-content: space-between;
-        // padding: 6px 40px;
+        padding: 0;
         margin-left: 0;
         margin-right: 0;
+
+        .noMissColumn {
+          > .subtitle {
+            text-align: center;
+            margin-bottom: 12px;
+          }
+        }
 
         .emailColumn {
           .form {
             flex-direction: column;
           }
+          .disclaimer {
+            text-align: center;
+          }
         }
       }
 
       &.fairLaunch {
+        grid-template-columns: auto;
+        text-align: center;
         .pic {
           img {
             //height: 100%;
-            width: 100%;
+            margin-left: -20px;
+            margin-right: -20px;
+            width: calc(100% + 40px);
+          }
+        }
+        .rightColumn {
+          width: 100%;
+          .launchButton {
+            margin-right: 20px;
           }
         }
       }

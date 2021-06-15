@@ -21,6 +21,10 @@
         margin-bottom: 24px;
       }
 
+      &.governedBy {
+        display: none;
+      }
+
       &.about {
         .body {
           margin-bottom: 42px;
@@ -76,6 +80,54 @@
         &:not(:last-child) {
           margin-right: 12px;
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .footerContainer {
+    .sections {
+      grid-template-columns: auto;
+      gap: unset;
+
+      .footerLinks {
+        flex-direction: column;
+      }
+
+      .section {
+        &.governedBy {
+          display: block;
+        }
+
+        &.about {
+          display: none;
+        }
+      }
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-areas:
+        "socialLinks socialLinks"
+        "copyright privacy";
+
+      .copyright {
+        grid-area: copyright;
+      }
+
+      .governedBy {
+        grid-area: governedBy;
+        display: none;
+      }
+
+      .socialLinks {
+        grid-area: socialLinks;
+      }
+
+      .privacy {
+        grid-area: privacy;
       }
     }
   }
