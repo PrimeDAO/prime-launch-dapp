@@ -8,6 +8,7 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { fromWei } from "services/EthereumService";
+import { NumberService } from "services/numberService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -24,6 +25,7 @@ export class Stage4 extends BaseStage {
   constructor(
     eventAggregator: EventAggregator,
     private whiteListService: WhiteListService,
+    private numberService: NumberService,
     router: Router,
   ) {
     super(router, eventAggregator);
@@ -95,11 +97,11 @@ export class Stage4 extends BaseStage {
       message = "Please enter a non-zero number for the Funding Max";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
       message = "Please enter a value for Funding Target smaller than Funding Max";
-    } else if (this.seedConfig.tokenDetails.maxSeedSupply && Number(fromWei(this.seedConfig.seedDetails.fundingMax)) > Number(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * Number(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
+    } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
-    } else if (!(Number(this.seedConfig.seedDetails.vestingDays) > 0)) {
+    } else if (!(this.seedConfig.seedDetails.vestingDays > 0)) {
       message = "Please enter a number greater than zero for  \"Seed tokens vested for\" ";
-    } else if (!(Number(this.seedConfig.seedDetails.vestingCliff) > 0)) {
+    } else if (!(this.seedConfig.seedDetails.vestingCliff > 0)) {
       message = "Please enter a number greater than zero for \"with a cliff of\" ";
     } else if (this.seedConfig.seedDetails.vestingCliff > this.seedConfig.seedDetails.vestingDays) {
       message = "Please enter a value of \"with a cliff of\" less than \"Seed tokens vested for \"";
