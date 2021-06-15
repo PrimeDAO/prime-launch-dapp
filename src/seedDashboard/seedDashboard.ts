@@ -63,7 +63,9 @@ export class SeedDashboard {
   }
 
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
-  get userCanRetrieve(): boolean { return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0); }
+  get userCanRetrieve(): boolean {
+    return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0);
+  }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number {

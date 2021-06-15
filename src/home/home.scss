@@ -9,7 +9,7 @@
 
     &.nomiss {
       border-radius: 6px;
-      & .title {
+      &.title {
         margin-bottom: 0px;
       }
     }
@@ -99,6 +99,10 @@
     }
 
     &.launches {
+      .scrollerContainer {
+        margin-bottom: 28px;
+      }
+
       > .heading1 {
         -webkit-text-fill-color: $Secondary02;
         margin-bottom: 53px;
@@ -133,22 +137,14 @@
       }
 
       .emailColumn {
+        align-self: end;
         .form {
           display: flex;
           margin-bottom: 4px;
-          width: 28em;
+          justify-content: center;
 
-          .emailInput {
-            flex-grow: 2;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border: 0px;
-          }
           .notifyButton {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
+            border-radius: 6px;
           }
         }
 
@@ -168,12 +164,12 @@
       column-gap: 10%;
       font-family: Inter;
 
-      .pic {
-        img {
-          width: 450px;
-          height: 430px;
-        }
-      }
+      // .pic {
+      //   img {
+      //     width: 450px;
+      //     height: 450px;
+      //   }
+      // }
 
       .rightColumn {
         width: 32em;
@@ -200,6 +196,66 @@
 
         .launchButton {
           margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .page.home {
+    .section {
+      &.launches,
+      &.fairLaunch,
+      &.nomiss {
+        .title {
+          white-space: normal;
+        }
+      }
+
+      &.top {
+        .moonshot {
+          right: unset;
+        }
+
+        .buttons {
+          display: flex;
+          justify-content: unset;
+          flex-direction: column;
+
+          .contribute {
+            margin-bottom: 24px;
+            margin-right: unset;
+          }
+          .contribute,
+          .launch {
+            width: unset;
+          }
+        }
+      }
+
+      &.nomiss {
+        grid-template-columns: auto;
+        height: unset;
+        // align-content: center;
+        // justify-content: space-between;
+        // padding: 6px 40px;
+        margin-left: 0;
+        margin-right: 0;
+
+        .emailColumn {
+          .form {
+            flex-direction: column;
+          }
+        }
+      }
+
+      &.fairLaunch {
+        .pic {
+          img {
+            //height: 100%;
+            width: 100%;
+          }
         }
       }
     }

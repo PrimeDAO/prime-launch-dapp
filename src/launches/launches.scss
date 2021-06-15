@@ -3,12 +3,16 @@
   .section {
     &.featured {
       margin-bottom: 92px;
+
+      .scrollerContainer {
+        margin-bottom: 28px;
+      }
     }
 
     &.launches {
       .launchGrid {
         display: grid;
-        grid-template-columns: 0.5fr 1fr 1fr 1fr 0.5fr 1fr 1fr;
+        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
         margin-bottom: 20px;

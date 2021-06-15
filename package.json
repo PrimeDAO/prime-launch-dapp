@@ -35,6 +35,7 @@
     "aurelia-event-aggregator": "^1.0.3",
     "aurelia-typed-observable-plugin": "^0.4.2",
     "axios": "^0.21.1",
+    "dompurify": "^2.2.9",
     "ethers": "^5.3.0",
     "json-to-graphql-query": "^2.0.0",
     "litepicker": "^2.0.11",
