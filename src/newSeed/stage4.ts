@@ -100,7 +100,7 @@ export class Stage4 extends BaseStage {
     } else if (this.seedConfig.seedDetails.vestingCliff > this.seedConfig.seedDetails.vestingDays) {
       message = "Please enter a value of \"with a cliff of\" less than \"Seed tokens vested for \"";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target smaller than Funding Max";
+      message = "Please enter a value for Funding Target lesser than or equal to Funding Max";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
