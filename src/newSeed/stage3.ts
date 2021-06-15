@@ -48,9 +48,9 @@ export class Stage3 extends BaseStage {
     } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
       message = "Please enter a valid address for the Seed Token Address";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
-      message = "Please enter a non-zero number for Maximum Supply";
+      message = "Please enter a number greater than zero for Maximum Supply";
     } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
-      message = "Please enter a non-zero number for Initial Supply";
+      message = "Please enter a number greater than zero for Initial Supply";
     } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "Please enter a value for Initial Supply smaller than Maximum Supply";
     }
@@ -60,9 +60,9 @@ export class Stage3 extends BaseStage {
       if (!tokenDistrb.category) {
         message = "Please enter a value for Category";
       } else if (!tokenDistrb.amount || tokenDistrb.amount === "0") {
-        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Amount`;
+        message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Amount`;
       } else if (!(tokenDistrb.lockup > 0)) {
-        message = `Please enter a non-zero number for Category ${tokenDistrb.category} Lock-up`;
+        message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Lock-up`;
       }
       totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
     });
