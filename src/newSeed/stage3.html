@@ -101,6 +101,13 @@
               <div class="infoInput supply numberInput" value.bind="distrib.lockup">
                 <div if.to-view="$index === 0" class="columnHeaders">Lockup-up (days)</div>
                 <input type="number" value.bind="distrib.lockup" placeholder="0" class="numberInput">
+                <span
+                  class="deleteLink"
+                  title="Delete this row"
+                  click.delegate="deleteTokenDistribution($index)"
+                >
+                  <i class="far fa-trash-alt"></i>
+                </span>
               </div>
             </div>
           </template>

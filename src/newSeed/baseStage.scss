@@ -235,6 +235,10 @@
         input.textInput {
           height: 2.3em;
         }
+        .deleteLink {
+          cursor: pointer;
+          justify-self: flex-end;
+        }
       }
     }
     .addLink {
