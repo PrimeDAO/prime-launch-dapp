@@ -12,15 +12,26 @@
           <networkfeedback></networkfeedback>
         </div>
         <header-buttons></header-buttons>
-        <div class="hConnectButton" show.to-view="!showingMobileMenu">
+        <div class="headerConnectButton">
           <connectbutton></connectbutton>
         </div>
         <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
       </div>
+      <div class="mobileMenuContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
+        <div class="menu">
+          <networkfeedback></networkfeedback>
+          <div class="mobileConnectButton">
+            <connectbutton hide-balances></connectbutton>
+          </div>
+          <div class="menuitems">
+            <header-buttons vertical></header-buttons>
+          </div>
+        </div>
+      </div>
       <div show.to-view="!showingMobileMenu" class="mainContent">
         <router-view></router-view>
       </div>
-      <div class="appFooter">
+      <div show.to-view="!showingMobileMenu" class="appFooter">
         <footer></footer>
       </div>
     </div>

@@ -11,6 +11,13 @@
     "footer footer";
   height: 100vh;
 
+  .networkfeedback {
+    color: $White;
+    .testnet {
+      color: $Shade01;
+    }
+  }
+
   > .logo {
     grid-area: logo;
     background-color: $BG01;
@@ -36,7 +43,7 @@
     /**
      * header connectButton
      */
-    > .hConnectButton {
+    > .headerConnectButton {
       padding-right: 20px;
       padding-top: 12px;
       padding-bottom: 12px;
@@ -53,21 +60,17 @@
       }
     }
     .networkfeedback {
-      color: $White;
       margin-left: 10px;
       text-align: left;
-      .testnet {
-        color: $Shade01;
-      }
     }
   }
 
-  .sidebarContainer {
+  .mobileMenuContainer {
     z-index: 9998; // so stays above model screen, below tooltips
-    grid-area: sidebar;
+    grid-area: mobileMenu;
     display: none;
 
-    .sidebar {
+    .menu {
       padding: 20px 0;
 
       .menuitems {
@@ -94,40 +97,34 @@
             }
           }
         }
-
-        .poolItems {
-          > a.item {
-            padding-top: 0;
-            padding-bottom: 16px;
-
-            > .text {
-              font-size: 12px;
-              display: flex;
-              justify-items: center;
-
-              > img {
-                padding-left: 3px;
-                padding-right: 19px;
-                width: 9px;
-              }
-            }
-          }
-
-          > a.item:last-child {
-            padding-bottom: 0;
-          }
-        }
       }
       /**
-       * sidebar connect button
+       * mobile menu connect button
        */
-      // > .connectButton {
+      // > .mobileConnectButton {
       //   flex-grow: 2;
       //   padding-right: 20px;
       //   padding-top: 12px;
       //   padding-bottom: 12px;
       // }
     }
+
+    /**
+     * mobilemenu footer
+     */
+    // > .appFooter {
+    //   padding: 0 20px;
+    //   position: fixed;
+    //   bottom: 30px;
+
+    //   .logo {
+    //     flex-direction: column;
+
+    //     img {
+    //       margin-bottom: 10px;
+    //     }
+    //   }
+    // }
   }
 
   .mainContent {
@@ -148,16 +145,13 @@
       grid-template-columns: 1fr 100fr;
       grid-template-areas:
         "logo header"
-        "sidebar sidebar";
-
-      > .appFooter {
-        display: none;
-      }
+        "mobileMenu mobileMenu";
     }
 
     .appHeader {
+      .networkfeedback,
       .headerButtons,
-      > .hConnectButton {
+      > .headerConnectButton {
         display: none;
       }
       > .mobilemenuButton {
@@ -165,15 +159,19 @@
       }
     }
 
-    .sidebarContainer {
+    .mobileMenuContainer {
       &.showingMobileMenu {
         display: unset;
         width: 100%;
         text-align: center;
       }
 
-      .sidebar {
-        .sbConnectButton {
+      .menu {
+        .networkfeedback {
+          margin-bottom: 20px;
+        }
+
+        .mobileConnectButton {
           margin-bottom: 26px;
         }
 
@@ -185,11 +183,6 @@
             }
           }
         }
-      }
-    }
-
-    .mainContent {
-      .page {
       }
     }
   }

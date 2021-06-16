@@ -3,7 +3,13 @@
 .headerButtons {
   display: grid;
   grid-template-columns: auto auto auto;
-  grid-gap: 10%;
+  column-gap: 10%;
+
+  &.vertical {
+    grid-template-columns: auto;
+    column-gap: unset;
+    row-gap: 12px;
+  }
 
   > .link {
     > a {
