@@ -17,7 +17,7 @@
     .section {
       margin-bottom: 48px;
 
-      .title {
+      > .title {
         margin-bottom: 24px;
       }
 
@@ -83,13 +83,14 @@
       }
     }
 
-    .privacy {
+    .privacy,
+    .cookies {
       display: none;
     }
   }
 }
 
-@media screen and (max-width: 1072px) {
+@media screen and (max-width: 1280px) {
   .footerContainer {
     .sections {
       grid-template-columns: auto;
@@ -97,12 +98,27 @@
 
       .footerLinks {
         flex-direction: column;
+        margin-bottom: 18px;
+
+        .section {
+          text-align: center;
+          margin-bottom: 0;
+          > .title {
+            width: 100%;
+            margin-bottom: 18px;
+          }
+
+          > .body {
+            display: none;
+          }
+        }
       }
 
       .section {
         &.governedBy {
           display: flex;
           justify-content: center;
+          margin-bottom: 18px;
           .title {
             margin: auto;
             display: grid;
@@ -121,17 +137,19 @@
 
     .bottom {
       display: grid;
-      grid-template-columns: 40% 60%;
+      grid-template-columns: 33% 33% 34%;
       grid-template-areas:
-        "socialLinks socialLinks"
-        "copyright privacy";
+        "socialLinks socialLinks socialLinks"
+        "copyright privacy cookies";
 
       align-items: center;
       justify-content: space-around;
+      text-align: center;
       row-gap: 24px;
 
       .copyright {
         grid-area: copyright;
+        justify-content: center;
       }
 
       .governedBy {
@@ -141,16 +159,32 @@
 
       .socialLinks {
         grid-area: socialLinks;
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(5, auto);
+        column-gap: 16px;
+
+        a {
+          &:not(:last-child) {
+            margin-right: 0;
+          }
+        }
       }
 
-      .privacy {
-        display: flex;
-        justify-content: space-around;
-        grid-area: privacy;
-
+      .privacy,
+      .cookies {
+        display: inline-block;
         a {
           color: $Neutral02;
         }
+      }
+
+      .privacy {
+        grid-area: privacy;
+      }
+
+      .cookies {
+        grid-area: cookies;
       }
     }
   }
