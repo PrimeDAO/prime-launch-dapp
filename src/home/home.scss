@@ -125,9 +125,8 @@
       margin-left: -40px;
       margin-right: -40px;
 
-      & .title {
+      &.title {
         font-family: "Aeonik";
-        line-height: unset;
       }
 
       .noMissColumn {
@@ -219,7 +218,17 @@
       &.top {
         width: unset;
         .moonshot {
-          right: unset;
+          right: 0;
+          left: 0;
+          top: 0;
+          overflow: hidden;
+          img {
+            opacity: 0.25;
+          }
+        }
+
+        > .subtitle {
+          margin-bottom: 48px;
         }
 
         .buttons {
@@ -251,9 +260,9 @@
         grid-template-columns: auto;
         height: unset;
         justify-content: space-around;
-        padding: 0;
         margin-left: 0;
         margin-right: 0;
+        padding: 20px;
 
         .noMissColumn {
           > .subtitle.subtext {
@@ -272,8 +281,12 @@
 
       &.fairLaunch {
         grid-template-columns: auto;
+        grid-template-areas: "rightColumn" "pic";
+        column-gap: unset;
+        row-gap: 48px;
         text-align: center;
         .pic {
+          grid-area: pic;
           img {
             //height: 100%;
             margin-left: -20px;
@@ -282,6 +295,7 @@
           }
         }
         .rightColumn {
+          grid-area: rightColumn;
           width: 100%;
           .launchButton {
             margin-right: 20px;
