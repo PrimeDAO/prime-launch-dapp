@@ -3,6 +3,7 @@
   display: inline-block;
   cursor: default;
   width: 320px;
+  min-width: 320px;
   padding-right: 30px;
 
   &:hover {
@@ -107,6 +108,9 @@
 
 @media screen and (max-width: 1072px) {
   .launchSummaryContainer {
-    width: 100%;
+    // because this is going to be vertically-aligned
+    padding-right: 0;
+    margin-bottom: 20px;
+    width: 50%;
   }
 }
