@@ -43,6 +43,7 @@
         max-width: 35rem;
         color: $Neutral03;
         margin-bottom: 200px;
+        white-space: normal;
       }
 
       .buttons {
@@ -124,13 +125,12 @@
       margin-left: -40px;
       margin-right: -40px;
 
-      & .title {
+      &.title {
         font-family: "Aeonik";
-        line-height: unset;
       }
 
       .noMissColumn {
-        .subtext {
+        .subtitle.subtext {
           color: $Neutral03;
           font-size: 18px;
         }
@@ -149,7 +149,7 @@
         }
 
         .disclaimer {
-          text-align: right;
+          text-align: center;
           a {
             color: $Neutral02;
             text-decoration: underline;
@@ -206,22 +206,36 @@
   .page.home {
     .section {
       &.launches,
-      &.fairLaunch,
-      &.nomiss {
-        .title {
+      &.fairLaunch .rightColumn,
+      &.nomiss .noMissColumn {
+        > .title {
           white-space: normal;
+          text-align: center;
+          width: auto; // so text-align:center works
         }
       }
 
       &.top {
+        margin-bottom: 100px;
+        width: unset;
         .moonshot {
-          right: unset;
+          right: 0;
+          left: 0;
+          top: 0;
+          overflow: hidden;
+          img {
+            opacity: 0.25;
+          }
+        }
+
+        > .subtitle {
+          margin-bottom: 48px;
         }
 
         .buttons {
-          display: flex;
           justify-content: unset;
           flex-direction: column;
+          width: 100%;
 
           .contribute {
             margin-bottom: 24px;
@@ -234,14 +248,30 @@
         }
       }
 
+      &.launches {
+        .scrollerContainer {
+          margin-bottom: 0;
+          .launchSummaryContainer {
+            margin-bottom: 20px;
+          }
+        }
+      }
+
       &.nomiss {
         grid-template-columns: auto;
         height: unset;
-        // align-content: center;
-        // justify-content: space-between;
-        // padding: 6px 40px;
+        justify-content: space-around;
         margin-left: 0;
         margin-right: 0;
+        padding: 20px;
+
+        .noMissColumn {
+          > .subtitle.subtext {
+            text-align: center;
+            color: $Neutral02;
+            margin-bottom: 12px;
+          }
+        }
 
         .emailColumn {
           .form {
@@ -251,10 +281,25 @@
       }
 
       &.fairLaunch {
+        grid-template-columns: auto;
+        grid-template-areas: "rightColumn" "pic";
+        column-gap: unset;
+        row-gap: 48px;
+        text-align: center;
         .pic {
+          grid-area: pic;
           img {
             //height: 100%;
-            width: 100%;
+            margin-left: -20px;
+            margin-right: -20px;
+            width: calc(100% + 40px);
+          }
+        }
+        .rightColumn {
+          grid-area: rightColumn;
+          width: 100%;
+          .launchButton {
+            margin-right: 20px;
           }
         }
       }
