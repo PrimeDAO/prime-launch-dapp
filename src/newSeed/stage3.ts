@@ -30,6 +30,12 @@ export class Stage3 extends BaseStage {
     this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
   }
 
+  // Delet a row in the custom links array
+  deleteTokenDistribution(index:number): void {
+    // Remove the indexed link
+    this.seedConfig.tokenDetails.tokenDistrib.splice(index, 1);
+  }
+
   async proceed(): Promise<void> {
     const message: string = await this.validateInputs();
     if (message) {
@@ -69,10 +75,11 @@ export class Stage3 extends BaseStage {
         message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Amount`;
       } else if (!(tokenDistrb.lockup > 0)) {
         message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Lock-up`;
+      } else {
+        totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
       }
-      totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
     });
-    if (!message && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
+    if (!message && this.seedConfig.tokenDetails.maxSeedSupply && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
     }
     this.stageState.verified = !message;
