@@ -205,6 +205,7 @@
 @media screen and (max-width: 1072px) {
   .page.home {
     .section {
+      &.top,
       &.launches,
       &.fairLaunch .rightColumn,
       &.nomiss .noMissColumn {
@@ -212,12 +213,13 @@
           white-space: normal;
           text-align: center;
           width: auto; // so text-align:center works
+          max-width: unset;
         }
       }
 
       &.top {
         margin-bottom: 100px;
-        width: unset;
+        width: 100%;
         .moonshot {
           right: 0;
           left: 0;
@@ -230,20 +232,19 @@
 
         > .subtitle {
           margin-bottom: 48px;
+          text-align: center;
+          max-width: unset;
         }
 
         .buttons {
           justify-content: unset;
           flex-direction: column;
           width: 100%;
+          align-items: center;
 
           .contribute {
             margin-bottom: 24px;
             margin-right: unset;
-          }
-          .contribute,
-          .launch {
-            width: unset;
           }
         }
       }
@@ -251,9 +252,6 @@
       &.launches {
         .scrollerContainer {
           margin-bottom: 0;
-          .launchSummaryContainer {
-            margin-bottom: 20px;
-          }
         }
       }
 
@@ -268,7 +266,6 @@
         .noMissColumn {
           > .subtitle.subtext {
             text-align: center;
-            color: $Neutral02;
             margin-bottom: 12px;
           }
         }
@@ -299,6 +296,22 @@
           grid-area: rightColumn;
           width: 100%;
           .launchButton {
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .page.home {
+    .section {
+      &.top {
+        .buttons {
+          .contribute,
+          .launch {
+            width: unset;
             margin-right: 20px;
           }
         }
