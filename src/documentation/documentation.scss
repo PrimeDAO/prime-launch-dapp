@@ -54,7 +54,8 @@
             max-width: 80vw;
             > .heading.heading3 {
                 font-size: 28px;
-                white-space: unset;
+                white-space: normal;
+                line-height: 100%;
             }
         }
         .documentBody {
