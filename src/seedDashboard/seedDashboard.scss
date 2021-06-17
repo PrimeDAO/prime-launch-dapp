@@ -131,7 +131,6 @@
 
     .forms {
       grid-area: forms;
-      padding: 28px 28px;
 
       .section1,
       .section2,
@@ -140,7 +139,7 @@
         background-color: $BG02;
         border-radius: 8px;
         align-items: baseline;
-        padding-bottom: 28px;
+        padding: 28px 28px;
 
         &:not(:last-child) {
           margin-bottom: 1.5em;
