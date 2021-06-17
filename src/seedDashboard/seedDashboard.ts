@@ -48,15 +48,19 @@ export class SeedDashboard {
   @computedFrom("seed.amountRaised", "seed.target")
   get fractionComplete(): number {
 
-    if (!this.seed?.target) {
-      return 0;
+    let fraction = 0;
+    if (this.seed?.target) {
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+        this.numberService.fromString(fromWei(this.seed.target));
     }
 
-    const fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-      this.numberService.fromString(fromWei(this.seed.target));
-
     setTimeout(() => {
-      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+      if (fraction === 0) {
+        this.progressBar.classList.add("hide");
+      } else {
+        this.progressBar.classList.remove("hide");
+        this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+      }
     }, 0);
 
     return fraction;

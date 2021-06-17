@@ -90,6 +90,10 @@
         border-radius: 10px;
         margin-bottom: 13px;
 
+        &.hide {
+          display: none;
+        }
+
         .bar {
           border-radius: 10px;
           background: $Gradient01;
@@ -322,7 +326,6 @@
 
     .seedSummary {
       grid-area: seedSummary;
-      padding-top: 28px;
 
       .section:not(:last-child) {
         margin-bottom: 4em;
@@ -454,7 +457,7 @@
   }
 }
 
-@media screen and (max-width: 1190px) {
+@media screen and (max-width: 1375px) {
   .page.seedDashboardContainer {
     .seedDashboard {
       grid-template-columns: auto;
