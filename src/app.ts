@@ -161,8 +161,8 @@ export class App {
     this.router = router;
   }
 
-  goto(where: string): void {
-    Utils.goto(where);
+  onNavigate(): void {
+    this.showingMobileMenu = false;
   }
 
   toggleMobileMenu(): void {
