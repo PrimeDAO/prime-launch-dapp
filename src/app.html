@@ -15,7 +15,7 @@
         <div class="headerConnectButton">
           <connectbutton></connectbutton>
         </div>
-        <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/hamburger_menu.svg" /></div>
+        <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/Icon_Menu.svg" /></div>
       </div>
       <div class="mobileMenuContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
         <div class="menu">
@@ -24,7 +24,7 @@
             <connectbutton hide-balances></connectbutton>
           </div>
           <div class="menuitems">
-            <header-buttons vertical></header-buttons>
+            <header-buttons vertical on-navigate.call="onNavigate()"></header-buttons>
           </div>
         </div>
       </div>
