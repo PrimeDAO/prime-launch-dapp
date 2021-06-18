@@ -26,6 +26,7 @@ export class SeedDashboard {
   seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
+  resized = false;
 
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
@@ -43,6 +44,7 @@ export class SeedDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
+    window.onresize = () => this.resized = !this.resized;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -54,14 +56,18 @@ export class SeedDashboard {
         this.numberService.fromString(fromWei(this.seed.target));
     }
 
-    setTimeout(() => {
-      if (fraction === 0) {
-        this.progressBar.classList.add("hide");
-      } else {
-        this.progressBar.classList.remove("hide");
-        this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
-      }
-    }, 0);
+    // setTimeout(() => {
+    //   if (fraction === 0) {
+    //     this.progressBar.classList.add("hide");
+    //   } else {
+    //     this.progressBar.classList.remove("hide");
+    //     this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+    //   }
+    // }, 0);
+
+    //    setTimeout(() => {
+    this.bar.style.width = `${Math.min(fraction, 1.0)*100}%`;
+    //    }, 0);
 
     return fraction;
   }
