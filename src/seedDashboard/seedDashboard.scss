@@ -109,6 +109,8 @@
         font-family: Inter;
         font-size: 24px;
         line-height: 29px;
+        white-space: nowrap;
+        margin-bottom: 28px;
 
         .amount {
           margin-right: 8px;
@@ -135,6 +137,7 @@
 
     .forms {
       grid-area: forms;
+      margin-bottom: 28px;
 
       .section1,
       .section2,
@@ -488,8 +491,17 @@
           text-align: center;
         }
       }
+
+      .seedSummary {
+        .middleSection {
+          justify-content: space-evenly;
+        }
+      }
     }
   }
+}
+
+@media screen and (max-width: 585px) {
 }
 
 @media screen and (max-width: 420px) {
@@ -497,6 +509,13 @@
     .seedDashboard {
       .seedBanner {
         justify-content: space-between;
+      }
+
+      .seedProgress {
+        .raised {
+          font-size: 18px;
+          line-height: 22px;
+        }
       }
     }
   }
