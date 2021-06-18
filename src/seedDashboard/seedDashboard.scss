@@ -491,8 +491,17 @@
           text-align: center;
         }
       }
+
+      .seedSummary {
+        .middleSection {
+          justify-content: space-evenly;
+        }
+      }
     }
   }
+}
+
+@media screen and (max-width: 585px) {
 }
 
 @media screen and (max-width: 420px) {
