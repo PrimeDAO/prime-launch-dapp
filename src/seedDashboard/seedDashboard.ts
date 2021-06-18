@@ -65,9 +65,12 @@ export class SeedDashboard {
     //   }
     // }, 0);
 
-    //    setTimeout(() => {
+    if (fraction === 0) {
+      this.progressBar.classList.add("hide");
+    } else {
+      this.progressBar.classList.remove("hide");
+    }
     this.bar.style.width = `${Math.min(fraction, 1.0)*100}%`;
-    //    }, 0);
 
     return fraction;
   }
