@@ -1,5 +1,4 @@
 @import "styles/colors.scss";
-@import "styles/styles";
 .page.launch {
   font-size: 1.7rem;
   display: flex;
@@ -10,13 +9,11 @@
     justify-content: center;
     flex-flow: column;
     padding-bottom: 3em;
-    .heading {
+    > .heading {
       font-family: Aeonik;
       font-weight: bold;
-      > div {
-        padding-top: 0.3em;
-        padding-bottom: 0.3em;
-      }
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
     }
   }
   .subtext {
@@ -29,7 +26,7 @@
   .banner > .subtext {
     font-weight: bold;
     text-align: center;
-    width: 615px;
+    max-width: 615px;
   }
   .launchBoxes {
     display: flex;
@@ -41,13 +38,15 @@
       font-size: 1.5em;
       line-height: 2.7em;
     }
+    > div {
+      width: 40%;
+    }
   }
 
   .launch-box-container {
     background-color: $BG02;
     border-radius: 1em;
     border: 1px solid $Border01;
-    width: 18em;
     height: 15em;
     display: grid;
     grid-template-rows: 2fr 1fr;
@@ -66,7 +65,6 @@
       flex-direction: row;
       flex-wrap: row wrap;
       align-items: center;
-      justify-content: space-between;
     }
     .buttonContainer {
       text-align: center;
@@ -97,6 +95,35 @@
         font-weight: normal;
         color: $Neutral03;
         padding-right: 1.1em;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .page.launch {
+    .banner {
+      > .heading.heading1 {
+        white-space: normal;
+        text-align: center;
+      }
+      > .subtext {
+        white-space: normal;
+      }
+    }
+    .launchBoxes {
+      flex-flow: column;
+      align-items: center;
+      > div {
+        width: 100%;
+      }
+    }
+    .launch-box-container {
+      .buttons {
+        justify-content: center;
+      }
+      .container-footer {
+        justify-content: center;
       }
     }
   }
