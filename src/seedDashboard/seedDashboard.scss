@@ -45,9 +45,9 @@
         }
 
         .label {
-          font-size: 0.8em;
+          font-size: 13px;
           color: $Neutral03;
-          margin-bottom: 0.25em;
+          margin-bottom: 4px;
         }
 
         .timer {
@@ -149,12 +149,12 @@
         padding: 28px 28px;
 
         &:not(:last-child) {
-          margin-bottom: 1.5em;
+          margin-bottom: 18px;
         }
 
         > .number {
           grid-area: number;
-          padding: 0.5em;
+          padding: 8px;
         }
 
         .description {
@@ -163,30 +163,32 @@
         }
 
         .form {
+          grid-area: form;
           display: grid;
-          grid-template-columns: auto auto 1fr auto auto;
+          grid-template-columns: auto auto 60px auto auto;
           grid-template-rows: auto auto;
           grid-template-areas:
             "input units1 equals output units2"
             "vestedMessage vestedMessage vestedMessage vestedMessage vestedMessage";
           row-gap: 12px;
           align-items: center;
+          width: min-content;
 
           .input,
           .units1,
           .units2,
           .output {
-            font-size: 1.1em;
+            font-size: 17px;
             // width: 3.3em;
             height: 100%;
             border: 1px solid #403453;
             background-color: #1b1722;
-            border-radius: 0.5em;
+            border-radius: 8px;
           }
 
           .input input {
             padding: 0;
-            font-size: 1.1rem;
+            font-size: 17px;
             width: 103px;
             text-align: center;
           }
@@ -227,6 +229,7 @@
             grid-area: input;
 
             .maxButton {
+              margin-top: 4px;
               text-align: center;
               font-size: 13px;
             }
@@ -263,23 +266,21 @@
 
         .description {
           grid-area: description;
-          font-size: 1.4em;
+          font-size: 22px;
+          justify-self: flex-start;
         }
         .subdescription {
-          padding-left: 1.8em;
-          padding-right: 1.8em;
-          padding-bottom: 1em;
+          padding-left: 29px;
+          padding-right: 29px;
+          padding-bottom: 16px;
           grid-area: subtext;
         }
         .help {
           justify-self: flex-end;
           grid-area: help;
           text-align: right;
-          width: 1.5em;
-          height: 1.5em;
-        }
-        .form {
-          grid-area: form;
+          width: 24px;
+          height: 24px;
         }
         .doit {
           grid-area: doit;
@@ -287,8 +288,8 @@
           align-self: center;
           button {
             width: 120px;
-            padding-left: 1.2em;
-            padding-right: 1.2em;
+            padding-left: 19px;
+            padding-right: 19px;
           }
         }
       }
@@ -300,7 +301,7 @@
         grid-template-areas:
           "description help"
           "subtext doit";
-        row-gap: 0.5em;
+        row-gap: 8px;
       }
 
       .section2,
@@ -312,7 +313,7 @@
           "description help"
           "form form"
           "doit doit";
-        row-gap: 0.5em;
+        row-gap: 8px;
       }
 
       .section4 {
@@ -323,15 +324,15 @@
           "description help"
           "vestedMessage vestedMessage"
           "doit doit";
-        row-gap: 0.5em;
+        row-gap: 8px;
       }
     }
 
     .seedSummary {
       grid-area: seedSummary;
 
-      .section:not(:last-child) {
-        margin-bottom: 4em;
+      > .section:not(:last-child) {
+        margin-bottom: 64px;
       }
 
       .middleSection {
@@ -411,11 +412,11 @@
 
       .bottomSection {
         .title {
-          margin-bottom: 0.5em;
+          margin-bottom: 8px;
         }
 
         .body {
-          margin-bottom: 2em;
+          margin-bottom: 19px;
         }
 
         .links {
@@ -424,7 +425,7 @@
 
           a {
             color: $Neutral02;
-            margin-bottom: 1em;
+            margin-bottom: 16px;
 
             &:hover {
               text-decoration: none;
@@ -432,19 +433,19 @@
 
             .icon {
               text-align: center;
-              margin-right: 0.25em;
-              font-size: 0.75em;
+              margin-right: 4px;
+              font-size: 12px;
               border-radius: 50%;
               color: $BG01;
               background-color: $Neutral02;
-              padding: 0.4em;
-              width: 1em;
-              height: 1em;
+              padding: 0.64px;
+              width: 16px;
+              height: 16px;
             }
 
             .name {
               text-transform: capitalize;
-              margin-right: 2em;
+              margin-right: 19px;
               &:hover {
                 text-decoration: underline;
               }
@@ -460,7 +461,7 @@
   }
 }
 
-@media screen and (max-width: 1375px) {
+@media screen and (max-width: 1475px) {
   .page.seedDashboardContainer {
     .seedDashboard {
       grid-template-columns: auto;
@@ -492,6 +493,11 @@
         }
       }
 
+      .forms {
+        max-width: 560px;
+        justify-self: center;
+      }
+
       .seedSummary {
         .middleSection {
           justify-content: space-evenly;
@@ -501,7 +507,40 @@
   }
 }
 
-@media screen and (max-width: 585px) {
+@media screen and (max-width: 620px) {
+  .page.seedDashboardContainer {
+    .seedDashboard {
+      .forms {
+        .section2,
+        .section3 {
+          justify-items: center;
+        }
+
+        .section2 {
+          .form {
+            grid-template-columns: auto auto;
+            grid-template-rows: auto auto auto auto;
+            grid-template-areas:
+              "input units1"
+              "equals equals"
+              "output units2"
+              "vestedMessage vestedMessage";
+          }
+        }
+        .section3 {
+          .form {
+            grid-template-columns: auto auto;
+            grid-template-rows: auto auto auto auto;
+            grid-template-areas:
+              "input units1"
+              ". ."
+              "output units2"
+              "vestedMessage vestedMessage";
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 420px) {

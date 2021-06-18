@@ -26,7 +26,6 @@ export class SeedDashboard {
   seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
-  resized = false;
 
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
@@ -44,7 +43,6 @@ export class SeedDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
-    window.onresize = () => this.resized = !this.resized;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
