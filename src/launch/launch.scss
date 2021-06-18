@@ -38,12 +38,14 @@
       font-size: 1.5em;
       line-height: 2.7em;
     }
+    > div {
+      width: 40%;
+    }
   }
 
   .launch-box-container {
     background-color: $BG02;
     border-radius: 1em;
-    max-width: 18em;
     border: 1px solid $Border01;
     height: 15em;
     display: grid;
@@ -98,7 +100,7 @@
   }
 }
 
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 900px) {
   .page.launch {
     .banner {
       > .heading.heading1 {
@@ -107,6 +109,13 @@
       }
       > .subtext {
         white-space: normal;
+      }
+    }
+    .launchBoxes {
+      flex-flow: column;
+      align-items: center;
+      > div {
+        width: 100%;
       }
     }
     .launch-box-container {
