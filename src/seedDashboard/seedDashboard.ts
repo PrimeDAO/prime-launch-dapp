@@ -56,15 +56,6 @@ export class SeedDashboard {
         this.numberService.fromString(fromWei(this.seed.target));
     }
 
-    // setTimeout(() => {
-    //   if (fraction === 0) {
-    //     this.progressBar.classList.add("hide");
-    //   } else {
-    //     this.progressBar.classList.remove("hide");
-    //     this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
-    //   }
-    // }, 0);
-
     if (fraction === 0) {
       this.progressBar.classList.add("hide");
     } else {
