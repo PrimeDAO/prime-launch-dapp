@@ -26,6 +26,7 @@ export class SeedDashboard {
   seedTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
+  resized = false;
 
   userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
@@ -43,21 +44,33 @@ export class SeedDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
+    window.onresize = () => this.resized = !this.resized;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
   get fractionComplete(): number {
 
-    if (!this.seed?.target) {
-      return 0;
+    let fraction = 0;
+    if (this.seed?.target) {
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
+        this.numberService.fromString(fromWei(this.seed.target));
     }
 
-    const fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-      this.numberService.fromString(fromWei(this.seed.target));
+    // setTimeout(() => {
+    //   if (fraction === 0) {
+    //     this.progressBar.classList.add("hide");
+    //   } else {
+    //     this.progressBar.classList.remove("hide");
+    //     this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
+    //   }
+    // }, 0);
 
-    setTimeout(() => {
-      this.bar.style.width = `${this.progressBar.clientWidth * Math.min(fraction, 1.0)}px`;
-    }, 0);
+    if (fraction === 0) {
+      this.progressBar.classList.add("hide");
+    } else {
+      this.progressBar.classList.remove("hide");
+    }
+    this.bar.style.width = `${Math.min(fraction, 1.0)*100}%`;
 
     return fraction;
   }
