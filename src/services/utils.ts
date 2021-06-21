@@ -74,7 +74,7 @@ export class Utils {
   }
 
   // eslint-disable-next-line no-useless-escape
-  private static pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+  private static pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?%#[\]@!\$&'\(\)\*\+,;=.]+$/);
 
   public static isValidUrl(str: string, emptyOk = false): boolean {
     return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
