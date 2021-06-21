@@ -46,7 +46,7 @@ export abstract class BaseStage {
   activate(_params: unknown, routeConfig: RouteConfig): void {
     Object.assign(this, routeConfig.settings);
     this.newSeed.currentStage = this.stageStates[this.stageNumber].title;
-    if (this.stageNumber + 1 <= 5) {
+    if (this.stageNumber < 5) {
       this.newSeed.setNextStage(this.stageStates[this.stageNumber + 1].title);
     } else {
       this.newSeed.setNextStage("Last Stage");
@@ -68,7 +68,7 @@ export abstract class BaseStage {
     if (this.stageNumber < this.maxStage) {
       this.router.navigate(`stage${this.stageNumber + 1}`);
       this.newSeed.setCurrentStage(this.stageStates[this.stageNumber + 1].title);
-      if (this.stageNumber + 1 <= 5) {
+      if (this.stageNumber < 5) {
         this.newSeed.setNextStage(this.stageStates[this.stageNumber + 2].title);
       } else {
         this.newSeed.setNextStage("Last Stage");
