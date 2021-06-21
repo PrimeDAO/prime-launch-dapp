@@ -6,6 +6,7 @@ import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Address, Hash } from "services/EthereumService";
+import { NewSeed } from "./newSeed";
 
 export interface IStageState {
   verified: boolean;
@@ -37,11 +38,19 @@ export abstract class BaseStage {
 
   constructor(
     protected router: Router,
-    protected eventAggregator: EventAggregator) {
+    protected eventAggregator: EventAggregator,
+    protected newSeed: NewSeed) {
+    this.newSeed = newSeed;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
     Object.assign(this, routeConfig.settings);
+    this.newSeed.currentStage = this.stageStates[this.stageNumber].title;
+    if (this.stageNumber + 1 <= 5) {
+      this.newSeed.setNextStage(this.stageStates[this.stageNumber + 1].title);
+    } else {
+      this.newSeed.setNextStage("Last Stage");
+    }
   }
 
   async detached(): Promise<void> {
@@ -58,12 +67,20 @@ export abstract class BaseStage {
   protected next(): void {
     if (this.stageNumber < this.maxStage) {
       this.router.navigate(`stage${this.stageNumber + 1}`);
+      this.newSeed.setCurrentStage(this.stageStates[this.stageNumber + 1].title);
+      if (this.stageNumber + 1 <= 5) {
+        this.newSeed.setNextStage(this.stageStates[this.stageNumber + 2].title);
+      } else {
+        this.newSeed.setNextStage("Last Stage");
+      }
     }
   }
 
   protected back(): void {
     if (this.stageNumber > 1) {
       this.router.navigate(`stage${this.stageNumber - 1}`);
+      this.newSeed.setCurrentStage(this.stageStates[this.stageNumber - 1].title);
+      this.newSeed.setNextStage(this.stageStates[this.stageNumber].title);
     }
   }
 

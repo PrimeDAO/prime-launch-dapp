@@ -1,3 +1,4 @@
+import { NewSeed } from "./newSeed";
 import { autoinject } from "aurelia-framework";
 import { BaseStage } from "newSeed/baseStage";
 import { Router } from "aurelia-router";
@@ -16,8 +17,9 @@ export class Stage6 extends BaseStage {
     eventAggregator: EventAggregator,
     private contractsService: ContractsService,
     private seedService: SeedService,
-    private numberService: NumberService) {
-    super(router, eventAggregator);
+    private numberService: NumberService,
+    protected newSeed:NewSeed) {
+    super(router, eventAggregator, newSeed);
   }
 
   attached(): void {
