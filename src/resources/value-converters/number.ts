@@ -1,5 +1,5 @@
 ﻿import {autoinject} from "aurelia-framework";
-import { NumberService } from "../../services/numberService";
+import { NumberService } from "../../services/NumberService";
 
 /**
  * when a number is retrieved from the element to which it is bound, convert it from a string to a number.

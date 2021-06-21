@@ -8,7 +8,7 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { fromWei } from "services/EthereumService";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 
 @autoinject
 export class Stage4 extends BaseStage {
