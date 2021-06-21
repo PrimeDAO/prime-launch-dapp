@@ -1,0 +1,5 @@
+<template bindable="seed, rowClass, index, nothot">
+  <div class="cell ${rowClass} ${(!nothot && seed.canGoToDashboard) ? 'hot' : '' }">
+    <slot></slot>
+  </div>
+</template>

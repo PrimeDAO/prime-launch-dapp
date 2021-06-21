@@ -1,4 +1,5 @@
 <template>
+  <require from="./launchCell.html"></require>
   <div class="page animated-page au-animate launches">
     <div if.to-view="featuredSeeds.length" class="section featured">
       <div class="title heading heading1">Featured</div>
@@ -19,41 +20,41 @@
           <div class="whitelist header">WHITELIST</div>
           <div class="target header">TARGET</div>
           <div class="cap header">MAX</div>
-          <div class="cap header">Seed Address</div>
+          <div class="cap header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds">
           <template if.to-view="!seed.initializing">
-            <a href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'" class="row">
-              <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
+            <a if.to-view="($index < 4) || seeingMore" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'" class="row">
+              <launchCell seed.to-view="seed" row-class="pair" index.to-view="$index">
                 <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-              </div>
-              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-              <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
+              </launchCell>
+              <launchCell seed.to-view="seed" row-class="project" index.to-view="$index">${seed.metadata.general.projectName}</launchCell>
+              <launchCell seed.to-view="seed" row-class="starts" index.to-view="$index">
                 <time-left seed.to-view="seed" hide-icons largest></time-left>
-              </div>
-              <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-              <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-              <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-              </div>
-              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
-              </div>
-              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
+              </launchCell>
+              <launchCell seed.to-view="seed" row-class="type" index.to-view="$index">SEED</launchCell>
+              <launchCell seed.to-view="seed" row-class="whitelist" index.to-view="$index"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></launchCell>
+              <launchCell seed.to-view="seed" row-class="target" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+              </launchCell>
+              <launchCell seed.to-view="seed" row-class="cap" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+              </launchCell>
+              <launchCell seed.to-view="seed" row-class="eslink" index.to-view="$index" nothot="true">
                 <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
-              </div>
+              </launchCell>
+            </a>
+          </template>
+          <template else>
+          </template>
+        </template>
       </div>
-</template>
-<template else>
-</template>
-</template>
-</div>
-<div if.to-view="!seeingMore" class="seeMore">
-  <div class="arrow">&darr;</div>
-  <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
-</div>
-<div if.to-view="seeingMore" class="seeMore">
-  <div class="arrow">&uarr;</div>
-  <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
-</div>
-</div>
-</div>
+      <div if.to-view="!seeingMore" class="seeMore">
+        <div class="arrow">&darr;</div>
+        <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
+      </div>
+      <div if.to-view="seeingMore" class="seeMore">
+        <div class="arrow">&uarr;</div>
+        <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
+      </div>
+    </div>
+  </div>
 </template>
