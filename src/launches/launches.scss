@@ -43,40 +43,39 @@
           > div {
             border-bottom: 1px solid $Border03;
           }
-        }
 
-        .cell {
-          white-space: nowrap;
-        }
-
-        .cell,
-        .header {
-          padding: 10px 0;
-
-          &.pair {
-            padding-left: 12px;
+          .cell {
+            white-space: nowrap;
           }
 
-          &.cap {
-            padding-right: 12px;
+          .cell {
+            padding: 10px 0;
+
+            &.pair {
+              padding-left: 12px;
+            }
+
+            &.cap {
+              padding-right: 12px;
+            }
+
+            &.target,
+            &.eslink,
+            &.cap {
+              text-align: right;
+            }
+
+            &.whitelist,
+            &.starts,
+            &.type {
+              text-align: center;
+            }
           }
 
-          &.target,
-          &.eslink,
-          &.cap {
-            text-align: right;
-          }
-
-          &.whitelist,
-          &.starts,
-          &.type {
-            text-align: center;
-          }
-        }
-
-        .cell {
-          &.pair {
-            padding: 6px 0;
+          .cell {
+            &.pair {
+              padding: 6px 0;
+            }
           }
         }
       }

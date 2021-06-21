@@ -12,18 +12,18 @@
     <div class="section launches">
       <div class="title heading heading1">Launches</div>
       <div class="launchGrid">
-        <div class="row">
-          <div class="pair header">PAIR</div>
-          <div class="project header">PROJECT</div>
-          <div class="starts header">STARTS</div>
-          <div class="type header">TYPE</div>
-          <div class="whitelist header">WHITELIST</div>
-          <div class="target header">TARGET</div>
-          <div class="cap header">MAX</div>
-          <div class="cap header">ETHERSCAN</div>
+        <div class="row header">
+          <div class="cell pair header">PAIR</div>
+          <div class="cell project header">PROJECT</div>
+          <div class="cell starts header">STARTS</div>
+          <div class="cell type header">TYPE</div>
+          <div class="cell whitelist header">WHITELIST</div>
+          <div class="cell target header">TARGET</div>
+          <div class="cell cap header">MAX</div>
+          <div class="cell cap header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds">
-          <a if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'" class="row">
+          <a class="row body" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
             <launchCell seed.to-view="seed" cell-class="pair" index.to-view="$index">
               <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
             </launchCell>
