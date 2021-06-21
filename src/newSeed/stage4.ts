@@ -132,12 +132,12 @@ export class Stage4 extends BaseStage {
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
-      message = "Please enter a valid url for Whitelist";
+      message = "Please enter a valid URL for Whitelist";
       // won't validate this for now
     // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
     //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
-      message = "Please enter a valid url for Legal Disclaimer";
+      message = "Please enter a valid URL for Legal Disclaimer";
     }
     this.stageState.verified = !message;
     return message;
