@@ -181,7 +181,6 @@ export class NewSeed {
       this.sideBar.classList.remove("show");
     } else {
       this.sideBar.classList.add("show");
-
     }
   }
 }
