@@ -12,6 +12,9 @@ export class NewSeed {
   seedConfig: ISeedConfig;
   stageStates: Array<IStageState>;
   wizardState: IWizardState;
+  sideBar: HTMLElement;
+  currentStage: string;
+  nextStage: string;
 
   constructor() {
     if (!this.seedConfig) {
@@ -155,7 +158,30 @@ export class NewSeed {
     this.router = router;
   }
 
-  setStage(route: string): void {
-    this.router.navigate(route);
+  setStage(config: { route: string, title: string, settings: { stageNumber: number } }): void {
+    this.router.navigate(config.route);
+    if (config.settings.stageNumber < 5) {
+      this.nextStage = this.stageStates[config.settings.stageNumber + 1].title;
+    } else {
+      this.nextStage = "Last Stage";
+    }
+    this.currentStage = config.title;
+  }
+
+  setCurrentStage(stageName: string): void {
+    this.currentStage = stageName;
+  }
+
+  setNextStage(stageName: string): void {
+    this.nextStage = stageName;
+  }
+
+  toggleSideBar(): void {
+    if (this.sideBar.classList.contains("show")) {
+      this.sideBar.classList.remove("show");
+    } else {
+      this.sideBar.classList.add("show");
+
+    }
   }
 }

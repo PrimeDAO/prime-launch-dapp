@@ -2,11 +2,18 @@
   <require from="../resources/elements/circledNumber/circledNumber.html"></require>
 
   <div class="newSeedContainer">
-    <div class="currentStageSidebar">
+    <div class="sideBarDropDownContainer">
+      <div click.delegate="toggleSideBar()" class="sideBarDropDown">
+        ${currentStage}
+        <div class="menubutton fas fa-angle-down"></div>
+      </div>
+      <div class="nextStage">${nextStage !== "Last Stage" ? "Next:" : ""} ${nextStage}</div>
+    </div>
+    <div class="currentStageSidebar" show.to-view="true" ref="sideBar">
       <template repeat.for="stage of router.navigation">
         <div
           class="currentstage ${stage.isActive ? 'active' : ''}"
-          click.delegate="setStage(stage.config.route)">
+          click.delegate="setStage(stage.config)">
           <div class="stagesNumber">
             <circled-number
               number.bind="$index + 1"

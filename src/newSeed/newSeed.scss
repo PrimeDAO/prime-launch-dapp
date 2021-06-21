@@ -4,6 +4,21 @@
   grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
+  .sideBarDropDownContainer {
+    display: none;
+    .sideBarDropDown {
+      font-family: Inter;
+      color: $Secondary02;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .nextStage {
+      font-family: Inter;
+      font-size: 12px;
+      color: $Neutral02;
+      padding-bottom: 1em;
+    }
+  }
   .currentStageSidebar {
     line-height: 2rem;
     font-size: 1.125rem;
@@ -35,6 +50,38 @@
         height: 1.3em;
         background-color: $Neutral02;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .newSeedContainer {
+    grid-template-columns: unset;
+    .sideBarDropDownContainer {
+      display: block;
+    }
+    .currentStageSidebar {
+      line-height: 1em;
+      font-size: 1rem;
+      padding-top: unset;
+      padding-bottom: 2em;
+      display: none;
+      .timeLine {
+        width: 2.6em;
+        height: .4em;
+        display: grid;
+        justify-content: center;
+        // padding-top: 0.1em;
+        // padding-bottom: 0.1em;
+        .ruler {
+          width: 0.2em;
+          height: 0.4em;
+          background-color: $Neutral02;
+        }
+      }
+    }
+    .currentStageSidebar.show {
+      display: block;
     }
   }
 }
