@@ -9,7 +9,7 @@
       </div>
       <div class="nextStage">${nextStage !== "Last Stage" ? "Next:" : ""} ${nextStage}</div>
     </div>
-    <div class="currentStageSidebar" show.to-view="true" ref="sideBar">
+    <div class="currentStageSidebar" ref="sideBar">
       <template repeat.for="stage of router.navigation">
         <div
           class="currentstage ${stage.isActive ? 'active' : ''}"
