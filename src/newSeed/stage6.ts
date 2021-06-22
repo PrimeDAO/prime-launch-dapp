@@ -5,7 +5,7 @@ import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { fromWei } from "services/EthereumService";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 
 @autoinject

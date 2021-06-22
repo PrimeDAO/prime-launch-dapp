@@ -9,7 +9,7 @@ import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 import { ISeedConfig } from "newSeed/seedConfig";
