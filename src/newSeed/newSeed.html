@@ -12,7 +12,7 @@
       <template repeat.for="stage of router.navigation">
         <div
           class="currentstage ${stage.isActive ? 'active' : ''}"
-          click.delegate="setStage(stage.config)">
+          click.delegate="setStage(stage.config.route)">
           <div class="stagesNumber">
             <circled-number
               number.bind="$index + 1"

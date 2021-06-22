@@ -161,8 +161,8 @@ export class NewSeed {
     this.router = router;
   }
 
-  setStage(config: { route: string, title: string, settings: { stageNumber: number } }): void {
-    this.router.navigate(config.route);
+  setStage(route: string): void {
+    this.router.navigate(route);
   }
 
   toggleSideBar(): void {
