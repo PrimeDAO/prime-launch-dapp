@@ -4,7 +4,7 @@ import {
   containerless,
 } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 import tippy from "tippy.js";
 
 @autoinject
