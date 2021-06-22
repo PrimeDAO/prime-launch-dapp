@@ -10,14 +10,9 @@
     }
 
     &.launches {
-      .launchGrid {
-        display: grid;
-        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
-        grid-template-rows: auto;
-        align-items: center;
+      .grid {
         margin-bottom: 20px;
-        font-size: 0.8em;
-
+        font-size: 16px;
         .row {
           display: contents;
           cursor: default;
@@ -26,61 +21,56 @@
             text-decoration: none;
           }
 
-          &:not(:first-child) {
-            .cell.hot {
-              cursor: pointer;
-            }
+          &.body .cell.hot {
+            cursor: pointer;
           }
 
-          &:hover > div {
+          &.body.hot:hover .cell.body {
             background-color: $BG02;
           }
 
-          &:first-of-type > div {
+          &.header > div {
             border-bottom: 1px solid $Border03;
           }
 
-          > div {
-            border-bottom: 1px solid $Border03;
+          .cell {
+            padding: 10px 0;
+
+            &.pair {
+              padding-left: 12px;
+            }
+
+            &.cap {
+              padding-right: 12px;
+            }
+
+            &.target,
+            &.eslink,
+            &.cap {
+              text-align: right;
+            }
+
+            &.whitelist,
+            &.starts,
+            &.type {
+              text-align: center;
+            }
           }
         }
+      }
 
-        .cell {
-          white-space: nowrap;
-          &.hideMore {
-            display: none;
-          }
-        }
+      .launchGrid {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
+        grid-template-rows: auto;
+        align-items: center;
+      }
 
-        .cell,
-        .header {
-          padding: 10px 0;
-
-          &.pair {
-            padding-left: 12px;
-          }
-
-          &.cap {
-            padding-right: 12px;
-          }
-
-          &.target,
-          &.cap {
-            text-align: right;
-          }
-
-          &.whitelist,
-          &.starts,
-          &.type {
-            text-align: center;
-          }
-        }
-
-        .cell {
-          &.pair {
-            padding: 6px 0;
-          }
-        }
+      .launchGridMobile {
+        display: none;
+        grid-template-columns: auto auto auto auto;
+        grid-template-rows: auto auto;
+        align-items: center;
       }
 
       .seeMore {
@@ -90,6 +80,34 @@
 
         > .arrow {
           margin-right: 6px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .page.launches {
+    .section {
+      .title {
+        white-space: normal;
+        text-align: center;
+        width: auto; // so text-align:center works
+        max-width: unset;
+      }
+
+      &.featured {
+        .scrollerContainer {
+          margin-bottom: 0;
+        }
+      }
+
+      &.launches {
+        .launchGrid {
+          display: none;
+        }
+        .launchGridMobile {
+          display: grid;
         }
       }
     }

@@ -6,7 +6,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 import { fromWei } from "services/EthereumService";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 
 @autoinject
 export class Stage3 extends BaseStage {
