@@ -4,10 +4,9 @@
   <div class="newSeedContainer">
     <div class="sideBarDropDownContainer">
       <div click.delegate="toggleSideBar()" class="sideBarDropDown">
-        ${currentStage}
+        ${currentStage.title}
         <div class="fas fa-angle-down"></div>
       </div>
-      <div class="nextStage">${nextStage !== "Last Stage" ? "Next:" : ""} ${nextStage}</div>
     </div>
     <div class="currentStageSidebar" ref="sideBar">
       <template repeat.for="stage of router.navigation">

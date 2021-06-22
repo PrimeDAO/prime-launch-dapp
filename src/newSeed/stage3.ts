@@ -1,4 +1,3 @@
-import { NewSeed } from "./newSeed";
 import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -21,9 +20,8 @@ export class Stage3 extends BaseStage {
     eventAggregator: EventAggregator,
     private tokenService: TokenService,
     private numberService: NumberService,
-    router: Router,
-    protected newSeed:NewSeed) {
-    super(router, eventAggregator, newSeed);
+    router: Router) {
+    super(router, eventAggregator);
   }
 
   addTokenDistribution(): void {

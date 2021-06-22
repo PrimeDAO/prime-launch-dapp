@@ -1,4 +1,3 @@
-import { NewSeed } from "./newSeed";
 import { autoinject } from "aurelia-framework";
 import { WhiteListService } from "./../services/WhiteListService";
 import { Router } from "aurelia-router";
@@ -27,9 +26,8 @@ export class Stage4 extends BaseStage {
     eventAggregator: EventAggregator,
     private whiteListService: WhiteListService,
     private numberService: NumberService,
-    router: Router,
-    protected newSeed:NewSeed) {
-    super(router, eventAggregator, newSeed);
+    router: Router) {
+    super(router, eventAggregator);
   }
 
   attached(): void {

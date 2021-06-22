@@ -1,8 +1,8 @@
 import "./newSeed.scss";
 import { PLATFORM } from "aurelia-pal";
-import { singleton } from "aurelia-framework";
+import { singleton, computedFrom } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "./seedConfig";
-import { Router, RouterConfiguration } from "aurelia-router";
+import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newSeed/baseStage";
 
 @singleton(false)
@@ -13,8 +13,11 @@ export class NewSeed {
   stageStates: Array<IStageState>;
   wizardState: IWizardState;
   sideBar: HTMLElement;
-  currentStage: string;
-  nextStage: string;
+
+  @computedFrom("router.currentInstruction")
+  get currentStage(): RouteConfig {
+    return this.router.currentInstruction.config;
+  }
 
   constructor() {
     if (!this.seedConfig) {
@@ -160,20 +163,6 @@ export class NewSeed {
 
   setStage(config: { route: string, title: string, settings: { stageNumber: number } }): void {
     this.router.navigate(config.route);
-    if (config.settings.stageNumber < 5) {
-      this.nextStage = this.stageStates[config.settings.stageNumber + 1].title;
-    } else {
-      this.nextStage = "Last Stage";
-    }
-    this.currentStage = config.title;
-  }
-
-  setCurrentStage(stageName: string): void {
-    this.currentStage = stageName;
-  }
-
-  setNextStage(stageName: string): void {
-    this.nextStage = stageName;
   }
 
   toggleSideBar(): void {
@@ -184,3 +173,4 @@ export class NewSeed {
     }
   }
 }
+
