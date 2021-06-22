@@ -484,14 +484,14 @@
     &.stage1 {
       .infoContainer {
         .otherLinks {
-          > div:first-of-type {
+          gap: unset;
             input {
-              width: 90%;
+              width: unset;
+              height: unset;
             }
-          }
           .addLinkContainer {
             input {
-              width: 90%;
+              width: unset;
             }
           }
         }
