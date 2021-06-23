@@ -10,9 +10,14 @@
     }
 
     &.launches {
+      .title {
+        -webkit-text-fill-color: $Secondary02;
+      }
+
       .grid {
         margin-bottom: 20px;
         font-size: 16px;
+
         .row {
           display: contents;
           cursor: default;
@@ -29,19 +34,15 @@
             background-color: $BG02;
           }
 
-          &.header > div {
-            border-bottom: 1px solid $Border03;
-          }
-
           .cell {
             padding: 10px 0;
 
-            &.pair {
-              padding-left: 12px;
+            &.header {
+              color: $Neutral02;
             }
 
-            &.cap {
-              padding-right: 12px;
+            &.project {
+              white-space: normal;
             }
 
             &.target,
@@ -64,13 +65,96 @@
         grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
+        column-gap: 8px;
+
+        .row {
+          &.header {
+            .cell {
+              border-bottom: 1px solid $Secondary02;
+              &:not(:nth-of-type(8n)) {
+                margin-right: -8px; // hack to remove gap in header bottom border
+              }
+            }
+          }
+        }
       }
 
       .launchGridMobile {
         display: none;
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: 2fr 1fr 1fr auto;
         grid-template-rows: auto auto;
         align-items: center;
+        column-gap: 8px;
+
+        .row {
+          &.header {
+            .cell:nth-of-type(n + 5) {
+              border-bottom: 1px solid $Secondary02;
+              color: $Neutral02;
+              opacity: 0.6;
+            }
+          }
+
+          &.pair {
+            padding-left: 0;
+          }
+
+          &.cap {
+            padding-right: 0;
+          }
+
+          .cell {
+            padding: 2px 0;
+            height: 17px;
+            text-align: left !important;
+
+            &.whitelist {
+              text-align: center !important;
+            }
+
+            /**
+             * cells in first subrow of each row
+             */
+            &:nth-of-type(n):nth-of-type(-n + 3) {
+              padding-top: 12px;
+            }
+
+            /**
+             * cells in second subrow of each row
+             */
+            &:nth-of-type(n + 5):nth-of-type(-n + 8) {
+              padding-bottom: 12px;
+
+              &:not(:nth-of-type(4n)) {
+                margin-right: -8px; // hack to remove gap in header bottom border
+              }
+
+              .etherscanlink .text,
+              .copy-to-clip-button {
+                color: $Neutral02;
+              }
+            }
+
+            &.body {
+              color: $Neutral02;
+              &.pair {
+                .tokenPairContainer {
+                  height: 17px;
+
+                  > img {
+                    width: 15px;
+                  }
+                }
+              }
+
+              &.starts {
+                .timeLeftContainer {
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+        }
       }
 
       .seeMore {
@@ -103,6 +187,9 @@
       }
 
       &.launches {
+        .grid {
+          font-size: 14px;
+        }
         .launchGrid {
           display: none;
         }

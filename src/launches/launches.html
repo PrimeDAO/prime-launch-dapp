@@ -1,5 +1,4 @@
 <template>
-  <require from="./launchCell.html"></require>
   <div class="page animated-page au-animate launches">
     <div if.to-view="featuredSeeds.length" class="section featured">
       <div class="title heading heading1">Featured</div>
@@ -20,26 +19,26 @@
           <div class="cell target header">TARGET</div>
           <div class="cell cap header">MAX</div>
           <div class="cell whitelist header">WHITELIST</div>
-          <div class="cell cap header">ETHERSCAN</div>
+          <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds">
           <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
-            <launchCell seed.to-view="seed" cell-class="pair" index.to-view="$index">
+            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="project" index.to-view="$index">${seed.metadata.general.projectName}</launchCell>
-            <launchCell seed.to-view="seed" cell-class="type" index.to-view="$index">SEED</launchCell>
-            <launchCell seed.to-view="seed" cell-class="starts" index.to-view="$index">
+            </div>
+            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="target" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="cap" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="whitelist" index.to-view="$index"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></launchCell>
-            <launchCell seed.to-view="seed" cell-class="eslink" index.to-view="$index" nothot="true">
-              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
-            </launchCell>
+            </div>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            </div>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            </div>
+            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="eslink cell body">
+              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
+            </div>
           </a>
         </template>
       </div>
@@ -52,26 +51,28 @@
           <div class="cell project header">PROJECT</div>
           <div class="cell starts header">STARTS</div>
           <div class="cell cap header">MAX</div>
-          <div class="cell cap header">ETHERSCAN</div>
+          <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds">
-          <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
-            <launchCell seed.to-view="seed" cell-class="pair" index.to-view="$index">
+          <a
+            class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
+            if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
+            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="type" index.to-view="$index">SEED</launchCell>
-            <launchCell seed.to-view="seed" cell-class="target" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="whitelist" index.to-view="$index"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></launchCell>
-            <launchCell seed.to-view="seed" cell-class="project" index.to-view="$index">${seed.metadata.general.projectName}</launchCell>
-            <launchCell seed.to-view="seed" cell-class="starts" index.to-view="$index">
+            </div>
+            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            </div>
+            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="cap" index.to-view="$index">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
-            </launchCell>
-            <launchCell seed.to-view="seed" cell-class="eslink" index.to-view="$index" nothot="true">
-              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
-            </launchCell>
+            </div>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            </div>
+            <div class="eslink cell body">
+              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
+            </div>
           </a>
         </template>
       </div>
