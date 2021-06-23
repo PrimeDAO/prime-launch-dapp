@@ -56,19 +56,19 @@
       display: block;
     }
     .currentStageSidebar {
-      line-height: 1em;
-      font-size: 1rem;
+      line-height: 16px;
+      font-size: 16px;
       padding-top: unset;
-      padding-bottom: 2em;
+      padding-bottom: 32px;
       display: none;
       .timeLine {
-        width: 2.6em;
-        height: .4em;
+        width: 40px;
+        height: 3px;
         display: grid;
         justify-content: center;
         .ruler {
-          width: 0.2em;
-          height: 0.4em;
+          width: 4px;
+          height: 4px;
           background-color: $Neutral02;
         }
       }
