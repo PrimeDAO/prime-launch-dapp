@@ -41,6 +41,10 @@
               color: $Neutral02;
             }
 
+            &.project {
+              white-space: normal;
+            }
+
             &.target,
             &.eslink,
             &.cap {
@@ -61,11 +65,15 @@
         grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
+        column-gap: 8px;
 
         .row {
           &.header {
             .cell {
               border-bottom: 1px solid $Secondary02;
+              &:not(:nth-of-type(8n)) {
+                margin-right: -8px; // hack to remove gap in header bottom border
+              }
             }
           }
         }
