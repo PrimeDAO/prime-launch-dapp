@@ -87,11 +87,11 @@
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
             <div class="distribRow">
               <div class="infoInput supply">
-                <div if.to-view="$index === 0" class="columnHeaders">Category</div>
+                <div class="columnHeaders">Category</div>
                 <input type="text" value.bind="distrib.category" class="textInput">
               </div>
               <div class="infoInput supply" value.bind="distrib.amount">
-                <div if.to-view="$index === 0" class="columnHeaders">Amount</div>
+                <div class="columnHeaders">Amount</div>
                 <numeric-input
                   output-as-string="true"
                   value.bind="distrib.amount"
@@ -99,7 +99,7 @@
                 </numeric-input>
               </div>
               <div class="infoInput supply numberInput" value.bind="distrib.lockup">
-                <div if.to-view="$index === 0" class="columnHeaders">Lockup-up (days)</div>
+                <div class="columnHeaders">Lockup-up (days)</div>
                 <input type="number" value.bind="distrib.lockup" placeholder="0" class="numberInput">
                 <span
                   class="deleteLink"
