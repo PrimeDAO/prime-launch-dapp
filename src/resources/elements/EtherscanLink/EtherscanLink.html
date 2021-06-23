@@ -9,6 +9,6 @@
       ${text || address}
     </div>
 
-    <copy-to-clipboard-button text-to-copy.to-view="address" message.to-view="copyMessage"></copy-to-clipboard-button>
+    <copy-to-clipboard-button if.to-view="!hideClipboardButton" text-to-copy.to-view="address" message.to-view="copyMessage"></copy-to-clipboard-button>
   </div>
 </template>
