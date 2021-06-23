@@ -26,8 +26,7 @@ export class Stage4 extends BaseStage {
     eventAggregator: EventAggregator,
     private whiteListService: WhiteListService,
     private numberService: NumberService,
-    router: Router,
-  ) {
+    router: Router) {
     super(router, eventAggregator);
   }
 

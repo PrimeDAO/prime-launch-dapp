@@ -20,8 +20,7 @@ export class Stage3 extends BaseStage {
     eventAggregator: EventAggregator,
     private tokenService: TokenService,
     private numberService: NumberService,
-    router: Router,
-  ) {
+    router: Router) {
     super(router, eventAggregator);
   }
 
