@@ -108,6 +108,10 @@
             height: 17px;
             text-align: left !important;
 
+            &.whitelist {
+              text-align: center !important;
+            }
+
             /**
              * cells in first subrow of each row
              */
