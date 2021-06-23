@@ -27,6 +27,7 @@ export class FormattedNumber {
   private text: string;
   private textElement: HTMLElement;
   private _value: number | string;
+  private tippyInstance: any;
 
   constructor(private numberService: NumberService) {
   }
@@ -72,12 +73,14 @@ export class FormattedNumber {
 
   private setTooltip() {
     if (this.textElement && this.value) {
+      if (!this.tippyInstance) {
       // tippy(this.textElement, "dispose");
-      const instance = tippy(this.textElement, {
-        appendTo: () => document.body, // because is "interactive" and otherwise messes with the layout on hover
-        zIndex: 10005,
-      });
-      instance.setContent(this.value.toString());
+        this.tippyInstance = tippy(this.textElement, {
+          appendTo: () => document.body, // because is "interactive" and otherwise messes with the layout on hover
+          zIndex: 10005,
+        });
+      }
+      this.tippyInstance.setContent(this.value.toString());
     }
   }
 }
