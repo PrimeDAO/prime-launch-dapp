@@ -1,8 +1,8 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
+  font-size: 16px;
   > div.mainStatus > div,
   > div.adminStatus > div {
-    font-size: 16px;
     font-family: Inter;
     align-self: center;
     white-space: nowrap;
