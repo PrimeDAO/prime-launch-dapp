@@ -56,6 +56,10 @@
             &.type {
               text-align: center;
             }
+
+            &.starts {
+              padding-right: 8px;
+            }
           }
         }
       }
@@ -65,15 +69,11 @@
         grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
-        column-gap: 8px;
 
         .row {
           &.header {
             .cell {
               border-bottom: 1px solid $Secondary02;
-              &:not(:nth-of-type(8n)) {
-                margin-right: -8px; // hack to remove gap in header bottom border
-              }
             }
           }
         }
@@ -84,7 +84,6 @@
         grid-template-columns: 2fr 1fr 1fr auto;
         grid-template-rows: auto auto;
         align-items: center;
-        column-gap: 8px;
 
         .row {
           &.header {
@@ -108,7 +107,8 @@
             height: 17px;
             text-align: left !important;
 
-            &.whitelist {
+            &.whitelist,
+            &.eslink {
               text-align: center !important;
             }
 
@@ -125,10 +125,6 @@
             &:nth-of-type(n + 5):nth-of-type(-n + 8) {
               padding-bottom: 12px;
 
-              &:not(:nth-of-type(4n)) {
-                margin-right: -8px; // hack to remove gap in header bottom border
-              }
-
               .etherscanlink .text,
               .copy-to-clip-button {
                 color: $Neutral02;
@@ -137,6 +133,7 @@
 
             &.body {
               color: $Neutral02;
+
               &.pair {
                 .tokenPairContainer {
                   height: 17px;
