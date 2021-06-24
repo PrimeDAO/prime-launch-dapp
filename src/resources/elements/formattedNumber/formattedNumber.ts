@@ -11,12 +11,15 @@ import tippy from "tippy.js";
 @containerless
 export class FormattedNumber {
 
+  //  @bindable public format?: string;
   /**
    * how many significant digits we want to display
    */
-  //  @bindable public format?: string;
-  @bindable public precision?: string | number;
+  // @bindable public precision?: string | number;
   @bindable.booleanAttr public average = false;
+  /**
+   * places after the decimal, padded with zeroes if needed
+   */
   @bindable public mantissa?: string | number;
   @bindable public value: number | string;
   @bindable public placement = "top";
@@ -45,8 +48,8 @@ export class FormattedNumber {
     if ((this._value !== null) && (this._value !== undefined)) {
       text = this.numberService.toString(Number(this._value),
         {
-          precision: this.precision ? this.precision : ((this.average && !this.mantissa) ? 3 : undefined),
-          average: !this.thousandsSeparated && this.average,
+          // precision: this.precision,
+          average: this.average,
           mantissa: this.mantissa,
           thousandSeparated: this.thousandsSeparated,
         },
