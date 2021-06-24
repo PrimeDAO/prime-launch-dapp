@@ -31,9 +31,9 @@
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
             </div>
-            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
             </div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="eslink cell body">
@@ -61,14 +61,14 @@
               <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
             </div>
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
             </div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
-            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
             </div>
             <div class="eslink cell body">
               <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
