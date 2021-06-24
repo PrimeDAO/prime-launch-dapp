@@ -413,6 +413,7 @@
       .bottomSection {
         .title {
           margin-bottom: 8px;
+          white-space: normal;
         }
 
         .body {
@@ -426,6 +427,10 @@
           a {
             color: $Neutral02;
             margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: auto auto;
+            column-gap: 8px;
+            align-items: center;
 
             &:hover {
               text-decoration: none;
@@ -433,7 +438,6 @@
 
             .icon {
               text-align: center;
-              margin-right: 4px;
               font-size: 12px;
               border-radius: 50%;
               color: $BG01;
@@ -444,8 +448,9 @@
             }
 
             .name {
+              white-space: normal;
               text-transform: capitalize;
-              margin-right: 19px;
+              margin-right: 18px;
               &:hover {
                 text-decoration: underline;
               }
