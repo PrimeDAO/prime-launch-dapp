@@ -115,7 +115,7 @@
             /**
              * cells in first subrow of each row
              */
-            &:nth-of-type(n):nth-of-type(-n + 3) {
+            &:nth-of-type(n):nth-of-type(-n + 4) {
               padding-top: 12px;
             }
 
