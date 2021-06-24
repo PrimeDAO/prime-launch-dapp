@@ -219,13 +219,15 @@ export class SeedDashboard {
     this.seedTokenToReceive = this.seed.userClaimableAmount;
   }
 
-  unlockFundingTokens(): void {
-    this.seed.unlockFundingTokens(this.fundingTokenToPay)
-      .then((receipt) => {
-        if (receipt) {
-          this.hydrateUserData();
-        }
-      });
+  async unlockFundingTokens(): Promise<void> {
+    if (await this.disclaimSeed()) {
+      this.seed.unlockFundingTokens(this.fundingTokenToPay)
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
+    }
   }
 
   async buy(): Promise<void> {

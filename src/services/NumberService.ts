@@ -1,4 +1,6 @@
-﻿const numbro = require("numbro");
+﻿import { format } from "node:path";
+
+const numeral = require("numeral");
 
 // export enum RoundingType {
 //   Bankers = 1,
@@ -7,16 +9,30 @@
 
 export class NumberService {
   /**
-   * Note this will round up when average==true and lazt significant digit is .5 or higher.
    * @param value
    * @param format
    */
   public toString(value: number | string,
     options?: {
-      precision?: string | number,
+      /**
+       * number of significant digits
+       */
+      // precision?: string | number,
+      /**
+       * truncate with 'k', 'M','B', etc.
+       * average takes precedence over thousandSeparated if both are present
+       */
       average?: boolean,
+      /**
+       * places after the decimal, padded with zeroes if needed.
+       * default is 2
+       * If you supply 0, then will output a whole number rounded up by any fractional part.
+       */
       mantissa?: string | number,
-      thousandSeparated?: boolean
+      /**
+       * insert commas
+       */
+      thousandSeparated?: boolean,
     },
   ): string | null | undefined {
 
@@ -28,15 +44,28 @@ export class NumberService {
     if (Number.isNaN(value)) {
       return null;
     }
-    return numbro(value).format(
-      Object.assign(
-        { average: !!options?.average },
-        { thousandSeparated: !!options?.thousandSeparated },
-        Number(options?.precision) ? { totalLength: this.fromString(options.precision) } : {},
-        options.mantissa !== undefined ? { mantissa: this.fromString(options.mantissa) } : undefined,
-      ) );
-  }
 
+    const thousandSeparated = !options.average && options.thousandSeparated;
+    const mantissa = (options.mantissa !== undefined) ? this.fromString(options.mantissa) : 2;
+
+    let formatString: string;
+
+    if (mantissa) {
+      formatString = "0.".padEnd(mantissa + 2, "0");
+    } else {
+      formatString = "0";
+    }
+
+    if (thousandSeparated) {
+      formatString = "0," + formatString;
+    } else if (options.average) {
+      formatString = formatString + "a";
+    }
+    /**
+     * supply trunc as rounding function because we don't want to round up
+     */
+    return numeral(value).format(formatString, Math.trunc) as string;
+  }
   /**
    * returns number with `digits` number of digits.
    * @param value the value
@@ -87,7 +116,7 @@ export class NumberService {
        */
       return 0;
     } else {
-      return numbro.unformat(value);
+      return numeral(value).value();
     }
   }
 

@@ -11,12 +11,15 @@ import tippy from "tippy.js";
 @containerless
 export class FormattedNumber {
 
+  //  @bindable public format?: string;
   /**
    * how many significant digits we want to display
    */
-  //  @bindable public format?: string;
-  @bindable public precision?: string | number;
+  // @bindable public precision?: string | number;
   @bindable.booleanAttr public average = false;
+  /**
+   * places after the decimal, padded with zeroes if needed
+   */
   @bindable public mantissa?: string | number;
   @bindable public value: number | string;
   @bindable public placement = "top";
@@ -27,6 +30,7 @@ export class FormattedNumber {
   private text: string;
   private textElement: HTMLElement;
   private _value: number | string;
+  private tippyInstance: any;
 
   constructor(private numberService: NumberService) {
   }
@@ -44,8 +48,8 @@ export class FormattedNumber {
     if ((this._value !== null) && (this._value !== undefined)) {
       text = this.numberService.toString(Number(this._value),
         {
-          precision: this.precision ? this.precision : ((this.average && !this.mantissa) ? 3 : undefined),
-          average: !this.thousandsSeparated && this.average,
+          // precision: this.precision,
+          average: this.average,
           mantissa: this.mantissa,
           thousandSeparated: this.thousandsSeparated,
         },
@@ -72,12 +76,14 @@ export class FormattedNumber {
 
   private setTooltip() {
     if (this.textElement && this.value) {
+      if (!this.tippyInstance) {
       // tippy(this.textElement, "dispose");
-      const instance = tippy(this.textElement, {
-        appendTo: () => document.body, // because is "interactive" and otherwise messes with the layout on hover
-        zIndex: 10005,
-      });
-      instance.setContent(this.value.toString());
+        this.tippyInstance = tippy(this.textElement, {
+          appendTo: () => document.body, // because is "interactive" and otherwise messes with the layout on hover
+          zIndex: 10005,
+        });
+      }
+      this.tippyInstance.setContent(this.value.toString());
     }
   }
 }
