@@ -6,7 +6,6 @@ import { Router, RouterConfiguration } from "aurelia-router";
 import { PLATFORM } from "aurelia-pal";
 import "./styles/styles.scss";
 import "./app.scss";
-import { Utils } from "services/utils";
 import tippy from "tippy.js";
 import { BindingSignaler } from "aurelia-templating-resources";
 import { EthereumService } from "services/EthereumService";
