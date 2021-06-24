@@ -42,7 +42,9 @@
             }
 
             &.project {
-              white-space: normal;
+              padding-right: 8px;
+              overflow-x: hidden;
+              text-overflow: ellipsis;
             }
 
             &.target,
@@ -104,7 +106,6 @@
 
           .cell {
             padding: 2px 0;
-            height: 17px;
             text-align: left !important;
 
             &.whitelist,
