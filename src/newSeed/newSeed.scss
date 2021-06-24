@@ -6,6 +6,7 @@
   background-color: $BG01;
   .sideBarDropDownContainer {
     display: none;
+    cursor: pointer;
     .sideBarDropDown {
       font-family: Inter;
       color: $Secondary02;

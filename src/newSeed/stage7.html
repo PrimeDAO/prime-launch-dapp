@@ -3,29 +3,23 @@
     <div class="infoContainer">
       <div class="heading heading2 title">Thank you!</div>
       <div class="subtext">
-        <p>We've created a Seed configured according to your specifications.</p>
-        <p>You may inspect the Seed configuration, stored in the JSON format, in IPFS,
-          <a href="https://gateway.pinata.cloud/ipfs/${wizardState.seedHash}" target="_blank" rel="noopener noreferrer">here</a>.
+        <p>Congratulations!</p>
+
+        <p>You have created a Seed according to your specifications.</p>
+
+        <p>You may inspect the Seed configuration, stored in the JSON format in IPFS, here:
+          <a href="https://gateway.pinata.cloud/ipfs/${wizardState.seedHash}" target="_blank" rel="noopener noreferrer">https://gateway.pinata.cloud/ipfs/${wizardState.seedHash}</a>.
+          Please save this URL.
         </p>
-        <p>Reminder: When the new Seed is approved and its creation has been executed, then it will automatically appear here in PrimeLAUNCH.
-          To enable the Seed to become usable, someone must transfer
+
+        <p>The DAO must approve the Seed's display in the PrimeLAUNCH interface, and someone must transfer
           <formatted-number
             value.to-view="wizardState.requiredSeedDeposit"
             thousands-separated></formatted-number>
           ${wizardState.seedTokenSymbol} to the Seed contract.
-          This amount includes
-          <formatted-number
-            value.to-view="wizardState.requiredSeedFee"
-            thousands-separated></formatted-number>
-          ${wizardState.seedTokenSymbol}
-          in fees that are paid as seed tokens are claimed.
-        <div if.to-view="!!seedConfig.seedDetails.whitelist">Further, as you will be the admistrator of the new Seed, you must add the whitelisted accounts to the Seed.</div>
+          This amount includes any service fees.
         </p>
-        <p>Fees will be sent to
-          <etherscanlink
-            address.to-view="wizardState.primeDaoAddress"
-            text.to-view="wizardState.primeDaoAddress"></etherscanlink>
-        </p>
+        <p>You are the sole administrator of the new Seed<span if.to-view="!!seedConfig.seedDetails.whitelist"> and are responsible for managing its whitelist</span>.</p>
       </div>
       <div class="linksContainer">
         <div>
