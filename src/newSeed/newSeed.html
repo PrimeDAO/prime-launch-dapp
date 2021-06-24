@@ -2,7 +2,13 @@
   <require from="../resources/elements/circledNumber/circledNumber.html"></require>
 
   <div class="newSeedContainer">
-    <div class="currentStageSidebar">
+    <div class="sideBarDropDownContainer">
+      <div click.delegate="toggleSideBar()" class="sideBarDropDown">
+        ${currentStage.title}
+        <div class="fas fa-angle-down"></div>
+      </div>
+    </div>
+    <div class="currentStageSidebar" ref="sideBar">
       <template repeat.for="stage of router.navigation">
         <div
           class="currentstage ${stage.isActive ? 'active' : ''}"

@@ -10,50 +10,80 @@
     </div>
     <div class="section launches">
       <div class="title heading heading1">Launches</div>
-      <div class="launchGrid">
-        <div class="row">
-          <div class="pair header">PAIR</div>
-          <div class="project header">PROJECT</div>
-          <div class="starts header">STARTS</div>
-          <div class="type header">TYPE</div>
-          <div class="whitelist header">WHITELIST</div>
-          <div class="target header">TARGET</div>
-          <div class="cap header">MAX</div>
-          <div class="cap header">Seed Address</div>
+      <div class="grid launchGrid">
+        <div class="row header">
+          <div class="cell pair header">PAIR</div>
+          <div class="cell project header">PROJECT</div>
+          <div class="cell type header">TYPE</div>
+          <div class="cell starts header">STARTS</div>
+          <div class="cell target header">TARGET</div>
+          <div class="cell cap header">MAX</div>
+          <div class="cell whitelist header">WHITELIST</div>
+          <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds">
-          <template if.to-view="!seed.initializing">
-            <a href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'" class="row">
-              <div class="cell pair  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
-                <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-              </div>
-              <div class="cell project  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-              <div class="cell starts  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">
-                <time-left seed.to-view="seed" hide-icons largest></time-left>
-              </div>
-              <div class="cell type  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-              <div class="cell whitelist  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-              <div class="cell target  ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
-              </div>
-              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''} ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
-              </div>
-              <div class="cell cap ${(($index >= 4) && !seeingMore) ? 'hideMore' : ''}">
-                <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString"></etherscanlink>
-              </div>
+          <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
+            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
+              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+            </div>
+            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
+              <time-left seed.to-view="seed" hide-icons largest></time-left>
+            </div>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            </div>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            </div>
+            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="eslink cell body">
+              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
+            </div>
+          </a>
+        </template>
       </div>
-</template>
-<template else>
-</template>
-</template>
-</div>
-<div if.to-view="!seeingMore" class="seeMore">
-  <div class="arrow">&darr;</div>
-  <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
-</div>
-<div if.to-view="seeingMore" class="seeMore">
-  <div class="arrow">&uarr;</div>
-  <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
-</div>
-</div>
-</div>
+      <div class="grid launchGridMobile">
+        <div class="row header">
+          <div class="cell pair header">PAIR</div>
+          <div class="cell type header">TYPE</div>
+          <div class="cell target header">TARGET</div>
+          <div class="cell whitelist header">WHITELIST</div>
+          <div class="cell project header">PROJECT</div>
+          <div class="cell starts header">STARTS</div>
+          <div class="cell cap header">MAX</div>
+          <div class="cell eslink header">ETHERSCAN</div>
+        </div>
+        <template repeat.for="seed of seeds">
+          <a
+            class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
+            if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
+            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
+              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+            </div>
+            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.target | ethwei"></formatted-number>
+            </div>
+            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
+              <time-left seed.to-view="seed" hide-icons largest></time-left>
+            </div>
+            <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average mantissa="2" value.to-view="seed.cap | ethwei"></formatted-number>
+            </div>
+            <div class="eslink cell body">
+              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
+            </div>
+          </a>
+        </template>
+      </div>
+      <div if.to-view="!seeingMore" class="seeMore">
+        <div class="arrow">&darr;</div>
+        <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
+      </div>
+      <div if.to-view="seeingMore" class="seeMore">
+        <div class="arrow">&uarr;</div>
+        <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
+      </div>
+    </div>
+  </div>
 </template>

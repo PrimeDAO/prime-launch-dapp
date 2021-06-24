@@ -28,14 +28,14 @@ export class Stage1 extends BaseStage {
       message = "Please enter a value for Project Name";
     }
     else if (!Utils.isValidUrl(this.seedConfig.general.projectWebsite)) {
-      message = "Please enter a valid url for Project Website";
+      message = "Please enter a valid URL for Project Website";
     }
     else if (!this.seedConfig.general.category) {
       message = "Please enter a Category";
     } else if (!Utils.isValidUrl(this.seedConfig.general.whitepaper)) {
-      message = "Please enter a valid url for Whitepaper";
+      message = "Please enter a valid URL for Whitepaper";
     } else if (!Utils.isValidUrl(this.seedConfig.general.github)) {
-      message = "Please enter a valid url for Github Link";
+      message = "Please enter a valid URL for Github Link";
     }
     else if (this.seedConfig.general.customLinks.length > 0 && (!this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1]?.media || !this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1].url )) {
       message = "Please enter a value for the Custom Link";
@@ -47,7 +47,7 @@ export class Stage1 extends BaseStage {
         message = "Please enter a value for Custom Link";
       } else if (!Utils.isValidUrl(link.url, false)) {
         // Current input as not been filled out
-        message = `Please enter a valid url for ${link.media}`;
+        message = `Please enter a valid URL for ${link.media}`;
       }
     });
     this.stageState.verified = !message;

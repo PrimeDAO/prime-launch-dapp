@@ -1,4 +1,5 @@
-﻿import { autoinject, bindable, bindingMode, customElement, computedFrom } from "aurelia-framework";
+﻿import { autoinject, bindingMode, customElement, computedFrom } from "aurelia-framework";
+import { bindable } from "aurelia-typed-observable-plugin";
 import { EthereumService, Networks } from "../../../services/EthereumService";
 import "./EtherscanLink.scss";
 
@@ -12,6 +13,7 @@ export class EtherscanLink {
    * set add classes on the text
    */
   @bindable({ defaultBindingMode: bindingMode.oneTime }) public css: string;
+  @bindable.booleanAttr({ defaultBindingMode: bindingMode.oneTime }) public hideClipboardButton: boolean;
   /**
    * bootstrap config for a tooltip
    */

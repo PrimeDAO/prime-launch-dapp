@@ -25,7 +25,7 @@ export class Stage2 extends BaseStage {
     } else if (!this.seedConfig.projectDetails.teamDescription) {
       message = "Please enter a value for Team Description";
     } else if (!Utils.isValidUrl(encodeURI(this.seedConfig.projectDetails.logo))) {
-      message = "Please enter a valid url for Project Logo";
+      message = "Please enter a valid URL for Project Logo";
     }
     else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please supply a valid image file type for Project Logo";

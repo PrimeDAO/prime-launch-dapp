@@ -10,13 +10,13 @@
     }
 
     &.launches {
-      .launchGrid {
-        display: grid;
-        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
-        grid-template-rows: auto;
-        align-items: center;
+      .title {
+        -webkit-text-fill-color: $Secondary02;
+      }
+
+      .grid {
         margin-bottom: 20px;
-        font-size: 0.8em;
+        font-size: 16px;
 
         .row {
           display: contents;
@@ -26,59 +26,133 @@
             text-decoration: none;
           }
 
-          &:not(:first-child) {
-            .cell.hot {
-              cursor: pointer;
-            }
+          &.body .cell.hot {
+            cursor: pointer;
           }
 
-          &:hover > div {
+          &.body.hot:hover .cell.body {
             background-color: $BG02;
           }
 
-          &:first-of-type > div {
-            border-bottom: 1px solid $Border03;
-          }
+          .cell {
+            padding: 10px 0;
 
-          > div {
-            border-bottom: 1px solid $Border03;
+            &.header {
+              color: $Neutral02;
+            }
+
+            &.project {
+              white-space: normal;
+            }
+
+            &.target,
+            &.eslink,
+            &.cap {
+              text-align: right;
+            }
+
+            &.whitelist,
+            &.starts,
+            &.type {
+              text-align: center;
+            }
           }
         }
+      }
 
-        .cell {
-          white-space: nowrap;
-          &.hideMore {
-            display: none;
+      .launchGrid {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
+        grid-template-rows: auto;
+        align-items: center;
+        column-gap: 8px;
+
+        .row {
+          &.header {
+            .cell {
+              border-bottom: 1px solid $Secondary02;
+              &:not(:nth-of-type(8n)) {
+                margin-right: -8px; // hack to remove gap in header bottom border
+              }
+            }
           }
         }
+      }
 
-        .cell,
-        .header {
-          padding: 10px 0;
+      .launchGridMobile {
+        display: none;
+        grid-template-columns: 2fr 1fr 1fr auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+        column-gap: 8px;
+
+        .row {
+          &.header {
+            .cell:nth-of-type(n + 5) {
+              border-bottom: 1px solid $Secondary02;
+              color: $Neutral02;
+              opacity: 0.6;
+            }
+          }
 
           &.pair {
-            padding-left: 12px;
+            padding-left: 0;
           }
 
           &.cap {
-            padding-right: 12px;
+            padding-right: 0;
           }
 
-          &.target,
-          &.cap {
-            text-align: right;
-          }
+          .cell {
+            padding: 2px 0;
+            height: 17px;
+            text-align: left !important;
 
-          &.whitelist,
-          &.starts,
-          &.type {
-            text-align: center;
-          }
-        }
+            &.whitelist {
+              text-align: center !important;
+            }
 
-        .cell {
-          &.pair {
-            padding: 6px 0;
+            /**
+             * cells in first subrow of each row
+             */
+            &:nth-of-type(n):nth-of-type(-n + 3) {
+              padding-top: 12px;
+            }
+
+            /**
+             * cells in second subrow of each row
+             */
+            &:nth-of-type(n + 5):nth-of-type(-n + 8) {
+              padding-bottom: 12px;
+
+              &:not(:nth-of-type(4n)) {
+                margin-right: -8px; // hack to remove gap in header bottom border
+              }
+
+              .etherscanlink .text,
+              .copy-to-clip-button {
+                color: $Neutral02;
+              }
+            }
+
+            &.body {
+              color: $Neutral02;
+              &.pair {
+                .tokenPairContainer {
+                  height: 17px;
+
+                  > img {
+                    width: 15px;
+                  }
+                }
+              }
+
+              &.starts {
+                .timeLeftContainer {
+                  font-size: 14px;
+                }
+              }
+            }
           }
         }
       }
@@ -90,6 +164,37 @@
 
         > .arrow {
           margin-right: 6px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .page.launches {
+    .section {
+      .title {
+        white-space: normal;
+        text-align: center;
+        width: auto; // so text-align:center works
+        max-width: unset;
+      }
+
+      &.featured {
+        .scrollerContainer {
+          margin-bottom: 0;
+        }
+      }
+
+      &.launches {
+        .grid {
+          font-size: 14px;
+        }
+        .launchGrid {
+          display: none;
+        }
+        .launchGridMobile {
+          display: grid;
         }
       }
     }

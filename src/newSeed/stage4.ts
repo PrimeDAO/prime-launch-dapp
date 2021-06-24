@@ -8,7 +8,7 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { BigNumber } from "ethers";
 import { fromWei } from "services/EthereumService";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -26,8 +26,7 @@ export class Stage4 extends BaseStage {
     eventAggregator: EventAggregator,
     private whiteListService: WhiteListService,
     private numberService: NumberService,
-    router: Router,
-  ) {
+    router: Router) {
     super(router, eventAggregator);
   }
 
@@ -99,7 +98,7 @@ export class Stage4 extends BaseStage {
       message = "Please enter a value for Funding Target lesser than or equal to Funding Max";
     } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
-    } else if (!(this.seedConfig.seedDetails.vestingDays > 0)) {
+    } else if (!(this.seedConfig.seedDetails.vestingDays >= 0)) {
       message = "Please enter a number greater than zero for  \"Seed tokens vested for\" ";
     } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
@@ -132,12 +131,12 @@ export class Stage4 extends BaseStage {
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
-      message = "Please enter a valid url for Whitelist";
+      message = "Please enter a valid URL for Whitelist";
       // won't validate this for now
     // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
     //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
-      message = "Please enter a valid url for Legal Disclaimer";
+      message = "Please enter a valid URL for Legal Disclaimer";
     }
     this.stageState.verified = !message;
     return message;

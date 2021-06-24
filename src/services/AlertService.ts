@@ -1,7 +1,7 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfig, EventConfigException } from "./GeneralEvents";
-import { DialogService } from "./dialogService";
+import { DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
 
 @autoinject
