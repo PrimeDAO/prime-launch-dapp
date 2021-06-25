@@ -81,9 +81,6 @@
                     token-address.to-view="seed.fundingTokenAddress">
                   </tokenbalance>
                 </div>
-                <div if.to-view="userCanPay && lockRequired" class="unlockButton">
-                  <a href="#" click.delegate="unlockFundingTokens()">UNLOCK</a>
-                </div>
               </div>
             </div>
             <div class="equals">=></div>
@@ -99,7 +96,10 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
           </div>
-          <div class="doit"><button if.to-view="seed.contributingIsOpen" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+          <template if.to-view="seed.contributingIsOpen && fundingTokenToPay">
+            <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+            <div class="doit" else><button if.to-view="fundingTokenToPay.gt(0)" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+          </template>
         </div>
         <!--
           ================ 
@@ -149,7 +149,7 @@
               if.to-view="seed.isLive && !seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open ${seed.vestingCliff | secondsDays} days after either the max is reached, or else after when the Seed campaign ends in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ' (and if by then the target has been reached)'}</div>
           </div>
-          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit" if.to-view="seedTokenToReceive"><button if.to-view="seedTokenToReceive.gt(0) && seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
@@ -162,7 +162,7 @@
             <question-mark text="As long as a Seed has not reached its target you can come here and retrieve all the funding tokens that you have contributed"></question-mark>
           </div>
           <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
-          <div class="doit"><button if.to-view="userCanRetrieve" class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
+          <div class="doit" if.to-view="userCanRetrieve"><button class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
         <div class="notWhitelisted" if.to-view="geoBlocked">
