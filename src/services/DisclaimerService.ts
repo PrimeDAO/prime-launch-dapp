@@ -1,6 +1,9 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DialogService } from "services/DialogService";
+import { Utils } from "services/utils";
+import axios from "axios";
+const marked = require("marked");
 
 @autoinject
 export class DisclaimerService {
@@ -12,6 +15,7 @@ export class DisclaimerService {
   constructor(
     private dialogService: DialogService,
     private eventAggregator: EventAggregator,
+    private utils: Utils,
   ) {
   }
 
@@ -25,20 +29,6 @@ export class DisclaimerService {
     return this.accountAddress && (localStorage.getItem(this.primeDisclaimerStatusKey) === "true");
   }
 
-  public async confirmCanConnect(account: string): Promise<boolean> {
-    this.accountAddress = account;
-    if (this.primeDisclaimed) {
-      return true;
-    } else {
-      const accepted = await this.disclaimPrime();
-      if (accepted) {
-        localStorage.setItem(this.primeDisclaimerStatusKey, "true");
-        return true;
-      }
-    }
-    return false;
-  }
-
   private async disclaimPrime(): Promise<boolean> {
 
     let disclaimed = false;
@@ -46,7 +36,6 @@ export class DisclaimerService {
     if (this.primeDisclaimed) {
       disclaimed = true;
     } else {
-      // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
       const response = await this.dialogService.disclaimer(
         "https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md",
         "PrimeLAUNCH Disclaimer",
@@ -63,5 +52,47 @@ export class DisclaimerService {
       }
     }
     return disclaimed;
+  }
+
+  public async confirmCanConnect(account: string): Promise<boolean> {
+    this.accountAddress = account;
+    if (this.primeDisclaimed) {
+      return true;
+    } else {
+      const accepted = await this.disclaimPrime();
+      if (accepted) {
+        localStorage.setItem(this.primeDisclaimerStatusKey, "true");
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public async confirmMarkdown(url: string): Promise<boolean> {
+
+    const disclaimer = await axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          return response.data;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        this.utils.axiosErrorHandler(err);
+        return null;
+      });
+
+    let result = false;
+
+    if (disclaimer) {
+      try {
+        marked(disclaimer);
+        result = true;
+      }
+      // eslint-disable-next-line no-empty
+      catch { }
+    }
+    return result;
   }
 }

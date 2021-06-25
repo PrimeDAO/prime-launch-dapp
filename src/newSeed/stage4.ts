@@ -6,9 +6,10 @@ import { BaseStage } from "newSeed/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { NumberService } from "services/NumberService";
+import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
 import { fromWei } from "services/EthereumService";
-import { NumberService } from "services/NumberService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -26,7 +27,9 @@ export class Stage4 extends BaseStage {
     eventAggregator: EventAggregator,
     private whiteListService: WhiteListService,
     private numberService: NumberService,
-    router: Router) {
+    router: Router,
+    private disclaimerService: DisclaimerService,
+  ) {
     super(router, eventAggregator);
   }
 
@@ -55,7 +58,7 @@ export class Stage4 extends BaseStage {
   }
 
   async proceed(): Promise<void> {
-    const message: string = this.validateInputs();
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
     } else {
@@ -76,7 +79,7 @@ export class Stage4 extends BaseStage {
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
   }
 
-  validateInputs(): string {
+  async validateInputs(): Promise<string> {
     let message: string;
     // Split the start and endt time
     let startTimes = [];
@@ -137,8 +140,12 @@ export class Stage4 extends BaseStage {
     //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
+    } else if (this.seedConfig.seedDetails.legalDisclaimer &&
+      !await this.disclaimerService.confirmMarkdown(this.seedConfig.seedDetails.legalDisclaimer)) {
+      message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     }
+
     this.stageState.verified = !message;
-    return message;
+    return Promise.resolve(message);
   }
 }

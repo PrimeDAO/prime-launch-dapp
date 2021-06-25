@@ -21,7 +21,7 @@ export class Stage5 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     // Validate current stage
     // TODO: Check if there is an email validator
@@ -29,6 +29,6 @@ export class Stage5 extends BaseStage {
       message = "Please enter a valid email address for Contact Email";
     }
     this.stageState.verified = !message;
-    return message;
+    return Promise.resolve(message);
   }
 }
