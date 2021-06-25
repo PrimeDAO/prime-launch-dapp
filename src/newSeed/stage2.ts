@@ -7,6 +7,15 @@ export class Stage2 extends BaseStage {
     return re.test(String(file).toLowerCase());
   }
 
+  private isLinkNotBroken(url: string): boolean {
+    if (!this.isValidFile(url)) return false;
+
+    const http = new XMLHttpRequest();
+    http.open("HEAD", url, false);
+    http.send();
+    return http.status===200;
+  }
+
   async proceed(): Promise<void> {
     const message: string = await this.validateInputs();
     if (message) {
@@ -26,9 +35,10 @@ export class Stage2 extends BaseStage {
       message = "Please enter a value for Team Description";
     } else if (!Utils.isValidUrl(encodeURI(this.seedConfig.projectDetails.logo))) {
       message = "Please enter a valid URL for Project Logo";
-    }
-    else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
+    } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please supply a valid image file type for Project Logo";
+    } else if (!this.isLinkNotBroken(this.seedConfig.projectDetails.logo)) {
+      message = "No image found under the provided Project Logo URL";
     }
     this.stageState.verified = !message;
     return message;

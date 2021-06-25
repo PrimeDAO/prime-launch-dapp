@@ -62,12 +62,15 @@
         <div>
           <label for="logo">Project Logo</label>
           <input id="logo" type="text" placeholder="URL to project's logo"
-            value.bind="seedConfig.projectDetails.logo">
+          value.bind="seedConfig.projectDetails.logo">
         </div>
         <div class="fileNote">
           Max. 5 MB <br> JPG, GIF, PNG or BMP formats<br>
           Recommended size: 400 x 400 px
         </div>
+      </div>
+      <div class="logoPreview" if.bind="isLinkNotBroken(seedConfig.projectDetails.logo)">
+        <img src.bind="seedConfig.projectDetails.logo" alt="Logo" />
       </div>
 
       <div class="buttonContainer">

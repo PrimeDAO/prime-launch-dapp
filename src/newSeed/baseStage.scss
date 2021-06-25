@@ -189,11 +189,20 @@
         width: 20em;
       }
     }
+
     .fileNote {
       display: flex;
       align-items: flex-end;
       color: $Neutral02;
       line-height: 1.5em;
+    }
+
+    .logoPreview {
+      display: flex;
+      &>img {
+        max-height: 400px;
+        max-width: 400px;
+      }
     }
   }
 
