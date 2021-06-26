@@ -11,16 +11,17 @@ export class Stage2 extends BaseStage {
 
   @bindable isLoadable = false;
 
-  private isLinkNotBroken(url: string): boolean {
-    if (!this.isValidFile(url)) {
-      return this.isLoadable = false;
+  private isLinkNotBroken(url:string):void {
+
+    if (!url || url.length < 4 || !this.isValidFile(url)) {
+      this.isLoadable = false;
     }
 
-    axios.get(url)
+    axios.head(url)
       .then(res => {
-        return this.isLoadable = res.status===200;
+        this.isLoadable = res.status === 200;
       }).catch( _ => {
-        return this.isLoadable = false;
+        this.isLoadable = false;
       });
   }
 
@@ -45,7 +46,7 @@ export class Stage2 extends BaseStage {
       message = "Please enter a valid URL for Project Logo";
     } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
       message = "Please supply a valid image file type for Project Logo";
-    } else if (!this.isLinkNotBroken(this.seedConfig.projectDetails.logo)) {
+    } else if (!this.isLoadable) {
       message = "No image found under the provided Project Logo URL";
     }
     this.stageState.verified = !message;
