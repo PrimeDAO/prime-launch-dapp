@@ -49,7 +49,7 @@ export class Stage3 extends BaseStage {
     this.wizardState.fundingTokenSymbol = this.fundingSymbol;
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
@@ -83,7 +83,7 @@ export class Stage3 extends BaseStage {
       }
     }
     this.stageState.verified = !message;
-    return message;
+    return Promise.resolve(message);
   }
 
   // TODO: Add a loading comp to the view while fetching

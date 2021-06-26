@@ -2,7 +2,7 @@
 import { autoinject } from "aurelia-framework";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { Router, RouterConfiguration } from "aurelia-router";
+import { Router, RouterConfiguration, NavigationInstruction, Next } from "aurelia-router";
 import { PLATFORM } from "aurelia-pal";
 import "./styles/styles.scss";
 import "./app.scss";
@@ -37,6 +37,10 @@ export class App {
     tippy("[data-tippy-content]");
 
     window.addEventListener("error", this.errorHandler);
+
+    document.addEventListener("scroll", (_e) => {
+      this.handleScrollEvent();
+    });
 
     this.eventAggregator.subscribe("seeds.loading", async (onOff: boolean) => {
       this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
@@ -157,7 +161,43 @@ export class App {
 
     config.fallbackRoute("home");
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _this = this;
+    /**
+     * restore the scroll position per each page
+     */
+    config.addPostRenderStep({
+      run(navigationInstruction: NavigationInstruction, next: Next) {
+        let position = sessionStorage.getItem(_this.getScrollStateKey(navigationInstruction.fragment));
+        if (!position) {
+          position = `${window.scrollX},${window.scrollY}`;
+          sessionStorage.setItem(_this.getScrollStateKey(navigationInstruction.fragment), position);
+        }
+        const scrollArgs = position.split(",");
+        setTimeout(() => window.scrollTo(Number(scrollArgs[0]), Number(scrollArgs[1])), 100);
+        return next();
+      },
+    });
+
     this.router = router;
+  }
+  /**
+   * store the scroll position per each page
+   */
+  handleScrollEvent(): void {
+    sessionStorage.setItem(this.getScrollStateKey(this.router.currentInstruction.fragment),
+      `${window.scrollX},${window.scrollY}`);
+  }
+
+  getScrollStateKey(fragment: string): string {
+    switch (fragment) {
+      case "":
+      case "/":
+      case "/home":
+        return "scroll-/home";
+      default:
+        return `scroll-${fragment}`;
+    }
   }
 
   onNavigate(): void {
@@ -169,7 +209,7 @@ export class App {
   }
 
   navigate(href: string): void {
-    this.showingMobileMenu = false;
+    this.onNavigate();
     this.router.navigate(href);
   }
 }

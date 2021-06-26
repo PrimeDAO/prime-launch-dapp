@@ -16,7 +16,7 @@ export class Stage2 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!this.seedConfig.projectDetails.summary) {
       message = "Please enter a value for Project Summary";
@@ -24,12 +24,13 @@ export class Stage2 extends BaseStage {
       message = "Please enter a value for Value Proposition";
     } else if (!this.seedConfig.projectDetails.teamDescription) {
       message = "Please enter a value for Team Description";
-    } else if (!Utils.isValidUrl(this.seedConfig.projectDetails.logo)) {
-      message = "Please supply a valid image file type for Project Logo";
-    } else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
+    } else if (!Utils.isValidUrl(encodeURI(this.seedConfig.projectDetails.logo))) {
       message = "Please enter a valid URL for Project Logo";
     }
+    else if (!this.isValidFile(this.seedConfig.projectDetails.logo)) {
+      message = "Please supply a valid image file type for Project Logo";
+    }
     this.stageState.verified = !message;
-    return message;
+    return Promise.resolve(message);
   }
 }

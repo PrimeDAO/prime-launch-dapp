@@ -237,11 +237,6 @@
 
           .units1 {
             grid-area: units1;
-
-            .unlockButton {
-              text-align: center;
-              font-size: 13px;
-            }
           }
 
           .units2 {
@@ -282,7 +277,8 @@
           width: 24px;
           height: 24px;
         }
-        .doit {
+        .doit,
+        .unlockButton {
           grid-area: doit;
           text-align: right;
           align-self: center;

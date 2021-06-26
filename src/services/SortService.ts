@@ -7,6 +7,10 @@ export enum SortOrder {
 
 export class SortService {
 
+  public static toggleSortOrder(order: SortOrder): SortOrder {
+    return order === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC;
+  }
+
   public static evaluateString(a: string, b: string, sortOrder: SortOrder = SortOrder.ASC): number {
     if (!a && !b) { return 0; }
 
@@ -46,9 +50,12 @@ export class SortService {
   }
 
   public static evaluateDateTime(valueA: string, valueB: string, sortOrder: SortOrder = SortOrder.ASC): number {
+    return SortService.evaluateDateTimeAsDate(new Date(valueA), new Date(valueB), sortOrder);
+  }
 
-    const a = new Date(valueA).valueOf();
-    const b = new Date(valueB).valueOf();
+  public static evaluateDateTimeAsDate(valueA: Date, valueB: Date, sortOrder: SortOrder = SortOrder.ASC): number {
+    const a = valueA?.valueOf();
+    const b = valueB?.valueOf();
 
     if (!a && !b) { return 0; }
 

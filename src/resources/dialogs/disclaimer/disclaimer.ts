@@ -2,6 +2,7 @@ import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import { Utils } from "services/utils";
 import "../dialogs.scss";
 const marked = require("marked");
 
@@ -17,6 +18,7 @@ export class Disclaimer {
   constructor(
     private controller: DialogController,
     private consoleLogService: ConsoleLogService,
+    private utils: Utils,
   ) { }
 
   public activate(model: IDisclaimerModel): void {
@@ -37,24 +39,7 @@ export class Disclaimer {
         }
       })
       .catch((err) => {
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          errorMsg = `Error fetching disclaimer: HTTP status ${err.response.status} at ${this.model.disclaimerUrl}`;
-          this.consoleLogService.logMessage(err.response.data, "error");
-          this.consoleLogService.logMessage(err.response.status, "error");
-          this.consoleLogService.logMessage(err.response.headers, "error");
-        } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          errorMsg = `Error fetching disclaimer: ${err.message} at ${this.model.disclaimerUrl}`;
-          this.consoleLogService.logMessage(err.message, "error");
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          errorMsg = `Error fetching disclaimer: ${err.message} at ${this.model.disclaimerUrl}`;
-          this.consoleLogService.logMessage(err.message, "error");
-        }
+        errorMsg = `Error fetching disclaimer: ${this.utils.axiosErrorHandler(err)}`;
         this.loading = false;
         return null;
       });
