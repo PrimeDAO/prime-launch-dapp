@@ -505,5 +505,11 @@
         }
       }
     }
+
+    &.stage7 {
+      .linksContainer {
+        width: unset;
+      }
+    }
   }
 }
