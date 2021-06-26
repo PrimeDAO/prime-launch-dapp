@@ -14,7 +14,7 @@ export class Stage1 extends BaseStage {
     this.seedConfig.general.customLinks.splice(index, 1);
   }
   async proceed(): Promise<void> {
-    const message: string = this.validateInputs();
+    const message: string = await this.validateInputs();
     if (message) {
       this.validationError(message);
     } else {
@@ -22,7 +22,7 @@ export class Stage1 extends BaseStage {
     }
   }
 
-  validateInputs(): string {
+  validateInputs(): Promise<string> {
     let message: string;
     if (!this.seedConfig.general.projectName) {
       message = "Please enter a value for Project Name";
@@ -51,6 +51,6 @@ export class Stage1 extends BaseStage {
       }
     });
     this.stageState.verified = !message;
-    return message;
+    return Promise.resolve(message);
   }
 }

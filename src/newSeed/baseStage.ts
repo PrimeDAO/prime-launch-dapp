@@ -45,7 +45,7 @@ export abstract class BaseStage {
   }
 
   async detached(): Promise<void> {
-    const message = this.validateInputs();
+    const message = await this.validateInputs();
     if (!message) {
       this.persistData();
     }
@@ -67,8 +67,8 @@ export abstract class BaseStage {
     }
   }
 
-  protected validateInputs(): string {
-    return null;
+  protected validateInputs(): Promise<string> {
+    return Promise.resolve(null);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

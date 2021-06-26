@@ -37,19 +37,26 @@
           .cell {
             padding: 10px 0;
 
+            &:not(:nth-of-type(n + 8)) {
+              padding-right: 12px;
+            }
+
             &.header {
               color: $Neutral02;
+
+              &.sortable {
+                cursor: pointer;
+              }
             }
 
             &.project {
-              padding-right: 8px;
               overflow-x: hidden;
               text-overflow: ellipsis;
             }
 
             &.target,
-            &.eslink,
-            &.cap {
+            &.cap,
+            &.eslink {
               text-align: right;
             }
 
@@ -59,8 +66,12 @@
               text-align: center;
             }
 
-            &.starts {
-              padding-right: 8px;
+            &.body {
+              &.eslink {
+                .etherscanlink .text {
+                  margin-right: 0;
+                }
+              }
             }
           }
         }
@@ -68,7 +79,7 @@
 
       .launchGrid {
         display: grid;
-        grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 1fr 1fr 0.5fr;
+        grid-template-columns: 0.5fr 0.5fr 2fr 0.75fr 0.75fr 0.75fr 0.75fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
 
@@ -76,6 +87,11 @@
           &.header {
             .cell {
               border-bottom: 1px solid $Secondary02;
+
+              &.seedToken,
+              &.fundingToken {
+                white-space: nowrap;
+              }
             }
           }
         }
@@ -83,9 +99,9 @@
 
       .launchGridMobile {
         display: none;
-        grid-template-columns: 2fr 1fr 1fr auto;
+        grid-template-columns: 0.5fr 2fr 1fr auto;
         grid-template-rows: auto auto;
-        align-items: center;
+        align-items: self-end; // makes header borders line up
 
         .row {
           &.header {
@@ -96,17 +112,13 @@
             }
           }
 
-          &.pair {
-            padding-left: 0;
-          }
-
-          &.cap {
-            padding-right: 0;
-          }
-
           .cell {
             padding: 2px 0;
             text-align: left !important;
+
+            &:not(:nth-of-type(n + 4)) {
+              padding-right: 8px;
+            }
 
             &.whitelist,
             &.eslink {
@@ -134,16 +146,6 @@
 
             &.body {
               color: $Neutral02;
-
-              &.pair {
-                .tokenPairContainer {
-                  height: 17px;
-
-                  > img {
-                    width: 15px;
-                  }
-                }
-              }
 
               &.starts {
                 .timeLeftContainer {

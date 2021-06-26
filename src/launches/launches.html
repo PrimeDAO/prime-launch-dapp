@@ -12,22 +12,22 @@
       <div class="title heading heading1">Launches</div>
       <div class="grid launchGrid">
         <div class="row header">
-          <div class="cell pair header">PAIR</div>
-          <div class="cell project header">PROJECT</div>
-          <div class="cell type header">TYPE</div>
-          <div class="cell starts header">STARTS</div>
-          <div class="cell target header">TARGET</div>
-          <div class="cell cap header">MAX</div>
+          <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
+          <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
+          <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
+          <!-- <div class="cell type header">TYPE</div> -->
+          <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
+          <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
+          <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
           <div class="cell whitelist header">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seeds">
+        <template repeat.for="seed of seeds | sort:sortEvaluator">
           <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
-            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-            </div>
+            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
             <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <!-- <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div> -->
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
@@ -44,27 +44,27 @@
       </div>
       <div class="grid launchGridMobile">
         <div class="row header">
-          <div class="cell pair header">PAIR</div>
-          <div class="cell type header">TYPE</div>
-          <div class="cell target header">TARGET</div>
+          <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
+          <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
+          <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
           <div class="cell whitelist header">WHITELIST</div>
-          <div class="cell project header">PROJECT</div>
-          <div class="cell starts header">STARTS</div>
-          <div class="cell cap header">MAX</div>
+          <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
+          <!-- <div class="cell type header">TYPE</div> -->
+          <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
+          <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seeds">
+        <template repeat.for="seed of seeds | sort:sortEvaluator">
           <a
             class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
-            <div class="pair cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-            </div>
-            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
+            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
+            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <!-- <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div> -->
             <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
             </div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
