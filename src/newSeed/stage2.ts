@@ -1,3 +1,5 @@
+import { bindable } from "aurelia-typed-observable-plugin";
+import axios from "axios";
 import { BaseStage } from "newSeed/baseStage";
 import { Utils } from "services/utils";
 
@@ -7,13 +9,19 @@ export class Stage2 extends BaseStage {
     return re.test(String(file).toLowerCase());
   }
 
-  private isLinkNotBroken(url: string): boolean {
-    if (!this.isValidFile(url)) return false;
+  @bindable isLoadable = false;
 
-    const http = new XMLHttpRequest();
-    http.open("HEAD", url, false);
-    http.send();
-    return http.status===200;
+  private isLinkNotBroken(url: string): boolean {
+    if (!this.isValidFile(url)) {
+      return this.isLoadable = false;
+    }
+
+    axios.get(url)
+      .then(res => {
+        return this.isLoadable = res.status===200;
+      }).catch( _ => {
+        return this.isLoadable = false;
+      });
   }
 
   async proceed(): Promise<void> {
