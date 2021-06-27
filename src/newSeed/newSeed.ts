@@ -1,14 +1,17 @@
 import "./newSeed.scss";
 import { PLATFORM } from "aurelia-pal";
-import { singleton, computedFrom } from "aurelia-framework";
+import { singleton, computedFrom, autoinject } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "./seedConfig";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
+import { EventAggregator } from "aurelia-event-aggregator";
 import { IStageState, IWizardState } from "newSeed/baseStage";
 
+@autoinject
 @singleton(false)
 export class NewSeed {
   router: Router;
 
+  seedCreated: boolean;
   seedConfig: ISeedConfig;
   stageStates: Array<IStageState>;
   wizardState: IWizardState;
@@ -19,7 +22,7 @@ export class NewSeed {
     return this.router.currentInstruction.config;
   }
 
-  constructor() {
+  constructor(private eventAggregator: EventAggregator) {
     if (!this.seedConfig) {
       this.seedConfig = new SeedConfig();
       this.wizardState = {};
@@ -59,6 +62,7 @@ export class NewSeed {
         },
       ];
     }
+    this.eventAggregator.subscribe("seed.created", (seedCreated: boolean) => this.seedCreated = seedCreated);
   }
 
   configureRouter(config: RouterConfiguration, router: Router): void {
@@ -162,7 +166,9 @@ export class NewSeed {
   }
 
   setStage(route: string): void {
-    this.router.navigate(route);
+    if (!this.seedCreated) {
+      this.router.navigate(route);
+    }
   }
 
   toggleSideBar(): void {
