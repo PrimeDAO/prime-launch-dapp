@@ -59,20 +59,29 @@
       </div>
 
       <div class="infoInput logo">
-        <div>
-          <label for="logo">Project Logo</label>
-          <input id="logo" type="text" placeholder="URL to project's logo"
+        <div class="logoInput">
+          <label for="logo">
+            <div class="text">Project Logo</div>
+            <div class="logoPreview" show.to-view="seedLogoIsValid && seedLogoIsLoaded">
+              <img class="logoImage"
+                src.to-view="seedConfig.projectDetails.logo"
+                error.trigger="isLoadedSeedLogo(false)"
+                load.trigger="isLoadedSeedLogo(true)">
+              </img>
+            </div>
+            <div class="logoNone" if.to-view="!seedLogoIsValid || !seedLogoIsLoaded">[none]</div>
+          </label>
+          <input id="logo" type="text"
+            placeholder="URL of the project's logo"
             value.bind="seedConfig.projectDetails.logo"
-            onchange.to-view="isLinkNotBroken(seedConfig.projectDetails.logo)"
-          >
+            input.trigger="isValidSeedLogo()">
         </div>
         <div class="fileNote">
-          Max. 5 MB <br> JPG, GIF, PNG or BMP formats<br>
-          Recommended size: 400 x 400 px
+          JPG, GIF, PNG or BMP formats<br />
+          Square aspect ratio<br />
+          Recommended size: 400 x 400 px<br />
+          Maximum 5MB file size
         </div>
-      </div>
-      <div class="logoPreview" show.to-view="isLoadable">
-        <img show.to-view="seedConfig.projectDetails.logo" src.to-view="seedConfig.projectDetails.logo" alt="Logo" />
       </div>
 
       <div class="buttonContainer">
