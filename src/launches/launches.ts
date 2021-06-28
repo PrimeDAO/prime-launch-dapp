@@ -74,7 +74,7 @@ export class Launches {
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.target, b.target, this.sortDirection);
         break;
       case "project":
-        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.metadata.general.projectName, b.metadata.general.projectName, this.sortDirection);
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.metadata?.general?.projectName, b.metadata?.general?.projectName, this.sortDirection);
         break;
       case "starts":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime, this.sortDirection);
