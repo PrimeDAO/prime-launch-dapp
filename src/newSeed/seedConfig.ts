@@ -59,7 +59,8 @@ export interface ISeedDetails {
   endDate: string,
   whitelist: string,
   geoBlock: boolean,
-  legalDisclaimer: string
+  legalDisclaimer: string,
+  adminAddress: string,
 }
 
 export interface IContactDetails {

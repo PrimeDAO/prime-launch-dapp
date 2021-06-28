@@ -81,68 +81,71 @@ export class Stage4 extends BaseStage {
 
   async validateInputs(): Promise<string> {
     let message: string;
-    // Split the start and endt time
-    let startTimes = [];
-    let endTimes = [];
-    const re = /^[-+]?(\d+)$/;
-    if (this.startTime) {
-      startTimes = this.startTime.split(":");
-    }
-    if (this.endTime) {
-      endTimes = this.endTime.split(":");
-    }
-    if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
-      message = "Please enter a value for Funding Tokens per Seed Token";
-    } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
-      message = "Please enter a number greater than zero for the Funding Target";
-    } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
-      message = "Please enter a number greater than zero for the Funding Max";
-    } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target lesser than or equal to Funding Max";
-    } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
-    } else if (!(this.seedConfig.seedDetails.vestingDays >= 0)) {
-      message = "Please enter a number greater than zero for  \"Seed tokens vested for\" ";
-    } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
-      message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.seedConfig.seedDetails.vestingCliff > this.seedConfig.seedDetails.vestingDays) {
-      message = "Please enter a value of \"with a cliff of\" less than \"Seed tokens vested for \"";
-    } else if (!this.startDate) {
-      message = "Please select a Start Date";
-    } else if (!this.startTime) {
-      message = "Please enter a value for the Start Time";
-    } else if (!re.test(startTimes[0]) || !re.test(startTimes[1]) || startTimes.length > 2) {
-      message = "Please enter a valid value for Start Time";
-    } else if (!(Number.parseInt(startTimes[0]) >= 0)
-      || !(Number.parseInt(startTimes[0]) < 24)) {
-      message = "Please enter a valid value for Start Time";
-    } else if (!(Number.parseInt(startTimes[1]) >= 0)
-      || !(Number.parseInt(startTimes[1]) < 60)) {
-      message = "Please enter a valid value for Start Time";
-    } else if (!this.endDate) {
-      message = "Please select an End Date";
-    } else if (!this.endTime) {
-      message = "Please enter a value for the End Time";
-    } else if (!re.test(endTimes[0]) || !re.test(endTimes[1]) || endTimes.length > 2) {
-      message = "Please enter a valid value for End Time";
-    } else if (!(Number.parseInt(endTimes[0]) >= 0)
-      || !(Number.parseInt(endTimes[0]) < 24)) {
-      message = "Please enter a valid value for End Time";
-    } else if (!(Number.parseInt(endTimes[1]) >= 0)
-      || !(Number.parseInt(endTimes[1]) < 60)) {
-      message = "Please enter a valid value for End Time";
-    } else if (this.endDate < this.startDate) {
-      message = "Please select an End Date greater than the Start Date";
-    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
-      message = "Please enter a valid URL for Whitelist";
-      // won't validate this for now
-    // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
-    //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
-    } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
-      message = "Please enter a valid URL for Legal Disclaimer";
-    } else if (this.seedConfig.seedDetails.legalDisclaimer &&
-      !await this.disclaimerService.confirmMarkdown(this.seedConfig.seedDetails.legalDisclaimer)) {
-      message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
+    // // Split the start and endt time
+    // let startTimes = [];
+    // let endTimes = [];
+    // const re = /^[-+]?(\d+)$/;
+    // if (this.startTime) {
+    //   startTimes = this.startTime.split(":");
+    // }
+    // if (this.endTime) {
+    //   endTimes = this.endTime.split(":");
+    // }
+    // if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
+    //   message = "Please enter a value for Funding Tokens per Seed Token";
+    // } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
+    //   message = "Please enter a number greater than zero for the Funding Target";
+    // } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
+    //   message = "Please enter a number greater than zero for the Funding Max";
+    // } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
+    //   message = "Please enter a value for Funding Target lesser than or equal to Funding Max";
+    // } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
+    //   message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
+    // } else if (!(this.seedConfig.seedDetails.vestingDays >= 0)) {
+    //   message = "Please enter a number greater than zero for  \"Seed tokens vested for\" ";
+    // } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
+    //   message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
+    // } else if (this.seedConfig.seedDetails.vestingCliff > this.seedConfig.seedDetails.vestingDays) {
+    //   message = "Please enter a value of \"with a cliff of\" less than \"Seed tokens vested for \"";
+    // } else if (!this.startDate) {
+    //   message = "Please select a Start Date";
+    // } else if (!this.startTime) {
+    //   message = "Please enter a value for the Start Time";
+    // } else if (!re.test(startTimes[0]) || !re.test(startTimes[1]) || startTimes.length > 2) {
+    //   message = "Please enter a valid value for Start Time";
+    // } else if (!(Number.parseInt(startTimes[0]) >= 0)
+    //   || !(Number.parseInt(startTimes[0]) < 24)) {
+    //   message = "Please enter a valid value for Start Time";
+    // } else if (!(Number.parseInt(startTimes[1]) >= 0)
+    //   || !(Number.parseInt(startTimes[1]) < 60)) {
+    //   message = "Please enter a valid value for Start Time";
+    // } else if (!this.endDate) {
+    //   message = "Please select an End Date";
+    // } else if (!this.endTime) {
+    //   message = "Please enter a value for the End Time";
+    // } else if (!re.test(endTimes[0]) || !re.test(endTimes[1]) || endTimes.length > 2) {
+    //   message = "Please enter a valid value for End Time";
+    // } else if (!(Number.parseInt(endTimes[0]) >= 0)
+    //   || !(Number.parseInt(endTimes[0]) < 24)) {
+    //   message = "Please enter a valid value for End Time";
+    // } else if (!(Number.parseInt(endTimes[1]) >= 0)
+    //   || !(Number.parseInt(endTimes[1]) < 60)) {
+    //   message = "Please enter a valid value for End Time";
+    // } else if (this.endDate < this.startDate) {
+    //   message = "Please select an End Date greater than the Start Date";
+    // } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
+    //   message = "Please enter a valid URL for Whitelist";
+    //   // won't validate this for now
+    // // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+    // //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
+    // } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
+    //   message = "Please enter a valid URL for Legal Disclaimer";
+    // } else if (this.seedConfig.seedDetails.legalDisclaimer &&
+    //   !await this.disclaimerService.confirmMarkdown(this.seedConfig.seedDetails.legalDisclaimer)) {
+    //   message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
+    // } else
+    if (!Utils.isAddress(this.seedConfig.seedDetails.adminAddress)) {
+      message = "Please enter a valid wallet address for Seed Administrator";
     }
 
     this.stageState.verified = !message;
