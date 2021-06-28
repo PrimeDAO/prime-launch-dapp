@@ -460,7 +460,6 @@
 
   &.stage7 {
     & .linksContainer {
-      width: 30em;
       display: flex;
       flex-flow: column;
       gap: 2em;
@@ -528,12 +527,6 @@
       }
       .fileNote {
         padding-left: 8px;
-      }
-    }
-
-    &.stage7 {
-      .linksContainer {
-        width: unset;
       }
     }
   }
