@@ -82,6 +82,9 @@ export class Launches {
       case "cap":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.cap, b.cap, this.sortDirection);
         break;
+      case "whitelist":
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBoolean(a.whitelisted, b.whitelisted, this.sortDirection);
+        break;
     }
   }
 }

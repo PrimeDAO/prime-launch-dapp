@@ -37,6 +37,12 @@ export class SortService {
     return ((diff.gt(0) ? 1 : (diff.lt(0) ? -1 : 0))) * sortOrder;
   }
 
+  public static evaluateBoolean(a: boolean, b: boolean, sortOrder: SortOrder = SortOrder.ASC): number {
+    return SortService.evaluateNumber(
+      a ? 1 : ((a === undefined) ? undefined : 0),
+      b ? 1 : ((b === undefined) ? undefined : 0), sortOrder);
+  }
+
   public static evaluateNumber(a: number, b: number, sortOrder: SortOrder = SortOrder.ASC): number {
     const isDefinedA = SortService.isDefined(a);
     const isDefinedB = SortService.isDefined(b);
