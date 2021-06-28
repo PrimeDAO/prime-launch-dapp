@@ -460,7 +460,6 @@
 
   &.stage7 {
     & .linksContainer {
-      width: 30em;
       display: flex;
       flex-flow: column;
       gap: 2em;
@@ -498,6 +497,10 @@
     }
     > .heading.heading2 {
       font-size: 26px;
+    }
+    label {
+      line-height: 20px;
+      margin-bottom: 5px;
     }
   }
 
