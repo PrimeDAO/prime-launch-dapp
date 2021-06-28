@@ -5,7 +5,7 @@ import { EthereumService, Hash } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
-import { autoinject, computedFrom } from "aurelia-framework";
+import { autoinject } from "aurelia-framework";
 import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
