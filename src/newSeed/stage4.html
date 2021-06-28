@@ -191,7 +191,7 @@
             </div>
           </div>
         </div>
-        <div class="infoInput">
+        <div class="infoInput admin">
           <div class="labeledQuestion">
             <label for="admin">Seed Administrator</label>
             <div class="questionMark">
@@ -202,6 +202,10 @@
             id="admin"
             value.bind="seedConfig.seedDetails.adminAddress"
             placeholder="Administrator wallet address" />
+          <template if.to-view="!seedConfig.seedDetails.adminAddress">
+            <button class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</button>
+            <button class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</button>
+          </template>
         </div>
         <div class="buttonContainer">
           <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>

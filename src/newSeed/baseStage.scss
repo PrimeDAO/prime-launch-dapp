@@ -361,6 +361,13 @@
           }
         }
       }
+
+      &.admin {
+        > input {
+          width: 240px;
+          margin-right: 6px;
+        }
+      }
     }
     .whitelistContainer {
       .inputFileLabel {
@@ -531,6 +538,16 @@
       }
       .fileNote {
         padding-left: 8px;
+      }
+    }
+
+    &.stage4 {
+      .infoInput {
+        &.admin {
+          > input {
+            margin-bottom: 8px;
+          }
+        }
       }
     }
   }
