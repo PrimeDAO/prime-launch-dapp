@@ -41,7 +41,7 @@ export class Launches {
     }
 
     this.seeds = this.seedService.seedsArray;
-    this.featuredSeeds = this.seedService.featuredSeeds;
+    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
   }
 
   seeMore(yesNo: boolean): void {

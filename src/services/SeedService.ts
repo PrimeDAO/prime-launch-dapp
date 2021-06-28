@@ -1,3 +1,4 @@
+import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
 import { EthereumService, Hash } from "./EthereumService";
@@ -9,7 +10,6 @@ import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import axios from "axios";
 import TransactionsService from "services/TransactionsService";
 
 // export interface ISeed {
@@ -49,10 +49,9 @@ export interface ISeedCreatedEventArgs {
 //   isWhitelisted: boolean;
 // }
 
-interface IFeaturedSeedsConfig {
-  [network: string]: { seeds: Array<Address> } ;
-}
-
+// interface IFeaturedSeedsConfig {
+//   [network: string]: { seeds: Array<Address> } ;
+// }
 
 @autoinject
 export class SeedService {
@@ -64,7 +63,7 @@ export class SeedService {
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
-  private featuredSeedsJson: IFeaturedSeedsConfig;
+  // private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
    * when the factory was created
    */
@@ -86,15 +85,16 @@ export class SeedService {
   }
 
   public async initialize(): Promise<void> {
-    if (!this.featuredSeedsJson) {
-      // eslint-disable-next-line require-atomic-updates
-      if (process.env.NODE_ENV === "development") {
-        this.featuredSeedsJson = require("../configurations/featuredSeeds.json");
-      } else {
-        axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
-          .then((response) => this.featuredSeedsJson = response.data);
-      }
-    }
+    // disabled for now
+    // if (!this.featuredSeedsJson) {
+    //   // eslint-disable-next-line require-atomic-updates
+    //   if (process.env.NODE_ENV === "development") {
+    //     this.featuredSeedsJson = require("../configurations/featuredSeeds.json");
+    //   } else {
+    //     axios.get("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/configurations/featuredSeeds.json")
+    //       .then((response) => this.featuredSeedsJson = response.data);
+    //   }
+    // }
 
     /**
      * don't need to reload the seedfactory on account change because we never send txts to it.
@@ -158,12 +158,18 @@ export class SeedService {
     return this.initializedPromise;
   }
 
+  private async ensureAllSeedsInitialized(): Promise<void> {
+    await this.ensureInitialized();
+    for (const seed of this.seedsArray) {
+      await seed.ensureInitialized();
+    }
+  }
+
   private _featuredSeeds: Array<Seed>;
 
-  @computedFrom("seeds.size", "featuredSeedsJson")
-  public get featuredSeeds(): Array<Seed> {
+  public async getFeaturedSeeds(): Promise<Array<Seed>> {
 
-    if (!this.seeds?.size || !this.featuredSeedsJson) {
+    if (!this.seeds?.size /* || !this.featuredSeedsJson */) {
       return [];
     }
 
@@ -171,11 +177,17 @@ export class SeedService {
       return this._featuredSeeds;
     }
     else {
-      const network = this.featuredSeedsJson[this.ethereumService.targetedNetwork];
-      return network ? this._featuredSeeds = network.seeds
-        .map( (address: Address) => this.seeds.get(address))
-        .filter((seed: Seed) => !!seed)
-        : [];
+      await this.ensureAllSeedsInitialized();
+      // const network = this.featuredSeedsJson[this.ethereumService.targetedNetwork];
+      /**
+       * take the first three seeds in order of when they start(ed), if they either haven't
+       * started or are live.
+       */
+      // return network ? this._featuredSeeds = network.seeds
+      return this._featuredSeeds = this.seedsArray
+        .filter((seed: Seed) => { return seed.hasNotStarted || seed.contributingIsOpen; })
+        .sort((a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
+        .slice(0, 3);
     }
   }
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
