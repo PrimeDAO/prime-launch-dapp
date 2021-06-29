@@ -119,7 +119,7 @@ export class App {
         nav: false,
         name: "launch",
         route: ["launch"],
-        title: "Liquid Launch",
+        title: "Host a Launch",
       },
       {
         moduleId: PLATFORM.moduleName("./launches/launches"),
