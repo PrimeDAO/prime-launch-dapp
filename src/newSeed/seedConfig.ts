@@ -82,24 +82,16 @@ export interface ISeedConfig {
 }
 
 export class SeedConfig implements ISeedConfig {
-  public version = "1.0.0";
-  public general = {
-    customLinks: [],
-  } as IGeneral;
-  public projectDetails = {
-    summary: "",
-    proposition: "",
-    teamDescription: "",
-  } as IProjectDetails;
-  public tokenDetails = {
-    tokenDistrib: [],
-  } as ITokenDetails;
-  public contactDetails={
-    remarks: "",
-  } as IContactDetails;
-  public seedDetails = {
-    geoBlock: false,
-  } as ISeedDetails;
+  public version: string;
+  public general: IGeneral;
+  public projectDetails:IProjectDetails;
+  public tokenDetails: ITokenDetails;
+  public contactDetails: IContactDetails;
+  public seedDetails: ISeedDetails;
+
+  constructor() {
+    this.clearState();
+  }
 
   clearState(): void {
     this.general = {
