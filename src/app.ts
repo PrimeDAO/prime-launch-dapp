@@ -126,7 +126,7 @@ export class App {
         nav: false,
         name: "launches",
         route: ["launches"],
-        title: "Launchs",
+        title: "Launches",
       },
       {
         moduleId: PLATFORM.moduleName("./documentation/documentation"),
