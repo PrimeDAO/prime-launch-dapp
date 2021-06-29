@@ -41,7 +41,7 @@ export class Launches {
     }
 
     this.seeds = this.seedService.seedsArray;
-    this.featuredSeeds = this.seedService.featuredSeeds;
+    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
   }
 
   seeMore(yesNo: boolean): void {
@@ -74,13 +74,16 @@ export class Launches {
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.target, b.target, this.sortDirection);
         break;
       case "project":
-        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.metadata.general.projectName, b.metadata.general.projectName, this.sortDirection);
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.metadata?.general?.projectName, b.metadata?.general?.projectName, this.sortDirection);
         break;
       case "starts":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime, this.sortDirection);
         break;
       case "cap":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.cap, b.cap, this.sortDirection);
+        break;
+      case "whitelist":
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBoolean(a.whitelisted, b.whitelisted, this.sortDirection);
         break;
     }
   }

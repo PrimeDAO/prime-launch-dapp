@@ -361,6 +361,13 @@
           }
         }
       }
+
+      &.admin {
+        > input {
+          width: 240px;
+          margin-right: 6px;
+        }
+      }
     }
     .whitelistContainer {
       .inputFileLabel {
@@ -460,7 +467,6 @@
 
   &.stage7 {
     & .linksContainer {
-      width: 30em;
       display: flex;
       flex-flow: column;
       gap: 2em;
@@ -499,6 +505,10 @@
     > .heading.heading2 {
       font-size: 26px;
     }
+    label {
+      line-height: 20px;
+      margin-bottom: 5px;
+    }
   }
 
   .page.stageContainer {
@@ -528,6 +538,16 @@
       }
       .fileNote {
         padding-left: 8px;
+      }
+    }
+
+    &.stage4 {
+      .infoInput {
+        &.admin {
+          > input {
+            margin-bottom: 8px;
+          }
+        }
       }
     }
   }

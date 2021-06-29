@@ -1,5 +1,4 @@
 import { autoinject } from "aurelia-framework";
-import { WhiteListService } from "./../services/WhiteListService";
 import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
@@ -9,7 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
-import { fromWei } from "services/EthereumService";
+import { EthereumService, fromWei } from "services/EthereumService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -25,8 +24,8 @@ export class Stage4 extends BaseStage {
 
   constructor(
     eventAggregator: EventAggregator,
-    private whiteListService: WhiteListService,
     private numberService: NumberService,
+    private ethereumService: EthereumService,
     router: Router,
     private disclaimerService: DisclaimerService,
   ) {
@@ -143,9 +142,19 @@ export class Stage4 extends BaseStage {
     } else if (this.seedConfig.seedDetails.legalDisclaimer &&
       !await this.disclaimerService.confirmMarkdown(this.seedConfig.seedDetails.legalDisclaimer)) {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
+    } else if (!Utils.isAddress(this.seedConfig.seedDetails.adminAddress)) {
+      message = "Please enter a valid wallet address for Seed Administrator";
     }
 
     this.stageState.verified = !message;
     return Promise.resolve(message);
+  }
+
+  connect(): void {
+    this.ethereumService.ensureConnected();
+  }
+
+  makeMeAdmin() : void {
+    this.seedConfig.seedDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
 }

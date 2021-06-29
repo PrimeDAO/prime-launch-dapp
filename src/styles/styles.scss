@@ -164,6 +164,14 @@ html {
         cursor: not-allowed;
         opacity: 0.2;
       }
+
+      &.small {
+        padding: 6px 17px;
+        font-size: 10px;
+        position: relative;
+        bottom: 3px;
+        text-transform: none;
+      }
     }
 
     .button1 {

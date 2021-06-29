@@ -47,7 +47,7 @@ export class Home {
       }
     }
 
-    this.featuredSeeds = this.seedService.featuredSeeds;
+    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
   }
 
   navigate(href: string): void {
