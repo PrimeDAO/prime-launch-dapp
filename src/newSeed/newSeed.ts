@@ -1,6 +1,6 @@
 import "./newSeed.scss";
 import { PLATFORM } from "aurelia-pal";
-import { singleton, computedFrom, autoinject } from "aurelia-framework";
+import { singleton, computedFrom } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "./seedConfig";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newSeed/baseStage";
@@ -9,7 +9,6 @@ import { IStageState, IWizardState } from "newSeed/baseStage";
 export class NewSeed {
   router: Router;
 
-  seedCreated: boolean;
   seedConfig: ISeedConfig;
   stageStates: Array<IStageState>;
   wizardState: IWizardState;
