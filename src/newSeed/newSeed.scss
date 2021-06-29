@@ -58,9 +58,6 @@
     grid-template-columns: unset;
     .sideBarDropDownContainer {
       display: block;
-      &.stage7 {
-        display: none;
-      }
     }
     .currentStageSidebar {
       line-height: 16px;
