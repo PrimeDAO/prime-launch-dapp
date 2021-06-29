@@ -5,7 +5,6 @@ import { ISeedConfig, SeedConfig } from "./seedConfig";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newSeed/baseStage";
 
-@autoinject
 @singleton(false)
 export class NewSeed {
   router: Router;
