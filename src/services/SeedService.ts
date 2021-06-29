@@ -128,10 +128,17 @@ export class SeedService {
                   /**
                     * TODO: This should also pull the full seed configuration from whereever we are storing it
                     */
-                  const seed = this.createSeedFromConfig(event);
-                  seedsMap.set(seed.address, seed);
-                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
-                  seed.initialize(); // set this off asyncronously.
+                  const seed = await this.createSeedFromConfig(event);
+                  /**
+                   * ignore seeds that don't have metadata
+                   */
+                  if (seed.metadataHash) {
+                    seedsMap.set(seed.address, seed);
+                    this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
+                    seed.initialize(); // set this off asyncronously.
+                  } else {
+                    this.consoleLogService.logMessage(`seed lacks metadata, is unusable: ${seed.address}`);
+                  }
                 }
                 this.seeds = seedsMap;
                 this.initializing = false;
@@ -149,7 +156,7 @@ export class SeedService {
     );
   }
 
-  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {
+  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Promise<Seed> {
     const seed = this.container.get(Seed);
     return seed.create({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
   }
