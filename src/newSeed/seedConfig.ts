@@ -94,6 +94,7 @@ export class SeedConfig implements ISeedConfig {
   }
 
   clearState(): void {
+    this.version = "1.0.0";
     this.general = {
       customLinks: [],
     } as IGeneral;
