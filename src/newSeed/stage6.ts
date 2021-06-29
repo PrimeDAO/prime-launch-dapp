@@ -1,4 +1,3 @@
-import { ISeedConfig } from "./seedConfig";
 import { autoinject } from "aurelia-framework";
 import { BaseStage } from "newSeed/baseStage";
 import { Router } from "aurelia-router";
@@ -35,16 +34,7 @@ export class Stage6 extends BaseStage {
   async submit(): Promise<void> {
     try {
       this.eventAggregator.publish("seed.creating", true);
-      const seedDetails:Partial<ISeedConfig> = {
-        version: undefined,
-        general: undefined,
-        projectDetails: undefined,
-        tokenDetails: undefined,
-        contactDetails: undefined,
-        seedDetails: undefined,
-      };
-      Object.assign(seedDetails, this.seedConfig);
-      this.wizardState.seedHash = await this.seedService.deploySeed(seedDetails);
+      this.wizardState.seedHash = await this.seedService.deploySeed(this.seedConfig);
       // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: https://gateway.pinata.cloud/ipfs/${this.seedHash}`);
       this.seedConfig.clearState();
       this.stageStates.forEach((stage: { verified: boolean }, index: number) => {

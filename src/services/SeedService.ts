@@ -178,7 +178,7 @@ export class SeedService {
         : [];
     }
   }
-  public async deploySeed(config: Partial<ISeedConfig>): Promise<Hash> {
+  public async deploySeed(config: ISeedConfig): Promise<Hash> {
 
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
