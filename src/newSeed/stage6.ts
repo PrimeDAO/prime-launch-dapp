@@ -36,7 +36,6 @@ export class Stage6 extends BaseStage {
       this.eventAggregator.publish("seed.creating", true);
       this.wizardState.seedHash = await this.seedService.deploySeed(this.seedConfig);
       // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: https://gateway.pinata.cloud/ipfs/${this.seedHash}`);
-      this.eventAggregator.publish("seed.created", true);
       this.next();
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));

@@ -78,6 +78,7 @@ export interface ISeedConfig {
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
   seedDetails: ISeedDetails,
+  clearState: () => void,
 }
 
 export class SeedConfig implements ISeedConfig {
@@ -99,4 +100,24 @@ export class SeedConfig implements ISeedConfig {
   public seedDetails = {
     geoBlock: false,
   } as ISeedDetails;
+
+  clearState(): void {
+    this.general = {
+      customLinks: [],
+    } as IGeneral;
+    this.projectDetails = {
+      summary: "",
+      proposition: "",
+      teamDescription: "",
+    } as IProjectDetails;
+    this.tokenDetails = {
+      tokenDistrib: [],
+    } as ITokenDetails;
+    this.contactDetails={
+      remarks: "",
+    } as IContactDetails;
+    this.seedDetails = {
+      geoBlock: false,
+    } as ISeedDetails;
+  }
 }

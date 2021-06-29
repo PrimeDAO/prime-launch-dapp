@@ -62,7 +62,6 @@ export class NewSeed {
         },
       ];
     }
-    this.eventAggregator.subscribe("seed.created", (seedCreated: boolean) => this.seedCreated = seedCreated);
   }
 
   configureRouter(config: RouterConfiguration, router: Router): void {
@@ -166,9 +165,7 @@ export class NewSeed {
   }
 
   setStage(route: string): void {
-    if (!this.seedCreated) {
-      this.router.navigate(route);
-    }
+    this.router.navigate(route);
   }
 
   toggleSideBar(): void {
