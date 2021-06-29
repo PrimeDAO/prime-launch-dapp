@@ -3,7 +3,6 @@ import { PLATFORM } from "aurelia-pal";
 import { singleton, computedFrom, autoinject } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "./seedConfig";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
-import { EventAggregator } from "aurelia-event-aggregator";
 import { IStageState, IWizardState } from "newSeed/baseStage";
 
 @autoinject
@@ -22,7 +21,7 @@ export class NewSeed {
     return this.router.currentInstruction.config;
   }
 
-  constructor(private eventAggregator: EventAggregator) {
+  constructor() {
     if (!this.seedConfig) {
       this.seedConfig = new SeedConfig();
       this.wizardState = {};

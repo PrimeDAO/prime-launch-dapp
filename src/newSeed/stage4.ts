@@ -1,4 +1,4 @@
-import { autoinject } from "aurelia-framework";
+import { autoinject, observable } from "aurelia-framework";
 import { WhiteListService } from "./../services/WhiteListService";
 import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
@@ -12,6 +12,7 @@ import { BigNumber } from "ethers";
 import { fromWei } from "services/EthereumService";
 
 @autoinject
+@observable({name: "endDate", changeHandler: "endDateHandler"})
 export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
@@ -149,5 +150,9 @@ export class Stage4 extends BaseStage {
 
     this.stageState.verified = !message;
     return Promise.resolve(message);
+  }
+
+  endDateHandler(oldValue: string, newValue: string): void {
+    console.log(oldValue, newValue);
   }
 }
