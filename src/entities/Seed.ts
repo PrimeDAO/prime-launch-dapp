@@ -218,8 +218,9 @@ export class Seed {
     this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
     Object.assign(this, config);
     /**
-     * need this immediately so caller can determine whether the seed should be kept
+     * need these immediately so caller can determine whether the seed should be kept
      */
+    await this.loadContracts();
     await this.hydrateMetadataHash();
     return this;
   }
@@ -230,8 +231,6 @@ export class Seed {
    * @returns
    */
   public async initialize(): Promise<Seed> {
-
-    await this.loadContracts();
     /**
      * no, intentionally don't await
      */
@@ -301,8 +300,11 @@ export class Seed {
   }
 
   public async hydrateMetadataHash(): Promise<void> {
-    this.metadataHash = Utils.toAscii((await this.contract.metadata()).slice(2));
-    this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+    const rawMetadata = await this.contract.metadata();
+    if (rawMetadata) {
+      this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+    }
   }
 
 
