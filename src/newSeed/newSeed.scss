@@ -4,7 +4,7 @@
   grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
-  &.stage7{
+  &.stage8{
     grid-template-columns: 1fr;
     .currentStageSidebar {
       display: none;
@@ -62,7 +62,7 @@
     .sideBarDropDownContainer {
       display: block;
     }
-    &.stage7 {
+    &.stage8 {
       .sideBarDropDown {
         display: none;
       }

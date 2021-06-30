@@ -1,24 +1,281 @@
 <template>
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
-      <div class="heading heading3 title">Seed Summary</div>
-      <div class="subtext">By clicking SUBMIT, you will initiate the process of creating a new Seed! This will:
-        <ol>
-          <li>Create a request for creation of the Seed that the DAO must accept for display in the PrimeLAUNCH interface.</li>
-          <li>Give you an IPFS URL which you can use to review the saved Seed information. Please save this URL.</li>
-          <li>To enable the Seed to become usable, someone must transfer
-            <formatted-number
-              value.to-view="wizardState.requiredSeedDeposit"
-              thousands-separated></formatted-number>
-            ${wizardState.seedTokenSymbol} to the Seed contract.
-            This amount includes any service fees for your launch.
-          </li>
-          <li>Please note that you will be the sole administrator of the new seed contract<span if.to-view="!!seedConfig.seedDetails.whitelist"> and only you may manage its whitelist</span>.
-          </li>
-        </ol>
+      <div class="heading heading2 title">Seed Summary</div>
+      <div class="summaryContainer">
+        <div class="heading heading3">General</div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Project Name
+            </div>
+            <div>
+              ${seedConfig.general.projectName}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Project Website
+            </div>
+            <div>
+              ${seedConfig.general.projectWebsite}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Project Category
+            </div>
+            <div>
+              ${seedConfig.general.category}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Whitepaper
+            </div>
+            <div>
+              ${seedConfig.general.whitepaper}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Github Link
+            </div>
+            <div>
+              ${seedConfig.general.github}
+            </div>
+        </div>
+        <div class="stageSeedDetails" show.to-view="seedConfig.general.customLinks.length > 0">
+          <div class="heading heading4">Custom Links</div>
+          <div class="stage1Metadata">
+            <template repeat.for="customLink of seedConfig.general.customLinks">
+              <div>
+                ${customLink.media}
+              </div>
+              <div>
+                ${customLink.url}
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Project Details</div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Project Summary
+            </div>
+            <div>
+              ${seedConfig.projectDetails.summary}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Value Proposition
+            </div>
+            <div>
+              ${seedConfig.projectDetails.proposition}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Team Description
+            </div>
+            <div>
+              ${seedConfig.projectDetails.teamDescription}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Project Logo
+            </div>
+            <div>
+              ${seedConfig.projectDetails.logo}
+            </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Token Details</div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Funding Token Address
+            </div>
+            <div>
+              ${seedConfig.tokenDetails.fundingAddress}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Seed Token Address
+            </div>
+            <div>
+              ${seedConfig.tokenDetails.seedAddress}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Maximum Seed Token Supply
+            </div>
+            <div>
+              ${seedConfig.tokenDetails.maxSeedSupply}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Initial Circulating Supply
+            </div>
+            <div>
+              ${seedConfig.tokenDetails.initialSeedSupply}
+            </div>
+        </div>
+        <div class="stageSeedDetails" show.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
+          <div class="heading heading4">Seed Token Global Distribution</div>
+          <div class="stage2Metadata">
+            <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
+              <div class="stageSeedDetails">
+                <div>
+                  Category
+                </div>
+                <div>
+                  ${customLink.category}
+                </div>
+              </div>
+              <div class="stageSeedDetails">
+                <div>
+                  Amount
+                </div>
+                <div>
+                  ${customLink.amount}
+                </div>
+              </div>
+              <div class="stageSeedDetails">
+                <div>
+                  Lock-up (days)
+                </div>
+                <div>
+                  ${customLink.lockup}
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">SEED Details</div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Funding Tokens per Seed Token
+            </div>
+            <div>
+              ${seedConfig.seedDetails.pricePerToken}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Funding Target
+            </div>
+            <div>
+              ${seedConfig.seedDetails.fundingTarget}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Funding Max
+            </div>
+            <div>
+              ${seedConfig.seedDetails.fundingMax}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Seed tokens vested for
+            </div>
+            <div>
+              ${seedConfig.seedDetails.vestingDays}
+            </div>
+        </div>
+        <div class="stageSeedDetails">
+          <div class="heading heading4">
+            with a cliff of
+          </div>
+          <div>
+            ${seedConfig.seedDetails.vestingCliff}
+          </div>
+        </div>
+        <div class="stageSeedDetails">
+          <div class="heading heading4">
+            Start Date
+          </div>
+          <div>
+            ${seedConfig.seedDetails.startDate}
+          </div>
+        </div>
+        <div class="stageSeedDetails">
+          <div class="heading heading4">
+            End Date
+          </div>
+          <div>
+            ${seedConfig.seedDetails.endDate}
+          </div>
+        </div>
+        <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.whitelist">
+          <div class="heading heading4">
+            Whitelist
+          </div>
+          <div>
+            ${seedConfig.seedDetails.whitelist}
+          </div>
+        </div>
+        <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.legalDisclaimer">
+          <div class="heading heading4">
+            Legal Disclaimer
+          </div>
+          <div>
+            ${seedConfig.seedDetails.legalDisclaimer}
+          </div>
+        </div>
+        <div class="stageSeedDetails">
+          <div class="heading heading4">
+            Geoblock
+          </div>
+          <div>
+            ${seedConfig.seedDetails.geoBlock}
+          </div>
+        </div>
+        <div class="stageSeedDetails">
+          <div class="heading heading4">
+            Admin Address
+          </div>
+          <div>
+            ${seedConfig.seedDetails.adminAddress}
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Project Details</div>
+        <div class="stageSeedDetails">
+            <div class="heading heading4">
+              Contact Email
+            </div>
+            <div>
+              ${seedConfig.contactDetails.contactEmail}
+            </div>
+        </div>
+        <div class="stageSeedDetails" show.to-view="seedConfig.contactDetails.remarks">
+            <div class="heading heading4">
+              Additional Remark
+            </div>
+            <div>
+              ${seedConfig.contactDetails.remarks}
+            </div>
+        </div>
       </div>
       <div class="buttonContainer">
-        <div class="stageButton proceed button1" click.delegate="submit()">SUBMIT</div>
+        <div class="stageButton cancel" click.delegate="submit()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="submit()">PROCEED</div>
       </div>
     </div>
   </div>

@@ -132,6 +132,27 @@
     height: 1.3em;
     align-self: center;
   }
+  .summaryContainer {
+    margin-bottom: 40px;
+    word-break: break-word;
+    .stageSeedDetails {
+      display: flex;
+      flex-flow: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stage1Metadata {
+      display: grid;
+      grid-template-columns: .4fr 1fr;
+      grid-template-rows: auto;
+      gap: 10px;
+    }
+    .stage2Metadata {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto;
+    }
+  }
 }
 
 .page.stageContainer {
@@ -465,6 +486,14 @@
     }
   }
 
+  &.stage6 {
+    hr {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      background-color: $Shade01;
+    }
+  }
+
   &.stage8 {
     & .linksContainer {
       display: flex;
@@ -508,6 +537,21 @@
     label {
       line-height: 20px;
       margin-bottom: 5px;
+    }
+    .summaryContainer {
+      margin-bottom: 30px;
+      word-break: break-word;
+      .stage1Metadata {
+        display: grid;
+        grid-template-columns: unset;
+        grid-template-rows: auto;
+      }
+      .stage2Metadata {
+        display: grid;
+        grid-template-columns: unset;
+        grid-template-rows: auto;
+        margin-bottom: 10px;
+      }
     }
   }
 
