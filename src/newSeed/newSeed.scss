@@ -25,6 +25,9 @@
     font-weight: 300;
     color: $Neutral02;
     padding: 5rem 1rem;
+    &.stage7 {
+      display: none;
+    }
     .currentstage {
       cursor: pointer;
     }
@@ -58,6 +61,9 @@
     grid-template-columns: unset;
     .sideBarDropDownContainer {
       display: block;
+      &.stage7 {
+        display: none;
+      }
     }
     .currentStageSidebar {
       line-height: 16px;
