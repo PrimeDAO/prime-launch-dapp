@@ -4,8 +4,11 @@
   grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
-  &.stage7 {
+  &.stage7{
     grid-template-columns: 1fr;
+    .currentStageSidebar {
+      display: none;
+    }
   }
   .sideBarDropDownContainer {
     display: none;
@@ -25,9 +28,6 @@
     font-weight: 300;
     color: $Neutral02;
     padding: 5rem 1rem;
-    &.stage7 {
-      display: none;
-    }
     .currentstage {
       cursor: pointer;
     }
@@ -61,7 +61,12 @@
     grid-template-columns: unset;
     .sideBarDropDownContainer {
       display: block;
-      &.stage7 {
+    }
+    &.stage7 {
+      .currentStageSidebar {
+        display: none;
+      }
+      .sideBarDropDown {
         display: none;
       }
     }
