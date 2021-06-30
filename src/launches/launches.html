@@ -10,7 +10,8 @@
     </div>
     <div class="section launches">
       <div class="title heading heading1">Launches</div>
-      <div class="grid launchGrid">
+      <div if.to-view="!seeds" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+      <div if.to-view="seeds" class="grid launchGrid">
         <div class="row header">
           <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
@@ -42,7 +43,7 @@
           </a>
         </template>
       </div>
-      <div class="grid launchGridMobile">
+      <div if.to-view="seeds" class="grid launchGridMobile">
         <div class="row header">
           <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
           <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
@@ -76,11 +77,11 @@
           </a>
         </template>
       </div>
-      <div if.to-view="!seeingMore" class="seeMore">
+      <div if.to-view="seeds && !seeingMore" class="seeMore">
         <div class="arrow">&darr;</div>
         <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
       </div>
-      <div if.to-view="seeingMore" class="seeMore">
+      <div if.to-view="seeds && seeingMore" class="seeMore">
         <div class="arrow">&uarr;</div>
         <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
       </div>

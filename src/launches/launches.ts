@@ -40,8 +40,8 @@ export class Launches {
       }
     }
 
-    this.seeds = this.seedService.seedsArray;
     this.featuredSeeds = await this.seedService.getFeaturedSeeds();
+    this.seeds = this.seedService.seedsArray;
   }
 
   seeMore(yesNo: boolean): void {
