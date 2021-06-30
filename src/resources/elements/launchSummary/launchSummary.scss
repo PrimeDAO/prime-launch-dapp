@@ -5,6 +5,7 @@
   width: 320px;
   min-width: 320px;
   padding-right: 30px;
+  height: 100%;
 
   &:hover {
     text-decoration: none;
@@ -18,11 +19,15 @@
       ". . timeLeft"
       "icon title title"
       "icon description description"
+      ". . ."
+      ". . ."
       "tokensTarget tokensTarget tokensTarget";
     row-gap: 12px;
     background-color: $BG02;
     border-radius: 6px;
     padding: 13px;
+    box-sizing: border-box;
+    height: 100%;
 
     > .icon {
       grid-area: icon;
@@ -44,9 +49,8 @@
       grid-area: description;
       font-family: Inter;
       font-size: 12px;
-      line-height: 140%;
+      line-height: 17px;
       color: $Neutral03;
-      margin-bottom: 32px;
       white-space: normal;
     }
 
