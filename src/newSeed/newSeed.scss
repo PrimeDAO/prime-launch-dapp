@@ -4,6 +4,12 @@
   grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
+  &.stage7{
+    grid-template-columns: 1fr;
+    .currentStageSidebar {
+      display: none;
+    }
+  }
   .sideBarDropDownContainer {
     display: none;
     cursor: pointer;
@@ -55,6 +61,11 @@
     grid-template-columns: unset;
     .sideBarDropDownContainer {
       display: block;
+    }
+    &.stage7 {
+      .sideBarDropDown {
+        display: none;
+      }
     }
     .currentStageSidebar {
       line-height: 16px;

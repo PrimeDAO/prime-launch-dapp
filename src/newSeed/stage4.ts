@@ -30,6 +30,12 @@ export class Stage4 extends BaseStage {
     private disclaimerService: DisclaimerService,
   ) {
     super(router, eventAggregator);
+    this.eventAggregator.subscribe("seed.clearState", () => {
+      this.startDate = undefined;
+      this.endDate = undefined;
+      this.startTime = undefined;
+      this.endTime = undefined;
+    });
   }
 
   attached(): void {
