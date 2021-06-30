@@ -110,7 +110,7 @@ html {
       }
       &.heading1 {
         font-size: 48px;
-        line-height: 46px;
+        line-height: 60px;
         margin-bottom: 24px;
         @include standardTextGradient;
       }
@@ -134,7 +134,7 @@ html {
 
     .subtext {
       color: $Neutral02;
-      font-size: 0.8125em;
+      font-size: 13px;
     }
 
     .button1,
