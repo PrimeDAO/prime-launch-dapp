@@ -52,7 +52,7 @@ export abstract class BaseStage {
   }
 
   protected cancel(): void {
-    this.router.parent.navigate("selectPackage");
+    this.router.parent.navigate("launch");
   }
 
   protected next(): void {
