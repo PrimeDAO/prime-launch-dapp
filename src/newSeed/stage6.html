@@ -117,17 +117,13 @@
             <div class="heading heading4">
               Maximum Seed Token Supply
             </div>
-            <div>
-              ${seedConfig.tokenDetails.maxSeedSupply}
-            </div>
+            <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" />
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
               Initial Circulating Supply
             </div>
-            <div>
-              ${seedConfig.tokenDetails.initialSeedSupply}
-            </div>
+            <formatted-number value.bind="seedConfig.tokenDetails.initialSeedSupply | ethwei" />
         </div>
         <div class="stageSeedDetails" show.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
           <div class="heading heading4">Seed Token Global Distribution</div>
@@ -145,9 +141,7 @@
                 <div>
                   Amount
                 </div>
-                <div>
-                  ${customLink.amount}
-                </div>
+                <formatted-number value.bind="customLink.amount | ethwei" />
               </div>
               <div class="stageSeedDetails">
                 <div>
@@ -168,41 +162,31 @@
             <div class="heading heading4">
               Funding Tokens per Seed Token
             </div>
-            <div>
-              ${seedConfig.seedDetails.pricePerToken}
-            </div>
+            <formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei" />
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
               Funding Target
             </div>
-            <div>
-              ${seedConfig.seedDetails.fundingTarget}
-            </div>
+            <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" />
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
               Funding Max
             </div>
-            <div>
-              ${seedConfig.seedDetails.fundingMax}
-            </div>
+            <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" />
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
               Seed tokens vested for
             </div>
-            <div>
-              ${seedConfig.seedDetails.vestingDays}
-            </div>
+            <formatted-number value.bind="seedConfig.seedDetails.vestingDays" />
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             with a cliff of
           </div>
-          <div>
-            ${seedConfig.seedDetails.vestingCliff}
-          </div>
+          <formatted-number value.bind="seedConfig.seedDetails.vestingCliff" />
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
