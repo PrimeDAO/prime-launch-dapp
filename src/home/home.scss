@@ -116,7 +116,7 @@
 
     &.nomiss {
       display: grid;
-      grid-template-columns: auto auto;
+      grid-template-columns: 1.4fr 1fr;
       background-color: $BG02;
       height: 12em;
       align-content: center;
@@ -124,6 +124,7 @@
       padding: 6px 40px;
       margin-left: -40px;
       margin-right: -40px;
+      column-gap: 24px;
 
       &.title {
         font-family: "Aeonik";
@@ -141,7 +142,7 @@
         .form {
           display: flex;
           margin-bottom: 4px;
-          justify-content: center;
+          justify-content: left;
 
           .notifyButton {
             border-radius: 6px;
@@ -149,7 +150,7 @@
         }
 
         .disclaimer {
-          text-align: center;
+          text-align: left;
           a {
             color: $Neutral02;
             text-decoration: underline;

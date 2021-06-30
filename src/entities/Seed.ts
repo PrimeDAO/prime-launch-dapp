@@ -122,11 +122,11 @@ export class Seed {
 
   public initializing = true;
   public metadata: ISeedConfig;
+  public metadataHash: Hash;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
-  private metadataHash: Hash;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -214,9 +214,15 @@ export class Seed {
     }));
   }
 
-  public create(config: ISeedConfiguration): Seed {
+  public async create(config: ISeedConfiguration): Promise<Seed> {
     this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
-    return Object.assign(this, config);
+    Object.assign(this, config);
+    /**
+     * need these immediately so caller can determine whether the seed should be kept
+     */
+    await this.loadContracts();
+    await this.hydrateMetadataHash();
+    return this;
   }
 
   /**
@@ -225,8 +231,6 @@ export class Seed {
    * @returns
    */
   public async initialize(): Promise<Seed> {
-
-    await this.loadContracts();
     /**
      * no, intentionally don't await
      */
@@ -277,9 +281,6 @@ export class Seed {
       this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
               * (this.fundingTokenInfo.price ?? 0);
 
-      this.metadataHash = Utils.toAscii((await this.contract.metadata()).slice(2));
-      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
-
       await this.hydrateTokensState();
 
       await this.hydrateUser();
@@ -298,6 +299,15 @@ export class Seed {
     return this.initializedPromise;
   }
 
+  public async hydrateMetadataHash(): Promise<void> {
+    const rawMetadata = await this.contract.metadata();
+    if (rawMetadata) {
+      this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+    }
+  }
+
+
   private async hydrateUser(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
 
@@ -312,9 +322,8 @@ export class Seed {
   }
 
   private async hydrateMetadata(): Promise<void> {
-    this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
-    if (!this.metadata) {
-      this.eventAggregator.publish("handleException", new Error(`seed lacks metadata, is unusable: ${this.address}`));
+    if (this.metadataHash) {
+      this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
     }
   }
 
