@@ -209,20 +209,20 @@
             <div class="heading heading4">
               Seed tokens vested for
             </div>
-            <div>${vestingDays}</div>
+            <div>${(seedConfig.seedDetails.vestingDays * 1000) | timespan:"minutes":largest}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             with a cliff of
           </div>
-          <div>${vestingCliff}</div>
+          <div>${(seedConfig.seedDetails.vestingCliff * 1000) | timespan:"minutes":largest}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             Start Date
           </div>
           <div>
-            ${seedConfig.seedDetails.startDate}
+            ${seedConfig.seedDetails.startDate | date:{format:"HH[:]mm dddd MMMM Do, YYYY", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -230,7 +230,7 @@
             End Date
           </div>
           <div>
-            ${seedConfig.seedDetails.endDate}
+            ${seedConfig.seedDetails.endDate | date:{format:"HH[:]mm dddd MMMM Do, YYYY", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.whitelist">
