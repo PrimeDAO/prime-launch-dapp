@@ -89,8 +89,10 @@
             <div class="heading heading4">
               Project Logo
             </div>
-            <div>
-              ${seedConfig.projectDetails.logo}
+            <div class="logo">
+              <img class="logoImage"
+                src.to-view="seedConfig.projectDetails.logo"
+                 />
             </div>
         </div>
       </div>
@@ -176,13 +178,13 @@
             <div class="heading heading4">
               Seed tokens vested for
             </div>
-            <formatted-number value.bind="seedConfig.seedDetails.vestingDays" />
+            <div>${vestingDays}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             with a cliff of
           </div>
-          <formatted-number value.bind="seedConfig.seedDetails.vestingCliff" />
+          <div>${vestingCliff}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
