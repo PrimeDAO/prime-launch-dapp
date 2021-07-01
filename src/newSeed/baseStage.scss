@@ -136,8 +136,7 @@
     margin-bottom: 40px;
     word-break: break-word;
     .stageSeedDetails {
-      display: flex;
-      flex-flow: column;
+      display: grid;
       gap: 10px;
       margin-bottom: 20px;
     }
@@ -488,11 +487,12 @@
 
   &.stage6 {
     .tokenInfo{
-      display: flex;
-      flex-flow: row nowrap;
-      gap: 10px;
-      & > div {
+      display: grid;
+      grid-template-columns: 1fr .5fr .5fr;
+      width: fit-content;
+      &  div {
         align-self: center;
+        margin-right: 10px;
       }
       & > img {
         width: 30px;
