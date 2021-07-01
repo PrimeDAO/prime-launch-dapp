@@ -20,7 +20,7 @@
           <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
           <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
-          <div class="cell whitelist header">WHITELIST</div>
+          <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds | sort:sortEvaluator">
