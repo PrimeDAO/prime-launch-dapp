@@ -8,7 +8,7 @@
       <div>
         <div class="infoInput">
           <label for="projName">Project Name</label>
-          <input id="projName" value.bind="seedConfig.general.projectName" />
+          <input id="projName" value.bind="seedConfig.general.projectName" maxlength="50" />
         </div>
         <div class="infoInput">
           <label for="projSite">Project Website</label>
@@ -16,7 +16,7 @@
         </div>
         <div class="infoInput">
           <label for="projCat">Project Category</label>
-          <input id="projCat" value.bind="seedConfig.general.category" />
+          <input id="projCat" value.bind="seedConfig.general.category" maxlength="50" />
         </div>
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
@@ -34,6 +34,7 @@
                 id="$index"
                 placeholder="E.g Twitter"
                 value.bind="seedConfig.general.customLinks[$index].media"
+                maxlength="20"
               />
             </div>
             <div class="addLinkContainer">
