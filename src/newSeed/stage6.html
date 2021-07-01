@@ -101,17 +101,13 @@
             <div class="heading heading4">
               Funding Token Address
             </div>
-            <div>
-              ${seedConfig.tokenDetails.fundingAddress}
-            </div>
+            <etherscanlink address.to-view="seedConfig.tokenDetails.fundingAddress" text.to-view="seedConfig.tokenDetails.fundingAddress | smallHexString" hide-clipboard-button></etherscanlink>
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
               Seed Token Address
             </div>
-            <div>
-              ${seedConfig.tokenDetails.seedAddress}
-            </div>
+            <etherscanlink address.to-view="seedConfig.tokenDetails.seedAddress" text.to-view="seedConfig.tokenDetails.seedAddress | smallHexString" hide-clipboard-button></etherscanlink>
         </div>
         <div class="stageSeedDetails">
             <div class="heading heading4">
@@ -232,9 +228,7 @@
           <div class="heading heading4">
             Admin Address
           </div>
-          <div>
-            ${seedConfig.seedDetails.adminAddress}
-          </div>
+          <etherscanlink address.to-view="seedConfig.seedDetails.adminAddress" text.to-view="seedConfig.seedDetails.adminAddress | smallHexString" hide-clipboard-button></etherscanlink>
         </div>
       </div>
       <hr />
