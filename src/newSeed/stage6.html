@@ -222,7 +222,7 @@
             Start Date
           </div>
           <div>
-            ${seedConfig.seedDetails.startDate | date:{format:"HH[:]mm dddd MMMM Do, YYYY", utc: true}}
+            ${seedConfig.seedDetails.startDate | date:{format:"ddd MMM do - kk:mm z", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -230,7 +230,7 @@
             End Date
           </div>
           <div>
-            ${seedConfig.seedDetails.endDate | date:{format:"HH[:]mm dddd MMMM Do, YYYY", utc: true}}
+            ${seedConfig.seedDetails.endDate | date:{format:"ddd MMM do - kk:mm z", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.whitelist">
