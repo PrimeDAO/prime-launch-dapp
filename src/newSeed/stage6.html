@@ -49,11 +49,21 @@
           <div class="heading heading4">Custom Links</div>
           <div class="stage1Metadata">
             <template repeat.for="customLink of seedConfig.general.customLinks">
-              <div>
-                ${customLink.media}
+              <div class="stageSeedDetails">
+                <div>
+                  Custom Link
+                </div>
+                <div>
+                  ${customLink.media}
+                </div>
               </div>
-              <div>
-                <a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a>
+              <div class="stageSeedDetails">
+                <div>
+                  URL
+                </div>
+                <div>
+                  <a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a>
+                </div>
               </div>
             </template>
           </div>
@@ -121,6 +131,7 @@
               <div>${wizardState.seedTokenSymbol}</div>
               <img class="logoImage"
               src.to-view="wizardState.seedTokenIcon"
+              show.to-view="wizardState.seedTokenIcon"
                />
             </div>
         </div>
@@ -133,6 +144,7 @@
               <div>${wizardState.seedTokenSymbol}</div>
               <img class="logoImage"
               src.to-view="wizardState.seedTokenIcon"
+              show.to-view="wizardState.seedTokenIcon"
                />
             </div>
         </div>
@@ -178,6 +190,7 @@
               <div>${wizardState.fundingTokenSymbol}</div>
               <img class="logoImage"
               src.to-view="wizardState.fundingTokenIcon"
+              show.to-view="wizardState.seedTokenIcon"
                />
             </div>
         </div>
@@ -190,6 +203,7 @@
               <div>${wizardState.fundingTokenSymbol}</div>
               <img class="logoImage"
               src.to-view="wizardState.fundingTokenIcon"
+              show.to-view="wizardState.seedTokenIcon"
                />
             </div>
         </div>
@@ -202,6 +216,7 @@
               <div>${wizardState.fundingTokenSymbol}</div>
               <img class="logoImage"
               src.to-view="wizardState.fundingTokenIcon"
+              show.to-view="wizardState.seedTokenIcon"
                />
             </div>
         </div>
@@ -222,7 +237,7 @@
             Start Date
           </div>
           <div>
-            ${seedConfig.seedDetails.startDate | date:{format:"ddd MMM do - kk:mm z", utc: true}}
+            ${seedConfig.seedDetails.startDate | date:{format:"dddd MMMM Do - HH[:]mm z, YYYY", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -230,7 +245,7 @@
             End Date
           </div>
           <div>
-            ${seedConfig.seedDetails.endDate | date:{format:"ddd MMM do - kk:mm z", utc: true}}
+            ${seedConfig.seedDetails.endDate | date:{format:"dddd MMMM Do - HH[:]mm z, YYYY", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.whitelist">
