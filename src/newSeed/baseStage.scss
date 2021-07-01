@@ -135,6 +135,9 @@
   .summaryContainer {
     margin-bottom: 40px;
     word-break: break-word;
+    > .heading.heading3 {
+      margin-bottom: 20px;
+    }
     .stageSeedDetails {
       display: grid;
       gap: 10px;
