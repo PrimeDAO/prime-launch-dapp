@@ -139,7 +139,7 @@
           <div class="labeledQuestion">
             <label for="whitelist">Whitelist</label>
             <div class="questionMark">
-              <question-mark text="Whitelisted addressed allowed to purchase Seed tokens. The whitelist file must contain a list of addresses separated by commas or whitespace and should be in .xx or .xx formats."></question-mark>
+              <question-mark text="A file containing a list of addresses that are allowed to purchase Seed tokens. This whitelist file must be formatted as plain text and the addresses must be separated by commas or whitespace"></question-mark>
             </div>
           </div>
           <input id="whitelist" value.bind="seedConfig.seedDetails.whitelist"
@@ -149,7 +149,7 @@
           <div class="labeledQuestion">
             <label for="disclaimer">Legal Disclaimer</label>
             <div class="questionMark">
-              <question-mark text="If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or markdown and should be in .xx or .xx formats to load correctly."></question-mark>
+              <question-mark text="If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or markdown"></question-mark>
             </div>
           </div>
           <input
@@ -161,13 +161,11 @@
           <div class="labeledQuestion">
             <label for="geoBlock">Geoblock</label>
             <div class="questionMark">
-              <question-mark allow-html text=
-              "When enabled, geoblock prevents a standard list of geographic locations from contributing to your launch.
+              <question-mark allow-html text="When enabled, geoblock prevents a standard list of geographic locations from contributing to your launch.
 
               <p>Disallowed regions:
               
-              <p>Afghanistan, Cuba, Ethiopia, Guyana, Iran, Iraq, Koria, Sudan, Syria, United States, United States Minor Outlying Islands, Venezuela, Yemen, the Crimea.</p></p>"
-              ></question-mark>
+              <p>Afghanistan, Cuba, Ethiopia, Guyana, Iran, Iraq, Koria, Sudan, Syria, United States, United States Minor Outlying Islands, Venezuela, Yemen, the Crimea.</p></p>"></question-mark>
             </div>
           </div>
           <div class="checkboxContainer" click.delegate="toggleGeoBlocking()">

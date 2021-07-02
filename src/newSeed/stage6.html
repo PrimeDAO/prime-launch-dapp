@@ -33,7 +33,7 @@
           <div class="heading heading4">
             Whitepaper
           </div>
-          <div>
+          <div class="ellipses">
             <a href=${seedConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${seedConfig.general.whitepaper}</a>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="heading heading4">
             Github Link
           </div>
-          <div>
+          <div class="ellipses">
             <a href=${seedConfig.general.github} target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
           </div>
         </div>
@@ -52,7 +52,7 @@
               <div class="header">Custom Link</div>
               <div class="header">URL</div>
               <div class="cell">${customLink.media}</div>
-              <div class="cell"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
@@ -229,15 +229,18 @@
           <div class="heading heading4">
             Whitelist
           </div>
-          <div>
-            ${seedConfig.seedDetails.whitelist || "[optional input not supplied]"}
+          <div class="ellipses" if.to-view="seedConfig.seedDetails.whitelist">
+            <a href="${seedConfig.seedDetails.whitelist}" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
+          </div>
+          <div else>
+            [optional input not supplied]
           </div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             Legal Disclaimer
           </div>
-          <div if.to-view="seedConfig.seedDetails.legalDisclaimer">
+          <div class="ellipses" if.to-view="seedConfig.seedDetails.legalDisclaimer">
             <a href=${seedConfig.seedDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
           </div>
           <div else>

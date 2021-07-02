@@ -480,8 +480,7 @@
           font-size: 18px;
           color: $Neutral02;
 
-          div:nth-last-child(1) {
-            margin-left: 6px;
+          .ellipses {
             overflow-x: hidden;
             text-overflow: ellipsis;
           }
