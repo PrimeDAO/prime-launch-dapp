@@ -51,6 +51,10 @@ export class NewSeed {
         },
         {
           verified: true,
+          title: "Seed Summary",
+        },
+        {
+          verified: true,
           title: "Ready to Go!",
         },
         {
@@ -73,7 +77,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 1,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -86,7 +90,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 2,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -99,7 +103,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 3,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -112,7 +116,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 4,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -125,7 +129,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 5,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -138,7 +142,7 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 6,
-          maxStage: 7,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
       {
@@ -151,7 +155,20 @@ export class NewSeed {
           seedConfig: this.seedConfig,
           stageStates: this.stageStates,
           stageNumber: 7,
-          maxStage: 7,
+          maxStage: 8,
+          wizardState: this.wizardState },
+      },
+      {
+        route: ["stage8"],
+        nav: false,
+        moduleId: PLATFORM.moduleName("./stage8"),
+        name: "stage8",
+        title: this.stageStates[8].title,
+        settings: {
+          seedConfig: this.seedConfig,
+          stageStates: this.stageStates,
+          stageNumber: 8,
+          maxStage: 8,
           wizardState: this.wizardState },
       },
     ];

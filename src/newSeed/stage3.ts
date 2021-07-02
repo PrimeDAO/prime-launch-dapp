@@ -46,7 +46,9 @@ export class Stage3 extends BaseStage {
 
   persistData(): void {
     this.wizardState.seedTokenSymbol = this.seedSymbol;
+    this.wizardState.seedTokenIcon = this.seedIcon;
     this.wizardState.fundingTokenSymbol = this.fundingSymbol;
+    this.wizardState.fundingTokenIcon = this.fundingIcon;
   }
 
   validateInputs(): Promise<string> {
