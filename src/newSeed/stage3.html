@@ -12,7 +12,7 @@
             <div class="labeledQuestion">
               <label for="fundingAddress">Funding Token Address</label>
               <div class="questionMark">
-                <question-mark text="The Ethereum address of the funding token that contributors send to the Seed contract to purchase Seed tokens"></question-mark>
+                <question-mark text="The Ethereum address of the funding token used to purchase Seed tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
             <div class="tickerContainer">
@@ -34,7 +34,7 @@
             <div class="labeledQuestion">
               <label for="seedAddress">Seed Token Address</label>
               <div class="questionMark">
-                <question-mark text="The Ethereum address of the seed token that contributors purchase using funding tokens"></question-mark>
+                <question-mark text="The Ethereum address of the token you are offering to contributors"></question-mark>
               </div>
             </div>
             <div class="tickerContainer">
@@ -55,7 +55,7 @@
           <div class="labeledQuestion">
             <label for="maxSeedSupply">Maximum Seed Token Supply</label>
             <div class="questionMark">
-              <question-mark text="The maximum total number of Seed tokens"></question-mark>
+              <question-mark text="The maximum supply of Seed tokens to exist over the project's lifetime. If there is no maximum, provide a reasonable estimate"></question-mark>
             </div>
           </div>
           <numeric-input
@@ -68,7 +68,7 @@
           <div class="labeledQuestion">
             <label for="initialSeedSupply">Initial Circulating Seed Token Supply </label>
             <div class="questionMark">
-              <question-mark text="The number of Seed tokens that will be in circulation at the time that Seed contributions have ended"></question-mark>
+              <question-mark text="The amount of Seed tokens that will be in circulation once the launch has concluded"></question-mark>
             </div>
           </div>
           <numeric-input
@@ -81,7 +81,7 @@
           <div class="labeledQuestion">
             <label>Seed Token Global Distribution</label>
             <div class="questionMark">
-              <question-mark text="The distribution of tokens between different groups holding the Seed token"></question-mark>
+              <question-mark text="The seed token distribution between different groups. Projects who issue tokens in multiple rounds should clearly demarcate the amount of tokens distributed in each round"></question-mark>
             </div>
           </div>
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">

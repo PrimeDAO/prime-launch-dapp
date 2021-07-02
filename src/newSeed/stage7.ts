@@ -1,6 +1,7 @@
+import { IpfsService } from "services/IpfsService";
 import { autoinject } from "aurelia-framework";
 import { BaseStage } from "newSeed/baseStage";
-import { Router } from "aurelia-router";
+import { Router, RouteConfig, Redirect } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
@@ -16,8 +17,23 @@ export class Stage7 extends BaseStage {
     eventAggregator: EventAggregator,
     private contractsService: ContractsService,
     private seedService: SeedService,
+    private ipfsService: IpfsService,
     private numberService: NumberService) {
     super(router, eventAggregator);
+  }
+
+  public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
+    /**
+     * heuristic for whether we have data.  Possibility is that the user
+     * has used the 'back' button or otherwize figured out how to return
+     * to this page, for example, just after having submitting a Seed,
+     * where the seedConfig will have been deleted.
+     */
+    if (!routeConfig.settings.seedConfig.general.projectName?.length) {
+      return new Redirect("");
+    } else {
+      return true;
+    }
   }
 
   attached(): void {
@@ -35,7 +51,7 @@ export class Stage7 extends BaseStage {
     try {
       this.eventAggregator.publish("seed.creating", true);
       this.wizardState.seedHash = await this.seedService.deploySeed(this.seedConfig);
-      // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: https://gateway.pinata.cloud/ipfs/${this.seedHash}`);
+      // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.seedHash)`);
       this.seedConfig.clearState();
       this.stageStates.forEach((stage: { verified: boolean }, index: number) => {
         if (index > 0) {
