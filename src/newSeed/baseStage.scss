@@ -144,8 +144,11 @@
       margin-bottom: 20px;
       font-size: 18px;
       color: $Neutral02;
+      max-width: 100vw;
       div:nth-last-child(1) {
         margin-left: 6px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
       }
     }
     .stage1Metadata {
