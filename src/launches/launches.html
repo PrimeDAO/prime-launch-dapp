@@ -1,11 +1,14 @@
 <template>
   <div class="page animated-page au-animate launches">
-    <div if.to-view="featuredSeeds.length" class="section featured">
+    <div class="section featured">
       <div class="title heading heading1">Featured</div>
-      <div class="launches">
+      <div class="launches" if.to-view="featuredSeeds.length">
         <horizontal-scroller item-count.to-view="featuredSeeds.length">
           <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
         </horizontal-scroller>
+      </div>
+      <div else class="loading">
+        <i class="fas fa-circle-notch fa-spin"></i>
       </div>
     </div>
     <div class="section launches">
@@ -20,7 +23,7 @@
           <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
           <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
-          <div class="cell whitelist header">WHITELIST</div>
+          <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="seed of seeds | sort:sortEvaluator">
