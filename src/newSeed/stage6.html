@@ -45,9 +45,9 @@
               <a href=${seedConfig.general.github} target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
             </div>
         </div>
-        <div class="stageSeedDetails" show.to-view="seedConfig.general.customLinks.length > 0">
+        <div class="stageSeedDetails">
           <div class="heading heading4">Custom Links</div>
-          <div class="stage1Metadata">
+          <div class="stage1Metadata" if.to-view="seedConfig.general.customLinks.length > 0">
             <template repeat.for="customLink of seedConfig.general.customLinks">
               <div class="stageSeedDetails">
                 <div class="metadataHeaders">
@@ -67,6 +67,7 @@
               </div>
             </template>
           </div>
+          <div else>[optional input not supplied]</div>
         </div>
       </div>
       <hr />
@@ -154,9 +155,9 @@
               <div>${wizardState.seedTokenSymbol}</div>
             </div>
         </div>
-        <div class="stageSeedDetails" show.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
+        <div class="stageSeedDetails">
           <div class="heading heading4">Seed Token Global Distribution</div>
-          <div class="stage2Metadata">
+          <div class="stage2Metadata" if.to-view="seedConfig.showtokenDetails.tokenDistrib.length > 0">
             <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
               <div class="stageSeedDetails">
                 <div class="metadataHeaders">
@@ -182,6 +183,7 @@
               </div>
             </template>
           </div>
+          <div else>[optional input not supplied]</div>
         </div>
       </div>
       <hr />
@@ -292,7 +294,7 @@
               Additional Remark
             </div>
             <div>
-              ${seedConfig.contactDetails.remarks || "[optional input not supplied"}
+              ${seedConfig.contactDetails.remarks || "[optional input not supplied]"}
             </div>
         </div>
       </div>
