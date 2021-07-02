@@ -15,7 +15,9 @@ export interface IStageState {
 export interface IWizardState {
   seedHash?: Hash;
   fundingTokenSymbol?: string;
+  fundingTokenIcon?: string;
   seedTokenSymbol?: string;
+  seedTokenIcon?: string;
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
   primeDaoAddress?: Address;
