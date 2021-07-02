@@ -1,7 +1,10 @@
+import { autoinject } from "aurelia-framework";
 import { Hash } from "services/EthereumService";
+import axios from "axios";
+import { ConsoleLogService } from "services/ConsoleLogService";
+const CID = require("cids");
 
 export interface IIpfsClient {
-  get(hash: Hash): Promise<string>;
   pinHash(hash: Hash, name?: string): Promise<void>;
   addAndPinData(data: string, name?: string): Promise<Hash>;
 }
@@ -13,7 +16,11 @@ export interface IAlchemyProposalParams {
   tags ?: string[];
 }
 
+@autoinject
 export class IpfsService {
+
+  constructor(private consoleLogService: ConsoleLogService) {}
+
   /**
    * must be initialize externally prior to using the service
    */
@@ -47,7 +54,18 @@ export class IpfsService {
    * @returns
    */
   public async getObjectFromHash(hash: Hash) : Promise<any> {
-    return JSON.parse(await this.ipfs.get(hash));
+    try {
+      const response = await axios.get(this.getIpfsUrl(hash));
+
+      if (response.status !== 200) {
+        throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);
+      } else {
+        return JSON.parse(response.data);
+      }
+    } catch (ex) {
+      this.consoleLogService.logMessage(ex.message, "warning");
+      return null;
+    }
   }
 
   /**
@@ -57,5 +75,16 @@ export class IpfsService {
    */
   public async saveString(str: string, name?: string): Promise<Hash> {
     return this.ipfs.addAndPinData(str, name);
+  }
+
+  /**
+   * url to use to request content from IPFS
+   * @param hash
+   * @returns
+   */
+  public getIpfsUrl(hash: string): string {
+    const format = process.env.IPFS_GATEWAY;
+    const encodedHash = new CID(hash).toV1().toBaseEncodedString("base32");
+    return format.replace("${hash}", encodedHash);
   }
 }
