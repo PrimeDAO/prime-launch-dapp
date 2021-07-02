@@ -504,9 +504,8 @@
         margin-right: 10px;
       }
       & > img {
-        width: 30px;
-        height: 30px;
-        border-radius: 13px;
+        @include tokenIcon;
+        height: 19px;
       }
     } 
     hr {
