@@ -50,7 +50,7 @@
           <div class="stage1Metadata">
             <template repeat.for="customLink of seedConfig.general.customLinks">
               <div class="stageSeedDetails">
-                <div>
+                <div class="metadataHeaders">
                   Custom Link
                 </div>
                 <div>
@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class="stageSeedDetails">
-                <div>
+                <div class="metadataHeaders">
                   URL
                 </div>
                 <div>
@@ -159,7 +159,7 @@
           <div class="stage2Metadata">
             <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
               <div class="stageSeedDetails">
-                <div>
+                <div class="metadataHeaders">
                   Category
                 </div>
                 <div>
@@ -167,13 +167,13 @@
                 </div>
               </div>
               <div class="stageSeedDetails">
-                <div>
+                <div class="metadataHeaders">
                   Amount
                 </div>
                 <formatted-number value.bind="customLink.amount | ethwei" />
               </div>
               <div class="stageSeedDetails">
-                <div>
+                <div class="metadataHeaders">
                   Lock-up (days)
                 </div>
                 <div>
@@ -231,7 +231,7 @@
             Start Date
           </div>
           <div>
-            ${seedConfig.seedDetails.startDate | date:{format:"dddd MMMM Do - HH[:]mm z, YYYY", utc: true}}
+            ${seedConfig.seedDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -239,23 +239,26 @@
             End Date
           </div>
           <div>
-            ${seedConfig.seedDetails.endDate | date:{format:"dddd MMMM Do - HH[:]mm z, YYYY", utc: true}}
+            ${seedConfig.seedDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
           </div>
         </div>
-        <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.whitelist">
+        <div class="stageSeedDetails">
           <div class="heading heading4">
             Whitelist
           </div>
           <div>
-            ${seedConfig.seedDetails.whitelist}
+            ${seedConfig.seedDetails.whitelist || "[optional input not supplied]"}
           </div>
         </div>
-        <div class="stageSeedDetails" show.to-view="seedConfig.seedDetails.legalDisclaimer">
+        <div class="stageSeedDetails">
           <div class="heading heading4">
             Legal Disclaimer
           </div>
-          <div>
+          <div if.to-view="seedConfig.seedDetails.legalDisclaimer">
             <a href=${seedConfig.seedDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
+          </div>
+          <div else>
+            [optional input not supplied]
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -284,12 +287,12 @@
               ${seedConfig.contactDetails.contactEmail}
             </div>
         </div>
-        <div class="stageSeedDetails" show.to-view="seedConfig.contactDetails.remarks">
+        <div class="stageSeedDetails">
             <div class="heading heading4">
               Additional Remark
             </div>
             <div>
-              ${seedConfig.contactDetails.remarks}
+              ${seedConfig.contactDetails.remarks || "[optional input not supplied"}
             </div>
         </div>
       </div>

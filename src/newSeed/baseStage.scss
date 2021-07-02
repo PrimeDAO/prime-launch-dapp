@@ -140,7 +140,7 @@
     }
     .stageSeedDetails {
       display: grid;
-      gap: 15px;
+      gap: 10px;
       margin-bottom: 20px;
       font-size: 18px;
       color: $Neutral02;
@@ -155,6 +155,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: auto;
+    }
+    .metadataHeaders {
+      text-decoration: underline;
+      color: $Neutral03;
     }
   }
 }
