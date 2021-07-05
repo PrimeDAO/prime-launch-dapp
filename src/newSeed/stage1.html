@@ -23,13 +23,13 @@
           <input id="whitePaper" value.bind="seedConfig.general.whitepaper" />
         </div>
         <div class="infoInput">
-          <label for="gitLink">Github Link</label>
+          <label for="gitLink">Github</label>
           <input id="gitLink" value.bind="seedConfig.general.github" />
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
           <div class="otherLinks">
             <div class="sMedia">
-              <label for="$index">Custom Link </label>
+              <label for="$index">Platform </label>
               <input
                 id="$index"
                 placeholder="E.g Twitter"

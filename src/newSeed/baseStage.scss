@@ -132,6 +132,41 @@
     height: 1.3em;
     align-self: center;
   }
+  .summaryContainer {
+    margin-bottom: 40px;
+    word-break: break-word;
+    > .heading.heading3 {
+      margin-bottom: 20px;
+    }
+    .stageSeedDetails {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: $Neutral02;
+      max-width: 100vw;
+      div:nth-last-child(1) {
+        margin-left: 6px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .stage1Metadata {
+      display: grid;
+      grid-template-columns: .4fr 1fr;
+      grid-template-rows: auto;
+      gap: 10px;
+    }
+    .stage2Metadata {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .metadataHeaders {
+      text-decoration: underline;
+      color: $Neutral03;
+    }
+  }
 }
 
 .page.stageContainer {
@@ -465,7 +500,28 @@
     }
   }
 
-  &.stage7 {
+  &.stage6 {
+    .tokenInfo{
+      display: grid;
+      grid-template-columns: 1fr .5fr .5fr;
+      width: fit-content;
+      &  div {
+        align-self: center;
+        margin-right: 10px;
+      }
+      & > img {
+        @include tokenIcon;
+        height: 19px;
+      }
+    } 
+    hr {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      background-color: $Shade03;
+    }
+  }
+
+  &.stage8 {
     & .linksContainer {
       display: flex;
       flex-flow: column;
@@ -508,6 +564,21 @@
     label {
       line-height: 20px;
       margin-bottom: 5px;
+    }
+    .summaryContainer {
+      margin-bottom: 30px;
+      word-break: break-word;
+      .stage1Metadata {
+        display: grid;
+        grid-template-columns: unset;
+        grid-template-rows: auto;
+      }
+      .stage2Metadata {
+        display: grid;
+        grid-template-columns: unset;
+        grid-template-rows: auto;
+        margin-bottom: 10px;
+      }
     }
   }
 

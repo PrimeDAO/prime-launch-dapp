@@ -112,6 +112,14 @@
         text-align: center;
         padding: 2em;
       }
+      .loading {
+        text-align: center;
+        font-size: 32px;
+        padding-top: 24px;
+        i {
+          color: $Secondary07;
+        }
+      }
     }
 
     &.nomiss {

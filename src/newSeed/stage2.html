@@ -9,34 +9,34 @@
           <div class="labeledQuestion">
             <label for="projSummary">Project Summary</label>
             <div class="questionMark">
-              <question-mark text="Describe your project. This will be visible to users on Home, Launches and Seed Dashboard pages as an introduction to your project"></question-mark>
+              <question-mark text="Describe your project. This introduction will be visible to users on the Home, Launches, and Seed Dashboard pages"></question-mark>
             </div>
           </div>
           <span value.from-view="seedConfig.projectDetails.summary">
-            ${seedConfig.projectDetails.summary.length}/150
+            ${seedConfig.projectDetails.summary.length}/200
           </span>
         </div>
         <textarea
           id="projSummary"
           value.bind="seedConfig.projectDetails.summary"
-          maxlength="150"></textarea>
+          maxlength="200"></textarea>
       </div>
       <div class="infoInput">
         <div class="labelContainer">
           <div class="labeledQuestion">
             <label for="valueProp">Value Proposition</label>
             <div class="questionMark">
-              <question-mark text="Describe why someone should contribute to your project? This will be visible on top of the Seed Dashboard"></question-mark>
+              <question-mark text="Describe why contributors should engage your project. This will be visible at the top of the Seed Dashboard"></question-mark>
             </div>
           </div>
           <span value.from-view="seedConfig.projectDetails.proposition">
-            ${seedConfig.projectDetails.proposition.length}/150
+            ${seedConfig.projectDetails.proposition.length}/200
           </span>
         </div>
         <textarea
           id="valueProp"
           value.bind="seedConfig.projectDetails.proposition"
-          maxlength="150">
+          maxlength="200">
           </textarea>
       </div>
       <div class="infoInput">
@@ -48,13 +48,13 @@
             </div>
           </div>
           <span value.from-view="seedConfig.projectDetails.teamDescription">
-            ${seedConfig.projectDetails.teamDescription.length}/150
+            ${seedConfig.projectDetails.teamDescription.length}/200
           </span>
         </div>
         <textarea
           id="teamDesc"
           value.bind="seedConfig.projectDetails.teamDescription"
-          maxlength="150">
+          maxlength="200">
           </textarea>
       </div>
 

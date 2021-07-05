@@ -1,6 +1,18 @@
 @import "styles/colors.scss";
 .page.launches {
   .section {
+    &.featured,
+    &.launches {
+      .loading {
+        text-align: center;
+        font-size: 32px;
+        padding-top: 24px;
+        i {
+          color: $Secondary07;
+        }
+      }
+    }
+
     &.featured {
       margin-bottom: 92px;
 
@@ -12,15 +24,6 @@
     &.launches {
       .title {
         -webkit-text-fill-color: $Secondary02;
-      }
-
-      .loading {
-        text-align: center;
-        font-size: 32px;
-        padding-top: 24px;
-        i {
-          color: $Secondary07;
-        }
       }
 
       .grid {

@@ -6,7 +6,7 @@
       </div>
       <div class="title heading heading0">Seamlessly fundraise for your moonshot</div>
       <div class="subtitle">
-        PrimeLAUNCH is a platform for fair token launches in a completely permissionless fashion.
+        PrimeLAUNCH is a platform for completely permissionless and fair token launches.
       </div>
       <div class="buttons">
         <div class="contribute" click.delegate="navigate('launches')">
@@ -15,7 +15,7 @@
             <div class="arrow">&#8599;</div>
           </div>
           <div class="icon"></div>
-          <div class="subtitle">View all available pools and contribute to launches</div>
+          <div class="subtitle">View all available launches and contribute</div>
         </div>
         <div class="launch" click.delegate="navigate('launch')">
           <div class="title">
@@ -28,13 +28,16 @@
       </div>
     </div>
     <div class="section launches">
+      <div class="title heading heading1">Featured Launches</div>
       <template if.to-view="featuredSeeds.length">
-        <div class="title heading heading1">Featured Launches</div>
         <horizontal-scroller item-count.to-view="featuredSeeds.length">
           <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
         </horizontal-scroller>
         <div class="launchesButton"><a class="button1" href="launches">VIEW ALL LAUNCHES</a></div>
       </template>
+      <div else class="loading">
+        <i class="fas fa-circle-notch fa-spin"></i>
+      </div>
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">

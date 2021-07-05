@@ -1,4 +1,3 @@
-import { ConsoleLogService } from "services/ConsoleLogService";
 import { autoinject } from "aurelia-framework";
 import { EthereumService } from "./EthereumService";
 import axios from "axios";
@@ -10,8 +9,7 @@ export class PinataIpfsClient implements IIpfsClient {
 
   private httpRequestConfig;
 
-  constructor(ethereumService: EthereumService,
-    private consoleLogService: ConsoleLogService) {
+  constructor(ethereumService: EthereumService) {
     this.httpRequestConfig = {
       headers: {
         pinata_api_key:
@@ -20,22 +18,6 @@ export class PinataIpfsClient implements IIpfsClient {
         (ethereumService.targetedNetwork === "mainnet") ? process.env.PINATA_SECRET_API_KEY : process.env.PINATA_SECRET_API_KEY_TEST,
       },
     };
-  }
-
-  public async get(hash: Hash): Promise<string> {
-
-    try {
-      const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${hash}`);
-
-      if (response.status !== 200) {
-        throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);
-      } else {
-        return response.data;
-      }
-    } catch (ex) {
-      this.consoleLogService.logMessage(ex.message, "warning");
-      return null;
-    }
   }
 
   public async addAndPinData(data: string, name?: string): Promise<Hash> {

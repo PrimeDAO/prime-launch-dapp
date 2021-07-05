@@ -103,7 +103,7 @@ export class Stage4 extends BaseStage {
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a number greater than zero for the Funding Max";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target lesser than or equal to Funding Max";
+      message = "Please enter a value for Funding Target less than or equal to Funding Max";
     } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
     } else if (!(this.seedConfig.seedDetails.vestingDays >= 0)) {
