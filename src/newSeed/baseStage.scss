@@ -183,10 +183,13 @@
         flex-flow: row wrap;
         gap: 1em;
         margin-bottom: 2em;
-        > div:first-of-type {
-          input {
-            width: 11em;
-          }
+        .sMedia {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+        }
+        .platform {
+          width: 11em;
         }
         .addLinkContainer {
           display: flex;
@@ -287,6 +290,11 @@
         flex: 1;
         justify-content: space-between;
         margin-bottom: 32px;
+        .category {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+        }
         .infoInput {
           margin-bottom: unset;
         }
