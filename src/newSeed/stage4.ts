@@ -82,6 +82,7 @@ export class Stage4 extends BaseStage {
     temp = this.endDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    this.wizardState.seedAdminAddress = this.seedConfig.seedDetails.adminAddress;
   }
 
   async validateInputs(): Promise<string> {
