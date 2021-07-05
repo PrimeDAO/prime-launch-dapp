@@ -96,6 +96,8 @@ export class SeedConfig implements ISeedConfig {
   clearState(): void {
     this.version = "1.0.0";
     this.general = {
+      projectName: "",
+      category: "",
       customLinks: [],
     } as IGeneral;
     this.projectDetails = {

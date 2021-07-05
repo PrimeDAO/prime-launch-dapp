@@ -96,9 +96,9 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
           </div>
-          <template if.to-view="seed.contributingIsOpen && fundingTokenToPay">
+          <template if.to-view="seed.contributingIsOpen">
             <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
-            <div class="doit" else><button if.to-view="fundingTokenToPay.gt(0)" class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+            <div class="doit" else><button class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
           </template>
         </div>
         <!--
@@ -149,7 +149,7 @@
               if.to-view="seed.isLive && !seed.claimingIsOpen"
               class="vestedMessage subtext">Claiming will open ${seed.vestingCliff | secondsDays} days after either the max is reached, or else after when the Seed campaign ends in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ' (and if by then the target has been reached)'}</div>
           </div>
-          <div class="doit" if.to-view="seedTokenToReceive"><button if.to-view="seedTokenToReceive.gt(0) && seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
         <!--
           ================ 
