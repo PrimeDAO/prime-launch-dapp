@@ -8,7 +8,7 @@ import { Seed } from "entities/Seed";
 @autoinject
 export class Home {
 
-  featuredSeeds: Array<Seed>;
+  featuredSeeds: Array<Seed> = [];
 
   constructor(
     private router: Router,
@@ -16,8 +16,10 @@ export class Home {
   ) {
   }
 
-  async attached(): Promise<void> {
-    this.seedService.getFeaturedSeeds().then((seeds) => { this.featuredSeeds = seeds; });
+  attached(): void {
+    this.seedService.getFeaturedSeeds().then((seeds) => {
+      this.featuredSeeds = seeds;
+    });
   }
 
   navigate(href: string): void {

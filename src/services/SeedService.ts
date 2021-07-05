@@ -176,10 +176,6 @@ export class SeedService {
 
   public async getFeaturedSeeds(): Promise<Array<Seed>> {
 
-    if (!this.seeds?.size /* || !this.featuredSeedsJson */) {
-      return [];
-    }
-
     if (this._featuredSeeds) {
       return this._featuredSeeds;
     }
@@ -197,6 +193,7 @@ export class SeedService {
         .slice(0, 3);
     }
   }
+
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
 
     const seedConfigString = JSON.stringify(config);
