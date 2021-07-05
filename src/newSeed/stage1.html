@@ -7,16 +7,26 @@
       </div>
       <div>
         <div class="infoInput">
-          <label for="projName">Project Name</label>
-          <input id="projName" value.bind="seedConfig.general.projectName" />
+          <div class="labelContainer">
+            <label for="projName">Project Name</label>
+            <span>
+              ${seedConfig.general.projectName.length}/50
+            </span>
+          </div>
+          <input id="projName" value.bind="seedConfig.general.projectName" maxlength="50" />
         </div>
         <div class="infoInput">
           <label for="projSite">Project Website</label>
           <input id="projSite" value.bind="seedConfig.general.projectWebsite" />
         </div>
         <div class="infoInput">
-          <label for="projCat">Project Category</label>
-          <input id="projCat" value.bind="seedConfig.general.category" />
+          <div class="labelContainer">
+            <label for="projCat">Project Category</label>
+            <span>
+              ${seedConfig.general.category.length}/50
+            </span>
+          </div>
+          <input id="projCat" value.bind="seedConfig.general.category" maxlength="50" />
         </div>
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
@@ -28,12 +38,19 @@
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
           <div class="otherLinks">
-            <div class="sMedia">
-              <label for="$index">Platform </label>
+            <div>
+              <div class="sMedia">
+                <label for="$index">Platform </label>
+                <span>
+                  ${link.media.length || 0}/20
+                </span>
+              </div>
               <input
                 id="$index"
+                class="platform"
                 placeholder="E.g Twitter"
                 value.bind="seedConfig.general.customLinks[$index].media"
+                maxlength="20"
               />
             </div>
             <div class="addLinkContainer">

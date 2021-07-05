@@ -87,8 +87,13 @@
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
             <div class="distribRow">
               <div class="infoInput supply">
-                <div class="columnHeaders">Category</div>
-                <input type="text" value.bind="distrib.category" class="textInput">
+                <div class="category">
+                  <div class="columnHeaders">Category</div>
+                  <span>
+                    ${distrib.category.length || 0}/30
+                  </span>
+                </div>
+                <input type="text" value.bind="distrib.category" class="textInput" maxlength="30">
               </div>
               <div class="infoInput supply" value.bind="distrib.amount">
                 <div class="columnHeaders">Amount</div>
