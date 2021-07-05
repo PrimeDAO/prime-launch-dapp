@@ -187,6 +187,8 @@
           display: flex;
           flex-flow: row nowrap;
           justify-content: space-between;
+          align-items: center;
+          color: $Neutral02;
         }
         .platform {
           width: 11em;
@@ -294,6 +296,8 @@
           display: flex;
           flex-flow: row nowrap;
           justify-content: space-between;
+          align-items: center;
+          color: $Neutral02;
         }
         .infoInput {
           margin-bottom: unset;
