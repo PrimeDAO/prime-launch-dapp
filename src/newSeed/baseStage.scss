@@ -132,6 +132,9 @@
     height: 1.3em;
     align-self: center;
   }
+  .importantText {
+    font-weight: bolder;
+  }
 }
 
 .page.stageContainer {
@@ -529,9 +532,6 @@
   }
 
   &.stage8 {
-    & .importantText {
-      font-weight: bolder;
-    }
     & .linksContainer {
       display: flex;
       flex-flow: column;
