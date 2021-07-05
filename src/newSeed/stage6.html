@@ -6,65 +6,53 @@
       <div class="summaryContainer">
         <div class="heading heading3">General</div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Project Name
-            </div>
-            <div>
-              ${seedConfig.general.projectName}
-            </div>
+          <div class="heading heading4">
+            Project Name
+          </div>
+          <div>
+            ${seedConfig.general.projectName}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Project Website
-            </div>
-            <div>
-              <a href=${seedConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${seedConfig.general.projectWebsite}</a>
-            </div>
+          <div class="heading heading4">
+            Project Website
+          </div>
+          <div>
+            <a href=${seedConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${seedConfig.general.projectWebsite}</a>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Project Category
-            </div>
-            <div>
-              ${seedConfig.general.category}
-            </div>
+          <div class="heading heading4">
+            Project Category
+          </div>
+          <div>
+            ${seedConfig.general.category}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Whitepaper
-            </div>
-            <div>
-              <a href=${seedConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${seedConfig.general.whitepaper}</a>
-            </div>
+          <div class="heading heading4">
+            Whitepaper
+          </div>
+          <div class="ellipses">
+            <a href=${seedConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${seedConfig.general.whitepaper}</a>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Github Link
-            </div>
-            <div>
-              <a href=${seedConfig.general.github} target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
-            </div>
+          <div class="heading heading4">
+            Github Link
+          </div>
+          <div class="ellipses">
+            <a href=${seedConfig.general.github} target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
+          </div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">Custom Links</div>
-          <div class="stage1Metadata" if.to-view="seedConfig.general.customLinks.length > 0">
+          <div class="customLinks" if.to-view="seedConfig.general.customLinks.length > 0">
             <template repeat.for="customLink of seedConfig.general.customLinks">
-              <div class="stageSeedDetails">
-                <div class="metadataHeaders">
-                  Custom Link
-                </div>
-                <div>
-                  ${customLink.media}
-                </div>
-              </div>
-              <div class="stageSeedDetails">
-                <div class="metadataHeaders">
-                  URL
-                </div>
-                <div>
-                  <a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a>
-                </div>
-              </div>
+              <div class="header">Custom Link</div>
+              <div class="header">URL</div>
+              <div class="cell">${customLink.media}</div>
+              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
@@ -74,113 +62,100 @@
       <div class="summaryContainer">
         <div class="heading heading3">Project Details</div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Project Summary
-            </div>
-            <div>
-              ${seedConfig.projectDetails.summary}
-            </div>
+          <div class="heading heading4">
+            Project Summary
+          </div>
+          <div>
+            ${seedConfig.projectDetails.summary}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Value Proposition
-            </div>
-            <div>
-              ${seedConfig.projectDetails.proposition}
-            </div>
+          <div class="heading heading4">
+            Value Proposition
+          </div>
+          <div>
+            ${seedConfig.projectDetails.proposition}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Team Description
-            </div>
-            <div>
-              ${seedConfig.projectDetails.teamDescription}
-            </div>
+          <div class="heading heading4">
+            Team Description
+          </div>
+          <div>
+            ${seedConfig.projectDetails.teamDescription}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Project Logo
-            </div>
-            <div class="tokenInfo">
-              <img class="logoImage"
-                src.to-view="seedConfig.projectDetails.logo"
-                 />
-            </div>
+          <div class="heading heading4">
+            Project Logo
+          </div>
+          <div class="tokenInfo">
+            <img class="logoImage"
+              src.to-view="seedConfig.projectDetails.logo" />
+          </div>
         </div>
       </div>
       <hr />
       <div class="summaryContainer">
         <div class="heading heading3">Token Details</div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Funding Token Address
-            </div>
-            <div class="tokenInfo">
-              <etherscanlink address.to-view="seedConfig.tokenDetails.fundingAddress" text.to-view="seedConfig.tokenDetails.fundingAddress | smallHexString"></etherscanlink>
-              <div>${wizardState.fundingTokenSymbol}</div>
-              <img class="logoImage"
+          <div class="heading heading4">
+            Funding Token Address
+          </div>
+          <div class="tokenInfo">
+            <etherscanlink address.to-view="seedConfig.tokenDetails.fundingAddress" text.to-view="seedConfig.tokenDetails.fundingAddress | smallHexString"></etherscanlink>
+            <div>${wizardState.fundingTokenSymbol}</div>
+            <img class="logoImage"
               src.to-view="wizardState.fundingTokenIcon"
-              show.to-view="wizardState.fundingTokenIcon"
-               />
-            </div>
+              show.to-view="wizardState.fundingTokenIcon" />
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Seed Token Address
-            </div>
-            <div class="tokenInfo">
-              <etherscanlink address.to-view="seedConfig.tokenDetails.seedAddress" text.to-view="seedConfig.tokenDetails.seedAddress | smallHexString"></etherscanlink>
-              <div>${wizardState.seedTokenSymbol}</div>
-              <img class="logoImage"
+          <div class="heading heading4">
+            Seed Token Address
+          </div>
+          <div class="tokenInfo">
+            <etherscanlink address.to-view="seedConfig.tokenDetails.seedAddress" text.to-view="seedConfig.tokenDetails.seedAddress | smallHexString"></etherscanlink>
+            <div>${wizardState.seedTokenSymbol}</div>
+            <img class="logoImage"
               src.to-view="wizardState.seedTokenIcon"
-              show.to-view="wizardState.seedTokenIcon"
-               />
-            </div>
+              show.to-view="wizardState.seedTokenIcon" />
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Maximum Seed Token Supply
+          <div class="heading heading4">
+            Maximum Seed Token Supply
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" />
             </div>
-            <div class="tokenInfo">
-              <div><formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" /></div>
-              <div>${wizardState.seedTokenSymbol}</div>
-            </div>
+            <div>${wizardState.seedTokenSymbol}</div>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Initial Circulating Supply
+          <div class="heading heading4">
+            Initial Circulating Supply
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="seedConfig.tokenDetails.initialSeedSupply | ethwei" />
             </div>
-            <div class="tokenInfo">
-              <div><formatted-number value.bind="seedConfig.tokenDetails.initialSeedSupply | ethwei" /></div>
-              <div>${wizardState.seedTokenSymbol}</div>
-            </div>
+            <div>${wizardState.seedTokenSymbol}</div>
+          </div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">Seed Token Global Distribution</div>
-          <div class="stage2Metadata" if.to-view="seedConfig.showtokenDetails.tokenDistrib.length > 0">
+          <div class="tokenDist" if.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
             <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
-              <div class="stageSeedDetails">
-                <div class="metadataHeaders">
-                  Category
-                </div>
-                <div>
-                  ${customLink.category}
-                </div>
-              </div>
-              <div class="stageSeedDetails">
-                <div class="metadataHeaders">
-                  Amount
-                </div>
+              <div class="header">Category</div>
+              <div class="header">Amount</div>
+              <div class="header">Lock-up (days)</div>
+              <div class="cell">${customLink.category}</div>
+              <div class="cell">
                 <formatted-number value.bind="customLink.amount | ethwei" />
               </div>
-              <div class="stageSeedDetails">
-                <div class="metadataHeaders">
-                  Lock-up (days)
-                </div>
-                <div>
-                  ${customLink.lockup}
-                </div>
-              </div>
+              <div class="cell">${customLink.lockup}</div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
@@ -190,37 +165,43 @@
       <div class="summaryContainer">
         <div class="heading heading3">SEED Details</div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Funding Tokens per Seed Token
+          <div class="heading heading4">
+            Funding Tokens per Seed Token
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei" />
             </div>
-            <div class="tokenInfo">
-              <div><formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei" /></div>
-              <div>${wizardState.fundingTokenSymbol}</div>
-            </div>
+            <div>${wizardState.fundingTokenSymbol}</div>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Funding Target
+          <div class="heading heading4">
+            Funding Target
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" />
             </div>
-            <div class="tokenInfo">
-              <div><formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" /></div>
-              <div>${wizardState.fundingTokenSymbol}</div>
-            </div>
+            <div>${wizardState.fundingTokenSymbol}</div>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Funding Max
+          <div class="heading heading4">
+            Funding Max
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" />
             </div>
-            <div class="tokenInfo">
-              <div><formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" /></div>
-              <div>${wizardState.fundingTokenSymbol}</div>
-            </div>
+            <div>${wizardState.fundingTokenSymbol}</div>
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Seed tokens vested for
-            </div>
-            <div>${(seedConfig.seedDetails.vestingDays * 1000) | timespan:"minutes":largest}</div>
+          <div class="heading heading4">
+            Seed tokens vested for
+          </div>
+          <div>${(seedConfig.seedDetails.vestingDays * 1000) | timespan:"minutes":largest}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
@@ -248,15 +229,18 @@
           <div class="heading heading4">
             Whitelist
           </div>
-          <div>
-            ${seedConfig.seedDetails.whitelist || "[optional input not supplied]"}
+          <div class="ellipses" if.to-view="seedConfig.seedDetails.whitelist">
+            <a href="${seedConfig.seedDetails.whitelist}" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
+          </div>
+          <div else>
+            [optional input not supplied]
           </div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             Legal Disclaimer
           </div>
-          <div if.to-view="seedConfig.seedDetails.legalDisclaimer">
+          <div class="ellipses" if.to-view="seedConfig.seedDetails.legalDisclaimer">
             <a href=${seedConfig.seedDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
           </div>
           <div else>
@@ -282,20 +266,20 @@
       <div class="summaryContainer">
         <div class="heading heading3">Project Details</div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Contact Email
-            </div>
-            <div>
-              ${seedConfig.contactDetails.contactEmail}
-            </div>
+          <div class="heading heading4">
+            Contact Email
+          </div>
+          <div>
+            ${seedConfig.contactDetails.contactEmail}
+          </div>
         </div>
         <div class="stageSeedDetails">
-            <div class="heading heading4">
-              Additional Remark
-            </div>
-            <div>
-              ${seedConfig.contactDetails.remarks || "[optional input not supplied]"}
-            </div>
+          <div class="heading heading4">
+            Additional Remark
+          </div>
+          <div>
+            ${seedConfig.contactDetails.remarks || "[optional input not supplied]"}
+          </div>
         </div>
       </div>
       <div class="buttonContainer">
