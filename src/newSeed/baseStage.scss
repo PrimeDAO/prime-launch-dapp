@@ -529,6 +529,9 @@
   }
 
   &.stage8 {
+    & .importantText {
+      font-weight: bolder;
+    }
     & .linksContainer {
       display: flex;
       flex-flow: column;
