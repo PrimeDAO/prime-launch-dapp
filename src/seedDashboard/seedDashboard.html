@@ -9,8 +9,8 @@
         <div class="description subtext">${seed.metadata.projectDetails.proposition}</div>
         <div class="timeLeft">
           <span if.to-view="seed.isLive && !seed.minimumReached">
-            <div class="label">MAX TIME LEFT</div>
-            <div class="timer">${seed.endsInMilliseconds | timespan:"seconds":false:true}</div>
+            <div class="label">MAX TIME TO CONTRIBUTE</div>
+            <div class="timer">${seed.endsInMilliseconds | timespan:"minutes":false:true}</div>
           </span>
         </div>
       </div>
@@ -177,46 +177,44 @@
           Right Column
           ================ 
         -->
-      <div class="seedSummary">
-        <div class="section middleSection">
-          <div class="label targetLabel">FUNDING TARGET</div>
-          <div class="value target">
-            <formatted-number value.to-view="seed.target | ethwei" average></formatted-number>
-          </div>
-          <div class="label maxLabel">MAX</div>
-          <div class="value max">
-            <formatted-number value.to-view="seed.cap | ethwei" average></formatted-number>
-          </div>
-          <div class="label valuationLabel">VALUATION</div>
-          <div class="value valuation">$ <formatted-number
-              if.to-view="seed.valuation"
-              value.to-view="seed.valuation"
-              thousands-separated></formatted-number>
-            <span else>N/A</span>
-          </div>
-          <div class="label tokensleftLabel">SEED TOKENS LEFT</div>
-          <div class="value tokensleft">
-            <formatted-number value.to-view="percentSeedTokensLeft" average mantissa="0"></formatted-number>%
-          </div>
-          <div class="tokenpriceLabel">
-            <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
-          </div>
-          <div class="value tokenprice">1 <div class="symbol">${seed.seedTokenInfo.symbol}</div> = ${seed.fundingTokensPerSeedToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
-          </div>
+      <div class="section seedSummary">
+        <div class="label targetLabel">FUNDING TARGET</div>
+        <div class="value target">
+          <formatted-number value.to-view="seed.target | ethwei" average></formatted-number>
         </div>
-        <div class="section bottomSection">
-          <div class="title heading heading3">About ${seed.metadata.general.projectName}</div>
-          <div class="body subtext">${seed.metadata.projectDetails.summary}</div>
-          <div if.to-view="seed.metadata.general.customLinks.length" class="links">
-            <a href.to-view="seed.metadata.general.projectWebsite" target="_blank" rel="noopener noreferrer">
-              <div class="icon ${iconClassForLinkType('home')}"></div>
-              <div class="name">${seed.metadata.general.projectName}</div>
-            </a>
-            <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
-              <div class="icon ${iconClassForLinkType(link.media)}"></div>
-              <div class="name">${link.media}</div>
-            </a>
-          </div>
+        <div class="label maxLabel">MAX</div>
+        <div class="value max">
+          <formatted-number value.to-view="seed.cap | ethwei" average></formatted-number>
+        </div>
+        <div class="label valuationLabel">VALUATION</div>
+        <div class="value valuation">$ <formatted-number
+            if.to-view="seed.valuation"
+            value.to-view="seed.valuation"
+            thousands-separated></formatted-number>
+          <span else>N/A</span>
+        </div>
+        <div class="label tokensleftLabel">SEED TOKENS LEFT</div>
+        <div class="value tokensleft">
+          <formatted-number value.to-view="percentSeedTokensLeft" average mantissa="0"></formatted-number>%
+        </div>
+        <div class="tokenpriceLabel">
+          <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+        </div>
+        <div class="value tokenprice">1 <div class="symbol">${seed.seedTokenInfo.symbol}</div> = ${seed.fundingTokensPerSeedToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
+        </div>
+      </div>
+      <div class="section seedAbout">
+        <div class="title heading heading3">About ${seed.metadata.general.projectName}</div>
+        <div class="body subtext">${seed.metadata.projectDetails.summary}</div>
+        <div if.to-view="seed.metadata.general.customLinks.length" class="links">
+          <a href.to-view="seed.metadata.general.projectWebsite" target="_blank" rel="noopener noreferrer">
+            <div class="icon ${iconClassForLinkType('home')}"></div>
+            <div class="name">${seed.metadata.general.projectName}</div>
+          </a>
+          <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
+            <div class="icon ${iconClassForLinkType(link.media)}"></div>
+            <div class="name">${link.media}</div>
+          </a>
         </div>
       </div>
     </div>

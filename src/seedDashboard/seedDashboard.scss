@@ -5,18 +5,20 @@
     grid-template-columns: 50% 40%;
     grid-template-areas:
       "seedBanner seedProgress"
-      "forms seedSummary";
+      "forms seedSummary"
+      "forms seedAbout";
     column-gap: 10%;
+    row-gap: 24px;
 
     .seedBanner {
       grid-area: seedBanner;
       display: grid;
       grid-template-columns: auto auto auto;
       grid-template-areas:
-        "title countdown countdown"
+        "title title countdown"
         "description description timeleft";
       align-items: center;
-      column-gap: 8px;
+      column-gap: 12px;
       row-gap: 20px;
       margin-bottom: 48px;
 
@@ -60,8 +62,15 @@
 
     .seedProgress {
       grid-area: seedProgress;
+      display: grid;
+      grid-template-areas:
+        "tokenId"
+        "progressBar"
+        "raised";
+      align-content: start;
 
       .tokenId {
+        grid-area: tokenId;
         display: flex;
         margin-bottom: 13px;
         font-family: Inter;
@@ -84,8 +93,9 @@
       }
 
       .progressBar {
+        grid-area: progressBar;
         background-color: $BG02;
-        width: 100%;
+        // width: 100%;
         height: 23px;
         border-radius: 10px;
         margin-bottom: 13px;
@@ -105,7 +115,11 @@
       }
 
       .raised {
-        display: flex;
+        grid-area: raised;
+        display: grid;
+        grid-template-columns: auto auto 3fr;
+        column-gap: 8px;
+        align-items: center;
         font-family: Inter;
         font-size: 24px;
         line-height: 29px;
@@ -113,18 +127,17 @@
         margin-bottom: 28px;
 
         .amount {
-          margin-right: 8px;
+          // margin-right: 8px;
           font-weight: bold;
         }
 
         .denomination {
-          align-self: flex-end;
           font-size: 18px;
           line-height: 22px;
         }
 
         .perc {
-          flex-grow: 2;
+          // flex-grow: 2;
           text-align: right;
 
           &.filled {
@@ -145,7 +158,7 @@
       .section4 {
         background-color: $BG02;
         border-radius: 8px;
-        align-items: baseline;
+        align-items: start;
         padding: 28px 28px;
 
         &:not(:last-child) {
@@ -273,7 +286,6 @@
         .help {
           justify-self: flex-end;
           grid-area: help;
-          text-align: right;
           width: 24px;
           height: 24px;
         }
@@ -326,136 +338,135 @@
 
     .seedSummary {
       grid-area: seedSummary;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-rows: auto 46px auto auto;
+      grid-template-areas:
+        "targetLabel maxLabel valuationLabel"
+        "target max valuation"
+        "tokensleftLabel tokenpriceLabel tokenpriceLabel"
+        "tokensleft tokenprice tokenprice";
+      align-content: start;
+      margin-bottom: 24px;
 
-      > .section:not(:last-child) {
-        margin-bottom: 64px;
+      .label {
+        font-size: 14px;
+        line-height: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: $Neutral03;
+        opacity: 0.4;
       }
 
-      .middleSection {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        grid-template-rows: auto 40% auto auto;
-        grid-template-areas:
-          "targetLabel maxLabel valuationLabel"
-          "target max valuation"
-          "tokensleftLabel tokenpriceLabel tokenpriceLabel"
-          "tokensleft tokenprice tokenprice";
+      .value {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 28px;
+        @include standardTextGradient;
+      }
 
-        .label {
-          font-size: 14px;
-          line-height: 24px;
-          font-weight: bold;
-          text-transform: uppercase;
-          color: $Neutral03;
-          opacity: 0.4;
+      .targetLabel {
+        grid-area: targetLabel;
+      }
+
+      .target {
+        grid-area: target;
+      }
+
+      .maxLabel {
+        grid-area: maxLabel;
+      }
+
+      .max {
+        grid-area: max;
+      }
+
+      .valuationLabel {
+        grid-area: valuationLabel;
+      }
+
+      .valuation {
+        grid-area: valuation;
+      }
+
+      .tokensleftLabel {
+        grid-area: tokensleftLabel;
+      }
+
+      .tokensleft {
+        grid-area: tokensleft;
+      }
+
+      .tokenpriceLabel {
+        grid-area: tokenpriceLabel;
+      }
+
+      .tokenprice {
+        grid-area: tokenprice;
+        font-size: 14px;
+        line-height: 17px;
+
+        .symbol {
+          display: inline-block;
+          font-weight: 100;
         }
+      }
+    }
 
-        .value {
-          font-family: Inter;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 28px;
-          @include standardTextGradient;
-        }
+    .seedAbout {
+      grid-area: seedAbout;
+      align-self: self-end;
 
-        .targetLabel {
-          grid-area: targetLabel;
-        }
+      .title {
+        margin-bottom: 8px;
+        white-space: normal;
+      }
 
-        .target {
-          grid-area: target;
-        }
+      .body {
+        margin-bottom: 19px;
+      }
 
-        .maxLabel {
-          grid-area: maxLabel;
-        }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
 
-        .max {
-          grid-area: max;
-        }
+        a {
+          color: $Neutral02;
+          margin-bottom: 16px;
+          display: grid;
+          grid-template-columns: auto auto;
+          column-gap: 8px;
 
-        .valuationLabel {
-          grid-area: valuationLabel;
-        }
-
-        .valuation {
-          grid-area: valuation;
-        }
-
-        .tokensleftLabel {
-          grid-area: tokensleftLabel;
-        }
-
-        .tokensleft {
-          grid-area: tokensleft;
-        }
-
-        .tokenpriceLabel {
-          grid-area: tokenpriceLabel;
-        }
-
-        .tokenprice {
-          grid-area: tokenprice;
-          font-size: 14px;
-          line-height: 17px;
-
-          .symbol {
-            display: inline-block;
-            font-weight: 100;
+          &:hover {
+            text-decoration: none;
           }
-        }
-      }
 
-      .bottomSection {
-        .title {
-          margin-bottom: 8px;
-          white-space: normal;
-        }
-
-        .body {
-          margin-bottom: 19px;
-        }
-
-        .links {
-          display: flex;
-          flex-wrap: wrap;
-
-          a {
-            color: $Neutral02;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: auto auto;
-            column-gap: 8px;
+          .icon {
+            font-size: 14px;
+            border-radius: 12px;
+            color: $BG01;
+            background-color: $Neutral02;
+            padding: 2px;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+          }
 
+          .name {
+            white-space: normal;
+            text-transform: capitalize;
+            margin-right: 18px;
             &:hover {
-              text-decoration: none;
-            }
-
-            .icon {
-              text-align: center;
-              font-size: 12px;
-              border-radius: 50%;
-              color: $BG01;
-              background-color: $Neutral02;
-              padding: 0.64px;
-              width: 16px;
-              height: 16px;
-            }
-
-            .name {
-              white-space: normal;
-              text-transform: capitalize;
-              margin-right: 18px;
-              &:hover {
-                text-decoration: underline;
-              }
+              text-decoration: underline;
             }
           }
+        }
 
-          a > div {
-            display: inline-block;
-          }
+        a > div {
+          display: inline-block;
         }
       }
     }
@@ -465,30 +476,37 @@
 @media screen and (max-width: 1475px) {
   .page.seedDashboardContainer {
     .seedDashboard {
-      grid-template-columns: auto;
       grid-template-areas:
         "seedBanner"
+        "seedSummary"
         "seedProgress"
         "forms"
-        "seedSummary";
-      column-gap: unset;
+        "seedAbout";
+      grid-template-columns: auto;
+      row-gap: 60px;
 
       .seedBanner {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto;
         grid-template-areas:
-          "timeleft timeleft"
-          "title countdown"
-          "description description";
-        justify-content: space-evenly;
-        // align-items: center;
-        // column-gap: 8px;
-        // row-gap: 20px;
+          "title"
+          "description"
+          "countdown"
+          "timeleft";
+        margin: 0 10%;
+        align-items: center;
 
-        .countdown {
-          justify-self: right;
+        .title {
+          width: 100%;
         }
 
+        .description {
+          margin-bottom: 24px;
+        }
+
+        .description,
+        .countdown,
+        .title,
         .timeLeft {
           text-align: center;
         }
@@ -499,9 +517,40 @@
         justify-self: center;
       }
 
+      .seedProgress,
       .seedSummary {
-        .middleSection {
-          justify-content: space-evenly;
+        justify-content: space-evenly;
+      }
+
+      .seedProgress {
+        .raised {
+          grid-template-columns: auto 0.1fr 4fr;
+        }
+
+        .tokenId {
+          justify-content: center;
+        }
+      }
+
+      .seedAbout {
+        margin: 0 10%;
+        text-align: center;
+
+        .title {
+          width: 100%;
+        }
+
+        .links {
+          margin: 0 10%;
+          flex-direction: column;
+
+          a {
+            display: flex;
+            justify-content: center;
+            .name {
+              margin-right: 0;
+            }
+          }
         }
       }
     }
@@ -511,10 +560,23 @@
 @media screen and (max-width: 620px) {
   .page.seedDashboardContainer {
     .seedDashboard {
+      padding-left: initial;
+      padding-right: initial;
+
       .forms {
         .section2,
-        .section3 {
+        .section3,
+        .section4 {
           justify-items: center;
+
+          .description {
+            justify-self: self-end;
+          }
+
+          .help {
+            justify-self: center;
+            align-self: center;
+          }
         }
 
         .section2 {
@@ -541,9 +603,16 @@
         }
       }
       .seedSummary {
-        .middleSection {
-          .value {
-            font-size: 20px;
+        .value {
+          font-size: 20px;
+        }
+      }
+
+      .seedAbout {
+        .links {
+          a {
+            text-align: left;
+            justify-content: flex-start;
           }
         }
       }
@@ -554,10 +623,6 @@
 @media screen and (max-width: 420px) {
   .page.seedDashboardContainer {
     .seedDashboard {
-      .seedBanner {
-        justify-content: space-between;
-      }
-
       .seedProgress {
         .raised {
           font-size: 18px;
