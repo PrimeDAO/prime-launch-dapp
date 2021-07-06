@@ -13,7 +13,7 @@
             ${wizardState.seedTokenSymbol} to the Seed contract.
             This amount includes any service fees for your launch.
           </li>
-          <li>Please note that you will be the sole administrator of the new seed contract<span if.to-view="!!seedConfig.seedDetails.whitelist"> and only you may manage its whitelist</span>.
+          <li>Please note that <etherscanlink address.to-view="wizardState.seedAdminAddress" text.to-view="wizardState.seedAdminAddress | smallHexString"></etherscanlink> will be the sole administrator of the new seed contract<span if.to-view="!!seedConfig.seedDetails.whitelist"> and only you may manage its whitelist</span>.
           </li>
         </ol>
       </div>
