@@ -44,7 +44,6 @@ export class Stage7 extends BaseStage {
       / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken));
     this.wizardState.requiredSeedFee = distributableSeeds * this.seedFee;
     this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredSeedFee;
-    this.wizardState.primeDaoAddress = this.contractsService.getContractAddress(ContractNames.PrimeDAO);
   }
 
   async submit(): Promise<void> {

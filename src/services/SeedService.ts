@@ -11,6 +11,7 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import TransactionsService from "services/TransactionsService";
+import { api } from "services/GnosisService";
 
 // export interface ISeed {
 //   address: Address;
@@ -199,22 +200,80 @@ export class SeedService {
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-    // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
-    // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    const hash = this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
 
-    // return this.transactionsService.send(factoryContract.deploySeed(
-    //   params.admin,
-    //   params.seedToken,
-    //   params.fundingToken,
-    //   params.successMinimumAndCap,
-    //   params.price,
-    //   params.startTime,
-    //   params.endTime,
-    //   params.vestingDuration,
-    //   params.vestingCliff,
-    //   params.isWhitelisted,
-    //   params.fee,
-    // ));
+    this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
+
+    const safeAddress = await this.contractsService.getContractAddress(ContractNames.SAFE);
+    const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    const gnosis = api(safeAddress);
+
+    const transaction = {
+      to: seedFactory.address,
+      value: 0,
+      operation: 0,
+      safe: safeAddress,
+    } as any;
+
+    const seedArguments = [
+      safeAddress,
+      config.seedDetails.adminAddress,
+      [config.tokenDetails.seedAddress, config.tokenDetails.fundingAddress],
+      [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
+      config.seedDetails.pricePerToken,
+      // convert from ISO string to Unix epoch seconds
+      Date.parse(config.seedDetails.startDate) / 1000,
+      // convert from ISO string to Unix epoch seconds
+      Date.parse(config.seedDetails.endDate) / 1000,
+      [config.seedDetails.vestingDays, config.seedDetails.vestingCliff],
+      !!config.seedDetails.whitelist,
+      2,
+      hash,
+    ];
+
+    transaction.data = seedFactory.populateTransaction.deploySeed(...seedArguments);
+    // Get transaction estimate: -
+
+    const estimate = await gnosis.callStatic.getEstimate(transaction);
+
+    Object.assign(transaction, {
+      safeTxGas: estimate.safeTxGas,
+      // Add payment related details
+      // Get Nonce
+      nonce: await gnosis.getCurrentNonce(),
+      baseGas: 0,
+      gasPrice: 0,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
+    });
+
+    // send details to Signer contract to generate hash and sign the hash.
+    // I'm confused with the equivalent of this in ethersjs
+    const { txHash, signature } = await signer.callStatic.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    );
+
+    transaction.contractTransactionHash = txHash;
+    transaction.signature = signature;
+    // Send signer.generateSignature() to do a transaction and store signature in contract
+    await signer.generateSignature(transaction.contractTransactionHash);
+    // Add sender to the transaction object
+    transaction.sender = signer.address;
+    // Send the transaction object to Gnosis Safe Transaction service
+    const response = await gnosis.sendTransaction(transaction);
+
+    console.dir(response);
+
+    return hash;
   }
 }
