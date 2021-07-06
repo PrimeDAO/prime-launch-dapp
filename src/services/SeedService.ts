@@ -1,12 +1,11 @@
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
-import { EthereumService, Hash } from "./EthereumService";
+import { EthereumService, Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
 import { autoinject } from "aurelia-framework";
-import { Address } from "services/EthereumService";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
@@ -200,9 +199,9 @@ export class SeedService {
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-    const hash = this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
 
-    this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
+    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const safeAddress = await this.contractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
@@ -229,13 +228,13 @@ export class SeedService {
       [config.seedDetails.vestingDays, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
       2,
-      hash,
+      this.asciiToHex(`0x${metaDataHash}`),
     ];
 
-    transaction.data = seedFactory.populateTransaction.deploySeed(...seedArguments);
+    transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     // Get transaction estimate: -
 
-    const estimate = await gnosis.callStatic.getEstimate(transaction);
+    const estimate = (await gnosis.getEstimate(transaction)).data;
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
@@ -250,7 +249,7 @@ export class SeedService {
 
     // send details to Signer contract to generate hash and sign the hash.
     // I'm confused with the equivalent of this in ethersjs
-    const { txHash, signature } = await signer.callStatic.generateSignature(
+    const { hash, signature } = await signer.callStatic.generateSignature(
       transaction.to,
       transaction.value,
       transaction.data,
@@ -263,17 +262,45 @@ export class SeedService {
       transaction.nonce,
     );
 
-    transaction.contractTransactionHash = txHash;
+    transaction.contractTransactionHash = hash;
     transaction.signature = signature;
     // Send signer.generateSignature() to do a transaction and store signature in contract
-    await signer.generateSignature(transaction.contractTransactionHash);
+    await signer.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    );
     // Add sender to the transaction object
     transaction.sender = signer.address;
+
+    console.log(`sending to safe txHash: ${hash}`);
+
     // Send the transaction object to Gnosis Safe Transaction service
     const response = await gnosis.sendTransaction(transaction);
 
     console.dir(response);
 
-    return hash;
+    if (response.status !== 201) {
+      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+    }
+
+    return metaDataHash;
+  }
+
+  private asciiToHex(str = ""): string {
+    const res = [];
+    const { length: len } = str;
+    for (let n = 0, l = len; n < l; n++) {
+      const hex = Number(str.charCodeAt(n)).toString(16);
+      res.push(hex);
+    }
+    return `0x${res.join("")}`;
   }
 }
