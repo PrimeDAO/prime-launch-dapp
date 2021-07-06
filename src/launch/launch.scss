@@ -60,9 +60,9 @@
       }
       .buttons {
         display: flex;
-        flex-direction: row;
-        flex-wrap: row wrap;
+        flex-flow: row wrap;
         align-items: center;
+        justify-content: space-between;
 
         .buttonContainer {
           text-align: center;
@@ -123,7 +123,7 @@
       }
       .launch-box-container {
         .buttons {
-          justify-content: center;
+          justify-content: space-evenly;
         }
         .container-footer {
           justify-content: center;
