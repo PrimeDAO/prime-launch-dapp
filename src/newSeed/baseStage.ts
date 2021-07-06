@@ -21,6 +21,7 @@ export interface IWizardState {
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
   primeDaoAddress?: Address;
+  seedAdminAddress?: Address;
 }
 
 @singleton(false)
