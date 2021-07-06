@@ -82,6 +82,7 @@ export class Stage4 extends BaseStage {
     temp = this.endDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
     this.wizardState.seedAdminAddress = this.seedConfig.seedDetails.adminAddress;
   }
 
