@@ -27,7 +27,7 @@
           <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator">
+        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator & debounce:1000">
           <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
             <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
@@ -60,7 +60,7 @@
           <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator">
+        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator & debounce:1000">
           <a
             class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
