@@ -99,7 +99,7 @@ export class SeedService {
                     this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
                     seed.initialize(); // set this off asyncronously.
                   } else {
-                    this.consoleLogService.logMessage(`seed lacks metadata, is unusable: ${seed.address}`);
+                    this.consoleLogService.logMessage(`seed lacks metadata, is unusable: ${seed.address}`, "warn");
                   }
                 }
                 this.seeds = seedsMap;
