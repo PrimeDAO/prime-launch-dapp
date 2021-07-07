@@ -1,7 +1,7 @@
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
-import { EthereumService, Hash, Address } from "./EthereumService";
+import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
@@ -9,45 +9,12 @@ import { autoinject } from "aurelia-framework";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import TransactionsService from "services/TransactionsService";
 import { api } from "services/GnosisService";
-
-// export interface ISeed {
-//   address: Address;
-//   description: string;
-//   /**
-//    * SVG icon for the pool
-//    */
-//   icon: string;
-//   name: string;
-//   /**
-//    * the pool doesn't actually exist yet, but we want to present a preview in the UI
-//    */
-//   preview: boolean;
-//   story: string;
-// }
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
   beneficiary: Address;
 }
-
-/**
- * see SeedFactory contract for docs of these params
- */
-// interface IDeploySeedParams {
-//   admin: Address;
-//   seedToken: Address;
-//   fundingToken: Address;
-//   successMinimumAndCap: Array<BigNumber>;
-//   fee: BigNumber;
-//   price: BigNumber;
-//   startTime: number;
-//   endTime: number;
-//   vestingDuration: number;
-//   vestingCliff: number;
-//   isWhitelisted: boolean;
-// }
 
 // interface IFeaturedSeedsConfig {
 //   [network: string]: { seeds: Array<Address> } ;
@@ -67,15 +34,13 @@ export class SeedService {
   /**
    * when the factory was created
    */
-  // private startingBlockNumber: number;
+  // TODO: private startingBlockNumber: number;
 
   constructor(
     private contractsService: ContractsService,
-    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
     private container: Container,
     private consoleLogService: ConsoleLogService,
-    private transactionsService: TransactionsService,
     private ipfsService: IpfsService,
   ) {
     /**
@@ -125,9 +90,6 @@ export class SeedService {
             this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
-                  /**
-                    * TODO: This should also pull the full seed configuration from whereever we are storing it
-                    */
                   const seed = await this.createSeedFromConfig(event);
                   /**
                    * ignore seeds that don't have metadata
@@ -232,14 +194,11 @@ export class SeedService {
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
-    // Get transaction estimate: -
 
     const estimate = (await gnosis.getEstimate(transaction)).data;
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
-      // Add payment related details
-      // Get Nonce
       nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
@@ -247,8 +206,6 @@ export class SeedService {
       refundReceiver: "0x0000000000000000000000000000000000000000",
     });
 
-    // send details to Signer contract to generate hash and sign the hash.
-    // I'm confused with the equivalent of this in ethersjs
     const { hash, signature } = await signer.callStatic.generateSignature(
       transaction.to,
       transaction.value,
@@ -264,7 +221,7 @@ export class SeedService {
 
     transaction.contractTransactionHash = hash;
     transaction.signature = signature;
-    // Send signer.generateSignature() to do a transaction and store signature in contract
+
     await signer.generateSignature(
       transaction.to,
       transaction.value,
@@ -277,15 +234,12 @@ export class SeedService {
       transaction.refundReceiver,
       transaction.nonce,
     );
-    // Add sender to the transaction object
+
     transaction.sender = signer.address;
 
-    console.log(`sending to safe txHash: ${hash}`);
+    this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
 
-    // Send the transaction object to Gnosis Safe Transaction service
     const response = await gnosis.sendTransaction(transaction);
-
-    console.dir(response);
 
     if (response.status !== 201) {
       throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
