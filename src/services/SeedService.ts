@@ -189,7 +189,7 @@ export class SeedService {
       [config.seedDetails.vestingDays, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
       2,
-      this.asciiToHex(`0x${metaDataHash}`),
+      this.asciiToHex(metaDataHash),
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
@@ -254,6 +254,6 @@ export class SeedService {
       const hex = Number(str.charCodeAt(n)).toString(16);
       res.push(hex);
     }
-    return res.join("");
+    return `0x${res.join("")}`;
   }
 }
