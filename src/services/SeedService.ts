@@ -5,7 +5,7 @@ import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
@@ -24,8 +24,10 @@ export interface ISeedCreatedEventArgs {
 export class SeedService {
 
   public seeds: Map<Address, Seed>;
+
+  @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
-    return Array.from(this.seeds?.values());
+    return this.seeds ? Array.from(this.seeds.values()) : [];
   }
   public initializing = true;
   private initializedPromise: Promise<void>;
@@ -47,6 +49,10 @@ export class SeedService {
      * otherwise singleton is the default
      */
     this.container.registerTransient(Seed);
+
+    this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
+      this.seeds.delete(seedAddress);
+    });
   }
 
   public async initialize(): Promise<void> {
@@ -90,17 +96,10 @@ export class SeedService {
             this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
-                  const seed = await this.createSeedFromConfig(event);
-                  /**
-                   * ignore seeds that don't have metadata
-                   */
-                  if (seed.metadataHash) {
-                    seedsMap.set(seed.address, seed);
-                    this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
-                    seed.initialize(); // set this off asyncronously.
-                  } else {
-                    this.consoleLogService.logMessage(`seed lacks metadata, is unusable: ${seed.address}`, "warn");
-                  }
+                  const seed = this.createSeedFromConfig(event);
+                  seedsMap.set(seed.address, seed);
+                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
+                  seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
                 this.initializing = false;
@@ -118,7 +117,7 @@ export class SeedService {
     );
   }
 
-  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Promise<Seed> {
+  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {
     const seed = this.container.get(Seed);
     return seed.create({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
   }
@@ -255,6 +254,6 @@ export class SeedService {
       const hex = Number(str.charCodeAt(n)).toString(16);
       res.push(hex);
     }
-    return `0x${res.join("")}`;
+    return res.join("");
   }
 }
