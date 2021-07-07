@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 .page.launch {
   font-size: 28px;
   display: flex;
@@ -60,9 +60,9 @@
       }
       .buttons {
         display: flex;
-        flex-direction: row;
-        flex-wrap: row wrap;
+        flex-flow: row wrap;
         align-items: center;
+        justify-content: space-between;
 
         .buttonContainer {
           text-align: center;
@@ -78,6 +78,12 @@
               background: $Neutral04;
               color: $Shade04;
             }
+          }
+        }
+
+        .moreInfoContainer {
+          a {
+            @include standardTextGradient;
           }
         }
       }
@@ -125,7 +131,7 @@
       }
       .launch-box-container {
         .buttons {
-          justify-content: center;
+          justify-content: space-evenly;
         }
         .container-footer {
           justify-content: center;
