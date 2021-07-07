@@ -140,6 +140,12 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
+    } else if (this.endDate.getTime() === this.startDate.getTime()) {
+      if ((24 - Number.parseInt(startTimes[0])) < (24 - Number.parseInt(endTimes[0]))) {
+        message = "Please select an End Date greater than the Start Date";
+      } else if (Number.parseInt(startTimes[1]) >= Number.parseInt(endTimes[1])) {
+        message = "Please select an End Date greater than the Start Date";
+      }
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid URL for Whitelist";
       // won't validate this for now
