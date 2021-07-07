@@ -64,6 +64,9 @@ export class SeedDashboard {
     return fraction;
   }
 
+  @computedFrom("seed.amountRaised")
+  get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
+
   @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
   get userCanRetrieve(): boolean {
     return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0);
@@ -88,8 +91,13 @@ export class SeedDashboard {
   @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
+  @computedFrom("maxFundable", "userFundingTokenBalance")
+  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.userFundingTokenBalance) ? this.maxFundable : this.userFundingTokenBalance; }
+
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
-  get lockRequired(): boolean { return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0"); }
+  get lockRequired(): boolean {
+    return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0") &&
+      this.maxUserCanPay.gte(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("seed", "ethereumService.defaultAccountAddress")
   private get seedDisclaimerStatusKey() {
@@ -210,9 +218,7 @@ export class SeedDashboard {
   }
 
   handleMaxBuy() : void {
-    const maxFundable = this.seed.cap.sub(this.seed.amountRaised);
-    this.fundingTokenToPay =
-      maxFundable.lt(this.userFundingTokenBalance) ? maxFundable : this.userFundingTokenBalance;
+    this.fundingTokenToPay = this.maxUserCanPay;
   }
 
   handleMaxClaim(): void {
