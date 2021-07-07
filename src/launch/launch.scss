@@ -75,7 +75,8 @@
             cursor: pointer;
             &.disabled {
               pointer-events: none;
-             background: grey;
+              background: $Neutral04;
+              color: $Shade04;
             }
           }
         }
