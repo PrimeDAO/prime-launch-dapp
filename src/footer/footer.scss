@@ -78,7 +78,10 @@
         display: inline-flex;
         span {
           font-size: 16px;
-          color: $Neutral02;
+          color: $Neutral01;
+          .fa-inverse {
+            color: #666666;
+          }
         }
 
         &:not(:last-child) {
