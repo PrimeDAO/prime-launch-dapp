@@ -186,7 +186,7 @@ export class SeedService {
       Date.parse(config.seedDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.seedDetails.endDate) / 1000,
-      [config.seedDetails.vestingDays, config.seedDetails.vestingCliff],
+      [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
       2,
       this.asciiToHex(metaDataHash),
