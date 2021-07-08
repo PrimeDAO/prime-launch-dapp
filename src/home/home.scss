@@ -147,15 +147,15 @@
 
       .emailColumn {
         align-self: center;
-        max-width: 450px;
         .form {
           display: flex;
           margin-bottom: 4px;
           justify-content: left;
 
           .notifyButton {
-            border-radius: 6px;
+            border-radius: 20px;
             flex-grow: 1;
+            max-width: 250px;
           }
         }
 
@@ -283,7 +283,7 @@
 
         .emailColumn {
           .form {
-            flex-direction: column;
+            justify-content: center;
           }
         }
       }
