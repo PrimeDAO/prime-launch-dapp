@@ -535,7 +535,12 @@
             background-color: $Shade03;
           }
         }
+
+        &:not(:first-child) {
+          margin-top: 40px;
+        }
       }
+
     }
   }
 
@@ -586,6 +591,10 @@
     .summaryContainer {
       margin-bottom: 30px;
       word-break: break-word;
+
+      &:not(:first-child) {
+        margin-top: 30px;
+      }
     }
   }
 
