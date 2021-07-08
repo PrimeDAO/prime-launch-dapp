@@ -539,7 +539,12 @@
             background-color: $Shade03;
           }
         }
+
+        + * + * {
+          margin-top: 40px;
+        }
       }
+
     }
   }
 
@@ -590,6 +595,10 @@
     .summaryContainer {
       margin-bottom: 30px;
       word-break: break-word;
+
+      + * + * {
+        margin-top: 30px;
+      }
     }
   }
 
