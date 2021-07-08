@@ -76,9 +76,9 @@
 
       a {
         display: inline-flex;
-        img {
-          width: 28px;
-          border-radius: 14px;
+        span {
+          font-size: 16px;
+          color: $Neutral02;
         }
 
         &:not(:last-child) {
