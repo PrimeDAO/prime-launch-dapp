@@ -9,7 +9,14 @@ body > ux-dialog-container {
   right: 10vw;
   bottom: 10vh;
   left: 10vw;
-  padding-bottom: 4px; // for some reason is needed to make room for the footer
+
+  // -bottom: 4px; // for some reason is needed to make room for the footer
+  background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
+  padding-left: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 4px;
+  border-radius: 6px;
 
   > div {
     margin: 0 !important;
@@ -25,13 +32,9 @@ body > ux-dialog-container {
     display: flex;
     flex-direction: column;
     color: $White;
-    background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
-    padding-left: 4px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-right: 4px;
-    border-radius: 6px;
     min-width: 160px;
+    border: none;
+    background-color: transparent;
 
     ux-dialog-header,
     ux-dialog-body,
@@ -92,10 +95,8 @@ body > ux-dialog-overlay {
 
     ux-dialog.dialog {
       min-width: 0;
-      border-radius: 0;
-      // border: none;
+      // border-radius: 0;
       // background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
-      padding: 1px;
 
       ux-dialog-header {
         border-radius: 0;
