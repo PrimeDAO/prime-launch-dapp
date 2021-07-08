@@ -30,11 +30,13 @@
         </div>
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
-          <input id="whitePaper" value.bind="seedConfig.general.whitepaper" />
+          <input id="whitePaper" value.bind="seedConfig.general.whitepaper"
+            placeholder="URL of the project's whitepaper" />
         </div>
         <div class="infoInput">
           <label for="gitLink">Github</label>
-          <input id="gitLink" value.bind="seedConfig.general.github" />
+          <input id="gitLink" value.bind="seedConfig.general.github"
+            placeholder="URL of the project's Github repository" />
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
           <div class="otherLinks">
@@ -50,22 +52,19 @@
                 class="platform"
                 placeholder="E.g Twitter"
                 value.bind="seedConfig.general.customLinks[$index].media"
-                maxlength="20"
-              />
+                maxlength="20" />
             </div>
             <div class="addLinkContainer">
               <div>
                 <label for="url`${index}`">URL</label>
                 <input
                   id="$index"
-                  placeholder="https://..."
-                  value.bind="seedConfig.general.customLinks[$index].url"
-                />
+                  placeholder="URL of the platform"
+                  value.bind="seedConfig.general.customLinks[$index].url" />
                 <span
                   class="deleteLink"
                   title="Delete this row"
-                  click.delegate="deleteCustomLinks($index)"
-                >
+                  click.delegate="deleteCustomLinks($index)">
                   <i class="far fa-trash-alt"></i>
                 </span>
               </div>
@@ -74,16 +73,14 @@
           <div
             class="addLink"
             click.delegate="addCustomLinks()"
-            if.bind="$index == seedConfig.general.customLinks.length - 1"
-          >
-            <a>+ Add link</a>
+            if.bind="$index == seedConfig.general.customLinks.length - 1">
+            <a>+ Add Social Media link</a>
           </div>
         </template>
         <div
           if.to-view="seedConfig.general.customLinks.length <= 0"
           class="addSingleLink"
-          click.delegate="addCustomLinks(-1)"
-        >
+          click.delegate="addCustomLinks(-1)">
           <a>+ Add Social Media link</a>
         </div>
       </div>
