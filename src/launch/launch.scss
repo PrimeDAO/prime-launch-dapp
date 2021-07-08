@@ -110,6 +110,23 @@
       }
     }
   }
+  position: relative;
+  &>.bg-image {
+    position: absolute;
+    z-index: -1;
+    right: -20px;
+    height: 650px;
+    object-fit: cover;
+    max-width: calc(100% - 160px)
+  }
+}
+
+@media screen and (min-width: 1070px) {
+  .page.launch {
+      &>.bg-image {
+        right: -160px;
+      }
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -137,6 +154,9 @@
           justify-content: center;
         }
       }
+    }
+    &>.bg-image {
+      display: none;
     }
   }
 }
