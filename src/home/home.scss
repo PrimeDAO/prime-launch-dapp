@@ -129,7 +129,7 @@
       height: 12em;
       align-content: center;
       justify-content: space-between;
-      padding: 6px 40px;
+      padding: 6px 100px;
       margin-left: -40px;
       margin-right: -40px;
       column-gap: 24px;
@@ -146,14 +146,16 @@
       }
 
       .emailColumn {
-        align-self: end;
+        align-self: center;
         .form {
           display: flex;
           margin-bottom: 4px;
           justify-content: left;
 
           .notifyButton {
-            border-radius: 6px;
+            border-radius: 20px;
+            flex-grow: 1;
+            max-width: 250px;
           }
         }
 
@@ -281,7 +283,7 @@
 
         .emailColumn {
           .form {
-            flex-direction: column;
+            justify-content: center;
           }
         }
       }
