@@ -31,7 +31,7 @@
           <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
             <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
-            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="project cell body ellipses ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
             <!-- <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div> -->
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>

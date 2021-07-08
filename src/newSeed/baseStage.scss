@@ -495,10 +495,6 @@
           font-size: 18px;
           color: $Neutral02;
 
-          .ellipses {
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-          }
           .customLinks {
             grid-template-columns: 0.4fr 1fr;
           }
