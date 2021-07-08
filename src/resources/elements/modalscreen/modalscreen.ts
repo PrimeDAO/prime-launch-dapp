@@ -19,7 +19,7 @@ export class ModalScreen {
   constructor(
     private aureliaHelperService: AureliaHelperService,
   ) {
-    window.onresize = () => this.onResize();
+    window.addEventListener("resize", () => this.onResize());
   }
 
   private onOffChanged(newValue, oldValue) {

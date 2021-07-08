@@ -71,6 +71,8 @@ export class App {
       const blockDate = this.ethereumService.lastBlockDate;
       this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
     }, 1000);
+
+    window.addEventListener("resize", () => { this.showingMobileMenu = false; });
   }
 
   private handleOnOff(onOff: boolean): void {
