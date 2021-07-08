@@ -186,7 +186,7 @@ export class Seed {
 
   @computedFrom("amountRaised")
   get maximumReached(): boolean {
-    return this.amountRaised.gte(this.cap);
+    return this.amountRaised?.gte(this.cap);
   }
 
   @computedFrom("hasEnoughSeedTokens", "isPaused", "isClosed")
@@ -214,15 +214,9 @@ export class Seed {
     }));
   }
 
-  public async create(config: ISeedConfiguration): Promise<Seed> {
+  public create(config: ISeedConfiguration): Seed {
     this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
-    Object.assign(this, config);
-    /**
-     * need these immediately so caller can determine whether the seed should be kept
-     */
-    await this.loadContracts();
-    await this.hydrateMetadataHash();
-    return this;
+    return Object.assign(this, config);
   }
 
   /**
@@ -231,6 +225,7 @@ export class Seed {
    * @returns
    */
   public async initialize(): Promise<Seed> {
+    await this.loadContracts();
     /**
      * no, intentionally don't await
      */
@@ -250,6 +245,8 @@ export class Seed {
   private async hydrate(): Promise<void> {
     this.initializing = true;
     try {
+      await this.hydrateMetadata();
+
       this.seedInitialized = await this.contract.initialized();
       this.seedTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
@@ -285,8 +282,6 @@ export class Seed {
 
       await this.hydrateUser();
 
-      await this.hydrateMetadata();
-
       this.initializing = false;
     }
     catch (error) {
@@ -298,15 +293,6 @@ export class Seed {
   public ensureInitialized(): Promise<void> {
     return this.initializedPromise;
   }
-
-  public async hydrateMetadataHash(): Promise<void> {
-    const rawMetadata = await this.contract.metadata();
-    if (rawMetadata) {
-      this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
-    }
-  }
-
 
   private async hydrateUser(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
@@ -322,8 +308,21 @@ export class Seed {
   }
 
   private async hydrateMetadata(): Promise<void> {
+    const rawMetadata = await this.contract.metadata();
+    if (rawMetadata && Number(rawMetadata)) {
+      this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+    } else {
+      this.eventAggregator.publish("Seed.InitializationFailed", this.address);
+      throw new Error(`seed lacks metadata, is unusable: ${this.address}`);
+    }
+
     if (this.metadataHash) {
       this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
+      if (!this.metadata) {
+        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
+        throw new Error(`seed metadata is not found in IPFS, seed is unusable: ${this.address}`);
+      }
     }
   }
 
