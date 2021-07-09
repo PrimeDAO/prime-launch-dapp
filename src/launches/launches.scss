@@ -53,6 +53,13 @@
           .cell {
             padding: 10px 0;
 
+            /**
+             * for when columns get scrunched together
+             */
+            &:not(:nth-of-type(n + 8)) {
+              padding-right: 12px;
+            }
+
             &.header {
               color: $Neutral02;
 
@@ -76,6 +83,11 @@
             &.type,
             &.eslink {
               text-align: center;
+            }
+
+            &.seedToken,
+            &.fundingToken {
+              white-space: nowrap;
             }
 
             &.eslink {
@@ -127,13 +139,14 @@
             padding: 2px 0;
             text-align: left !important;
 
-            &:not(:nth-of-type(n + 4)) {
+            &:not(:nth-of-type(n + 5)) {
               padding-right: 8px;
             }
 
             &.whitelist,
             &.eslink {
               text-align: center !important;
+              padding-right: 0;
             }
 
             /**
@@ -141,6 +154,7 @@
              */
             &:nth-of-type(n):nth-of-type(-n + 4) {
               padding-top: 12px;
+              margin-bottom: 0;
             }
 
             /**
