@@ -2,9 +2,9 @@
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Seed Summary</div>
-      <div class="subtext">Review your Seed details before proceeding</div>
+      <div class="subtext">Please review the details of your seed submission before proceeding.</div>
       <div class="summaryContainer">
-        <div class="heading heading3">General</div>
+        <div class="heading heading3">General Information</div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             Project Name
@@ -201,7 +201,7 @@
           <div class="heading heading4">
             Seed tokens vested for
           </div>
-          <div>${(seedConfig.seedDetails.vestingDays * 1000) | timespan:"minutes":largest}</div>
+          <div>${(seedConfig.seedDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
@@ -264,7 +264,7 @@
       </div>
       <hr />
       <div class="summaryContainer">
-        <div class="heading heading3">Project Details</div>
+        <div class="heading heading3">Contact Details</div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
             Contact Email

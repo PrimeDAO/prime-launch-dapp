@@ -76,9 +76,12 @@
 
       a {
         display: inline-flex;
-        img {
-          width: 28px;
-          border-radius: 14px;
+        span {
+          font-size: 16px;
+          color: $Neutral01;
+          .fa-inverse {
+            color: #666666;
+          }
         }
 
         &:not(:last-child) {

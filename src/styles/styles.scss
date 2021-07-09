@@ -166,10 +166,10 @@ html {
       }
 
       &.small {
-        padding: 6px 17px;
-        font-size: 10px;
+        padding: 8px 17px;
+        font-size: 11px;
         position: relative;
-        bottom: 3px;
+        bottom: 4px;
         text-transform: none;
       }
     }
@@ -181,6 +181,15 @@ html {
     .button2 {
       @include standardTextGradient;
       border: solid 1px $Secondary02;
+
+      &:hover {
+        -webkit-text-fill-color: $Secondary04;
+      }
+    }
+
+    .ellipses {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
   }
 

@@ -10,8 +10,7 @@ import { SortService } from "services/SortService";
 @autoinject
 export class Launches {
 
-  seeds: Array<Seed>;
-  featuredSeeds: Array<Seed> = [];
+  featuredSeeds: Array<Seed> = null;
   seeingMore: boolean;
 
   constructor(
@@ -23,10 +22,6 @@ export class Launches {
   attached(): void {
     this.seedService.getFeaturedSeeds().then((seeds) => {
       this.featuredSeeds = seeds;
-    });
-
-    this.seedService.ensureInitialized().then(() => {
-      this.seeds = this.seedService.seedsArray;
     });
   }
 

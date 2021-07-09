@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 .page.launch {
   font-size: 28px;
   display: flex;
@@ -60,9 +60,9 @@
       }
       .buttons {
         display: flex;
-        flex-direction: row;
-        flex-wrap: row wrap;
+        flex-flow: row wrap;
         align-items: center;
+        justify-content: space-between;
 
         .buttonContainer {
           text-align: center;
@@ -75,7 +75,15 @@
             cursor: pointer;
             &.disabled {
               pointer-events: none;
+              background: $Neutral04;
+              color: $Shade04;
             }
+          }
+        }
+
+        .moreInfoContainer {
+          a {
+            @include standardTextGradient;
           }
         }
       }
@@ -102,6 +110,23 @@
       }
     }
   }
+  position: relative;
+  &>.bg-image {
+    position: absolute;
+    z-index: -1;
+    right: -20px;
+    height: 650px;
+    object-fit: cover;
+    max-width: calc(100% - 160px)
+  }
+}
+
+@media screen and (min-width: 1070px) {
+  .page.launch {
+      &>.bg-image {
+        right: -160px;
+      }
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -123,12 +148,15 @@
       }
       .launch-box-container {
         .buttons {
-          justify-content: center;
+          justify-content: space-evenly;
         }
         .container-footer {
           justify-content: center;
         }
       }
+    }
+    &>.bg-image {
+      display: none;
     }
   }
 }

@@ -1,20 +1,20 @@
-<template bindable="title, subTitle1, btnText, poweredBy, logo, disabled">
+<template bindable="name, subTitle1, btnText, poweredBy, logo, disabled">
   <div class="launch-box-container">
     <div class="topSection">
-      <div class="heading heading3 title">${title}</div>
+      <div class="heading heading3 title">${name}</div>
       <div class="subtext">${subTitle1}</div>
     </div>
     <div class="buttons">
       <div class="buttonContainer">
         <a class="button1 ${disabled}" route-href="route: newSeed">${btnText}</a>
       </div>
-      <!-- <div>
-        <a>Learn more</a>
-      </div> -->
+      <div class="moreInfoContainer">
+        <a href="https://hi704760.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">Request Information</a>
+      </div>
     </div>
     <div class="container-footer">
       <div>POWERED BY</div>
-      <img alt="icon" src.bind="logo"/>
+      <img alt="icon" src.bind="logo" />
     </div>
   </div>
 </template>
