@@ -322,6 +322,18 @@ export class EthereumService {
     block.blockDate = new Date(block.timestamp * 1000);
     return block;
   }
+
+
+  public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
+    let targetedNetwork = this.targetedNetwork as string;
+    if (targetedNetwork === Networks.Mainnet) {
+      targetedNetwork = "";
+    } else {
+      targetedNetwork = targetedNetwork + ".";
+    }
+
+    return `http://${targetedNetwork}etherscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
+  }
 }
 
 export const toWei = (ethValue: BigNumber | string | number): BigNumber => {

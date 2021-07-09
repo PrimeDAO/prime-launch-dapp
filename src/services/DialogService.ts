@@ -6,14 +6,14 @@ import {
   DialogSettings,
 } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
-import { Alert } from "../resources/dialogs/alert/alert";
-import { Disclaimer } from "../resources/dialogs/disclaimer/disclaimer";
+import { ConsoleLogService } from "services/ConsoleLogService";
 
 @autoinject
 export class DialogService {
 
   constructor(
-    private dialogService: AureliaDialogService) {
+    private dialogService: AureliaDialogService,
+    private consoleLogService: ConsoleLogService) {
   }
 
   public open(
@@ -30,18 +30,30 @@ export class DialogService {
       }, settings));
   }
 
-  public alert(message: string): Promise<DialogCloseResult> {
-    return this.open(Alert, { message }, { keyboard: true })
-      .whenClosed(
-        (result: DialogCloseResult) => result,
-        // not sure if this works for alert
-        (error: string) => { return { output: error, wasCancelled: false }; });
-  }
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public axiosErrorHandler(err: any): string {
+    let errorMsg: string;
 
-  public disclaimer(disclaimerUrl: string, title: string): Promise<DialogCloseResult> {
-    return this.open(Disclaimer, { disclaimerUrl, title }, { keyboard: true })
-      .whenClosed(
-        (result: DialogCloseResult) => result,
-        (error: string) => { return { output: error, wasCancelled: false }; });
+    if (err.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      errorMsg = `HTTP status ${err.response.status}`;
+      this.consoleLogService.logMessage(err.response.data, "error");
+      this.consoleLogService.logMessage(err.response.status, "error");
+      this.consoleLogService.logMessage(err.response.headers, "error");
+    } else if (err.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      errorMsg = `No response: ${err.message}`;
+      this.consoleLogService.logMessage(err.message, "error");
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      errorMsg = `Unknown error: ${err.message}`;
+      this.consoleLogService.logMessage(err.message, "error");
+    }
+    return errorMsg;
   }
 }
+
+export { DialogCloseResult };

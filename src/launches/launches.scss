@@ -53,10 +53,6 @@
           .cell {
             padding: 10px 0;
 
-            &:not(:nth-of-type(n + 8)) {
-              padding-right: 12px;
-            }
-
             &.header {
               color: $Neutral02;
 
@@ -71,22 +67,21 @@
             }
 
             &.target,
-            &.cap,
-            &.eslink {
+            &.cap {
               text-align: right;
             }
 
             &.whitelist,
             &.starts,
-            &.type {
+            &.type,
+            &.eslink {
               text-align: center;
             }
 
-            &.body {
-              &.eslink {
-                .etherscanlink .text {
-                  margin-right: 0;
-                }
+            &.eslink {
+              i {
+                cursor: pointer;
+                color: $Secondary06;
               }
             }
           }

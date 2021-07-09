@@ -41,9 +41,7 @@
             <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
             </div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="eslink cell body">
-              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
-            </div>
+            <div class="eslink cell body" click.delegate="gotoEtherscan(seed)"><i class="fa fa-external-link-alt"></i></div>
           </a>
         </template>
       </div>
@@ -76,9 +74,7 @@
             </div>
             <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
             </div>
-            <div class="eslink cell body">
-              <etherscanlink address.to-view="seed.address" text.to-view="seed.address | smallHexString" hide-clipboard-button></etherscanlink>
-            </div>
+            <div class="eslink cell body" click.delegate="gotoEtherscan(seed)"><i class="fa fa-external-link-alt"></i></div>
           </a>
         </template>
       </div>

@@ -1,12 +1,8 @@
 import { autoinject } from "aurelia-framework";
 import { getAddress } from "ethers/lib/utils";
-import { ConsoleLogService } from "services/ConsoleLogService";
-import { Address } from "services/EthereumService";
 
 @autoinject
 export class Utils {
-
-  constructor(private consoleLogService: ConsoleLogService) {}
 
   public static sleep(milliseconds: number): Promise<any> {
     return new Promise((resolve: (args: any[]) => void): any => setTimeout(resolve, milliseconds));
@@ -91,7 +87,7 @@ export class Utils {
     return (emptyOk && (!email || !email.trim())) || (email && re.test(String(email).toLowerCase()));
   }
 
-  public static isAddress(address: Address, emptyOk = false): boolean {
+  public static isAddress(address: string, emptyOk = false): boolean {
     try {
       return (emptyOk && (!address || !address.trim())) || (address && !!getAddress(address));
     } catch (e) { return false; }
@@ -109,29 +105,5 @@ export class Utils {
       str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
     }
     return str;
-  }
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public axiosErrorHandler(err: any): string {
-    let errorMsg: string;
-
-    if (err.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      errorMsg = `HTTP status ${err.response.status}`;
-      this.consoleLogService.logMessage(err.response.data, "error");
-      this.consoleLogService.logMessage(err.response.status, "error");
-      this.consoleLogService.logMessage(err.response.headers, "error");
-    } else if (err.request) {
-    // The request was made but no response was received
-    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    // http.ClientRequest in node.js
-      errorMsg = `No response: ${err.message}`;
-      this.consoleLogService.logMessage(err.message, "error");
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      errorMsg = `Unknown error: ${err.message}`;
-      this.consoleLogService.logMessage(err.message, "error");
-    }
-    return errorMsg;
   }
 }

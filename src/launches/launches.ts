@@ -1,3 +1,4 @@
+import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
 import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
@@ -5,6 +6,7 @@ import { Router } from "aurelia-router";
 import "./launches.scss";
 import { Seed } from "entities/Seed";
 import { SortService } from "services/SortService";
+import { Utils } from "services/utils";
 
 @singleton(false)
 @autoinject
@@ -15,6 +17,7 @@ export class Launches {
 
   constructor(
     private router: Router,
+    private ethereumService: EthereumService,
     private seedService: SeedService,
   ) {
   }
@@ -67,5 +70,9 @@ export class Launches {
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBoolean(a.whitelisted, b.whitelisted, this.sortDirection);
         break;
     }
+  }
+
+  gotoEtherscan(seed: Seed): void {
+    Utils.goto(this.ethereumService.getEtherscanLink(seed.address));
   }
 }
