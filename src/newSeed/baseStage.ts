@@ -20,7 +20,6 @@ export interface IWizardState {
   seedTokenIcon?: string;
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
-  primeDaoAddress?: Address;
   seedAdminAddress?: Address;
 }
 

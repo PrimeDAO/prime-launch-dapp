@@ -186,6 +186,11 @@ html {
         -webkit-text-fill-color: $Secondary04;
       }
     }
+
+    .ellipses {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   etherscanlink {

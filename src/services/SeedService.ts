@@ -1,53 +1,20 @@
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
-import { EthereumService, Hash } from "./EthereumService";
+import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
 import { Container } from "aurelia-dependency-injection";
 import { ContractNames, ContractsService, IStandardEvent } from "./ContractsService";
-import { autoinject } from "aurelia-framework";
-import { Address } from "services/EthereumService";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import TransactionsService from "services/TransactionsService";
-
-// export interface ISeed {
-//   address: Address;
-//   description: string;
-//   /**
-//    * SVG icon for the pool
-//    */
-//   icon: string;
-//   name: string;
-//   /**
-//    * the pool doesn't actually exist yet, but we want to present a preview in the UI
-//    */
-//   preview: boolean;
-//   story: string;
-// }
+import { api } from "services/GnosisService";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
   beneficiary: Address;
 }
-
-/**
- * see SeedFactory contract for docs of these params
- */
-// interface IDeploySeedParams {
-//   admin: Address;
-//   seedToken: Address;
-//   fundingToken: Address;
-//   successMinimumAndCap: Array<BigNumber>;
-//   fee: BigNumber;
-//   price: BigNumber;
-//   startTime: number;
-//   endTime: number;
-//   vestingDuration: number;
-//   vestingCliff: number;
-//   isWhitelisted: boolean;
-// }
 
 // interface IFeaturedSeedsConfig {
 //   [network: string]: { seeds: Array<Address> } ;
@@ -57,8 +24,10 @@ export interface ISeedCreatedEventArgs {
 export class SeedService {
 
   public seeds: Map<Address, Seed>;
+
+  @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
-    return Array.from(this.seeds?.values());
+    return this.seeds ? Array.from(this.seeds.values()) : [];
   }
   public initializing = true;
   private initializedPromise: Promise<void>;
@@ -67,21 +36,23 @@ export class SeedService {
   /**
    * when the factory was created
    */
-  // private startingBlockNumber: number;
+  // TODO: private startingBlockNumber: number;
 
   constructor(
     private contractsService: ContractsService,
-    private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
     private container: Container,
     private consoleLogService: ConsoleLogService,
-    private transactionsService: TransactionsService,
     private ipfsService: IpfsService,
   ) {
     /**
      * otherwise singleton is the default
      */
     this.container.registerTransient(Seed);
+
+    this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
+      this.seeds.delete(seedAddress);
+    });
   }
 
   public async initialize(): Promise<void> {
@@ -125,20 +96,10 @@ export class SeedService {
             this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
-                  /**
-                    * TODO: This should also pull the full seed configuration from whereever we are storing it
-                    */
-                  const seed = await this.createSeedFromConfig(event);
-                  /**
-                   * ignore seeds that don't have metadata
-                   */
-                  if (seed.metadataHash) {
-                    seedsMap.set(seed.address, seed);
-                    this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
-                    seed.initialize(); // set this off asyncronously.
-                  } else {
-                    this.consoleLogService.logMessage(`seed lacks metadata, is unusable: ${seed.address}`);
-                  }
+                  const seed = this.createSeedFromConfig(event);
+                  seedsMap.set(seed.address, seed);
+                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
+                  seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
                 this.initializing = false;
@@ -156,7 +117,7 @@ export class SeedService {
     );
   }
 
-  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Promise<Seed> {
+  private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {
     const seed = this.container.get(Seed);
     return seed.create({ beneficiary: config.args.beneficiary, address: config.args.newSeed });
   }
@@ -199,22 +160,100 @@ export class SeedService {
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-    return this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-    // this.consoleLogService.logMessage(`seed registration hash: ${hash}`, "info");
-    // const factoryContract = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
 
-    // return this.transactionsService.send(factoryContract.deploySeed(
-    //   params.admin,
-    //   params.seedToken,
-    //   params.fundingToken,
-    //   params.successMinimumAndCap,
-    //   params.price,
-    //   params.startTime,
-    //   params.endTime,
-    //   params.vestingDuration,
-    //   params.vestingCliff,
-    //   params.isWhitelisted,
-    //   params.fee,
-    // ));
+    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
+
+    const safeAddress = await this.contractsService.getContractAddress(ContractNames.SAFE);
+    const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    const gnosis = api(safeAddress);
+
+    const transaction = {
+      to: seedFactory.address,
+      value: 0,
+      operation: 0,
+      safe: safeAddress,
+    } as any;
+
+    const seedArguments = [
+      safeAddress,
+      config.seedDetails.adminAddress,
+      [config.tokenDetails.seedAddress, config.tokenDetails.fundingAddress],
+      [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
+      config.seedDetails.pricePerToken,
+      // convert from ISO string to Unix epoch seconds
+      Date.parse(config.seedDetails.startDate) / 1000,
+      // convert from ISO string to Unix epoch seconds
+      Date.parse(config.seedDetails.endDate) / 1000,
+      [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
+      !!config.seedDetails.whitelist,
+      2,
+      this.asciiToHex(metaDataHash),
+    ];
+
+    transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+
+    const estimate = (await gnosis.getEstimate(transaction)).data;
+
+    Object.assign(transaction, {
+      safeTxGas: estimate.safeTxGas,
+      nonce: await gnosis.getCurrentNonce(),
+      baseGas: 0,
+      gasPrice: 0,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
+    });
+
+    const { hash, signature } = await signer.callStatic.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    );
+
+    transaction.contractTransactionHash = hash;
+    transaction.signature = signature;
+
+    await signer.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    );
+
+    transaction.sender = signer.address;
+
+    this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
+
+    const response = await gnosis.sendTransaction(transaction);
+
+    if (response.status !== 201) {
+      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+    }
+
+    return metaDataHash;
+  }
+
+  private asciiToHex(str = ""): string {
+    const res = [];
+    const { length: len } = str;
+    for (let n = 0, l = len; n < l; n++) {
+      const hex = Number(str.charCodeAt(n)).toString(16);
+      res.push(hex);
+    }
+    return `0x${res.join("")}`;
   }
 }

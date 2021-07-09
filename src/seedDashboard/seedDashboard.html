@@ -64,7 +64,7 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section2">
           <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="Submit ${seed.fundingTokenInfo.symbol} tokens here to participate in the Seed. Please remember you are paying ${seed.fundingTokenInfo.symbol} and be aware of lock-ups if there is a vesting cliff"></question-mark>
+            <question-mark text="Submit ${seed.fundingTokenInfo.symbol} tokens here to participate in the Seed. Remember to check if there is a vesting release schedule prior to contribution"></question-mark>
           </div>
           <div class="form">
             <div class="input">
@@ -110,7 +110,7 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section3">
           <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="Some projects will lock the Seed tokens for an amount of time. The tokens in the Claimable box are already unlocked and can be claimed by you at any point. The tokens in the Pending box (right side) are locked and will gradually unlock depending on the vesting period set by the team hosting the Seed"></question-mark>
+            <question-mark text="Many projects will lock or vest your tokens over some period of time. Here you may claim fully vested tokens as well as see which tokens are still pending depending on the project's vesting schedule"></question-mark>
           </div>
           <div class="form">
             <div class="input">
@@ -148,7 +148,7 @@
             </div>
             <div
               if.to-view="seed.isLive && !seed.claimingIsOpen"
-              class="vestedMessage subtext">Claiming will open ${seed.vestingCliff | secondsDays} days after either the max is reached, or else after when the Seed campaign ends in ${seed.endsInMilliseconds | timespan:"seconds":true}${seed.minimumReached ? '' : ' (and if by then the target has been reached)'}</div>
+              class="vestedMessage subtext">Tokens can be ${seed.vestingCliff ? 'claimed ${seed.vestingCliff | secondsDays} days' : 'immediately claimed'} after the Max is reached or when the campaign expires, assuming the Target has been met</div>
           </div>
           <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
@@ -160,7 +160,7 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="As long as a Seed has not reached its target you can come here and retrieve all the funding tokens that you have contributed"></question-mark>
+            <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all previously submitted contributions"></question-mark>
           </div>
           <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
           <div class="doit" if.to-view="userCanRetrieve"><button class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
