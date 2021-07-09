@@ -51,9 +51,9 @@ export class Launches {
       case "fundingToken":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.fundingTokenInfo.symbol, b.fundingTokenInfo.symbol, this.sortDirection);
         break;
-      // case "type":
-      //   this.sortEvaluator = (_a: Seed, _b: Seed) => 0;
-      //   break;
+      case "type":
+        this.sortEvaluator = (_a: Seed, _b: Seed) => 0;
+        break;
       case "target":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.target, b.target, this.sortDirection);
         break;
