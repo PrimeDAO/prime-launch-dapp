@@ -38,6 +38,10 @@
             text-decoration: none;
           }
 
+          .cell {
+            margin-bottom: 16px;
+          }
+
           &.body .cell.hot {
             cursor: pointer;
           }
@@ -149,6 +153,7 @@
              */
             &:nth-of-type(n + 5):nth-of-type(-n + 8) {
               padding-bottom: 12px;
+              color: $Neutral02;
 
               .etherscanlink .text,
               .copy-to-clip-button {
@@ -157,8 +162,6 @@
             }
 
             &.body {
-              color: $Neutral02;
-
               &.starts {
                 .timeLeftContainer {
                   font-size: 14px;
