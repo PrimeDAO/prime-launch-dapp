@@ -72,7 +72,13 @@ export class Launches {
     }
   }
 
-  gotoEtherscan(seed: Seed): void {
+  gotoEtherscan(seed: Seed, event: Event): boolean {
     Utils.goto(this.ethereumService.getEtherscanLink(seed.address));
+    event.stopPropagation();
+    return false;
+  }
+
+  onSeedClick(seed: Seed): void {
+    this.router.navigate(seed.canGoToDashboard ? `seed/${seed.address}` : "launches");
   }
 }
