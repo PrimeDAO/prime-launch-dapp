@@ -175,15 +175,16 @@
       column-gap: 10%;
       font-family: Inter;
 
-      // .pic {
-      //   img {
-      //     width: 450px;
-      //     height: 450px;
-      //   }
-      // }
+      .pic {
+        img {
+            border-radius: 6px;
+          // width: 450px;
+          // height: 450px;
+        }
+      }
 
       .rightColumn {
-        width: 32em;
+        width: 100%;
         > .heading1 {
           -webkit-text-fill-color: $Secondary02;
         }
@@ -297,6 +298,7 @@
         .pic {
           grid-area: pic;
           img {
+            border-radius: 6px;
             width: 75%;
           }
         }
@@ -318,6 +320,7 @@
       &.fairLaunch {
         .pic {
           img {
+            border-radius: 6px;
             margin-left: -20px;
             margin-right: -20px;
             width: calc(100% + 40px);
