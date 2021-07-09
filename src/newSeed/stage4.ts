@@ -76,10 +76,11 @@ export class Stage4 extends BaseStage {
     // Get the start and end time
     const startTimes = this.startTime.split(":");
     const endTimes = this.endTime.split(":");
-    let temp = this.startDate;
+    const temp:Date = undefined;
+    Object.assign(temp, this.startDate);
     temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
     this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    temp = this.endDate;
+    Object.assign(temp, this.endDate);
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
     // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
@@ -141,9 +142,10 @@ export class Stage4 extends BaseStage {
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
     } else if (this.endDate.getTime() === this.startDate.getTime()) {
-      if ((24 - Number.parseInt(startTimes[0])) < (24 - Number.parseInt(endTimes[0]))) {
+      const hourDiff = 24 - Number.parseInt(startTimes[0]) - (24 - Number.parseInt(endTimes[0]));
+      if (hourDiff < 0) {
         message = "Please select an End Date greater than the Start Date";
-      } else if (Number.parseInt(startTimes[1]) >= Number.parseInt(endTimes[1])) {
+      } else if (hourDiff === 0 && (Number.parseInt(startTimes[1]) >= Number.parseInt(endTimes[1]))) {
         message = "Please select an End Date greater than the Start Date";
       }
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
