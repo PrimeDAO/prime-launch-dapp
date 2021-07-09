@@ -1,20 +1,21 @@
 <template>
   <div class="page animated-page au-animate launches">
-    <div class="section featured">
+    <div class="section featured" if.to-view="!featuredSeeds || featuredSeeds.length">
       <div class="title heading heading1">Featured</div>
-      <div class="launches" if.to-view="featuredSeeds.length">
+      <div class="launches" if.to-view="featuredSeeds && featuredSeeds.length">
         <horizontal-scroller item-count.to-view="featuredSeeds.length">
           <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
         </horizontal-scroller>
       </div>
-      <div else class="loading">
+      <div if.to-view="!featuredSeeds" class="loading">
         <i class="fas fa-circle-notch fa-spin"></i>
       </div>
     </div>
     <div class="section launches">
       <div class="title heading heading1">Launches</div>
-      <div if.to-view="!seeds" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
-      <div if.to-view="seeds" class="grid launchGrid">
+      <div if.to-view="!seedService.seedsArray" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+      <!-- Desktop grid -->
+      <div if.to-view="seedService.seedsArray" class="grid launchGrid">
         <div class="row header">
           <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
@@ -26,11 +27,11 @@
           <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seeds | sort:sortEvaluator">
+        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator & debounce:1000">
           <a class="row body ${seed.canGoToDashboard ? 'hot' : '' }" if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
             <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
-            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
+            <div class="project cell body ellipses ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
             <!-- <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div> -->
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
@@ -46,7 +47,8 @@
           </a>
         </template>
       </div>
-      <div if.to-view="seeds" class="grid launchGridMobile">
+      <!-- Mobile grid -->
+      <div if.to-view="seedService.seedsArray" class="grid launchGridMobile">
         <div class="row header">
           <div class="cell seedToken header sortable" click.delegate="sort('seedToken')">SEED TOKEN</div>
           <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
@@ -58,7 +60,7 @@
           <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seeds | sort:sortEvaluator">
+        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator & debounce:1000">
           <a
             class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)" href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : 'launches'">
@@ -80,11 +82,11 @@
           </a>
         </template>
       </div>
-      <div if.to-view="seeds && !seeingMore" class="seeMore">
+      <div if.to-view="seedService.seedsArray && !seeingMore" class="seeMore">
         <div class="arrow">&darr;</div>
         <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
       </div>
-      <div if.to-view="seeds && seeingMore" class="seeMore">
+      <div if.to-view="seedService.seedsArray && seeingMore" class="seeMore">
         <div class="arrow">&uarr;</div>
         <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
       </div>

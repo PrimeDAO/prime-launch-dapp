@@ -8,7 +8,7 @@ import { Seed } from "entities/Seed";
 @autoinject
 export class Home {
 
-  featuredSeeds: Array<Seed> = [];
+  featuredSeeds: Array<Seed> = null;
 
   constructor(
     private router: Router,

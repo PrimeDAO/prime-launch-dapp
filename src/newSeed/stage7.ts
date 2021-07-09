@@ -1,5 +1,5 @@
-import { IpfsService } from "services/IpfsService";
-import { autoinject } from "aurelia-framework";
+import { EthereumService } from "./../services/EthereumService";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newSeed/baseStage";
 import { Router, RouteConfig, Redirect } from "aurelia-router";
 import { SeedService } from "services/SeedService";
@@ -7,7 +7,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
-import { ContractNames, ContractsService } from "services/ContractsService";
 
 @autoinject
 export class Stage7 extends BaseStage {
@@ -15,9 +14,8 @@ export class Stage7 extends BaseStage {
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
-    private contractsService: ContractsService,
     private seedService: SeedService,
-    private ipfsService: IpfsService,
+    private ethereumService: EthereumService,
     private numberService: NumberService) {
     super(router, eventAggregator);
   }
@@ -44,7 +42,6 @@ export class Stage7 extends BaseStage {
       / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken));
     this.wizardState.requiredSeedFee = distributableSeeds * this.seedFee;
     this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredSeedFee;
-    this.wizardState.primeDaoAddress = this.contractsService.getContractAddress(ContractNames.PrimeDAO);
   }
 
   async submit(): Promise<void> {
@@ -66,5 +63,12 @@ export class Stage7 extends BaseStage {
     finally {
       this.eventAggregator.publish("seed.creating", false);
     }
+  }
+
+  @computedFrom("ethereumService.defaultAccountAddress")
+  get connected(): boolean { return !!this.ethereumService.defaultAccountAddress;}
+
+  connect(): void {
+    this.ethereumService.ensureConnected();
   }
 }

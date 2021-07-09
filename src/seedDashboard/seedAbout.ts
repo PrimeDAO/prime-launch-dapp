@@ -12,6 +12,7 @@ export class SeedAbout{
     ["twitter", "fab fa-twitter"],
     ["telegram", "fab fa-telegram-plane"],
     ["discord", "fab fa-discord"],
+    ["youtube", "fab fa-youtube"],
     ["medium", "fab fa-medium-m"],
     ["github", "fab fa-github"],
     ["website", "fa fa-globe-americas"],

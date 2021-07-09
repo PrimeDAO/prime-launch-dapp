@@ -495,10 +495,6 @@
           font-size: 18px;
           color: $Neutral02;
 
-          .ellipses {
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-          }
           .customLinks {
             grid-template-columns: 0.4fr 1fr;
           }
@@ -539,7 +535,12 @@
             background-color: $Shade03;
           }
         }
+
+        &:not(:first-child) {
+          margin-top: 40px;
+        }
       }
+
     }
   }
 
@@ -590,6 +591,10 @@
     .summaryContainer {
       margin-bottom: 30px;
       word-break: break-word;
+
+      &:not(:first-child) {
+        margin-top: 30px;
+      }
     }
   }
 

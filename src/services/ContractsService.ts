@@ -7,6 +7,7 @@ const ContractAddresses = require("../contracts/contractAddresses.json") as INet
 // const WETHABI = require("../contracts/WETH.json");
 const SeedFactoryABI = require("../contracts/SeedFactory.json");
 const SeedABI = require("../contracts/Seed.json");
+const SignerABI = require("../contracts/Signer.json");
 const ERC20ABI = require("../contracts/ERC20.json");
 
 export enum ContractNames {
@@ -16,7 +17,8 @@ export enum ContractNames {
   , PRIMETOKEN = "PrimeToken"
   , DAI = "DAI"
   , ERC20 = "ERC20"
-  , PrimeDAO = "Avatar"
+  , SAFE = "Safe"
+  , SIGNER = "Signer"
 }
 
 export interface IStandardEvent<TArgs> {
@@ -41,6 +43,7 @@ export class ContractsService {
       , [ContractNames.DAI, ERC20ABI.abi]
       // , [ContractNames.WETH, WETHABI.abi]
       , [ContractNames.ERC20, ERC20ABI.abi]
+      , [ContractNames.SIGNER, SignerABI.abi]
       ,
     ],
   );
@@ -48,6 +51,7 @@ export class ContractsService {
   private static Contracts = new Map<ContractNames, Contract>([
     [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
+    , [ContractNames.SIGNER, null]
     // , [ContractNames.WETH, null]
     // , [ContractNames.PRIMETOKEN, null]
     // , [ContractNames.DAI, null]

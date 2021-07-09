@@ -18,7 +18,8 @@
         </ol>
       </div>
       <div class="buttonContainer">
-        <div class="stageButton proceed button1" click.delegate="submit()">SUBMIT</div>
+        <div if.to-view="!connected" class="stageButton proceed button1" click.delegate="connect()">CONNECT TO YOUR WALLET PROVIDER</div>
+        <div else class="stageButton proceed button1" click.delegate="submit()">SUBMIT</div>
       </div>
     </div>
   </div>
