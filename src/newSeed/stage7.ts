@@ -50,11 +50,9 @@ export class Stage7 extends BaseStage {
       this.wizardState.seedHash = await this.seedService.deploySeed(this.seedConfig);
       // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.seedHash)`);
       this.seedConfig.clearState();
-      this.stageStates.forEach((stage: { verified: boolean }, index: number) => {
-        if (index > 0) {
-          stage.verified = false;
-        }
-      });
+      for (let i = 1; i <= this.maxStage; ++i) {
+        this.stageStates[i].verified = false;
+      }
       this.eventAggregator.publish("seed.clearState", true);
       this.next();
     } catch (ex) {
