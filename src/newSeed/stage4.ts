@@ -71,17 +71,29 @@ export class Stage4 extends BaseStage {
     }
   }
 
-  persistData(): void {
+  setSeedConfigStartDate(): Date {
     // Set the ISO time
     // Get the start and end time
     const startTimes = this.startTime.split(":");
-    const endTimes = this.endTime.split(":");
-    let temp = Object.assign({}, this.startDate);
+    const temp = this.startDate;
     temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
     this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    temp = Object.assign({}, this.endDate);
+    return new Date(this.seedConfig.seedDetails.startDate);
+  }
+
+  setSeedConfigEndDate(): Date {
+    // Set the ISO time
+    // Get the start and end time
+    const endTimes = this.endTime.split(":");
+    const temp = this.startDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    return new Date(this.seedConfig.seedDetails.endDate);
+  }
+
+  persistData(): void {
+    this.setSeedConfigStartDate();
+    this.setSeedConfigEndDate();
     // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
     this.wizardState.seedAdminAddress = this.seedConfig.seedDetails.adminAddress;
   }
@@ -140,13 +152,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a valid value for End Time";
     } else if (this.endDate < this.startDate) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.endDate.getTime() === this.startDate.getTime()) {
-      const hourDiff = 24 - Number.parseInt(startTimes[0]) - (24 - Number.parseInt(endTimes[0]));
-      if (hourDiff < 0) {
-        message = "Please select an End Date greater than the Start Date";
-      } else if (hourDiff === 0 && (Number.parseInt(startTimes[1]) >= Number.parseInt(endTimes[1]))) {
-        message = "Please select an End Date greater than the Start Date";
-      }
+    } else if (this.setSeedConfigEndDate() <= this.setSeedConfigStartDate()) {
+      message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid URL for Whitelist";
       // won't validate this for now
