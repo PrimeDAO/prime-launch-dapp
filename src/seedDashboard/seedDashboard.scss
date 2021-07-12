@@ -26,6 +26,8 @@
         margin-bottom: 0;
         white-space: normal;
         line-height: 42px;
+        overflow-x: clip;
+        max-width: 400px;
       }
 
       .countdown {
@@ -506,6 +508,7 @@
 
         .title {
           width: 100%;
+          max-width: unset;
         }
 
         .description {

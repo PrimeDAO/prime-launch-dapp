@@ -43,6 +43,8 @@
       font-weight: bold;
       font-size: 22px;
       white-space: normal;
+      overflow-x: clip;
+      max-width: 255px;
     }
 
     > .description {
@@ -119,5 +121,11 @@
     padding-right: 0;
     margin-bottom: 20px;
     width: 50%;
+
+    .launchSummary {
+      > .title {
+        max-width: unset;
+      }
+    }
   }
 }

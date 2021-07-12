@@ -1,7 +1,8 @@
+import { Utils } from "services/utils";
 import { TransactionResponse, TransactionReceipt } from "@ethersproject/providers";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { EthereumService, Hash, Networks } from "services/EthereumService";
+import { EthereumService, Hash } from "services/EthereumService";
 
 @autoinject
 export default class TransactionsService {
@@ -11,6 +12,7 @@ export default class TransactionsService {
   constructor(
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService,
+    private utils: Utils,
   ) { }
 
   public async send(methodCall: () => Promise<TransactionResponse>): Promise<TransactionReceipt> {
@@ -31,13 +33,7 @@ export default class TransactionsService {
   }
 
   public getEtherscanLink(txHash: Hash): string {
-    let targetedNetwork = this.ethereumService.targetedNetwork as string;
-    if (targetedNetwork === Networks.Mainnet) {
-      targetedNetwork = "";
-    } else {
-      targetedNetwork = targetedNetwork + ".";
-    }
-    return `http://${targetedNetwork}etherscan.io/tx/${txHash}`;
+    return this.ethereumService.getEtherscanLink(txHash, true);
   }
 }
 

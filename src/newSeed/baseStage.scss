@@ -581,12 +581,14 @@
         width: unset;
       }
     }
+    .labeledQuestion {
+      margin-bottom: 5px;
+    }
     > .heading.heading2 {
       font-size: 26px;
     }
     label {
       line-height: 20px;
-      margin-bottom: 5px;
     }
     .summaryContainer {
       margin-bottom: 30px;

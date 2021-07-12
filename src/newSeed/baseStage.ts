@@ -58,9 +58,7 @@ export abstract class BaseStage {
   }
 
   protected next(): void {
-    if (this.stageNumber < this.maxStage) {
-      this.router.navigate(`stage${this.stageNumber + 1}`);
-    }
+    this.router.navigate(`stage${this.stageNumber + 1}`);
   }
 
   protected back(): void {

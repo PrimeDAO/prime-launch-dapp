@@ -7,6 +7,7 @@ import { EventConfigTransaction } from "services/GeneralEvents";
 import { TransactionReceipt } from "services/TransactionsService";
 import "./ConnectButton.scss";
 import { bindable } from "aurelia-typed-observable-plugin";
+import { Utils } from "services/utils";
 
 enum Phase {
   None = "None",
@@ -76,14 +77,7 @@ export class ConnectButton {
 
   private gotoTx() {
     if (this.txReceipt) {
-      let targetedNetwork = this.ethereumService.targetedNetwork as string;
-      if (targetedNetwork === Networks.Mainnet) {
-        targetedNetwork = "";
-      } else {
-        targetedNetwork = targetedNetwork + ".";
-      }
-      const where = `http://${targetedNetwork}etherscan.io/tx/${this.txReceipt.transactionHash}`;
-      window.open(where, "_blank", "noopener noreferrer");
+      Utils.goto(this.ethereumService.getEtherscanLink(this.txReceipt.transactionHash, true));
     }
   }
 }

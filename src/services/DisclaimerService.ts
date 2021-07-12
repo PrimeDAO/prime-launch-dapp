@@ -1,7 +1,7 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { DialogService } from "services/DialogService";
-import { Utils } from "services/utils";
+import { DialogCloseResult, DialogService } from "services/DialogService";
+import { Disclaimer } from "../resources/dialogs/disclaimer/disclaimer";
 import axios from "axios";
 const marked = require("marked");
 
@@ -15,7 +15,6 @@ export class DisclaimerService {
   constructor(
     private dialogService: DialogService,
     private eventAggregator: EventAggregator,
-    private utils: Utils,
   ) {
   }
 
@@ -36,7 +35,7 @@ export class DisclaimerService {
     if (this.primeDisclaimed) {
       disclaimed = true;
     } else {
-      const response = await this.dialogService.disclaimer(
+      const response = await this.showDisclaimer(
         "https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md",
         "PrimeLAUNCH Disclaimer",
       );
@@ -79,7 +78,7 @@ export class DisclaimerService {
         }
       })
       .catch((err) => {
-        this.utils.axiosErrorHandler(err);
+        this.dialogService.axiosErrorHandler(err);
         return null;
       });
 
@@ -94,5 +93,12 @@ export class DisclaimerService {
       catch { }
     }
     return result;
+  }
+
+  public showDisclaimer(disclaimerUrl: string, title: string): Promise<DialogCloseResult> {
+    return this.dialogService.open(Disclaimer, { disclaimerUrl, title }, { keyboard: true })
+      .whenClosed(
+        (result: DialogCloseResult) => result,
+        (error: string) => { return { output: error, wasCancelled: false }; });
   }
 }

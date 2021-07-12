@@ -5,7 +5,7 @@
     href.to-view="seed.canGoToDashboard ? `seed/${address}` : `${router.currentInstruction.fragment}`">
     <div if.to-view="!loading" class="launchSummary">
       <div class="icon"><img src="${seed.metadata.projectDetails.logo}" /></div>
-      <div class="title">${seed.metadata.general.projectName}</div>
+      <div class="title ellipses">${seed.metadata.general.projectName}</div>
       <div class="countdown">
         <time-left seed.to-view="seed" largest contained></time-left>
       </div>

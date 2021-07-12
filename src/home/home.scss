@@ -171,8 +171,8 @@
 
     &.fairLaunch {
       display: grid;
-      grid-template-columns: auto auto;
-      column-gap: 10%;
+      grid-template-columns: auto 1fr;
+      column-gap: 80px;
       font-family: Inter;
 
       // .pic {
@@ -183,7 +183,6 @@
       // }
 
       .rightColumn {
-        width: 32em;
         > .heading1 {
           -webkit-text-fill-color: $Secondary02;
         }
