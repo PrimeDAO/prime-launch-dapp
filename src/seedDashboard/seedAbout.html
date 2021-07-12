@@ -7,6 +7,14 @@
         <div class="icon ${iconClassForLinkType('home')}"></div>
         <div class="name">${seed.metadata.general.projectName}</div>
       </a>
+      <a href.to-view="seed.metadata.general.whitepaper" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${linkIcons.get('misc')}"></div>
+        <div class="name">Whitepaper</div>
+      </a>
+      <a href.to-view="seed.metadata.general.github" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${linkIcons.get('github')}"></div>
+        <div class="name">Github</div>
+      </a>
       <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
         <div class="icon ${iconClassForLinkType(link.media)}"></div>
         <div class="name">${link.media}</div>
