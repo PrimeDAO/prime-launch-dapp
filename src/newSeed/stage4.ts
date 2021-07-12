@@ -76,11 +76,10 @@ export class Stage4 extends BaseStage {
     // Get the start and end time
     const startTimes = this.startTime.split(":");
     const endTimes = this.endTime.split(":");
-    const temp:Date = undefined;
-    Object.assign(temp, this.startDate);
+    let temp = Object.assign({}, this.startDate);
     temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
     this.seedConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    Object.assign(temp, this.endDate);
+    temp = Object.assign({}, this.endDate);
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
     // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
