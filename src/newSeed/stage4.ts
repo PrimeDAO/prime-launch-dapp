@@ -85,7 +85,7 @@ export class Stage4 extends BaseStage {
     // Set the ISO time
     // Get the start and end time
     const endTimes = this.endTime.split(":");
-    const temp = this.startDate;
+    const temp = this.endDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
     this.seedConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
     return new Date(this.seedConfig.seedDetails.endDate);
