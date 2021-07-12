@@ -156,10 +156,11 @@
 
     .bottom {
       display: grid;
-      grid-template-columns: 33% 33% 34%;
+      grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        "socialLinks socialLinks socialLinks"
-        "copyright privacy cookies";
+        "socialLinks socialLinks"
+        "copyright copyright"
+        "privacy cookies";
 
       align-items: center;
       justify-content: space-around;
@@ -173,6 +174,10 @@
 
       .governedBy {
         grid-area: governedBy;
+        display: none;
+      }
+
+      .bottomGovernedBy {
         display: none;
       }
 
