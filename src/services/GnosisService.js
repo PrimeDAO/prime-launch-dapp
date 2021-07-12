@@ -1,7 +1,15 @@
 const axios = require('axios');
 
 /* eslint-disable */
-const url = `https://safe-transaction.rinkeby.gnosis.io/api/v1/safes/`
+const url = process.env.NODE_ENV === "development"?
+    `https://safe-transaction.rinkeby.gnosis.io/api/v1/safes/`
+    :
+    `https://safe-transaction.gnosis.io/api/v1/safes/`;
+
+const relayUrl = process.env.NODE_ENV === "development"?
+    `https://safe-relay.rinkeby.gnosis.io/api/v2/safes/`
+    :
+    `https://safe-relay.gnosis.io/api/v2/safes/`;
 
 const post = async (method, payload, safe) => {
     const res = await axios.post(
@@ -20,7 +28,7 @@ const get = async (method, safe) => {
 
 const getEstimate = async (payload, safe) => {
     const res = await axios.post(
-        `https://safe-relay.rinkeby.gnosis.io/api/v2/safes/${safe}/transactions/estimate/`,
+        `${relayUrl}${safe}/transactions/estimate/`,
         payload
     );
     return res;
@@ -47,9 +55,9 @@ const api = (safe) => ({
 });
 
 const methods = {
-    'sendTransaction': `/transactions/`,
+    'sendTransaction': `/multisig-transactions/`,
     'addDelegate': `/delegates/`,
-    'getTransactionHistory': `/transactions`,
+    'getTransactionHistory': `/multisig-transactions`,
     'getEstimate': `/transactions/estimate/`,
     'getNonce': `/transactions`,
     'getDelegates': `/delegates/`

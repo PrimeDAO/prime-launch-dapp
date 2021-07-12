@@ -6,7 +6,7 @@ const addressesSrcPath = "../contracts-v2/contractAddresses.json";
 const addressesDestPath = "./src/contracts/contractAddresses.json";
 const srcPath = "../contracts-v2/artifacts";
 const destPath = "./src/contracts";
-const gnosisServiceFilePath = "../contracts-v2/scripts/utils/gnosis_url_generator.js";
+const gnosisServiceFilePath = "../contracts-v2/scripts/utils/gnosis.js";
 const gnosisServiceDestPath = "./src/services/GnosisService.js";
 
 if (!fs.existsSync(srcPath)) {

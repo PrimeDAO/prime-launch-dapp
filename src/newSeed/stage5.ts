@@ -8,9 +8,11 @@ export class Stage5 extends BaseStage {
     if (message) {
       this.validationError(message);
     } else {
-      for (let i = 1; i < this.stageStates.length - 1; ++i) {
+      // don't need to recheck this stage, since we just did it above
+      for (let i = 1; i < this.stageNumber; ++i) {
         if (!this.stageStates[i].verified) {
           message = `Please review step ${i} - ${this.stageStates[i].title}`;
+          break;
         }
       }
       if (message) {

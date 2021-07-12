@@ -1,4 +1,4 @@
-import { DialogService } from "./../services/DialogService";
+import { DisclaimerService } from "./../services/DisclaimerService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
@@ -38,7 +38,7 @@ export class SeedDashboard {
     private numberService: NumberService,
     private ethereumService: EthereumService,
     private geoBlockService: GeoBlockService,
-    private dialogService: DialogService,
+    private disclaimerService: DisclaimerService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -180,7 +180,7 @@ export class SeedDashboard {
       disclaimed = true;
     } else {
       // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
-      const response = await this.dialogService.disclaimer(
+      const response = await this.disclaimerService.showDisclaimer(
         this.seed.metadata.seedDetails.legalDisclaimer,
         `${this.seed.metadata.general.projectName} Disclaimer`,
       );
