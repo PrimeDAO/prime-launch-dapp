@@ -150,8 +150,6 @@ export class Stage4 extends BaseStage {
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
-    } else if (this.endDate < this.startDate) {
-      message = "Please select an End Date greater than the Start Date";
     } else if (this.setSeedConfigEndDate() <= this.setSeedConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
