@@ -2,7 +2,7 @@ import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { Utils } from "services/utils";
+import { DialogService } from "services/DialogService";
 import "../dialogs.scss";
 const marked = require("marked");
 
@@ -18,7 +18,7 @@ export class Disclaimer {
   constructor(
     private controller: DialogController,
     private consoleLogService: ConsoleLogService,
-    private utils: Utils,
+    private dialogService: DialogService,
   ) { }
 
   public activate(model: IDisclaimerModel): void {
@@ -39,7 +39,7 @@ export class Disclaimer {
         }
       })
       .catch((err) => {
-        errorMsg = `Error fetching disclaimer: ${this.utils.axiosErrorHandler(err)}`;
+        errorMsg = `Error fetching disclaimer: ${this.dialogService.axiosErrorHandler(err)}`;
         this.loading = false;
         return null;
       });

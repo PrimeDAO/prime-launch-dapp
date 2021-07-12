@@ -1,6 +1,6 @@
-﻿import { autoinject, bindingMode, customElement, computedFrom } from "aurelia-framework";
+﻿import { EthereumService } from "services/EthereumService";
+import { autoinject, bindingMode, customElement, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
-import { EthereumService, Networks } from "../../../services/EthereumService";
 import "./EtherscanLink.scss";
 
 @autoinject
@@ -24,29 +24,14 @@ export class EtherscanLink {
   // private coldElement: HTMLElement;
   // private hotElement: HTMLElement;
 
-
   @computedFrom("address")
   private get networkExplorerUri(): string {
-    let targetedNetwork = this.ethereumService.targetedNetwork as string;
-    if (targetedNetwork === Networks.Mainnet) {
-      targetedNetwork = "";
-    } else {
-      targetedNetwork = targetedNetwork + ".";
-    }
-    const isGanache = targetedNetwork === "Ganache.";
-
-    if (isGanache) {
-      if (this.type === "tx") {
-        this.internal = true;
-        return `/#/txInfo/${this.address}`;
-      }
-    } else {
-      // go with etherscan
-      return `http://${targetedNetwork}etherscan.io/${this.type === "tx" ? "tx" : "address"}/${this.address}`;
-    }
+    return this.ethereumService.getEtherscanLink(this.address, this.type === "tx");
   }
 
-  constructor(private ethereumService: EthereumService) {}
+  constructor(
+    private ethereumService: EthereumService,
+  ) { }
 
   public attached(): void {
     if (this.type === "tx") {

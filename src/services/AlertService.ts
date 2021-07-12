@@ -1,8 +1,9 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfig, EventConfigException } from "./GeneralEvents";
-import { DialogService } from "./DialogService";
+import { DialogCloseResult, DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
+import { Alert } from "../resources/dialogs/alert/alert";
 
 @autoinject
 export class AlertService {
@@ -37,14 +38,22 @@ export class AlertService {
       message = config.message;
     }
 
-    this.dialogService.alert(`${message ? `${message}: ` : ""}${ex?.reason ?? ex?.message ?? ex}`);
+    this.showAlert(`${message ? `${message}: ` : ""}${ex?.reason ?? ex?.message ?? ex}`);
   }
 
   private handleFailure(config: EventConfig | string) {
-    this.dialogService.alert(this.getMessage(config));
+    this.showAlert(this.getMessage(config));
   }
 
   private getMessage(config: EventConfig | string): string {
     return (typeof config === "string") ? config : config.message;
+  }
+
+  public showAlert(message: string): Promise<DialogCloseResult> {
+    return this.dialogService.open(Alert, { message }, { keyboard: true })
+      .whenClosed(
+        (result: DialogCloseResult) => result,
+        // not sure if this works for alert
+        (error: string) => { return { output: error, wasCancelled: false }; });
   }
 }

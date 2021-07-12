@@ -1,3 +1,4 @@
+import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
 import { IpfsService } from "./IpfsService";
@@ -43,6 +44,7 @@ export class SeedService {
     private eventAggregator: EventAggregator,
     private container: Container,
     private consoleLogService: ConsoleLogService,
+    private transactionsService: TransactionsService,
     private ipfsService: IpfsService,
   ) {
     /**
@@ -218,10 +220,12 @@ export class SeedService {
       transaction.nonce,
     );
 
+    // eslint-disable-next-line require-atomic-updates
     transaction.contractTransactionHash = hash;
+    // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
 
-    await signer.generateSignature(
+    const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,
       transaction.value,
       transaction.data,
@@ -232,8 +236,13 @@ export class SeedService {
       transaction.gasToken,
       transaction.refundReceiver,
       transaction.nonce,
-    );
+    ));
 
+    if (!result) {
+      return null;
+    }
+
+    // eslint-disable-next-line require-atomic-updates
     transaction.sender = signer.address;
 
     this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
