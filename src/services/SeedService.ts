@@ -1,3 +1,4 @@
+import { EthereumService } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
@@ -45,6 +46,7 @@ export class SeedService {
     private container: Container,
     private consoleLogService: ConsoleLogService,
     private transactionsService: TransactionsService,
+    private ethereumService: EthereumService,
     private ipfsService: IpfsService,
   ) {
     /**
@@ -169,7 +171,7 @@ export class SeedService {
     const safeAddress = await this.contractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const gnosis = api(safeAddress);
+    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
     const transaction = {
       to: seedFactory.address,
@@ -195,6 +197,9 @@ export class SeedService {
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+
+    console.log("estimating transaction:");
+    console.dir(transaction);
 
     const estimate = (await gnosis.getEstimate(transaction)).data;
 
@@ -224,6 +229,9 @@ export class SeedService {
     transaction.contractTransactionHash = hash;
     // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
+
+    console.log("generating signature for transaction:");
+    console.dir(transaction);
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,
