@@ -38,6 +38,10 @@
             text-decoration: none;
           }
 
+          .cell {
+            margin-bottom: 16px;
+          }
+
           &.body .cell.hot {
             cursor: pointer;
           }
@@ -49,6 +53,9 @@
           .cell {
             padding: 10px 0;
 
+            /**
+             * for when columns get scrunched together
+             */
             &:not(:nth-of-type(n + 8)) {
               padding-right: 12px;
             }
@@ -67,22 +74,26 @@
             }
 
             &.target,
-            &.cap,
-            &.eslink {
+            &.cap {
               text-align: right;
             }
 
             &.whitelist,
             &.starts,
-            &.type {
+            &.type,
+            &.eslink {
               text-align: center;
             }
 
-            &.body {
-              &.eslink {
-                .etherscanlink .text {
-                  margin-right: 0;
-                }
+            &.seedToken,
+            &.fundingToken {
+              white-space: nowrap;
+            }
+
+            &.eslink {
+              i {
+                cursor: pointer;
+                color: $Secondary05;
               }
             }
           }
@@ -128,13 +139,14 @@
             padding: 2px 0;
             text-align: left !important;
 
-            &:not(:nth-of-type(n + 4)) {
+            &:not(:nth-of-type(n + 5)) {
               padding-right: 8px;
             }
 
             &.whitelist,
             &.eslink {
               text-align: center !important;
+              padding-right: 0;
             }
 
             /**
@@ -142,6 +154,7 @@
              */
             &:nth-of-type(n):nth-of-type(-n + 4) {
               padding-top: 12px;
+              margin-bottom: 0;
             }
 
             /**
@@ -149,6 +162,7 @@
              */
             &:nth-of-type(n + 5):nth-of-type(-n + 8) {
               padding-bottom: 12px;
+              color: $Neutral02;
 
               .etherscanlink .text,
               .copy-to-clip-button {
@@ -157,8 +171,6 @@
             }
 
             &.body {
-              color: $Neutral02;
-
               &.starts {
                 .timeLeftContainer {
                   font-size: 14px;
