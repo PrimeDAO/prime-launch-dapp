@@ -528,6 +528,9 @@
               @include tokenIcon;
               height: 19px;
             }
+            &.projectLogo {
+              grid-template-columns: 0.1fr 1fr;
+            }
           }
           hr {
             margin-top: 20px;
