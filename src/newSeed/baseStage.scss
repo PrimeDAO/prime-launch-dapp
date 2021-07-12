@@ -545,6 +545,7 @@
   }
 
   &.stage8 {
+    max-width: 90vw;
     & .linksContainer {
       display: flex;
       flex-flow: column;
