@@ -527,11 +527,11 @@
             & > img {
               @include tokenIcon;
               height: 19px;
-              margin-right: 10px;
             }
             &.projectLogo {
               grid-template-columns: auto auto;
               align-items: center;
+              column-gap: 10px;
             }
           }
           hr {
