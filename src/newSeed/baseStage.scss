@@ -522,14 +522,16 @@
             width: fit-content;
             & div {
               align-self: center;
-              margin-right: 10px;
+              margin-right: 0;
             }
             & > img {
               @include tokenIcon;
               height: 19px;
+              margin-right: 10px;
             }
             &.projectLogo {
-              grid-template-columns: 0.1fr 1fr;
+              grid-template-columns: auto auto;
+              align-items: center;
             }
           }
           hr {
@@ -543,7 +545,6 @@
           margin-top: 40px;
         }
       }
-
     }
   }
 
