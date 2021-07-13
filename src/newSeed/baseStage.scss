@@ -265,7 +265,9 @@
           flex-flow: row nowrap;
           justify-content: space-between;
           align-items: center;
-          color: $Neutral02;
+          span {
+            color: $Neutral02;
+          }
         }
         .infoInput {
           margin-bottom: unset;
