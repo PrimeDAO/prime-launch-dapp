@@ -303,25 +303,25 @@
           font-weight: normal;
         }
         .questionMark {
-          width: 1.3em;
-          height: 1.3em;
+          width: 21px;
+          height: 21px;
           align-self: center;
           justify-self: center;
         }
       }
       .vestingPeriod {
-        width: 11em;
+        width: 176px;
         display: flex;
         flex-flow: row nowrap;
         flex: 1;
-        gap: 0em;
+        gap: 0px;
         input {
-          width: 5em;
-          border-top-right-radius: 0em;
-          border-bottom-right-radius: 0em;
+          width: 80px;
+          border-top-right-radius: 0px;
+          border-bottom-right-radius: 0px;
         }
         > div {
-          width: 5em;
+          width: 80px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -333,23 +333,23 @@
       .vestingDatesContainer {
         display: flex;
         flex-flow: row nowrap;
-        gap: 1em;
+        gap: 16px;
       }
       .vestingDates {
-        width: 11em;
+        width: 176px;
         display: flex;
         flex-flow: row nowrap;
         flex: 1;
-        gap: 0em;
+        gap: 0px;
         input {
-          width: 7em;
-          border-top-right-radius: 0em;
-          border-bottom-right-radius: 0em;
+          width: 112px;
+          border-top-right-radius: 0px;
+          border-bottom-right-radius: 0px;
           border-right: 0px;
           cursor: pointer;
         }
         > div {
-          width: 3em;
+          width: 48px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -361,7 +361,7 @@
           z-index: 1;
           cursor: pointer;
           i {
-            font-size: 1.4em;
+            font-size: 22px;
           }
         }
       }
@@ -380,28 +380,28 @@
         justify-content: space-around;
         align-items: center;
         overflow-wrap: break-word;
-        width: 16em;
-        height: 4.5em;
-        border-radius: 0.6em;
+        width: 256px;
+        height: 72px;
+        border-radius: 9px;
         background-color: #1b1722;
         border: 1px solid $Border01;
         cursor: pointer;
         span {
-          font-size: 0.7em;
+          font-size: 11px;
           font-weight: 100;
           text-align: center;
-          line-height: 1em;
+          line-height: 16px;
         }
         i {
-          font-size: 2.8em;
+          font-size: 44px;
           -webkit-text-fill-color: $Neutral02;
         }
         span {
-          width: 8em;
+          width: 128px;
           -webkit-text-fill-color: $Neutral03;
-          font-size: 1em;
+          font-size: 16px;
           text-align: left;
-          line-height: 1.24em;
+          line-height: 19px;
         }
       }
       input[type="file"] {
@@ -409,48 +409,48 @@
       }
     }
     .checkboxContainer {
-      width: 3.7em;
-      height: 2em;
+      width: 59px;
+      height: 32px;
       border: 1px solid #2a2a2a;
       border-radius: 23px;
       position: relative;
       display: flex;
       align-items: center;
-      margin-bottom: 2em;
+      margin-bottom: 32px;
       background: $Gradient01;
       cursor: pointer;
       i.yes {
         position: absolute;
-        left: 0.6em;
+        left: 8px;
         color: black;
         font-weight: 700;
       }
       i.no {
         position: absolute;
-        right: 0.6em;
+        right: 8px;
         color: black;
         font-weight: 700;
       }
       .checkbox {
-        width: 1.8em;
-        height: 1.8em;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         > input {
-          width: 1.8em;
-          height: 1.8em;
+          width: 28px;
+          height: 28px;
           visibility: hidden;
           position: absolute;
           &:checked + label {
-            left: 1.7em;
+            left: 27px;
           }
         }
         & label {
           display: block;
-          width: 1.4em;
-          height: 1.4em;
+          width: 22px;
+          height: 22px;
           position: absolute;
-          left: 0.15em;
+          left: 1px;
           background: white;
           border-radius: 50%;
           transition: all 0.3s ease;
@@ -464,7 +464,7 @@
   &.stage5 {
     .infoContainer {
       & textarea {
-        height: 7em;
+        height: 112px;
       }
     }
   }
@@ -537,7 +537,7 @@
     & .linksContainer {
       display: flex;
       flex-flow: column;
-      gap: 2em;
+      gap: 32px;
       > div {
         > a {
           color: $Neutral03;
