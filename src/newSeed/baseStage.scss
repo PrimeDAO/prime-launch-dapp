@@ -518,20 +518,16 @@
 
           .tokenInfo {
             display: grid;
-            grid-template-columns: 1fr 0.5fr 0.5fr;
+            grid-template-columns: repeat(3, auto);
+            column-gap: 10px;
+            align-items: center;
             width: fit-content;
             & div {
               align-self: center;
-              margin-right: 0;
             }
             & > img {
               @include tokenIcon;
               height: 19px;
-            }
-            &.projectLogo {
-              grid-template-columns: auto auto;
-              align-items: center;
-              column-gap: 10px;
             }
           }
           hr {
