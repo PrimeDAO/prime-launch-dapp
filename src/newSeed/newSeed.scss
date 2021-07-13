@@ -22,12 +22,12 @@
     }
   }
   .currentStageSidebar {
-    line-height: 2rem;
-    font-size: 1.125rem;
+    line-height: 33px;
+    font-size: 18px;
     font-family: Inter;
     font-weight: 300;
     color: $Neutral02;
-    padding: 5rem 1rem;
+    padding: 80px 16px;
     .currentstage {
       cursor: pointer;
     }
@@ -36,20 +36,20 @@
     }
     .stagesNumber {
       display: flex;
-      gap: 1em;
+      gap: 16px;
       flex-flow: row nowrap;
       align-items: center;
     }
     .timeLine {
-      width: 2.6em;
-      height: 1.3em;
+      width: 45px;
+      height: 24px;
       display: grid;
       justify-content: center;
-      padding-top: 0.15em;
-      padding-bottom: 0.15em;
+      padding-top: 3px;
+      padding-bottom: 3px;
       .ruler {
-        width: 0.23em;
-        height: 1.3em;
+        width: 4px;
+        height: 24px;
         background-color: $Neutral02;
       }
     }

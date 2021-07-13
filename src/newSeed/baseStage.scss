@@ -5,34 +5,34 @@
   font-family: Inter;
   background-color: $BG02;
   border: 1px solid $Border01;
-  border-radius: 1.5em;
-  padding: 2em;
-  min-width: 40rem;
+  border-radius: 25px;
+  padding: 32px;
+  min-width: 640px;
 
   a {
     font-family: Aeonik;
   }
 
   .title {
-    font-size: 1.625em;
+    font-size: 26px;
   }
   .subtext {
-    line-height: 1.5em;
-    font-size: 1em;
+    line-height: 24px;
+    font-size: 16px;
     color: $Neutral03;
-    margin-bottom: 3em;
+    margin-bottom: 48px;
   }
   .infoInput {
-    margin-bottom: 2em;
+    margin-bottom: 32px;
     > textarea {
       resize: none;
-      width: 23em;
-      height: 4.5em;
+      width: 368px;
+      height: 72px;
       color: $Neutral02;
       border: 1px solid $Border01;
     }
     .labelContainer {
-      width: 24em;
+      width: 384px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -43,8 +43,8 @@
   .buttonContainer {
     display: flex;
     flex-flow: row wrap;
-    column-gap: 3em;
-    margin-top: 5em;
+    column-gap: 48px;
+    margin-top: 80px;
     .stageButton {
       display: flex;
       align-items: center;
@@ -62,14 +62,14 @@
   }
   label {
     display: block;
-    font-size: 1.1em;
+    font-size: 17px;
     font-weight: bold;
-    line-height: 2em;
+    line-height: 32px;
     color: $Secondary02;
   }
   input {
-    width: 23em;
-    height: 2.7em;
+    width: 368px;
+    height: 43px;
     border: 1px solid $Border01;
     border-radius: 10px;
     color: $Neutral02;
@@ -93,8 +93,8 @@
   input:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
-    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
-    box-shadow: 0 0 0px 3.7em $BG01 inset;
+    -webkit-box-shadow: 0 0 0px 59px $BG01 inset;
+    box-shadow: 0 0 0px 59px $BG01 inset;
     caret-color: $Neutral02;
   }
   textarea:-webkit-autofill,
@@ -102,21 +102,8 @@
   textarea:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
-    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
-    box-shadow: 0 0 0px 3.7em $BG01 inset;
-  }
-
-  select {
-    width: 14em;
-    height: 2.9em;
-    border: 1px solid $Border01;
-    border-radius: 10px;
-    color: $Neutral02;
-    background-color: $BG01;
-    font-family: Inter;
-    font-size: 1.1em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    -webkit-box-shadow: 0 0 0px 59px $BG01 inset;
+    box-shadow: 0 0 0px 59px $BG01 inset;
   }
 
   a {
@@ -125,11 +112,11 @@
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
-    gap: 1em;
+    gap: 16px;
   }
   .questionMark {
-    width: 1.3em;
-    height: 1.3em;
+    width: 21px;
+    height: 21px;
     align-self: center;
   }
   .importantText {
@@ -142,15 +129,15 @@
     .infoContainer {
       .infoInput {
         .optional {
-          padding-left: 0.3em;
+          padding-left: 5px;
           font-weight: lighter;
         }
       }
       .otherLinks {
         display: flex;
         flex-flow: row wrap;
-        gap: 1em;
-        margin-bottom: 2em;
+        gap: 16px;
+        margin-bottom: 32px;
         .sMedia {
           display: flex;
           flex-flow: row nowrap;
@@ -159,14 +146,14 @@
           color: $Neutral02;
         }
         .platform {
-          width: 11em;
+          width: 143px;
         }
         .addLinkContainer {
           display: flex;
           align-items: flex-end;
           flex-flow: column;
           input {
-            width: 21em;
+            width: 336px;
           }
           .deleteLink {
             cursor: pointer;
@@ -174,7 +161,7 @@
           }
           .addLink {
             cursor: pointer;
-            padding-right: 1em;
+            padding-right: 16px;
             align-self: flex-start;
           }
         }
@@ -183,7 +170,7 @@
         cursor: pointer;
         display: flex;
         justify-content: flex-start;
-        margin-bottom: 2em;
+        margin-bottom: 32px;
       }
     }
   }
@@ -221,7 +208,7 @@
 
       .fileNote {
         color: $Neutral02;
-        line-height: 1.5em;
+        line-height: 24px;
       }
     }
   }
@@ -230,7 +217,7 @@
     .tickerContainer {
       display: flex;
       align-items: center;
-      gap: 1em;
+      gap: 16px;
       .ticker {
         font-family: Inter;
         color: $Neutral02;
@@ -244,14 +231,14 @@
     }
     .infoInput.supply {
       input {
-        width: 10em;
+        width: 160px;
       }
     }
     .tokenDistribution {
       .columnHeaders {
-        font-size: 0.9em;
+        font-size: 14px;
         font-weight: normal;
-        line-height: 2em;
+        line-height: 32px;
         text-align: left;
       }
       .distribRow {
@@ -265,16 +252,18 @@
           flex-flow: row nowrap;
           justify-content: space-between;
           align-items: center;
-          color: $Neutral02;
+          > span {
+            color: $Neutral02;
+          }
         }
         .infoInput {
           margin-bottom: unset;
         }
         input {
-          height: 2.3em;
+          height: 37px;
         }
         input.textInput {
-          height: 2.3em;
+          height: 37px;
         }
         .deleteLink {
           cursor: pointer;
@@ -291,7 +280,7 @@
     .infoInput {
       .pptContainer {
         input {
-          width: 3em;
+          width: 48px;
         }
         > label {
           align-self: center;
@@ -301,15 +290,15 @@
       }
       &.maxTarget {
         input {
-          width: 8.5em;
+          width: 136px;
         }
         display: flex;
         flex-flow: row wrap;
         flex: 1;
-        gap: 2em;
+        gap: 32px;
         &.maxTargetLabel label {
-          font-size: 0.9em;
-          line-height: 3em;
+          font-size: 14px;
+          line-height: 48px;
           -webkit-text-fill-color: $White;
           font-weight: normal;
         }
