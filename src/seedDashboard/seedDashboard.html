@@ -146,9 +146,11 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div
-              if.to-view="seed.isLive && !seed.claimingIsOpen"
-              class="vestedMessage subtext">Tokens can be ${seed.vestingCliff ? 'claimed ${seed.vestingCliff | secondsDays} days' : 'immediately claimed'} after the Max is reached or when the campaign expires, assuming the Target has been met</div>
+            <div class="vestedMessage subtext">
+              <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
+              <span else class="vestedMessage subtext">Tokens can be immediately claimed</span>
+              after the Max is reached or when the campaign expires, assuming the Target has been met
+            </div>
           </div>
           <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
         </div>
