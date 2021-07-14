@@ -21,6 +21,13 @@ export class SeedAbout{
     ["pdf", "fas fa-file-pdf"],
   ]);
 
+  formatLink(link: string): string {
+    const pattern = /^(?:http(s)?:\/\/)/;
+    if (!pattern.test(link)) {
+      return "//" + link;
+    }
+  }
+
   iconClassForLinkType(type: string): string {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
   }
