@@ -522,8 +522,8 @@
             column-gap: 10px;
             align-items: center;
             width: fit-content;
-            & div {
-              align-self: center;
+            & .etherscanlink {
+              margin-right: 10px;
             }
             & > img {
               @include tokenIcon;
@@ -536,7 +536,6 @@
             background-color: $Shade03;
           }
         }
-
         &:not(:first-child) {
           margin-top: 40px;
         }
