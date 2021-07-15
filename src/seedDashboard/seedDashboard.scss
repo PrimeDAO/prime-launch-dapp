@@ -177,6 +177,10 @@
           padding-bottom: 8px;
         }
 
+        .vestedMessage {
+          font-style: italic;
+        }
+
         .form {
           grid-area: form;
           display: grid;
@@ -270,7 +274,6 @@
 
           .vestedMessage {
             grid-area: vestedMessage;
-            font-style: italic;
           }
         }
 

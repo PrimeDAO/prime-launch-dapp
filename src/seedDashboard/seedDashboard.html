@@ -147,7 +147,7 @@
             </div>
             <div class="vestedMessage subtext">
               <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
-              <span else class="vestedMessage subtext">Tokens can be immediately claimed</span>
+              <span else>Tokens can be immediately claimed</span>
               after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
             </div>
           </div>
@@ -163,9 +163,10 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all previously submitted contributions"></question-mark>
+            <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all of your previously-submitted contributions"></question-mark>
           </div>
-          <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
+          <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei" thousands-separated></formatted-number>
+            ${seed.fundingTokenInfo.symbol} tokens</div>
           <div class="doit"><button class="submitButton button1" disabled.to-view="!userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
