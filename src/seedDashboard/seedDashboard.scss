@@ -88,6 +88,8 @@
             @include tokenIcon;
             width: 28px;
             border-radius: 14px;
+            position: relative;
+            top: 3px;
           }
         }
       }
@@ -295,7 +297,7 @@
           text-align: right;
           align-self: center;
           button {
-            width: 120px;
+            width: 160px;
             padding-left: 19px;
             padding-right: 19px;
           }
