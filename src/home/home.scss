@@ -47,11 +47,12 @@
       }
 
       .buttons {
-        display: flex;
+        display: grid;
+        grid-auto-flow: column;
         justify-content: space-between;
         cursor: pointer;
         width: 710px;
-        gap: 24px;
+        grid-gap: 24px;
         .buttonContainer {
             display: flex;
             border-radius: 6px;
@@ -248,7 +249,7 @@
 
         .buttons {
           justify-content: unset;
-          flex-direction: column;
+          grid-auto-flow: row;
           width: 100%;
           align-items: center;
 
