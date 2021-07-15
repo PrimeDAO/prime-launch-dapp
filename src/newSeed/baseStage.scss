@@ -252,7 +252,7 @@
           flex-flow: row nowrap;
           justify-content: space-between;
           align-items: center;
-          > span {
+          span {
             color: $Neutral02;
           }
         }
@@ -507,10 +507,11 @@
 
           .tokenInfo {
             display: grid;
-            grid-template-columns: 1fr 0.5fr 0.5fr;
+            grid-template-columns: repeat(3, auto);
+            column-gap: 10px;
+            align-items: center;
             width: fit-content;
-            & div {
-              align-self: center;
+            & .etherscanlink {
               margin-right: 10px;
             }
             & > img {
@@ -524,12 +525,10 @@
             background-color: $Shade03;
           }
         }
-
         &:not(:first-child) {
           margin-top: 40px;
         }
       }
-
     }
   }
 

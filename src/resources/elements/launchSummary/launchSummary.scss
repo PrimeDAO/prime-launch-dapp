@@ -2,8 +2,8 @@
 .launchSummaryContainer {
   display: inline-block;
   cursor: default;
-  width: 320px;
-  min-width: 320px;
+  width: 360px;
+  min-width: 360px;
   padding-right: 30px;
   height: 100%;
 
@@ -13,7 +13,7 @@
 
   .launchSummary {
     display: grid;
-    grid-template-columns: 38px 2fr 1fr;
+    grid-template-columns: 58px 2fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
       ". . timeLeft"
@@ -32,8 +32,8 @@
     > .icon {
       grid-area: icon;
       img {
-        height: 26px;
-        width: 26px;
+        height: 46px;
+        width: 46px;
         border-radius: 13px;
       }
     }
@@ -44,7 +44,7 @@
       font-size: 22px;
       white-space: normal;
       overflow-x: clip;
-      max-width: 255px;
+      max-width: 295px;
     }
 
     > .description {
@@ -90,7 +90,7 @@
         .tokenPairContainer > img {
           width: 26px;
           height: 26px;
-          border-radius: 13px;
+          border-radius: 16px;
         }
       }
 
