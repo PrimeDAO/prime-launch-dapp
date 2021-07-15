@@ -51,25 +51,29 @@
         justify-content: space-between;
         cursor: pointer;
         width: 710px;
-
+        gap: 24px;
+        .buttonContainer {
+            display: flex;
+            border-radius: 6px;
+            overflow: hidden;
+        }
         .contribute,
         .launch {
           border-left-width: 4px;
           border-left-style: solid;
           border-image: linear-gradient(to bottom, #ff497a, #a258a7) 1 100%;
-          border-top-right-radius: 6px;
-          border-bottom-right-radius: 6px;
+          border-radius: 6px;
           background-color: $BG02;
           width: 335px;
 
           padding: 18px;
-          padding-right: 24px;
 
           .title {
             display: flex;
             justify-content: space-between;
             color: $White;
             margin-bottom: 16px;
+            margin-right: 6px;
 
             .header {
               font-weight: bold;
@@ -91,10 +95,6 @@
             mix-blend-mode: normal;
             opacity: 0.8;
           }
-        }
-
-        .contribute {
-          margin-right: 24px;
         }
       }
     }
@@ -252,10 +252,6 @@
           width: 100%;
           align-items: center;
 
-          .contribute {
-            margin-bottom: 24px;
-            margin-right: unset;
-          }
         }
       }
 
