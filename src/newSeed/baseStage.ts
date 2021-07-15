@@ -14,6 +14,7 @@ export interface IStageState {
 
 export interface IWizardState {
   seedHash?: Hash;
+  whiteList?: string;
   fundingTokenSymbol?: string;
   fundingTokenIcon?: string;
   seedTokenSymbol?: string;
