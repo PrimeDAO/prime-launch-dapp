@@ -405,7 +405,7 @@
       grid-area: seedSummary;
       display: grid;
       grid-template-columns: auto auto auto;
-      grid-template-rows: auto 46px auto auto auto;
+      grid-template-rows: auto 46px auto 88px auto;
       grid-template-areas:
         "targetLabel maxLabel valuationLabel"
         "target max valuation"
@@ -471,7 +471,7 @@
         grid-area: tokenprice;
         font-size: 14px;
         line-height: 17px;
-        margin-bottom: 48px;
+        padding-top: 8px;
 
         .symbol {
           display: inline-block;
@@ -543,16 +543,12 @@
       }
 
       .seedSummary {
-        grid-template-rows: auto 46px auto auto;
+        grid-template-rows: auto 46px auto 64px;
         grid-template-areas:
           "targetLabel maxLabel valuationLabel"
           "target max valuation"
           "tokensleftLabel tokenpriceLabel tokenpriceLabel"
           "tokensleft tokenprice tokenprice";
-
-        .tokenprice {
-          margin-bottom: 20px;
-        }
       }
 
       .seedAbout {
@@ -636,6 +632,9 @@
       .seedSummary {
         .value {
           font-size: 20px;
+        }
+        .tokenprice {
+          padding-top: 4px;
         }
       }
 
