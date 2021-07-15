@@ -13,13 +13,14 @@ import { Utils } from "services/utils";
 export class Launches {
 
   featuredSeeds: Array<Seed> = null;
-  seeingMore: boolean;
+  seeingMore = false;
 
   constructor(
     private router: Router,
     private ethereumService: EthereumService,
     private seedService: SeedService,
   ) {
+    this.sort("starts"); // sort order will be ASC
   }
 
   attached(): void {
@@ -32,7 +33,7 @@ export class Launches {
     this.seeingMore = yesNo;
   }
 
-  sortDirection = SortOrder.ASC;
+  sortDirection = SortOrder.DESC;
   sortColumn: string;
   sortEvaluator: (a: any, b: any) => number;
 

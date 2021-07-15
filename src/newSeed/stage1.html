@@ -74,14 +74,14 @@
             class="addLink"
             click.delegate="addCustomLinks()"
             if.bind="$index == seedConfig.general.customLinks.length - 1">
-            <a>+ Add Social Media link</a>
+            <a>+ Add Social Media Link</a>
           </div>
         </template>
         <div
           if.to-view="seedConfig.general.customLinks.length <= 0"
           class="addSingleLink"
           click.delegate="addCustomLinks(-1)">
-          <a>+ Add Social Media link</a>
+          <a>+ Add Social Media Link</a>
         </div>
       </div>
       <div class="buttonContainer">
