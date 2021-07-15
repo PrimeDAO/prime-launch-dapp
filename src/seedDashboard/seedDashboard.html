@@ -27,7 +27,7 @@
         </div>
         <div class="raised">
           <div class="amount">$<formatted-number
-              value.to-view="amountRaised | ethwei"
+              value.to-view="seed.amountRaised | ethwei"
               thousands-separated></formatted-number>
           </div>
           <div class="denomination">USD raised</div>
@@ -193,7 +193,7 @@
         <div class="value valuation">$ <formatted-number
             if.to-view="seed.valuation"
             value.to-view="seed.valuation"
-            thousands-separated></formatted-number>
+            average></formatted-number>
           <span else>N/A</span>
         </div>
         <div class="label tokensleftLabel">SEED TOKENS LEFT</div>
