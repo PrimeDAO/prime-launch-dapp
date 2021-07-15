@@ -148,7 +148,7 @@
             <div class="vestedMessage subtext">
               <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
               <span else class="vestedMessage subtext">Tokens can be immediately claimed</span>
-              after the Max is reached or when the campaign expires, assuming the Target has been met
+              after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
             </div>
           </div>
           <div class="doit"><button
