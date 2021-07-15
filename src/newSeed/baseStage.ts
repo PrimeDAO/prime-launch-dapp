@@ -31,6 +31,7 @@ export abstract class BaseStage {
   protected maxStage: number;
   protected stageStates: Array<IStageState>;
   protected wizardState: IWizardState;
+  protected nextButtonClicked: boolean;
 
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
@@ -43,13 +44,16 @@ export abstract class BaseStage {
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
+    this.nextButtonClicked = false;
     Object.assign(this, routeConfig.settings);
   }
 
   async detached(): Promise<void> {
-    const message = await this.validateInputs();
-    if (!message) {
-      this.persistData();
+    if (!this.nextButtonClicked) {
+      const message = await this.validateInputs();
+      if (!message) {
+        this.persistData();
+      }
     }
   }
 

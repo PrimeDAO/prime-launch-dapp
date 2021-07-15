@@ -40,6 +40,8 @@ export class Stage3 extends BaseStage {
     if (message) {
       this.validationError(message);
     } else {
+      this.persistData();
+      this.nextButtonClicked = true;
       this.next();
     }
   }
