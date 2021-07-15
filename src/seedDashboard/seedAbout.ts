@@ -22,7 +22,7 @@ export class SeedAbout{
   ]);
 
   formatLink(link: string): string {
-    const pattern = /^(?:http(s)?:\/\/)/;
+    const pattern = /^(?:http(s)?:\/\/)/i;
     if (!pattern.test(link)) {
       return "//" + link;
     }
