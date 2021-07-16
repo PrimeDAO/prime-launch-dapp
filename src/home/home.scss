@@ -248,7 +248,7 @@
         }
 
         .buttons {
-          justify-content: unset;
+          justify-content: center;
           grid-auto-flow: row;
           width: 100%;
           align-items: center;
@@ -332,7 +332,6 @@
           .contribute,
           .launch {
             width: unset;
-            margin-right: 20px;
           }
         }
       }
