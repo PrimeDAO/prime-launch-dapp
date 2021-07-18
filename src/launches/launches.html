@@ -32,8 +32,8 @@
             class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(seed)">
-            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
+            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.seedTokenInfo.icon"></img>${seed.seedTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.icon"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="project cell body ellipses ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
@@ -66,11 +66,11 @@
             class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(seed)">
-            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.seedTokenInfo.symbol}</div>
+            <div class="seedToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.seedTokenInfo.icon"></img>${seed.seedTokenInfo.symbol}</div>
             <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.fundingTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.icon"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
