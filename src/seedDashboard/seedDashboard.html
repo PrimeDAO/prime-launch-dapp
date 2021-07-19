@@ -53,7 +53,7 @@
           <div class="help">
             <question-mark text="Check if your address is eligibile to participate in this Seed. You can learn more about the Prime Launch whitelist process here"></question-mark>
           </div>
-          <div class="subdescription subtext">Connect your wallet to contribute and claim rewards.</div>
+          <div class="subdescription subtext">Connect your wallet to contribute and claim rewards</div>
           <div class="doit"><button class="button1" click.delegate="connect()">CONNECT</button></div>
         </div>
         <!--
@@ -97,9 +97,9 @@
             </div>
             <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
           </div>
-          <template if.to-view="seed.contributingIsOpen">
-            <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
-            <div class="doit" else><button class="submitButton button1" click.delegate="buy()">SUBMIT</button></div>
+          <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+          <template else>
+            <div class="doit"><button disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))" class="submitButton button1" click.delegate="buy()">CONTRIBUTE</button></div>
           </template>
         </div>
         <!--
@@ -129,7 +129,6 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
-
                     thousands-separated></formatted-number>
                 </div>
               </div>
@@ -148,11 +147,13 @@
             </div>
             <div class="vestedMessage subtext">
               <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
-              <span else class="vestedMessage subtext">Tokens can be immediately claimed</span>
-              after the Max is reached or when the campaign expires, assuming the Target has been met
+              <span else>Tokens can be immediately claimed</span>
+              after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
             </div>
           </div>
-          <div class="doit"><button if.to-view="seed.claimingIsOpen && seed.userCanClaim" class="submitButton button1" click.delegate="claim()">SUBMIT</button></div>
+          <div class="doit"><button
+              disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+              class="submitButton button1" click.delegate="claim()">CLAIM</button></div>
         </div>
         <!--
           ================ 
@@ -162,10 +163,11 @@
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
-            <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all previously submitted contributions"></question-mark>
+            <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all of your previously-submitted contributions"></question-mark>
           </div>
-          <!-- <div class="vestedMessage subtext">Retrieve all of the ${seed.fundingTokenInfo.symbol} that you have contributed</div> -->
-          <div class="doit" if.to-view="userCanRetrieve"><button class="submitButton button1" click.delegate="retrieve()">RETRIEVE</button>
+          <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei" thousands-separated></formatted-number>
+            ${seed.fundingTokenInfo.symbol} tokens</div>
+          <div class="doit"><button class="submitButton button1" disabled.to-view="!userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
         <div class="notWhitelisted" if.to-view="geoBlocked">

@@ -177,7 +177,6 @@ export class SeedService {
       to: seedFactory.address,
       value: 0,
       operation: 0,
-      safe: safeAddress,
     } as any;
 
     const seedArguments = [
@@ -210,6 +209,7 @@ export class SeedService {
       gasPrice: 0,
       gasToken: "0x0000000000000000000000000000000000000000",
       refundReceiver: "0x0000000000000000000000000000000000000000",
+      safe: safeAddress,
     });
 
     const { hash, signature } = await signer.callStatic.generateSignature(
