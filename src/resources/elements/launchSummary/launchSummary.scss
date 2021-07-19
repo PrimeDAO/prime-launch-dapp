@@ -127,9 +127,9 @@
     .launchSummary {
       grid-template-columns: 48px 1fr 1fr;
       grid-template-areas:
-        ". . timeLeft"
+        "icon . timeLeft"
         "icon title title"
-        "icon description description"
+        ". description description"
         ". . ."
         ". . ."
         "tokensTarget tokensTarget tokensTarget";
