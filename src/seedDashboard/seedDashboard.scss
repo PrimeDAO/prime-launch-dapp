@@ -88,6 +88,8 @@
             @include tokenIcon;
             width: 28px;
             border-radius: 14px;
+            position: relative;
+            top: 3px;
           }
         }
       }
@@ -173,6 +175,10 @@
         .description {
           padding-top: 16px;
           padding-bottom: 8px;
+        }
+
+        .vestedMessage {
+          font-style: italic;
         }
 
         .form {
@@ -268,7 +274,6 @@
 
           .vestedMessage {
             grid-area: vestedMessage;
-            font-style: italic;
           }
         }
 
@@ -278,7 +283,7 @@
           justify-self: flex-start;
         }
         .subdescription {
-          padding-left: 29px;
+          padding-left: 0px;
           padding-right: 29px;
           padding-bottom: 16px;
           grid-area: subtext;
@@ -295,7 +300,7 @@
           text-align: right;
           align-self: center;
           button {
-            width: 120px;
+            width: 160px;
             padding-left: 19px;
             padding-right: 19px;
           }

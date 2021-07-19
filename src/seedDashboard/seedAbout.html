@@ -15,7 +15,7 @@
         <div class="icon ${linkIcons.get('github')}"></div>
         <div class="name">Github</div>
       </a>
-      <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="link.url" target="_blank" rel="noopener noreferrer">
+      <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="formatLink(link.url)" target="_blank" rel="noopener noreferrer">
         <div class="icon ${iconClassForLinkType(link.media)}"></div>
         <div class="name">${link.media}</div>
       </a>

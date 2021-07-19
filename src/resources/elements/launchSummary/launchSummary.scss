@@ -61,7 +61,7 @@
       text-align: right;
     }
 
-    .tokensTarget {
+    > .tokensTarget {
       grid-area: tokensTarget;
       display: grid;
       grid-template-columns: auto auto;
@@ -73,14 +73,14 @@
 
       > .title {
         font-weight: bold;
-        font-size: 0.8em;
+        font-size: 13px;
       }
 
-      .tokensTitle {
+      > .tokensTitle {
         grid-area: tokensTitle;
       }
 
-      .targetTitle {
+      > .targetTitle {
         grid-area: targetTitle;
       }
 
@@ -94,7 +94,7 @@
         }
       }
 
-      .targetValue {
+      > .targetValue {
         grid-area: targetValue;
         font-size: 26px;
         font-weight: bold;
@@ -123,8 +123,34 @@
     width: 50%;
 
     .launchSummary {
+      grid-template-columns: 48px 1fr 1fr;
+      grid-template-areas:
+        ". . timeLeft"
+        "icon title title"
+        "icon description description"
+        ". . ."
+        ". . ."
+        "tokensTarget tokensTarget tokensTarget";
+
       > .title {
         max-width: unset;
+      }
+
+      > .icon {
+        img {
+          height: 36px;
+          width: 36px;
+        }
+      }
+
+      > .tokensTitle,
+      > .title,
+      > .description {
+        text-align: left;
+      }
+
+      > .timeLeft {
+        text-align: right;
       }
     }
   }
