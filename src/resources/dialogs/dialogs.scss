@@ -24,11 +24,13 @@ body > ux-dialog-container {
     height: 100%;
     > div {
       height: 100%;
+      width: 100%;
     }
   }
 
   ux-dialog {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     color: $White;
@@ -48,6 +50,8 @@ body > ux-dialog-container {
       border-top-right-radius: 6px;
       .heading {
         @include standardTextGradient;
+        white-space: pre-wrap;
+        word-break: break-word;
       }
     }
 
@@ -75,6 +79,14 @@ body > ux-dialog-container {
     }
 
     &.disclaimer {
+      .bodyContainer {
+        white-space: pre-wrap;
+        word-break: break-word;
+
+        img {
+          max-width: 100%;
+        }
+      }
     }
 
     &.alert {

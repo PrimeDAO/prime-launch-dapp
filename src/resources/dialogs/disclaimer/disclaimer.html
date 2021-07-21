@@ -1,10 +1,12 @@
 <template>
   <ux-dialog class="dialog disclaimer">
     <ux-dialog-header>
-      <div class="heading heading2">${model.title}</div>
+      <div class="heading heading2 ellipses">${model.title}</div>
     </ux-dialog-header>
     <ux-dialog-body if.to-view="loading" class="loading"><i class="fas fa-circle-notch fa-spin"></i></ux-dialog-body>
-    <ux-dialog-body else innerhtml.to-view="disclaimerHtml | sanitizeHTML"></ux-dialog-body>
+    <ux-dialog-body else>
+      <div class="bodyContainer" innerhtml.to-view="disclaimerHtml | sanitizeHTML"></div>
+    </ux-dialog-body>
     <ux-dialog-footer>
       <label><input type="checkbox" checked.bind="checked">I acknowledge that I have fully read and understood this disclaimer</label>
       <button class="button2" click.trigger="controller.cancel(false)">Decline</button>
