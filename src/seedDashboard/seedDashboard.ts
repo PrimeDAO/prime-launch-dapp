@@ -114,7 +114,7 @@ export class SeedDashboard {
      * main interest here is literally to prevent access to seeds that don't
      * yet have seed tokens
      */
-    return seed?.hasEnoughSeedTokens && !seed.isClosed && !seed.isPaused;
+    return seed?.canGoToDashboard;
   }
 
   async activate(params: { address: Address}): Promise<void> {

@@ -161,7 +161,7 @@ export class Seed {
 
   @computedFrom("isLive", "maximumReached", "isPaused", "isClosed", "hasEnoughSeedTokens")
   public get contributingIsOpen(): boolean {
-    return this.isLive && this.hasEnoughSeedTokens && !this.maximumReached && !this.isPaused && !this.isClosed;
+    return this.isLive && !this.uninitialized && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
    * Really means "complete".  But does not imply that the vesting cliff has actually ended.
@@ -169,14 +169,14 @@ export class Seed {
    */
   @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
   get claimingIsOpen(): boolean {
-    return this.hasEnoughSeedTokens && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
+    return !this.uninitialized && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
   }
   /**
    * didn't reach the target and not paused or closed
    */
   @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
   get incomplete(): boolean {
-    return this.isDead && this.hasEnoughSeedTokens && !this.minimumReached && !this.isPaused && !this.isClosed;
+    return this.isDead && !this.uninitialized && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
   @computedFrom("_now_")
@@ -189,9 +189,14 @@ export class Seed {
     return this.amountRaised?.gte(this.cap);
   }
 
-  @computedFrom("hasEnoughSeedTokens", "isPaused", "isClosed")
+  @computedFrom("uninitialized", "isPaused", "isClosed")
   get canGoToDashboard(): boolean {
-    return this.hasEnoughSeedTokens && !this.isPaused && !this.isClosed;
+    return !this.uninitialized && !this.isPaused && !this.isClosed;
+  }
+
+  @computedFrom("hasEnoughSeedTokens")
+  get uninitialized(): boolean {
+    return !this.hasEnoughSeedTokens;
   }
 
   constructor(

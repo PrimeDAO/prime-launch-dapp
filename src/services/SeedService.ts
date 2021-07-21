@@ -153,7 +153,7 @@ export class SeedService {
        */
       // return network ? this._featuredSeeds = network.seeds
       return this._featuredSeeds = this.seedsArray
-        .filter((seed: Seed) => { return seed.hasNotStarted || seed.contributingIsOpen; })
+        .filter((seed: Seed) => { return !seed.uninitialized && (seed.hasNotStarted || seed.contributingIsOpen); })
         .sort((a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
         .slice(0, 3);
     }
