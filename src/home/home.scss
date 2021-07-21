@@ -323,18 +323,3 @@
     }
   }
 }
-
-@media screen and (max-width: 420px) {
-  .page.home {
-    .section {
-      &.top {
-        .buttons {
-          .contribute,
-          .launch {
-            width: unset;
-          }
-        }
-      }
-    }
-  }
-}
