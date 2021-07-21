@@ -94,8 +94,6 @@ export class TokenService {
         symbol: "N/A",
       };
 
-      this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
-
       if (["mainnet", "kovan"].includes(this.ethereumService.targetedNetwork)) {
         const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
         // eslint-disable-next-line require-atomic-updates
@@ -104,9 +102,10 @@ export class TokenService {
             tokenInfo = response.data;
             // eslint-disable-next-line require-atomic-updates
             tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
+            this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
           })
           .catch((error) => {
-            this.consoleLogService.logMessage(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
+            this.consoleLogService.logMessage(`TokenService: Error fetching token info for ${address}: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
             // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
             // TODO:  restore the exception?
           });
@@ -170,7 +169,7 @@ export class TokenService {
         })
         .catch((error) => {
           if (process.env.NODE_ENV !== "development") {
-            this.consoleLogService.logMessage(`TokenService: Error fetching token info: ${error?.response?.data?.error?.message ?? error?.message}`, "warn");
+            this.consoleLogService.logMessage(`TokenService: Error fetching token id for ${name}: ${error?.response?.data?.error?.message ?? error?.message}`, "warn");
           }
         });
     }
