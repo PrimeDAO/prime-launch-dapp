@@ -23,7 +23,7 @@
         <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>INCOMPLETE
       </div>
       <div
-        if.to-view="!seed.hasEnoughSeedTokens"
+        if.to-view="!seed.hasEnoughSeedTokens && !seed.isClosed && !seed.isPaused"
         class="uninitialized">
         <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>UNINITIALIZED
       </div>
