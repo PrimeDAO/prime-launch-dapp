@@ -109,11 +109,9 @@ export class SeedDashboard {
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
+    await this.seedService.ensureInitialized();
     const seed = this.seedService.seeds?.get(params.address);
-    /**
-     * main interest here is literally to prevent access to seeds that don't
-     * yet have seed tokens
-     */
+    await seed.ensureInitialized();
     return seed?.canGoToDashboard;
   }
 
