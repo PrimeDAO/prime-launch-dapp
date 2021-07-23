@@ -123,6 +123,7 @@ export class Seed {
   public initializing = true;
   public metadata: ISeedConfig;
   public metadataHash: Hash;
+  public corrupt = false;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
@@ -229,26 +230,31 @@ export class Seed {
    * @param config
    * @returns
    */
-  public async initialize(): Promise<Seed> {
+  public async initialize(): Promise<void> {
+    this.initializing = true;
     await this.loadContracts();
     /**
-     * no, intentionally don't await
-     */
+       * no, intentionally don't await
+       */
     this.hydrate();
-
-    return this;
   }
 
   private async loadContracts(): Promise<void> {
-    this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
-    if (this.seedTokenAddress) {
-      this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
-      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+    try {
+      this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
+      if (this.seedTokenAddress) {
+        this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+        this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+      }
+    }
+    catch (error) {
+      this.corrupt = true;
+      this.initializing = false;
+      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
     }
   }
 
   private async hydrate(): Promise<void> {
-    this.initializing = true;
     try {
       await this.hydrateMetadata();
 
@@ -286,11 +292,11 @@ export class Seed {
       await this.hydrateTokensState();
 
       await this.hydrateUser();
-
-      this.initializing = false;
     }
     catch (error) {
-      this.consoleLogService.logMessage(`Seed: Error hydrating seed data ${error?.message}`, "error");
+      this.corrupt = true;
+      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
+    } finally {
       this.initializing = false;
     }
   }
