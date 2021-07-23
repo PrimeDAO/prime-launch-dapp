@@ -1,3 +1,4 @@
+import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -39,6 +40,7 @@ export class SeedDashboard {
     private ethereumService: EthereumService,
     private geoBlockService: GeoBlockService,
     private disclaimerService: DisclaimerService,
+    private router: Router,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -207,7 +209,22 @@ export class SeedDashboard {
     this.seedTokenToReceive = this.seed.userClaimableAmount;
   }
 
+  async validateClosedOrPaused(): Promise<boolean> {
+    const closedOrPaused = await this.seed.hydateClosedOrPaused();
+    if (closedOrPaused) {
+      this.eventAggregator.publish("handleValidationError", "Sorry, this seed has been closed or paused");
+      this.router.navigate("/home");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async unlockFundingTokens(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (await this.disclaimSeed()) {
       this.seed.unlockFundingTokens(this.fundingTokenToPay)
         .then((receipt) => {
@@ -219,6 +236,10 @@ export class SeedDashboard {
   }
 
   async buy(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (!this.fundingTokenToPay?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
@@ -237,7 +258,11 @@ export class SeedDashboard {
     }
   }
 
-  claim(): void {
+  async claim(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
       if (!this.seedTokenToReceive?.gt(0)) {
         this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
@@ -249,7 +274,11 @@ export class SeedDashboard {
     }
   }
 
-  retrieve(): void {
+  async retrieve(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (this.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {

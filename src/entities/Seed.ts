@@ -280,8 +280,7 @@ export class Seed {
        * in units of fundingToken
        */
       this.cap = await this.contract.hardCap();
-      this.isPaused = await this.contract.paused();
-      this.isClosed = await this.contract.closed();
+      await this.hydateClosedOrPaused();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.permissionedSeed();
       this.vestingDuration = (await this.contract.vestingDuration());
@@ -387,5 +386,11 @@ export class Seed {
           return receipt;
         }
       });
+  }
+
+  public async hydateClosedOrPaused(): Promise<boolean> {
+    this.isPaused = await this.contract.paused();
+    this.isClosed = await this.contract.closed();
+    return this.isPaused || this.isClosed;
   }
 }
