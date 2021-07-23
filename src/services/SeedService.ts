@@ -1,5 +1,5 @@
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, Networks } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
@@ -37,9 +37,9 @@ export class SeedService {
   private seedFactory: any;
   // private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
-   * when the factory was created
+   * when the factory was created, pulled by hand from etherscan.io
    */
-  // TODO: private startingBlockNumber: number;
+  private startingBlockNumber: number;
 
   constructor(
     private contractsService: ContractsService,
@@ -59,6 +59,9 @@ export class SeedService {
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds.delete(seedAddress);
     });
+
+    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
+      12787753 : 8896151;
   }
 
   public async initialize(): Promise<void> {
@@ -99,7 +102,7 @@ export class SeedService {
           try {
             const seedsMap = new Map<Address, Seed>();
             const filter = this.seedFactory.filters.SeedCreated();
-            this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
+            this.seedFactory.queryFilter(filter, this.startingBlockNumber)
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
                   const seed = this.createSeedFromConfig(event);
