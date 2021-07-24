@@ -5,11 +5,14 @@ import { BaseStage } from "newSeed/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
-import { fromWei } from "services/EthereumService";
+import { Address, fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 
 @autoinject
 export class Stage3 extends BaseStage {
+  private lastCheckedFundingAddress: string;
+  private lastCheckedSeedAddress: string;
+
   private fundingSymbol: string;
   private seedSymbol: string;
 
@@ -42,7 +45,19 @@ export class Stage3 extends BaseStage {
     this.wizardState.fundingTokenIcon = this.fundingIcon;
   }
 
-  validateInputs(): Promise<string> {
+  private async checkToken(address: Address): Promise<boolean> {
+    let isOk = false;
+    const contract = this.tokenService.getTokenContract(address);
+    if (contract) {
+      try {
+        await contract.totalSupply();
+        isOk = true;
+      } catch {}
+    }
+    return isOk;
+  }
+
+  async validateInputs(): Promise<string> {
     let message: string;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
@@ -57,6 +72,10 @@ export class Stage3 extends BaseStage {
       message = "Please enter a number greater than zero for Initial Supply";
     } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "Please enter a value for Initial Supply smaller than Maximum Supply";
+    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingAddress))) {
+      message = "Funding token address is not a valid contract";
+    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.seedAddress))) {
+      message = "Seed token address is not a valid contract";
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
@@ -83,35 +102,41 @@ export class Stage3 extends BaseStage {
   getTokenInfo(type: string): void {
     if (type === "funding") {
       if (this.seedConfig.tokenDetails.fundingAddress) {
-        this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
-          if (tokenInfo.symbol === "N/A") {
-            throw new Error();
-          } else {
-            this.fundingSymbol = tokenInfo.symbol;
-            this.fundingIcon = tokenInfo.icon;
-          }
-        }).catch(() => {
-          this.validationError("Could not get funding token information from the address supplied");
-          this.fundingSymbol = this.fundingIcon = undefined;
-        });
+        if (this.lastCheckedFundingAddress !== this.seedConfig.tokenDetails.fundingAddress) {
+          this.lastCheckedFundingAddress = this.seedConfig.tokenDetails.fundingAddress;
+          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
+            if (tokenInfo.symbol === "N/A") {
+              throw new Error();
+            } else {
+              this.fundingSymbol = tokenInfo.symbol;
+              this.fundingIcon = tokenInfo.icon;
+            }
+          }).catch(() => {
+            this.validationError("Could not get funding token information from the address supplied");
+            this.fundingSymbol = this.fundingIcon = undefined;
+          });
+        }
       } else {
-        this.fundingSymbol = this.fundingIcon = undefined;
+        this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = undefined;
       }
     } else if (type === "seed") {
       if (this.seedConfig.tokenDetails.seedAddress) {
-        this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
-          if (tokenInfo.symbol === "N/A") {
-            throw new Error();
-          } else {
-            this.seedSymbol = tokenInfo.symbol;
-            this.seedIcon = tokenInfo.icon;
-          }
-        }).catch(() => {
-          this.validationError("Could not get seed token information from the address supplied");
-          this.seedSymbol = this.seedIcon = undefined;
-        });
+        if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.seedAddress) {
+          this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.seedAddress;
+          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
+            if (tokenInfo.symbol === "N/A") {
+              throw new Error();
+            } else {
+              this.seedSymbol = tokenInfo.symbol;
+              this.seedIcon = tokenInfo.icon;
+            }
+          }).catch(() => {
+            this.validationError("Could not get seed token information from the address supplied");
+            this.seedSymbol = this.seedIcon = undefined;
+          });
+        }
       } else {
-        this.seedSymbol = this.seedIcon = undefined;
+        this.lastCheckedSeedAddress = this.seedSymbol = this.seedIcon = undefined;
       }
     }
   }
