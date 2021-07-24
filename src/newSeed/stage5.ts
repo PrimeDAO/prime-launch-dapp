@@ -3,24 +3,21 @@ import { Utils } from "services/utils";
 
 export class Stage5 extends BaseStage {
 
-  async proceed(): Promise<void> {
-    let message = await this.validateInputs();
-    if (message) {
-      this.validationError(message);
-    } else {
-      // don't need to recheck this stage, since we just did it above
+  async proceed(): Promise<boolean> {
+    if (await super.proceed(false)) {
+    /**
+     * Since this is the last stage and we are apparently valid,
+     * then we have to confirm the other stages before moving on.
+     */
       for (let i = 1; i < this.stageNumber; ++i) {
         if (!this.stageStates[i].verified) {
-          message = `Please review step ${i} - ${this.stageStates[i].title}`;
-          break;
+          this.validationError(`Please review step ${i} - ${this.stageStates[i].title}`);
+          return;
         }
       }
-      if (message) {
-        this.validationError(message);
-        return;
-      }
+      // apparently all are valid, so proceed
       this.next();
-    }
+    } // else we are not valid. Don't proceed.
   }
 
   validateInputs(): Promise<string> {

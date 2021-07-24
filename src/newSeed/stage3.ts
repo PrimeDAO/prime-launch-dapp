@@ -35,15 +35,6 @@ export class Stage3 extends BaseStage {
     this.seedConfig.tokenDetails.tokenDistrib.splice(index, 1);
   }
 
-  async proceed(): Promise<void> {
-    const message: string = await this.validateInputs();
-    if (message) {
-      this.validationError(message);
-    } else {
-      this.next();
-    }
-  }
-
   persistData(): void {
     this.wizardState.seedTokenSymbol = this.seedSymbol;
     this.wizardState.seedTokenIcon = this.seedIcon;
@@ -90,29 +81,37 @@ export class Stage3 extends BaseStage {
 
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
-    if (type === "fund") {
+    if (type === "funding") {
       if (this.seedConfig.tokenDetails.fundingAddress) {
         this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
-          this.fundingSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
-          this.fundingIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+          if (tokenInfo.symbol === "N/A") {
+            throw new Error();
+          } else {
+            this.fundingSymbol = tokenInfo.symbol;
+            this.fundingIcon = tokenInfo.icon;
+          }
         }).catch(() => {
-          this.validationError("Could not get token info from the address supplied");
+          this.validationError("Could not get funding token information from the address supplied");
+          this.fundingSymbol = this.fundingIcon = undefined;
         });
       } else {
-        this.fundingSymbol = undefined;
-        this.fundingIcon = undefined;
+        this.fundingSymbol = this.fundingIcon = undefined;
       }
     } else if (type === "seed") {
       if (this.seedConfig.tokenDetails.seedAddress) {
         this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
-          this.seedSymbol = (tokenInfo.symbol !== "N/A") ? tokenInfo.symbol : undefined;
-          this.seedIcon = (tokenInfo.symbol !== "N/A") ? tokenInfo.icon : undefined;
+          if (tokenInfo.symbol === "N/A") {
+            throw new Error();
+          } else {
+            this.seedSymbol = tokenInfo.symbol;
+            this.seedIcon = tokenInfo.icon;
+          }
         }).catch(() => {
-          this.validationError("Could not get token info from the address supplied");
+          this.validationError("Could not get seed token information from the address supplied");
+          this.seedSymbol = this.seedIcon = undefined;
         });
       } else {
-        this.seedSymbol = undefined;
-        this.seedIcon = undefined;
+        this.seedSymbol = this.seedIcon = undefined;
       }
     }
   }

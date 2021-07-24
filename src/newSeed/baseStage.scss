@@ -237,6 +237,7 @@
       }
       img {
         @include tokenIcon;
+        border-radius: 12px;
         width: 24px;
         position: relative;
         top: 1px;

@@ -31,15 +31,6 @@ export class Stage2 extends BaseStage {
     }
   }
 
-  async proceed(): Promise<void> {
-    const message: string = await this.validateInputs();
-    if (message) {
-      this.validationError(message);
-    } else {
-      this.next();
-    }
-  }
-
   validateInputs(): Promise<string> {
     let message: string;
     if (!this.seedConfig.projectDetails.summary) {
