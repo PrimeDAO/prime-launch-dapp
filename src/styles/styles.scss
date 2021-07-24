@@ -181,6 +181,7 @@ html {
     .button2 {
       @include standardTextGradient;
       border: solid 1px $Secondary02;
+      display: inline-block;
 
       &:hover {
         -webkit-text-fill-color: $Secondary04;

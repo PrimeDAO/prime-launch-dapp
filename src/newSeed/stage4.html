@@ -192,8 +192,8 @@
             value.bind="seedConfig.seedDetails.adminAddress"
             placeholder="Administrator wallet address" />
           <template if.to-view="!seedConfig.seedDetails.adminAddress">
-            <button class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</button>
-            <button class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</button>
+            <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
+            <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
           </template>
         </div>
         <div class="buttonContainer">
