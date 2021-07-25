@@ -17,6 +17,7 @@
         </div>
         <div class="mobilemenuButton"><img click.delegate="toggleMobileMenu()" src="/Icon_Menu.svg" /></div>
       </div>
+
       <div class="mobileMenuContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
         <div class="menu">
           <networkfeedback></networkfeedback>
@@ -28,10 +29,10 @@
           </div>
         </div>
       </div>
-      <div show.to-view="!showingMobileMenu" class="mainContent">
+      <div class="mainContent">
         <router-view></router-view>
       </div>
-      <div show.to-view="!showingMobileMenu" class="appFooter">
+      <div class="appFooter">
         <footer></footer>
       </div>
     </div>

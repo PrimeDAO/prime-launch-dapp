@@ -21,7 +21,6 @@
 
   > .logo {
     grid-area: logo;
-    background-color: $BG01;
     align-items: start;
     padding-top: 22px;
     // just for vertical alignment of the logo
@@ -52,7 +51,6 @@
 
     > .mobilemenuButton {
       display: none;
-      padding-right: 24px;
       position: relative;
       top: 2px;
       img {
@@ -67,7 +65,7 @@
   }
 
   .mobileMenuContainer {
-    z-index: 998; // stay below modal screen
+    z-index: 997; // stay below modal screen
     grid-area: mobileMenu;
     display: none;
 
@@ -99,33 +97,7 @@
           }
         }
       }
-      /**
-       * mobile menu connect button
-       */
-      // > .mobileConnectButton {
-      //   flex-grow: 2;
-      //   padding-right: 20px;
-      //   padding-top: 12px;
-      //   padding-bottom: 12px;
-      // }
     }
-
-    /**
-     * mobilemenu footer
-     */
-    // > .appFooter {
-    //   padding: 0 20px;
-    //   position: fixed;
-    //   bottom: 30px;
-
-    //   .logo {
-    //     flex-direction: column;
-
-    //     img {
-    //       margin-bottom: 10px;
-    //     }
-    //   }
-    // }
   }
 
   .mainContent {
@@ -142,13 +114,16 @@
 
 @media screen and (max-width: 1072px) {
   .appWrapper {
-    &.showingMobileMenu {
-      grid-template-columns: 1fr 100fr;
-      grid-template-areas:
-        "logo header"
-        "mobileMenu mobileMenu";
-    }
 
+    &.showingMobileMenu {
+      position: fixed;
+      width: calc(100% - 40px);
+    }
+    .appHeader, 
+    .logo {
+      z-index: 998;
+      right: 20px;
+    }
     .appHeader {
       .networkfeedback,
       .headerButtons,
@@ -161,10 +136,20 @@
     }
 
     .mobileMenuContainer {
+      position: fixed;
+      display: unset;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;
+      background: $BG02;
+      text-align: center;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+      padding-top: calc(50vh - 125px);
       &.showingMobileMenu {
-        display: unset;
-        width: 100%;
-        text-align: center;
+        transform: translateX(0);
       }
 
       .menu {
