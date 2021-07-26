@@ -46,6 +46,7 @@ export class SeedDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
     }));
+    this.connected = !!this.ethereumService.defaultAccountAddress;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
