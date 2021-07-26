@@ -21,7 +21,6 @@ export interface ISeedConfiguration {
 }
 
 interface IFunderPortfolio {
-  seedAmount: BigNumber;
   totalClaimed: BigNumber;
   fundingAmount: BigNumber;
   fee: BigNumber;
