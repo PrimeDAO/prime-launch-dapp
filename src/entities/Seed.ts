@@ -1,3 +1,4 @@
+import { toBigNumberJs } from "services/BigNumberService";
 import { IpfsService } from "./../services/IpfsService";
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -313,7 +314,11 @@ export class Seed {
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
+      /**
+       * seeds that will be claimable, but are currently still vesting
+       */
+      this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
     }
   }
 
@@ -345,6 +350,16 @@ export class Seed {
     this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
     this.hasEnoughSeedTokens =
       this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
+
+  private seedsFromFunding(fundingAmount: BigNumber): BigNumber {
+    const bnFundingAmount = toBigNumberJs(fundingAmount);
+    if ((this.fundingTokensPerSeedToken > 0) && (fundingAmount.gt(0))) {
+      return BigNumber.from(bnFundingAmount.idiv(this.fundingTokensPerSeedToken).toString());
+    } else {
+      return BigNumber.from(0);
+    }
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
