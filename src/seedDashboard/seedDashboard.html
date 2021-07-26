@@ -168,7 +168,7 @@
           </div>
           <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei" thousands-separated></formatted-number>
             ${seed.fundingTokenInfo.symbol} tokens</div>
-          <div class="doit"><button class="submitButton button1" disabled.to-view="!userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
+          <div class="doit"><button class="submitButton button1" disabled.to-view="!seed.userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
         <div class="notWhitelisted" if.to-view="geoBlocked">

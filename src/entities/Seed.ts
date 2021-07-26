@@ -185,6 +185,11 @@ export class Seed {
     return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
+  @computedFrom("userCurrentFundingContributions", "retrievingIsOpen")
+  get userCanRetrieve(): boolean {
+    return this.retrievingIsOpen && this.userCurrentFundingContributions?.gt(0);
+  }
+
   @computedFrom("amountRaised")
   get maximumReached(): boolean {
     return this.amountRaised?.gte(this.cap);
@@ -308,7 +313,6 @@ export class Seed {
     const account = this.ethereumService.defaultAccountAddress;
 
     if (account) {
-      this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       const lock: IFunderPortfolio = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
@@ -318,6 +322,12 @@ export class Seed {
        * seeds that will be claimable, but are currently still vesting
        */
       this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      this.userIsWhitelisted = !this.whitelisted ||
+        this.userCanClaim || // can claim now
+        this.userPendingAmount.gt(0) || // can eventually claim
+        this.userCanRetrieve ||
+        ((await this.contract.checkWhitelisted(account))
+        );
     }
   }
 

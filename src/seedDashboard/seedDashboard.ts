@@ -71,11 +71,6 @@ export class SeedDashboard {
   @computedFrom("seed.amountRaised")
   get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
 
-  @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
-  get userCanRetrieve(): boolean {
-    return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0);
-  }
-
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number {
     return (this.seed?.fundingTokensPerSeedToken > 0) ?
@@ -278,7 +273,7 @@ export class SeedDashboard {
       return;
     }
 
-    if (this.userCanRetrieve) {
+    if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {
           if (receipt) {
