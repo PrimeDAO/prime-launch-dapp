@@ -13,7 +13,7 @@
 
   .launchSummary {
     display: grid;
-    grid-template-columns: 58px 2fr 1fr;
+    grid-template-columns: 58px 4fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
       "icon . timeLeft"
@@ -125,7 +125,7 @@
     width: 50%;
 
     .launchSummary {
-      grid-template-columns: 48px 1fr 1fr;
+      grid-template-columns: 48px 4fr 1fr;
       grid-template-areas:
         "icon . timeLeft"
         "icon title title"

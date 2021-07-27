@@ -46,6 +46,7 @@ export class SeedDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
     }));
+    this.connected = !!this.ethereumService.defaultAccountAddress;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -69,11 +70,6 @@ export class SeedDashboard {
 
   @computedFrom("seed.amountRaised")
   get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
-
-  @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
-  get userCanRetrieve(): boolean {
-    return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0);
-  }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number {
@@ -277,7 +273,7 @@ export class SeedDashboard {
       return;
     }
 
-    if (this.userCanRetrieve) {
+    if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {
           if (receipt) {

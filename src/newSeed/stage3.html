@@ -18,7 +18,7 @@
             <div class="tickerContainer">
               <input id="fundingAddress"
                 value.bind="seedConfig.tokenDetails.fundingAddress"
-                blur.trigger="getTokenInfo('fund')">
+                blur.trigger="getTokenInfo('funding')">
               </input>
               <div class="ticker">
                 ${fundingSymbol}
@@ -109,8 +109,7 @@
                 <span
                   class="deleteLink"
                   title="Delete this row"
-                  click.delegate="deleteTokenDistribution($index)"
-                >
+                  click.delegate="deleteTokenDistribution($index)">
                   <i class="far fa-trash-alt"></i>
                 </span>
               </div>

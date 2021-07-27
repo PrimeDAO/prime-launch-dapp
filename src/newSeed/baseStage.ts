@@ -68,6 +68,19 @@ export abstract class BaseStage {
     }
   }
 
+  protected async proceed(moveOn = true): Promise<boolean> {
+    const message: string = await this.validateInputs();
+    if (message) {
+      this.validationError(message);
+      return false;
+    } else {
+      if (moveOn) {
+        this.next();
+      }
+      return true;
+    }
+  }
+
   protected validateInputs(): Promise<string> {
     return Promise.resolve(null);
   }

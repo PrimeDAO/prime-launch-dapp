@@ -1,3 +1,4 @@
+import { toBigNumberJs } from "services/BigNumberService";
 import { IpfsService } from "./../services/IpfsService";
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -20,7 +21,6 @@ export interface ISeedConfiguration {
 }
 
 interface IFunderPortfolio {
-  seedAmount: BigNumber;
   totalClaimed: BigNumber;
   fundingAmount: BigNumber;
   fee: BigNumber;
@@ -185,6 +185,11 @@ export class Seed {
     return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
+  @computedFrom("userCurrentFundingContributions", "retrievingIsOpen")
+  get userCanRetrieve(): boolean {
+    return this.retrievingIsOpen && this.userCurrentFundingContributions?.gt(0);
+  }
+
   @computedFrom("amountRaised")
   get maximumReached(): boolean {
     return this.amountRaised?.gte(this.cap);
@@ -308,12 +313,21 @@ export class Seed {
     const account = this.ethereumService.defaultAccountAddress;
 
     if (account) {
-      this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       const lock: IFunderPortfolio = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
+      /**
+       * seeds that will be claimable, but are currently still vesting
+       */
+      this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      this.userIsWhitelisted = !this.whitelisted ||
+        this.userCanClaim || // can claim now
+        this.userPendingAmount.gt(0) || // can eventually claim
+        this.userCanRetrieve ||
+        ((await this.contract.checkWhitelisted(account))
+        );
     }
   }
 
@@ -345,6 +359,16 @@ export class Seed {
     this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
     this.hasEnoughSeedTokens =
       this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
+
+  private seedsFromFunding(fundingAmount: BigNumber): BigNumber {
+    const bnFundingAmount = toBigNumberJs(fundingAmount);
+    if ((this.fundingTokensPerSeedToken > 0) && (fundingAmount.gt(0))) {
+      return BigNumber.from(bnFundingAmount.idiv(this.fundingTokensPerSeedToken).toString());
+    } else {
+      return BigNumber.from(0);
+    }
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
