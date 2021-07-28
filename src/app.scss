@@ -70,7 +70,7 @@
   }
 
   .mobileMenuContainer {
-    z-index: 997; // stay below modal screen
+    z-index: 998; // stay below modal screen
     grid-area: mobileMenu;
     display: none;
 
@@ -247,10 +247,13 @@
     transform: scale(1);
   }
   &.au-enter-active {
-    animation: openMenu 0.3s cubic-bezier(0.27, 0, 0.395, 0.36);
+    & .menu {
+      opacity: 0;
+    }
+    animation: openMenu 0.25s cubic-bezier(.42,.49,1,.35);
   }
   &.au-leave-active {
-    animation: closeMenu 0.3s cubic-bezier(0.27, 0, 0.395, 0.36);
+    animation: closeMenu 0.25s cubic-bezier(0,.32,.82,1);
   }
 
 }
