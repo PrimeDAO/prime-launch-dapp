@@ -62,15 +62,6 @@ export class Stage4 extends BaseStage {
     this.seedConfig.seedDetails.geoBlock = !this.seedConfig.seedDetails.geoBlock;
   }
 
-  async proceed(): Promise<void> {
-    const message: string = await this.validateInputs();
-    if (message) {
-      this.validationError(message);
-    } else {
-      this.next();
-    }
-  }
-
   setSeedConfigStartDate(): Date {
     // Set the ISO time
     // Get the start and end time

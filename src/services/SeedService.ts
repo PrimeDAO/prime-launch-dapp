@@ -1,4 +1,5 @@
-import { EthereumService } from "services/EthereumService";
+import { AureliaHelperService } from "services/AureliaHelperService";
+import { EthereumService, Networks } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
@@ -36,9 +37,9 @@ export class SeedService {
   private seedFactory: any;
   // private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
-   * when the factory was created
+   * when the factory was created, pulled by hand from etherscan.io
    */
-  // TODO: private startingBlockNumber: number;
+  private startingBlockNumber: number;
 
   constructor(
     private contractsService: ContractsService,
@@ -48,6 +49,7 @@ export class SeedService {
     private transactionsService: TransactionsService,
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
+    private aureliaHelperService: AureliaHelperService,
   ) {
     /**
      * otherwise singleton is the default
@@ -57,6 +59,9 @@ export class SeedService {
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds.delete(seedAddress);
     });
+
+    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
+      12787753 : 8896151;
   }
 
   public async initialize(): Promise<void> {
@@ -97,11 +102,19 @@ export class SeedService {
           try {
             const seedsMap = new Map<Address, Seed>();
             const filter = this.seedFactory.filters.SeedCreated();
-            this.seedFactory.queryFilter(filter /*, this.startingBlockNumber */)
+            this.seedFactory.queryFilter(filter, this.startingBlockNumber)
               .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
                 for (const event of txEvents) {
                   const seed = this.createSeedFromConfig(event);
                   seedsMap.set(seed.address, seed);
+                  /**
+                   * remove the seed if it is corrupt
+                   */
+                  this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
+                    if (newValue) { // pretty much the only case
+                      this.seeds.delete(seed.address);
+                    }
+                  });
                   this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
                   seed.initialize(); // set this off asyncronously.
                 }
@@ -153,7 +166,7 @@ export class SeedService {
        */
       // return network ? this._featuredSeeds = network.seeds
       return this._featuredSeeds = this.seedsArray
-        .filter((seed: Seed) => { return seed.hasNotStarted || seed.contributingIsOpen; })
+        .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
         .sort((a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
         .slice(0, 3);
     }

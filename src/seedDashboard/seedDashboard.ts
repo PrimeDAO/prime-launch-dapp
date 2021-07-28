@@ -1,3 +1,4 @@
+import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -31,6 +32,7 @@ export class SeedDashboard {
   userFundingTokenAllowance: BigNumber;
 
   geoBlocked: boolean;
+  connected = false;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -39,10 +41,12 @@ export class SeedDashboard {
     private ethereumService: EthereumService,
     private geoBlockService: GeoBlockService,
     private disclaimerService: DisclaimerService,
+    private router: Router,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.hydrateUserData();
+      this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
     }));
+    this.connected = !!this.ethereumService.defaultAccountAddress;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -66,11 +70,6 @@ export class SeedDashboard {
 
   @computedFrom("seed.amountRaised")
   get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
-
-  @computedFrom("seed.userCurrentFundingContributions", "seed.retrievingIsOpen")
-  get userCanRetrieve(): boolean {
-    return this.seed.retrievingIsOpen && this.seed.userCurrentFundingContributions?.gt(0);
-  }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
   get seedTokenReward(): number {
@@ -109,12 +108,10 @@ export class SeedDashboard {
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
+    await this.seedService.ensureInitialized();
     const seed = this.seedService.seeds?.get(params.address);
-    /**
-     * main interest here is literally to prevent access to seeds that don't
-     * yet have seed tokens
-     */
-    return seed?.hasEnoughSeedTokens;
+    await seed.ensureInitialized();
+    return seed?.canGoToDashboard;
   }
 
   async activate(params: { address: Address}): Promise<void> {
@@ -169,9 +166,6 @@ export class SeedDashboard {
     this.ethereumService.ensureConnected();
   }
 
-  @computedFrom("ethereumService.defaultAccountAddress")
-  get connected(): boolean { return !!this.ethereumService.defaultAccountAddress; }
-
   async disclaimSeed(): Promise<boolean> {
 
     let disclaimed = false;
@@ -209,7 +203,22 @@ export class SeedDashboard {
     this.seedTokenToReceive = this.seed.userClaimableAmount;
   }
 
+  async validateClosedOrPaused(): Promise<boolean> {
+    const closedOrPaused = await this.seed.hydateClosedOrPaused();
+    if (closedOrPaused) {
+      this.eventAggregator.publish("handleValidationError", "Sorry, this seed has been closed or paused");
+      this.router.navigate("/home");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async unlockFundingTokens(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (await this.disclaimSeed()) {
       this.seed.unlockFundingTokens(this.fundingTokenToPay)
         .then((receipt) => {
@@ -221,6 +230,10 @@ export class SeedDashboard {
   }
 
   async buy(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (!this.fundingTokenToPay?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
@@ -239,7 +252,11 @@ export class SeedDashboard {
     }
   }
 
-  claim(): void {
+  async claim(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
     if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
       if (!this.seedTokenToReceive?.gt(0)) {
         this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
@@ -251,8 +268,12 @@ export class SeedDashboard {
     }
   }
 
-  retrieve(): void {
-    if (this.userCanRetrieve) {
+  async retrieve(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
+    if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {
           if (receipt) {

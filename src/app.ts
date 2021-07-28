@@ -166,14 +166,29 @@ export class App {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
     /**
-     * restore the scroll position per each page
+     * obtain and store the scroll position per each page as we leave
+     */
+    config.addPreActivateStep({
+      run(navigationInstruction: NavigationInstruction, next: Next) {
+        if (navigationInstruction.previousInstruction) {
+          let position = sessionStorage.getItem(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment));
+          if (!position) {
+            position = `${window.scrollX},${window.scrollY}`;
+            sessionStorage.setItem(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment), position);
+          }
+        }
+        return next();
+      },
+    });
+
+    /**
+     * restore the scroll position per each page as we arrive
      */
     config.addPostRenderStep({
       run(navigationInstruction: NavigationInstruction, next: Next) {
         let position = sessionStorage.getItem(_this.getScrollStateKey(navigationInstruction.fragment));
         if (!position) {
-          position = `${window.scrollX},${window.scrollY}`;
-          sessionStorage.setItem(_this.getScrollStateKey(navigationInstruction.fragment), position);
+          position = "0,0";
         }
         const scrollArgs = position.split(",");
         setTimeout(() => window.scrollTo(Number(scrollArgs[0]), Number(scrollArgs[1])), 100);

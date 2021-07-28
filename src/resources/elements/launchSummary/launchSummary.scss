@@ -13,12 +13,12 @@
 
   .launchSummary {
     display: grid;
-    grid-template-columns: 58px 2fr 1fr;
+    grid-template-columns: 58px 4fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
-      ". . timeLeft"
+      "icon . timeLeft"
       "icon title title"
-      "icon description description"
+      ". description description"
       ". . ."
       ". . ."
       "tokensTarget tokensTarget tokensTarget";
@@ -30,6 +30,8 @@
     height: 100%;
 
     > .icon {
+      display: grid;
+      align-items: center;
       grid-area: icon;
       img {
         height: 46px;
@@ -123,11 +125,11 @@
     width: 50%;
 
     .launchSummary {
-      grid-template-columns: 48px 1fr 1fr;
+      grid-template-columns: 48px 4fr 1fr;
       grid-template-areas:
-        ". . timeLeft"
+        "icon . timeLeft"
         "icon title title"
-        "icon description description"
+        ". description description"
         ". . ."
         ". . ."
         "tokensTarget tokensTarget tokensTarget";

@@ -1,3 +1,4 @@
+import { toBigNumberJs } from "services/BigNumberService";
 import { IpfsService } from "./../services/IpfsService";
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -20,7 +21,6 @@ export interface ISeedConfiguration {
 }
 
 interface IFunderPortfolio {
-  seedAmount: BigNumber;
   totalClaimed: BigNumber;
   fundingAmount: BigNumber;
   fee: BigNumber;
@@ -123,6 +123,7 @@ export class Seed {
   public initializing = true;
   public metadata: ISeedConfig;
   public metadataHash: Hash;
+  public corrupt = false;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
@@ -161,7 +162,7 @@ export class Seed {
 
   @computedFrom("isLive", "maximumReached", "isPaused", "isClosed", "hasEnoughSeedTokens")
   public get contributingIsOpen(): boolean {
-    return this.isLive && this.hasEnoughSeedTokens && !this.maximumReached && !this.isPaused && !this.isClosed;
+    return this.isLive && !this.uninitialized && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
    * Really means "complete".  But does not imply that the vesting cliff has actually ended.
@@ -169,14 +170,14 @@ export class Seed {
    */
   @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
   get claimingIsOpen(): boolean {
-    return this.hasEnoughSeedTokens && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
+    return !this.uninitialized && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
   }
   /**
    * didn't reach the target and not paused or closed
    */
   @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
   get incomplete(): boolean {
-    return this.isDead && this.hasEnoughSeedTokens && !this.minimumReached && !this.isPaused && !this.isClosed;
+    return this.isDead && !this.uninitialized && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
   @computedFrom("_now_")
@@ -184,14 +185,24 @@ export class Seed {
     return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
+  @computedFrom("userCurrentFundingContributions", "retrievingIsOpen")
+  get userCanRetrieve(): boolean {
+    return this.retrievingIsOpen && this.userCurrentFundingContributions?.gt(0);
+  }
+
   @computedFrom("amountRaised")
   get maximumReached(): boolean {
     return this.amountRaised?.gte(this.cap);
   }
 
-  @computedFrom("hasEnoughSeedTokens", "isPaused", "isClosed")
+  @computedFrom("uninitialized", "isPaused", "isClosed")
   get canGoToDashboard(): boolean {
-    return this.hasEnoughSeedTokens && !this.isPaused && !this.isClosed;
+    return !this.uninitialized && !this.isPaused && !this.isClosed;
+  }
+
+  @computedFrom("hasEnoughSeedTokens")
+  get uninitialized(): boolean {
+    return !this.hasEnoughSeedTokens;
   }
 
   constructor(
@@ -224,26 +235,31 @@ export class Seed {
    * @param config
    * @returns
    */
-  public async initialize(): Promise<Seed> {
+  public async initialize(): Promise<void> {
+    this.initializing = true;
     await this.loadContracts();
     /**
-     * no, intentionally don't await
-     */
+       * no, intentionally don't await
+       */
     this.hydrate();
-
-    return this;
   }
 
   private async loadContracts(): Promise<void> {
-    this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
-    if (this.seedTokenAddress) {
-      this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
-      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+    try {
+      this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
+      if (this.seedTokenAddress) {
+        this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+        this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+      }
+    }
+    catch (error) {
+      this.corrupt = true;
+      this.initializing = false;
+      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
     }
   }
 
   private async hydrate(): Promise<void> {
-    this.initializing = true;
     try {
       await this.hydrateMetadata();
 
@@ -269,8 +285,7 @@ export class Seed {
        * in units of fundingToken
        */
       this.cap = await this.contract.hardCap();
-      this.isPaused = await this.contract.paused();
-      this.isClosed = await this.contract.closed();
+      await this.hydateClosedOrPaused();
       // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.permissionedSeed();
       this.vestingDuration = (await this.contract.vestingDuration());
@@ -281,11 +296,11 @@ export class Seed {
       await this.hydrateTokensState();
 
       await this.hydrateUser();
-
-      this.initializing = false;
     }
     catch (error) {
-      this.consoleLogService.logMessage(`Seed: Error hydrating seed data ${error?.message}`, "error");
+      this.corrupt = true;
+      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
+    } finally {
       this.initializing = false;
     }
   }
@@ -298,12 +313,21 @@ export class Seed {
     const account = this.ethereumService.defaultAccountAddress;
 
     if (account) {
-      this.userIsWhitelisted = !this.whitelisted || (await this.contract.checkWhitelisted(account));
       const lock: IFunderPortfolio = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      this.userPendingAmount = lock.seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
+      /**
+       * seeds that will be claimable, but are currently still vesting
+       */
+      this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      this.userIsWhitelisted = !this.whitelisted ||
+        this.userCanClaim || // can claim now
+        this.userPendingAmount.gt(0) || // can eventually claim
+        this.userCanRetrieve ||
+        ((await this.contract.checkWhitelisted(account))
+        );
     }
   }
 
@@ -335,6 +359,16 @@ export class Seed {
     this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
     this.hasEnoughSeedTokens =
       this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
+
+  private seedsFromFunding(fundingAmount: BigNumber): BigNumber {
+    const bnFundingAmount = toBigNumberJs(fundingAmount);
+    if ((this.fundingTokensPerSeedToken > 0) && (fundingAmount.gt(0))) {
+      return BigNumber.from(bnFundingAmount.idiv(this.fundingTokensPerSeedToken).toString());
+    } else {
+      return BigNumber.from(0);
+    }
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
@@ -376,5 +410,11 @@ export class Seed {
           return receipt;
         }
       });
+  }
+
+  public async hydateClosedOrPaused(): Promise<boolean> {
+    this.isPaused = await this.contract.paused();
+    this.isClosed = await this.contract.closed();
+    return this.isPaused || this.isClosed;
   }
 }

@@ -95,7 +95,8 @@
                 <div class="token">${seed.seedTokenInfo.symbol}</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
+            <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
+            <div class="vestedMessage subtext" else>Tokens will vest for ${seed.vestingDuration | secondsDays} days with no cliff</div>
           </div>
           <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
           <template else>
@@ -167,7 +168,7 @@
           </div>
           <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei" thousands-separated></formatted-number>
             ${seed.fundingTokenInfo.symbol} tokens</div>
-          <div class="doit"><button class="submitButton button1" disabled.to-view="!userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
+          <div class="doit"><button class="submitButton button1" disabled.to-view="!seed.userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
         <div class="notWhitelisted" if.to-view="geoBlocked">

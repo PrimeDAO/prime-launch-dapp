@@ -23,10 +23,8 @@ export class Launches {
     this.sort("starts"); // sort order will be ASC
   }
 
-  attached(): void {
-    this.seedService.getFeaturedSeeds().then((seeds) => {
-      this.featuredSeeds = seeds;
-    });
+  async attached(): Promise<void> {
+    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
   }
 
   seeMore(yesNo: boolean): void {
