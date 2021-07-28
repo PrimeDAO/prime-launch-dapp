@@ -213,6 +213,10 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
     rules: [
+      {
+        test: /\.md$/i,
+        use: 'raw-loader',
+      },
       // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
       // only when the issuer is a .js/.ts file, so the loaders are not applied inside html templates
       {
