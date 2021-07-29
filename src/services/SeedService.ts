@@ -204,7 +204,7 @@ export class SeedService {
       Date.parse(config.seedDetails.endDate) / 1000,
       [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
-      toWei(2),
+      toWei(".02"), // 2%
       this.asciiToHex(metaDataHash),
     ];
 
