@@ -17,4 +17,4 @@ Seed Launches may also include a token **vesting schedule for contributors**, in
 - ***whitelist*** — projects can optionally allow only whitelisted contributors
 - ***vesting*** — settable cliffs and vesting schedules for contributors
 
-To host a Seed Round on Prime Launch, see **[Apply to host a Launch](https://www.notion.so/1952243ce1954b47903425fc8ba9d93c)** or head straight to the **Registration screen.** To contribute to a launch, ****see **[Contribute to a Launch](https://www.notion.so/941142a994144aa989acd3e41929d8c5)** or view all upcoming launches **here.**
+To host a Seed Round on Prime Launch, see **<a href="https://www.notion.so/1952243ce1954b47903425fc8ba9d93c"  target="_blank" rel="noopener noreferrer">Apply to host a Launch</a>** or head straight to the **Registration screen.** To contribute to a launch, ****see **<a href="https://www.notion.so/941142a994144aa989acd3e41929d8c5"  target="_blank" rel="noopener noreferrer">Contribute to a Launch</a>** or view all upcoming launches **here.**
