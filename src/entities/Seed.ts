@@ -160,29 +160,28 @@ export class Seed {
     return (this._now >= this.endTime);
   }
 
-  @computedFrom("isLive", "maximumReached", "isPaused", "isClosed", "hasEnoughSeedTokens")
+  @computedFrom("isLive", "uninitialized", "maximumReached", "isPaused", "isClosed")
   public get contributingIsOpen(): boolean {
     return this.isLive && !this.uninitialized && !this.maximumReached && !this.isPaused && !this.isClosed;
   }
   /**
    * Really means "complete".  But does not imply that the vesting cliff has actually ended.
-   * Not paused or closed.
    */
-  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  @computedFrom("uninitialized", "maximumReached", "minimumReached", "isDead")
   get claimingIsOpen(): boolean {
-    return !this.uninitialized && (this.maximumReached || (this.minimumReached && this.isDead)) && !this.isPaused && !this.isClosed;
+    return !this.uninitialized && (this.maximumReached || (this.minimumReached && this.isDead));
   }
   /**
    * didn't reach the target and not paused or closed
    */
-  @computedFrom("maximumReached", "minimumReached", "isDead", "isPaused", "isClosed")
+  @computedFrom("uninitialized", "minimumReached", "isDead", "isPaused", "isClosed")
   get incomplete(): boolean {
     return this.isDead && !this.uninitialized && !this.minimumReached && !this.isPaused && !this.isClosed;
   }
 
   @computedFrom("_now_")
   get retrievingIsOpen(): boolean {
-    return (this._now >= this.startTime) && !this.minimumReached && !this.isPaused && !this.isClosed;
+    return (this._now >= this.startTime) && !this.minimumReached;
   }
 
   @computedFrom("userCurrentFundingContributions", "retrievingIsOpen")
@@ -195,9 +194,9 @@ export class Seed {
     return this.amountRaised?.gte(this.cap);
   }
 
-  @computedFrom("uninitialized", "isPaused", "isClosed")
+  @computedFrom("uninitialized")
   get canGoToDashboard(): boolean {
-    return !this.uninitialized && !this.isPaused && !this.isClosed;
+    return !this.uninitialized;
   }
 
   @computedFrom("hasEnoughSeedTokens")
