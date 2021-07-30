@@ -12,7 +12,7 @@ export class Documentation {
 
     const routes = [
       {
-        route: ["", "document1"],
+        route: ["", "overview"],
         nav: true,
         moduleId: PLATFORM.moduleName("./document1"),
         name: "document1",
@@ -22,7 +22,7 @@ export class Documentation {
         },
       },
       {
-        route: ["document2"],
+        route: ["seed-launch"],
         nav: true,
         moduleId: PLATFORM.moduleName("./document2"),
         name: "document2",
@@ -32,7 +32,7 @@ export class Documentation {
         },
       },
       {
-        route: ["document3"],
+        route: ["liquid-launch-lbp"],
         nav: true,
         moduleId: PLATFORM.moduleName("./document3"),
         name: "document3",
