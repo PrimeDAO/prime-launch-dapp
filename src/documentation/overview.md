@@ -4,7 +4,7 @@ Prime Launch is a platform for hosting decentralized token launches on Ethereum.
  - Project teams and DAOs can use Prime Launch to seamlessly distribute tokens and attract resources. 
  - Users looking to acquire tokens can get access to curated Web 3.0 projects that have been verified by a permissionless process, ensuring only top-quality projects are listed. 
 
-## **The challenge: IDOs are a hostile frontier**
+## The challenge: IDOs are a hostile frontier
 
 With the advancement of decentralized finance, an increasing number of crypto projects have shifted from listing tokens on centralized exchanges to listing on decentralized exchanges. With this transition, new mechanisms for market-making and token offerings have emerged, collectively called Initial Decentralized Offerings (IDOs) . These mechanisms have removed many frictions from the industry, as projects no longer need to wait (or pay) for centralized exchanges to list their assets. This has allowed a more diverse group of DeFi projects to emerge.
 
