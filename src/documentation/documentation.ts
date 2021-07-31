@@ -26,35 +26,41 @@ export class Documentation {
         nav: true,
         moduleId: PLATFORM.moduleName("./document2"),
         name: "document2",
-        title: "Seed Details & Benefits",
+        title: "Seed Launch",
         settings: {
           content: require("/src/documentation/seedLaunch.md").default,
         },
       },
       {
-        route: ["liquid-launch-lbp"],
+        route: ["liquid-launch"],
         nav: true,
         moduleId: PLATFORM.moduleName("./document3"),
         name: "document3",
-        title: "Liquid Launch Details and Benefits",
+        title: "Liquid Launch",
         settings: {
           content: require("/src/documentation/liquidLaunch.md").default,
         },
       },
-      // {
-      //   route: ["document4"],
-      //   nav: true,
-      //   moduleId: PLATFORM.moduleName("./document4.html"),
-      //   name: "document4",
-      //   title: "Contribute to a Launch",
-      // },
-      // {
-      //   route: ["document5"],
-      //   nav: true,
-      //   moduleId: PLATFORM.moduleName("./document5.html"),
-      //   name: "document5",
-      //   title: "Apply to Host a Launch",
-      // },
+      {
+        route: ["contribute-to-a-launch"],
+        nav: true,
+        moduleId: PLATFORM.moduleName("./document4"),
+        name: "document4",
+        title: "Contribute to a Launch",
+        settings: {
+          content: require("/src/documentation/contributeToALaunch.md").default,
+        }
+      },
+      {
+        route: ["apply-to-host-a-launch"],
+        nav: true,
+        moduleId: PLATFORM.moduleName("./document5"),
+        name: "document5",
+        title: "Apply to Host a Launch",
+        settings: {
+          content: require("/src/documentation/applyToHostALaunch.md").default,
+        }
+      },
       // {
       //   route: ["document6"],
       //   nav: true,
