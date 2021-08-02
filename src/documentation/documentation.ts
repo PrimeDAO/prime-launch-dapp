@@ -52,29 +52,35 @@ export class Documentation {
         }
       },
       {
-        route: ["apply-to-host-a-launch"],
+        route: ["host-a-launch"],
         nav: true,
         moduleId: PLATFORM.moduleName("./document5"),
         name: "document5",
-        title: "Apply to Host a Launch",
+        title: "Host a Launch",
         settings: {
-          content: require("/src/documentation/applyToHostALaunch.md").default,
+          content: require("/src/documentation/hostALaunch.md").default,
         }
       },
-      // {
-      //   route: ["document6"],
-      //   nav: true,
-      //   moduleId: PLATFORM.moduleName("./document6.html"),
-      //   name: "document6",
-      //   title: "Prime support and services",
-      // },
-      // {
-      //   route: ["document7"],
-      //   nav: true,
-      //   moduleId: PLATFORM.moduleName("./document7.html"),
-      //   name: "document7",
-      //   title: "FAQ",
-      // },
+      {
+        route: ["prime-support"],
+        nav: true,
+        moduleId: PLATFORM.moduleName("./document6"),
+        name: "document6",
+        title: "Prime Support and Services",
+        settings: {
+          content: require("/src/documentation/primeSupportAndServices.md").default,
+        }
+      },
+      {
+        route: ["FAQ"],
+        nav: true,
+        moduleId: PLATFORM.moduleName("./document7"),
+        name: "document7",
+        title: "FAQ",
+        settings: {
+          content: require("/src/documentation/FAQ.md").default
+        }
+      },
 
       // {
       //   route: ["document8"],

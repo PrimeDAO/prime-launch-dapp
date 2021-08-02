@@ -4,10 +4,10 @@ To contribute to a launch and receive tokens, follow the steps outlined below.
 2. Next up, you will need to fund your wallet with the of tokens you want to contribute to the Launch and some ETH for paying transaction costs (~$25 worth of ETH is safe). Most wallets will give you instructions on how to do this. 
 4. On the <a href="/launches">Launches page</a>, you can view the upcoming launches and see which tokens the project is accepting in its launch.
 
-### Contributing to a Seed Launch
+## Contributing to a Seed Launch
 
 TODO
 
-### Contributing to a Liquid Launch
+## Contributing to a Liquid Launch
 
 TODO
