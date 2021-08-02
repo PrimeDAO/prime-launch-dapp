@@ -17,16 +17,10 @@ If your application is not accepted, consider opening a Prime Forum thread to re
 
 ### Launch Process
 
-5. Discuss with arseny
+TODO
 
 ### Post Launch
 
-6. Hosting a Launch on Prime Launch is not the end of the relationship between; contrarly, this is the start of the connection between a project and the Prime Network. A project that launched on Prime Launch can always benefit from the value-added by the Prime Network. Depending on the needs of the project, there are several avenues to continue the collaboration.
+Hosting a Launch on Prime Launch is the start of the connection between a project and the Prime Network. Depending on the needs of the project, there are several avenues to continue the collaboration:
 
-- Follow up liquidity: Prime Pools with co-farming of BAL & PRIME 
-
-- DAO2DAO deals
-- Incubators and Hackathons
-- Media
-- Research and Development:
-- Community and Marketing:
+TODO (Prime Pools, DAO2DAO, incubators/hackathons, R&D, community & marketing)
