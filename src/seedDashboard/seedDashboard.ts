@@ -139,6 +139,7 @@ export class SeedDashboard {
         await seed.ensureInitialized();
       }
       this.seed = seed;
+      this.geoBlocked = this.geoBlocked && this.seed.metadata.seedDetails.geoBlock;
 
       await this.hydrateUserData();
 
