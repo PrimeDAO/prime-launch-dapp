@@ -6,7 +6,17 @@ To contribute to a launch and receive tokens, follow the steps outlined below.
 
 ## Contributing to a Seed Launch
 
-TODO
+To contribute to a Seed Launch, you must hold some of the launch's contribution token.
+
+In the "Contribute" box, exchange the contribution token for rights to claim a fixed amount of the project's token when the launch ends. 
+
+Seed Launches end when the maximum funding threshold is reached or the contribution time window is over (whether or not the funding target is reached). If the funding target isn't reached when the launch ends, contributors can reclaim the tokens the contributed and no project tokens will be distributed. 
+
+If the funding target or the maximum funding is reached, contributors can claim project tokens in the "Claim" box after the launch ends. Note, however, that many Seed Launches will have vesting periods with cliffs and/or vesting time:
+- Cliff: a period of time before any tokens can be claimed
+- Vest: a period of time following the cliff during which tokens will be unlocked linearly
+
+For example, take a Seed Launch with a 3 day cliff and a 10 day vest. A contributor who has contributed enough to claim 10 tokens will have to wait 3 days for the cliff, after which their 10 tokens will unlock gradually over the next 10 days.
 
 ## Contributing to a Liquid Launch
 
