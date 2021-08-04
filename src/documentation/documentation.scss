@@ -7,7 +7,7 @@
 
     .documentBody {
         display: grid;
-        grid-template-columns: .7fr 2fr;
+        grid-template-columns: 0.7fr 2fr;
         gap: 20px;
     }
 
@@ -39,12 +39,20 @@
             font-size: 16px;
             line-height: 140%;
             color: $Neutral03;
+
+            a {
+                border-bottom: 1px dashed #ffffff;
+
+                &:hover {
+                    font-weight: 600;
+                    text-decoration: none;
+                }
+            }
         }
     }
 }
 
 @media screen and (max-width: 1072px) {
-
     .documentsContainer {
         > .heading.heading1 {
             -webkit-text-fill-color: $Secondary02;
