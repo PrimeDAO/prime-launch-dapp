@@ -157,3 +157,9 @@
     }
   }
 }
+
+@media screen and (max-width: 400px) {
+  .launchSummaryContainer {
+    min-width: 80vw;
+  }
+}
