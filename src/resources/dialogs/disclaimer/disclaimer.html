@@ -10,7 +10,7 @@
     <ux-dialog-footer>
       <label><input type="checkbox" checked.bind="checked">I acknowledge that I have fully read and understood this disclaimer</label>
       <div role="button" class="button2" click.trigger="controller.cancel(false)">Decline</div>
-      <div role="button" class="button1" disabled.to-view="!checked" ref="okButton" click.trigger="controller.ok(true)">Accept</div>
+      <button class="button1" disabled.to-view="!checked" ref="okButton" click.trigger="controller.ok(true)">Accept</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

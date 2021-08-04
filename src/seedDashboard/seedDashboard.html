@@ -146,7 +146,10 @@
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
-            <div class="vestedMessage subtext">
+            <div if.to-view="seed.incomplete" class="vestedMessage subtext">
+              This seed round is incomplete, hence there are no tokens to be claimed. You can retrieve from the section below any funding tokens that you may have contributed.
+            </div>
+            <div else class="vestedMessage subtext">
               <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
               <span else>Tokens can be immediately claimed</span>
               after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met

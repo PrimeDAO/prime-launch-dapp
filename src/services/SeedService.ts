@@ -1,5 +1,5 @@
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, Networks } from "services/EthereumService";
+import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
 import { ISeedConfig } from "./../newSeed/seedConfig";
@@ -204,7 +204,7 @@ export class SeedService {
       Date.parse(config.seedDetails.endDate) / 1000,
       [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
-      2,
+      toWei(".02"), // 2%
       this.asciiToHex(metaDataHash),
     ];
 

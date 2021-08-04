@@ -21,7 +21,6 @@
 
   > .logo {
     grid-area: logo;
-    background-color: $BG01;
     align-items: start;
     padding-top: 22px;
     // just for vertical alignment of the logo
@@ -52,7 +51,6 @@
 
     > .mobilemenuButton {
       display: none;
-      padding-right: 24px;
       position: relative;
       top: 2px;
       img {
@@ -64,6 +62,11 @@
       margin-left: 10px;
       text-align: left;
     }
+  }
+
+  .appHeader, .logo {
+    top: unset;
+    z-index: 998;
   }
 
   .mobileMenuContainer {
@@ -99,33 +102,7 @@
           }
         }
       }
-      /**
-       * mobile menu connect button
-       */
-      // > .mobileConnectButton {
-      //   flex-grow: 2;
-      //   padding-right: 20px;
-      //   padding-top: 12px;
-      //   padding-bottom: 12px;
-      // }
     }
-
-    /**
-     * mobilemenu footer
-     */
-    // > .appFooter {
-    //   padding: 0 20px;
-    //   position: fixed;
-    //   bottom: 30px;
-
-    //   .logo {
-    //     flex-direction: column;
-
-    //     img {
-    //       margin-bottom: 10px;
-    //     }
-    //   }
-    // }
   }
 
   .mainContent {
@@ -141,15 +118,75 @@
 }
 
 @media screen and (max-width: 1072px) {
+
+  .mobilemenuButton {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    transform: rotate(0deg);
+    transition: .5s ease-in-out;
+    cursor: pointer;
+    transform: scale(1);
+    span {
+      display: block;
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: $Primary01;
+      border-radius: 2px;
+      opacity: 1;
+      left: 0;
+      transform: rotate(0deg);
+      transition: .25s ease-in-out;
+
+      &:nth-child(1) {
+        top: 5px;
+      }
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        top: 11px;
+      }
+
+      &:nth-child(4) {
+        top: 17px;
+      }
+    }
+
+    &.showingMobileMenu {
+      span {
+        &:nth-child(1) {
+          width: 0%;
+          left: 50%;
+        }
+
+        &:nth-child(2) {
+          transform: rotate(45deg);
+        }
+
+        &:nth-child(3) {
+          transform: rotate(-45deg);
+        }
+
+        &:nth-child(4) {
+          width: 0%;
+          left: 50%;
+        }
+      }
+    }
+  }
+
   .appWrapper {
     &.showingMobileMenu {
-      grid-template-columns: 1fr 100fr;
-      grid-template-areas:
-        "logo header"
-        "mobileMenu mobileMenu";
+      .appHeader, 
+      .logo {
+        top: 0;
+        position: fixed;
+      }
     }
 
     .appHeader {
+      right: 20px;
       .networkfeedback,
       .headerButtons,
       > .headerConnectButton {
@@ -160,31 +197,81 @@
       }
     }
 
-    .mobileMenuContainer {
-      &.showingMobileMenu {
-        display: unset;
-        width: 100%;
-        text-align: center;
+  }
+}
+
+.animateMobileMenuBackground {
+  width: 300vmax;
+  height: 300vmax;
+  background: $BG03;
+  border-radius: 50%;
+  border: 1px solid $BG02;
+  position: fixed;
+  top: calc(-150vmax + 40px);
+  right: calc(-150vmax + 50px);
+
+  &>.mobileMenuContainer {
+    position: fixed;
+    left: calc(50vw - 85px);
+    top: calc(50vh - 115px);
+    text-align: center;
+
+    &.showingMobileMenu {
+      display: unset;
+    }
+
+    &>.menu {
+      .networkfeedback {
+        margin-bottom: 20px;
       }
 
-      .menu {
-        .networkfeedback {
-          margin-bottom: 20px;
-        }
+      .mobileConnectButton {
+        margin-bottom: 26px;
+      }
 
-        .mobileConnectButton {
-          margin-bottom: 26px;
-        }
-
-        .menuitems {
-          a.item {
-            padding-left: calc(50% - 80px);
-            .text {
-              justify-items: unset;
-            }
+      .menuitems {
+        a.item {
+          padding-left: calc(50% - 80px);
+          .text {
+            justify-items: unset;
           }
         }
       }
     }
+  }
+
+  &.au-enter, &.au-left {
+    transform: scale(0);
+  }
+  &.au-leave, &.au-entered {
+    transform: scale(1);
+  }
+  &.au-enter-active {
+    & .menu {
+      opacity: 0;
+    }
+    animation: openMenu 0.25s cubic-bezier(.42,.49,1,.35);
+  }
+  &.au-leave-active {
+    animation: closeMenu 0.25s cubic-bezier(0,.32,.82,1);
+  }
+
+}
+
+
+@keyframes openMenu {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes closeMenu {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
   }
 }
