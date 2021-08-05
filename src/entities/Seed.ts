@@ -325,7 +325,7 @@ export class Seed {
         this.userCanClaim || // can claim now
         this.userPendingAmount.gt(0) || // can eventually claim
         this.userCanRetrieve ||
-        ((await this.contract.checkWhitelisted(account))
+        ((await this.contract.whitelisted(account))
         );
     }
   }
