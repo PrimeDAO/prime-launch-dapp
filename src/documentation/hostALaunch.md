@@ -9,18 +9,24 @@ Your application is now submitted to Prime Launch and the evaluation process wil
 
 ## Evaluation Process
 
-Official Prime Launches are curated by PrimeDAO to ensure all listed projects are on par with Prime Launch's standards. After submitting the application form, the PrimeDAO-appointed Prime Launch multi-sig will take up to 5 days to approve or deny the submission.
+Official Prime Launches are curated by PrimeDAO to ensure all listed projects are on par with Prime Launch's standards. After submitting the application form, the Prime DAO-appointed Prime Launch multi-sig will take up to 5 days to approve or deny the submission.
 
-If the launch is approved, it will become visible in the Prime Launch UI, and the project can go ahead and fund the Launch contract. Follow-up information will automatically be sent over to the Launch host. 
+If the launch is approved, it will become visible in the Prime Launch UI, and you will be ready to continue the launch process, as described in the next section. 
 
-If your application is not accepted, consider opening a Prime Forum thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
+If your application is not accepted, consider opening a <a href="https://daotalk.org/c/primedao/38" target="_blank" rel="noopener noreferrer">Prime Forum</a> thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
 
 ## Launch Process
 
-TODO
+Once your launched is approved, you will need to finish setting it up using the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>. On the dashboard, depending on the stage of your launch, you will see buttons to:
+
+- Send the required project tokens to the launch contract
+- Set up a whitelist for contributors (if applicable for your launch)
+- Pause the launch
+- Close the launch
+- Reclaim any extra project tokens (once the launch is over)
+
+These buttons will only work for the admin address you chose for your launch.
 
 ## Post Launch
 
-Hosting a Launch on Prime Launch is the start of a longer-term connection between a project and the Prime Network. Depending on the needs of the project, there are several avenues to continue the collaboration. 
-
-See <a href="/documentation/prime-support">Prime Support And Services</a> for details.
+Once a launch is complete, the project admin may reclaim any unused project tokens from the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>.

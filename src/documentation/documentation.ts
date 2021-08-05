@@ -61,6 +61,7 @@ export class Documentation {
           content: require("/src/documentation/hostALaunch.md").default,
         }
       },
+      /*
       {
         route: ["prime-support"],
         nav: true,
@@ -71,6 +72,7 @@ export class Documentation {
           content: require("/src/documentation/primeSupportAndServices.md").default,
         }
       },
+      */
       {
         route: ["FAQ"],
         nav: true,
