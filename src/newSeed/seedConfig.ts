@@ -16,8 +16,8 @@ export interface IProjectDetails {
 }
 
 export interface ITokenDetails {
-  fundingAddress: string,
-  seedAddress: string,
+  fundingTokenAddress: string,
+  projectTokenAddress: string,
   /**
    * In wei, maximum ever total supply of project tokens
    */

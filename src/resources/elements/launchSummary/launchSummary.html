@@ -11,10 +11,10 @@
       </div>
       <div class="description">${seed.metadata.projectDetails.proposition}</div>
       <div class="tokensTarget">
-        <div class="tokensTitle title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
+        <div class="tokensTitle title subtext">${seed.projectTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
         <div class="targetTitle title subtext">TARGET</div>
         <div class="tokens">
-          <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+          <token-pair token1.to-view="seed.projectTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
         </div>
         <div class="targetValue">$ <formatted-number thousands-separated average value.to-view="seed.target | ethwei"></formatted-number>
         </div>

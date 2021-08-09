@@ -195,7 +195,7 @@ export class SeedService {
     const seedArguments = [
       safeAddress,
       config.seedDetails.adminAddress,
-      [config.tokenDetails.seedAddress, config.tokenDetails.fundingAddress],
+      [config.tokenDetails.projectTokenAddress, config.tokenDetails.fundingTokenAddress],
       [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
       config.seedDetails.pricePerToken,
       // convert from ISO string to Unix epoch seconds

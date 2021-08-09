@@ -18,9 +18,9 @@
 
       <div class="seedProgress">
         <div class="tokenId">
-          <div class="icon"><img src.to-view="seed.seedTokenInfo.icon"></img></div>
-          <div class="name">${seed.seedTokenInfo.name}</div>
-          <div class="symbol">(${seed.seedTokenInfo.symbol})</div>
+          <div class="icon"><img src.to-view="seed.projectTokenInfo.icon"></img></div>
+          <div class="name">${seed.projectTokenInfo.name}</div>
+          <div class="symbol">(${seed.projectTokenInfo.symbol})</div>
         </div>
         <div ref="progressBar" class="progressBar">
           <div ref="bar" class="bar ${(fractionComplete >= 1) ? 'complete' : ''}">&nbsp;</div>
@@ -87,12 +87,12 @@
             <div class="equals">=></div>
             <div class="output">
               <formatted-number
-                value.to-view="seedTokenReward"
+                value.to-view="projectTokenReward"
                 average></formatted-number>
             </div>
             <div class="units2">
               <div class="container">
-                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="token">${seed.projectTokenInfo.symbol}</div>
               </div>
             </div>
             <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
@@ -109,7 +109,7 @@
           ================ 
         -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section3">
-          <div class="description">Claim ${seed.seedTokenInfo.symbol}</div>
+          <div class="description">Claim ${seed.projectTokenInfo.symbol}</div>
           <div class="help">
             <question-mark text="Many projects will lock or vest your tokens over some period of time. Here you may claim fully vested tokens as well as see which tokens are still pending depending on the project's vesting schedule"></question-mark>
           </div>
@@ -118,7 +118,7 @@
               <div class="seedRequest">
                 <numeric-input
                   disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
-                  value.bind="seedTokenToReceive"
+                  value.bind="projectTokenToReceive"
                   placeholder="0.0"></numeric-input>
                 <div class="maxButton" if.to-view="seed.claimingIsOpen && seed.userCanClaim">
                   <a href="#" click.delegate="handleMaxClaim()">MAX</a>
@@ -127,7 +127,7 @@
             </div>
             <div class="units1">
               <div class="container">
-                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="token">${seed.projectTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
                     value.to-view="seed.userClaimableAmount | ethwei"
                     thousands-separated></formatted-number>
@@ -142,7 +142,7 @@
             </div>
             <div class="units2">
               <div class="container">
-                <div class="token">${seed.seedTokenInfo.symbol}</div>
+                <div class="token">${seed.projectTokenInfo.symbol}</div>
                 <div class="subsection subtext">Pending</div>
               </div>
             </div>
@@ -204,12 +204,12 @@
         </div>
         <div class="label tokensleftLabel">PROJECT TOKENS LEFT</div>
         <div class="value tokensleft">
-          <formatted-number value.to-view="percentSeedTokensLeft" average mantissa="0"></formatted-number>%
+          <formatted-number value.to-view="percentProjectTokensLeft" average mantissa="0"></formatted-number>%
         </div>
         <div class="tokenpriceLabel">
-          <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+          <token-pair token1.to-view="seed.projectTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
         </div>
-        <div class="value tokenprice">1 <div class="symbol">${seed.seedTokenInfo.symbol}</div> = ${seed.fundingTokensPerSeedToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
+        <div class="value tokenprice">1 <div class="symbol">${seed.projectTokenInfo.symbol}</div> = ${seed.fundingTokensPerProjectToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
         </div>
         <seed-about seed.to-view="seed" type="twocolumn"></seed-about>
       </div>

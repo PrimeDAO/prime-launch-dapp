@@ -85,7 +85,7 @@
               text-align: center;
             }
 
-            &.seedToken,
+            &.projectToken,
             &.fundingToken {
               white-space: nowrap;
 
@@ -118,7 +118,7 @@
             .cell {
               border-bottom: 1px solid $Secondary02;
 
-              &.seedToken,
+              &.projectToken,
               &.fundingToken {
                 white-space: nowrap;
               }

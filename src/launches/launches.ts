@@ -44,8 +44,8 @@ export class Launches {
     }
 
     switch (columnName) {
-      case "seedToken":
-        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.seedTokenInfo.symbol, b.seedTokenInfo.symbol, this.sortDirection);
+      case "projectToken":
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.projectTokenInfo.symbol, b.projectTokenInfo.symbol, this.sortDirection);
         break;
       case "fundingToken":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.fundingTokenInfo.symbol, b.fundingTokenInfo.symbol, this.sortDirection);

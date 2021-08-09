@@ -39,8 +39,8 @@ export class Stage3 extends BaseStage {
   }
 
   persistData(): void {
-    this.wizardState.seedTokenSymbol = this.seedSymbol;
-    this.wizardState.seedTokenIcon = this.seedIcon;
+    this.wizardState.projectTokenSymbol = this.seedSymbol;
+    this.wizardState.projectTokenIcon = this.seedIcon;
     this.wizardState.fundingTokenSymbol = this.fundingSymbol;
     this.wizardState.fundingTokenIcon = this.fundingIcon;
   }
@@ -59,9 +59,9 @@ export class Stage3 extends BaseStage {
 
   async validateInputs(): Promise<string> {
     let message: string;
-    if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
+    if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingTokenAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
-    } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
+    } else if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       message = "Please enter a valid address for the Project Token Address";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
@@ -72,9 +72,9 @@ export class Stage3 extends BaseStage {
       message = "Please enter a number greater than zero for Initial Supply";
     } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
       message = "Please enter a value for Initial Supply smaller than Maximum Supply";
-    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingAddress))) {
+    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingTokenAddress))) {
       message = "Funding token address is not a valid contract";
-    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.seedAddress))) {
+    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {
       message = "Project token address is not a valid contract";
     } else {
       // Check the token distribution
@@ -101,10 +101,10 @@ export class Stage3 extends BaseStage {
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
     if (type === "funding") {
-      if (this.seedConfig.tokenDetails.fundingAddress?.length) {
-        if (this.lastCheckedFundingAddress !== this.seedConfig.tokenDetails.fundingAddress) {
-          this.lastCheckedFundingAddress = this.seedConfig.tokenDetails.fundingAddress;
-          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
+      if (this.seedConfig.tokenDetails.fundingTokenAddress?.length) {
+        if (this.lastCheckedFundingAddress !== this.seedConfig.tokenDetails.fundingTokenAddress) {
+          this.lastCheckedFundingAddress = this.seedConfig.tokenDetails.fundingTokenAddress;
+          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingTokenAddress).then((tokenInfo: ITokenInfo) => {
             if (tokenInfo.symbol === "N/A") {
               throw new Error();
             } else {
@@ -120,10 +120,10 @@ export class Stage3 extends BaseStage {
         this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = undefined;
       }
     } else if (type === "seed") {
-      if (this.seedConfig.tokenDetails.seedAddress?.length) {
-        if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.seedAddress) {
-          this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.seedAddress;
-          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
+      if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {
+        if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.projectTokenAddress) {
+          this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.projectTokenAddress;
+          this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
             if (tokenInfo.symbol === "N/A") {
               throw new Error();
             } else {

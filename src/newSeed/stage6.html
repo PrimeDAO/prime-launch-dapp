@@ -116,11 +116,11 @@
             Project Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink address.to-view="seedConfig.tokenDetails.seedAddress" text.to-view="seedConfig.tokenDetails.seedAddress | smallHexString"></etherscanlink>
-            <div>${wizardState.seedTokenSymbol}</div>
+            <etherscanlink address.to-view="seedConfig.tokenDetails.projectTokenAddress" text.to-view="seedConfig.tokenDetails.projectTokenAddress | smallHexString"></etherscanlink>
+            <div>${wizardState.projectTokenSymbol}</div>
             <img class="logoImage"
-              src.to-view="wizardState.seedTokenIcon"
-              show.to-view="wizardState.seedTokenIcon" />
+              src.to-view="wizardState.projectTokenIcon"
+              show.to-view="wizardState.projectTokenIcon" />
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -131,7 +131,7 @@
             <div>
               <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" />
             </div>
-            <div>${wizardState.seedTokenSymbol}</div>
+            <div>${wizardState.projectTokenSymbol}</div>
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -142,7 +142,7 @@
             <div>
               <formatted-number value.bind="seedConfig.tokenDetails.initialSeedSupply | ethwei" />
             </div>
-            <div>${wizardState.seedTokenSymbol}</div>
+            <div>${wizardState.projectTokenSymbol}</div>
           </div>
         </div>
         <div class="stageSeedDetails">

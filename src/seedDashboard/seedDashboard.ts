@@ -22,9 +22,9 @@ export class SeedDashboard {
 
   seed: Seed;
   loading = true;
-  // seedTokenToReceive = 1;
+  // projectTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
-  seedTokenToReceive: BigNumber;
+  projectTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
 
@@ -71,16 +71,16 @@ export class SeedDashboard {
   @computedFrom("seed.amountRaised")
   get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
 
-  @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number {
-    return (this.seed?.fundingTokensPerSeedToken > 0) ?
-      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken
+  @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
+  get projectTokenReward(): number {
+    return (this.seed?.fundingTokensPerProjectToken > 0) ?
+      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerProjectToken
       : 0;
   }
 
   /** TODO: don't use current balance */
   @computedFrom("seed.seedRemainder", "seed.seedAmountRequired")
-  get percentSeedTokensLeft(): number {
+  get percentProjectTokensLeft(): number {
     return this.seed?.seedAmountRequired?.gt(0) ?
       ((this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
         this.numberService.fromString(fromWei(this.seed.seedAmountRequired))) * 100)
@@ -201,7 +201,7 @@ export class SeedDashboard {
   }
 
   handleMaxClaim(): void {
-    this.seedTokenToReceive = this.seed.userClaimableAmount;
+    this.projectTokenToReceive = this.seed.userClaimableAmount;
   }
 
   async validateClosedOrPaused(): Promise<boolean> {
@@ -255,12 +255,12 @@ export class SeedDashboard {
 
   async claim(): Promise<void> {
     if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
-      if (!this.seedTokenToReceive?.gt(0)) {
-        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
-      } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
-        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
+      if (!this.projectTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.projectTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
+        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
-        this.seed.claim(this.seedTokenToReceive);
+        this.seed.claim(this.projectTokenToReceive);
       }
     }
   }

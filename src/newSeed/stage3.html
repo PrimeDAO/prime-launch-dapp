@@ -10,14 +10,14 @@
         <div class="infoInput ticker">
           <div class="address">
             <div class="labeledQuestion">
-              <label for="seedAddress">Project Token Address</label>
+              <label for="projectTokenAddress">Project Token Address</label>
               <div class="questionMark">
                 <question-mark text="The Ethereum address of the token you are offering to contributors"></question-mark>
               </div>
             </div>
             <div class="tickerContainer">
-              <input id="seedAddress"
-                value.bind="seedConfig.tokenDetails.seedAddress"
+              <input id="projectTokenAddress"
+                value.bind="seedConfig.tokenDetails.projectTokenAddress"
                 blur.trigger="getTokenInfo('seed')">
               </input>
               <div class="ticker">
