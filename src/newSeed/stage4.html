@@ -86,22 +86,21 @@
                 ref="startDateRef"
                 click.delegate="startDatePicker.show()"
                 autocomplete="off" disabled />
-              <div><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
+              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
             </div>
           </div>
           <div>
-            <label for="startTime">Start Time</label>
+            <label for="startTime">Start Time (GMT)</label>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
                   id="startTime"
                   value.bind="startTime"
-                  autocomplete="off"
-                  placeholder="HH:MM (GMT)" />
-                <div><i class="far fa-clock"></i></div>
+                  autocomplete="off" />
+                <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
               <div class="questionMark">
-                <question-mark text="The start time for the launch"></question-mark>
+                <question-mark text="The start time for the launch, in GMT"></question-mark>
               </div>
             </div>
           </div>
@@ -118,21 +117,20 @@
                 ref="endDateRef"
                 click.delegate="endDatePicker.show()"
                 autocomplete="off" disabled />
-              <div><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
           </div>
           <div>
-            <label for="endTime">End Time</label>
+            <label for="endTime">End Time (GMT)</label>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
                   id="endTime" value.bind="endTime"
-                  autocomplete="off"
-                  placeholder="HH:MM (GMT)" />
-                <div><i class="far fa-clock"></i></div>
+                  autocomplete="off" />
+                <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
               <div class="questionMark">
-                <question-mark text="The maximum end time for the launch. The launch will conclude at this time"></question-mark>
+                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
               </div>
             </div>
           </div>
