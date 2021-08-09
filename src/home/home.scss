@@ -54,9 +54,9 @@
         width: 710px;
         grid-gap: 24px;
         .buttonContainer {
-            display: flex;
-            border-radius: 6px;
-            overflow: hidden;
+          display: flex;
+          border-radius: 6px;
+          overflow: hidden;
         }
         .contribute,
         .launch {
@@ -203,6 +203,10 @@
         .learnMore {
           @include standardTextGradient();
           font-weight: bold;
+
+          &:hover {
+            border-bottom: 1px solid $Secondary02;
+          }
         }
 
         .launchButton {
@@ -252,7 +256,6 @@
           grid-auto-flow: row;
           width: 100%;
           align-items: center;
-
         }
       }
 
