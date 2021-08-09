@@ -254,10 +254,6 @@ export class SeedDashboard {
   }
 
   async claim(): Promise<void> {
-    if (await this.validateClosedOrPaused()) {
-      return;
-    }
-
     if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
       if (!this.seedTokenToReceive?.gt(0)) {
         this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
@@ -270,10 +266,6 @@ export class SeedDashboard {
   }
 
   async retrieve(): Promise<void> {
-    if (await this.validateClosedOrPaused()) {
-      return;
-    }
-
     if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {
