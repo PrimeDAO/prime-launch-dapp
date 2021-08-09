@@ -10,28 +10,6 @@
         <div class="infoInput ticker">
           <div class="address">
             <div class="labeledQuestion">
-              <label for="fundingAddress">Funding Token Address</label>
-              <div class="questionMark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
-              </div>
-            </div>
-            <div class="tickerContainer">
-              <input id="fundingAddress"
-                value.bind="seedConfig.tokenDetails.fundingAddress"
-                blur.trigger="getTokenInfo('funding')">
-              </input>
-              <div class="ticker">
-                ${fundingSymbol}
-              </div>
-              <div if.to-view="fundingIcon">
-                <img src.bind="fundingIcon" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="infoInput ticker">
-          <div class="address">
-            <div class="labeledQuestion">
               <label for="seedAddress">Project Token Address</label>
               <div class="questionMark">
                 <question-mark text="The Ethereum address of the token you are offering to contributors"></question-mark>
@@ -47,6 +25,28 @@
               </div>
               <div if.to-view="seedIcon">
                 <img src.bind="seedIcon" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="infoInput ticker">
+          <div class="address">
+            <div class="labeledQuestion">
+              <label for="fundingAddress">Funding Token Address</label>
+              <div class="questionMark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <div class="tickerContainer">
+              <input id="fundingAddress"
+                value.bind="seedConfig.tokenDetails.fundingAddress"
+                blur.trigger="getTokenInfo('funding')">
+              </input>
+              <div class="ticker">
+                ${fundingSymbol}
+              </div>
+              <div if.to-view="fundingIcon">
+                <img src.bind="fundingIcon" />
               </div>
             </div>
           </div>
