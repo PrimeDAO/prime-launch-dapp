@@ -109,7 +109,7 @@
 
       .launchGrid {
         display: grid;
-        grid-template-columns: 0.5fr 0.5fr 2fr 0.75fr 0.75fr 0.75fr 0.75fr 0.5fr;
+        grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr 0.75fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
 
@@ -129,7 +129,7 @@
 
       .launchGridMobile {
         display: none;
-        grid-template-columns: 0.5fr 1fr 1fr auto;
+        grid-template-columns: 1fr 0.5fr 0.5fr auto;
         grid-template-rows: auto auto;
         align-items: self-end; // makes header borders line up
 
