@@ -19,7 +19,7 @@ export interface ITokenDetails {
   fundingAddress: string,
   seedAddress: string,
   /**
-   * In wei, maximum ever total supply of seed tokens
+   * In wei, maximum ever total supply of project tokens
    */
   maxSeedSupply: string,
   /**
@@ -41,7 +41,7 @@ export interface ITokenDetails {
 
 export interface ISeedDetails {
   /**
-   * The price of one seed token in units of funding tokens
+   * The price of one project token in units of funding tokens
    * In wei.
    */
   pricePerToken: string,

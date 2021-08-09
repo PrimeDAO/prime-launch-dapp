@@ -62,12 +62,12 @@ export class Stage3 extends BaseStage {
     if (!Utils.isAddress(this.seedConfig.tokenDetails.fundingAddress)) {
       message = "Please enter a valid address for the Funding Token Address";
     } else if (!Utils.isAddress(this.seedConfig.tokenDetails.seedAddress)) {
-      message = "Please enter a valid address for the Seed Token Address";
+      message = "Please enter a valid address for the Project Token Address";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
+      message = "Funding Max cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
     } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
       message = "Please enter a number greater than zero for Initial Supply";
     } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
@@ -75,7 +75,7 @@ export class Stage3 extends BaseStage {
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingAddress))) {
       message = "Funding token address is not a valid contract";
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.seedAddress))) {
-      message = "Seed token address is not a valid contract";
+      message = "Project token address is not a valid contract";
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
@@ -91,7 +91,7 @@ export class Stage3 extends BaseStage {
         }
       });
       if (!message && totalDistribAmount.gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
-        message = "The sum of the Seed Token Global Distributions should not be greater than the Maximum Supply of Seed tokens";
+        message = "The sum of the Project Token Global Distributions should not be greater than the Maximum Supply of Project tokens";
       }
     }
     this.stageState.verified = !message;
@@ -101,7 +101,7 @@ export class Stage3 extends BaseStage {
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(type: string): void {
     if (type === "funding") {
-      if (this.seedConfig.tokenDetails.fundingAddress) {
+      if (this.seedConfig.tokenDetails.fundingAddress?.length) {
         if (this.lastCheckedFundingAddress !== this.seedConfig.tokenDetails.fundingAddress) {
           this.lastCheckedFundingAddress = this.seedConfig.tokenDetails.fundingAddress;
           this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.fundingAddress).then((tokenInfo: ITokenInfo) => {
@@ -112,7 +112,7 @@ export class Stage3 extends BaseStage {
               this.fundingIcon = tokenInfo.icon;
             }
           }).catch(() => {
-            this.validationError("Could not get funding token information from the address supplied");
+            this.validationError("Could not obtain funding token information from the address supplied");
             this.fundingSymbol = this.fundingIcon = undefined;
           });
         }
@@ -120,7 +120,7 @@ export class Stage3 extends BaseStage {
         this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = undefined;
       }
     } else if (type === "seed") {
-      if (this.seedConfig.tokenDetails.seedAddress) {
+      if (this.seedConfig.tokenDetails.seedAddress?.length) {
         if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.seedAddress) {
           this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.seedAddress;
           this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.seedAddress).then((tokenInfo: ITokenInfo) => {
@@ -131,7 +131,7 @@ export class Stage3 extends BaseStage {
               this.seedIcon = tokenInfo.icon;
             }
           }).catch(() => {
-            this.validationError("Could not get seed token information from the address supplied");
+            this.validationError("Could not obtain project token information from the address supplied");
             this.seedSymbol = this.seedIcon = undefined;
           });
         }

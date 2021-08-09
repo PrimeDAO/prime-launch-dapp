@@ -113,7 +113,7 @@
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
-            Seed Token Address
+            Project Token Address
           </div>
           <div class="tokenInfo">
             <etherscanlink address.to-view="seedConfig.tokenDetails.seedAddress" text.to-view="seedConfig.tokenDetails.seedAddress | smallHexString"></etherscanlink>
@@ -125,7 +125,7 @@
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
-            Maximum Seed Token Supply
+            Maximum Project Token Supply
           </div>
           <div class="tokenInfo">
             <div>
@@ -146,7 +146,7 @@
           </div>
         </div>
         <div class="stageSeedDetails">
-          <div class="heading heading4">Seed Token Global Distribution</div>
+          <div class="heading heading4">Project Token Global Distribution</div>
           <div class="tokenDist" if.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
             <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
               <div class="header">Category</div>
@@ -167,7 +167,7 @@
         <div class="heading heading3">SEED Details</div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
-            Funding Tokens per Seed Token
+            Funding Tokens per Project Token
           </div>
           <div class="tokenInfo">
             <div>
@@ -200,7 +200,7 @@
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
-            Seed tokens vested for
+            Project tokens vested for
           </div>
           <div>${(seedConfig.seedDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
         </div>

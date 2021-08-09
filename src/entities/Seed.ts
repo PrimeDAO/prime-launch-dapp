@@ -46,7 +46,7 @@ export class Seed {
   public isClosed: boolean;
   /**
    * The number of fundingTokens required to receive one seedToken,
-   * ie, the price of one seed token in units of funding tokens.
+   * ie, the price of one project (seed) token in units of funding tokens.
    */
   public fundingTokensPerSeedToken: number;
   /**
@@ -64,11 +64,11 @@ export class Seed {
    */
   public whitelisted: boolean;
   /**
-   * the number of seconds of over which seed tokens vest
+   * the number of seconds of over which project tokens vest
    */
   public vestingDuration: number;
   /**
-   * the initial period in seconds of the vestingDuration during which seed tokens may not
+   * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
   public vestingCliff: number;
@@ -78,15 +78,17 @@ export class Seed {
    */
   public amountRaised: BigNumber;
   /**
-   * $ value of the total supply of the seed token
+   * $ value of the total supply of the project (seed) token
    */
   public valuation: number;
-
+  /**
+   * "seed token" is a synonym for "project token"
+   */
   public seedTokenAddress: Address;
   public seedTokenInfo: ITokenInfo;
   public seedTokenContract: any;
   /**
-   * balance of seed tokens in this contract
+   * balance of project tokens in this contract
    */
   public seedTokenBalance: BigNumber;
   /**
@@ -98,7 +100,7 @@ export class Seed {
    */
   public seedAmountRequired: BigNumber;
   /**
-   * Is the seed contract initialized and have enough seed tokens to pay its obligations
+   * Is the seed contract initialized and have enough project tokens to pay its obligations
    */
   public hasEnoughSeedTokens: boolean;
 
@@ -110,11 +112,11 @@ export class Seed {
 
   public userIsWhitelisted: boolean;
   /**
-   * claimable seed tokens
+   * claimable project (seed) tokens
    */
   public userClaimableAmount: BigNumber;
   /**
-   * pending (locked) seed tokens
+   * pending (locked) project tokens
    */
   public userPendingAmount: BigNumber;
   public userCanClaim: boolean;
