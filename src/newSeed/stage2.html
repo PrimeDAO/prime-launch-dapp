@@ -58,32 +58,6 @@
           </textarea>
       </div>
 
-      <div class="infoInput logo">
-        <div class="logoInput">
-          <label for="logo">
-            <div class="text">Project Logo</div>
-            <div class="logoPreview" show.to-view="seedLogoIsValid && seedLogoIsLoaded">
-              <img class="logoImage"
-                src.to-view="seedConfig.projectDetails.logo"
-                error.trigger="isLoadedSeedLogo(false)"
-                load.trigger="isLoadedSeedLogo(true)">
-              </img>
-            </div>
-            <div class="logoNone" if.to-view="!seedLogoIsValid || !seedLogoIsLoaded">[none]</div>
-          </label>
-          <input id="logo" type="text"
-            value.bind="seedConfig.projectDetails.logo"
-            input.trigger="isValidSeedLogo()"
-            placeholder="URL to a valid image file">
-        </div>
-        <div class="fileNote">
-          JPG, GIF, PNG or BMP formats<br />
-          Square aspect ratio<br />
-          Recommended size: 400x400px<br />
-          Maximum 5MB file size
-        </div>
-      </div>
-
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
         <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
