@@ -1,3 +1,4 @@
+import { BrowserStorageService } from "./../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
@@ -42,6 +43,7 @@ export class SeedDashboard {
     private geoBlockService: GeoBlockService,
     private disclaimerService: DisclaimerService,
     private router: Router,
+    private storageService: BrowserStorageService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
@@ -104,7 +106,7 @@ export class SeedDashboard {
   }
 
   private get seedDisclaimed(): boolean {
-    return this.ethereumService.defaultAccountAddress && (localStorage.getItem(this.seedDisclaimerStatusKey) === "true");
+    return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.seedDisclaimerStatusKey, "false") === "true");
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -188,7 +190,7 @@ export class SeedDashboard {
         disclaimed = false;
       } else {
         if (response.output) {
-          localStorage.setItem(this.seedDisclaimerStatusKey, "true");
+          this.storageService.lsSet(this.seedDisclaimerStatusKey, "true");
         }
         disclaimed = response.output as boolean;
       }

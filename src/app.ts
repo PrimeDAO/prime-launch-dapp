@@ -10,6 +10,7 @@ import tippy from "tippy.js";
 import { BindingSignaler } from "aurelia-templating-resources";
 import { EthereumService } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import { BrowserStorageService } from "services/BrowserStorageService";
 
 @autoinject
 export class App {
@@ -17,7 +18,9 @@ export class App {
     private signaler: BindingSignaler,
     private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
-    private consoleLogService: ConsoleLogService) { }
+    private consoleLogService: ConsoleLogService,
+    private storageService: BrowserStorageService,
+  ) { }
 
   router: Router;
   onOff = false;
@@ -173,10 +176,10 @@ export class App {
     config.addPreActivateStep({
       run(navigationInstruction: NavigationInstruction, next: Next) {
         if (navigationInstruction.previousInstruction) {
-          let position = sessionStorage.getItem(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment));
+          let position = this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment));
           if (!position) {
             position = `${window.scrollX},${window.scrollY}`;
-            sessionStorage.setItem(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment), position);
+            this.storageService.ssSet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment), position);
           }
         }
         return next();
@@ -188,7 +191,7 @@ export class App {
      */
     config.addPostRenderStep({
       run(navigationInstruction: NavigationInstruction, next: Next) {
-        let position = sessionStorage.getItem(_this.getScrollStateKey(navigationInstruction.fragment));
+        let position = this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.fragment));
         if (!position) {
           position = "0,0";
         }
@@ -204,7 +207,7 @@ export class App {
    * store the scroll position per each page
    */
   handleScrollEvent(): void {
-    sessionStorage.setItem(this.getScrollStateKey(this.router.currentInstruction.fragment),
+    this.storageService.ssSet(this.getScrollStateKey(this.router.currentInstruction.fragment),
       `${window.scrollX},${window.scrollY}`);
   }
 
