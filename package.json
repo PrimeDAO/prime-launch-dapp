@@ -1,10 +1,10 @@
 {
-  "name": "@primedao/prime-ido-dapp",
+  "name": "@primedao/prime-launch-dapp",
   "version": "1.0.0",
   "description": "The PrimeDAO’s Home for IDOs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PrimeDAO/prime-ido-dapp"
+    "url": "https://github.com/PrimeDAO/prime-launch-dapp"
   },
   "author": "CL Cybernetix GmbH",
   "homepage": "./",
@@ -45,7 +45,7 @@
     "numeral": "^2.0.6",
     "rxjs": "^6.6.3",
     "tippy.js": "^6.2.7",
-    "web3modal": "^1.9.0"
+    "web3modal": "^1.9.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
