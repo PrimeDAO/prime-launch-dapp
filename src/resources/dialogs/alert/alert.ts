@@ -1,5 +1,6 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
+import "./alert.scss";
 
 @autoinject
 export class Alert {
@@ -11,7 +12,6 @@ export class Alert {
 
   public activate(model: IAlertModel): void {
     this.model = model;
-    require("./alert.scss");
   }
 
   public attached(): void {

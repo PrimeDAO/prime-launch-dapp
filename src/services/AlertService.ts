@@ -50,9 +50,27 @@ export class AlertService {
   }
 
   public showAlert(message: string): Promise<DialogCloseResult> {
-    return this.dialogService.open(Alert, { message }, { keyboard: true })
+    /**
+     * hack we gotta go through because of how the gradient border, size
+     * and position of the dialog is defined in ux-dialog-container.
+     * See alert.scss and dialogs.scss.  We have no other way to selectively
+     * alter the css of that element.  Once alert.scss is loaded, it forever overrides
+     * the default styling on ux-dialog-container.
+     */
+    let theContainer: Element;
+
+    return this.dialogService.open(Alert, { message }, {
+      keyboard: true,
+      position: (modalContainer: Element, _modalOverlay: Element): void => {
+        theContainer = modalContainer;
+        modalContainer.classList.add("alert");
+      },
+    })
       .whenClosed(
-        (result: DialogCloseResult) => result,
+        (result: DialogCloseResult) => {
+          theContainer.classList.remove("alert");
+          return result;
+        },
         // not sure if this works for alert
         (error: string) => { return { output: error, wasCancelled: false }; });
   }
