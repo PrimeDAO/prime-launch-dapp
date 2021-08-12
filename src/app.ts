@@ -73,6 +73,8 @@ export class App {
     }, 1000);
 
     window.addEventListener("resize", () => { this.showingMobileMenu = false; });
+
+    this.ethereumService.connectToConnectedProvider();
   }
 
   private handleOnOff(onOff: boolean): void {

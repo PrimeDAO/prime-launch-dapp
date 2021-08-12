@@ -1,4 +1,7 @@
+import detectEthereumProvider from "@metamask/detect-provider";
+import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
+import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber, ethers, Signer } from "ethers";
 import { BaseProvider, Web3Provider } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
@@ -64,7 +67,10 @@ export interface IChainEventInfo {
 export class EthereumService {
   constructor(
     private eventAggregator: EventAggregator,
-    private disclaimerService: DisclaimerService) { }
+    private disclaimerService: DisclaimerService,
+    private consoleLogService: ConsoleLogService,
+    private storageService: BrowserStorageService,
+  ) { }
 
   private static ProviderEndpoints = {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
@@ -214,49 +220,136 @@ export class EthereumService {
   public walletProvider: Web3Provider;
   public defaultAccountAddress: Address;
 
-  public async connect(network = Networks.Mainnet): Promise<void> {
+  public async connect(): Promise<void> {
 
+    if (!this.walletProvider) {
+      this.ensureWeb3Modal();
+      const web3ModalProvider = await this.web3Modal.connect();
+      this.setProvider(web3ModalProvider);
+    }
+  }
+
+  public ensureConnected(): boolean {
+    if (!this.defaultAccountAddress) {
+      // TODO: make this await until we're either connected or not?
+      this.connect();
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+  /**
+   * silently connect to metamask if a metamask account is already connected,
+   * without invoking Web3Modal nor MetaMask popups.
+   */
+  public async connectToConnectedProvider(): Promise<void> {
+    // const cachedProvider = this.cachedProvider;
+    // const cachedAccount = this.cachedWalletAccount;
+
+    this.ensureWeb3Modal();
+
+    const provider = (await detectEthereumProvider()) as any;
+
+    /**
+     * at this writing, `_metamask.isUnlocked` is "experimental", according to MetaMask,
+     * but it sure helps us know whether we can connect without MetaMask asking the user to log in.
+     */
+    if (provider && (await provider._metamask.isUnlocked())) {
+      const accounts = await provider.request({ method: "eth_requestAccounts" });
+      if (accounts) {
+        this.setProvider(provider);
+      }
+    }
+  }
+
+  private ensureWeb3Modal(): void {
     if (!this.web3Modal) {
       this.web3Modal = new Web3Modal({
-        network, // optional
-        // cacheProvider: true, // optional
+        // network: Networks.Mainnet,
+        cacheProvider: false,
         providerOptions: EthereumService.providerOptions, // required
         theme: "dark",
       });
-      this.web3Modal?.clearCachedProvider(); // just in case
-    }
-
-    const web3ModalProvider = await this.web3Modal.connect();
-    if (web3ModalProvider) {
-      const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider);
-      (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
-      const chainId = await this.getChainId(walletProvider);
-      const chainName = this.chainNameById.get(chainId);
-      if (chainName !== this.targetedNetwork) {
-        this.eventAggregator.publish("handleFailure", new EventConfigFailure(`Please connect to ${this.targetedNetwork}`));
-        return;
-      }
       /**
-       * we will keep the original readonly provider which should still be fine since
-       * the targeted network cannot have changed.
+       * If a provider has been cached before, and is still set, Web3Modal will use it even
+       * if we have pass `cachedProvider: false` above. `cachedProvider: true` only controls
+       * whether the provider should be cached, not whether it should be used.
+       * So call clearCachedProvider() here to clear it, just in case it has ever been set.
        */
-      this.walletProvider = walletProvider;
-      this.web3ModalProvider = web3ModalProvider;
-      this.defaultAccount = await this.getCurrentAccountFromProvider(this.walletProvider);
-      this.defaultAccountAddress = await this.getDefaultAccountAddress();
-      /**
-       * because the events aren't fired on first connection
-       */
-      this.fireConnectHandler({ chainId, chainName, provider: this.walletProvider });
-      this.fireAccountsChangedHandler(this.defaultAccountAddress);
-
-      this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
-
-      this.web3ModalProvider.on("chainChanged", this.handleChainChanged);
-
-      this.web3ModalProvider.on("disconnect", this.handleDisconnect);
+      this.web3Modal?.clearCachedProvider();
     }
   }
+
+  private async setProvider(web3ModalProvider: Web3Provider & IEIP1193): Promise<void> {
+    try {
+      if (web3ModalProvider) {
+        const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider as any);
+        (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
+        const chainId = await this.getChainId(walletProvider);
+        const chainName = this.chainNameById.get(chainId);
+        if (chainName !== this.targetedNetwork) {
+          this.eventAggregator.publish("handleFailure", new EventConfigFailure(`Please connect to ${this.targetedNetwork}`));
+          return;
+        }
+        /**
+           * we will keep the original readonly provider which should still be fine since
+           * the targeted network cannot have changed.
+           */
+        this.walletProvider = walletProvider;
+        this.web3ModalProvider = web3ModalProvider;
+        this.defaultAccount = await this.getCurrentAccountFromProvider(this.walletProvider);
+        this.defaultAccountAddress = await this.getDefaultAccountAddress();
+        /**
+           * because the events aren't fired on first connection
+           */
+        this.fireConnectHandler({ chainId, chainName, provider: this.walletProvider });
+        this.fireAccountsChangedHandler(this.defaultAccountAddress);
+
+        this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
+
+        this.web3ModalProvider.on("chainChanged", this.handleChainChanged);
+
+        this.web3ModalProvider.on("disconnect", this.handleDisconnect);
+
+        // this.cachedProvider = this.walletProvider;
+        // this.cachedWalletAccount = this.defaultAccountAddress;
+      }
+    } catch (error) {
+      this.consoleLogService.logMessage(`Error connecting to wallet provider ${error?.message}`, "error");
+      // this.cachedProvider = null;
+      // this.cachedWalletAccount = null;
+      // this.web3Modal?.clearCachedProvider();
+    }
+  }
+
+  // private cachedProviderKey = "cachedWalletProvider";
+  // private cachedWalletAccountKey = "cachedWalletAccount";
+
+  // private get cachedProvider(): any {
+  //   return JSON.parse(this.storageService.lsGet(this.cachedProviderKey));
+  // }
+
+  // private set cachedProvider(provider: any) {
+  //   if (provider) {
+  //     this.storageService.lsSet(this.cachedProviderKey, JSON.stringify(provider));
+  //   } else {
+  //     this.storageService.lsRemove(this.cachedProviderKey);
+  //   }
+  // }
+
+  // private get cachedWalletAccount(): Address {
+  //   return this.storageService.lsGet(this.cachedWalletAccountKey);
+  // }
+
+  // private set cachedWalletAccount(account: Address) {
+  //   if (account) {
+  //     this.storageService.lsSet(this.cachedWalletAccountKey, account);
+  //   } else {
+  //     this.storageService.lsRemove(this.cachedWalletAccountKey);
+  //   }
+  // }
 
   private handleAccountsChanged = async (accounts: Array<Address>) => {
     this.defaultAccount = await this.getCurrentAccountFromProvider(this.walletProvider);
@@ -281,7 +374,9 @@ export class EthereumService {
   }
 
   public disconnect(error: { code: number; message: string }): void {
-    this.web3Modal?.clearCachedProvider(); // so web3Modal will let the user reconnect
+    // this.cachedProvider = null;
+    // this.cachedWalletAccount = null;
+    // this.web3Modal?.clearCachedProvider(); // so web3Modal will let the user reconnect
     this.web3ModalProvider?.removeListener("accountsChanged", this.handleAccountsChanged);
     this.web3ModalProvider?.removeListener("chainChanged", this.handleChainChanged);
     this.web3ModalProvider?.removeListener("disconnect", this.handleDisconnect);
@@ -304,17 +399,6 @@ export class EthereumService {
    */
   public dispose(): void {
     this.readOnlyProvider.off("block", (blockNumber: number) => this.handleNewBlock(blockNumber));
-  }
-
-  public ensureConnected(): boolean {
-    if (!this.defaultAccountAddress) {
-      // TODO: make this await until we're either connected or not?
-      this.connect();
-      return false;
-    }
-    else {
-      return true;
-    }
   }
 
   public async getBlock(blockNumber: number): Promise<IBlockInfo> {
