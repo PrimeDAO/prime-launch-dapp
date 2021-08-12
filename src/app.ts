@@ -176,10 +176,10 @@ export class App {
     config.addPreActivateStep({
       run(navigationInstruction: NavigationInstruction, next: Next) {
         if (navigationInstruction.previousInstruction) {
-          let position = this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment));
+          let position = _this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment));
           if (!position) {
             position = `${window.scrollX},${window.scrollY}`;
-            this.storageService.ssSet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment), position);
+            _this.storageService.ssSet(_this.getScrollStateKey(navigationInstruction.previousInstruction.fragment), position);
           }
         }
         return next();
@@ -191,7 +191,7 @@ export class App {
      */
     config.addPostRenderStep({
       run(navigationInstruction: NavigationInstruction, next: Next) {
-        let position = this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.fragment));
+        let position = _this.storageService.ssGet(_this.getScrollStateKey(navigationInstruction.fragment));
         if (!position) {
           position = "0,0";
         }
