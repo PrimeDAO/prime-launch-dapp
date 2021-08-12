@@ -13,8 +13,8 @@ body > ux-dialog-container {
   // -bottom: 4px; // for some reason is needed to make room for the footer
   background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
   padding-left: 4px;
-  padding-top: 1px;
-  padding-bottom: 1px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   padding-right: 4px;
   border-radius: 6px;
 
@@ -111,7 +111,6 @@ body > ux-dialog-overlay {
       // background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
 
       ux-dialog-header {
-        border-radius: 0;
         .heading {
           white-space: normal;
           text-align: center;
@@ -125,7 +124,6 @@ body > ux-dialog-overlay {
       }
 
       ux-dialog-footer {
-        border-radius: 0;
         display: flex;
         flex-direction: column;
         text-align: center;
