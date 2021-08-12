@@ -22,6 +22,7 @@ export interface IWizardState {
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
   seedAdminAddress?: Address;
+  seedStartDate?: string;
 }
 
 @singleton(false)

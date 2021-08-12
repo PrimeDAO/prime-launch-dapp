@@ -12,18 +12,15 @@
           <span class="importantText">Please save this URL.</span>
         </p>
 
-        <p>The DAO must approve the Seed's display in the PrimeLAUNCH interface, and someone must transfer
-          <formatted-number
+        <p>PrimeDAO Governance needs to approve and initialize your new Seed before it can appear in and be used in the PrimeLAUNCH interface. The approval takes place in the <a href="https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions" target="_blank" rel="noopener noreferrer">PrimeLAUNCH multisig wallet</a>. Reviews generally take 5-7 days.</p>
+
+        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.seedAdminAddress" text="Seed Admin"></etherscanlink> will have to add <formatted-number
             value.to-view="wizardState.requiredSeedDeposit"
-            thousands-separated></formatted-number>
-          ${wizardState.projectTokenSymbol} to the Seed contract.
-          This amount includes any service fees.
-        </p>
-        <p>
-          <etherscanlink address.to-view="wizardState.seedAdminAddress" text.to-view="wizardState.seedAdminAddress | smallHexString"></etherscanlink> is the sole administrator of the new Seed<span if.to-view="!!wizardState.whiteList"> and is responsible for managing its whitelist</span>.
-        </p>
+            thousands-separated></formatted-number> ${wizardState.projectTokenSymbol} to the Seed<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="https://admin.launch.prime.xyz" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
+
+        <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the Seed is initialized. The Seed will automatically start ${wizardState.seedStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
       </div>
-      <div class="linksContainer">
+      <!-- <div class="linksContainer">
         <div>
           <i class="fas fa-arrow-right"></i>
           <a>Go to useful link</a>
@@ -32,13 +29,9 @@
           <i class="fas fa-arrow-right"></i>
           <a>Read our FAQ</a>
         </div>
-        <!-- <div>
-            <i class="fas fa-arrow-right"></i>
-            <a>Have some fun while waiting…</a>
-          </div> -->
-        <div class="closeButton">
-          <a class="button1" href="/">Close</a>
-        </div>
+      </div> -->
+      <div class="closeButton">
+        <a class="button1" href="/">Close</a>
       </div>
     </div>
   </div>

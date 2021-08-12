@@ -88,6 +88,7 @@ export class Stage4 extends BaseStage {
     // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
     this.wizardState.seedAdminAddress = this.seedConfig.seedDetails.adminAddress;
     this.wizardState.whiteList = this.seedConfig.seedDetails.whitelist;
+    this.wizardState.seedStartDate = this.seedConfig.seedDetails.startDate;
   }
 
   async validateInputs(): Promise<string> {
