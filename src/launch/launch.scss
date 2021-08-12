@@ -84,6 +84,9 @@
         .moreInfoContainer {
           a {
             @include standardTextGradient;
+            &:hover {
+              border-bottom: 1px solid $Secondary02;
+            }
           }
         }
       }
@@ -111,21 +114,21 @@
     }
   }
   position: relative;
-  &>.bg-image {
+  & > .bg-image {
     position: absolute;
     z-index: -1;
     right: -20px;
     height: 650px;
     object-fit: cover;
-    max-width: calc(100% - 160px)
+    max-width: calc(100% - 160px);
   }
 }
 
 @media screen and (min-width: 1070px) {
   .page.launch {
-      &>.bg-image {
-        right: -160px;
-      }
+    & > .bg-image {
+      right: -160px;
+    }
   }
 }
 
@@ -155,7 +158,7 @@
         }
       }
     }
-    &>.bg-image {
+    & > .bg-image {
       display: none;
     }
   }
