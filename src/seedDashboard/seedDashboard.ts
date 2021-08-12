@@ -249,7 +249,9 @@ export class SeedDashboard {
       this.seed.buy(this.fundingTokenToPay)
         .then((receipt) => {
           if (receipt) {
+            this.fundingTokenToPay = null;
             this.hydrateUserData();
+            // alert("Congratulations!");
           }
         });
     }
