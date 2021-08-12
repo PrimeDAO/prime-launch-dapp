@@ -1,3 +1,4 @@
+import { AlertService } from "./../services/AlertService";
 import { BrowserStorageService } from "./../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
@@ -44,6 +45,7 @@ export class SeedDashboard {
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
+    private alertService: AlertService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
@@ -247,11 +249,11 @@ export class SeedDashboard {
       this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.seed.fundingTokenInfo.symbol} to the Seed contract`);
     } else if (await this.disclaimSeed()) {
       this.seed.buy(this.fundingTokenToPay)
-        .then((receipt) => {
+        .then(async (receipt) => {
           if (receipt) {
+            await this.hydrateUserData();
+            this.alertService.showAlert(`Congratulations! You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
-            this.hydrateUserData();
-            // alert("Congratulations!");
           }
         });
     }

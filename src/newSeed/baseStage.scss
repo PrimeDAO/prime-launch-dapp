@@ -389,6 +389,12 @@
           width: 240px;
           margin-right: 6px;
         }
+
+        .button2.small {
+          text-transform: none;
+          position: relative;
+          bottom: 4px;
+        }
       }
     }
     .whitelistContainer {
