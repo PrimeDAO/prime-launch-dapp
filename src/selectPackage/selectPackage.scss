@@ -104,3 +104,11 @@
     }
   }
 }
+
+@media screen and (max-width: 900px) {
+  .page.page.selectPackage .banner > .heading.heading1 {
+    white-space: normal;
+    text-align: center;
+    line-height: 50px;
+  }
+}
