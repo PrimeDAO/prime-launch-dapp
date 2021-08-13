@@ -22,4 +22,4 @@ For example, take a Seed Launch with a 3 day cliff and a 10 day vest. A contribu
 
 ## Contributing to a Liquid Launch
 
-*Liquid Launches are currently in development and are expected to go live in September 2021. If you're interested in hosting a Liquid Launch on Prime Launch, it's already possible to pre-register and request more information via <a href ="https://hi704760.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">this form</a>.*
+*Liquid Launches are currently in development and are expected to go live in September 2021. If you're interested in hosting a Liquid Launch on Prime Launch, it's already possible to pre-register and request more information via <a href ="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">this form</a>.*
