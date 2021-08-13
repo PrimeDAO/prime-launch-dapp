@@ -6,60 +6,101 @@
   justify-content: center;
   gap: 30px;
 
-  .banner {
-    text-align: center;
+  > .banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
   }
 
   .packages {
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 350px));
-    gap: 20px;
+    justify-content: center;
+  }
+
+  & .subtext {
+    font-size: 18px;
+    max-width: 615px;
+    text-align: center;
+    color: $Neutral03;
+    font-family: Inter;
   }
 
   .packageContainer {
     background-color: $BG02;
-    border-radius: 15px;
-    height: 100%;
-    display: grid;
-    grid-template-rows: 2fr 1fr;
-    > div {
-      padding-left: 20px;
-      padding-right: 40px;
-      font-size: 20px;
-    }
+    border-radius: 25px;
+    max-width: 360px;
+    padding: 30px;
     .topSection {
-      padding-top: 10px;
-      padding-bottom: 40px;
-      line-height: 1.3em;
+      margin-bottom: 107px;
+      .heading3 {
+        font-size: 36px;
+        line-height: 65px;
+      }
+      .subtext {
+        text-align: left;
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 57px;
+      }
       .benefitsContainer {
         text-align: left;
         text-orientation: sideways-right;
-        padding-left: 1.5em;
-        padding-right: 1.5em;
-        padding-top: 1.5em;
-        font-size: 0.8em;
-        line-height: 2em;
-        span {
-          color: firebrick;
-          font-size: 1.3em;
-          padding: 0.4em;
+        padding-left: 42px;
+        line-height: 24px;
+        .benefit {
+          display: grid;
+          grid-template-columns: .1fr 1fr;
+          gap: 14px;
+          font-family: Inter;
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 11px;
+          .check {
+            text-align: center;
+            background-color: #21B66F;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            padding: 3px;
+            color: $Black;
+          }
+          .noCheck {
+            text-align: center;
+            background-color: #FF8A80;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            padding: 3px;
+            color: $Black;
+          }
         }
       }
     }
     .packageFooter {
       display: grid;
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-rows: .6fr 1fr .5fr;
       justify-content: center;
       row-gap: 10px;
+      font-family: Inter;
       .discount {
         text-align: center;
-      }
-      a {
-        text-align: center;
+        font-size: 28px;
+        line-height: 24px;
+        font-weight: bold;
+        .subtext {
+          font-size: 14px;
+          color: $Neutral02;
+        }
       }
     }
     .learnMore {
       text-align: center;
+      font-size: 14px;
+      a {
+        color: $Neutral02;
+        font-weight: 500;
+      }
     }
   }
 }
