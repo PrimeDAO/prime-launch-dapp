@@ -1,0 +1,17 @@
+body > ux-dialog-container.alert {
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ux-dialog {
+    ux-dialog-footer {
+      .button1 {
+        &.small {
+          width: 98px;
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
   <div class="section seedAbout ${type}">
     <div class="title heading heading3">About ${seed.metadata.general.projectName}</div>
     <div class="body subtext">${seed.metadata.projectDetails.summary}</div>
-    <div if.to-view="seed.metadata.general.customLinks.length" class="links">
+    <div class="links">
       <a href.to-view="seed.metadata.general.projectWebsite" target="_blank" rel="noopener noreferrer">
         <div class="icon ${iconClassForLinkType('home')}"></div>
         <div class="name">${seed.metadata.general.projectName}</div>
@@ -15,10 +15,12 @@
         <div class="icon ${linkIcons.get('github')}"></div>
         <div class="name">Github</div>
       </a>
-      <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="formatLink(link.url)" target="_blank" rel="noopener noreferrer">
-        <div class="icon ${iconClassForLinkType(link.media)}"></div>
-        <div class="name">${link.media}</div>
-      </a>
+      <template if.to-view="seed.metadata.general.customLinks.length">
+        <a repeat.for="link of seed.metadata.general.customLinks" href.to-view="formatLink(link.url)" target="_blank" rel="noopener noreferrer">
+          <div class="icon ${iconClassForLinkType(link.media)}"></div>
+          <div class="name">${link.media}</div>
+        </a>
+      </template>
     </div>
   </div>
 </template>

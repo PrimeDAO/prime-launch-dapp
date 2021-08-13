@@ -45,10 +45,10 @@ export class Seed {
    */
   public isClosed: boolean;
   /**
-   * The number of fundingTokens required to receive one seedToken,
-   * ie, the price of one seed token in units of funding tokens.
+   * The number of fundingTokens required to receive one projectToken,
+   * ie, the price of one project (seed) token in units of funding tokens.
    */
-  public fundingTokensPerSeedToken: number;
+  public fundingTokensPerProjectToken: number;
   /**
    * in terms of fundingToken
    */
@@ -64,11 +64,11 @@ export class Seed {
    */
   public whitelisted: boolean;
   /**
-   * the number of seconds of over which seed tokens vest
+   * the number of seconds of over which project tokens vest
    */
   public vestingDuration: number;
   /**
-   * the initial period in seconds of the vestingDuration during which seed tokens may not
+   * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
   public vestingCliff: number;
@@ -78,17 +78,19 @@ export class Seed {
    */
   public amountRaised: BigNumber;
   /**
-   * $ value of the total supply of the seed token
+   * $ value of the total supply of the project (seed) token
    */
   public valuation: number;
-
-  public seedTokenAddress: Address;
-  public seedTokenInfo: ITokenInfo;
-  public seedTokenContract: any;
   /**
-   * balance of seed tokens in this contract
+   * "seed token" is a synonym for "project token"
    */
-  public seedTokenBalance: BigNumber;
+  public projectTokenAddress: Address;
+  public projectTokenInfo: ITokenInfo;
+  public projectTokenContract: any;
+  /**
+   * balance of project tokens in this contract
+   */
+  public projectTokenBalance: BigNumber;
   /**
    * number of tokens in this seed contract
    */
@@ -98,9 +100,9 @@ export class Seed {
    */
   public seedAmountRequired: BigNumber;
   /**
-   * Is the seed contract initialized and have enough seed tokens to pay its obligations
+   * Is the seed contract initialized and have enough project tokens to pay its obligations
    */
-  public hasEnoughSeedTokens: boolean;
+  public hasEnoughProjectTokens: boolean;
 
   public feeRemainder: BigNumber;
 
@@ -110,11 +112,11 @@ export class Seed {
 
   public userIsWhitelisted: boolean;
   /**
-   * claimable seed tokens
+   * claimable project (seed) tokens
    */
   public userClaimableAmount: BigNumber;
   /**
-   * pending (locked) seed tokens
+   * pending (locked) project tokens
    */
   public userPendingAmount: BigNumber;
   public userCanClaim: boolean;
@@ -199,9 +201,9 @@ export class Seed {
     return !this.uninitialized;
   }
 
-  @computedFrom("hasEnoughSeedTokens")
+  @computedFrom("hasEnoughProjectTokens")
   get uninitialized(): boolean {
-    return !this.hasEnoughSeedTokens;
+    return !this.hasEnoughProjectTokens;
   }
 
   constructor(
@@ -246,8 +248,8 @@ export class Seed {
   private async loadContracts(): Promise<void> {
     try {
       this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
-      if (this.seedTokenAddress) {
-        this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+      if (this.projectTokenAddress) {
+        this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
         this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
       }
     }
@@ -263,18 +265,18 @@ export class Seed {
       await this.hydrateMetadata();
 
       this.seedInitialized = await this.contract.initialized();
-      this.seedTokenAddress = await this.contract.seedToken();
+      this.projectTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
 
-      this.seedTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seedTokenAddress);
+      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
-      this.seedTokenContract = this.tokenService.getTokenContract(this.seedTokenAddress);
+      this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-      this.fundingTokensPerSeedToken = this.numberService.fromString(fromWei(await this.contract.price()));
+      this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price()));
       /**
        * in units of fundingToken
        */
@@ -325,7 +327,7 @@ export class Seed {
         this.userCanClaim || // can claim now
         this.userPendingAmount.gt(0) || // can eventually claim
         this.userCanRetrieve ||
-        ((await this.contract.checkWhitelisted(account))
+        ((await this.contract.whitelisted(account))
         );
     }
   }
@@ -355,16 +357,16 @@ export class Seed {
     this.seedRemainder = await this.contract.seedRemainder();
     this.seedAmountRequired = await this.contract.seedAmountRequired();
     this.feeRemainder = await this.contract.feeRemainder();
-    this.seedTokenBalance = await this.seedTokenContract.balanceOf(this.address);
-    this.hasEnoughSeedTokens =
-      this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.seedTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+    this.projectTokenBalance = await this.projectTokenContract.balanceOf(this.address);
+    this.hasEnoughProjectTokens =
+      this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
   }
 
 
   private seedsFromFunding(fundingAmount: BigNumber): BigNumber {
     const bnFundingAmount = toBigNumberJs(fundingAmount);
-    if ((this.fundingTokensPerSeedToken > 0) && (fundingAmount.gt(0))) {
-      return BigNumber.from(bnFundingAmount.idiv(this.fundingTokensPerSeedToken).toString());
+    if ((this.fundingTokensPerProjectToken > 0) && (fundingAmount.gt(0))) {
+      return BigNumber.from(bnFundingAmount.idiv(this.fundingTokensPerProjectToken).toString());
     } else {
       return BigNumber.from(0);
     }

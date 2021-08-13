@@ -3,6 +3,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DialogCloseResult, DialogService } from "services/DialogService";
 import { Disclaimer } from "../resources/dialogs/disclaimer/disclaimer";
 import axios from "axios";
+import { BrowserStorageService } from "services/BrowserStorageService";
 const marked = require("marked");
 
 @autoinject
@@ -15,6 +16,7 @@ export class DisclaimerService {
   constructor(
     private dialogService: DialogService,
     private eventAggregator: EventAggregator,
+    private storageService: BrowserStorageService,
   ) {
   }
 
@@ -25,7 +27,7 @@ export class DisclaimerService {
 
   @computedFrom("primeDisclaimerStatusKey")
   private get primeDisclaimed(): boolean {
-    return this.accountAddress && (localStorage.getItem(this.primeDisclaimerStatusKey) === "true");
+    return this.accountAddress && (this.storageService.lsGet(this.primeDisclaimerStatusKey, "false") === "true");
   }
 
   private async disclaimPrime(): Promise<boolean> {
@@ -60,7 +62,7 @@ export class DisclaimerService {
     } else {
       const accepted = await this.disclaimPrime();
       if (accepted) {
-        localStorage.setItem(this.primeDisclaimerStatusKey, "true");
+        this.storageService.lsSet(this.primeDisclaimerStatusKey, "true");
         return true;
       }
     }

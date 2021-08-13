@@ -37,7 +37,7 @@ export class Stage7 extends BaseStage {
   attached(): void {
     // this.seedConfig.seedDetails.fundingMax = toWei("100").toString();
     // this.seedConfig.seedDetails.pricePerToken = toWei(".5").toString();
-    // this.wizardState.seedTokenSymbol = "PRIME";
+    // this.wizardState.projectTokenSymbol = "PRIME";
     const distributableSeeds = this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax))
       / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken));
     this.wizardState.requiredSeedFee = distributableSeeds * this.seedFee;

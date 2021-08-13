@@ -345,16 +345,17 @@
         }
       }
       .vestingDatesContainer {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 1em;
+        display: grid;
+        column-gap: 1em;
+        grid-template-columns: auto auto;
       }
+
       .vestingDates {
         width: 11em;
-        display: flex;
-        flex-flow: row nowrap;
-        flex: 1;
-        gap: 0em;
+        display: grid;
+        grid-template-columns: auto auto;
+        column-gap: 0;
+
         input {
           width: 7em;
           border-top-right-radius: 0em;
@@ -362,8 +363,8 @@
           border-right: 0px;
           cursor: pointer;
         }
-        > div {
-          width: 3em;
+        .inputIcon {
+          width: 2.5em;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -374,9 +375,12 @@
           border-bottom-right-radius: 10px;
           z-index: 1;
           cursor: pointer;
-          i {
+          > i {
             font-size: 1.4em;
           }
+        }
+
+        .timezone {
         }
       }
 
@@ -384,6 +388,12 @@
         > input {
           width: 240px;
           margin-right: 6px;
+        }
+
+        .button2.small {
+          text-transform: none;
+          position: relative;
+          bottom: 4px;
         }
       }
     }

@@ -3,7 +3,6 @@ import { autoinject } from "aurelia-framework";
 import axios from "axios";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { DialogService } from "services/DialogService";
-import "../dialogs.scss";
 const marked = require("marked");
 
 @autoinject

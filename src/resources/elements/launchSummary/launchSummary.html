@@ -4,17 +4,17 @@
     ref="container"
     href.to-view="seed.canGoToDashboard ? `seed/${address}` : `${router.currentInstruction.fragment}`">
     <div if.to-view="!loading" class="launchSummary">
-      <div class="icon"><img src="${seed.metadata.projectDetails.logo}" /></div>
+      <div class="icon"><img src.to-view="seed.projectTokenInfo.icon" /></div>
       <div class="title ellipses">${seed.metadata.general.projectName}</div>
       <div class="countdown">
         <time-left seed.to-view="seed" largest contained></time-left>
       </div>
-      <div class="description">${seed.metadata.projectDetails.proposition}</div>
+      <div class="description">${seed.metadata.projectDetails.summary}</div>
       <div class="tokensTarget">
-        <div class="tokensTitle title subtext">${seed.seedTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
+        <div class="tokensTitle title subtext">${seed.projectTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
         <div class="targetTitle title subtext">TARGET</div>
         <div class="tokens">
-          <token-pair token1.to-view="seed.seedTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
+          <token-pair token1.to-view="seed.projectTokenInfo.icon" token2.to-view="seed.fundingTokenInfo.icon"></token-pair>
         </div>
         <div class="targetValue">$ <formatted-number thousands-separated average value.to-view="seed.target | ethwei"></formatted-number>
         </div>

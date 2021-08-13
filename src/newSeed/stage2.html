@@ -7,9 +7,9 @@
       <div class="infoInput">
         <div class="labelContainer">
           <div class="labeledQuestion">
-            <label for="projSummary">Project Summary</label>
+            <label for="projSummary">Short Description</label>
             <div class="questionMark">
-              <question-mark text="Describe your project. This introduction will be visible to users on the Home, Launches, and Seed Dashboard pages"></question-mark>
+              <question-mark text="Describe your project. This short description will be visible to users on Featured Launch cards and the Seed Dashboard page"></question-mark>
             </div>
           </div>
           <span>
@@ -26,17 +26,17 @@
           <div class="labeledQuestion">
             <label for="valueProp">Value Proposition</label>
             <div class="questionMark">
-              <question-mark text="Describe why contributors should engage your project. This will be visible at the top of the Seed Dashboard"></question-mark>
+              <question-mark text="Describe why contributors should engage your project. This will be will be prominently displayed on the Seed Dashboard page"></question-mark>
             </div>
           </div>
           <span>
-            ${seedConfig.projectDetails.proposition.length}/200
+            ${seedConfig.projectDetails.proposition.length}/300
           </span>
         </div>
         <textarea
           id="valueProp"
           value.bind="seedConfig.projectDetails.proposition"
-          maxlength="200">
+          maxlength="300">
           </textarea>
       </div>
       <div class="infoInput">
@@ -56,31 +56,6 @@
           value.bind="seedConfig.projectDetails.teamDescription"
           maxlength="200">
           </textarea>
-      </div>
-
-      <div class="infoInput logo">
-        <div class="logoInput">
-          <label for="logo">
-            <div class="text">Project Logo</div>
-            <div class="logoPreview" show.to-view="seedLogoIsValid && seedLogoIsLoaded">
-              <img class="logoImage"
-                src.to-view="seedConfig.projectDetails.logo"
-                error.trigger="isLoadedSeedLogo(false)"
-                load.trigger="isLoadedSeedLogo(true)">
-              </img>
-            </div>
-            <div class="logoNone" if.to-view="!seedLogoIsValid || !seedLogoIsLoaded">[none]</div>
-          </label>
-          <input id="logo" type="text"
-            value.bind="seedConfig.projectDetails.logo"
-            input.trigger="isValidSeedLogo()">
-        </div>
-        <div class="fileNote">
-          JPG, GIF, PNG or BMP formats<br />
-          Square aspect ratio<br />
-          Recommended size: 400x400px<br />
-          Maximum 5MB file size
-        </div>
       </div>
 
       <div class="buttonContainer">

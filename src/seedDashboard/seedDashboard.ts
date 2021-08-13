@@ -1,3 +1,5 @@
+import { AlertService } from "./../services/AlertService";
+import { BrowserStorageService } from "./../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
 import { EthereumService, fromWei } from "./../services/EthereumService";
@@ -22,9 +24,9 @@ export class SeedDashboard {
 
   seed: Seed;
   loading = true;
-  // seedTokenToReceive = 1;
+  // projectTokenToReceive = 1;
   fundingTokenToPay: BigNumber;
-  seedTokenToReceive: BigNumber;
+  projectTokenToReceive: BigNumber;
   progressBar: HTMLElement;
   bar: HTMLElement;
 
@@ -42,6 +44,8 @@ export class SeedDashboard {
     private geoBlockService: GeoBlockService,
     private disclaimerService: DisclaimerService,
     private router: Router,
+    private storageService: BrowserStorageService,
+    private alertService: AlertService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
@@ -71,16 +75,16 @@ export class SeedDashboard {
   @computedFrom("seed.amountRaised")
   get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
 
-  @computedFrom("fundingTokenToPay", "seed.fundingTokensPerSeedToken")
-  get seedTokenReward(): number {
-    return (this.seed?.fundingTokensPerSeedToken > 0) ?
-      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerSeedToken
+  @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
+  get projectTokenReward(): number {
+    return (this.seed?.fundingTokensPerProjectToken > 0) ?
+      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerProjectToken
       : 0;
   }
 
   /** TODO: don't use current balance */
   @computedFrom("seed.seedRemainder", "seed.seedAmountRequired")
-  get percentSeedTokensLeft(): number {
+  get percentProjectTokensLeft(): number {
     return this.seed?.seedAmountRequired?.gt(0) ?
       ((this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
         this.numberService.fromString(fromWei(this.seed.seedAmountRequired))) * 100)
@@ -104,7 +108,7 @@ export class SeedDashboard {
   }
 
   private get seedDisclaimed(): boolean {
-    return this.ethereumService.defaultAccountAddress && (localStorage.getItem(this.seedDisclaimerStatusKey) === "true");
+    return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.seedDisclaimerStatusKey, "false") === "true");
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -188,7 +192,7 @@ export class SeedDashboard {
         disclaimed = false;
       } else {
         if (response.output) {
-          localStorage.setItem(this.seedDisclaimerStatusKey, "true");
+          this.storageService.lsSet(this.seedDisclaimerStatusKey, "true");
         }
         disclaimed = response.output as boolean;
       }
@@ -201,7 +205,7 @@ export class SeedDashboard {
   }
 
   handleMaxClaim(): void {
-    this.seedTokenToReceive = this.seed.userClaimableAmount;
+    this.projectTokenToReceive = this.seed.userClaimableAmount;
   }
 
   async validateClosedOrPaused(): Promise<boolean> {
@@ -245,35 +249,29 @@ export class SeedDashboard {
       this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.seed.fundingTokenInfo.symbol} to the Seed contract`);
     } else if (await this.disclaimSeed()) {
       this.seed.buy(this.fundingTokenToPay)
-        .then((receipt) => {
+        .then(async (receipt) => {
           if (receipt) {
-            this.hydrateUserData();
+            await this.hydrateUserData();
+            this.alertService.showAlert(`Congratulations! You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
+            this.fundingTokenToPay = null;
           }
         });
     }
   }
 
   async claim(): Promise<void> {
-    if (await this.validateClosedOrPaused()) {
-      return;
-    }
-
     if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
-      if (!this.seedTokenToReceive?.gt(0)) {
-        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.seedTokenInfo.symbol} you wish to receive`);
-      } else if (this.seed.userClaimableAmount.lt(this.seedTokenToReceive)) {
-        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.seedTokenInfo.symbol} you are requesting exceeds your claimable amount`);
+      if (!this.projectTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.projectTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
+        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
-        this.seed.claim(this.seedTokenToReceive);
+        this.seed.claim(this.projectTokenToReceive);
       }
     }
   }
 
   async retrieve(): Promise<void> {
-    if (await this.validateClosedOrPaused()) {
-      return;
-    }
-
     if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
         .then((receipt) => {

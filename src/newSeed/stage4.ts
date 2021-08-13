@@ -88,6 +88,7 @@ export class Stage4 extends BaseStage {
     // Save the seed admin address to wizard state in order to persist it after seedConfig state is cleared in stage7
     this.wizardState.seedAdminAddress = this.seedConfig.seedDetails.adminAddress;
     this.wizardState.whiteList = this.seedConfig.seedDetails.whitelist;
+    this.wizardState.seedStartDate = this.seedConfig.seedDetails.startDate;
   }
 
   async validateInputs(): Promise<string> {
@@ -103,7 +104,7 @@ export class Stage4 extends BaseStage {
       endTimes = this.endTime.split(":");
     }
     if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
-      message = "Please enter a value for Funding Tokens per Seed Token";
+      message = "Please enter a value for Funding Tokens per Project Token";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
@@ -111,13 +112,13 @@ export class Stage4 extends BaseStage {
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Max";
     } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Max cannot be greater than Maximum Seed Token Supply times the Funding Tokens per Seed Token";
+      message = "Funding Max cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
     } else if (!(this.seedConfig.seedDetails.vestingPeriod >= 0)) {
-      message = "Please enter a number greater than zero for  \"Seed tokens vested for\" ";
+      message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
     } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
     } else if (this.seedConfig.seedDetails.vestingCliff > this.seedConfig.seedDetails.vestingPeriod) {
-      message = "Please enter a value of \"with a cliff of\" less than \"Seed tokens vested for \"";
+      message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {

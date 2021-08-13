@@ -17,11 +17,12 @@ export interface IWizardState {
   whiteList?: string;
   fundingTokenSymbol?: string;
   fundingTokenIcon?: string;
-  seedTokenSymbol?: string;
-  seedTokenIcon?: string;
+  projectTokenSymbol?: string;
+  projectTokenIcon?: string;
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
   seedAdminAddress?: Address;
+  seedStartDate?: string;
 }
 
 @singleton(false)

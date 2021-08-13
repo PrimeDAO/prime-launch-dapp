@@ -7,8 +7,8 @@
 
     .documentBody {
         display: grid;
-        grid-template-columns: .7fr 2fr;
-        gap: 20px;
+        grid-template-columns: 0.7fr 2fr;
+        gap: 50px;
     }
 
     .sidebar {
@@ -39,12 +39,15 @@
             font-size: 16px;
             line-height: 140%;
             color: $Neutral03;
+
+            a {
+                color: $Secondary07;
+            }
         }
     }
 }
 
 @media screen and (max-width: 1072px) {
-
     .documentsContainer {
         > .heading.heading1 {
             -webkit-text-fill-color: $Secondary02;
