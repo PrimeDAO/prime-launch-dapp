@@ -6,6 +6,12 @@
   justify-content: center;
   gap: 30px;
 
+  .launchBG {
+    position: absolute;
+    right: 0;
+    z-index: -1;
+  }
+
   .banner {
     display: flex;
     justify-content: center;
