@@ -258,14 +258,14 @@ export class EthereumService {
      * However, it doesn't tell us whether an account is connected to this dApp.
      * but it sure helps us know whether we can connect without MetaMask asking the user to log in.
      */
-    if (provider && (await provider._metamask.isUnlocked())) {
+    if (provider && provider._metamask.isUnlocked && (await provider._metamask.isUnlocked())) {
       const chainId = this.chainNameById.get(Number(await provider.request({ method: "eth_chainId" })));
       if (chainId === this.targetedNetwork) {
         const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts?.length) {
           const account = getAddress(accounts[0]);
           if (this.disclaimerService.getPrimeDisclaimed(account)) {
-            this.consoleLogService.logMessage(`autoconnecting to ${accounts}`, "info");
+            this.consoleLogService.logMessage(`autoconnecting to ${account}`, "info");
             this.setProvider(provider);
           }
         }
