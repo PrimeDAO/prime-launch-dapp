@@ -120,7 +120,6 @@
     right: -20px;
     height: 650px;
     object-fit: cover;
-    max-width: calc(100% - 160px);
   }
 }
 
@@ -157,9 +156,6 @@
           justify-content: center;
         }
       }
-    }
-    & > .bg-image {
-      display: none;
     }
   }
 }
