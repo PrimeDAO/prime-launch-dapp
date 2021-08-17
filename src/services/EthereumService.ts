@@ -10,7 +10,7 @@ import Torus from "@toruslabs/torus-embed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfigFailure } from "services/GeneralEvents";
-import { formatEther, parseEther } from "ethers/lib/utils";
+import { formatEther, getAddress, parseEther } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 
 interface IEIP1193 {
@@ -169,7 +169,7 @@ export class EthereumService {
       const accounts = await provider.listAccounts();
 
       if (accounts) {
-        account = accounts[0];
+        account = getAddress(accounts[0]);
       } else {
         account = null;
       }
@@ -178,7 +178,7 @@ export class EthereumService {
   }
 
   private async fireAccountsChangedHandler(account: Address) {
-    if (account && !(await this.disclaimerService.confirmCanConnect(account))) {
+    if (account && !(await this.disclaimerService.ensurePrimeDisclaimed(account))) {
       this.disconnect({ code: -1, message: "User declined the PrimeLAUNCH disclaimer" });
     } else {
       console.info(`account changed: ${account}`);
@@ -253,13 +253,22 @@ export class EthereumService {
     const provider = (await detectEthereumProvider()) as any;
 
     /**
-     * at this writing, `_metamask.isUnlocked` is "experimental", according to MetaMask,
+     * at this writing, `_metamask.isUnlocked` is "experimental", according to MetaMask.
+     * It tells us that the user has logged into Metamask.
+     * However, it doesn't tell us whether an account is connected to this dApp.
      * but it sure helps us know whether we can connect without MetaMask asking the user to log in.
      */
-    if (provider && (await provider._metamask.isUnlocked())) {
-      const accounts = await provider.request({ method: "eth_requestAccounts" });
-      if (accounts) {
-        this.setProvider(provider);
+    if (provider && provider._metamask.isUnlocked && (await provider._metamask.isUnlocked())) {
+      const chainId = this.chainNameById.get(Number(await provider.request({ method: "eth_chainId" })));
+      if (chainId === this.targetedNetwork) {
+        const accounts = await provider.request({ method: "eth_accounts" });
+        if (accounts?.length) {
+          const account = getAddress(accounts[0]);
+          if (this.disclaimerService.getPrimeDisclaimed(account)) {
+            this.consoleLogService.logMessage(`autoconnecting to ${account}`, "info");
+            this.setProvider(provider);
+          }
+        }
       }
     }
   }

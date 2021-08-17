@@ -9,6 +9,7 @@
     justify-content: center;
     flex-flow: column;
     padding-bottom: 78px;
+    background: $BG01;
 
     > .subtext {
       font-family: Inter;
@@ -120,7 +121,6 @@
     right: -20px;
     height: 650px;
     object-fit: cover;
-    max-width: calc(100% - 160px);
   }
 }
 
@@ -157,9 +157,6 @@
           justify-content: center;
         }
       }
-    }
-    & > .bg-image {
-      display: none;
     }
   }
 }
