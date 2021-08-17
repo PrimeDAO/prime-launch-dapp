@@ -77,13 +77,13 @@ export class Stage3 extends BaseStage {
       let totalDistribAmount = BigNumber.from("0");
       this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { stakeHolder: string, amount: string, cliff: number, vest: number }) => {
         if (!tokenDistrb.stakeHolder) {
-          message = "Please enter a value for Stakeholder";
+          message = "Please enter an Amount for Stakeholder";
         } else if (!tokenDistrb.amount) {
-          message = `Please enter a value for ${tokenDistrb.stakeHolder} Amount`;
+          message = `Please enter an Amount for ${tokenDistrb.stakeHolder} Amount`;
         } else if (!tokenDistrb.cliff) {
-          message = `Please enter a value for ${tokenDistrb.stakeHolder} Cliff`;
+          message = `Please enter an Amount for ${tokenDistrb.stakeHolder} Cliff`;
         } else if (!tokenDistrb.vest) {
-          message = `Please enter a value for ${tokenDistrb.stakeHolder} Vest`;
+          message = `Please enter an Amount for ${tokenDistrb.stakeHolder} Vest`;
         } else {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
