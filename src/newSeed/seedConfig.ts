@@ -26,7 +26,7 @@ export interface ITokenDetails {
    * In wei,
    */
   tokenDistrib: Array<{
-    category: string,
+    stakeHolder: string,
     /**
      * In wei
      */
@@ -34,7 +34,8 @@ export interface ITokenDetails {
     /**
      * In days
      */
-    lockup: number
+    cliff: number,
+    vest: number
   }>
 }
 

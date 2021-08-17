@@ -127,15 +127,17 @@
         <div class="stageSeedDetails">
           <div class="heading heading4">Project Token Global Distribution</div>
           <div class="tokenDist" if.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
-            <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
-              <div class="header">Category</div>
+            <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
+              <div class="header">Stakeholder</div>
               <div class="header">Amount</div>
-              <div class="header">Lock-up (days)</div>
-              <div class="cell">${customLink.category}</div>
+              <div class="header">Cliff (in days)</div>
+              <div class="header">Vesting (in days)</div>
+              <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="customLink.amount | ethwei" />
+                <formatted-number value.bind="distrib.amount | ethwei" />
               </div>
-              <div class="cell">${customLink.lockup}</div>
+              <div class="cell">${distrib.cliff}</div>
+              <div class="cell">${distrib.vest}</div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
