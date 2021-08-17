@@ -245,7 +245,7 @@
     }
     .infoInput.supply {
       input {
-        width: 10em;
+        width: 7em;
       }
     }
     .tokenDistribution {
@@ -261,6 +261,7 @@
         flex: 1;
         justify-content: space-between;
         margin-bottom: 32px;
+        column-gap: 10px;
         .category {
           display: flex;
           flex-flow: row nowrap;
@@ -512,7 +513,7 @@
             grid-template-columns: 0.4fr 1fr;
           }
           .tokenDist {
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
           }
           .customLinks,
           .tokenDist {
