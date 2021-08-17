@@ -68,10 +68,6 @@ export class Stage3 extends BaseStage {
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Max cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
-    } else if (!this.seedConfig.tokenDetails.initialSeedSupply || this.seedConfig.tokenDetails.initialSeedSupply === "0") {
-      message = "Please enter a number greater than zero for Initial Supply";
-    } else if (BigNumber.from(this.seedConfig.tokenDetails.initialSeedSupply).gt(this.seedConfig.tokenDetails.maxSeedSupply)) {
-      message = "Please enter a value for Initial Supply smaller than Maximum Supply";
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingTokenAddress))) {
       message = "Funding token address is not a valid contract";
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {

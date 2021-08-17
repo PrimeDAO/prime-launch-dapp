@@ -25,7 +25,6 @@ export interface ITokenDetails {
   /**
    * In wei,
    */
-  initialSeedSupply: string,
   tokenDistrib: Array<{
     category: string,
     /**
