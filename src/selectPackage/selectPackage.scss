@@ -12,12 +12,13 @@
     z-index: -1;
     object-fit: cover;
   }
-
+  
   .banner {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column;
+    background: $BG01;
   }
 
   .packages {
