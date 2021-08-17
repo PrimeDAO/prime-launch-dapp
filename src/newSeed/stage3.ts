@@ -79,11 +79,11 @@ export class Stage3 extends BaseStage {
         if (!tokenDistrb.stakeHolder) {
           message = "Please enter a value for Stakeholder";
         } else if (!tokenDistrb.amount) {
-          message = `Please enter a value for Category ${tokenDistrb.stakeHolder} Amount`;
+          message = "Please enter a value for Category Amount";
         } else if (!tokenDistrb.cliff) {
-          message = `Please enter a value for Category ${tokenDistrb.stakeHolder} Cliff`;
+          message = "Please enter a value for Category Cliff";
         } else if (!tokenDistrb.vest) {
-          message = `Please enter a value for Category ${tokenDistrb.stakeHolder} Vest`;
+          message = "Please enter a value for Category Vest";
         } else {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
