@@ -125,17 +125,6 @@
           </div>
         </div>
         <div class="stageSeedDetails">
-          <div class="heading heading4">
-            Initial Circulating Supply
-          </div>
-          <div class="tokenInfo">
-            <div>
-              <formatted-number value.bind="seedConfig.tokenDetails.initialSeedSupply | ethwei" />
-            </div>
-            <div>${wizardState.projectTokenSymbol}</div>
-          </div>
-        </div>
-        <div class="stageSeedDetails">
           <div class="heading heading4">Project Token Global Distribution</div>
           <div class="tokenDist" if.to-view="seedConfig.tokenDetails.tokenDistrib.length > 0">
             <template repeat.for="customLink of seedConfig.tokenDetails.tokenDistrib">
