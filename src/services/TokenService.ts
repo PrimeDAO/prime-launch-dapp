@@ -51,6 +51,7 @@ export class TokenService {
     let tokenInfo = this.tokenInfos.get(address.toLowerCase());
 
     if (!tokenInfo) {
+      // are these defaults ever actually used anymore?
       // eslint-disable-next-line require-atomic-updates
       tokenInfo = {
         address,
