@@ -12,11 +12,11 @@
       </div>
       <div class="documentContainer">
         <router-view></router-view>
-        <div class="navigationButton">
-          <div click.delegate="previous()">
+        <div class="navigationContainer">
+          <div click.delegate="previous()" class="navigationButton">
             <i class="fas fa-arrow-left" if.to-view="previousDocTitle"></i> ${previousDocTitle} 
           </div>
-          <div click.delegate=next()>
+          <div click.delegate=next() class="navigationButton">
             ${nextDocTitle} <i class="fas fa-arrow-right" if.to-view="nextDocTitle"></i>
           </div>
         </div>

@@ -46,11 +46,13 @@
             }
         }
     }
-    .navigationButton {
+    .navigationContainer {
         display: flex;
         justify-content: space-between;
-        cursor: pointer;
         color: $Secondary02;
+    }
+    .navigationButton {
+        cursor: pointer;
     }
 }
 
