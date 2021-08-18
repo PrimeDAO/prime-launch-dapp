@@ -12,6 +12,14 @@
       </div>
       <div class="documentContainer">
         <router-view></router-view>
+        <div class="navigationButton">
+          <div click.delegate="previous()">
+            <i class="fas fa-arrow-left"></i> ${previousDocTitle} 
+          </div>
+          <div click.delegate=next()>
+            ${nextDocTitle} <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
