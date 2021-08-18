@@ -29,7 +29,7 @@ export class Stage3 extends BaseStage {
 
   addTokenDistribution(): void {
     // Create a new custom link object
-    this.seedConfig.tokenDetails.tokenDistrib.push({category: undefined, amount: undefined, lockup: undefined});
+    this.seedConfig.tokenDetails.tokenDistrib.push({stakeHolder: undefined, amount: undefined, cliff: undefined, vest: undefined});
   }
 
   // Delet a row in the custom links array
@@ -75,13 +75,15 @@ export class Stage3 extends BaseStage {
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
-      this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { category: string, amount: string, lockup: number }) => {
-        if (!tokenDistrb.category) {
-          message = "Please enter a value for Category";
-        } else if (!tokenDistrb.amount || tokenDistrb.amount === "0") {
-          message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Amount`;
-        } else if (!(tokenDistrb.lockup > 0)) {
-          message = `Please enter a number greater than zero for Category ${tokenDistrb.category} Lock-up`;
+      this.seedConfig.tokenDetails.tokenDistrib.forEach((tokenDistrb: { stakeHolder: string, amount: string, cliff: number, vest: number }) => {
+        if (!tokenDistrb.stakeHolder) {
+          message = "Please enter a name for Stakeholder";
+        } else if (!tokenDistrb.amount) {
+          message = `Please enter an amount for ${tokenDistrb.stakeHolder}`;
+        } else if (!tokenDistrb.cliff) {
+          message = `Please enter the cliff for ${tokenDistrb.stakeHolder}`;
+        } else if (!tokenDistrb.vest) {
+          message = `Please enter the vesting period for ${tokenDistrb.stakeHolder}`;
         } else {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
