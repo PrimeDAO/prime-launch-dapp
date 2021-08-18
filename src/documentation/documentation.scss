@@ -39,11 +39,25 @@
             font-size: 16px;
             line-height: 140%;
             color: $Neutral03;
+            margin-bottom: 60px;
 
             a {
                 color: $Secondary07;
             }
         }
+    }
+    .navigationContainer {
+        display: flex;
+        justify-content: space-between;
+        color: $Secondary02;
+    }
+    .navigationNext {
+        @include standardTextGradient;
+        cursor: pointer;
+    }
+    .navigationPrevious {
+        @include standardTextGradientReversed;
+        cursor: pointer;
     }
 }
 
