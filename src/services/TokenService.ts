@@ -44,17 +44,17 @@ export class TokenService {
     return `https://${this.ethereumService.targetedNetwork === Networks.Mainnet ? "" : `${this.ethereumService.targetedNetwork}-`}api.ethplorer.io/${api}?apiKey=${process.env.ETHPLORER_KEY}`;
   }
 
-  private async _getTokenInfoFromAddress(address: Address,
+  private async _getTokenInfoFromAddress(tokenAddress: Address,
     resolve: (tokenInfo: ITokenInfo) => void,
     _rejector: (reason?: any) => void): Promise<void> {
 
-    let tokenInfo = this.tokenInfos.get(address.toLowerCase());
+    let tokenInfo = this.tokenInfos.get(tokenAddress.toLowerCase());
 
     if (!tokenInfo) {
       // are these defaults ever actually used anymore?
       // eslint-disable-next-line require-atomic-updates
       tokenInfo = {
-        address,
+        address: tokenAddress,
         logoURI: "/genericToken.svg",
         id: "",
         name: "Unknown",
@@ -64,15 +64,15 @@ export class TokenService {
       };
 
       if (["mainnet", "rinkeby"].includes(this.ethereumService.targetedNetwork)) {
-        const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([address], this.tokenLists);
+        const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
         // eslint-disable-next-line require-atomic-updates
-        tokenInfo = tokenInfoMap[address];
+        tokenInfo = tokenInfoMap[tokenAddress];
         // eslint-disable-next-line require-atomic-updates
         tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-        this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
+        this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
       }
 
-      this.tokenInfos.set(address.toLowerCase(), tokenInfo);
+      this.tokenInfos.set(tokenAddress.toLowerCase(), tokenInfo);
 
       if (tokenInfo.id) {
         const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;
@@ -93,7 +93,7 @@ export class TokenService {
     resolve(tokenInfo);
   }
 
-  public async getTokenInfoFromAddress(address: Address): Promise<ITokenInfo> {
+  public async getTokenInfoFromAddress(tokenAddress: Address): Promise<ITokenInfo> {
 
     let resolver: (value: ITokenInfo | PromiseLike<ITokenInfo>) => void;
     let rejector: (reason?: any) => void;
@@ -106,7 +106,7 @@ export class TokenService {
       rejector = reject;
     });
 
-    this.queue.next(() => this._getTokenInfoFromAddress(address, resolver, rejector) );
+    this.queue.next(() => this._getTokenInfoFromAddress(tokenAddress, resolver, rejector) );
 
     return promise;
   }

@@ -8,7 +8,7 @@ import { ITokenInfo } from "services/TokenTypes";
 
 interface ITokenListUris {
   All: string[];
-  PrimeDAO: {
+  Balancer: {
     All: string[];
     // Compliant list for exchange
     Default: string;
@@ -55,14 +55,14 @@ export class TokenListService {
   private get uris(): ITokenListUris {
     const { Balancer, External } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
 
-    const primeDaoLists = [Balancer.Default, Balancer.Vetted];
-    const All = [...primeDaoLists, ...External];
+    const balancerLists = [Balancer.Default, Balancer.Vetted];
+    const All = [...balancerLists, ...External];
     const Approved = [Balancer.Default, ...External];
 
     return {
       All,
-      PrimeDAO: {
-        All: primeDaoLists,
+      Balancer: {
+        All: balancerLists,
         ...Balancer,
       },
       Approved,
