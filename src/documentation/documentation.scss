@@ -52,6 +52,7 @@
         color: $Secondary02;
     }
     .navigationButton {
+        @include standardTextGradient;
         cursor: pointer;
     }
 }
