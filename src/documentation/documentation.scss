@@ -51,8 +51,12 @@
         justify-content: space-between;
         color: $Secondary02;
     }
-    .navigationButton {
+    .navigationNext {
         @include standardTextGradient;
+        cursor: pointer;
+    }
+    .navigationPrevious {
+        @include standardTextGradientReversed;
         cursor: pointer;
     }
 }

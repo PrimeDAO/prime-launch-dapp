@@ -8,6 +8,12 @@
   -webkit-text-fill-color: transparent;
 }
 
+@mixin standardTextGradientReversed {
+  background-image: $Gradient08;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 @mixin tokenIcon {
   width: 19px;
   border-radius: 9px;
