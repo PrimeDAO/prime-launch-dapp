@@ -12,6 +12,7 @@ import { IpfsService } from "services/IpfsService";
 import { GeoBlockService } from "services/GeoBlockService";
 import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
+import { TokenService } from "services/TokenService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -47,6 +48,10 @@ export function configure(aurelia: Aurelia): void {
           (process.env.NODE_ENV === "development" ? Networks.Rinkeby : Networks.Mainnet));
 
       aurelia.container.get(ContractsService);
+
+      const tokenService = aurelia.container.get(TokenService);
+
+      await tokenService.initialize();
 
       const seedService = aurelia.container.get(SeedService);
 
