@@ -13,7 +13,7 @@ export class Documentation {
     if (docNumber < 6) {
       return this.router.routes[docNumber + 1].title;
     } else {
-      return this.router.routes[docNumber].title;
+      return "";
     }
   }
 
@@ -23,7 +23,7 @@ export class Documentation {
     if (docNumber > 1) {
       return this.router.routes[docNumber - 1].title;
     } else {
-      return this.router.routes[docNumber].title;
+      return "";
     }
   }
 
