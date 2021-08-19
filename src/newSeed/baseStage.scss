@@ -325,6 +325,9 @@
         }
         &.fundingTarget {
           flex-flow: column;
+          .fundingDescrp {
+            color: $Neutral02;
+          }
         }
       }
       .vestingPeriod {
