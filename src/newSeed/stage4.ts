@@ -108,11 +108,11 @@ export class Stage4 extends BaseStage {
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
-      message = "Please enter a number greater than zero for the Funding Max";
+      message = "Please enter a number greater than zero for the Funding Maximum";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target less than or equal to Funding Max";
+      message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Max cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
+      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
     } else if (!(this.seedConfig.seedDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
     } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
