@@ -326,7 +326,9 @@
         &.fundingTarget {
           flex-flow: column;
           .fundingDescrp {
+            margin-bottom: 10px;
             color: $Neutral02;
+            padding-left: 10px;
           }
           .fundingTicker {
             display: flex;
