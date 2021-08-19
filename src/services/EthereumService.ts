@@ -107,6 +107,8 @@ export class EthereumService {
   };
 
   public targetedNetwork: AllowedNetworks;
+  public targetedChainId: number;
+
   /**
    * provided by ethers
    */
@@ -127,6 +129,7 @@ export class EthereumService {
     }
 
     this.targetedNetwork = network;
+    this.targetedChainId = this.chainIdByName.get(network);
 
     EthereumService.providerOptions.torus.options.network = network;
 
@@ -155,6 +158,12 @@ export class EthereumService {
     [1, Networks.Mainnet],
     [4, Networks.Rinkeby],
     [42, Networks.Kovan],
+  ]);
+
+  private chainIdByName = new Map<AllowedNetworks, number>([
+    [Networks.Mainnet, 1],
+    [Networks.Rinkeby, 4],
+    [Networks.Kovan, 42],
   ]);
 
   private async getChainId(provider: Web3Provider): Promise<number> {

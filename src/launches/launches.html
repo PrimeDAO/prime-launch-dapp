@@ -30,8 +30,8 @@
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(seed)">
             <div class="project cell body ellipses ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.icon"></img>${seed.projectTokenInfo.symbol}</div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.icon"></img>${seed.fundingTokenInfo.symbol}</div>
+            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.logoURI"></img>${seed.projectTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
@@ -64,13 +64,13 @@
             if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(seed)">
             <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.icon"></img>${seed.projectTokenInfo.symbol}</div>
+            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.logoURI"></img>${seed.projectTokenInfo.symbol}</div>
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.icon"></img>${seed.fundingTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
             </div>
             <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>

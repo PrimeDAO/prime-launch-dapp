@@ -51,11 +51,14 @@ export class IpfsService {
   /**
    * fetches JSON data given hash, converts to an object
    * @param hash
+   * @param protocol -- ipfs or ipns
    * @returns
    */
-  public async getObjectFromHash(hash: Hash) : Promise<any> {
+  public async getObjectFromHash(hash: Hash, protocol = "ipfs") : Promise<any> {
+    let url = "n/a";
     try {
-      const response = await axios.get(this.getIpfsUrl(hash));
+      url = this.getIpfsUrl(hash, protocol);
+      const response = await axios.get(url);
 
       if (response.status !== 200) {
         throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);
@@ -63,7 +66,7 @@ export class IpfsService {
         return JSON.parse(response.data);
       }
     } catch (ex) {
-      this.consoleLogService.logMessage(ex.message, "warning");
+      this.consoleLogService.logMessage(`Error fetching from ${url}: ${ex.message}`, "error");
       return null;
     }
   }
@@ -78,13 +81,13 @@ export class IpfsService {
   }
 
   /**
-   * url to use to request content from IPFS
-   * @param hash
+   * url to use to request content from IPFS or IPNS
+   * @param hash IPFS hash or IPNS name
    * @returns
    */
-  public getIpfsUrl(hash: string): string {
+  public getIpfsUrl(hash: string, protocol= "ipfs"): string {
     const format = process.env.IPFS_GATEWAY;
-    const encodedHash = new CID(hash).toV1().toBaseEncodedString("base32");
-    return format.replace("${hash}", encodedHash);
+    const encodedHash = (protocol === "ipfs") ? new CID(hash).toV1().toBaseEncodedString("base32") : hash;
+    return format.replace("${hash}", encodedHash).replace("${protocol}", protocol);
   }
 }

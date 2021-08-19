@@ -4,52 +4,12 @@ import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { Address, EthereumService, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { TransactionResponse } from "services/TransactionsService";
 import { toBigNumberJs } from "services/BigNumberService";
 import { from, Subject } from "rxjs";
 import { concatMap } from "rxjs/operators";
-
-export interface IErc20Token {
-  allowance(owner: Address, spender: Address): Promise<BigNumber>;
-  approve(spender: Address, amount: BigNumber): Promise<TransactionResponse>; // boolean
-  balanceOf(account: Address): Promise<BigNumber>;
-  name(): Promise<string>;
-  totalSupply(): Promise<BigNumber>;
-  transfer(recipient: Address, amount: BigNumber): Promise<TransactionResponse>; // boolean
-  transferFrom(sender: Address, recipient: Address, amount: BigNumber): Promise<TransactionResponse>; // boolean
-}
-
-export interface ITokenPrices {
-  // key is "weth" or "primedao"
-  [key: string]: number;
-}
-
-export interface ITokenInfo {
-  address: Address;
-  icon: string;
-  id: string; // id on coingecko
-  name: string; // token name,
-  price: number;
-  // priceChangePercentage_24h: number;
-  // priceChangePercentage_7d: number;
-  // priceChangePercentage_30d: number;
-  symbol: string; // token symbol,
-}
-
-export interface ITokenHolder {
-  /**
-   * address of holder
-   */
-  address: Address;
-  /**
-   * token balance
-   */
-  balance: BigNumber;
-  /**
-   * share of holder in percent
-   */
-  share: number;
-}
+import { IErc20Token, ITokenHolder, ITokenInfo } from "services/TokenTypes";
+import { TokenListMap, TokenListService } from "services/TokenListService";
+import TokenMetadataService from "services/TokenMetadataService";
 
 @autoinject
 export class TokenService {
@@ -57,11 +17,14 @@ export class TokenService {
   erc20Abi: any;
   tokenInfos = new Map<Address, ITokenInfo>();
   queue: Subject<() => Promise<void>>;
+  tokenLists: TokenListMap;
 
   constructor(
     private ethereumService: EthereumService,
     private consoleLogService: ConsoleLogService,
-    private contractsService: ContractsService) {
+    private contractsService: ContractsService,
+    private tokenListService: TokenListService,
+    private tokenMetadataService: TokenMetadataService) {
     this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
     this.queue = new Subject<() => Promise<void>>();
     // this will initiate the execution of the promises
@@ -72,46 +35,44 @@ export class TokenService {
       .subscribe();
   }
 
+  async initialize(): Promise<TokenListMap> {
+    return this.tokenLists = await this.tokenListService.fetchLists();
+  }
+
   private getEthplorerUrl(api: string) {
     // note ethplorer only works on mainnet and kovan
     return `https://${this.ethereumService.targetedNetwork === Networks.Mainnet ? "" : `${this.ethereumService.targetedNetwork}-`}api.ethplorer.io/${api}?apiKey=${process.env.ETHPLORER_KEY}`;
   }
 
-  private async _getTokenInfoFromAddress(address: Address,
+  private async _getTokenInfoFromAddress(tokenAddress: Address,
     resolve: (tokenInfo: ITokenInfo) => void,
     _rejector: (reason?: any) => void): Promise<void> {
 
-    let tokenInfo = this.tokenInfos.get(address.toLowerCase());
+    let tokenInfo = this.tokenInfos.get(tokenAddress.toLowerCase());
 
     if (!tokenInfo) {
+      // are these defaults ever actually used anymore?
       // eslint-disable-next-line require-atomic-updates
       tokenInfo = {
-        address,
-        icon: "/genericToken.svg",
+        address: tokenAddress,
+        logoURI: "/genericToken.svg",
         id: "",
         name: "Unknown",
         price: 0,
+        decimals: 18,
         symbol: "N/A",
       };
 
-      if (["mainnet", "kovan"].includes(this.ethereumService.targetedNetwork)) {
-        const uri = this.getEthplorerUrl(`getTokenInfo/${address}`);
+      if (["mainnet", "rinkeby"].includes(this.ethereumService.targetedNetwork)) {
+        const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
         // eslint-disable-next-line require-atomic-updates
-        await axios.get(uri)
-          .then(async (response) => {
-            tokenInfo = response.data;
-            // eslint-disable-next-line require-atomic-updates
-            tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-            this.consoleLogService.logMessage(`loaded token: ${address}`, "info");
-          })
-          .catch((error) => {
-            this.consoleLogService.logMessage(`TokenService: Error fetching token info for ${address}: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
-            // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
-            // TODO:  restore the exception?
-          });
+        tokenInfo = tokenInfoMap[tokenAddress];
+        // eslint-disable-next-line require-atomic-updates
+        tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
+        this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
       }
 
-      this.tokenInfos.set(address.toLowerCase(), tokenInfo);
+      this.tokenInfos.set(tokenAddress.toLowerCase(), tokenInfo);
 
       if (tokenInfo.id) {
         const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;
@@ -119,7 +80,9 @@ export class TokenService {
         await axios.get(uri)
           .then((response) => {
             tokenInfo.price = response.data.market_data.current_price.usd ?? 0;
-            tokenInfo.icon = response.data.image.thumb;
+            if (!tokenInfo.logoURI) {
+              tokenInfo.logoURI = response.data.image.thumb;
+            }
           })
           .catch((error) => {
             this.consoleLogService.logMessage(`PriceService: Error fetching token price ${error?.message}`, "error");
@@ -130,7 +93,7 @@ export class TokenService {
     resolve(tokenInfo);
   }
 
-  public async getTokenInfoFromAddress(address: Address): Promise<ITokenInfo> {
+  public async getTokenInfoFromAddress(tokenAddress: Address): Promise<ITokenInfo> {
 
     let resolver: (value: ITokenInfo | PromiseLike<ITokenInfo>) => void;
     let rejector: (reason?: any) => void;
@@ -143,7 +106,7 @@ export class TokenService {
       rejector = reject;
     });
 
-    this.queue.next(() => this._getTokenInfoFromAddress(address, resolver, rejector) );
+    this.queue.next(() => this._getTokenInfoFromAddress(tokenAddress, resolver, rejector) );
 
     return promise;
   }
@@ -210,3 +173,5 @@ export class TokenService {
       });
   }
 }
+
+export { IErc20Token, ITokenHolder, ITokenInfo, ITokenPrices } from "services/TokenTypes";

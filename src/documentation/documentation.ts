@@ -1,11 +1,31 @@
 import "./documentation.scss";
 import { PLATFORM } from "aurelia-pal";
-import { singleton } from "aurelia-framework";
+import { singleton, computedFrom } from "aurelia-framework";
 import { Router, RouterConfiguration } from "aurelia-router";
 
 @singleton(false)
 export class Documentation {
   router: Router;
+
+  @computedFrom("router.currentInstruction")
+  get nextDocTitle(): string {
+    const docNumber = this.router.currentInstruction.config.settings.docNumber;
+    if (docNumber < 6) {
+      return this.router.routes[docNumber + 1].title;
+    } else {
+      return "";
+    }
+  }
+
+  @computedFrom("router.currentInstruction")
+  get previousDocTitle(): string {
+    const docNumber = this.router.currentInstruction.config.settings.docNumber;
+    if (docNumber > 1) {
+      return this.router.routes[docNumber - 1].title;
+    } else {
+      return "";
+    }
+  }
 
   configureRouter(config: RouterConfiguration, router: Router): void {
     config.title = "Documentation";
@@ -19,6 +39,7 @@ export class Documentation {
         title: "Overview",
         settings: {
           content: require("/src/documentation/overview.md").default,
+          docNumber: 1,
         },
       },
       {
@@ -29,6 +50,7 @@ export class Documentation {
         title: "Seed Launch",
         settings: {
           content: require("/src/documentation/seedLaunch.md").default,
+          docNumber: 2,
         },
       },
       {
@@ -39,6 +61,7 @@ export class Documentation {
         title: "Liquid Launch",
         settings: {
           content: require("/src/documentation/liquidLaunch.md").default,
+          docNumber: 3,
         },
       },
       {
@@ -49,7 +72,8 @@ export class Documentation {
         title: "Contribute to a Launch",
         settings: {
           content: require("/src/documentation/contributeToALaunch.md").default,
-        }
+          docNumber: 4,
+        },
       },
       {
         route: ["host-a-launch"],
@@ -59,7 +83,8 @@ export class Documentation {
         title: "Host a Launch",
         settings: {
           content: require("/src/documentation/hostALaunch.md").default,
-        }
+          docNumber: 5,
+        },
       },
       /*
       {
@@ -80,8 +105,9 @@ export class Documentation {
         name: "document7",
         title: "FAQ",
         settings: {
-          content: require("/src/documentation/FAQ.md").default
-        }
+          content: require("/src/documentation/FAQ.md").default,
+          docNumber: 6,
+        },
       },
 
       // {
@@ -96,5 +122,21 @@ export class Documentation {
     config.map(routes);
 
     this.router = router;
+  }
+
+  next(): void {
+    const docNumber = this.router.currentInstruction.config.settings.docNumber;
+    if (docNumber < 6) {
+      // @ts-ignore
+      this.router.navigate(this.router.routes[docNumber + 1].route);
+    }
+  }
+
+  previous(): void {
+    const docNumber = this.router.currentInstruction.config.settings.docNumber;
+    if (docNumber > 1) {
+      // @ts-ignore
+      this.router.navigate(this.router.routes[docNumber - 1].route);
+    }
   }
 }

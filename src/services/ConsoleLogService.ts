@@ -103,6 +103,7 @@ export class ConsoleLogService {
         this.logger.info(msg);
         break;
       case "warn":
+      case "warning":
         this.logger.warn(msg);
         break;
       case "error":

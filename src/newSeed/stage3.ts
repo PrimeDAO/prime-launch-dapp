@@ -107,7 +107,7 @@ export class Stage3 extends BaseStage {
               throw new Error();
             } else {
               this.fundingSymbol = tokenInfo.symbol;
-              this.fundingIcon = tokenInfo.icon;
+              this.fundingIcon = tokenInfo.logoURI;
             }
           }).catch(() => {
             this.validationError("Could not obtain funding token information from the address supplied");
@@ -126,7 +126,7 @@ export class Stage3 extends BaseStage {
               throw new Error();
             } else {
               this.seedSymbol = tokenInfo.symbol;
-              this.seedIcon = tokenInfo.icon;
+              this.seedIcon = tokenInfo.logoURI;
             }
           }).catch(() => {
             this.validationError("Could not obtain project token information from the address supplied");
