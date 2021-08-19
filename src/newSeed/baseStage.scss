@@ -328,7 +328,6 @@
           .fundingDescrp {
             margin-bottom: 10px;
             color: $Neutral02;
-            padding-left: 10px;
           }
           .fundingTicker {
             display: flex;
@@ -563,9 +562,12 @@
             & .etherscanlink {
               margin-right: 10px;
             }
-            & > img {
+            img {
               @include tokenIcon;
-              height: 19px;
+              border-radius: 12px;
+              width: 24px;
+              position: relative;
+              top: 1px;
             }
           }
           hr {
