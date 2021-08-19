@@ -328,6 +328,22 @@
           .fundingDescrp {
             color: $Neutral02;
           }
+          .fundingTicker {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            .ticker {
+              font-family: Inter;
+              color: $Neutral02;
+            }
+            img {
+              @include tokenIcon;
+              border-radius: 12px;
+              width: 24px;
+              position: relative;
+              top: 1px;
+            }
+          }
         }
       }
       .vestingPeriod {

@@ -111,11 +111,11 @@ export class Stage3 extends BaseStage {
             }
           }).catch(() => {
             this.validationError("Could not obtain funding token information from the address supplied");
-            this.fundingSymbol = this.fundingIcon = undefined;
+            this.fundingSymbol = this.fundingIcon = this.wizardState.fundingTokenSymbol = this.wizardState.fundingTokenIcon = undefined;
           });
         }
       } else {
-        this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = undefined;
+        this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = this.wizardState.fundingTokenSymbol = this.wizardState.fundingTokenIcon = undefined;
       }
     } else if (type === "seed") {
       if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {

@@ -24,12 +24,20 @@
             <div class="fundingDescrp">
               The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
             </div>
-            <numeric-input
-              output-as-string="true"
-              id="fundingTarget"
-              value.bind="seedConfig.seedDetails.fundingTarget"
-              placeholder="100">
-            </numeric-input>
+            <div class="fundingTicker">
+              <numeric-input
+                output-as-string="true"
+                id="fundingTarget"
+                value.bind="seedConfig.seedDetails.fundingTarget"
+                placeholder="100">
+              </numeric-input>
+              <div class="ticker">
+                ${wizardState.fundingTokenSymbol}
+              </div>
+              <div if.to-view="wizardState.fundingTokenIcon">
+                <img src.bind="wizardState.fundingTokenIcon" />
+              </div>
+            </div>
           </div>
           <div>
             <div class="labeledQuestion">
@@ -41,12 +49,20 @@
             <div class="fundingDescrp">
               The Funding Max is the maximum amount to be raised in the seed. Once the Funding Max is reached, the seed will automatically end and the vesting period, if there is one, will begin
             </div>
-            <numeric-input
-              output-as-string="true"
-              id="fundingMax"
-              value.bind="seedConfig.seedDetails.fundingMax"
-              placeholder="1000">
-            </numeric-input>
+            <div class="fundingTicker">
+              <numeric-input
+                output-as-string="true"
+                id="fundingMax"
+                value.bind="seedConfig.seedDetails.fundingMax"
+                placeholder="1000">
+              </numeric-input>
+              <div class="ticker">
+                ${wizardState.fundingTokenSymbol}
+              </div>
+              <div if.to-view="wizardState.fundingTokenIcon">
+                <img src.bind="wizardState.fundingTokenIcon" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="labeledQuestion">
