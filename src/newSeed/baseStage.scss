@@ -323,6 +323,9 @@
           align-self: center;
           justify-self: center;
         }
+        &.fundingTarget {
+          flex-flow: column;
+        }
       }
       .vestingPeriod {
         width: 11em;
