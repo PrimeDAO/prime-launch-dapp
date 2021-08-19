@@ -621,6 +621,9 @@
       }
     }
     .labeledQuestion {
+      label {
+        margin-bottom: unset;
+      }
       margin-bottom: 5px;
     }
     > .heading.heading2 {
