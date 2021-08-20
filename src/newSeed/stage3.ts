@@ -67,7 +67,7 @@ export class Stage3 extends BaseStage {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Max cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
+      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.fundingTokenAddress))) {
       message = "Funding token address is not a valid contract";
     } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {
@@ -111,11 +111,11 @@ export class Stage3 extends BaseStage {
             }
           }).catch(() => {
             this.validationError("Could not obtain funding token information from the address supplied");
-            this.fundingSymbol = this.fundingIcon = undefined;
+            this.fundingSymbol = this.fundingIcon = this.wizardState.fundingTokenSymbol = this.wizardState.fundingTokenIcon = undefined;
           });
         }
       } else {
-        this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = undefined;
+        this.lastCheckedFundingAddress = this.fundingSymbol = this.fundingIcon = this.wizardState.fundingTokenSymbol = this.wizardState.fundingTokenIcon = undefined;
       }
     } else if (type === "seed") {
       if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {

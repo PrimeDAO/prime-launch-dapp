@@ -166,17 +166,23 @@
               <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" />
             </div>
             <div>${wizardState.fundingTokenSymbol}</div>
+            <div if.to-view="wizardState.fundingTokenIcon">
+              <img src.bind="wizardState.fundingTokenIcon" />
+            </div>
           </div>
         </div>
         <div class="stageSeedDetails">
           <div class="heading heading4">
-            Funding Max
+            Funding Maximum
           </div>
           <div class="tokenInfo">
             <div>
               <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" />
             </div>
             <div>${wizardState.fundingTokenSymbol}</div>
+            <div if.to-view="wizardState.fundingTokenIcon">
+              <img src.bind="wizardState.fundingTokenIcon" />
+            </div>
           </div>
         </div>
         <div class="stageSeedDetails">

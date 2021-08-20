@@ -323,6 +323,29 @@
           align-self: center;
           justify-self: center;
         }
+        &.fundingTarget {
+          flex-flow: column;
+          .fundingDescrp {
+            margin-bottom: 10px;
+            color: $Neutral02;
+          }
+          .fundingTicker {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            .ticker {
+              font-family: Inter;
+              color: $Neutral02;
+            }
+            img {
+              @include tokenIcon;
+              border-radius: 12px;
+              width: 24px;
+              position: relative;
+              top: 1px;
+            }
+          }
+        }
       }
       .vestingPeriod {
         width: 11em;
@@ -539,9 +562,12 @@
             & .etherscanlink {
               margin-right: 10px;
             }
-            & > img {
+            img {
               @include tokenIcon;
-              height: 19px;
+              border-radius: 12px;
+              width: 24px;
+              position: relative;
+              top: 1px;
             }
           }
           hr {
@@ -595,6 +621,9 @@
       }
     }
     .labeledQuestion {
+      label {
+        margin-bottom: unset;
+      }
       margin-bottom: 5px;
     }
     > .heading.heading2 {
@@ -602,6 +631,7 @@
     }
     label {
       line-height: 20px;
+      margin-bottom: 5px;
     }
     .summaryContainer {
       margin-bottom: 30px;
