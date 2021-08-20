@@ -5,6 +5,6 @@ export class SelectPackage {
   private seedFee: number;
 
   constructor() {
-    this.seedFee = SeedService.seedFee;
+    this.seedFee = SeedService.seedFee * 100;
   }
 }

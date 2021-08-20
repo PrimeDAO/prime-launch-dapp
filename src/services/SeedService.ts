@@ -27,7 +27,7 @@ export interface ISeedCreatedEventArgs {
 export class SeedService {
 
   public seeds: Map<Address, Seed>;
-  public static seedFee = 0;
+  public static seedFee = 0.0; //If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
 
   @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
