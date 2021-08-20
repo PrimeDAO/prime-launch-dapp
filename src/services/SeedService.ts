@@ -27,6 +27,7 @@ export interface ISeedCreatedEventArgs {
 export class SeedService {
 
   public seeds: Map<Address, Seed>;
+  public static seedFee = 0;
 
   @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
@@ -204,7 +205,7 @@ export class SeedService {
       Date.parse(config.seedDetails.endDate) / 1000,
       [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
-      toWei(".02"), // 2%
+      toWei(SeedService.seedFee), // 2%
       this.asciiToHex(metaDataHash),
     ];
 
