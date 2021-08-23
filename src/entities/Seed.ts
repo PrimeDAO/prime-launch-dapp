@@ -36,6 +36,7 @@ export class Seed {
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
+  public admin: Address;
   /**
    * a state set by the admin (creator) of the Seed
    */
@@ -265,6 +266,7 @@ export class Seed {
       await this.hydrateMetadata();
 
       this.seedInitialized = await this.contract.initialized();
+      this.admin = await this.contract.admin();
       this.projectTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
 
