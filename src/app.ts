@@ -163,6 +163,13 @@ export class App {
         route: ["selectPackage"],
         title: "Select Your Package",
       },
+      {
+        moduleId: PLATFORM.moduleName("./adminDashboard/adminDashboard"),
+        nav: false,
+        name: "adminDashboard",
+        route: ["adminDashboard"],
+        title: "Administer a Launch",
+      },
 
     ]);
 
