@@ -1,7 +1,6 @@
 <template>
   <div class="page animated-page adminContainer au-animate ">
-    html...
-    <div class="someclass">dfssdf</div>
-    <button if.to-view="!connected" click.delegate="connect()">Connect...</button>
+    <div if.to-view="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
+    <div else class="formContainer">The form</div>
   </div>
 </template>
