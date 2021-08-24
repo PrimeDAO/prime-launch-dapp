@@ -10,6 +10,8 @@
 
     img {
       @include tokenIcon;
+      position: relative;
+      top: 2px;
     }
 
     > div:not(:last-child) {

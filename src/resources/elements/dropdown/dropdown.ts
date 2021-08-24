@@ -17,14 +17,6 @@ export class Dropdown {
   private menu: HTMLElement;
   private titleText: string;
 
-  // @computedFrom("selectedItemIndex")
-  // get selection(): number { return this.selectedItemIndex; }
-  // set selection(newValue: number) {
-  //   if (newValue !== this.selectedItemIndex) {
-  //     this.selectedItemIndex = newValue;
-  //   }
-  // }
-
   async attached(): Promise<void> {
     this.title.addEventListener("click", (e) => this.toggleMenuDisplay(e));
     this.menuChanged();
@@ -51,17 +43,6 @@ export class Dropdown {
     return elem;
   }
 
-  // toggleDisplay(elem: HTMLElement): void {
-  //   const curDisplayStyle = elem.style.display;
-
-  //   if (curDisplayStyle === "none" || curDisplayStyle === "") {
-  //     elem.style.display = "block";
-  //   }
-  //   else {
-  //     elem.style.display = "none";
-  //   }
-  // }
-
   toggleMenuDisplay(_e: Event): void {
     this.toggleClass(this.menu, "hide");
     this.toggleClass(this.title, "menuShowing");
@@ -69,17 +50,12 @@ export class Dropdown {
 
   handleOptionSelected(e: Event, ndx: number): void {
     this.toggleClass(this.menu, "hide");
-    // this.toggleClass((e.target as any).parentNode, "hide");
+    this.toggleClass(this.title, "menuShowing");
 
     const newValue = this.getLabel ? this.getLabel({ index: ndx }) : this.dropdownOptions[ndx].innerHTML;
-    // const icon = document.querySelector(".dropdown .selectedLabel .fa");
 
     this.titleText = newValue;
     this.selectedItemIndex = ndx;
-    //    this.title.appendChild(icon);
-
-    //trigger custom event
-    //this.title.dispatchEvent(new Event("change"));
     //setTimeout is used so transition is properly shown
     // setTimeout(() => this.toggleClass(icon, "rotate-90"));
   }
