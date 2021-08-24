@@ -122,9 +122,7 @@ export class Stage4 extends BaseStage {
       endTimes = this.endTime.split(":");
     }
     if (!Utils.isAddress(this.seedConfig.seedDetails.fundingTokenAddress)) {
-      message = "Please enter a valid address for the Funding Token Address";
-    } else if (!(await this.checkToken(this.seedConfig.seedDetails.fundingTokenAddress))) {
-      message = "Funding token address is not a valid contract";
+      message = "Please select a Funding Token";
     } else if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
       message = "Please enter a value for Funding Tokens per Project Token";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
