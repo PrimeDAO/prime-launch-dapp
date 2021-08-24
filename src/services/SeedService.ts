@@ -144,7 +144,7 @@ export class SeedService {
     return this.initializedPromise;
   }
 
-  private async ensureAllSeedsInitialized(): Promise<void> {
+  public async ensureAllSeedsInitialized(): Promise<void> {
     await this.ensureInitialized();
     for (const seed of this.seedsArray) {
       await seed.ensureInitialized();
@@ -196,7 +196,7 @@ export class SeedService {
     const seedArguments = [
       safeAddress,
       config.seedDetails.adminAddress,
-      [config.tokenDetails.projectTokenAddress, config.tokenDetails.fundingTokenAddress],
+      [config.tokenDetails.projectTokenAddress, config.seedDetails.fundingTokenAddress],
       [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
       config.seedDetails.pricePerToken,
       // convert from ISO string to Unix epoch seconds
@@ -211,8 +211,8 @@ export class SeedService {
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
 
-    console.log("estimating transaction:");
-    console.dir(transaction);
+    // console.log("estimating transaction:");
+    // console.dir(transaction);
 
     const estimate = (await gnosis.getEstimate(transaction)).data;
 
@@ -244,8 +244,8 @@ export class SeedService {
     // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
 
-    console.log("generating signature for transaction:");
-    console.dir(transaction);
+    // console.log("generating signature for transaction:");
+    // console.dir(transaction);
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,

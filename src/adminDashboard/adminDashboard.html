@@ -1,6 +1,10 @@
 <template>
   <div class="page animated-page adminContainer au-animate ">
-    <div if.to-view="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
-    <div else class="formContainer">The form</div>
-  </div>
+    <div show.bind="!loading">
+      <div if.bind="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
+      <div else class="formContainer">
+        <div if.bind="seeds.length">[Seeds Dropdown]</div>
+        <div else>You have not created any Seeds</div>
+      </div>
+    </div>
 </template>

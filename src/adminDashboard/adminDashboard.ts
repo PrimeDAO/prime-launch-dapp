@@ -5,13 +5,15 @@ import { SeedService } from "services/SeedService";
 import "./adminDashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
-import { throwIfEmpty } from "rxjs/operators";
+import { EventConfigException } from "services/GeneralEvents";
+import { Utils } from "services/utils";
 
 @autoinject
 export class AdminDashboard {
 
-  seeds: Array<Seed>;
+  seeds: Array<Seed> = [];
   subscriptions: DisposableCollection = new DisposableCollection();
+  loading = true;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -24,22 +26,37 @@ export class AdminDashboard {
     private ethereumService: EthereumService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
-      this.seeds = await this.seedService.seedsArray
-        .filter((seed) => seed.admin === this.ethereumService.defaultAccountAddress);
+      this.hydrate();
     }));
   }
 
-  async activate(): Promise<void> {
-    await this.seedService.ensureInitialized();
-    if (this.ethereumService.defaultAccountAddress) {
-      this.seeds = await this.seedService.seedsArray
-        .filter((seed) => seed.admin === this.ethereumService.defaultAccountAddress);
+  async attached(): Promise<void> {
+
+    try {
+      if (this.seedService.initializing) {
+        this.eventAggregator.publish("seeds.loading", true);
+        await this.seedService.ensureAllSeedsInitialized();
+      }
+      await this.hydrate();
+
+    } catch (ex) {
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+    }
+    finally {
+      this.eventAggregator.publish("seeds.loading", false);
+      this.loading = false;
     }
   }
 
-  // attached() {
-
-  // }
+  async hydrate(): Promise<void> {
+    if (this.ethereumService.defaultAccountAddress) {
+      const defaultAccount = this.ethereumService.defaultAccountAddress.toLowerCase();
+      this.seeds = this.seedService.seedsArray
+        .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
+    } else {
+      this.seeds = [];
+    }
+  }
 
   connect():void {
     this.ethereumService.ensureConnected();

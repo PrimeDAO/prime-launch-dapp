@@ -1,5 +1,5 @@
 import detectEthereumProvider from "@metamask/detect-provider";
-import { BrowserStorageService } from "./BrowserStorageService";
+// import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber, ethers, Signer } from "ethers";
@@ -69,7 +69,7 @@ export class EthereumService {
     private eventAggregator: EventAggregator,
     private disclaimerService: DisclaimerService,
     private consoleLogService: ConsoleLogService,
-    private storageService: BrowserStorageService,
+    // private storageService: BrowserStorageService,
   ) { }
 
   private static ProviderEndpoints = {
@@ -189,10 +189,10 @@ export class EthereumService {
   private async fireAccountsChangedHandler(account: Address) {
     if (account && !(await this.disclaimerService.ensurePrimeDisclaimed(account))) {
       this.disconnect({ code: -1, message: "User declined the PrimeLAUNCH disclaimer" });
-    } else {
-      console.info(`account changed: ${account}`);
-      this.eventAggregator.publish("Network.Changed.Account", account);
+      account = null;
     }
+    console.info(`account changed: ${account}`);
+    this.eventAggregator.publish("Network.Changed.Account", account);
   }
   private fireChainChangedHandler(info: IChainEventInfo) {
     console.info(`chain changed: ${info.chainId}`);
@@ -214,7 +214,7 @@ export class EthereumService {
     if (Signer.isSigner(this.defaultAccount)) {
       return await this.defaultAccount.getAddress();
     } else {
-      return this.defaultAccount;
+      return getAddress(this.defaultAccount);
     }
   }
 
