@@ -1,0 +1,19 @@
+@import "styles/styles.scss";
+
+.tokenSelect {
+  .dropdown {
+    width: 300px;
+  }
+  .tokenItem {
+    display: flex;
+    align-items: center;
+
+    img {
+      @include tokenIcon;
+    }
+
+    > div:not(:last-child) {
+      margin-right: 6px;
+    }
+  }
+}

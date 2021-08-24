@@ -74,6 +74,12 @@
     border-radius: 10px;
     color: $Neutral02;
   }
+
+  select {
+    border: 1px solid $Border01;
+    color: $Neutral02;
+  }
+
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -104,19 +110,6 @@
     transition: background-color 100s ease-in-out 0s;
     -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
     box-shadow: 0 0 0px 3.7em $BG01 inset;
-  }
-
-  select {
-    width: 14em;
-    height: 2.9em;
-    border: 1px solid $Border01;
-    border-radius: 10px;
-    color: $Neutral02;
-    background-color: $BG01;
-    font-family: Inter;
-    font-size: 1.1em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
   }
 
   a {
@@ -226,7 +219,8 @@
     }
   }
 
-  &.stage3 {
+  &.stage3,
+  &.stage4 {
     .tickerContainer {
       display: flex;
       align-items: center;
@@ -243,6 +237,9 @@
         top: 1px;
       }
     }
+  }
+
+  &.stage3 {
     .infoInput.supply {
       input {
         width: 7em;
@@ -293,6 +290,16 @@
 
   &.stage4 {
     .infoInput {
+      .tokenSelector {
+        display: flex;
+        align-items: center;
+
+        .tokenSelect {
+          margin-right: 16px;
+          display: inline-block;
+        }
+      }
+
       .pptContainer {
         input {
           width: 3em;

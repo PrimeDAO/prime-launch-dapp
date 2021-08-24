@@ -18,35 +18,13 @@
             <div class="tickerContainer">
               <input id="projectTokenAddress"
                 value.bind="seedConfig.tokenDetails.projectTokenAddress"
-                blur.trigger="getTokenInfo('seed')">
+                blur.trigger="getTokenInfo()">
               </input>
               <div class="ticker">
                 ${seedSymbol}
               </div>
               <div if.to-view="seedIcon">
                 <img src.bind="seedIcon" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="infoInput ticker">
-          <div class="address">
-            <div class="labeledQuestion">
-              <label for="fundingTokenAddress">Funding Token Address</label>
-              <div class="questionMark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
-              </div>
-            </div>
-            <div class="tickerContainer">
-              <input id="fundingTokenAddress"
-                value.bind="seedConfig.tokenDetails.fundingTokenAddress"
-                blur.trigger="getTokenInfo('funding')">
-              </input>
-              <div class="ticker">
-                ${fundingSymbol}
-              </div>
-              <div if.to-view="fundingIcon">
-                <img src.bind="fundingIcon" />
               </div>
             </div>
           </div>

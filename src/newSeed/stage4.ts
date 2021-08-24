@@ -9,6 +9,7 @@ import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
 import { EthereumService, fromWei } from "services/EthereumService";
+import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -21,15 +22,32 @@ export class Stage4 extends BaseStage {
   dateService = new DateService();
   startDatePicker: Litepicker;
   endDatePicker: Litepicker;
+  lastCheckedFundingAddress: string;
+  fundingSymbol: string;
+  fundingIcon: string;
+  // totally faked ATM.  Don't keep any of this code.
+  tokenList=
+  (process.env.NETWORK === "mainnet") ?
+    [
+      "0xE59064a8185Ed1Fca1D17999621eFedfab4425c9",
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    ] : // rinkeby of course
+    [
+      "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
+      "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+      "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
+    ];
 
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
     private ethereumService: EthereumService,
     router: Router,
+    tokenService: TokenService,
     private disclaimerService: DisclaimerService,
   ) {
-    super(router, eventAggregator);
+    super(router, eventAggregator, tokenService);
     this.eventAggregator.subscribe("seed.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
@@ -103,7 +121,11 @@ export class Stage4 extends BaseStage {
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
+    if (!Utils.isAddress(this.seedConfig.seedDetails.fundingTokenAddress)) {
+      message = "Please enter a valid address for the Funding Token Address";
+    } else if (!(await this.checkToken(this.seedConfig.seedDetails.fundingTokenAddress))) {
+      message = "Funding token address is not a valid contract";
+    } else if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
       message = "Please enter a value for Funding Tokens per Project Token";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
@@ -169,5 +191,26 @@ export class Stage4 extends BaseStage {
 
   makeMeAdmin() : void {
     this.seedConfig.seedDetails.adminAddress = this.ethereumService.defaultAccountAddress;
+  }
+
+  getTokenInfo(): void {
+    // if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {
+    //   if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.projectTokenAddress) {
+    //     this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.projectTokenAddress;
+    //     this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
+    //       if (tokenInfo.symbol === "N/A") {
+    //         throw new Error();
+    //       } else {
+    //         this.seedSymbol = tokenInfo.symbol;
+    //         this.seedIcon = tokenInfo.logoURI;
+    //       }
+    //     }).catch(() => {
+    //       this.validationError("Could not obtain project token information from the address supplied");
+    //       this.seedSymbol = this.seedIcon = undefined;
+    //     });
+    //   }
+    // } else {
+    //   this.lastCheckedSeedAddress = this.seedSymbol = this.seedIcon = undefined;
+    // }
   }
 }

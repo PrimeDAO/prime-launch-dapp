@@ -95,10 +95,10 @@
           </div>
           <div class="tokenInfo">
             <etherscanlink address.to-view="seedConfig.tokenDetails.fundingTokenAddress" text.to-view="seedConfig.tokenDetails.fundingTokenAddress | smallHexString"></etherscanlink>
-            <div>${wizardState.fundingTokenSymbol}</div>
+            <div>${wizardState.fundingTokenInfo.symbol}</div>
             <img class="logoImage"
-              src.to-view="wizardState.fundingTokenIcon"
-              show.to-view="wizardState.fundingTokenIcon" />
+              src.to-view="wizardState.fundingTokenInfo.logoURI"
+              show.to-view="wizardState.fundingTokenInfo.logoURI" />
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -154,7 +154,7 @@
             <div>
               <formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei" />
             </div>
-            <div>${wizardState.fundingTokenSymbol}</div>
+            <div>${wizardState.fundingTokenInfo.symbol}</div>
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -165,9 +165,9 @@
             <div>
               <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" />
             </div>
-            <div>${wizardState.fundingTokenSymbol}</div>
-            <div if.to-view="wizardState.fundingTokenIcon">
-              <img src.bind="wizardState.fundingTokenIcon" />
+            <div if.to-view="wizardState.fundingToken">${wizardState.fundingTokenInfo.symbol}</div>
+            <div if.to-view="wizardState.fundingToken">
+              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
             </div>
           </div>
         </div>
@@ -179,9 +179,9 @@
             <div>
               <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" />
             </div>
-            <div>${wizardState.fundingTokenSymbol}</div>
-            <div if.to-view="wizardState.fundingTokenIcon">
-              <img src.bind="wizardState.fundingTokenIcon" />
+            <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
+            <div if.to-view="wizardState.fundingTokenInfo">
+              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
             </div>
           </div>
         </div>

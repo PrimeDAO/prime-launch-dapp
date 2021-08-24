@@ -7,6 +7,39 @@
         <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> to request further information.
       </div>
       <div>
+        <div class="infoInput ticker">
+          <div class="address">
+            <div class="labeledQuestion">
+              <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
+              <div class="questionMark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <div class="tokenSelector">
+              <token-select
+                selected-token-address.bind="seedConfig.seedDetails.fundingTokenAddress"
+                selected-token-info.bind="wizardState.fundingTokenInfo"
+                token-addresses.to-view="tokenList">
+              </token-select>
+              <div if.to-view="seedConfig.seedDetails.fundingTokenAddress">
+                <etherscanlink address.to-view="seedConfig.seedDetails.fundingTokenAddress"
+                  text.to-view="seedConfig.seedDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              </div>
+            </div>
+            <!-- <div class="tickerContainer">
+              <div if.to-view="seedConfig.seedDetails.fundingTokenAddress">
+                <etherscanlink address.to-view="seedConfig.seedDetails.fundingTokenAddress"
+                  text.to-view="seedConfig.seedDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              </div>
+              <div if.to-view="wizardState.fundingTokenInfo">
+                <img src.to-view="wizardState.fundingTokenInfo.logoURI" />
+              </div>
+              <div if.to-view="wizardState.fundingTokenInfo" class="ticker">
+                ${wizardState.fundingTokenInfo.symbol}
+              </div>
+            </div> -->
+          </div>
+        </div>
         <div class="infoInput">
           <label for="ppt">Funding Tokens per Project Token</label>
           <div class="pptContainer">
@@ -31,11 +64,11 @@
                 value.bind="seedConfig.seedDetails.fundingTarget"
                 placeholder="100">
               </numeric-input>
-              <div class="ticker">
-                ${wizardState.fundingTokenSymbol}
+              <div if.to-view="wizardState.fundingTokenInfo">
+                <img src.bind="wizardState.fundingTokenInfo.logoURI" />
               </div>
-              <div if.to-view="wizardState.fundingTokenIcon">
-                <img src.bind="wizardState.fundingTokenIcon" />
+              <div if.to-view="wizardState.fundingTokenInfo" class="ticker">
+                ${wizardState.fundingTokenInfo.symbol}
               </div>
             </div>
           </div>
@@ -56,11 +89,11 @@
                 value.bind="seedConfig.seedDetails.fundingMax"
                 placeholder="1000">
               </numeric-input>
-              <div class="ticker">
-                ${wizardState.fundingTokenSymbol}
+              <div if.to-view="wizardState.fundingTokenInfo">
+                <img src.bind="wizardState.fundingTokenInfo.logoURI" />
               </div>
-              <div if.to-view="wizardState.fundingTokenIcon">
-                <img src.bind="wizardState.fundingTokenIcon" />
+              <div class="ticker" if.to-view="wizardState.fundingTokenInfo">
+                ${wizardState.fundingTokenInfo.symbol}
               </div>
             </div>
           </div>

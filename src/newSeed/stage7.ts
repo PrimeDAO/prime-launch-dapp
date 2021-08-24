@@ -7,6 +7,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
+import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage7 extends BaseStage {
@@ -16,8 +17,9 @@ export class Stage7 extends BaseStage {
     eventAggregator: EventAggregator,
     private seedService: SeedService,
     private ethereumService: EthereumService,
+    tokenService: TokenService,
     private numberService: NumberService) {
-    super(router, eventAggregator);
+    super(router, eventAggregator, tokenService);
   }
 
   public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {

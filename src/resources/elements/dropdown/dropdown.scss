@@ -1,0 +1,71 @@
+@import "styles/styles.scss";
+
+.dropdown {
+  border: 1px solid $Secondary02;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  background: $BG01;
+  color: $Neutral02;
+  border-radius: 10px;
+  font-family: Inter;
+  width: fit-content;
+
+  > .selectedLabel {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 12px;
+
+    .up {
+      display: none;
+    }
+
+    &.menuShowing {
+      .up {
+        display: initial;
+      }
+      .down {
+        display: none;
+      }
+    }
+
+    div.up,
+    div.down {
+      margin-right: 0.7em;
+    }
+  }
+
+  > .menu {
+    border-top: 1px solid $Border01;
+    transition: max-height 0.5s ease-out;
+    max-height: 20em;
+    overflow: hidden;
+    cursor: pointer;
+
+    &.hide {
+      // doing it this way retains the width, for sizing the dropdown
+      visibility: hidden;
+      height: 0;
+    }
+
+    > .option {
+      color: $White;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      padding-left: 12px;
+      padding: 12px;
+    }
+
+    > .option:last-of-type {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    > .option:hover {
+      background: $Border01;
+    }
+  }
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}

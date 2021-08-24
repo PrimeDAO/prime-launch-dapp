@@ -1,3 +1,4 @@
+import { ITokenInfo } from "services/TokenTypes";
 import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
@@ -6,6 +7,7 @@ import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Address, Hash } from "services/EthereumService";
+import { TokenService } from "services/TokenService";
 
 export interface IStageState {
   verified: boolean;
@@ -15,8 +17,7 @@ export interface IStageState {
 export interface IWizardState {
   seedHash?: Hash;
   whiteList?: string;
-  fundingTokenSymbol?: string;
-  fundingTokenIcon?: string;
+  fundingTokenInfo?: ITokenInfo;
   projectTokenSymbol?: string;
   projectTokenIcon?: string;
   requiredSeedDeposit?: number;
@@ -41,7 +42,9 @@ export abstract class BaseStage {
 
   constructor(
     protected router: Router,
-    protected eventAggregator: EventAggregator) {
+    protected eventAggregator: EventAggregator,
+    protected tokenService: TokenService,
+  ) {
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
@@ -92,5 +95,18 @@ export abstract class BaseStage {
 
   protected validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
+  }
+
+  public async checkToken(address: Address): Promise<boolean> {
+    let isOk = false;
+    const contract = this.tokenService.getTokenContract(address);
+    if (contract) {
+      try {
+        await contract.totalSupply();
+        isOk = true;
+        // eslint-disable-next-line no-empty
+      } catch { }
+    }
+    return isOk;
   }
 }

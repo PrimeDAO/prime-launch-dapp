@@ -55,13 +55,10 @@ export class TokenService {
       // eslint-disable-next-line require-atomic-updates
       tokenInfo = {
         address: tokenAddress,
-        logoURI: "/genericToken.svg",
         id: "",
-        name: "Unknown",
         price: 0,
         decimals: 18,
-        symbol: "N/A",
-      };
+      } as unknown as ITokenInfo;
 
       if (["mainnet", "rinkeby"].includes(this.ethereumService.targetedNetwork)) {
         const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
@@ -88,6 +85,14 @@ export class TokenService {
             this.consoleLogService.logMessage(`PriceService: Error fetching token price ${error?.message}`, "error");
           });
       }
+
+      if (!tokenInfo.logoURI) {
+        tokenInfo.logoURI = "/genericToken.svg";
+      }
+      if (!tokenInfo.symbol) {
+        tokenInfo.symbol = tokenInfo.name = "N/A";
+      }
+
     }
 
     resolve(tokenInfo);
@@ -106,9 +111,24 @@ export class TokenService {
       rejector = reject;
     });
 
+    /**
+     * Fetch tokens one-at-a-time because many requests will be redundant, we want them
+     * to take advantage of caching, and we don't want to re-enter on fetching duplicate tokens.
+     */
     this.queue.next(() => this._getTokenInfoFromAddress(tokenAddress, resolver, rejector) );
 
     return promise;
+  }
+
+  public async getTokenInfoFromAddresses(tokenAddresses: Array<Address>): Promise<Array<ITokenInfo>> {
+    const promises = new Array<Promise<ITokenInfo>>();
+
+    tokenAddresses.forEach((address: Address) =>
+    {
+      promises.push(this.getTokenInfoFromAddress(address));
+    });
+
+    return Promise.all(promises);
   }
 
   geckoCoinInfo: Map<string, string>;

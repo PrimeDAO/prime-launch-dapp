@@ -23,6 +23,8 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/questionMark/questionMark"),
     PLATFORM.moduleName("./elements/tokenPair/tokenPair"),
     PLATFORM.moduleName("./elements/markdown/markdown"),
+    PLATFORM.moduleName("./elements/tokenSelect/tokenSelect"),
+    PLATFORM.moduleName("./elements/dropdown/dropdown"),
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
     PLATFORM.moduleName("./value-converters/date"),
@@ -31,6 +33,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./value-converters/secondsDays"),
     PLATFORM.moduleName("./value-converters/smallHexString"),
     PLATFORM.moduleName("./value-converters/sort"),
+    PLATFORM.moduleName("./attributes/mutationObserver"),
 
     PLATFORM.moduleName("./dialogs/disclaimer/disclaimer"),
     // PLATFORM.moduleName("./bindingBehaviors/asyncBinding"),

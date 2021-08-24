@@ -16,7 +16,6 @@ export interface IProjectDetails {
 }
 
 export interface ITokenDetails {
-  fundingTokenAddress: string,
   projectTokenAddress: string,
   /**
    * In wei, maximum ever total supply of project tokens
@@ -40,6 +39,7 @@ export interface ITokenDetails {
 }
 
 export interface ISeedDetails {
+  fundingTokenAddress: string,
   /**
    * The price of one project token in units of funding tokens
    * In wei.
