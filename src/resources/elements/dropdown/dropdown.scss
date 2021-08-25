@@ -14,9 +14,10 @@
     justify-content: space-between;
     cursor: pointer;
     margin: 12px;
+    margin-right: 0;
 
     .itemContent {
-      margin-right: 6px;
+      margin-right: 8px;
     }
 
     .up {
@@ -41,7 +42,6 @@
   > .menu {
     border-top: 1px solid $Border01;
     transition: max-height 0.5s ease-out;
-    max-height: 20em;
     overflow: hidden;
     cursor: pointer;
 
