@@ -7,6 +7,17 @@ export const SocialLinkNames = [
   "LinkedIn",
 ];
 
+export const CategoryNames = [
+  "Assets",
+  "L1 protocol",
+  "L2 protocol",
+  "Lending",
+  "NFT",
+  "Options",
+  "Staking",
+  "Stablecoin",
+];
+
 export class SocialLinkSpec {
   public media: string;
   public url: string;

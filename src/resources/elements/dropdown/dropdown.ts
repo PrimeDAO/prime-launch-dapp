@@ -9,7 +9,7 @@ export class Dropdown {
    */
   @bindable getLabel?: ({ index: number }) => any;
   @bindable.string placeholder = "Select...";
-  @bindable itemChanged: ({ index: number }) => void;
+  @bindable itemChanged: ({ value: string, index: number }) => void;
   @bindable.number({ defaultBindingMode: bindingMode.twoWay }) selectedItemIndex?: number;
 
   private dropdown: HTMLElement;
@@ -32,7 +32,7 @@ export class Dropdown {
       item.classList.add("option");
       item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
     });
-    if (typeof this.selectedItemIndex === "number") {
+    if (this.hasSelectedItemIndex) {
       this.selectItem(this.selectedItemIndex);
     }
   }
@@ -52,10 +52,13 @@ export class Dropdown {
     this.toggleClass(this.title, "menuShowing");
   }
 
+  get hasSelectedItemIndex(): boolean { return (typeof this.selectedItemIndex === "number") && !isNaN(this.selectedItemIndex); }
+
   private selectItem(index: number): void {
     this.titleText = this.getLabel ? this.getLabel({ index }) : this.dropdownOptions[index].innerHTML;
-    if ((typeof this.selectedItemIndex === "number") && (this.selectedItemIndex !== index)) {
-      this.itemChanged({ index });
+
+    if (this.selectedItemIndex !== index) {
+      this.itemChanged({ value: this.titleText, index });
       this.selectedItemIndex = index;
     }
   }

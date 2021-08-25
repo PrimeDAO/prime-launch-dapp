@@ -17,13 +17,14 @@ export class TokenSelect {
     private tokenService: TokenService,
   ) {}
 
-  setSelectedTokenIndex(index: number): void {
+  setSelectedTokenIndex(_value: string, index: number): void {
     this.selectedTokenInfo = this.tokenInfos[index];
     this.selectedTokenAddress = this.selectedTokenInfo?.address;
   }
 
   getSelectedTokenIndex(): number {
-    return this.tokenInfos?.indexOf(this.selectedTokenInfo) ?? null;
+    const index = this.tokenInfos?.indexOf(this.selectedTokenInfo);
+    return (index > -1) ? index : undefined;
   }
 
   async attached(): Promise<void> {

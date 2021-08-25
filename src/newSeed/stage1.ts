@@ -1,7 +1,7 @@
 import { BaseStage } from "./baseStage";
 // Let's import the utils helper
 import { Utils } from "../services/utils";
-import { SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
+import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
 
 // interface ISocialLinkInfo {
 //   platformIndex: number,
@@ -11,13 +11,22 @@ import { SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
 export class Stage1 extends BaseStage {
 
   public socialLinkNames = SocialLinkNames;
+  public categoryNames = CategoryNames;
 
-  public setMediaFromIndex(index: number, link: SocialLinkSpec): void {
-    link.media = SocialLinkNames[index];
+  public setCategoryName(name: string, _index: number): void {
+    this.seedConfig.general.category = name;
+  }
+
+  public getCategoryNameIndex(): number {
+    return this.seedConfig.general.category ? CategoryNames.indexOf(this.seedConfig.general.category) : undefined;
+  }
+
+  public setMediaFromIndex(name: string, _index: number, link: SocialLinkSpec): void {
+    link.media = name;
   }
 
   public getMediaIndexForLink(link: SocialLinkSpec): number {
-    return SocialLinkNames.indexOf(link.media);
+    return link.media ? SocialLinkNames.indexOf(link.media) : undefined;
   }
 
   // Add a link object to the link object arrays
@@ -40,7 +49,7 @@ export class Stage1 extends BaseStage {
       message = "Please enter a valid URL for Project Website";
     }
     else if (!this.seedConfig.general.category) {
-      message = "Please enter a Category";
+      message = "Please select a Category";
     } else if (!Utils.isValidUrl(this.seedConfig.general.whitepaper)) {
       message = "Please enter a valid URL for Whitepaper";
     } else if (!Utils.isValidUrl(this.seedConfig.general.github)) {
