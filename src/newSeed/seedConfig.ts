@@ -1,11 +1,24 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+export const SocialLinkNames = [
+  "Twitter",
+  "Discord",
+  "Telegram",
+  "Reddit",
+  "LinkedIn",
+];
+
+export class SocialLinkSpec {
+  public media: string;
+  public url: string;
+}
+
 export interface IGeneral {
   projectName: string,
   projectWebsite: string,
   category: string,
   whitepaper: string,
   github: string,
-  customLinks: Array<{media: string, url: string }>
+  customLinks: Array<SocialLinkSpec>
 }
 
 export interface IProjectDetails {

@@ -20,11 +20,11 @@
                 value.bind="seedConfig.tokenDetails.projectTokenAddress"
                 blur.trigger="getTokenInfo()">
               </input>
-              <div class="ticker">
-                ${seedSymbol}
-              </div>
               <div if.to-view="seedIcon">
                 <img src.bind="seedIcon" />
+              </div>
+              <div if.to-view="seedIcon" class="ticker">
+                ${seedSymbol}
               </div>
             </div>
           </div>

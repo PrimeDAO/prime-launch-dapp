@@ -1,12 +1,29 @@
 import { BaseStage } from "./baseStage";
 // Let's import the utils helper
 import { Utils } from "../services/utils";
+import { SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
+
+// interface ISocialLinkInfo {
+//   platformIndex: number,
+//   url: string,
+// }
 
 export class Stage1 extends BaseStage {
+
+  public socialLinkNames = SocialLinkNames;
+
+  public setMediaFromIndex(index: number, link: SocialLinkSpec): void {
+    link.media = SocialLinkNames[index];
+  }
+
+  public getMediaIndexForLink(link: SocialLinkSpec): number {
+    return SocialLinkNames.indexOf(link.media);
+  }
+
   // Add a link object to the link object arrays
-  addCustomLinks(): void {
+  addCustomLink(): void {
     // Create a new custom link object
-    this.seedConfig.general.customLinks.push({media: undefined, url: undefined});
+    this.seedConfig.general.customLinks.push(new SocialLinkSpec());
   }
   // Delet a row in the custom links array
   deleteCustomLinks(index:number): void {
@@ -29,19 +46,19 @@ export class Stage1 extends BaseStage {
     } else if (!Utils.isValidUrl(this.seedConfig.general.github)) {
       message = "Please enter a valid URL for Github Link";
     }
-    else if (this.seedConfig.general.customLinks.length > 0 && (!this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1]?.media || !this.seedConfig.general.customLinks[this.seedConfig.general.customLinks.length - 1].url )) {
-      message = "Please enter a value for the Custom Link";
-    }
     // Validate the link
-    this.seedConfig.general.customLinks.forEach((link: {media:string, url:string}) => {
+    for (const link of this.seedConfig.general.customLinks ){
       if (!link.media) {
         // Current input as not been filled out
-        message = "Please enter a value for Custom Link";
+        message = "Please select a social media platform";
       } else if (!Utils.isValidUrl(link.url, false)) {
         // Current input as not been filled out
         message = `Please enter a valid URL for ${link.media}`;
       }
-    });
+      if (message) {
+        break;
+      }
+    }
     this.stageState.verified = !message;
     return Promise.resolve(message);
   }

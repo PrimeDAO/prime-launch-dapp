@@ -1,6 +1,7 @@
 <template>
   <dropdown class="tokenSelect"
-    selected-item-index.bind="selectedTokenIndex"
+    item-changed.call="setSelectedTokenIndex(index)"
+    selected-item-index.to-view="getSelectedTokenIndex()"
     placeholder="Select a token...">
     <div repeat.for="tokenInfo of tokenInfos">
       <div class="tokenItem">

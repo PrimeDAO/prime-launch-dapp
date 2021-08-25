@@ -1,4 +1,4 @@
-import { autoinject, bindingMode, computedFrom } from "aurelia-framework";
+import { autoinject, bindingMode } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./dropdown.scss";
 
@@ -9,7 +9,8 @@ export class Dropdown {
    */
   @bindable getLabel?: ({ index: number }) => any;
   @bindable.string placeholder = "Select...";
-  @bindable.number({ defaultBindingMode: bindingMode.twoWay }) selectedItemIndex: number;
+  @bindable itemChanged: ({ index: number }) => void;
+  @bindable.number({ defaultBindingMode: bindingMode.twoWay }) selectedItemIndex?: number;
 
   private dropdown: HTMLElement;
   private dropdownOptions: Array<Element>;
@@ -31,6 +32,9 @@ export class Dropdown {
       item.classList.add("option");
       item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
     });
+    if (typeof this.selectedItemIndex === "number") {
+      this.selectItem(this.selectedItemIndex);
+    }
   }
 
   toggleClass(elem: HTMLElement, className: string): HTMLElement {
@@ -48,14 +52,18 @@ export class Dropdown {
     this.toggleClass(this.title, "menuShowing");
   }
 
-  handleOptionSelected(e: Event, ndx: number): void {
+  private selectItem(index: number): void {
+    this.titleText = this.getLabel ? this.getLabel({ index }) : this.dropdownOptions[index].innerHTML;
+    if ((typeof this.selectedItemIndex === "number") && (this.selectedItemIndex !== index)) {
+      this.itemChanged({ index });
+      this.selectedItemIndex = index;
+    }
+  }
+
+  handleOptionSelected(_e: Event, index: number): void {
     this.toggleClass(this.menu, "hide");
     this.toggleClass(this.title, "menuShowing");
-
-    const newValue = this.getLabel ? this.getLabel({ index: ndx }) : this.dropdownOptions[ndx].innerHTML;
-
-    this.titleText = newValue;
-    this.selectedItemIndex = ndx;
+    this.selectItem(index);
     //setTimeout is used so transition is properly shown
     // setTimeout(() => this.toggleClass(icon, "rotate-90"));
   }

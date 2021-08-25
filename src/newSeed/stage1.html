@@ -40,39 +40,30 @@
         </div>
         <template repeat.for="link of seedConfig.general.customLinks">
           <div class="otherLinks">
-            <div>
+            <div class="addLinkContainer">
               <div class="sMedia">
-                <label for="$index">Platform </label>
-                <span>
-                  ${link.media.length || 0}/20
-                </span>
+                <dropdown
+                  item-changed.call="setMediaFromIndex(index, link)"
+                  selected-item-index.to-view="getMediaIndexForLink(link)"
+                  placeholder="Select a Social Platform...">
+                  <div repeat.for="name of socialLinkNames">${name}</div>
+                </dropdown>
               </div>
               <input
-                id="$index"
-                class="platform"
-                placeholder="E.g Twitter"
-                value.bind="seedConfig.general.customLinks[$index].media"
-                maxlength="20" />
-            </div>
-            <div class="addLinkContainer">
-              <div>
-                <label for="url`${index}`">URL</label>
-                <input
-                  id="$index"
-                  placeholder="URL of the platform"
-                  value.bind="seedConfig.general.customLinks[$index].url" />
-                <span
-                  class="deleteLink"
-                  title="Delete this row"
-                  click.delegate="deleteCustomLinks($index)">
-                  <i class="far fa-trash-alt"></i>
-                </span>
+                id="${`url${$index}`}"
+                placeholder="${link.media ? `Your ${link.media}` : 'Platform'} URL"
+                value.bind="link.url" />
+              <div
+                class="deleteLink"
+                title="Delete this row"
+                click.delegate="deleteCustomLinks($index)">
+                <i class="far fa-trash-alt"></i>
               </div>
             </div>
           </div>
           <div
             class="addLink"
-            click.delegate="addCustomLinks()"
+            click.delegate="addCustomLink()"
             if.bind="$index == seedConfig.general.customLinks.length - 1">
             <a>+ Add Social Media Link</a>
           </div>
@@ -80,7 +71,7 @@
         <div
           if.to-view="seedConfig.general.customLinks.length <= 0"
           class="addSingleLink"
-          click.delegate="addCustomLinks(-1)">
+          click.delegate="addCustomLink(-1)">
           <a>+ Add Social Media Link</a>
         </div>
       </div>

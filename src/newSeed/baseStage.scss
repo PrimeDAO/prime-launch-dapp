@@ -144,22 +144,25 @@
         flex-flow: row wrap;
         gap: 1em;
         margin-bottom: 2em;
-        .sMedia {
-          display: flex;
-          flex-flow: row nowrap;
-          justify-content: space-between;
-          align-items: center;
-          color: $Neutral02;
-        }
-        .platform {
-          width: 11em;
-        }
+        align-items: center;
+
         .addLinkContainer {
-          display: flex;
-          align-items: flex-end;
-          flex-flow: column;
+          display: grid;
+          grid-template-columns: auto auto auto;
+          column-gap: 12px;
+          align-items: center;
+
+          .sMedia {
+            .dropdown {
+              width: 246px;
+            }
+          }
+          .platform {
+            width: 11em;
+            margin-right: 16px;
+          }
           input {
-            width: 21em;
+            width: 14em;
           }
           .deleteLink {
             cursor: pointer;
@@ -655,13 +658,25 @@
       .infoContainer {
         .otherLinks {
           gap: unset;
-          input {
-            width: unset;
-            height: unset;
-          }
+
           .addLinkContainer {
+            grid-template-columns: auto auto;
+            grid-template-areas:
+              "dropdown dropdown"
+              "input delete";
+            .sMedia {
+              grid-area: dropdown;
+              margin-bottom: 8px;
+            }
+
             input {
+              grid-area: input;
               width: unset;
+              height: unset;
+            }
+
+            .delete {
+              grid-area: delete;
             }
           }
         }
