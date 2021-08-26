@@ -69,10 +69,11 @@
   }
   input {
     width: 23em;
-    height: 2.7em;
+    height: fit-content;
     border: 1px solid $Border01;
     border-radius: 10px;
     color: $Neutral02;
+    padding: 5px 12px;
   }
 
   select {

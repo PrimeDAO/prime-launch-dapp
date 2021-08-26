@@ -8,12 +8,13 @@
   border-radius: 10px;
   font-family: Inter;
   width: fit-content;
+  height: fit-content;
 
   > .selectedLabel {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    margin: 12px;
+    margin: 11px;
     margin-right: 0;
 
     .itemContent {
