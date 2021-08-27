@@ -12,9 +12,6 @@ import { NumberService } from "services/NumberService";
 export class Stage3 extends BaseStage {
   private lastCheckedSeedAddress: string;
 
-  private seedSymbol: string;
-  private seedIcon: string;
-
   constructor(
     eventAggregator: EventAggregator,
     tokenService: TokenService,
@@ -32,11 +29,6 @@ export class Stage3 extends BaseStage {
   deleteTokenDistribution(index:number): void {
     // Remove the indexed link
     this.seedConfig.tokenDetails.tokenDistrib.splice(index, 1);
-  }
-
-  persistData(): void {
-    this.wizardState.projectTokenSymbol = this.seedSymbol;
-    this.wizardState.projectTokenIcon = this.seedIcon;
   }
 
   async validateInputs(): Promise<string> {
@@ -76,23 +68,22 @@ export class Stage3 extends BaseStage {
 
   // TODO: Add a loading comp to the view while fetching
   getTokenInfo(): void {
-    if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {
+    if (Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.projectTokenAddress) {
         this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.projectTokenAddress;
         this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
           if (tokenInfo.symbol === "N/A") {
             throw new Error();
           } else {
-            this.seedSymbol = tokenInfo.symbol;
-            this.seedIcon = tokenInfo.logoURI;
+            this.wizardState.projectTokenInfo = tokenInfo;
           }
         }).catch(() => {
           this.validationError("Could not obtain project token information from the address supplied");
-          this.seedSymbol = this.seedIcon = undefined;
+          this.wizardState.projectTokenInfo = undefined;
         });
       }
     } else {
-      this.lastCheckedSeedAddress = this.seedSymbol = this.seedIcon = undefined;
+      this.lastCheckedSeedAddress = this.wizardState.projectTokenInfo = undefined;
     }
   }
 }

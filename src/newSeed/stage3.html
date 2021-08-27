@@ -16,15 +16,12 @@
               </div>
             </div>
             <div class="tickerContainer">
-              <input id="projectTokenAddress"
+              <input
                 value.bind="seedConfig.tokenDetails.projectTokenAddress"
                 blur.trigger="getTokenInfo()">
               </input>
-              <div if.to-view="seedIcon">
-                <img src.bind="seedIcon" />
-              </div>
-              <div if.to-view="seedIcon" class="ticker">
-                ${seedSymbol}
+              <div if.to-view="wizardState.projectTokenInfo" class="ticker">
+                <img src.bind="wizardState.projectTokenInfo.logoURI" /> ${wizardState.projectTokenInfo.name} (${wizardState.projectTokenInfo.symbol})
               </div>
             </div>
           </div>

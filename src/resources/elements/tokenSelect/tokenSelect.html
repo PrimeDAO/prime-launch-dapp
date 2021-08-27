@@ -1,8 +1,8 @@
 <template>
   <!-- selected-item-index is used only for assigning the initial value -->
   <dropdown class="tokenSelect"
-    item-changed.call="setSelectedTokenIndex(value,index)"
-    selected-item-index.to-view="getSelectedTokenIndex()"
+    item-changed.call="setSelectedToken(value,index)"
+    selected-item-index.to-view="selectedTokenIndex"
     placeholder="Select a token...">
     <div repeat.for="tokenInfo of tokenInfos">
       <div class="tokenItem">

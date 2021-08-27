@@ -190,25 +190,4 @@ export class Stage4 extends BaseStage {
   makeMeAdmin() : void {
     this.seedConfig.seedDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
-
-  getTokenInfo(): void {
-    // if (this.seedConfig.tokenDetails.projectTokenAddress?.length) {
-    //   if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.projectTokenAddress) {
-    //     this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.projectTokenAddress;
-    //     this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
-    //       if (tokenInfo.symbol === "N/A") {
-    //         throw new Error();
-    //       } else {
-    //         this.seedSymbol = tokenInfo.symbol;
-    //         this.seedIcon = tokenInfo.logoURI;
-    //       }
-    //     }).catch(() => {
-    //       this.validationError("Could not obtain project token information from the address supplied");
-    //       this.seedSymbol = this.seedIcon = undefined;
-    //     });
-    //   }
-    // } else {
-    //   this.lastCheckedSeedAddress = this.seedSymbol = this.seedIcon = undefined;
-    // }
-  }
 }

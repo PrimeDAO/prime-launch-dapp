@@ -18,8 +18,7 @@ export interface IWizardState {
   seedHash?: Hash;
   whiteList?: string;
   fundingTokenInfo?: ITokenInfo;
-  projectTokenSymbol?: string;
-  projectTokenIcon?: string;
+  projectTokenInfo?: ITokenInfo;
   requiredSeedDeposit?: number;
   requiredSeedFee?: number;
   seedAdminAddress?: Address;

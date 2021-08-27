@@ -1,4 +1,4 @@
-import { autoinject, bindingMode } from "aurelia-framework";
+import { autoinject, bindingMode, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./dropdown.scss";
 
@@ -52,6 +52,7 @@ export class Dropdown {
     this.toggleClass(this.title, "menuShowing");
   }
 
+  @computedFrom("selectedItemIndex")
   get hasSelectedItemIndex(): boolean { return (typeof this.selectedItemIndex === "number") && !isNaN(this.selectedItemIndex); }
 
   private selectItem(index: number): void {

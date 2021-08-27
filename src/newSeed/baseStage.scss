@@ -244,6 +244,20 @@
         width: 7em;
       }
     }
+    .tickerContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      input {
+        display: block;
+      }
+      .ticker {
+        margin-left: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
     .tokenDistribution {
       .columnHeaders {
         font-size: 0.9em;
@@ -338,7 +352,7 @@
           .fundingTicker {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             .ticker {
               font-family: Inter;
               color: $Neutral02;

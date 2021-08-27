@@ -1,5 +1,5 @@
 import { Address } from "services/EthereumService";
-import { autoinject, bindingMode } from "aurelia-framework";
+import { autoinject, bindingMode, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { ITokenInfo } from "services/TokenTypes";
 import { TokenService } from "services/TokenService";
@@ -17,12 +17,13 @@ export class TokenSelect {
     private tokenService: TokenService,
   ) {}
 
-  setSelectedTokenIndex(_value: string, index: number): void {
+  setSelectedToken(_value: string, index: number): void {
     this.selectedTokenInfo = this.tokenInfos[index];
     this.selectedTokenAddress = this.selectedTokenInfo?.address;
   }
 
-  getSelectedTokenIndex(): number {
+  @computedFrom("tokenInfos", "selectedTokenInfo")
+  get selectedTokenIndex(): number {
     const index = this.tokenInfos?.indexOf(this.selectedTokenInfo);
     return (index > -1) ? index : undefined;
   }

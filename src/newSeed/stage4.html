@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="infoInput">
-          <label for="ppt">Funding Tokens per Project Token</label>
+          <label for="ppt">Funding Tokens ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''} per Project Token ${wizardState.projectTokenInfo ? `(${wizardState.projectTokenInfo.symbol})` : '' }</label>
           <div class="pptContainer">
             <numeric-input
               output-as-string="true"
@@ -41,7 +41,7 @@
         </div>
         <div class="infoInput maxTarget fundingTarget">
           <div>
-            <label for="fundingTarget">Funding Target</label>
+            <label for="fundingTarget">Funding Tokens ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''} Target</label>
             <div class="fundingDescrp">
               The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
             </div>
@@ -52,17 +52,17 @@
                 value.bind="seedConfig.seedDetails.fundingTarget"
                 placeholder="100">
               </numeric-input>
-              <div if.to-view="wizardState.fundingTokenInfo">
+              <!-- <div if.to-view="wizardState.fundingTokenInfo">
                 <img src.bind="wizardState.fundingTokenInfo.logoURI" />
               </div>
               <div if.to-view="wizardState.fundingTokenInfo" class="ticker">
-                ${wizardState.fundingTokenInfo.symbol}
-              </div>
+                ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''}
+              </div> -->
             </div>
           </div>
           <div>
             <div class="labeledQuestion">
-              <label for="fundingMax">Funding Maximum</label>
+              <label for="fundingMax">Funding Tokens ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''} Maximum</label>
               <div class="questionMark">
                 <question-mark text="Measured in funding tokens"></question-mark>
               </div>
@@ -70,7 +70,7 @@
             <div class="fundingDescrp">
               The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
             </div>
-            <div class="fundingTicker">
+            <!-- <div class="fundingTicker">
               <numeric-input
                 output-as-string="true"
                 id="fundingMax"
@@ -81,9 +81,9 @@
                 <img src.bind="wizardState.fundingTokenInfo.logoURI" />
               </div>
               <div class="ticker" if.to-view="wizardState.fundingTokenInfo">
-                ${wizardState.fundingTokenInfo.symbol}
+                ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''}
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="labeledQuestion">
