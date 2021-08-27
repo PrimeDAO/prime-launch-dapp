@@ -19,9 +19,9 @@
           <label for="projSite">Project Website</label>
           <input id="projSite" value.bind="seedConfig.general.projectWebsite" />
         </div>
-        <div class="infoInput">
+        <div class="infoInput category">
           <div class="labelContainer">
-            <label for="projCat">Project Category</label>
+            <label>Project Category</label>
           </div>
 
           <!-- selected-item-index is used only for assigning the initial value -->
@@ -50,7 +50,7 @@
                 <dropdown
                   item-changed.call="setMediaFromIndex(value, index, link)"
                   selected-item-index.to-view="getMediaIndexForLink(link)"
-                  placeholder="Select a Social Platform...">
+                  placeholder="Select Media...">
                   <div repeat.for="name of socialLinkNames">${name}</div>
                 </dropdown>
               </div>
