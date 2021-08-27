@@ -1,4 +1,5 @@
 <template>
+  <require from="./tokenLabel.html"></require>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">SEED Details</div>
@@ -29,7 +30,7 @@
           </div>
         </div>
         <div class="infoInput">
-          <label for="ppt">Funding Tokens ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''} per Project Token ${wizardState.projectTokenInfo ? `(${wizardState.projectTokenInfo.symbol})` : '' }</label>
+          <label for="ppt">Funding Tokens <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel> per Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel></label>
           <div class="pptContainer">
             <numeric-input
               output-as-string="true"
@@ -41,7 +42,7 @@
         </div>
         <div class="infoInput maxTarget fundingTarget">
           <div>
-            <label for="fundingTarget">Funding Tokens ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''} Target</label>
+            <label for="fundingTarget">Funding Tokens <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel> Target</label>
             <div class="fundingDescrp">
               The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
             </div>

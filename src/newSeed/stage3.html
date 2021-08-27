@@ -1,5 +1,6 @@
 <template>
   <require from="../resources/elements/questionMark/questionMark.html"></require>
+  <require from="./tokenLabel.html"></require>
   <div class="page animated-page stageContainer stage3 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Token Details</div>
@@ -28,7 +29,7 @@
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
-            <label for="maxSeedSupply">Maximum Project Token Supply</label>
+            <label for="maxSeedSupply">Maximum Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel> Supply</label>
             <div class="questionMark">
               <question-mark text="The maximum supply of project tokens to exist over the project's lifetime. If there is no maximum, provide a reasonable estimate"></question-mark>
             </div>
@@ -41,9 +42,9 @@
         </div>
         <div class="tokenDistribution">
           <div class="labeledQuestion">
-            <label>Project Token Distribution per Stakeholder Group</label>
+            <label>Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel> Distribution per Stakeholder Group</label>
             <div class="questionMark">
-              <question-mark text="The project token distribution between different groups. Projects who issue tokens in multiple rounds should clearly demarcate the amount of tokens distributed in each round"></question-mark>
+              <question-mark text="The project token distribution between different stakeholders. Projects who issue tokens in multiple rounds should clearly demarcate the amount of tokens distributed in each round"></question-mark>
             </div>
           </div>
           <template repeat.for="distrib of seedConfig.tokenDetails.tokenDistrib">
@@ -84,7 +85,7 @@
           <div
             class="addLink"
             click.delegate="addTokenDistribution()">
-            <a>+ Add Row</a>
+            <a>+ Add Stakeholder</a>
           </div>
         </div>
       </div>
