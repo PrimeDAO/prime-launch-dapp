@@ -20,11 +20,12 @@
               <div class="inputContainer">
                 <input
                   value.bind="seedConfig.tokenDetails.projectTokenAddress"
-                  blur.trigger="getTokenInfo()">
+                  input.trigger="getTokenInfo()">
                 </input>
-                <div class="looksGood" if.bind="projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
+                <div class="looksGood" show.bind="!loadingToken && projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
+                <div class="looksBad" show.bind="!loadingToken && seedConfig.tokenDetails.projectTokenAddress && projectTokenErrorMessage"><i ref="errorIcon" class="fas fa-exclamation-triangle"></i></div>
+                <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
               </div>
-              <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
               <!-- <div if.to-view="wizardState.projectTokenInfo && !projectTokenMissingMetadata" class="ticker">
                 <img src.bind="wizardState.projectTokenInfo.logoURI" /> ${wizardState.projectTokenInfo.name} (${wizardState.projectTokenInfo.symbol})
               </div> -->

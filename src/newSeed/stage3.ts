@@ -7,6 +7,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
+import tippy from "tippy.js";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -16,6 +17,10 @@ export class Stage3 extends BaseStage {
   tiSymbolInputPresupplied: boolean;
   tiLogoInputPresupplied: boolean;
   loadingToken = false;
+  errorIcon: HTMLElement;
+  seedLogoIsValid = false;
+  seedLogoIsLoaded = false;
+  projectTokenErrorMessage: string;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -23,6 +28,12 @@ export class Stage3 extends BaseStage {
     private numberService: NumberService,
     router: Router) {
     super(router, eventAggregator, tokenService);
+  }
+
+  attached(): void {
+    tippy(this.errorIcon, {
+      content: this.projectTokenErrorMessage,
+    });
   }
 
   addTokenDistribution(): void {
@@ -42,9 +53,6 @@ export class Stage3 extends BaseStage {
     return re.test(String(file).toLowerCase());
   }
 
-  seedLogoIsValid = false;
-  seedLogoIsLoaded = false;
-
   private isValidSeedLogo(): string {
     let message;
 
@@ -57,7 +65,22 @@ export class Stage3 extends BaseStage {
     if (!this.seedLogoIsValid) {
       this.isLoadedSeedLogo(false);
     }
+
     return message;
+  }
+
+  private async isValidProjectTokenInfo(): Promise<string> {
+    let message;
+    if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
+      message = "Please enter a valid address for the Project Token Address";
+    } else if (!this.wizardState.projectTokenInfo ||
+      (!(await this.tokenService.isERC20Token(this.seedConfig.tokenDetails.projectTokenAddress)))) {
+      message = "Please enter a project token address that references a valid ERC20 token contract";
+    }
+    tippy(this.errorIcon, {
+      content: message,
+    });
+    return this.projectTokenErrorMessage = message;
   }
 
   private isLoadedSeedLogo(valid: boolean): void {
@@ -78,19 +101,12 @@ export class Stage3 extends BaseStage {
     !tokenInfo.logoURI || (tokenInfo.logoURI === TokenService.DefaultLogoURI));
   }
 
-  // attached():void {
-  //   this.lastCheckedSeedAddress = null;
-  //   this.getTokenInfo();
-  // }
-
   async validateInputs(): Promise<string> {
     let message: string;
-    if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
-      message = "Please enter a valid address for the Project Token Address";
-    } else if (!this.wizardState.projectTokenInfo ||
-        (!(await this.tokenService.isERC20Token(this.seedConfig.tokenDetails.projectTokenAddress)))) {
-      message = "Please enter a project token address that references a valid ERC20 token contract";
-    } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
+
+    message = await this.isValidProjectTokenInfo();
+
+    if (!message && !this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
@@ -172,9 +188,10 @@ export class Stage3 extends BaseStage {
             this.tiLogoInputPresupplied =
             this.tiSymbolInputPresupplied =
             this.tiNameInputPresupplied = true;
-            this.seedLogoIsValid = true;
-            this.seedLogoIsLoaded = true;
           }
+          // this.seedLogoIsValid = true; // assuming
+          // this.seedLogoIsLoaded = true; // assuming
+          this.projectTokenErrorMessage = null;
           this.loadingToken = false;
         }).catch(() => {
           // then is probably not a valid token contract
@@ -182,11 +199,13 @@ export class Stage3 extends BaseStage {
           this.wizardState.projectTokenInfo = null;
           this.formIsEditable = false;
           this.loadingToken = false;
+          this.isValidProjectTokenInfo();
         });
       }
     } else {
       this.lastCheckedSeedAddress = this.wizardState.projectTokenInfo = null;
       this.formIsEditable = false;
+      this.isValidProjectTokenInfo();
     }
   }
 }
