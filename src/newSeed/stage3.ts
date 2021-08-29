@@ -136,6 +136,8 @@ export class Stage3 extends BaseStage {
         this.loadingToken = true;
         this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
 
+          tokenInfo = Object.assign({}, tokenInfo);
+
           this.wizardState.projectTokenInfo = tokenInfo;
 
           if (this.tokenIsMissingMetadata(tokenInfo)) {
