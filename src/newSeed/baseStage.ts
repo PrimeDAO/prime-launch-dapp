@@ -95,17 +95,4 @@ export abstract class BaseStage {
   protected validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
   }
-
-  public async checkToken(address: Address): Promise<boolean> {
-    let isOk = false;
-    const contract = this.tokenService.getTokenContract(address);
-    if (contract) {
-      try {
-        await contract.totalSupply();
-        isOk = true;
-        // eslint-disable-next-line no-empty
-      } catch { }
-    }
-    return isOk;
-  }
 }

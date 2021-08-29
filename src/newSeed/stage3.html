@@ -17,12 +17,58 @@
               </div>
             </div>
             <div class="tickerContainer">
-              <input
-                value.bind="seedConfig.tokenDetails.projectTokenAddress"
-                blur.trigger="getTokenInfo()">
-              </input>
-              <div if.to-view="wizardState.projectTokenInfo" class="ticker">
+              <div class="inputContainer">
+                <input
+                  value.bind="seedConfig.tokenDetails.projectTokenAddress"
+                  blur.trigger="getTokenInfo()">
+                </input>
+                <div class="looksGood" if.bind="projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
+              </div>
+              <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
+              <!-- <div if.to-view="wizardState.projectTokenInfo && !projectTokenMissingMetadata" class="ticker">
                 <img src.bind="wizardState.projectTokenInfo.logoURI" /> ${wizardState.projectTokenInfo.name} (${wizardState.projectTokenInfo.symbol})
+              </div> -->
+              <div if.bind="wizardState.projectTokenInfo" class="projectTokenInfoFormContainer">
+                <div if.bind="formIsEditable" class="explanation">You have provided a valid token address, but we can't find some or all of the information we need to describe the token. Please fill in the missing token information below.</div>
+                <div class="tokenForm">
+                  <div class="field nameInput ${tiNameInputPresupplied ? 'presupplied' : ''}
+                                              ${wizardState.projectTokenInfo.name ? 'supplied' : ''}">
+                    <label>Name</label>
+                    <input type="text" value.bind="wizardState.projectTokenInfo.name" class="textInput inputElement" />
+                    <div class="goodValue">${wizardState.projectTokenInfo.name}</div>
+                  </div>
+                  <div class="field symbolInput ${tiSymbolInputPresupplied ? 'presupplied' : ''}
+                                                ${wizardState.projectTokenInfo.symbol ? 'supplied' : ''}">
+                    <label>Symbol</label>
+                    <input type="text" value.bind="wizardState.projectTokenInfo.symbol" class="textInput inputElement" />
+                    <div class="goodValue">${wizardState.projectTokenInfo.symbol}</div>
+                  </div>
+                  <!-- <input type="number" step="1" value.bind="decimals | number" class="textInput" /> -->
+                  <div class="field logoInput ${tiLogoInputPresupplied ? 'presupplied' : ''}
+                                              ${seedLogoIsLoaded ? 'supplied' : ''}">
+                    <label>
+                      <div>Logo</div>
+                      <img
+                        show.bind="seedLogoIsLoaded"
+                        src.bind="wizardState.projectTokenInfo.logoURI"
+                        error.trigger="isLoadedSeedLogo(false)"
+                        load.trigger="isLoadedSeedLogo(true)" />
+                    </label>
+                    <div class="inputNote inputElement">
+                      <input type="text"
+                        value.bind="wizardState.projectTokenInfo.logoURI"
+                        input.trigger="isValidSeedLogo()"
+                        placeholder="URL to a valid image file">
+                      <div class="fileNote">
+                        JPG, GIF, PNG or BMP formats<br />
+                        Square aspect ratio<br />
+                        Recommended size: 400x400px<br />
+                        Maximum 5MB file size
+                      </div>
+                    </div>
+                    <div class="goodValue">${wizardState.projectTokenInfo.logoURI}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

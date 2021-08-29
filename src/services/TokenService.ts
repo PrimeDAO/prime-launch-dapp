@@ -1,3 +1,4 @@
+import { getAddress } from "ethers/lib/utils";
 import { autoinject } from "aurelia-framework";
 import { BigNumber, Contract, ethers } from "ethers";
 import axios from "axios";
@@ -18,6 +19,10 @@ export class TokenService {
   tokenInfos = new Map<Address, ITokenInfo>();
   queue: Subject<() => Promise<void>>;
   tokenLists: TokenListMap;
+
+  static DefaultLogoURI = "/genericToken.svg";
+  static DefaultNameSymbol = "N/A";
+  static DefaultDecimals = 0;
 
   constructor(
     private ethereumService: EthereumService,
@@ -44,33 +49,64 @@ export class TokenService {
     return `https://${this.ethereumService.targetedNetwork === Networks.Mainnet ? "" : `${this.ethereumService.targetedNetwork}-`}api.ethplorer.io/${api}?apiKey=${process.env.ETHPLORER_KEY}`;
   }
 
+  /**
+   * returns promise of a tokenInfo if a the metadata is found in the tokenLists or
+   * a valid token contract is found.
+   *
+   * If there is an error, then throws an exception.
+   */
   private async _getTokenInfoFromAddress(tokenAddress: Address,
     resolve: (tokenInfo: ITokenInfo) => void,
-    _rejector: (reason?: any) => void): Promise<void> {
+    reject: (reason?: any) => void): Promise<void> {
 
     let tokenInfo = this.tokenInfos.get(tokenAddress.toLowerCase());
 
     if (!tokenInfo) {
-      // are these defaults ever actually used anymore?
-      // eslint-disable-next-line require-atomic-updates
-      tokenInfo = {
-        address: tokenAddress,
-        id: "",
-        price: 0,
-        decimals: 18,
-      } as unknown as ITokenInfo;
 
-      if (["mainnet", "rinkeby"].includes(this.ethereumService.targetedNetwork)) {
-        const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
-        // eslint-disable-next-line require-atomic-updates
-        tokenInfo = tokenInfoMap[tokenAddress];
+      if (!getAddress(tokenAddress)) {
+        reject(`Invalid token address: ${tokenAddress}`);
+        return;
+      }
+
+      /**
+       * fetchTokenMetadata will throw an exception if it can't at least find an ERC20 token at the
+       * given address.
+       */
+      const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
+      // eslint-disable-next-line require-atomic-updates
+      tokenInfo = tokenInfoMap[tokenAddress];
+      if (tokenInfo) {
         // eslint-disable-next-line require-atomic-updates
         tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
         this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
+      } else {
+        // is not a valid token contractz, or some other error occurred
+        reject(`Token address is possibly not a reference to an ERC20 contract: ${tokenAddress}`);
+        return;
+      }
+      /**
+       * at this point we have at least some of the metadata, if not all, and
+       * having the tokenInfo.id, we have a shot at getting a price for it from coingecko.
+       *
+       * We'll go ahead an fill in some default values for the token.  But will reject
+       * tokens with decimals !== 18.
+       */
+      if (!tokenInfo.name) {
+        tokenInfo.name = TokenService.DefaultNameSymbol;
+      }
+      if (!tokenInfo.symbol) {
+        tokenInfo.symbol = TokenService.DefaultNameSymbol;
+      }
+      if (!tokenInfo.decimals) {
+        tokenInfo.decimals = TokenService.DefaultDecimals;
+      } else if (tokenInfo.decimals !== 18) {
+        reject(`Token must have 18 decimals: ${tokenAddress}`);
+        return;
       }
 
-      this.tokenInfos.set(tokenAddress.toLowerCase(), tokenInfo);
-
+      /**
+       * try to get the token USD price, take a last shot at getting a logoURI.
+       */
       if (tokenInfo.id) {
         const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;
 
@@ -87,12 +123,10 @@ export class TokenService {
       }
 
       if (!tokenInfo.logoURI) {
-        tokenInfo.logoURI = "/genericToken.svg";
-      }
-      if (!tokenInfo.symbol) {
-        tokenInfo.symbol = tokenInfo.name = "N/A";
+        tokenInfo.logoURI = TokenService.DefaultLogoURI;
       }
 
+      this.tokenInfos.set(tokenAddress.toLowerCase(), tokenInfo);
     }
 
     resolve(tokenInfo);
@@ -191,6 +225,20 @@ export class TokenService {
         // TODO:  restore the exception?
         return [];
       });
+  }
+
+
+  public async isERC20Token(address: Address): Promise<boolean> {
+    let isOk = false;
+    const contract = this.getTokenContract(address);
+    if (contract) {
+      try {
+        await contract.totalSupply();
+        isOk = true;
+        // eslint-disable-next-line no-empty
+      } catch { }
+    }
+    return isOk;
   }
 }
 

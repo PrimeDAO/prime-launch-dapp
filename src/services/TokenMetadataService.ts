@@ -31,8 +31,13 @@ export default class TokenMetadataService {
 
   /**
    * Tries to find metadata for the given token addresses via all provided
-   * TokenLists. If any token metadata can't be found, resort
-   * to an onchain multicall.
+   * TokenLists.
+   *
+   * If token metadata can't be found in the lists, resorts to invoking
+   * functions on the token contract.
+   *
+   * If can't find a working token contract, then the offending address
+   * will not be included in the metaDict.
    */
   public async fetchTokenMetadata(
     addresses: string[],
@@ -91,14 +96,17 @@ export default class TokenMetadataService {
           this.contractsService.getContractAbi(ContractNames.ERC20),
           this.ethereumService.readOnlyProvider) as unknown as Contract & IErc20Token;
 
-        const tokenInfo: ITokenInfo = metaDict[address] = {} as unknown as ITokenInfo;
-        tokenInfo.address = address;
-        const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
-        const logoFound = await axios.get(logoURI).catch(() => null);
-        tokenInfo.logoURI = logoFound ? logoURI : null;
-        tokenInfo.name = await tokenContract.name();
-        tokenInfo.symbol = await tokenContract.symbol();
-        tokenInfo.decimals = await tokenContract.decimals();
+        const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
+        try {
+          const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+          const logoFound = await axios.get(logoURI).catch(() => null);
+          tokenInfo.logoURI = logoFound ? logoURI : null;
+          tokenInfo.name = await tokenContract.name();
+          tokenInfo.symbol = await tokenContract.symbol();
+          tokenInfo.decimals = await tokenContract.decimals();
+          metaDict[address] = tokenInfo as unknown as ITokenInfo;
+        // eslint-disable-next-line no-empty
+        } catch { }
       }
 
       return metaDict;

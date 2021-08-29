@@ -11,6 +11,11 @@ import { NumberService } from "services/NumberService";
 @autoinject
 export class Stage3 extends BaseStage {
   private lastCheckedSeedAddress: string;
+  formIsEditable: boolean;
+  tiNameInputPresupplied: boolean;
+  tiSymbolInputPresupplied: boolean;
+  tiLogoInputPresupplied: boolean;
+  loadingToken = false;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -31,17 +36,74 @@ export class Stage3 extends BaseStage {
     this.seedConfig.tokenDetails.tokenDistrib.splice(index, 1);
   }
 
+
+  private isValidImageFormat(file: string): boolean {
+    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
+    return re.test(String(file).toLowerCase());
+  }
+
+  seedLogoIsValid = false;
+  seedLogoIsLoaded = false;
+
+  private isValidSeedLogo(): string {
+    let message;
+
+    if (!Utils.isValidUrl(encodeURI(this.wizardState.projectTokenInfo.logoURI))) {
+      message = "Please enter a valid URL for project token logo";
+    } else if (!this.isValidImageFormat(this.wizardState.projectTokenInfo.logoURI)) {
+      message = "Please supply a valid image file type for project token logo";
+    }
+    this.seedLogoIsValid = !message;
+    if (!this.seedLogoIsValid) {
+      this.isLoadedSeedLogo(false);
+    }
+    return message;
+  }
+
+  private isLoadedSeedLogo(valid: boolean): void {
+    this.seedLogoIsLoaded = valid;
+  }
+
+  get projectTokenInfoIsComplete(): boolean {
+    return this.wizardState.projectTokenInfo &&
+      !this.tokenIsMissingMetadata(this.wizardState.projectTokenInfo) &&
+      this.seedLogoIsValid && this.seedLogoIsLoaded;
+  }
+
+  private tokenIsMissingMetadata(tokenInfo: ITokenInfo): boolean {
+    return (
+      !tokenInfo.name || (tokenInfo.name === TokenService.DefaultNameSymbol) ||
+    !tokenInfo.symbol || (tokenInfo.symbol === TokenService.DefaultNameSymbol) ||
+    !tokenInfo.decimals || (tokenInfo.decimals === TokenService.DefaultDecimals) ||
+    !tokenInfo.logoURI || (tokenInfo.logoURI === TokenService.DefaultLogoURI));
+  }
+
+  // attached():void {
+  //   this.lastCheckedSeedAddress = null;
+  //   this.getTokenInfo();
+  // }
+
   async validateInputs(): Promise<string> {
     let message: string;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       message = "Please enter a valid address for the Project Token Address";
+    } else if (!this.wizardState.projectTokenInfo ||
+        (!(await this.tokenService.isERC20Token(this.seedConfig.tokenDetails.projectTokenAddress)))) {
+      message = "Please enter a project token address that references a valid ERC20 token contract";
     } else if (!this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
-    } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {
-      message = "Project token address is not a valid contract";
+    // } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {
+    //   message = "Project token address is not a valid contract";
+      // else if (!Utils.isValidUrl(encodeURI(this.wizardState.projectTokenInfo.logoURI))) {
+      //   message = "Please enter a valid URL for project token logo";
+      // } else if (!this.isValidImageFormat(this.wizardState.projectTokenInfo.logoURI)) {
+      //   message = "Please supply a valid image file type for project token logo";
+      // } else if (!this.seedLogoIsLoaded) {
+      //   message = "No valid image found at the provided project token logo URL";
+      // }
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
@@ -71,19 +133,58 @@ export class Stage3 extends BaseStage {
     if (Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       if (this.lastCheckedSeedAddress !== this.seedConfig.tokenDetails.projectTokenAddress) {
         this.lastCheckedSeedAddress = this.seedConfig.tokenDetails.projectTokenAddress;
+        this.loadingToken = true;
         this.tokenService.getTokenInfoFromAddress(this.seedConfig.tokenDetails.projectTokenAddress).then((tokenInfo: ITokenInfo) => {
-          if (tokenInfo.symbol === "N/A") {
-            throw new Error();
+
+          this.wizardState.projectTokenInfo = tokenInfo;
+
+          if (this.tokenIsMissingMetadata(tokenInfo)) {
+
+            tokenInfo.decimals = 18; // assume for now
+
+            if (tokenInfo.name !== TokenService.DefaultNameSymbol) {
+              this.tiNameInputPresupplied = true;
+            } else {
+              this.tiNameInputPresupplied = false;
+              tokenInfo.name = "";
+              this.formIsEditable = true;
+            }
+            if (tokenInfo.symbol !== TokenService.DefaultNameSymbol) {
+              this.tiSymbolInputPresupplied = true;
+            } else {
+              this.tiSymbolInputPresupplied = false;
+              tokenInfo.symbol = "";
+              this.formIsEditable = true;
+            }
+            if (tokenInfo.logoURI !== TokenService.DefaultLogoURI) {
+              this.tiLogoInputPresupplied = true;
+            } else {
+              this.tiLogoInputPresupplied = false;
+              tokenInfo.logoURI = "";
+              this.formIsEditable = true;
+            }
+            // then is a token contract, but can't obtain all the metadata for it
+
           } else {
-            this.wizardState.projectTokenInfo = tokenInfo;
+            this.formIsEditable = false;
+            this.tiLogoInputPresupplied =
+            this.tiSymbolInputPresupplied =
+            this.tiNameInputPresupplied = true;
+            this.seedLogoIsValid = true;
+            this.seedLogoIsLoaded = true;
           }
+          this.loadingToken = false;
         }).catch(() => {
-          this.validationError("Could not obtain project token information from the address supplied");
-          this.wizardState.projectTokenInfo = undefined;
+          // then is probably not a valid token contract
+          // this.validationError("Could not obtain project token information from the address supplied");
+          this.wizardState.projectTokenInfo = null;
+          this.formIsEditable = false;
+          this.loadingToken = false;
         });
       }
     } else {
-      this.lastCheckedSeedAddress = this.wizardState.projectTokenInfo = undefined;
+      this.lastCheckedSeedAddress = this.wizardState.projectTokenInfo = null;
+      this.formIsEditable = false;
     }
   }
 }
