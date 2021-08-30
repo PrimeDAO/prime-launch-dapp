@@ -1,4 +1,4 @@
-import { getAddress } from "ethers/lib/utils";
+import { FormatTypes, getAddress, Interface } from "ethers/lib/utils";
 import { autoinject } from "aurelia-framework";
 import { BigNumber, Contract, ethers } from "ethers";
 import axios from "axios";
@@ -30,7 +30,7 @@ export class TokenService {
     private contractsService: ContractsService,
     private tokenListService: TokenListService,
     private tokenMetadataService: TokenMetadataService) {
-    this.erc20Abi = contractsService.getContractAbi(ContractNames.ERC20);
+    this.erc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
     this.queue = new Subject<() => Promise<void>>();
     // this will initiate the execution of the promises
     // each promise is executed after the previous one has resolved
@@ -81,7 +81,7 @@ export class TokenService {
         this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
       } else {
         // is not a valid token contractz, or some other error occurred
-        reject(`Token address is possibly not a reference to an ERC20 contract: ${tokenAddress}`);
+        reject(`Token address possibly does not reference to an ERC20 contract: ${tokenAddress}`);
         return;
       }
       /**
@@ -101,6 +101,11 @@ export class TokenService {
         tokenInfo.decimals = TokenService.DefaultDecimals;
       } else if (tokenInfo.decimals !== 18) {
         reject(`Token must have 18 decimals: ${tokenAddress}`);
+        return;
+      }
+
+      if (!this.isERC20Token(tokenInfo.address)) {
+        reject(`Token address does not reference to an ERC20 contract: ${tokenAddress}`);
         return;
       }
 
@@ -228,15 +233,51 @@ export class TokenService {
   }
 
 
-  public async isERC20Token(address: Address): Promise<boolean> {
-    let isOk = false;
-    const contract = this.getTokenContract(address);
+  public async isERC20Token(tokenAddress: Address): Promise<boolean> {
+    let isOk = true;
+
+    const contract = this.getTokenContract(tokenAddress);
     if (contract) {
       try {
-        await contract.totalSupply();
-        isOk = true;
+        let targetedNetwork = this.ethereumService.targetedNetwork as string;
+        if (targetedNetwork === Networks.Mainnet) {
+          targetedNetwork = "";
+        } else {
+          await contract.totalSupply();
+          return true; // for now
+          targetedNetwork = `-${targetedNetwork}`;
+        }
+
+        const contractAbi = await axios.get(`https://api${targetedNetwork}.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}`).then((result) => result.data);
+        const contractInterface = new Interface(contractAbi);
+        const ierc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
+        const ierc20Interface = new Interface(ierc20Abi);
+
+        for (const functionName in ierc20Interface.functions) {
+          const contractFunction = contractInterface.functions[functionName];
+          if (!contractFunction ||
+            (contractFunction.format(FormatTypes.minimal) !== ierc20Interface.functions[functionName].format(FormatTypes.minimal))) {
+            isOk = false;
+            break;
+          }
+        }
+        if (isOk) {
+          for (const eventName in ierc20Interface.events) {
+            const contractEvent = contractInterface.events[eventName];
+            if (!contractEvent ||
+            (contractEvent.format(FormatTypes.minimal) !== ierc20Interface.events[eventName].format(FormatTypes.minimal))) {
+              isOk = false;
+              break;
+            }
+          }
+        }
         // eslint-disable-next-line no-empty
-      } catch { }
+      } catch (error) {
+        this.consoleLogService.logMessage(`TokenService: Error confirming IERC20: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
+        isOk = false;
+      }
+    } else { // not sure this ever actually happens
+      isOk = false;
     }
     return isOk;
   }
