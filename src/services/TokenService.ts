@@ -239,37 +239,32 @@ export class TokenService {
     const contract = this.getTokenContract(tokenAddress);
     if (contract) {
       try {
-        let targetedNetwork = this.ethereumService.targetedNetwork as string;
-        if (targetedNetwork === Networks.Mainnet) {
-          targetedNetwork = "";
-        } else {
-          await contract.totalSupply();
-          return true; // for now
-          targetedNetwork = `-${targetedNetwork}`;
-        }
+        if (this.ethereumService.targetedNetwork === Networks.Mainnet) {
+          const contractAbi = await axios.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}`).then((result) => result.data);
+          const contractInterface = new Interface(contractAbi);
+          const ierc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
+          const ierc20Interface = new Interface(ierc20Abi);
 
-        const contractAbi = await axios.get(`https://api${targetedNetwork}.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}`).then((result) => result.data);
-        const contractInterface = new Interface(contractAbi);
-        const ierc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
-        const ierc20Interface = new Interface(ierc20Abi);
-
-        for (const functionName in ierc20Interface.functions) {
-          const contractFunction = contractInterface.functions[functionName];
-          if (!contractFunction ||
-            (contractFunction.format(FormatTypes.minimal) !== ierc20Interface.functions[functionName].format(FormatTypes.minimal))) {
-            isOk = false;
-            break;
-          }
-        }
-        if (isOk) {
-          for (const eventName in ierc20Interface.events) {
-            const contractEvent = contractInterface.events[eventName];
-            if (!contractEvent ||
-            (contractEvent.format(FormatTypes.minimal) !== ierc20Interface.events[eventName].format(FormatTypes.minimal))) {
+          for (const functionName in ierc20Interface.functions) {
+            const contractFunction = contractInterface.functions[functionName];
+            if (!contractFunction ||
+                (contractFunction.format(FormatTypes.minimal) !== ierc20Interface.functions[functionName].format(FormatTypes.minimal))) {
               isOk = false;
               break;
             }
           }
+          if (isOk) {
+            for (const eventName in ierc20Interface.events) {
+              const contractEvent = contractInterface.events[eventName];
+              if (!contractEvent ||
+                  (contractEvent.format(FormatTypes.minimal) !== ierc20Interface.events[eventName].format(FormatTypes.minimal))) {
+                isOk = false;
+                break;
+              }
+            }
+          }
+        } else { // a testnet, just do this
+          await contract.totalSupply();
         }
         // eslint-disable-next-line no-empty
       } catch (error) {
