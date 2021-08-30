@@ -85,12 +85,15 @@ export class Stage3 extends BaseStage {
 
   private isLoadedSeedLogo(valid: boolean): void {
     this.seedLogoIsLoaded = valid;
+    if (valid) {
+      this.seedLogoIsValid = true;
+    }
   }
 
   get projectTokenInfoIsComplete(): boolean {
     return this.wizardState.projectTokenInfo &&
       !this.tokenIsMissingMetadata(this.wizardState.projectTokenInfo) &&
-      this.seedLogoIsValid && this.seedLogoIsLoaded;
+      this.seedLogoIsLoaded;
   }
 
   private tokenIsMissingMetadata(tokenInfo: ITokenInfo): boolean {
@@ -106,20 +109,19 @@ export class Stage3 extends BaseStage {
 
     message = await this.isValidProjectTokenInfo();
 
+    if (!message) {
+      message = this.isValidSeedLogo();
+    }
+
+    if (!message && !this.seedLogoIsLoaded) {
+      message = "No valid image found at the provided project token logo URL";
+    }
+
     if (!message && !this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
-    // } else if (!(await this.checkToken(this.seedConfig.tokenDetails.projectTokenAddress))) {
-    //   message = "Project token address is not a valid contract";
-      // else if (!Utils.isValidUrl(encodeURI(this.wizardState.projectTokenInfo.logoURI))) {
-      //   message = "Please enter a valid URL for project token logo";
-      // } else if (!this.isValidImageFormat(this.wizardState.projectTokenInfo.logoURI)) {
-      //   message = "Please supply a valid image file type for project token logo";
-      // } else if (!this.seedLogoIsLoaded) {
-      //   message = "No valid image found at the provided project token logo URL";
-      // }
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
