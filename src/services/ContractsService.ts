@@ -155,7 +155,7 @@ export class ContractsService {
       } else {
         contract = new ethers.Contract(
           ContractAddresses[this.ethereumService.targetedNetwork][contractName],
-          this.getContractAbi(contractName),
+          ContractsService.getContractAbi(contractName),
           signerOrProvider);
       }
       ContractsService.Contracts.set(contractName, contract);
@@ -171,7 +171,7 @@ export class ContractsService {
     return ContractsService.Contracts.get(contractName);
   }
 
-  public getContractAbi(contractName: ContractNames): Address {
+  public static getContractAbi(contractName: ContractNames): Address {
     return ContractsService.ABIs.get(contractName);
   }
 
@@ -182,7 +182,7 @@ export class ContractsService {
   public getContractAtAddress(contractName: ContractNames, address: Address): Contract & any {
     return new ethers.Contract(
       address,
-      this.getContractAbi(contractName),
+      ContractsService.getContractAbi(contractName),
       this.createProvider());
   }
 }
