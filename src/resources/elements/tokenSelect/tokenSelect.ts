@@ -3,7 +3,7 @@ import { autoinject, bindingMode, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { ITokenInfo } from "services/TokenTypes";
 import { TokenService } from "services/TokenService";
-import "./TokenSelect.scss";
+import "./tokenSelect.scss";
 
 @autoinject
 export class TokenSelect {
