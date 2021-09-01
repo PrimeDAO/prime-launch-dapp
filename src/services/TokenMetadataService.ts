@@ -93,7 +93,7 @@ export default class TokenMetadataService {
       for await (const address of addresses) {
         const tokenContract = new ethers.Contract(
           address,
-          ContractsService.getContractAbi(ContractNames.ERC20),
+          ContractsService.getContractAbi(ContractNames.IERC20),
           this.ethereumService.readOnlyProvider) as unknown as Contract & IErc20Token;
 
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;

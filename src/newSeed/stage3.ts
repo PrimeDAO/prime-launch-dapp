@@ -17,7 +17,7 @@ export class Stage3 extends BaseStage {
   tiSymbolInputPresupplied: boolean;
   tiLogoInputPresupplied: boolean;
   loadingToken = false;
-  errorIcon: HTMLElement;
+  logoIcon: HTMLElement;
   seedLogoIsValid = false;
   seedLogoIsLoaded = false;
   projectTokenErrorMessage: string;
@@ -31,8 +31,13 @@ export class Stage3 extends BaseStage {
   }
 
   attached(): void {
-    tippy(this.errorIcon, {
-      content: this.projectTokenErrorMessage,
+    this.configProjectLogoTooltip();
+  }
+
+  configProjectLogoTooltip(): void {
+    tippy(this.logoIcon, {
+      content: this.wizardState.projectTokenInfo.logoURI,
+      interactive: true,
     });
   }
 
@@ -73,13 +78,9 @@ export class Stage3 extends BaseStage {
     let message;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       message = "Please enter a valid address for the Project Token Address";
-    } else if (!this.wizardState.projectTokenInfo ||
-      (!(await this.tokenService.isERC20Token(this.seedConfig.tokenDetails.projectTokenAddress)))) {
-      message = "Please enter a project token address that references a valid ERC20 token contract";
+    } else if (!this.wizardState.projectTokenInfo) {
+      message = "Please enter a project token address that references a valid IERC20 token contract";
     }
-    tippy(this.errorIcon, {
-      content: message,
-    });
     return this.projectTokenErrorMessage = message;
   }
 
@@ -87,6 +88,7 @@ export class Stage3 extends BaseStage {
     this.seedLogoIsLoaded = valid;
     if (valid) {
       this.seedLogoIsValid = true;
+      this.configProjectLogoTooltip();
     }
   }
 

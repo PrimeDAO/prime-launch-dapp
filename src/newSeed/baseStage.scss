@@ -232,15 +232,19 @@
           color: $AlertGreen;
         }
 
-        .looksBad {
-          color: $AlertRed;
-        }
-
         .loadingToken {
           font-size: 18px;
           i {
             color: $Secondary07;
           }
+        }
+      }
+
+      .looksBad {
+        color: $Neutral02;
+        i {
+          color: $AlertRed;
+          margin-right: 6px;
         }
       }
 

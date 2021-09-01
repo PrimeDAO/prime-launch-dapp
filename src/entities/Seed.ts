@@ -257,7 +257,7 @@ export class Seed {
     catch (error) {
       this.corrupt = true;
       this.initializing = false;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
+      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     }
   }
 
@@ -302,7 +302,7 @@ export class Seed {
     }
     catch (error) {
       this.corrupt = true;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed ${error?.message}`, "error");
+      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
     }
