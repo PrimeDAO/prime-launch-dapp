@@ -1,4 +1,4 @@
-import { Contract, ethers, Signer } from "ethers";
+import { BigNumber, Contract, ethers, Signer } from "ethers";
 import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
@@ -184,5 +184,35 @@ export class ContractsService {
       address,
       ContractsService.getContractAbi(contractName),
       this.createProvider());
+  }
+
+  // org.zeppelinos.proxy.implementation
+  private static storagePositionZep = "0x7050c9e0f4ca769c69bd3a8ef740bc37934f8e2c036e5a723fd8ee048ed3f8c3";
+
+  // eip1967.proxy.implementation
+  private static storagePosition1967 = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";
+
+
+  /**
+   * Attempts to obtain the addresss of a proxy contract implementation.
+   * Uses a heuristic described here:
+   *     https://ethereum.stackexchange.com/questions/103143/how-do-i-get-the-implementation-contract-address-from-the-proxy-contract-address
+   *
+   * More info here:
+   *     https://medium.com/etherscan-blog/and-finally-proxy-contract-support-on-etherscan-693e3da0714b
+   *
+   * @param proxyContract
+   * @returns null if not found
+   */
+  public async getProxyImplementation(proxyContract: Address): Promise<Address> {
+
+    let result = await this.ethereumService.readOnlyProvider.getStorageAt(proxyContract, ContractsService.storagePositionZep);
+    if (BigNumber.from(result).isZero()) {
+      result = await this.ethereumService.readOnlyProvider.getStorageAt(proxyContract, ContractsService.storagePosition1967);
+    }
+
+    const bnResult = BigNumber.from(result);
+
+    return bnResult.isZero() ? null : bnResult.toHexString();
   }
 }

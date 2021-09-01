@@ -106,7 +106,7 @@ export class TokenService {
       }
 
       if (!await this.isERC20Token(tokenInfo.address)) {
-        reject(`Token address does not reference to an IERC20 contract: ${tokenAddress}`);
+        reject(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
         return;
       }
 
@@ -248,6 +248,12 @@ export class TokenService {
     if (contract) {
       try {
         if (this.ethereumService.targetedNetwork === Networks.Mainnet) {
+
+          const proxyImplementation = await this.contractsService.getProxyImplementation(tokenAddress);
+          if (proxyImplementation) {
+            tokenAddress = proxyImplementation;
+          }
+
           const contractAbi = await axios.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}&apikey=${process.env.ETHERSCAN_KEY}`)
             .then((result) => {
               return result.data.message !== "OK" ? null : result.data.result;

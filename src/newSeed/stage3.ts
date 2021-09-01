@@ -1,3 +1,4 @@
+import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -26,6 +27,7 @@ export class Stage3 extends BaseStage {
     eventAggregator: EventAggregator,
     tokenService: TokenService,
     private numberService: NumberService,
+    private consoleLogService: ConsoleLogService,
     router: Router) {
     super(router, eventAggregator, tokenService);
   }
@@ -79,7 +81,7 @@ export class Stage3 extends BaseStage {
     if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       message = "Please enter a valid address for the Project Token Address";
     } else if (!this.wizardState.projectTokenInfo) {
-      message = "Please enter a project token address that references a valid IERC20 token contract";
+      message = "Please enter a project token address that references a valid IERC20 token contract having 18 decimals";
     }
     return this.projectTokenErrorMessage = message;
   }
@@ -197,9 +199,10 @@ export class Stage3 extends BaseStage {
           // this.seedLogoIsLoaded = true; // assuming
           this.projectTokenErrorMessage = null;
           this.loadingToken = false;
-        }).catch(() => {
+        }).catch((error) => {
           // then is probably not a valid token contract
           // this.validationError("Could not obtain project token information from the address supplied");
+          this.consoleLogService.logMessage(`error loading project token info: ${error?.message ?? error}`, "info");
           this.wizardState.projectTokenInfo = null;
           this.formIsEditable = false;
           this.loadingToken = false;
