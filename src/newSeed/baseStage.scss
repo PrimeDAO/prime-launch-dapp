@@ -241,6 +241,8 @@
       }
 
       .looksBad {
+        margin-left: 8px;
+        white-space: normal;
         color: $Neutral02;
         i {
           color: $AlertRed;
