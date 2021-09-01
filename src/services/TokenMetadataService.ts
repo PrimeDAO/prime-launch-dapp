@@ -101,12 +101,22 @@ export default class TokenMetadataService {
           const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
           const logoFound = await axios.get(logoURI).catch(() => null);
           tokenInfo.logoURI = logoFound ? logoURI : null;
-          tokenInfo.name = await tokenContract.name();
-          tokenInfo.symbol = await tokenContract.symbol();
+          /**
+           * none of the following functions are required by IERC20, so we will tolerate their
+           * absence since we have fallbacks.  But we must nevertheless fail here if decimals
+           * is missing.  We and our contracts assume 18.
+           */
+          try {
+            tokenInfo.name = await tokenContract.name();
+            tokenInfo.symbol = await tokenContract.symbol();
+          // eslint-disable-next-line no-empty
+          } catch { }
           tokenInfo.decimals = await tokenContract.decimals();
           metaDict[address] = tokenInfo as unknown as ITokenInfo;
         // eslint-disable-next-line no-empty
-        } catch { }
+        } catch (ex) {
+          this.consoleLogService.logMessage(`getMetaOnchain: ${ex.message ?? ex} `, "error");
+        }
       }
 
       return metaDict;

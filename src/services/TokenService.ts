@@ -82,7 +82,7 @@ export class TokenService {
         tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
       } else {
         // is not a valid token contractz, or some other error occurred
-        reject(`Token address possibly does not reference to an IERC20 contract: ${tokenAddress}`);
+        reject(`Token does not appear to be a token contract: ${tokenAddress}`);
         return;
       }
       /**

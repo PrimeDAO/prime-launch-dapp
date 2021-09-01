@@ -37,10 +37,12 @@ export class Stage3 extends BaseStage {
   }
 
   configProjectLogoTooltip(): void {
-    tippy(this.logoIcon, {
-      content: this.wizardState.projectTokenInfo.logoURI,
-      interactive: true,
-    });
+    if (this.logoIcon) {
+      tippy(this.logoIcon, {
+        content: this.wizardState.projectTokenInfo?.logoURI ?? "",
+        interactive: true,
+      });
+    }
   }
 
   addTokenDistribution(): void {
