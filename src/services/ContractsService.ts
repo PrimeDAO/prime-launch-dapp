@@ -9,6 +9,7 @@ const SeedFactoryABI = require("../contracts/SeedFactory.json");
 const SeedABI = require("../contracts/Seed.json");
 const SignerABI = require("../contracts/Signer.json");
 const IERC20ABI = require("../contracts/IERC20.json");
+const ERC20ABI = require("../contracts/ERC20.json");
 
 export enum ContractNames {
   SEEDFACTORY = "SeedFactory"
@@ -17,6 +18,7 @@ export enum ContractNames {
   , PRIMETOKEN = "PrimeToken"
   , DAI = "DAI"
   , IERC20 = "IERC20"
+  , ERC20 = "ERC20"
   , SAFE = "Safe"
   , SIGNER = "Signer"
 }
@@ -43,6 +45,7 @@ export class ContractsService {
       , [ContractNames.DAI, IERC20ABI.abi]
       // , [ContractNames.WETH, WETHABI.abi]
       , [ContractNames.IERC20, IERC20ABI.abi]
+      , [ContractNames.ERC20, ERC20ABI.abi]
       , [ContractNames.SIGNER, SignerABI.abi]
       ,
     ],

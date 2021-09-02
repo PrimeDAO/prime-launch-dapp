@@ -41,6 +41,17 @@ export class TokenService {
   }
 
   async initialize(): Promise<TokenListMap> {
+    this.geckoCoinInfo = new Map<string, string>();
+    const uri = "https://api.coingecko.com/api/v3/coins/list";
+
+    await axios.get(uri)
+      .then((response) => {
+        if (response.data && response.data.length) {
+          response.data.map((tokenInfo: ITokenInfo) =>
+            this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
+        }
+      });
+
     return this.tokenLists = await this.tokenListService.fetchLists();
   }
 
@@ -181,32 +192,7 @@ export class TokenService {
   }
 
   async getTokenGeckoId(name: string, symbol: string): Promise<string> {
-    if (!this.geckoCoinInfo) {
-      this.geckoCoinInfo = new Map<string, string>();
-    }
-
-    const geckoMapKey = this.getTokenGeckoMapKey(name, symbol);
-
-    let id = this.geckoCoinInfo.get(geckoMapKey);
-
-    if (!id) {
-      const uri = "https://api.coingecko.com/api/v3/coins/list";
-
-      await axios.get(uri)
-        .then((response) => {
-          if (response.data && response.data.length) {
-            const tokenInfo = response.data[0];
-            this.geckoCoinInfo.set(geckoMapKey, tokenInfo.id);
-            id = tokenInfo.id;
-          }
-        })
-        .catch((error) => {
-          if (process.env.NODE_ENV !== "development") {
-            this.consoleLogService.logMessage(`TokenService: Error fetching token id for ${name}: ${error?.response?.data?.error?.message ?? error?.message}`, "warn");
-          }
-        });
-    }
-
+    const id = this.geckoCoinInfo.get(this.getTokenGeckoMapKey(name, symbol));
     if (id) {
       return id;
     } else {

@@ -55,7 +55,7 @@
                         src.bind="wizardState.projectTokenInfo.logoURI"
                         error.trigger="isLoadedSeedLogo(false)"
                         load.trigger="isLoadedSeedLogo(true)" />
-                      <a class="logoUri ellipses" href.bind="wizardState.projectTokenInfo.logoURI" target="_blank" rel="noopener noreferrer">${wizardState.projectTokenInfo.logoURI}</a>
+                      <a show.bind="tiLogoInputPresupplied" class="logoUri ellipses" href.bind="wizardState.projectTokenInfo.logoURI" target="_blank" rel="noopener noreferrer">${wizardState.projectTokenInfo.logoURI}</a>
                     </label>
                     <div class="inputNote inputElement">
                       <input type="text"

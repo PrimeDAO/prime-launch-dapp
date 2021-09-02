@@ -3,8 +3,8 @@ import { autoinject } from "aurelia-framework";
 import { ContractNames, ContractsService } from "./ContractsService";
 import { getAddress } from "ethers/lib/utils";
 import { EthereumService } from "services/EthereumService";
-import { Contract, ethers } from "ethers";
-import { IErc20Token, ITokenInfo } from "services/TokenTypes";
+import { ITokenInfo } from "services/TokenTypes";
+import { ethers } from "ethers";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ITokenList, TokenListMap } from "services/TokenListService";
 // import { Multicaller } from '@/lib/utils/balancer/contract';
@@ -93,8 +93,8 @@ export default class TokenMetadataService {
       for await (const address of addresses) {
         const tokenContract = new ethers.Contract(
           address,
-          ContractsService.getContractAbi(ContractNames.IERC20),
-          this.ethereumService.readOnlyProvider) as unknown as Contract & IErc20Token;
+          ContractsService.getContractAbi(ContractNames.ERC20),
+          this.ethereumService.readOnlyProvider);
 
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
         try {
@@ -104,7 +104,7 @@ export default class TokenMetadataService {
           /**
            * none of the following functions are required by IERC20, so we will tolerate their
            * absence since we have fallbacks.  But we must nevertheless fail here if decimals
-           * is missing.  We and our contracts assume 18.
+           * is missing.  We and our contracts require 18.
            */
           try {
             tokenInfo.name = await tokenContract.name();
