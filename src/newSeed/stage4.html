@@ -71,13 +71,13 @@
             <div class="fundingDescrp">
               The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
             </div>
+            <numeric-input
+              output-as-string="true"
+              id="fundingMax"
+              value.bind="seedConfig.seedDetails.fundingMax"
+              placeholder="1000">
+            </numeric-input>
             <!-- <div class="fundingTicker">
-              <numeric-input
-                output-as-string="true"
-                id="fundingMax"
-                value.bind="seedConfig.seedDetails.fundingMax"
-                placeholder="1000">
-              </numeric-input>
               <div if.to-view="wizardState.fundingTokenInfo">
                 <img src.bind="wizardState.fundingTokenInfo.logoURI" />
               </div>
