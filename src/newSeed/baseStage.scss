@@ -188,9 +188,6 @@
     }
   }
 
-  &.stage2 {
-  }
-
   &.stage3,
   &.stage4 {
     .tickerContainer {
@@ -717,7 +714,7 @@
       label {
         margin-bottom: unset;
       }
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     > .heading.heading2 {
       font-size: 26px;
@@ -799,6 +796,23 @@
         &.admin {
           > input {
             margin-bottom: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page.stageContainer {
+    &.stage4 {
+      .infoInput {
+        .tokenSelector {
+          flex-direction: column;
+          align-items: center;
+
+          .tokenSelect {
+            margin-right: 0;
           }
         }
       }
