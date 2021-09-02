@@ -188,6 +188,7 @@ export class TokenService {
   getTokenGeckoMapKey(name: string, symbol: string): string {
     // PRIMEDao Token HACK!!!
     if (name.toLowerCase() === "primedao token") { name = "primedao"; }
+    if (name.toLowerCase() === "dai stablecoin") { name = "dai"; }
     return `${name.toLowerCase()}_${symbol.toLowerCase()}`;
   }
 
@@ -196,7 +197,7 @@ export class TokenService {
     if (id) {
       return id;
     } else {
-      this.consoleLogService.logMessage(`TokenService: Error fetching token info: token not found (${name}/${symbol})`, "warn");
+      this.consoleLogService.logMessage(`TokenService: Unable to find token info in CoinGecko: (${name}/${symbol})`, "warn");
       return "";
     }
   }
