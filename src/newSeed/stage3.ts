@@ -8,7 +8,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
-import tippy from "tippy.js";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -30,19 +29,6 @@ export class Stage3 extends BaseStage {
     private consoleLogService: ConsoleLogService,
     router: Router) {
     super(router, eventAggregator, tokenService);
-  }
-
-  attached(): void {
-    this.configProjectLogoTooltip();
-  }
-
-  configProjectLogoTooltip(): void {
-    if (this.logoIcon) {
-      tippy(this.logoIcon, {
-        content: this.wizardState.projectTokenInfo?.logoURI ?? "",
-        interactive: true,
-      });
-    }
   }
 
   addTokenDistribution(): void {
@@ -92,7 +78,6 @@ export class Stage3 extends BaseStage {
     this.seedLogoIsLoaded = valid;
     if (valid) {
       this.seedLogoIsValid = true;
-      this.configProjectLogoTooltip();
     }
   }
 
