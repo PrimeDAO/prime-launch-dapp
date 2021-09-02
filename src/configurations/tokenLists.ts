@@ -22,7 +22,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
         "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
     },
     External: [
-      "ipns://tokens.uniswap.org",
+      "ipns://tokens-uniswap-org",
       "tokenlist.zerion.eth",
       "tokens.1inch.eth",
       "tokenlist.aave.eth",
@@ -38,7 +38,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
         "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
     },
     External: [
-      "ipns://tokens.uniswap.org",
+      "ipns://tokens-uniswap-org",
       // 'https://tokens.coingecko.com/uniswap/all.json',
       "https://umaproject.org/uma.tokenlist.json",
     ],
