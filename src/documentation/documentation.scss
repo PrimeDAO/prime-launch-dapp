@@ -5,78 +5,94 @@
     justify-content: center;
     gap: 20px;
 
-    .documentBody {
+    .documentContainer {
         display: grid;
         grid-template-columns: 0.7fr 2fr;
-        gap: 50px;
-    }
 
-    .sidebar {
-        line-height: 200.02%;
-        font-family: Inter;
-        font-size: 16px;
-
-        a {
-            text-decoration: none;
-            display: block;
-        }
-
-        .active {
-            color: $Secondary02;
-        }
-    }
-    .docsContainer {
-        max-width: 40rem;
-
-        > .heading3 {
-            line-height: 200%;
-            font-size: 36px;
-        }
-
-        .document {
+        .sidebar {
+            padding-top: 28px;
+            line-height: 200.02%;
             font-family: Inter;
-            font-weight: 500;
             font-size: 16px;
-            line-height: 140%;
-            color: $Neutral03;
-            margin-bottom: 60px;
 
             a {
-                color: $Secondary07;
+                text-decoration: none;
+                display: block;
+            }
+
+            .active {
+                color: $Secondary02;
             }
         }
-    }
-    .navigationContainer {
-        display: flex;
-        justify-content: space-between;
-        color: $Secondary02;
-    }
-    .navigationNext {
-        @include standardTextGradient;
-        cursor: pointer;
-    }
-    .navigationPrevious {
-        @include standardTextGradientReversed;
-        cursor: pointer;
+
+        .rightSection {
+            background-color: $BG01;
+            border-radius: 6px;
+            padding: 56px;
+            .documentBodyContainer {
+                max-width: 40rem;
+
+                > .title.heading {
+                    margin-bottom: 28px;
+                    font-size: 36px;
+                }
+
+                .documentBody {
+                    font-family: Inter;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 140%;
+                    color: $Neutral03;
+                    margin-bottom: 28px;
+
+                    a {
+                        color: $Secondary07;
+                    }
+                }
+            }
+
+            .navigationContainer {
+                display: flex;
+                justify-content: space-between;
+                color: $Secondary02;
+                .navigationNext {
+                    @include standardTextGradient;
+                    cursor: pointer;
+                }
+                .navigationPrevious {
+                    @include standardTextGradientReversed;
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }
 
 @media screen and (max-width: 1072px) {
     .documentsContainer {
-        > .heading.heading1 {
-            -webkit-text-fill-color: $Secondary02;
+        > .title.heading {
             font-size: 34px;
         }
-        .docsContainer {
-            > .heading.heading3 {
-                font-size: 28px;
-                white-space: normal;
-                line-height: 100%;
+        .documentContainer {
+            grid-template-columns: auto;
+            .rightSection {
+                padding: 0;
             }
-        }
-        .documentBody {
-            grid-template-columns: unset;
-            gap: 50px;
+            .sidebar {
+                padding-top: 0;
+                margin-bottom: 30px;
+            }
+
+            .rightSection {
+                background-color: unset;
+                .documentBodyContainer {
+                    > .title.heading {
+                        font-size: 28px;
+                        white-space: normal;
+                        line-height: 56px;
+                    }
+                }
+            }
         }
     }
 }
