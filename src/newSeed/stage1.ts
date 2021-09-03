@@ -1,12 +1,6 @@
 import { BaseStage } from "./baseStage";
-// Let's import the utils helper
 import { Utils } from "../services/utils";
 import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
-
-// interface ISocialLinkInfo {
-//   platformIndex: number,
-//   url: string,
-// }
 
 export class Stage1 extends BaseStage {
 

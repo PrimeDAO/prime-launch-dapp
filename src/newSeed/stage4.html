@@ -179,7 +179,7 @@
             </div>
           </div>
         </div>
-        <div class="infoInput">
+        <div class="infoInput whitelistContainer">
           <div class="labeledQuestion">
             <label for="whitelist">Whitelist</label>
             <div class="questionMark">
@@ -187,8 +187,13 @@
               </question-mark>
             </div>
           </div>
-          <input id="whitelist" value.bind="seedConfig.seedDetails.whitelist"
+          <input id="whitelist"
+            value.bind="seedConfig.seedDetails.whitelist"
+            input.trigger="getWhiteListFeedback()"
             placeholder="(Optional) URL to a whitelist" />
+          <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
+          <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
+          <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
         </div>
         <div class="infoInput">
           <div class="labeledQuestion">

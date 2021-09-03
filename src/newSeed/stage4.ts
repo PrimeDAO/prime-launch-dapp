@@ -1,4 +1,5 @@
-import { autoinject } from "aurelia-framework";
+import { WhiteListService } from "./../services/WhiteListService";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "./../services/DateService";
 import { BaseStage } from "newSeed/baseStage";
@@ -8,7 +9,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
-import { EthereumService, fromWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 
 @autoinject
@@ -25,6 +26,9 @@ export class Stage4 extends BaseStage {
   lastCheckedFundingAddress: string;
   fundingSymbol: string;
   fundingIcon: string;
+  whitelist: Set<Address>;
+  loadingWhitelist = false;
+  lastWhitelistUrlValidated: string;
   // totally faked ATM.  Don't keep any of this code.
   tokenList=
   (process.env.NETWORK === "mainnet") ?
@@ -45,6 +49,7 @@ export class Stage4 extends BaseStage {
     private ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
+    private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
   ) {
     super(router, eventAggregator, tokenService);
@@ -74,6 +79,16 @@ export class Stage4 extends BaseStage {
     this.endDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.endDate = date.toJSDate();
     });
+  }
+
+  @computedFrom("seedConfig.seedDetails.whitelist")
+  get whitelistUrlIsValid(): boolean {
+    return Utils.isValidUrl(this.seedConfig.seedDetails.whitelist);
+  }
+
+  @computedFrom("seedConfig.seedDetails.whitelist", "lastWhitelistUrlValidated")
+  get currentWhitelistIsValidated(): boolean {
+    return this.lastWhitelistUrlValidated === this.seedConfig.seedDetails.whitelist;
   }
 
   toggleGeoBlocking(): void {
@@ -167,9 +182,8 @@ export class Stage4 extends BaseStage {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid URL for Whitelist";
-      // won't validate this for now
-    // } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
-    //   message = "Please submit a whitelist that contains a list of addresses separated by commas or whitespace";
+    } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+      message = "Whitelist cannot be fetched or parsed. Please enter a URL to a whitelist that conforms to the given formatting rules";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
     } else if (this.seedConfig.seedDetails.legalDisclaimer &&
@@ -189,5 +203,16 @@ export class Stage4 extends BaseStage {
 
   makeMeAdmin() : void {
     this.seedConfig.seedDetails.adminAddress = this.ethereumService.defaultAccountAddress;
+  }
+
+  async getWhiteListFeedback(): Promise<void> {
+    if (this.seedConfig.seedDetails.whitelist) {
+      this.loadingWhitelist = true;
+      this.whitelist = await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist);
+      this.lastWhitelistUrlValidated = this.seedConfig.seedDetails.whitelist;
+      this.loadingWhitelist = false;
+    } else {
+      this.whitelist = null;
+    }
   }
 }

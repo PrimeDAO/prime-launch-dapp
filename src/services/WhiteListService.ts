@@ -4,13 +4,15 @@ import { autoinject } from "aurelia-framework";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import axios from "axios";
 import { Address } from "services/EthereumService";
+import { AxiosService } from "services/axiosService";
 
 @autoinject
 export class WhiteListService {
 
   constructor(
     private consoleLogService: ConsoleLogService,
-    private ethereumService: EthereumService) {}
+    private ethereumService: EthereumService,
+    private axiosService: AxiosService) {}
 
   private lists = new Map<string, Set<Address>>();
 
@@ -37,21 +39,7 @@ export class WhiteListService {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            this.consoleLogService.logMessage(error.response.data, "error");
-            this.consoleLogService.logMessage(error.response.status, "error");
-            this.consoleLogService.logMessage(error.response.headers, "error");
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            this.consoleLogService.logMessage(error.request, "error");
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            this.consoleLogService.logMessage(error.message, "error");
-          }
+          this.axiosService.axiosErrorHandler(error);
           this.lists.set(url, null);
           return null;
         });

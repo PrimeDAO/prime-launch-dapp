@@ -512,38 +512,26 @@
       }
     }
     .whitelistContainer {
-      .inputFileLabel {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-around;
-        align-items: center;
-        overflow-wrap: break-word;
-        width: 16em;
-        height: 4.5em;
-        border-radius: 0.6em;
-        background-color: #1b1722;
-        border: 1px solid $Border01;
-        cursor: pointer;
-        span {
-          font-size: 0.7em;
-          font-weight: 100;
-          text-align: center;
-          line-height: 1em;
-        }
+      .loadingWhitelist {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: 6px;
         i {
-          font-size: 2.8em;
-          -webkit-text-fill-color: $Neutral02;
-        }
-        span {
-          width: 8em;
-          -webkit-text-fill-color: $Neutral03;
-          font-size: 1em;
-          text-align: left;
-          line-height: 1.24em;
+          color: $Secondary07;
         }
       }
-      input[type="file"] {
-        display: none;
+
+      .whiteListFeedback {
+        color: $Neutral02;
+        margin-left: 6px;
+        margin-top: 6px;
+
+        &.bad {
+          i {
+            color: $AlertRed;
+            margin-right: 6px;
+          }
+        }
       }
     }
     .checkboxContainer {
