@@ -44,8 +44,8 @@ export default class TokenMetadataService {
     tokenLists: TokenListMap,
   ): Promise<TokenInfoMap> {
     addresses = addresses.map(address => getAddress(address));
-    const tokenListTokens = this.tokenListsTokensFrom(tokenLists);
-    let metaDict = this.getMetaFromLists(addresses, tokenListTokens);
+    const tokenList = this.flattenTokenLists(tokenLists);
+    let metaDict = this.getMetaFromList(addresses, tokenList);
 
     // If token meta can't be found in TokenLists, fetch onchain
     const unknownAddresses = addresses.filter(
@@ -59,22 +59,28 @@ export default class TokenMetadataService {
     return metaDict;
   }
 
-  private tokenListsTokensFrom(lists: TokenListMap): ITokenInfo[] {
+  private flattenTokenLists(lists: TokenListMap): ITokenInfo[] {
+    /**
+     * Note this can return dups.
+     * The lists will be enumerated in the order in which they appear in lists, which
+     * is the order in which they appeared in tokenLists.ts.
+     */
     return Object.values<ITokenList>(lists)
       .map(list => list?.tokens ?? [])
       .flat();
   }
 
-  private getMetaFromLists(
+  private getMetaFromList(
     addresses: string[],
     tokens: ITokenInfo[],
   ): TokenInfoMap {
     const metaDict = {};
 
     addresses.forEach(async address => {
-      const tokenMeta = tokens.find(
-        token => getAddress(token.address) === address,
-      );
+      /**
+       * `find` returns the first matching token found among dups
+       **/
+      const tokenMeta = tokens.find(token => getAddress(token.address) === address);
       if (tokenMeta)
         metaDict[address] = {
           ...tokenMeta,

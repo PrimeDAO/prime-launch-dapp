@@ -99,10 +99,12 @@ export class TokenListService {
   }
 
   /**
-   * Fetch object with each propertiy the Uri to metadata for a token list.
+   * Fetch object with each key being the Uri to metadata for a token list.
+   * The object keys, when enumerated, will appear in the order in which they
+   * appear in `this.uris.All`.
    */
   public async fetchLists(): Promise<TokenListMap> {
-    const uris: string[] = this.uris.All;
+    const uris = this.uris.All;
     /**
      * each call to `fetch` fetches a list
      */
@@ -122,11 +124,6 @@ export class TokenListService {
       const tokenInfos = list[1]?.tokens;
       if (tokenInfos) {
         list[1].tokens = tokenInfos.filter((tokenInfo: ITokenInfo) => tokenInfo["chainId"] === this.ethereumService.targetedChainId);
-        // list[1].tokens.map((tokenInfo: ITokenInfo) =>
-        // {
-        //   tokenInfo.icon = tokenInfo["logoURI"];
-        //   delete tokenInfo["logoURI"];
-        // };
       }
     }
     return Object.fromEntries(validLists);
