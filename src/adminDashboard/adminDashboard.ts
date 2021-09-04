@@ -65,7 +65,6 @@ export class AdminDashboard {
 
   async setSeed(index) {
     this.selectedSeed = this.seeds[index];
-    console.log(this.selectedSeed);
   }
 
   async fundSeed() {
@@ -153,6 +152,5 @@ export class AdminDashboard {
 
   connect():void {
     this.ethereumService.ensureConnected();
-    console.log(this.seeds);
   }
 }
