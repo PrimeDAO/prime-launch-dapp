@@ -3,8 +3,82 @@
     <div show.bind="!loading">
       <div if.bind="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
       <div else class="formContainer">
-        <div if.bind="seeds.length">[Seeds Dropdown, etc...]</div>
+        <div>
+          <div if.bind="seeds.length">
+            <div>
+              <dropdown
+                item-changed.call="setSeed(index)"
+                selected-item-index.to-view="selectedSeed.metadata.general.projectName"
+                placeholder="Select a Category...">
+                <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+              </dropdown>
+            </div>
+            <div if.bind="selectedSeed.address">
+              Project Name:- ${selectedSeed.metadata.general.projectName}
+              <div>
+                <div class="stageButton proceed button1" click.delegate="fundSeed()">
+                  Fund Project
+                </div>
+              </div>
+              <div>
+                <div class="stageButton proceed button1" click.delegate="withdrawFundingTokens()">
+                  Withdraw Funding Tokens
+                </div>
+              </div>
+              <div>
+                <div class="stageButton proceed button1" click.delegate="addWhitelist()">
+                  Add Whitelist
+                </div>
+              </div>
+              <div>
+                <div class="stageButton proceed button1" click.delegate="pauseLaunch()">
+                  Pause
+                </div>
+              </div>
+              <div>
+                <div class="stageButton proceed button1" click.delegate="unpauseLaunch()">
+                  UnPause
+                </div>
+              </div>
+              <div>
+                <div class="stageButton proceed button1" click.delegate="closeLaunch()">
+                  Close
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label for="addressToRemove">Address to remove from whitelist</label>
+                  <input id="addressToRemove" value.bind="addressToRemove"
+                    placeholder="0x6C4ef..." />
+                </div>
+                <div class="stageButton proceed button1" click.delegate="removeFromWhiteliste(addressToRemove)">
+                  Remove from whitelist
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label for="addressToAdd">Address to add from whitelist</label>
+                  <input id="addressToAdd" value.bind="addressToAdd"
+                    placeholder="0x6C4ef..." />
+                </div>
+                <div class="stageButton proceed button1" click.delegate="addToWhitelist(addressToAdd)">
+                  Add to whitelist
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label for="receiverAddress">Receiver Address</label>
+                  <input id="receiverAddress" value.bind="receiverAddress"
+                    placeholder="0x6C4ef..." />
+                </div>
+                <div class="stageButton proceed button1" click.delegate="retrieveProjectTokens(receiverAddress)">
+                  Retrieve Project Tokens
+                </div>
+              </div>
+            </div>
+          </div>
         <div else>You have not created any Seeds</div>
+        </div>
       </div>
     </div>
 </template>
