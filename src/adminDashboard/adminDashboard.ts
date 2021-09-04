@@ -68,33 +68,33 @@ export class AdminDashboard {
   }
 
   async fundSeed() {
-    try{
+    try {
       await this.selectedSeed.projectTokenContract.transfer(this.selectedSeed.address, this.selectedSeed.seedAmountRequired);
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
   async retrieveProjectTokens(receiver: Address) {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.retrieveSeedTokens(receiver);
       await this.selectedSeed.contract.retrieveSeedTokens(receiver);
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
   async withdrawFundingTokens() {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.withdraw();
       await this.selectedSeed.contract.withdraw();
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
   async addWhitelist() {
-    try{
+    try {
       const filterPattern = /([^\W]+)/g;
       const response = await axios.get(this.selectedSeed.metadata.seedDetails.whitelist);
       const whitelistAddress = response.data.match(filterPattern);
@@ -106,51 +106,51 @@ export class AdminDashboard {
   }
 
   async addToWhitelist(address: Address) {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.whitelist(address);
       await this.selectedSeed.contract.whitelist(address);
-    } catch (error){
+    } catch (error) {
       alert(error.message);
     }
   }
 
-  async removeFromWhiteliste(address: Address){
-    try{
+  async removeFromWhiteliste(address: Address) {
+    try {
       await this.selectedSeed.contract.callStatic.unwhitelist(address);
       await this.selectedSeed.contract.unwhitelist(address);
-    } catch (error){
+    } catch (error) {
       alert(error.message);
     }
   }
 
   async pauseLaunch() {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.pause();
       await this.selectedSeed.contract.pause();
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
   async unpauseLaunch() {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.unpause();
       await this.selectedSeed.contract.unpause();
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
   async closeLaunch() {
-    try{
+    try {
       await this.selectedSeed.contract.callStatic.close();
       await this.selectedSeed.contract.close();
     } catch (error) {
-        alert(error.message);
+      alert(error.message);
     }
   }
 
-  connect():void {
+  connect(): void {
     this.ethereumService.ensureConnected();
   }
 }
