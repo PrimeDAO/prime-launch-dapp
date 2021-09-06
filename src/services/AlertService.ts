@@ -1,9 +1,9 @@
-import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfig, EventConfigException } from "./GeneralEvents";
 import { DialogCloseResult, DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
 import { Alert } from "../resources/dialogs/alert/alert";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 @autoinject
 export class AlertService {
@@ -12,19 +12,17 @@ export class AlertService {
   private subscriptions: DisposableCollection = new DisposableCollection();
 
   constructor(
-    eventAggregator: EventAggregator,
+    private eventAggregator: EventAggregator,
     private dialogService: DialogService,
   ) {
-    this.subscriptions.push(eventAggregator
-      .subscribe("handleException",
-        (config: EventConfigException | any) => this.handleException(config)));
-    this.subscriptions.push(eventAggregator
-      .subscribe("handleFailure", (config: EventConfig | string) => this.handleFailure(config)));
   }
 
-  /* shouldn't actually ever happen */
-  public dispose(): void {
-    this.subscriptions.dispose();
+  shouldHandleErrors(): void {
+    this.subscriptions.push(this.eventAggregator
+      .subscribe("handleException",
+        (config: EventConfigException | any) => this.handleException(config)));
+    this.subscriptions.push(this.eventAggregator
+      .subscribe("handleFailure", (config: EventConfig | string) => this.handleFailure(config)));
   }
 
   private handleException(config: EventConfigException | any) {
