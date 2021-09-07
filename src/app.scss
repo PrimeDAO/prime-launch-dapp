@@ -64,7 +64,8 @@
     }
   }
 
-  .appHeader, .logo {
+  .appHeader,
+  .logo {
     top: unset;
     z-index: 998;
   }
@@ -118,13 +119,12 @@
 }
 
 @media screen and (max-width: 1072px) {
-
   .mobilemenuButton {
     border-radius: 50%;
     width: 24px;
     height: 24px;
     transform: rotate(0deg);
-    transition: .5s ease-in-out;
+    transition: 0.5s ease-in-out;
     cursor: pointer;
     transform: scale(1);
     span {
@@ -137,7 +137,7 @@
       opacity: 1;
       left: 0;
       transform: rotate(0deg);
-      transition: .25s ease-in-out;
+      transition: 0.25s ease-in-out;
 
       &:nth-child(1) {
         top: 5px;
@@ -178,7 +178,7 @@
 
   .appWrapper {
     &.showingMobileMenu {
-      .appHeader, 
+      .appHeader,
       .logo {
         top: 0;
         position: fixed;
@@ -196,21 +196,20 @@
         display: block;
       }
     }
-
   }
 }
 
 .animateMobileMenuBackground {
   width: 300vmax;
   height: 300vmax;
-  background: $BG03;
+  background-color: $BG01;
   border-radius: 50%;
   border: 1px solid $BG02;
   position: fixed;
   top: calc(-150vmax + 40px);
   right: calc(-150vmax + 50px);
 
-  &>.mobileMenuContainer {
+  & > .mobileMenuContainer {
     position: fixed;
     left: calc(50vw - 85px);
     top: calc(50vh - 115px);
@@ -220,7 +219,7 @@
       display: unset;
     }
 
-    &>.menu {
+    & > .menu {
       .networkfeedback {
         margin-bottom: 20px;
       }
@@ -240,24 +239,24 @@
     }
   }
 
-  &.au-enter, &.au-left {
+  &.au-enter,
+  &.au-left {
     transform: scale(0);
   }
-  &.au-leave, &.au-entered {
+  &.au-leave,
+  &.au-entered {
     transform: scale(1);
   }
   &.au-enter-active {
     & .menu {
       opacity: 0;
     }
-    animation: openMenu 0.25s cubic-bezier(.42,.49,1,.35);
+    animation: openMenu 0.25s cubic-bezier(0.42, 0.49, 1, 0.35);
   }
   &.au-leave-active {
-    animation: closeMenu 0.25s cubic-bezier(0,.32,.82,1);
+    animation: closeMenu 0.25s cubic-bezier(0, 0.32, 0.82, 1);
   }
-
 }
-
 
 @keyframes openMenu {
   0% {
