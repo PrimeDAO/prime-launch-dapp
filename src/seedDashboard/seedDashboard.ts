@@ -1,4 +1,3 @@
-import { AlertService } from "./../services/AlertService";
 import { BrowserStorageService } from "./../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
@@ -15,6 +14,7 @@ import { BigNumber } from "ethers";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { GeoBlockService } from "services/GeoBlockService";
+import { CongratulationsService } from "services/CongratulationsService";
 
 @autoinject
 export class SeedDashboard {
@@ -45,7 +45,7 @@ export class SeedDashboard {
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
-    private alertService: AlertService,
+    private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
@@ -252,7 +252,7 @@ export class SeedDashboard {
         .then(async (receipt) => {
           if (receipt) {
             await this.hydrateUserData();
-            this.alertService.showAlert(`Congratulations! You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
+            this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
           }
         });
