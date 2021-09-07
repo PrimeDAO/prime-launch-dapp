@@ -1,3 +1,4 @@
+import { EthereumService } from "./../services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
@@ -5,6 +6,7 @@ import { Router } from "aurelia-router";
 import "./home.scss";
 import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
+import axios from "axios";
 
 @singleton(false)
 @autoinject
@@ -17,6 +19,7 @@ export class Home {
     private router: Router,
     private seedService: SeedService,
     private eventAggregator: EventAggregator,
+    private ethereumService: EthereumService,
   ) {
   }
 
@@ -30,10 +33,24 @@ export class Home {
     this.router.navigate(href);
   }
 
-  subscribe(): void {
+  async subscribe(): Promise<void> {
     if (!Utils.isValidEmail(this.subscriberEmail)) {
       this.eventAggregator.publish("handleValidationError", "Please enter a valid email address");
     } else {
-      // window.open(`mailto:renc@curvelabs.eu?subject=Sign-up%20for%20Prime%20Launch%20Newsletter&body=My%20email%20address: ${this.subscriberEmail}`, "#", "noopener noreferrer");
+      try {
+        const response = await axios.post("https://api.primedao.io/subscribeEmailAddress",
+          {
+            prod: (process.env.NODE_ENV === "production") && (this.ethereumService.targetedNetwork === "mainnet"),
+            email: this.subscriberEmail,
+          });
+
+        if (response.status !== 200) {
+          throw Error(`An error occurred submitting the email: ${response.statusText}`);
+        }
+        this.eventAggregator.publish("showMessage", "Your email address has been submitted!");
+      } catch (ex) {
+        this.eventAggregator.publish("handleException", `Sorry, we are enable to submit the email: ${ex?.message ?? ex}`);
+      }
     }
-  }}
+  }
+}
