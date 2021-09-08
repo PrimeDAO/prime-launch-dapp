@@ -12,22 +12,22 @@
               </dropdown>
             </div>
             <div if.bind="selectedSeed.address">
-                <div if.bind="selectedSeed.hasEnoughProjectTokens" class="stageButton proceed button1" click.delegate="selectedSeed.fundSeed()">
+                <div if.bind="selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fundSeed()">
                   Fund Project
                 </div>
-                <div class="stageButton proceed button1" click.delegate="selectedSeed.withdrawFundingTokens()">
+                <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                   Withdraw Funding Tokens
                 </div>
-                <div if.bind="selectedSeed.whitelisted" class="stageButton proceed button1" click.delegate="addWhitelist()">
+                <div if.bind="selectedSeed.whitelisted" class="button1" click.delegate="addWhitelist()">
                   Add Whitelist
                 </div>
-                <div if.bind="!selectedSeed.isPaused" class="stageButton proceed button1" click.delegate="selectedSeed.pauseLaunch()">
+                <div if.bind="!selectedSeed.isPaused" class="button1" click.delegate="selectedSeed.pauseLaunch()">
                   Pause
                 </div>
-                <div else class="stageButton proceed button1" click.delegate="selectedSeed.unpauseLaunch()">
+                <div else class="button1" click.delegate="selectedSeed.unpauseLaunch()">
                   UnPause
                 </div>
-                <div class="stageButton proceed button1" click.delegate="selectedSeed.closeLaunch()">
+                <div class="button1" click.delegate="selectedSeed.closeLaunch()">
                   Close
                 </div>
                 <div if.bind="selectedSeed.whitelisted">
@@ -35,7 +35,7 @@
                     <label for="addressToRemove">Address to remove from whitelist</label>
                     <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
                   </div>
-                  <div class="stageButton proceed button1" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
+                  <div class="button1" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
                     Remove from whitelist
                   </div>
                 </div>
@@ -44,7 +44,7 @@
                     <label for="addressToAdd">Address to add from whitelist</label>
                     <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
                   </div>
-                  <div class="stageButton proceed button1" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
+                  <div class="button1" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
                     Add to whitelist
                   </div>
                 </div>
@@ -52,7 +52,7 @@
                   <label for="receiverAddress">Receiver Address</label>
                   <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
                 </div>
-                <div class="stageButton proceed button1" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
+                <div class="button1" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
                   Retrieve Project Tokens
                 </div>
             </div>
