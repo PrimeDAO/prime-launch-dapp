@@ -3,7 +3,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber, ethers, Signer } from "ethers";
-import { BaseProvider, Web3Provider } from "@ethersproject/providers";
+import { BaseProvider, ExternalProvider, Web3Provider } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Torus from "@toruslabs/torus-embed";
@@ -308,7 +308,7 @@ export class EthereumService {
         const chainId = await this.getChainId(walletProvider);
         const chainName = this.chainNameById.get(chainId);
         if (chainName !== this.targetedNetwork) {
-          this.eventAggregator.publish("handleFailure", new EventConfigFailure(`Please connect to ${this.targetedNetwork}`));
+          this.eventAggregator.publish("Network.wrongNetwork", { provider: walletProvider.provider, connectedTo: chainName, need: this.targetedNetwork });
           return;
         }
         /**
@@ -405,6 +405,31 @@ export class EthereumService {
     this.walletProvider = undefined;
     this.fireDisconnectHandler(error);
   }
+
+  public async switchToTargetedNetwork(provider: ExternalProvider): Promise<boolean> {
+    const hexChainId = `0x${this.targetedChainId.toString(16)}`;
+    try {
+      if (provider.request) {
+        await provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: hexChainId }],
+        });
+        await this.setProvider(this.walletProvider);
+        return true;
+      }
+    } catch (err) {
+    // user rejected request
+      if (err.code === 4001) {
+        return false;
+      }
+      // chain does not exist, let's add it (see balancer)
+      // if (err.code === 4902) {
+      //   return importNetworkDetailsToWallet(provider);
+      // }
+    }
+    return false;
+  }
+
 
   private _lastBlockDate: Date;
 

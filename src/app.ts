@@ -11,6 +11,8 @@ import { BindingSignaler } from "aurelia-templating-resources";
 import { EthereumService } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BrowserStorageService } from "services/BrowserStorageService";
+import { AlertService } from "services/AlertService";
+import { ShowButtonsEnum } from "resources/dialogs/alert/alert";
 
 @autoinject
 export class App {
@@ -20,6 +22,7 @@ export class App {
     private eventAggregator: EventAggregator,
     private consoleLogService: ConsoleLogService,
     private storageService: BrowserStorageService,
+    private alertService: AlertService,
   ) { }
 
   router: Router;
@@ -67,6 +70,17 @@ export class App {
 
     this.eventAggregator.subscribe("transaction.failed", async () => {
       this.handleOnOff(false);
+    });
+
+    this.eventAggregator.subscribe("Network.wrongNetwork", async (info: { provider: any, connectedTo: string, need: string }) => {
+
+      const connect = await this.alertService.showAlert(`You are connecting to ${info.connectedTo}, but we expect you to connect to ${info.need}.  Do you want to switch your connection ${info.need} now?`,
+        // eslint-disable-next-line no-bitwise
+        ShowButtonsEnum.OK | ShowButtonsEnum.Cancel);
+
+      if (!connect.wasCancelled && !connect.output) {
+        this.ethereumService.switchToTargetedNetwork(info.provider);
+      }
     });
 
     this.intervalId = setInterval(async () => {

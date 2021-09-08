@@ -1,5 +1,9 @@
 @import "styles/styles.scss";
 
+body > ux-dialog-overlay.active {
+  opacity: 0.75;
+}
+
 /**
  * specify "body" to force this css to take precedence over Aurelia's
  **/
