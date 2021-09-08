@@ -74,7 +74,7 @@ export class App {
 
     this.eventAggregator.subscribe("Network.wrongNetwork", async (info: { provider: any, connectedTo: string, need: string }) => {
 
-      const connect = await this.alertService.showAlert(`You are connecting to ${info.connectedTo}, but we expect you to connect to ${info.need}.  Do you want to switch your connection ${info.need} now?`,
+      const connect = await this.alertService.showAlert(`You are connecting to ${info.connectedTo ?? "[unknown]"}, but we expect you to connect to ${info.need}.  Do you want to switch your connection ${info.need} now?`,
         // eslint-disable-next-line no-bitwise
         ShowButtonsEnum.OK | ShowButtonsEnum.Cancel);
 
