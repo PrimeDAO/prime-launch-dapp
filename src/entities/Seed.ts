@@ -374,6 +374,12 @@ export class Seed {
     }
   }
 
+  async fundSeed(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired)
+    );
+  }
+
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.buy(amount))
       .then(async (receipt) => {
@@ -394,6 +400,54 @@ export class Seed {
           return receipt;
         }
       });
+  }
+
+  async retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.retrieveSeedTokens(receiver)
+    );
+  }
+
+  async withdrawFundingTokens(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.withdraw()
+    );
+  }
+
+  async addWhitelist(whitelistAddress: Set<Address>): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.whitelistBatch([...whitelistAddress])
+    );
+  }
+
+  async addToWhitelist(address: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.whitelist(address)
+    );
+  }
+
+  async removeFromWhitelist(address: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.unwhitelist(address)
+    );
+  }
+
+  async pauseLaunch (): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.pause()
+    );
+  }
+
+  async unpauseLaunch(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.unpause()
+    );
+  }
+
+  async closeLaunch(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.close()
+    );
   }
 
   public fundingTokenAllowance(): Promise<BigNumber> {

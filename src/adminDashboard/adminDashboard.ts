@@ -1,4 +1,4 @@
-import BigNumber from '../services/BigNumberService';
+import { TransactionReceipt } from 'services/TransactionsService';
 import { Seed } from './../entities/Seed';
 import { Address, EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -7,8 +7,9 @@ import "./adminDashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
-import { Utils } from "services/utils";
+import { WhiteListService } from 'services/WhiteListService';
 import axios from 'axios';
+import TransactionsService from 'services/TransactionsService';
 
 @autoinject
 export class AdminDashboard {
@@ -19,7 +20,7 @@ export class AdminDashboard {
   addressToAdd: String = '';
   receiverAddress: String = '';
   subscriptions: DisposableCollection = new DisposableCollection();
-  loading = true;
+  loading: boolean = true;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -30,6 +31,8 @@ export class AdminDashboard {
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
     private ethereumService: EthereumService,
+    private whiteListService: WhiteListService,
+    private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -56,98 +59,21 @@ export class AdminDashboard {
 
   async hydrate(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      const defaultAccount = this.ethereumService.defaultAccountAddress.toLowerCase();
+      const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.seeds = this.seedService.seedsArray;
     } else {
       this.seeds = [];
     }
   }
 
-  async setSeed(index) {
+  setSeed(index): void {
     this.selectedSeed = this.seeds[index];
+    console.log(this.selectedSeed);
   }
 
-  async fundSeed() {
-    try {
-      await this.selectedSeed.projectTokenContract.transfer(this.selectedSeed.address, this.selectedSeed.seedAmountRequired);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async retrieveProjectTokens(receiver: Address) {
-    try {
-      await this.selectedSeed.contract.callStatic.retrieveSeedTokens(receiver);
-      await this.selectedSeed.contract.retrieveSeedTokens(receiver);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async withdrawFundingTokens() {
-    try {
-      await this.selectedSeed.contract.callStatic.withdraw();
-      await this.selectedSeed.contract.withdraw();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async addWhitelist() {
-    try {
-      const filterPattern = /([^\W]+)/g;
-      const response = await axios.get(this.selectedSeed.metadata.seedDetails.whitelist);
-      const whitelistAddress = response.data.match(filterPattern);
-      await this.selectedSeed.contract.callStatic.whitelistBatch(whitelistAddress);
-      await this.selectedSeed.contract.whitelistBatch(whitelistAddress);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async addToWhitelist(address: Address) {
-    try {
-      await this.selectedSeed.contract.callStatic.whitelist(address);
-      await this.selectedSeed.contract.whitelist(address);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async removeFromWhiteliste(address: Address) {
-    try {
-      await this.selectedSeed.contract.callStatic.unwhitelist(address);
-      await this.selectedSeed.contract.unwhitelist(address);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async pauseLaunch() {
-    try {
-      await this.selectedSeed.contract.callStatic.pause();
-      await this.selectedSeed.contract.pause();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async unpauseLaunch() {
-    try {
-      await this.selectedSeed.contract.callStatic.unpause();
-      await this.selectedSeed.contract.unpause();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-
-  async closeLaunch() {
-    try {
-      await this.selectedSeed.contract.callStatic.close();
-      await this.selectedSeed.contract.close();
-    } catch (error) {
-      alert(error.message);
-    }
+  async addWhitelist(): Promise<TransactionReceipt> {
+    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.seedDetails.whitelist);
+    return await this.selectedSeed.addWhitelist(whitelistAddress);
   }
 
   connect(): void {
