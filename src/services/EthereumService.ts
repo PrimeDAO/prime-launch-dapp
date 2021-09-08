@@ -166,10 +166,6 @@ export class EthereumService {
     [Networks.Kovan, 42],
   ]);
 
-  private async getChainId(provider: Web3Provider): Promise<number> {
-    return Number((await provider.send("net_version", [])));
-  }
-
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
     let account: Signer | string;
     if (Signer.isSigner(provider)) {
@@ -305,8 +301,9 @@ export class EthereumService {
       if (web3ModalProvider) {
         const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider as any);
         (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
-        const chainId = await this.getChainId(walletProvider);
-        const chainName = this.chainNameById.get(chainId);
+        const network = await walletProvider.getNetwork();
+        const chainId = network.chainId;
+        const chainName = network.name === "homestead" ? "mainnet" : network.name;
         if (chainName !== this.targetedNetwork) {
           this.eventAggregator.publish("Network.wrongNetwork", { provider: walletProvider.provider, connectedTo: chainName, need: this.targetedNetwork });
           return;
@@ -410,6 +407,9 @@ export class EthereumService {
     const hexChainId = `0x${this.targetedChainId.toString(16)}`;
     try {
       if (provider.request) {
+        /**
+         * note this will simply throw an exception when the website is running on localhost
+         */
         await provider.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: hexChainId }],
