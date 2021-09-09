@@ -1,3 +1,15 @@
 [context.production]
   command = "npm run build"
   environment = { NODE_VERSION = "14.11.0" }
+
+[context.staging]
+  command = "npm run build-rinkeby"
+  environment = { NODE_VERSION = "14.11.0" }
+
+[context.development]
+  command = "npm run build-dev"
+  environment = { NODE_VERSION = "14.11.0" }
+
+[context.deploy-preview]
+  command = "npm run build-dev"
+  environment = { NODE_VERSION = "14.11.0" }
