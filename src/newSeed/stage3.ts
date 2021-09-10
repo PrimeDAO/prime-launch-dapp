@@ -148,7 +148,6 @@ export class Stage3 extends BaseStage {
           tokenInfo = Object.assign({}, tokenInfo);
 
           this.wizardState.projectTokenInfo = tokenInfo;
-          this.wizardState.projectTokenInfo.logoURI = "/genericToken.svg";
 
           if (this.tokenIsMissingMetadata(tokenInfo)) {
 
