@@ -44,7 +44,7 @@ export class Stage3 extends BaseStage {
 
 
   private isValidImageFormat(file: string): boolean {
-    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
+    const re = /(\.jpg|\.bmp|\.gif|\.png)($|\?)/i;
     return re.test(String(file).toLowerCase());
   }
 
@@ -148,6 +148,7 @@ export class Stage3 extends BaseStage {
           tokenInfo = Object.assign({}, tokenInfo);
 
           this.wizardState.projectTokenInfo = tokenInfo;
+          this.wizardState.projectTokenInfo.logoURI = "/genericToken.svg";
 
           if (this.tokenIsMissingMetadata(tokenInfo)) {
 
