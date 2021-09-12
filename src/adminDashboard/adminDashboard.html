@@ -4,33 +4,33 @@
       <div if.bind="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
       <div else class="formContainer">
           <div if.bind="seeds.length">
-            <div>
-              <dropdown item-changed.call="setSeed(index)"
-                selected-item-index.to-view="selectedSeed.metadata.general.projectName"
-                placeholder="Select a Seed...">
-                <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
-              </dropdown>
-            </div>
+            <dropdown item-changed.call="setSeed(index)"
+              selected-item-index.to-view="selectedSeed.metadata.general.projectName"
+              placeholder="Select a Seed...">
+              <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+            </dropdown>
             <div if.bind="selectedSeed.address">
-                <div if.bind="selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fund()">
+                <div if.bind="!selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fund()">
                   Fund Project
                 </div>
+                <!-- I would like to use the below condition to check if this functionality is available or not -->
+                <!-- "(selectedSeed.amountRaised.toString() == selectedSeed.target.toString()) || (selectedSeed.minimumReached && selectedSeed.endTime <= new Date())" -->
                 <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                   Withdraw Funding Tokens
                 </div>
-                <div if.bind="selectedSeed.whitelisted" class="button1" click.delegate="addWhitelist()">
+                <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed" class="button1" click.delegate="addWhitelist()">
                   Add Whitelist
                 </div>
-                <div if.bind="!selectedSeed.isPaused" class="button1" click.delegate="selectedSeed.pause()">
+                <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.pause()">
                   Pause
                 </div>
-                <div else class="button1" click.delegate="selectedSeed.unPause()">
+                <div else if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.unPause()">
                   UnPause
                 </div>
-                <div class="button1" click.delegate="selectedSeed.close()">
+                <div if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.close()">
                   Close
                 </div>
-                <div if.bind="selectedSeed.whitelisted">
+                <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
                   <div>
                     <label for="addressToRemove">Address to remove from whitelist</label>
                     <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
@@ -39,7 +39,7 @@
                     Remove from whitelist
                   </div>
                 </div>
-                <div if.bind="selectedSeed.whitelisted">
+                <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
                   <div>
                     <label for="addressToAdd">Address to add from whitelist</label>
                     <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
@@ -48,6 +48,8 @@
                     Add to whitelist
                   </div>
                 </div>
+                <!-- I would like to use the below condition to check if this functionality is available or not -->
+                <!-- "selectedSeed.isClosed || (selectedSeed.amountRaised.toString() == selectedSeed.target.toString()) || (selectedSeed.endTime <= new Date())" -->
                 <div>
                   <label for="receiverAddress">Receiver Address</label>
                   <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
