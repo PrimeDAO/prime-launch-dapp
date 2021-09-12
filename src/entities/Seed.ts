@@ -402,18 +402,6 @@ export class Seed {
       });
   }
 
-  async retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.retrieveSeedTokens(receiver)
-    );
-  }
-
-  async withdrawFundingTokens(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.withdraw()
-    );
-  }
-
   async addWhitelist(whitelistAddress: Set<Address>): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.whitelistBatch([...whitelistAddress])
@@ -433,21 +421,33 @@ export class Seed {
   }
 
   async pause (): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.pause()
-    );
+    return this.transactionsService.send(() => this.contract.pause())
+      .then((receipt) => {
+        if(receipt){
+          this.hydateClosedOrPaused
+          return receipt
+        }
+      });
   }
 
   async unPause(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.unpause()
-    );
+    return this.transactionsService.send(() => this.contract.unpause())
+      .then((receipt) => {
+        if(receipt){
+          this.hydateClosedOrPaused
+          return receipt
+        }
+      });
   }
 
   async close(): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.close()
-    );
+    return this.transactionsService.send(() => this.contract.close())
+      .then((receipt) => {
+        if(receipt){
+          this.hydateClosedOrPaused
+          return receipt
+        }
+      });
   }
 
   public fundingTokenAllowance(): Promise<BigNumber> {
@@ -464,6 +464,26 @@ export class Seed {
         if (receipt) {
           this.hydrateTokensState();
           this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  public retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          return receipt;
+        }
+      });
+  }
+
+  public withdrawFundingTokens(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.withdraw())
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
           return receipt;
         }
       });
