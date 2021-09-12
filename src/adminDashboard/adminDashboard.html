@@ -12,7 +12,7 @@
               </dropdown>
             </div>
             <div if.bind="selectedSeed.address">
-                <div if.bind="selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fundSeed()">
+                <div if.bind="selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fund()">
                   Fund Project
                 </div>
                 <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
@@ -21,13 +21,13 @@
                 <div if.bind="selectedSeed.whitelisted" class="button1" click.delegate="addWhitelist()">
                   Add Whitelist
                 </div>
-                <div if.bind="!selectedSeed.isPaused" class="button1" click.delegate="selectedSeed.pauseLaunch()">
+                <div if.bind="!selectedSeed.isPaused" class="button1" click.delegate="selectedSeed.pause()">
                   Pause
                 </div>
-                <div else class="button1" click.delegate="selectedSeed.unpauseLaunch()">
+                <div else class="button1" click.delegate="selectedSeed.unPause()">
                   UnPause
                 </div>
-                <div class="button1" click.delegate="selectedSeed.closeLaunch()">
+                <div class="button1" click.delegate="selectedSeed.close()">
                   Close
                 </div>
                 <div if.bind="selectedSeed.whitelisted">

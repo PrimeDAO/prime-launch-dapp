@@ -374,7 +374,7 @@ export class Seed {
     }
   }
 
-  async fundSeed(): Promise<TransactionReceipt> {
+  async fund(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired)
     );
@@ -432,19 +432,19 @@ export class Seed {
     );
   }
 
-  async pauseLaunch (): Promise<TransactionReceipt> {
+  async pause (): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.pause()
     );
   }
 
-  async unpauseLaunch(): Promise<TransactionReceipt> {
+  async unPause(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.unpause()
     );
   }
 
-  async closeLaunch(): Promise<TransactionReceipt> {
+  async close(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.close()
     );
