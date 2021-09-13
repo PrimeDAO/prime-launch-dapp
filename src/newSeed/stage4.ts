@@ -139,7 +139,7 @@ export class Stage4 extends BaseStage {
     if (!Utils.isAddress(this.seedConfig.seedDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
     } else if (!this.seedConfig.seedDetails.pricePerToken || this.seedConfig.seedDetails.pricePerToken === "0") {
-      message = "Please enter a value for Funding Tokens per Project Token";
+      message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
@@ -147,7 +147,7 @@ export class Stage4 extends BaseStage {
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
+      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!(this.seedConfig.seedDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
     } else if (!(this.seedConfig.seedDetails.vestingCliff >= 0)) {
@@ -182,7 +182,7 @@ export class Stage4 extends BaseStage {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.whitelist, true)) {
       message = "Please enter a valid URL for Whitelist";
-    } else if (!(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
+    } else if (!!this.seedConfig.seedDetails.whitelist && !(await this.whiteListService.getWhiteList(this.seedConfig.seedDetails.whitelist))) {
       message = "Whitelist cannot be fetched or parsed. Please enter a URL to a whitelist that conforms to the given formatting rules";
     } else if (!Utils.isValidUrl(this.seedConfig.seedDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
