@@ -48,6 +48,14 @@ export class WhiteListService {
   }
 
   /**
+   * Returns only whether the account is in the whitelist file.  However, be aware that the
+   * the account may no longer be in the whitelist according to the contract that was
+   * initialized by the whitelist.
+   *
+   *****************
+   * So you should not use this function to determine the user's whitelist status at runtime.
+   *****************
+   *
    * @param url the location of the file containing a list of addresses (see getWhiteList())
    * @param account optional, default is the current account
    * @returns true if account is whitelisted

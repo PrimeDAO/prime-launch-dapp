@@ -30,7 +30,6 @@ export class SeedDashboard {
   progressBar: HTMLElement;
   bar: HTMLElement;
 
-  userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
   geoBlocked: boolean;
@@ -91,11 +90,11 @@ export class SeedDashboard {
       : 0;
   }
 
-  @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
-  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+  @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
+  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
-  @computedFrom("maxFundable", "userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.userFundingTokenBalance) ? this.maxFundable : this.userFundingTokenBalance; }
+  @computedFrom("maxFundable", "seed.userFundingTokenBalance")
+  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
@@ -162,7 +161,6 @@ export class SeedDashboard {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.userFundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
       this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
     }
   }
@@ -241,7 +239,7 @@ export class SeedDashboard {
 
     if (!this.fundingTokenToPay?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
-    } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+    } else if (this.seed.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else if (this.fundingTokenToPay.add(this.seed.amountRaised).gt(this.seed.cap)) {
       this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);

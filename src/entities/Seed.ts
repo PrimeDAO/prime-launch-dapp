@@ -122,6 +122,7 @@ export class Seed {
   public userPendingAmount: BigNumber;
   public userCanClaim: boolean;
   public userCurrentFundingContributions: BigNumber;
+  public userFundingTokenBalance: BigNumber;
 
   public initializing = true;
   public metadata: ISeedConfig;
@@ -321,6 +322,7 @@ export class Seed {
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
       const seedAmount = this.seedsFromFunding(lock.fundingAmount);
+      this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
       /**
        * seeds that will be claimable, but are currently still vesting
        */
