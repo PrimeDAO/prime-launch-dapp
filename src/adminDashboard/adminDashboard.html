@@ -13,10 +13,17 @@
                 <div if.bind="!selectedSeed.hasEnoughProjectTokens" class="button1" click.delegate="selectedSeed.fund()">
                   Fund Project
                 </div>
-                <!-- I would like to use the below condition to check if this functionality is available or not -->
-                <!-- "(selectedSeed.amountRaised.toString() == selectedSeed.target.toString()) || (selectedSeed.minimumReached && selectedSeed.endTime <= new Date())" -->
-                <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
+                <div if.bind="selectedSeed.claimingIsOpen" class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                   Withdraw Funding Tokens
+                </div>
+                <div if.bind="selectedSeed.isClosed || selectedSeed.claimingIsOpen">
+                  <div>
+                    <label for="receiverAddress">Receiver Address</label>
+                    <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
+                  </div>
+                  <div class="button1" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
+                    Retrieve Project Tokens
+                  </div>
                 </div>
                 <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed" class="button1" click.delegate="addWhitelist()">
                   Add Whitelist
@@ -27,8 +34,14 @@
                 <div else if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.unPause()">
                   UnPause
                 </div>
-                <div if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.close()">
-                  Close
+                <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+                  <div>
+                    <label for="addressToAdd">Address to add from whitelist</label>
+                    <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
+                  </div>
+                  <div class="button1" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
+                    Add to whitelist
+                  </div>
                 </div>
                 <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
                   <div>
@@ -39,23 +52,8 @@
                     Remove from whitelist
                   </div>
                 </div>
-                <div if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
-                  <div>
-                    <label for="addressToAdd">Address to add from whitelist</label>
-                    <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                  </div>
-                  <div class="button1" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
-                    Add to whitelist
-                  </div>
-                </div>
-                <!-- I would like to use the below condition to check if this functionality is available or not -->
-                <!-- "selectedSeed.isClosed || (selectedSeed.amountRaised.toString() == selectedSeed.target.toString()) || (selectedSeed.endTime <= new Date())" -->
-                <div>
-                  <label for="receiverAddress">Receiver Address</label>
-                  <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                </div>
-                <div class="button1" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
-                  Retrieve Project Tokens
+                <div if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.close()">
+                  Close
                 </div>
             </div>
           </div>
