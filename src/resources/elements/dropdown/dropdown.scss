@@ -40,10 +40,6 @@
   }
 
   > .menu {
-    // border-top: 1px solid $Border01;
-    // transition: max-height 0.5s ease-out;
-    // overflow: hidden;
-    // cursor: pointer;
     transition: all 0.16s ease-in-out;
     overflow: hidden;
     cursor: pointer;
@@ -58,6 +54,27 @@
     z-index: 1;
     opacity: 1;
     height: fit-content;
+    max-height: 225px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar-button:vertical {
+      display: block;
+      height: 2px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: $Neutral02;
+      border: 3px solid $BG01;
+    }
+
     transform: scaleY(1);
     transform-origin: top;
 

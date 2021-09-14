@@ -23,18 +23,20 @@ export class Dropdown {
       // Close the menu if the user clicks outside the dropdown
       let isInDropdown = false;
       const clickedElement = e.target as HTMLElement;
-      this.dropdown.childNodes.forEach(node => {
-        if (isInDropdown) return;
-        isInDropdown = node.nodeType === 1 && node.textContent.includes(clickedElement.textContent);
-      });
+      if (this.dropdown) {
+        this.dropdown.childNodes.forEach(node => {
+          if (isInDropdown) return;
+          isInDropdown = node.nodeType === 1 && node.textContent.includes(clickedElement.textContent);
+        });
 
-      if (
-        !isInDropdown &&
-        !this.menu.classList.contains("hide") &&
-        this.dropdown.classList.contains("menuShowing")
-      ) {
-        this.dropdown.classList.remove("menuShowing");
-        this.menu.classList.add("hide");
+        if (
+          !isInDropdown &&
+          !this.menu.classList.contains("hide") &&
+          this.dropdown.classList.contains("menuShowing")
+        ) {
+          this.dropdown.classList.remove("menuShowing");
+          this.menu.classList.add("hide");
+        }
       }
     });
 
