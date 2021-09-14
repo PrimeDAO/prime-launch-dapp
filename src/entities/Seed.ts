@@ -128,6 +128,7 @@ export class Seed {
   public metadata: ISeedConfig;
   public metadataHash: Hash;
   public corrupt = false;
+  public userHydrated = false;
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
@@ -316,13 +317,16 @@ export class Seed {
   private async hydrateUser(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
 
+    this.userHydrated = false;
+
     if (account) {
       const lock: IFunderPortfolio = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock.fundingAmount;
+
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
-      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
       this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
+      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
       /**
        * seeds that will be claimable, but are currently still vesting
        */
@@ -333,6 +337,7 @@ export class Seed {
         this.userCanRetrieve ||
         ((await this.contract.whitelisted(account))
         );
+      this.userHydrated = true;
     }
   }
 
