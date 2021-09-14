@@ -19,7 +19,29 @@ export class Dropdown {
   private titleText: string;
 
   async attached(): Promise<void> {
-    this.title.addEventListener("click", (e) => this.toggleMenuDisplay(e));
+    document.addEventListener("click", (e: MouseEvent) => {
+      // Close the menu if the user clicks outside the dropdown
+      let isInDropdown = false;
+      const clickedElement = e.target as HTMLElement;
+      this.dropdown.childNodes.forEach(node => {
+        if (isInDropdown) return;
+        isInDropdown = node.nodeType === 1 && node.textContent.includes(clickedElement.textContent);
+      });
+
+      if (
+        !isInDropdown &&
+        !this.menu.classList.contains("hide") &&
+        this.dropdown.classList.contains("menuShowing")
+      ) {
+        this.dropdown.classList.remove("menuShowing");
+        this.menu.classList.add("hide");
+      }
+    });
+
+    this.dropdown.addEventListener("click", (e) => {
+      this.toggleMenuDisplay(e);
+    });
+
     this.menuChanged();
   }
 
@@ -49,7 +71,7 @@ export class Dropdown {
 
   toggleMenuDisplay(_e: Event): void {
     this.toggleClass(this.menu, "hide");
-    this.toggleClass(this.title, "menuShowing");
+    this.toggleClass(this.dropdown, "menuShowing");
   }
 
   @computedFrom("selectedItemIndex")
@@ -65,8 +87,6 @@ export class Dropdown {
   }
 
   handleOptionSelected(_e: Event, index: number): void {
-    this.toggleClass(this.menu, "hide");
-    this.toggleClass(this.title, "menuShowing");
     this.selectItem(index);
     //setTimeout is used so transition is properly shown
     // setTimeout(() => this.toggleClass(icon, "rotate-90"));
