@@ -33,7 +33,6 @@ export class SeedDashboard {
   userFundingTokenAllowance: BigNumber;
 
   geoBlocked: boolean;
-  connected = false;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -47,9 +46,13 @@ export class SeedDashboard {
     private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
+      this.hydrateUserData();
     }));
-    this.connected = !!this.ethereumService.defaultAccountAddress;
+  }
+
+  @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
+  get connected(): boolean {
+    return !!this.ethereumService.defaultAccountAddress && this.seed?.userHydrated;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")

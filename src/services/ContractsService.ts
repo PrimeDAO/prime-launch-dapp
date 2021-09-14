@@ -2,14 +2,7 @@ import { BigNumber, Contract, ethers, Signer } from "ethers";
 import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-
-const ContractAddresses = require("../contracts/contractAddresses.json") as INetworkContractAddresses;
-// const WETHABI = require("../contracts/WETH.json");
-const SeedFactoryABI = require("../contracts/SeedFactory.json");
-const SeedABI = require("../contracts/Seed.json");
-const SignerABI = require("../contracts/Signer.json");
-const IERC20ABI = require("../contracts/IERC20.json");
-const ERC20ABI = require("../contracts/ERC20.json");
+import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 
 export enum ContractNames {
   SEEDFACTORY = "SeedFactory"
@@ -30,34 +23,13 @@ export interface IStandardEvent<TArgs> {
   getBlock(): Promise<IBlockInfoNative>;
 }
 
-interface INetworkContractAddresses {
-  [network: string]: Map<ContractNames, string>;
-}
-
 @autoinject
 export class ContractsService {
-
-  private static ABIs = new Map<ContractNames, any>(
-    [
-      [ContractNames.SEEDFACTORY, SeedFactoryABI.abi]
-      , [ContractNames.SEED, SeedABI.abi]
-      , [ContractNames.PRIMETOKEN, IERC20ABI.abi]
-      , [ContractNames.DAI, IERC20ABI.abi]
-      // , [ContractNames.WETH, WETHABI.abi]
-      , [ContractNames.IERC20, IERC20ABI.abi]
-      , [ContractNames.ERC20, ERC20ABI.abi]
-      , [ContractNames.SIGNER, SignerABI.abi]
-      ,
-    ],
-  );
 
   private static Contracts = new Map<ContractNames, Contract>([
     [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]
-    // , [ContractNames.WETH, null]
-    // , [ContractNames.PRIMETOKEN, null]
-    // , [ContractNames.DAI, null]
     ,
   ]);
 
@@ -134,10 +106,6 @@ export class ContractsService {
   }
 
   private initializeContracts(): void {
-    if (!ContractAddresses || !ContractAddresses[this.ethereumService.targetedNetwork]) {
-      throw new Error("initializeContracts: ContractAddresses not set");
-    }
-
     /**
      * to assert that contracts are not available during the course of this method
      */
@@ -157,7 +125,7 @@ export class ContractsService {
         contract = ContractsService.Contracts.get(contractName).connect(signerOrProvider);
       } else {
         contract = new ethers.Contract(
-          ContractAddresses[this.ethereumService.targetedNetwork][contractName],
+          ContractsService.getContractAddress(contractName),
           ContractsService.getContractAbi(contractName),
           signerOrProvider);
       }
@@ -174,12 +142,12 @@ export class ContractsService {
     return ContractsService.Contracts.get(contractName);
   }
 
-  public static getContractAbi(contractName: ContractNames): Address {
-    return ContractsService.ABIs.get(contractName);
+  public static getContractAbi(contractName: ContractNames): Array<any> {
+    return ContractsDeploymentProvider.getContractAbi(contractName);
   }
 
-  public getContractAddress(contractName: ContractNames): Address {
-    return ContractAddresses[this.ethereumService.targetedNetwork][contractName];
+  public static getContractAddress(contractName: ContractNames): Address {
+    return ContractsDeploymentProvider.getContractAddress(contractName);
   }
 
   public getContractAtAddress(contractName: ContractNames, address: Address): Contract & any {
