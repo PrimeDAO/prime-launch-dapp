@@ -412,26 +412,41 @@ export class Seed {
   async addWhitelist(whitelistAddress: Set<Address>): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.whitelistBatch([...whitelistAddress])
-    );
+    ).then((receipt) => {
+      if(receipt){
+        this.hydrateUser()
+        return receipt
+      }
+    });
   }
 
   async addToWhitelist(address: Address): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.whitelist(address)
-    );
+    ).then((receipt) => {
+      if(receipt){
+        this.hydrateUser()
+        return receipt
+      }
+    });
   }
 
   async removeFromWhitelist(address: Address): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.unwhitelist(address)
-    );
+    ).then((receipt) => {
+      if(receipt){
+        this.hydateClosedOrPaused()
+        return receipt
+      }
+    });
   }
 
   async pause (): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.pause())
       .then((receipt) => {
         if(receipt){
-          this.hydateClosedOrPaused
+          this.hydateClosedOrPaused()
           return receipt
         }
       });
@@ -441,7 +456,7 @@ export class Seed {
     return this.transactionsService.send(() => this.contract.unpause())
       .then((receipt) => {
         if(receipt){
-          this.hydateClosedOrPaused
+          this.hydateClosedOrPaused()
           return receipt
         }
       });
@@ -451,7 +466,7 @@ export class Seed {
     return this.transactionsService.send(() => this.contract.close())
       .then((receipt) => {
         if(receipt){
-          this.hydateClosedOrPaused
+          this.hydateClosedOrPaused()
           return receipt
         }
       });
@@ -481,6 +496,7 @@ export class Seed {
       .then((receipt) => {
         if (receipt) {
           this.hydrateTokensState();
+          this.hydrateUser();
           return receipt;
         }
       });
@@ -491,6 +507,7 @@ export class Seed {
       .then((receipt) => {
         if (receipt) {
           this.hydrateTokensState();
+          this.hydrateUser();
           return receipt;
         }
       });
