@@ -23,9 +23,9 @@
                   input.trigger="getTokenInfo()">
                 </input>
                 <div class="looksGood" show.bind="!loadingToken && projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
-                <div class="looksBad" show.bind="!loadingToken && seedConfig.tokenDetails.projectTokenAddress && projectTokenErrorMessage"><i ref="errorIcon" class="fas fa-exclamation-triangle"></i></div>
                 <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
               </div>
+              <div if.bind="!loadingToken && seedConfig.tokenDetails.projectTokenAddress && projectTokenErrorMessage" class="looksBad"><i class="fas fa-exclamation-triangle"></i> ${projectTokenErrorMessage}</div>
               <!-- <div if.to-view="wizardState.projectTokenInfo && !projectTokenMissingMetadata" class="ticker">
                 <img src.bind="wizardState.projectTokenInfo.logoURI" /> ${wizardState.projectTokenInfo.name} (${wizardState.projectTokenInfo.symbol})
               </div> -->
@@ -50,10 +50,12 @@
                     <label>
                       <div>Logo</div>
                       <img
+                        ref="logoIcon"
                         show.bind="seedLogoIsLoaded"
                         src.bind="wizardState.projectTokenInfo.logoURI"
                         error.trigger="isLoadedSeedLogo(false)"
                         load.trigger="isLoadedSeedLogo(true)" />
+                      <a show.bind="tiLogoInputPresupplied" class="logoUri ellipses" href.bind="wizardState.projectTokenInfo.logoURI" target="_blank" rel="noopener noreferrer">${wizardState.projectTokenInfo.logoURI}</a>
                     </label>
                     <div class="inputNote inputElement">
                       <input type="text"
@@ -67,7 +69,6 @@
                         Maximum 5MB file size
                       </div>
                     </div>
-                    <div class="goodValue">${wizardState.projectTokenInfo.logoURI}</div>
                   </div>
                 </div>
               </div>

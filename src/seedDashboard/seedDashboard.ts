@@ -1,4 +1,3 @@
-import { AlertService } from "./../services/AlertService";
 import { BrowserStorageService } from "./../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "./../services/DisclaimerService";
@@ -15,6 +14,7 @@ import { BigNumber } from "ethers";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { GeoBlockService } from "services/GeoBlockService";
+import { CongratulationsService } from "services/CongratulationsService";
 
 @autoinject
 export class SeedDashboard {
@@ -30,11 +30,9 @@ export class SeedDashboard {
   progressBar: HTMLElement;
   bar: HTMLElement;
 
-  userFundingTokenBalance: BigNumber;
   userFundingTokenAllowance: BigNumber;
 
   geoBlocked: boolean;
-  connected = false;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -45,12 +43,16 @@ export class SeedDashboard {
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
-    private alertService: AlertService,
+    private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.hydrateUserData().then(() => { this.connected = !!this.ethereumService.defaultAccountAddress; });
+      this.hydrateUserData();
     }));
-    this.connected = !!this.ethereumService.defaultAccountAddress;
+  }
+
+  @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
+  get connected(): boolean {
+    return !!this.ethereumService.defaultAccountAddress && this.seed?.userHydrated;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -91,11 +93,11 @@ export class SeedDashboard {
       : 0;
   }
 
-  @computedFrom("userFundingTokenBalance", "fundingTokenToPay")
-  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+  @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
+  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
-  @computedFrom("maxFundable", "userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.userFundingTokenBalance) ? this.maxFundable : this.userFundingTokenBalance; }
+  @computedFrom("maxFundable", "seed.userFundingTokenBalance")
+  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
@@ -162,7 +164,6 @@ export class SeedDashboard {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.userFundingTokenBalance = await this.seed.fundingTokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
       this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
     }
   }
@@ -241,7 +242,7 @@ export class SeedDashboard {
 
     if (!this.fundingTokenToPay?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute`);
-    } else if (this.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+    } else if (this.seed.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
       this.eventAggregator.publish("handleValidationError", `Your ${this.seed.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else if (this.fundingTokenToPay.add(this.seed.amountRaised).gt(this.seed.cap)) {
       this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);
@@ -252,7 +253,7 @@ export class SeedDashboard {
         .then(async (receipt) => {
           if (receipt) {
             await this.hydrateUserData();
-            this.alertService.showAlert(`Congratulations! You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
+            this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
           }
         });

@@ -5,34 +5,34 @@
   font-family: Inter;
   background-color: $BG02;
   border: 1px solid $Border01;
-  border-radius: 1.5em;
-  padding: 2em;
-  min-width: 40rem;
+  border-radius: 1.8px;
+  padding: 24px;
+  min-width: 640px;
 
   a {
     font-family: Aeonik;
   }
 
   .title {
-    font-size: 1.625em;
+    font-size: 26px;
   }
   .subtext {
-    line-height: 1.5em;
-    font-size: 1em;
+    line-height: 24px;
+    font-size: 16px;
     color: $Neutral03;
-    margin-bottom: 3em;
+    margin-bottom: 48px;
   }
   .infoInput {
-    margin-bottom: 2em;
+    margin-bottom: 32px;
     > textarea {
       resize: none;
-      width: 23em;
-      height: 4.5em;
+      width: 368px;
+      height: 72px;
       color: $Neutral02;
       border: 1px solid $Border01;
     }
     .labelContainer {
-      width: 24em;
+      width: 384px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -43,8 +43,8 @@
   .buttonContainer {
     display: flex;
     flex-flow: row wrap;
-    column-gap: 3em;
-    margin-top: 5em;
+    column-gap: 48px;
+    margin-top: 80px;
     .stageButton {
       display: flex;
       align-items: center;
@@ -62,13 +62,13 @@
   }
   label {
     display: block;
-    font-size: 1.1em;
+    font-size: 17px;
     font-weight: bold;
-    line-height: 2em;
+    line-height: 32px;
     color: $Secondary02;
   }
   input {
-    width: 23em;
+    width: 368px;
     height: fit-content;
     border: 1px solid $Border01;
     border-radius: 10px;
@@ -100,8 +100,8 @@
   input:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
-    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
-    box-shadow: 0 0 0px 3.7em $BG01 inset;
+    -webkit-box-shadow: 0 0 0px 60px $BG01 inset;
+    box-shadow: 0 0 0px 60px $BG01 inset;
     caret-color: $Neutral02;
   }
   textarea:-webkit-autofill,
@@ -109,8 +109,8 @@
   textarea:-webkit-autofill:focus {
     -webkit-text-fill-color: $Neutral02;
     transition: background-color 100s ease-in-out 0s;
-    -webkit-box-shadow: 0 0 0px 3.7em $BG01 inset;
-    box-shadow: 0 0 0px 3.7em $BG01 inset;
+    -webkit-box-shadow: 0 0 0px 60px $BG01 inset;
+    box-shadow: 0 0 0px 60px $BG01 inset;
   }
 
   a {
@@ -119,11 +119,11 @@
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
-    gap: 1em;
+    gap: 16px;
   }
   .questionMark {
-    width: 1.3em;
-    height: 1.3em;
+    width: 20px;
+    height: 20px;
     align-self: center;
   }
   .importantText {
@@ -137,11 +137,11 @@
       .infoInput {
         &.category {
           .dropdown {
-            width: 190px;
+            width: 192px;
           }
         }
         .optional {
-          padding-left: 0.3em;
+          padding-left: 0.48px;
           font-weight: lighter;
         }
       }
@@ -149,8 +149,8 @@
       .otherLinks {
         display: flex;
         flex-flow: row wrap;
-        gap: 1em;
-        margin-bottom: 2em;
+        gap: 16px;
+        margin-bottom: 32px;
         align-items: center;
 
         .addLinkContainer {
@@ -166,7 +166,7 @@
           }
 
           input {
-            width: 14em;
+            width: 224px;
           }
           .deleteLink {
             cursor: pointer;
@@ -174,7 +174,7 @@
           }
           .addLink {
             cursor: pointer;
-            padding-right: 1em;
+            padding-right: 16px;
             align-self: flex-start;
           }
         }
@@ -183,12 +183,9 @@
         cursor: pointer;
         display: flex;
         justify-content: flex-start;
-        margin-bottom: 2em;
+        margin-bottom: 32px;
       }
     }
-  }
-
-  &.stage2 {
   }
 
   &.stage3,
@@ -196,7 +193,7 @@
     .tickerContainer {
       display: flex;
       align-items: center;
-      gap: 1em;
+      gap: 16px;
       .ticker {
         font-family: Inter;
         color: $Neutral02;
@@ -214,7 +211,7 @@
   &.stage3 {
     .infoInput.supply {
       input {
-        width: 7em;
+        width: 112px;
       }
     }
     .tickerContainer {
@@ -232,15 +229,21 @@
           color: $AlertGreen;
         }
 
-        .looksBad {
-          color: $AlertRed;
-        }
-
         .loadingToken {
           font-size: 18px;
           i {
-            color: $Secondary07;
+            color: $Secondary03-dev;
           }
+        }
+      }
+
+      .looksBad {
+        margin-left: 8px;
+        white-space: normal;
+        color: $Neutral02;
+        i {
+          color: $AlertRed;
+          margin-right: 6px;
         }
       }
 
@@ -282,7 +285,7 @@
             &.logoInput {
               label {
                 display: grid;
-                grid-template-columns: auto auto;
+                grid-template-columns: auto auto 160px;
                 column-gap: 12px;
                 align-items: center;
                 justify-content: flex-start;
@@ -330,9 +333,9 @@
     }
     .tokenDistribution {
       .columnHeaders {
-        font-size: 0.9em;
+        font-size: 14px;
         font-weight: normal;
-        line-height: 2em;
+        line-height: 32px;
         text-align: left;
       }
       .distribRow {
@@ -355,10 +358,10 @@
           margin-bottom: unset;
         }
         input {
-          height: 2.3em;
+          height: 36px;
         }
         input.textInput {
-          height: 2.3em;
+          height: 36px;
         }
         .deleteLink {
           cursor: pointer;
@@ -384,8 +387,12 @@
       }
 
       .pptContainer {
+        > .text {
+          display: inline-block;
+          color: $Neutral02;
+        }
         input {
-          width: 3em;
+          width: 72px;
         }
         > label {
           align-self: center;
@@ -395,21 +402,21 @@
       }
       &.maxTarget {
         input {
-          width: 8.5em;
+          width: 136px;
         }
         display: flex;
         flex-flow: row wrap;
         flex: 1;
-        gap: 2em;
+        gap: 32px;
         &.maxTargetLabel label {
-          font-size: 0.9em;
-          line-height: 3em;
+          font-size: 14px;
+          line-height: 48px;
           -webkit-text-fill-color: $White;
           font-weight: normal;
         }
         .questionMark {
-          width: 1.3em;
-          height: 1.3em;
+          width: 1.48px;
+          height: 1.48px;
           align-self: center;
           justify-self: center;
         }
@@ -438,18 +445,18 @@
         }
       }
       .vestingPeriod {
-        width: 11em;
+        width: 176px;
         display: flex;
         flex-flow: row nowrap;
         flex: 1;
-        gap: 0em;
+        gap: 0;
         input {
-          width: 5em;
-          border-top-right-radius: 0em;
-          border-bottom-right-radius: 0em;
+          width: 80px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
         > div {
-          width: 5em;
+          width: 80px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -460,25 +467,25 @@
       }
       .vestingDatesContainer {
         display: grid;
-        column-gap: 1em;
+        column-gap: 16px;
         grid-template-columns: auto auto;
       }
 
       .vestingDates {
-        width: 11em;
+        width: 176px;
         display: grid;
         grid-template-columns: auto auto;
         column-gap: 0;
 
         input {
-          width: 7em;
-          border-top-right-radius: 0em;
-          border-bottom-right-radius: 0em;
+          width: 112px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
           border-right: 0px;
           cursor: pointer;
         }
         .inputIcon {
-          width: 2.5em;
+          width: 2.8px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -490,7 +497,7 @@
           z-index: 1;
           cursor: pointer;
           > i {
-            font-size: 1.4em;
+            font-size: 22px;
           }
         }
       }
@@ -509,83 +516,71 @@
       }
     }
     .whitelistContainer {
-      .inputFileLabel {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-around;
-        align-items: center;
-        overflow-wrap: break-word;
-        width: 16em;
-        height: 4.5em;
-        border-radius: 0.6em;
-        background-color: #1b1722;
-        border: 1px solid $Border01;
-        cursor: pointer;
-        span {
-          font-size: 0.7em;
-          font-weight: 100;
-          text-align: center;
-          line-height: 1em;
-        }
+      .loadingWhitelist {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: 6px;
         i {
-          font-size: 2.8em;
-          -webkit-text-fill-color: $Neutral02;
-        }
-        span {
-          width: 8em;
-          -webkit-text-fill-color: $Neutral03;
-          font-size: 1em;
-          text-align: left;
-          line-height: 1.24em;
+          color: $Secondary03-dev;
         }
       }
-      input[type="file"] {
-        display: none;
+
+      .whiteListFeedback {
+        color: $Neutral02;
+        margin-left: 6px;
+        margin-top: 6px;
+
+        &.bad {
+          i {
+            color: $AlertRed;
+            margin-right: 6px;
+          }
+        }
       }
     }
     .checkboxContainer {
-      width: 3.7em;
-      height: 2em;
+      width: 60px;
+      height: 32px;
       border: 1px solid #2a2a2a;
       border-radius: 23px;
       position: relative;
       display: flex;
       align-items: center;
-      margin-bottom: 2em;
+      margin-bottom: 32px;
       background: $Gradient01;
       cursor: pointer;
       i.yes {
         position: absolute;
-        left: 0.6em;
+        left: 10px;
         color: black;
         font-weight: 700;
       }
       i.no {
         position: absolute;
-        right: 0.6em;
+        right: 10px;
         color: black;
         font-weight: 700;
       }
       .checkbox {
-        width: 1.8em;
-        height: 1.8em;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         > input {
-          width: 1.8em;
-          height: 1.8em;
+          width: 28px;
+          height: 28px;
           visibility: hidden;
           position: absolute;
           &:checked + label {
-            left: 1.7em;
+            left: 28px;
           }
         }
         & label {
           display: block;
-          width: 1.4em;
-          height: 1.4em;
+          width: 22px;
+          height: 22px;
           position: absolute;
-          left: 0.15em;
+          left: 2px;
           background: white;
           border-radius: 50%;
           transition: all 0.3s ease;
@@ -599,7 +594,7 @@
   &.stage5 {
     .infoContainer {
       & textarea {
-        height: 7em;
+        height: 112px;
       }
     }
   }
@@ -674,7 +669,7 @@
     & .linksContainer {
       display: flex;
       flex-flow: column;
-      gap: 2em;
+      gap: 32px;
       > div {
         > a {
           color: $Neutral03;
@@ -711,7 +706,7 @@
       label {
         margin-bottom: unset;
       }
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     > .heading.heading2 {
       font-size: 26px;
@@ -793,6 +788,29 @@
         &.admin {
           > input {
             margin-bottom: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page.stageContainer {
+    &.stage4 {
+      .infoInput {
+        .pptContainer {
+          > .text:first-of-type {
+            display: block;
+          }
+        }
+
+        .tokenSelector {
+          flex-direction: column;
+          align-items: center;
+
+          .tokenSelect {
+            margin-right: 0;
           }
         }
       }

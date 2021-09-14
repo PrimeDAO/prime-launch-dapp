@@ -3,8 +3,8 @@ import { autoinject } from "aurelia-framework";
 import { ContractNames, ContractsService } from "./ContractsService";
 import { getAddress } from "ethers/lib/utils";
 import { EthereumService } from "services/EthereumService";
-import { Contract, ethers } from "ethers";
-import { IErc20Token, ITokenInfo } from "services/TokenTypes";
+import { ITokenInfo } from "services/TokenTypes";
+import { ethers } from "ethers";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ITokenList, TokenListMap } from "services/TokenListService";
 // import { Multicaller } from '@/lib/utils/balancer/contract';
@@ -44,8 +44,8 @@ export default class TokenMetadataService {
     tokenLists: TokenListMap,
   ): Promise<TokenInfoMap> {
     addresses = addresses.map(address => getAddress(address));
-    const tokenListTokens = this.tokenListsTokensFrom(tokenLists);
-    let metaDict = this.getMetaFromLists(addresses, tokenListTokens);
+    const tokenList = this.flattenTokenLists(tokenLists);
+    let metaDict = this.getMetaFromList(addresses, tokenList);
 
     // If token meta can't be found in TokenLists, fetch onchain
     const unknownAddresses = addresses.filter(
@@ -59,22 +59,28 @@ export default class TokenMetadataService {
     return metaDict;
   }
 
-  private tokenListsTokensFrom(lists: TokenListMap): ITokenInfo[] {
+  private flattenTokenLists(lists: TokenListMap): ITokenInfo[] {
+    /**
+     * Note this can return dups.
+     * The lists will be enumerated in the order in which they appear in lists, which
+     * is the order in which they appeared in tokenLists.ts.
+     */
     return Object.values<ITokenList>(lists)
       .map(list => list?.tokens ?? [])
       .flat();
   }
 
-  private getMetaFromLists(
+  private getMetaFromList(
     addresses: string[],
     tokens: ITokenInfo[],
   ): TokenInfoMap {
     const metaDict = {};
 
     addresses.forEach(async address => {
-      const tokenMeta = tokens.find(
-        token => getAddress(token.address) === address,
-      );
+      /**
+       * `find` returns the first matching token found among dups
+       **/
+      const tokenMeta = tokens.find(token => getAddress(token.address) === address);
       if (tokenMeta)
         metaDict[address] = {
           ...tokenMeta,
@@ -94,19 +100,29 @@ export default class TokenMetadataService {
         const tokenContract = new ethers.Contract(
           address,
           ContractsService.getContractAbi(ContractNames.ERC20),
-          this.ethereumService.readOnlyProvider) as unknown as Contract & IErc20Token;
+          this.ethereumService.readOnlyProvider);
 
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
         try {
           const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
           const logoFound = await axios.get(logoURI).catch(() => null);
           tokenInfo.logoURI = logoFound ? logoURI : null;
-          tokenInfo.name = await tokenContract.name();
-          tokenInfo.symbol = await tokenContract.symbol();
+          /**
+           * none of the following functions are required by IERC20, so we will tolerate their
+           * absence since we have fallbacks.  But we must nevertheless fail here if decimals
+           * is missing.  We and our contracts require 18.
+           */
+          try {
+            tokenInfo.name = await tokenContract.name();
+            tokenInfo.symbol = await tokenContract.symbol();
+          // eslint-disable-next-line no-empty
+          } catch { }
           tokenInfo.decimals = await tokenContract.decimals();
           metaDict[address] = tokenInfo as unknown as ITokenInfo;
         // eslint-disable-next-line no-empty
-        } catch { }
+        } catch (ex) {
+          this.consoleLogService.logMessage(`getMetaOnchain: ${ex.message ?? ex} `, "error");
+        }
       }
 
       return metaDict;

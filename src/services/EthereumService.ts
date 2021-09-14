@@ -3,13 +3,12 @@ import detectEthereumProvider from "@metamask/detect-provider";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber, ethers, Signer } from "ethers";
-import { BaseProvider, Web3Provider } from "@ethersproject/providers";
+import { BaseProvider, ExternalProvider, Web3Provider, Network } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Torus from "@toruslabs/torus-embed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { EventConfigFailure } from "services/GeneralEvents";
 import { formatEther, getAddress, parseEther } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 
@@ -166,10 +165,6 @@ export class EthereumService {
     [Networks.Kovan, 42],
   ]);
 
-  private async getChainId(provider: Web3Provider): Promise<number> {
-    return Number((await provider.send("net_version", [])));
-  }
-
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
     let account: Signer | string;
     if (Signer.isSigner(provider)) {
@@ -230,7 +225,6 @@ export class EthereumService {
   public defaultAccountAddress: Address;
 
   public async connect(): Promise<void> {
-
     if (!this.walletProvider) {
       this.ensureWeb3Modal();
       const web3ModalProvider = await this.web3Modal.connect();
@@ -300,15 +294,23 @@ export class EthereumService {
     }
   }
 
+  private async getNetwork(provider: Web3Provider): Promise<Network> {
+    let network = await provider.getNetwork();
+    network = Object.assign({}, network);
+    if (network.name === "homestead") {
+      network.name = "mainnet";
+    }
+    return network;
+  }
+
   private async setProvider(web3ModalProvider: Web3Provider & IEIP1193): Promise<void> {
     try {
       if (web3ModalProvider) {
         const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider as any);
         (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
-        const chainId = await this.getChainId(walletProvider);
-        const chainName = this.chainNameById.get(chainId);
-        if (chainName !== this.targetedNetwork) {
-          this.eventAggregator.publish("handleFailure", new EventConfigFailure(`Please connect to ${this.targetedNetwork}`));
+        const network = await this.getNetwork(walletProvider);
+        if (network.name !== this.targetedNetwork) {
+          this.eventAggregator.publish("Network.wrongNetwork", { provider: web3ModalProvider, connectedTo: network.name, need: this.targetedNetwork });
           return;
         }
         /**
@@ -322,7 +324,7 @@ export class EthereumService {
         /**
            * because the events aren't fired on first connection
            */
-        this.fireConnectHandler({ chainId, chainName, provider: this.walletProvider });
+        this.fireConnectHandler({ chainId: network.chainId, chainName: network.name, provider: this.walletProvider });
         this.fireAccountsChangedHandler(this.defaultAccountAddress);
 
         this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
@@ -375,15 +377,15 @@ export class EthereumService {
     this.fireAccountsChangedHandler(accounts?.[0]);
   }
 
-  private handleChainChanged = (chainId: number) => {
-    const chainName = this.chainNameById.get(chainId);
-    if (chainName !== this.targetedNetwork) {
-      this.disconnect({ code: -1, message: "wrong network" });
-      this.eventAggregator.publish("handleFailure", new EventConfigFailure(`Please connect to ${this.targetedNetwork}`));
+  private handleChainChanged = async (chainId: number) => {
+    const network = ethers.providers.getNetwork(Number(chainId));
+
+    if (network.name !== this.targetedNetwork) {
+      this.eventAggregator.publish("Network.wrongNetwork", { provider: this.web3ModalProvider, connectedTo: network.name, need: this.targetedNetwork });
       return;
     }
     else {
-      this.fireChainChangedHandler({ chainId, chainName, provider: this.walletProvider });
+      this.fireChainChangedHandler({ chainId: network.chainId, chainName: network.name, provider: this.walletProvider });
     }
   }
 
@@ -405,6 +407,39 @@ export class EthereumService {
     this.walletProvider = undefined;
     this.fireDisconnectHandler(error);
   }
+
+  /**
+   *
+   * @param provider should be a Web3Provider
+   * @returns
+   */
+  public async switchToTargetedNetwork(provider: ExternalProvider): Promise<boolean> {
+    const hexChainId = `0x${this.targetedChainId.toString(16)}`;
+    try {
+      if (provider.request) {
+        /**
+         * note this will simply throw an exception when the website is running on localhost
+         */
+        await provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: hexChainId }],
+        });
+        this.setProvider(provider as unknown as Web3Provider);
+        return true;
+      }
+    } catch (err) {
+      // user rejected request
+      if (err.code === 4001) {
+        // return false;
+      }
+      // chain does not exist, let's add it (see balancer)
+      // if (err.code === 4902) {
+      //   return importNetworkDetailsToWallet(provider);
+      // }
+    }
+    return false;
+  }
+
 
   private _lastBlockDate: Date;
 

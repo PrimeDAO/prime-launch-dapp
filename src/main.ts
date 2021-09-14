@@ -13,6 +13,7 @@ import { GeoBlockService } from "services/GeoBlockService";
 import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
+import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -43,6 +44,8 @@ export function configure(aurelia: Aurelia): void {
       ethereumService.initialize(
         process.env.NETWORK as AllowedNetworks ??
           (process.env.NODE_ENV === "development" ? Networks.Rinkeby : Networks.Mainnet));
+
+      ContractsDeploymentProvider.initialize(ethereumService.targetedNetwork);
 
       aurelia.container.get(ContractsService);
 

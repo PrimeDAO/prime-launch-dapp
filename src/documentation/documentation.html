@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page au-animate documentsContainer">
-    <div class="heading heading1">Documentation</div>
-    <div class="documentBody">
+    <div class="title heading heading1">Documentation</div>
+    <div class="documentContainer">
       <div class="sidebar">
         <template repeat.for="doc of router.navigation">
           <a href.to-view="doc.href"
@@ -10,11 +10,11 @@
           </a>
         </template>
       </div>
-      <div class="documentContainer">
+      <div class="rightSection">
         <router-view></router-view>
         <div class="navigationContainer">
           <div click.delegate="previous()" class="navigationPrevious">
-            <i class="fas fa-arrow-left" if.to-view="previousDocTitle"></i> ${previousDocTitle} 
+            <i class="fas fa-arrow-left" if.to-view="previousDocTitle"></i> ${previousDocTitle}
           </div>
           <div click.delegate=next() class="navigationNext">
             ${nextDocTitle} <i class="fas fa-arrow-right" if.to-view="nextDocTitle"></i>

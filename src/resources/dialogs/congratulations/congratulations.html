@@ -1,0 +1,13 @@
+<template>
+  <ux-dialog class="dialog congratulations">
+    <ux-dialog-header class="bg-confetti-animated">
+      Congratulations!
+    </ux-dialog-header>
+    <ux-dialog-body with.bind="model">
+      <div class="body">${message}</div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="button1 small" ref="okButton" click.trigger="controller.ok()">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

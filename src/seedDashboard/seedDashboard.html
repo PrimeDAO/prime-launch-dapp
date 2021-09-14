@@ -95,8 +95,8 @@
                 <div class="token">${seed.projectTokenInfo.symbol}</div>
               </div>
             </div>
-            <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">Tokens will vest for ${seed.vestingDuration | secondsDays} days with a cliff of ${seed.vestingCliff | secondsDays} days</div>
-            <div class="vestedMessage subtext" else>Tokens will vest for ${seed.vestingDuration | secondsDays} days with no cliff</div>
+            <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">Project tokens will be locked for ${seed.vestingCliff | secondsDays} day(s) after launch, then unlock gradually over ${seed.vestingDuration | secondsDays} day(s)</div>
+            <div class="vestedMessage subtext" else>Project tokens will unlock gradually over ${seed.vestingDuration | secondsDays} days(s) after launch</div>
           </div>
           <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
           <template else>

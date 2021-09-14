@@ -1,3 +1,4 @@
+import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber } from "ethers";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -7,7 +8,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
-import tippy from "tippy.js";
 
 @autoinject
 export class Stage3 extends BaseStage {
@@ -17,7 +17,7 @@ export class Stage3 extends BaseStage {
   tiSymbolInputPresupplied: boolean;
   tiLogoInputPresupplied: boolean;
   loadingToken = false;
-  errorIcon: HTMLElement;
+  logoIcon: HTMLElement;
   seedLogoIsValid = false;
   seedLogoIsLoaded = false;
   projectTokenErrorMessage: string;
@@ -26,14 +26,9 @@ export class Stage3 extends BaseStage {
     eventAggregator: EventAggregator,
     tokenService: TokenService,
     private numberService: NumberService,
+    private consoleLogService: ConsoleLogService,
     router: Router) {
     super(router, eventAggregator, tokenService);
-  }
-
-  attached(): void {
-    tippy(this.errorIcon, {
-      content: this.projectTokenErrorMessage,
-    });
   }
 
   addTokenDistribution(): void {
@@ -49,7 +44,7 @@ export class Stage3 extends BaseStage {
 
 
   private isValidImageFormat(file: string): boolean {
-    const re = /(\.jpg|\.bmp|\.gif|\.png)$/i;
+    const re = /(\.jpg|\.bmp|\.gif|\.png)($|\?)/i;
     return re.test(String(file).toLowerCase());
   }
 
@@ -73,13 +68,9 @@ export class Stage3 extends BaseStage {
     let message;
     if (!Utils.isAddress(this.seedConfig.tokenDetails.projectTokenAddress)) {
       message = "Please enter a valid address for the Project Token Address";
-    } else if (!this.wizardState.projectTokenInfo ||
-      (!(await this.tokenService.isERC20Token(this.seedConfig.tokenDetails.projectTokenAddress)))) {
-      message = "Please enter a project token address that references a valid ERC20 token contract";
+    } else if (!this.wizardState.projectTokenInfo) {
+      message = "Please enter a project token address that references a valid IERC20 token contract having 18 decimals";
     }
-    tippy(this.errorIcon, {
-      content: message,
-    });
     return this.projectTokenErrorMessage = message;
   }
 
@@ -121,7 +112,7 @@ export class Stage3 extends BaseStage {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
       this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Funding Tokens per Project Token";
+      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");
@@ -195,9 +186,10 @@ export class Stage3 extends BaseStage {
           // this.seedLogoIsLoaded = true; // assuming
           this.projectTokenErrorMessage = null;
           this.loadingToken = false;
-        }).catch(() => {
+        }).catch((error) => {
           // then is probably not a valid token contract
           // this.validationError("Could not obtain project token information from the address supplied");
+          this.consoleLogService.logMessage(`error loading project token info: ${error?.message ?? error}`, "info");
           this.wizardState.projectTokenInfo = null;
           this.formIsEditable = false;
           this.loadingToken = false;

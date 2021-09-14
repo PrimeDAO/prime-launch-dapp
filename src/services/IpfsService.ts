@@ -63,7 +63,7 @@ export class IpfsService {
       if (response.status !== 200) {
         throw Error(`An error occurred getting the hash ${hash}: ${response.statusText}`);
       } else {
-        return JSON.parse(response.data);
+        return (typeof response.data === "string") ? JSON.parse(response.data) : response.data;
       }
     } catch (ex) {
       this.consoleLogService.logMessage(`Error fetching from ${url}: ${ex.message}`, "error");

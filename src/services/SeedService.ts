@@ -182,7 +182,7 @@ export class SeedService {
 
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
-    const safeAddress = await this.contractsService.getContractAddress(ContractNames.SAFE);
+    const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);

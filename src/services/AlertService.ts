@@ -1,9 +1,9 @@
-import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EventConfig, EventConfigException } from "./GeneralEvents";
 import { DialogCloseResult, DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
-import { Alert } from "../resources/dialogs/alert/alert";
+import { Alert, ShowButtonsEnum } from "../resources/dialogs/alert/alert";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 @autoinject
 export class AlertService {
@@ -12,19 +12,17 @@ export class AlertService {
   private subscriptions: DisposableCollection = new DisposableCollection();
 
   constructor(
-    eventAggregator: EventAggregator,
+    private eventAggregator: EventAggregator,
     private dialogService: DialogService,
   ) {
-    this.subscriptions.push(eventAggregator
-      .subscribe("handleException",
-        (config: EventConfigException | any) => this.handleException(config)));
-    this.subscriptions.push(eventAggregator
-      .subscribe("handleFailure", (config: EventConfig | string) => this.handleFailure(config)));
   }
 
-  /* shouldn't actually ever happen */
-  public dispose(): void {
-    this.subscriptions.dispose();
+  shouldHandleErrors(): void {
+    this.subscriptions.push(this.eventAggregator
+      .subscribe("handleException",
+        (config: EventConfigException | any) => this.handleException(config)));
+    this.subscriptions.push(this.eventAggregator
+      .subscribe("handleFailure", (config: EventConfig | string) => this.handleFailure(config)));
   }
 
   private handleException(config: EventConfigException | any) {
@@ -49,7 +47,7 @@ export class AlertService {
     return (typeof config === "string") ? config : config.message;
   }
 
-  public showAlert(message: string): Promise<DialogCloseResult> {
+  public showAlert(message: string, buttons = ShowButtonsEnum.OK): Promise<DialogCloseResult> {
     /**
      * hack we gotta go through because of how the gradient border, size
      * and position of the dialog is defined in ux-dialog-container.
@@ -59,7 +57,7 @@ export class AlertService {
      */
     let theContainer: Element;
 
-    return this.dialogService.open(Alert, { message }, {
+    return this.dialogService.open(Alert, { message, buttons }, {
       keyboard: true,
       position: (modalContainer: Element, _modalOverlay: Element): void => {
         theContainer = modalContainer;

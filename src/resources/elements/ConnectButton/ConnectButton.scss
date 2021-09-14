@@ -15,7 +15,7 @@
     padding: 0.6rem 0.9rem;
     border-radius: 0.75rem;
     white-space: nowrap;
-    color: $Secondary05;
+    color: $Secondary01-dev;
     background-color: $BG01;
     border: $BG05;
     cursor: pointer;
@@ -23,7 +23,7 @@
 
     &:hover,
     &:focus {
-      color: $Secondary06;
+      color: $Secondary02-dev;
     }
   }
 
@@ -56,7 +56,7 @@
       margin-right: 0.5em;
       position: relative;
       bottom: 1px;
-      color: $Secondary06;
+      color: $Secondary02-dev;
     }
 
     .connectedButtons {
@@ -73,7 +73,7 @@
             margin-right: 6px;
           }
           i {
-            color: $Secondary05;
+            color: $Secondary01-dev;
           }
           &.confirming {
             cursor: pointer;

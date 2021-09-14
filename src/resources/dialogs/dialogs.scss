@@ -1,5 +1,9 @@
 @import "styles/styles.scss";
 
+body > ux-dialog-overlay.active {
+  opacity: 0.75;
+}
+
 /**
  * specify "body" to force this css to take precedence over Aurelia's
  **/
@@ -64,7 +68,7 @@ body > ux-dialog-container {
         text-align: center;
         padding-top: 32px;
         i {
-          color: $Secondary07;
+          color: $Secondary03-dev;
           font-size: 28px;
         }
       }

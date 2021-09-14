@@ -5,6 +5,7 @@ import { Disclaimer } from "../resources/dialogs/disclaimer/disclaimer";
 import axios from "axios";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import { Address } from "services/EthereumService";
+import { AxiosService } from "services/axiosService";
 const marked = require("marked");
 
 @autoinject
@@ -17,6 +18,7 @@ export class DisclaimerService {
     private dialogService: DialogService,
     private eventAggregator: EventAggregator,
     private storageService: BrowserStorageService,
+    private axiosService: AxiosService,
   ) {
   }
 
@@ -76,7 +78,7 @@ export class DisclaimerService {
         }
       })
       .catch((err) => {
-        this.dialogService.axiosErrorHandler(err);
+        this.axiosService.axiosErrorHandler(err);
         return null;
       });
 

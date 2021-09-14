@@ -30,7 +30,7 @@ export class TokenService {
     private contractsService: ContractsService,
     private tokenListService: TokenListService,
     private tokenMetadataService: TokenMetadataService) {
-    this.erc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
+    this.erc20Abi = ContractsService.getContractAbi(ContractNames.IERC20);
     this.queue = new Subject<() => Promise<void>>();
     // this will initiate the execution of the promises
     // each promise is executed after the previous one has resolved
@@ -41,6 +41,17 @@ export class TokenService {
   }
 
   async initialize(): Promise<TokenListMap> {
+    this.geckoCoinInfo = new Map<string, string>();
+    const uri = "https://api.coingecko.com/api/v3/coins/list";
+
+    await axios.get(uri)
+      .then((response) => {
+        if (response.data && response.data.length) {
+          response.data.map((tokenInfo: ITokenInfo) =>
+            this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
+        }
+      });
+
     return this.tokenLists = await this.tokenListService.fetchLists();
   }
 
@@ -63,13 +74,15 @@ export class TokenService {
 
     if (!tokenInfo) {
 
-      if (!getAddress(tokenAddress)) {
+      tokenAddress = getAddress(tokenAddress);
+
+      if (!tokenAddress) {
         reject(`Invalid token address: ${tokenAddress}`);
         return;
       }
 
       /**
-       * fetchTokenMetadata will throw an exception if it can't at least find an ERC20 token at the
+       * fetchTokenMetadata will throw an exception if it can't at least find an IERC20 token at the
        * given address.
        */
       const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
@@ -78,10 +91,9 @@ export class TokenService {
       if (tokenInfo) {
         // eslint-disable-next-line require-atomic-updates
         tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
-        this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
       } else {
         // is not a valid token contractz, or some other error occurred
-        reject(`Token address possibly does not reference to an ERC20 contract: ${tokenAddress}`);
+        reject(`Token does not appear to be a token contract: ${tokenAddress}`);
         return;
       }
       /**
@@ -104,8 +116,8 @@ export class TokenService {
         return;
       }
 
-      if (!this.isERC20Token(tokenInfo.address)) {
-        reject(`Token address does not reference to an ERC20 contract: ${tokenAddress}`);
+      if (!await this.isERC20Token(tokenInfo.address)) {
+        reject(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
         return;
       }
 
@@ -132,6 +144,7 @@ export class TokenService {
       }
 
       this.tokenInfos.set(tokenAddress.toLowerCase(), tokenInfo);
+      this.consoleLogService.logMessage(`loaded token: ${tokenAddress}`, "info");
     }
 
     resolve(tokenInfo);
@@ -175,36 +188,18 @@ export class TokenService {
   getTokenGeckoMapKey(name: string, symbol: string): string {
     // PRIMEDao Token HACK!!!
     if (name.toLowerCase() === "primedao token") { name = "primedao"; }
+    if (name.toLowerCase() === "dai stablecoin") { name = "dai"; }
     return `${name.toLowerCase()}_${symbol.toLowerCase()}`;
   }
 
   async getTokenGeckoId(name: string, symbol: string): Promise<string> {
-    if (!this.geckoCoinInfo) {
-      const uri = "https://api.coingecko.com/api/v3/coins/list";
-
-      await axios.get(uri)
-        .then((response) => {
-          this.geckoCoinInfo = new Map<string, string>();
-
-          response.data.map((tokenInfo: ITokenInfo) =>
-            this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
-        })
-        .catch((error) => {
-          if (process.env.NODE_ENV !== "development") {
-            this.consoleLogService.logMessage(`TokenService: Error fetching token id for ${name}: ${error?.response?.data?.error?.message ?? error?.message}`, "warn");
-          }
-        });
+    const id = this.geckoCoinInfo.get(this.getTokenGeckoMapKey(name, symbol));
+    if (id) {
+      return id;
+    } else {
+      this.consoleLogService.logMessage(`TokenService: Unable to find token info in CoinGecko: (${name}/${symbol})`, "warn");
+      return "";
     }
-
-    if (this.geckoCoinInfo) {
-      const id = this.geckoCoinInfo.get(this.getTokenGeckoMapKey(name, symbol));
-      if (id) {
-        return id;
-      } else {
-        this.consoleLogService.logMessage(`TokenService: Error fetching token info: token not found, or more than one match found (${name}/${symbol})`, "warn");
-      }
-    }
-    return "";
   }
 
   public getTokenContract(tokenAddress: Address): Contract & IErc20Token {
@@ -240,9 +235,23 @@ export class TokenService {
     if (contract) {
       try {
         if (this.ethereumService.targetedNetwork === Networks.Mainnet) {
-          const contractAbi = await axios.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}`).then((result) => result.data);
+
+          const proxyImplementation = await this.contractsService.getProxyImplementation(tokenAddress);
+          if (proxyImplementation) {
+            tokenAddress = proxyImplementation;
+          }
+
+          const contractAbi = await axios.get(`https://api.etherscan.io/api?module=contract&action=getabi&address=${tokenAddress}&apikey=${process.env.ETHERSCAN_KEY}`)
+            .then((result) => {
+              return result.data.message !== "OK" ? null : result.data.result;
+            });
+
+          if (!contractAbi) {
+            throw new Error("ABI not obtainable, contract may not be verified in etherscan");
+          }
+
           const contractInterface = new Interface(contractAbi);
-          const ierc20Abi = ContractsService.getContractAbi(ContractNames.ERC20);
+          const ierc20Abi = ContractsService.getContractAbi(ContractNames.IERC20);
           const ierc20Interface = new Interface(ierc20Abi);
 
           for (const functionName in ierc20Interface.functions) {
@@ -250,6 +259,7 @@ export class TokenService {
             if (!contractFunction ||
                 (contractFunction.format(FormatTypes.minimal) !== ierc20Interface.functions[functionName].format(FormatTypes.minimal))) {
               isOk = false;
+              this.consoleLogService.logMessage(`TokenService: Token ${tokenAddress} fails to implement IERC20 on function: ${functionName}`, "error");
               break;
             }
           }
@@ -259,6 +269,7 @@ export class TokenService {
               if (!contractEvent ||
                   (contractEvent.format(FormatTypes.minimal) !== ierc20Interface.events[eventName].format(FormatTypes.minimal))) {
                 isOk = false;
+                this.consoleLogService.logMessage(`TokenService: Token ${tokenAddress} fails to implement IERC20 on event: ${eventName}`, "error");
                 break;
               }
             }

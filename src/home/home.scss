@@ -118,7 +118,7 @@
         font-size: 32px;
         padding-top: 24px;
         i {
-          color: $Secondary07;
+          color: $Secondary03-dev;
         }
       }
     }
@@ -147,16 +147,27 @@
       }
 
       .emailColumn {
-        align-self: center;
         .form {
+          width: 400px;
           display: flex;
           margin-bottom: 4px;
-          justify-content: left;
+          align-items: center;
+
+          .emailInput {
+            flex-grow: 2;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            height: 45px;
+            border: 1px solid $Border01;
+            color: $White;
+          }
 
           .notifyButton {
-            border-radius: 20px;
-            flex-grow: 1;
-            max-width: 250px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin-left: 0;
           }
         }
 

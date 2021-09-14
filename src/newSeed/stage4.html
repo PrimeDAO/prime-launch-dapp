@@ -30,14 +30,18 @@
           </div>
         </div>
         <div class="infoInput">
-          <label for="ppt">Funding Tokens <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel> per Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel></label>
+          <label for="ppt">Project Token Exchange Ratio</label>
           <div class="pptContainer">
+            <div class="text">1 Funding Token <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel> =</div>
             <numeric-input
               output-as-string="true"
               id="ppt"
               value.bind="seedConfig.seedDetails.pricePerToken"
               placeholder="1.5">
             </numeric-input>
+
+            <div class="text">Project Tokens <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel>
+            </div>
           </div>
         </div>
         <div class="infoInput maxTarget fundingTarget">
@@ -53,12 +57,6 @@
                 value.bind="seedConfig.seedDetails.fundingTarget"
                 placeholder="100">
               </numeric-input>
-              <!-- <div if.to-view="wizardState.fundingTokenInfo">
-                <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-              </div>
-              <div if.to-view="wizardState.fundingTokenInfo" class="ticker">
-                ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''}
-              </div> -->
             </div>
           </div>
           <div>
@@ -71,20 +69,12 @@
             <div class="fundingDescrp">
               The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
             </div>
-            <!-- <div class="fundingTicker">
-              <numeric-input
-                output-as-string="true"
-                id="fundingMax"
-                value.bind="seedConfig.seedDetails.fundingMax"
-                placeholder="1000">
-              </numeric-input>
-              <div if.to-view="wizardState.fundingTokenInfo">
-                <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-              </div>
-              <div class="ticker" if.to-view="wizardState.fundingTokenInfo">
-                ${wizardState.fundingTokenInfo ? `(${wizardState.fundingTokenInfo.symbol})` : ''}
-              </div>
-            </div> -->
+            <numeric-input
+              output-as-string="true"
+              id="fundingMax"
+              value.bind="seedConfig.seedDetails.fundingMax"
+              placeholder="1000">
+            </numeric-input>
           </div>
         </div>
         <div class="labeledQuestion">
@@ -179,7 +169,7 @@
             </div>
           </div>
         </div>
-        <div class="infoInput">
+        <div class="infoInput whitelistContainer">
           <div class="labeledQuestion">
             <label for="whitelist">Whitelist</label>
             <div class="questionMark">
@@ -187,8 +177,13 @@
               </question-mark>
             </div>
           </div>
-          <input id="whitelist" value.bind="seedConfig.seedDetails.whitelist"
+          <input id="whitelist"
+            value.bind="seedConfig.seedDetails.whitelist"
+            input.trigger="getWhiteListFeedback()"
             placeholder="(Optional) URL to a whitelist" />
+          <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
+          <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
+          <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
         </div>
         <div class="infoInput">
           <div class="labeledQuestion">
