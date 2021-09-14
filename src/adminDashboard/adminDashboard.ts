@@ -60,7 +60,8 @@ export class AdminDashboard {
   async hydrate(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
-      this.seeds = this.seedService.seedsArray;
+      this.seeds = this.seedService.seedsArray
+        .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});;
     } else {
       this.seeds = [];
     }
