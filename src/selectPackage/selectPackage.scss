@@ -82,6 +82,14 @@
             padding: 3px;
             color: $Black;
           }
+          .benefit-header {
+            line-height: 25px;
+          }
+          .benefit-description {
+            font-size: 14px;
+            line-height: 20px;
+            color: $Neutral02;
+          }
         }
       }
     }
