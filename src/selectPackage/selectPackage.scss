@@ -64,23 +64,21 @@
           font-size: 16px;
           font-weight: bold;
           margin-bottom: 11px;
-          .check {
-            text-align: center;
-            background-color: #21B66F;
+          .check, .noCheck {
+            display: grid;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
             width: 20px;
             height: 20px;
             padding: 3px;
             color: $Black;
           }
+          .check {
+            background-color: $AlertGreen;
+          }
           .noCheck {
-            text-align: center;
-            background-color: #FF8A80;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            padding: 3px;
-            color: $Black;
+            background-color: $AlertOrange;
           }
           .benefit-header {
             line-height: 25px;
