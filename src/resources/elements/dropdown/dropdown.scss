@@ -54,8 +54,8 @@
     z-index: 1;
     opacity: 1;
     height: fit-content;
-    max-height: 225px;
     overflow-y: auto;
+    // max-height: 225px;
 
     &::-webkit-scrollbar-button:vertical {
       display: block;

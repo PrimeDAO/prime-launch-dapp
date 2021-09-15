@@ -21,22 +21,15 @@ export class Dropdown {
   async attached(): Promise<void> {
     document.addEventListener("click", (e: MouseEvent) => {
       // Close the menu if the user clicks outside the dropdown
-      let isInDropdown = false;
       const clickedElement = e.target as HTMLElement;
-      if (this.dropdown) {
-        this.dropdown.childNodes.forEach(node => {
-          if (isInDropdown) return;
-          isInDropdown = node.nodeType === 1 && node.textContent.includes(clickedElement.textContent);
-        });
-
-        if (
-          !isInDropdown &&
-          !this.menu.classList.contains("hide") &&
-          this.dropdown.classList.contains("menuShowing")
-        ) {
-          this.dropdown.classList.remove("menuShowing");
-          this.menu.classList.add("hide");
-        }
+      if (
+        this.dropdown &&
+        clickedElement.closest(".dropdown") === null && // Clicked element is not part of the dropdown element
+        !this.menu.classList.contains("hide") &&
+        this.dropdown.classList.contains("menuShowing")
+      ) {
+        this.dropdown.classList.remove("menuShowing");
+        this.menu.classList.add("hide");
       }
     });
 
