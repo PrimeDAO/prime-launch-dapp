@@ -1,0 +1,54 @@
+<template>
+  <nav class="navbar-container">
+    <div class="logo">
+      <img src="../../static/primeDAOLogo.svg" alt="PrimeDAO">
+    </div>
+
+    <div class="products ${vertical ? 'vertical' : ''}">
+      <ul class="container">
+        <li click.delegate="toggleSubmenu()" class="item active">
+          <div class="icon launch"><img class="mono" src="/logos/products/launch-mono.svg" /><img class="color" src="/logos/products/launch.svg" /></div>
+          <div class="text">Launch</div>
+        </li>
+        <li class="item">
+          <div class="icon pools"><img class="mono" src="/logos/products/pools-mono.svg" /><img class="color" src="/logos/products/pools.svg" /></div>
+          <div class="text">Pools</div>
+        </li>
+        <li class="item">
+          <div class="icon rating"><img class="mono" src="/logos/products/rating-mono.svg" /><img class="color" src="/logos/products/rating.svg" /></div>
+          <div class="text">Rating</div>
+        </li>
+        <li class="item">
+          <div class="icon deals"><img class="mono" src="/logos/products/deals-mono.svg" /><img class="color" src="/logos/products/deals.svg" /></div>
+          <div class="text">Deals</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="productSubpages ${submenuVisible ? 'showing' : ''}">
+      <ul class="container">
+        <li click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</li>
+        <li click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Launch</li>
+        <li click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</li>
+        <li click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</li>
+      </ul>
+    </div>
+
+    <div class="networkFeedback">
+      <networkfeedback></networkfeedback>
+    </div>
+    <div class="headerConnectButton">
+      <connectbutton></connectbutton>
+    </div>
+    <!-- <div if.to-view="isConnected" class="wallet-balance">
+        <div class="wallet-balance-text">
+          <span>XX.xx Prime</span>
+          <span>X.xx ETH</span>
+        </div>
+        <div class="wallet-user-details">
+          <span>JohnDoe.eth</span>
+          <span> ⌄ </span>
+        </div>
+      </div> -->
+  </nav>
+</template>
