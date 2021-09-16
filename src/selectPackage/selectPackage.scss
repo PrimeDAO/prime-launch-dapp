@@ -38,18 +38,18 @@
     background-color: $BG02;
     border-radius: 25px;
     max-width: 360px;
-    padding: 30px;
+    padding: 20px 30px;
     .topSection {
-      margin-bottom: 107px;
+      margin-bottom: 58px;
       .heading3 {
         font-size: 36px;
-        line-height: 65px;
+        line-height: 60px;
       }
       .subtext {
         text-align: left;
         font-size: 16px;
         line-height: 24px;
-        margin-bottom: 57px;
+        margin-bottom: 47px;
       }
       .benefitsContainer {
         text-align: left;
@@ -64,30 +64,36 @@
           font-size: 16px;
           font-weight: bold;
           margin-bottom: 11px;
-          .check {
-            text-align: center;
-            background-color: #21B66F;
+          .check, .noCheck {
+            display: grid;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
             width: 20px;
             height: 20px;
             padding: 3px;
             color: $Black;
           }
+          .check {
+            background-color: $AlertGreen;
+          }
           .noCheck {
-            text-align: center;
-            background-color: #FF8A80;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            padding: 3px;
-            color: $Black;
+            background-color: $AlertOrange;
+          }
+          .benefit-header {
+            line-height: 25px;
+          }
+          .benefit-description {
+            font-size: 14px;
+            line-height: 20px;
+            color: $Neutral02;
           }
         }
       }
     }
     .packageFooter {
       display: grid;
-      grid-template-rows: .6fr 1fr .5fr;
+      grid-template-rows: 48px 55px 17px;
       justify-content: center;
       row-gap: 10px;
       font-family: Inter;
