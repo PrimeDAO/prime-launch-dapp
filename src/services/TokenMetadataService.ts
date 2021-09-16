@@ -110,7 +110,7 @@ export default class TokenMetadataService {
           /**
            * none of the following functions are required by IERC20, so we will tolerate their
            * absence since we have fallbacks.  But we must nevertheless fail here if decimals
-           * is missing.  We and our contracts require 18.
+           * is missing.
            */
           try {
             tokenInfo.name = await tokenContract.name();
