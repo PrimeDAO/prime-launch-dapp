@@ -1,5 +1,5 @@
-import { TransactionReceipt } from 'services/TransactionsService';
-import { Seed } from '../entities/Seed';
+import { TransactionReceipt } from "services/TransactionsService";
+import { Seed } from "../entities/Seed";
 import { Address, EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
@@ -7,19 +7,19 @@ import "./seedAdminDashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
-import { WhiteListService } from 'services/WhiteListService';
-import TransactionsService from 'services/TransactionsService';
+import { WhiteListService } from "services/WhiteListService";
+import TransactionsService from "services/TransactionsService";
 
 @autoinject
 export class SeedAdminDashboard {
 
   seeds: Array<Seed> = [];
   selectedSeed: Seed;
-  addressToRemove: String = '';
-  addressToAdd: String = '';
-  receiverAddress: String = '';
+  addressToRemove = "";
+  addressToAdd = "";
+  receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
-  loading: boolean = true;
+  loading = true;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -60,7 +60,7 @@ export class SeedAdminDashboard {
     if (this.ethereumService.defaultAccountAddress) {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.seeds = this.seedService.seedsArray
-        .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});;
+        .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
     } else {
       this.seeds = [];
     }
@@ -68,7 +68,6 @@ export class SeedAdminDashboard {
 
   setSeed(index): void {
     this.selectedSeed = this.seeds[index];
-    console.log(this.selectedSeed);
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
