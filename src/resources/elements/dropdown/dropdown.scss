@@ -1,10 +1,21 @@
 @import "styles/styles.scss";
 
+@mixin defaultTransition($properties...) {
+  $transition: ();
+  @each $property in $properties {
+    $transition: append($transition, ($property 0.16s ease-in-out), $separator: comma);
+  }
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;}
+
 .dropdown {
-  border: 1px solid $Border01;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   background: $BG01;
   color: $Neutral02;
+  border: 1px solid $Border01;
   border-radius: 10px;
   font-family: Inter;
   width: fit-content;
@@ -13,6 +24,9 @@
   &:focus-within, &:active, &.menuShowing {
     border-color: $Secondary02;
   }
+
+  @include defaultTransition(border-radius, box-shadow, border-color);
+
   > .selectedLabel {
     display: flex;
     justify-content: space-between;
@@ -40,7 +54,6 @@
   }
 
   > .menu {
-    transition: all 0.16s ease-in-out;
     overflow: hidden;
     cursor: pointer;
     position: absolute;
@@ -56,6 +69,7 @@
     height: fit-content;
     overflow-y: auto;
     // max-height: 225px;
+    @include defaultTransition(transform, opacity, border-radius);
 
     &::-webkit-scrollbar-button:vertical {
       display: block;
