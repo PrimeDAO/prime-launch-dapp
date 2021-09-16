@@ -187,10 +187,10 @@ export class App {
         title: "Select Your Package",
       },
       {
-        moduleId: PLATFORM.moduleName("./adminDashboard/adminDashboard"),
+        moduleId: PLATFORM.moduleName("./seedAdminDashboard/seedAdminDashboard"),
         nav: false,
-        name: "adminDashboard",
-        route: ["adminDashboard"],
+        name: "seedAdminDashboard",
+        route: ["seedAdminDashboard"],
         title: "Administer a Launch",
       },
 
