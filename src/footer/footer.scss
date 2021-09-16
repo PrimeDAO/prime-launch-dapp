@@ -1,8 +1,8 @@
 @import "styles/colors.scss";
 
 @mixin logo($url) {
-  -webkit-mask: url("../../static/logos/" + $url) no-repeat center;
-  mask: url("../../static/logos/" + $url) no-repeat center;
+  -webkit-mask: url("../../static/" + $url) no-repeat center;
+  mask: url("../../static/" + $url) no-repeat center;
 }
 
 .footerContainer {
