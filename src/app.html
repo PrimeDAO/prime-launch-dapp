@@ -5,44 +5,12 @@
   <navbar></navbar>
   <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
     <div class="appWrapper">
-      <!-- <div class="logo">
-        <a href="home"><img src="/primeLaunchLogo.svg" /></a>
-      </div>
-      <div class="appHeader">
-        <div class="networkFeedback">
-          <networkfeedback></networkfeedback>
-        </div>
-        <header-buttons></header-buttons>
-        <div class="headerConnectButton">
-          <connectbutton></connectbutton>
-        </div> -->
-      <!--Begin Hamburger Icon -->
-      <!-- <div class="mobilemenuButton ${showingMobileMenu ? 'showingMobileMenu' : ''}" click.delegate="toggleMobileMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div> -->
-      <!-- End Hamburger Icon -->
       <div class="mainContent">
         <router-view></router-view>
       </div>
       <div class="appFooter">
         <footer></footer>
       </div>
-      <!-- <div if.bind="showingMobileMenu" class="animateMobileMenuBackground au-animate">
-        <div class="mobileMenuContainer ${showingMobileMenu ? 'showingMobileMenu' : ''}">
-          <div class="menu" if.bind="showingMobileMenu">
-            <networkfeedback></networkfeedback>
-            <div class="mobileConnectButton">
-              <connectbutton hide-balances></connectbutton>
-            </div>
-            <div class="menuitems">
-              <header-buttons vertical on-navigate.call="onNavigate()"></header-buttons>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </modalscreen>
 </template>

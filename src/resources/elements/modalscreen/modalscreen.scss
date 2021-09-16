@@ -2,10 +2,10 @@
 .modalScreenContainer {
   height: auto;
   .modalMask {
-    z-index: 999;
+    z-index: 997;
     position: absolute;
+    left: 0;
     min-width: 100%;
-    min-height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
     display: none; // set to flex by the view model
     justify-content: center;
