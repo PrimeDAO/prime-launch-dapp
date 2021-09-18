@@ -19,9 +19,6 @@
   border-radius: 9px;
 }
 
-$BodyPaddingLeftRight: 160px;
-$BodyPaddingLeftRightMobile: 20px;
-
 html {
   body {
     font-size: 16px;
@@ -30,8 +27,9 @@ html {
     color: $White;
     font-family: Aeonik;
     min-height: 100vh;
-    padding-left: $BodyPaddingLeftRight;
-    padding-right: $BodyPaddingLeftRight;
+    width: clamp(0px, calc(100% - 100px), 1440px);
+    margin: auto;
+    overflow: overlay;
 
     input {
       font-family: Aeonik;
@@ -265,9 +263,6 @@ html {
 @media screen and (max-width: 1072px) {
   html {
     body {
-      padding-left: $BodyPaddingLeftRightMobile;
-      padding-right: $BodyPaddingLeftRightMobile;
-
       .heading {
         &.heading0 {
           font-size: 48px;

@@ -3,13 +3,14 @@
 @import "resources/dialogs/dialogs.scss";
 .appWrapper {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 100%;
   grid-template-rows: 118px 100fr 1fr;
   grid-template-areas:
     "."
     "mainContent"
     "footer";
-  height: 100vh;
+  height: 100%;
+  position: relative;
 
   .mainContent {
     grid-area: mainContent;
@@ -17,9 +18,12 @@
     padding-bottom: 52px;
   }
 
-  .appFooter {
-    grid-area: footer;
-  }
+}
+.appFooter {
+  grid-area: footer;
+  position: absolute;
+  left: 0;
+  width: 100%;
 }
 
 @media screen and (max-width: 1072px) {

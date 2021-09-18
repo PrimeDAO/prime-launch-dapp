@@ -9,9 +9,11 @@
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  grid-template-columns: $BodyPaddingLeftRight auto auto auto;
+  grid-template-columns: minmax(50px, calc((100% - 1440px) / 2)) auto 130px auto;
   grid-template-areas: "logo products networkFeedback connect" "subPages subPages subPages subPages";
   background-color: $BG01;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  padding-right: 5px;  // Place for scrollbar
 
   .logo {
     grid-area: logo;
@@ -27,7 +29,6 @@
 
   .products {
     grid-area: products;
-    // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
 
     .container {
       list-style-type: none;
@@ -36,6 +37,8 @@
       grid-template-columns: auto auto auto auto;
       justify-content: start;
       column-gap: 16px;
+      height: 68px;
+      margin: 0;
 
       > .item {
         font-family: Aeonik;
@@ -44,12 +47,12 @@
         display: grid;
         grid-template-columns: auto 1fr;
         text-align: center;
-        border-bottom: 3px solid $BG01;
+        border-bottom: 3px solid transparent;
         cursor: pointer;
         color: $Neutral02;
         column-gap: 2px;
         padding-left: 4px;
-        padding-right: 4px;
+        padding-right: 8px;
         align-items: center;
 
         .icon {
@@ -109,17 +112,14 @@
 
     .container {
       list-style-type: none;
-      padding: 0 20px;
+      padding-left: clamp(50px, 100%, calc((100% - 1440px) / 2));
       margin: 0;
-      padding-left: $BodyPaddingLeftRight;
       display: grid;
       grid-template-columns: auto auto auto auto;
       justify-content: start;
 
       column-gap: 20px;
-      // grid-template-columns: repeat(auto-fill, min-content);
       text-align: left;
-      // width: clamp(250px, 100%, calc(1084px));
       > .item {
         cursor: pointer;
         padding: 10px 0;
@@ -162,12 +162,11 @@
 
 @media screen and (max-width: 1072px) {
   .navbar-container {
-    grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
-
+    grid-template-columns: minmax(50px, calc((100% - 1440px) / 2)) auto auto;
     .products {
       .container {
-        justify-content: center;
+        // justify-content: center;
         column-gap: 2px;
         .item {
           grid-template-columns: auto;
@@ -179,12 +178,12 @@
       }
     }
 
-    .productSubpages {
-      .container {
-        padding-left: 0;
-        justify-content: center;
-      }
-    }
+    // .productSubpages {
+    //   .container {
+    //     padding-left: 0;
+    //     justify-content: center;
+    //   }
+    // }
     .networkFeedback {
       display: none;
     }
@@ -195,7 +194,6 @@
   .navbar-container {
     .products {
       grid-area: products;
-      // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
 
       .container {
         column-gap: 0;

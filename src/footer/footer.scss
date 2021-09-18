@@ -8,6 +8,7 @@
 .footerContainer {
   width: calc(100% - 40px);
   padding: 0 20px;
+  padding-right: 5px; // Place for scrollbar
   color: $Border01;
   font-family: Inter;
   font-size: 14px;
@@ -89,7 +90,7 @@
   > hr {
     background-color: $Border01;
     height: 1px;
-    width: 100vw;
+    width: 100%;
     position: absolute;
     margin: 0 -20px;
   }
