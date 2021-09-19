@@ -175,8 +175,15 @@ export class App {
       {
         moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
         nav: false,
-        name: "selectPackage",
-        route: ["selectPackage"],
+        name: "selectPackageSeed",
+        route: ["newSeed/selectPackage"],
+        title: "Select Your Package",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),
+        nav: false,
+        name: "selectPackageLBP",
+        route: ["newLBP/selectPackage"],
         title: "Select Your Package",
       },
       {
