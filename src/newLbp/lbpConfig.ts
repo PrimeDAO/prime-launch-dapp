@@ -64,19 +64,8 @@ export interface ITokenDetails {
 
 export interface ILbpDetails {
   fundingTokenAddress: string,
-  /**
-   * The price of one project token in units of funding tokens
-   * In wei.
-   */
-  pricePerToken: string,
-  /**
-   * In wei
-   */
-  fundingTarget: string,
-  /**
-   * In wei
-   */
-  fundingMax: string,
+  amountProjectToken: string,
+  amountFundingToken: string,
   vestingPeriod: number,
   vestingCliff: number,
   startDate: string,

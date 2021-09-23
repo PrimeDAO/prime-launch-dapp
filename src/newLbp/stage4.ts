@@ -8,7 +8,7 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
-import { BigNumber } from "ethers";
+// import { BigNumber } from "ethers";
 import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 
@@ -138,16 +138,6 @@ export class Stage4 extends BaseStage {
     }
     if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
-    } else if (!this.lbpConfig.lbpDetails.pricePerToken || this.lbpConfig.lbpDetails.pricePerToken === "0") {
-      message = "Please enter a value for Project Token Exchange Ratio";
-    } else if (!this.lbpConfig.lbpDetails.fundingTarget || this.lbpConfig.lbpDetails.fundingTarget === "0") {
-      message = "Please enter a number greater than zero for the Funding Target";
-    } else if (!this.lbpConfig.lbpDetails.fundingMax || this.lbpConfig.lbpDetails.fundingMax === "0") {
-      message = "Please enter a number greater than zero for the Funding Maximum";
-    } else if (BigNumber.from(this.lbpConfig.lbpDetails.fundingTarget).gt(this.lbpConfig.lbpDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
-    } else if (this.lbpConfig.tokenDetails.maxLbpSupply && this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.fundingMax)) > this.numberService.fromString(fromWei(this.lbpConfig.tokenDetails.maxLbpSupply)) * this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.pricePerToken))) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!(this.lbpConfig.lbpDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
     } else if (!(this.lbpConfig.lbpDetails.vestingCliff >= 0)) {

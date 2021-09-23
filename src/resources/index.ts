@@ -21,6 +21,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/launchSummary/launchSummary"),
     PLATFORM.moduleName("./elements/circledNumber/circledNumber"),
     PLATFORM.moduleName("./elements/questionMark/questionMark"),
+    PLATFORM.moduleName("./elements/rangeInput/rangeInput"),
     PLATFORM.moduleName("./elements/tokenPair/tokenPair"),
     PLATFORM.moduleName("./elements/markdown/markdown"),
     PLATFORM.moduleName("./elements/tokenSelect/tokenSelect"),
