@@ -5,7 +5,7 @@ import { Router, RouteConfig, Redirect } from "aurelia-router";
 import { LbpService } from "services/LbpService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { fromWei } from "services/EthereumService";
+// import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 import { TokenService } from "services/TokenService";
 
@@ -40,10 +40,10 @@ export class Stage7 extends BaseStage {
     // this.lbpConfig.lbpDetails.fundingMax = toWei("100").toString();
     // this.lbpConfig.lbpDetails.pricePerToken = toWei(".5").toString();
     // this.wizardState.projectTokenSymbol = "PRIME";
-    const distributableLbps = this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.fundingMax))
-      / this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.pricePerToken));
-    this.wizardState.requiredLbpFee = distributableLbps * this.lbpFee;
-    this.wizardState.requiredLbpDeposit = distributableLbps + this.wizardState.requiredLbpFee;
+    // const distributableLbps = this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.fundingMax))
+    //   / this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.pricePerToken));
+    // this.wizardState.requiredLbpFee = distributableLbps * this.lbpFee;
+    // this.wizardState.requiredLbpDeposit = distributableLbps + this.wizardState.requiredLbpFee;
   }
 
   async submit(): Promise<void> {

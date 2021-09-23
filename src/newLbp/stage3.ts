@@ -6,7 +6,7 @@ import { BaseStage } from "newLbp/baseStage";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
-import { fromWei } from "services/EthereumService";
+// import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 
 @autoinject
@@ -110,9 +110,6 @@ export class Stage3 extends BaseStage {
 
     if (!message && !this.lbpConfig.tokenDetails.maxLbpSupply || this.lbpConfig.tokenDetails.maxLbpSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
-    } else if (this.lbpConfig.lbpDetails.fundingMax && this.lbpConfig.lbpDetails.pricePerToken &&
-      this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.fundingMax)) > this.numberService.fromString(fromWei(this.lbpConfig.tokenDetails.maxLbpSupply)) * this.numberService.fromString(fromWei(this.lbpConfig.lbpDetails.pricePerToken))) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else {
       // Check the token distribution
       let totalDistribAmount = BigNumber.from("0");

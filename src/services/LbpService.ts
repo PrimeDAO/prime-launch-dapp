@@ -2,7 +2,7 @@ import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
-import { ILbpConfig } from "../newLbp/lbpConfig";
+import { ILbpConfig } from "newLbp/lbpConfig";
 import { IpfsService } from "./IpfsService";
 import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
@@ -197,8 +197,7 @@ export class LbpService {
       safeAddress,
       config.lbpDetails.adminAddress,
       [config.tokenDetails.projectTokenAddress, config.lbpDetails.fundingTokenAddress],
-      [config.lbpDetails.fundingTarget, config.lbpDetails.fundingMax],
-      config.lbpDetails.pricePerToken,
+      config.lbpDetails.amountFundingToken,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.lbpDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds

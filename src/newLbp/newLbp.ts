@@ -48,7 +48,7 @@ export class NewLbp {
         },
         {
           verified: false,
-          title: "LBP Details",
+          title: "Launch Details",
         },
         {
           verified: false,

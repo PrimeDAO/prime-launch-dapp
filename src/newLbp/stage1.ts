@@ -1,4 +1,4 @@
-import { BaseStage } from "./baseStage";
+import { BaseStage } from "newLbp/baseStage";
 import { Utils } from "../services/utils";
 import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newLbp/lbpConfig";
 

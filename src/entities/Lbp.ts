@@ -1,9 +1,9 @@
 import { toBigNumberJs } from "services/BigNumberService";
-import { IpfsService } from "../services/IpfsService";
-import { ITokenInfo } from "../services/TokenService";
+import { IpfsService } from "services/IpfsService";
+import { ITokenInfo } from "services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { DateService } from "../services/DateService";
-import { ContractsService, ContractNames } from "../services/ContractsService";
+import { DateService } from "services/DateService";
+import { ContractsService, ContractNames } from "services/ContractsService";
 import { BigNumber } from "ethers";
 import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
