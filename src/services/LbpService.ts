@@ -195,14 +195,12 @@ export class LbpService {
 
     const lbpArguments = [
       safeAddress,
-      config.lbpDetails.adminAddress,
       [config.tokenDetails.projectTokenAddress, config.lbpDetails.fundingTokenAddress],
       config.lbpDetails.amountFundingToken,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.lbpDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.lbpDetails.endDate) / 1000,
-      !!config.lbpDetails.whitelist,
       toWei(LbpService.lbpFee),
       this.asciiToHex(metaDataHash),
     ];

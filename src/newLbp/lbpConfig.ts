@@ -68,9 +68,9 @@ export interface ILbpDetails {
   amountFundingToken: string,
   startDate: string,
   endDate: string,
-  whitelist: string,
-  legalDisclaimer: string,
-  adminAddress: string,
+  startWeight: number,
+  endWeight: number,
+  legalDisclaimer: boolean,
 }
 
 export interface IContactDetails {
@@ -122,6 +122,8 @@ export class LbpConfig implements ILbpConfig {
       fundingTokenAddress: "",
       amountFundingToken: "",
       amountProjectToken: "",
+      startWeight: 80,
+      endWeight: 80,
     } as ILbpDetails;
     this.contactDetails={
       remarks: "",

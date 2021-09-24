@@ -2,11 +2,11 @@
   <span class="range-input" >
     <input ref="rangeInput" 
       type="range" 
-      value.bind="val" 
+      value.bind="value" 
       min.bind="min" 
       step.bind="step" 
       max.bind="max" id="range1" 
-      data="first"/>
+      data.bind="name"/>
     <output class="first output left">
       <span>${val1}</span> ${projectToken}
     </output>

@@ -1,7 +1,7 @@
-import { WhiteListService } from "../services/WhiteListService";
-import { autoinject, computedFrom } from "aurelia-framework";
+import { WhiteListService } from "services/WhiteListService";
+import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import { DateService } from "../services/DateService";
+import { DateService } from "services/DateService";
 import { BaseStage } from "newLbp/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
@@ -9,7 +9,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 // import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { Address, EthereumService } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 
 @autoinject
@@ -42,6 +42,9 @@ export class Stage4 extends BaseStage {
       "0xc778417E063141139Fce010982780140Aa0cD5Ab",
       "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
     ];
+
+  sliderStartWeights: HTMLInputElement;
+  sliderEndWeights: HTMLInputElement;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -79,16 +82,24 @@ export class Stage4 extends BaseStage {
     this.endDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.endDate = date.toJSDate();
     });
-  }
 
-  @computedFrom("lbpConfig.lbpDetails.whitelist")
-  get whitelistUrlIsValid(): boolean {
-    return Utils.isValidUrl(this.lbpConfig.lbpDetails.whitelist);
-  }
+    this.sliderStartWeights.oninput = (event: Event) => {
+      this.lbpConfig.lbpDetails.startWeight = Number.parseFloat((event.target as HTMLInputElement).value);
+      // Move the end weight to the same value as the start weight
+      // if its greater than the start weight.
+      if (this.lbpConfig.lbpDetails.startWeight < this.lbpConfig.lbpDetails.endWeight) {
+        this.lbpConfig.lbpDetails.endWeight = this.lbpConfig.lbpDetails.startWeight;
+      }
+    };
 
-  @computedFrom("lbpConfig.lbpDetails.whitelist", "lastWhitelistUrlValidated")
-  get currentWhitelistIsValidated(): boolean {
-    return this.lastWhitelistUrlValidated === this.lbpConfig.lbpDetails.whitelist;
+    this.sliderEndWeights.oninput = (event: Event) => {
+      let endWeight = Number.parseFloat((event.target as HTMLInputElement).value);
+      if (endWeight > this.lbpConfig.lbpDetails.startWeight) {
+        endWeight = this.lbpConfig.lbpDetails.startWeight;
+        (event.target as HTMLInputElement).value = endWeight.toString();
+      }
+      this.lbpConfig.lbpDetails.endWeight = endWeight;
+    };
   }
 
   setLbpConfigStartDate(): Date {
@@ -111,13 +122,14 @@ export class Stage4 extends BaseStage {
     return new Date(this.lbpConfig.lbpDetails.endDate);
   }
 
-  persistData(): void {
-    this.setLbpConfigStartDate();
-    this.setLbpConfigEndDate();
-    // Save the LBP admin address to wizard state in order to persist it after lbpConfig state is cleared in stage7
-    this.wizardState.lbpAdminAddress = this.lbpConfig.lbpDetails.adminAddress;
-    this.wizardState.whiteList = this.lbpConfig.lbpDetails.whitelist;
-    this.wizardState.lbpStartDate = this.lbpConfig.lbpDetails.startDate;
+  // persistData(): void {
+  //   this.setLbpConfigStartDate();
+  //   this.setLbpConfigEndDate();
+  //   this.wizardState.lbpStartDate = this.lbpConfig.lbpDetails.startDate;
+  // }
+
+  toggleLegalDisclaimer(): void {
+    this.lbpConfig.lbpDetails.legalDisclaimer = !this.lbpConfig.lbpDetails.legalDisclaimer;
   }
 
   async validateInputs(): Promise<string> {
@@ -164,39 +176,16 @@ export class Stage4 extends BaseStage {
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
+    } else if (this.lbpConfig.lbpDetails.endWeight > this.lbpConfig.lbpDetails.startWeight) {
+      message = `The ${this.wizardState.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setLbpConfigEndDate() <= this.setLbpConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (!Utils.isValidUrl(this.lbpConfig.lbpDetails.whitelist, true)) {
-      message = "Please enter a valid URL for Whitelist";
-    } else if (!!this.lbpConfig.lbpDetails.whitelist && !(await this.whiteListService.getWhiteList(this.lbpConfig.lbpDetails.whitelist))) {
-      message = "Whitelist cannot be fetched or parsed. Please enter a URL to a whitelist that conforms to the given formatting rules";
-    } else if (!Utils.isValidUrl(this.lbpConfig.lbpDetails.legalDisclaimer, true)) {
-      message = "Please enter a valid URL for Legal Disclaimer";
-    } else if (this.lbpConfig.lbpDetails.legalDisclaimer &&
-      !await this.disclaimerService.confirmMarkdown(this.lbpConfig.lbpDetails.legalDisclaimer)) {
-      message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
+    } else if (!this.lbpConfig.lbpDetails.legalDisclaimer) {
+      message = "Please confirm the Legal Disclaimer";
     }
 
     this.stageState.verified = !message;
     return Promise.resolve(message);
   }
 
-  connect(): void {
-    this.ethereumService.ensureConnected();
-  }
-
-  makeMeAdmin() : void {
-    this.lbpConfig.lbpDetails.adminAddress = this.ethereumService.defaultAccountAddress;
-  }
-
-  async getWhiteListFeedback(): Promise<void> {
-    if (this.lbpConfig.lbpDetails.whitelist) {
-      this.loadingWhitelist = true;
-      this.whitelist = await this.whiteListService.getWhiteList(this.lbpConfig.lbpDetails.whitelist);
-      this.lastWhitelistUrlValidated = this.lbpConfig.lbpDetails.whitelist;
-      this.loadingWhitelist = false;
-    } else {
-      this.whitelist = null;
-    }
-  }
 }

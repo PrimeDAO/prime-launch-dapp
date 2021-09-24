@@ -107,6 +107,9 @@
             <range-input name="start-weight" 
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
+              set-weight.bind="setLbpConfigStartWeight"
+              value.bind="lbpConfig.lbpDetails.startWeight"
+              ref="sliderStartWeights"
             >
             </range-input>
           </div>
@@ -145,12 +148,42 @@
             <range-input name="end-weight" 
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
+              value.bind="lbpConfig.lbpDetails.endWeight"
+              max-allowed.bind="lbpConfig.lbpDetails.startWeight"
+              ref="sliderEndWeights"
             >
             </range-input>
           </div>
         </div>
 
         <!-- TODO: Launch Preview -->
+        <div class="infoInput launchPreview">
+          <h3>Launch Preview</h3>
+          <div class="previewBox">
+            launch preview
+          </div>
+        </div>
+
+        <!-- TODO: Disclaimer -->
+        <div class="infoInput">
+          <div class="labeledQuestion">
+            <label for="legalDisclaimer">Legal Disclaimer</label>
+            <div class="questionMark">
+              <question-mark allow-html text="TODO: Explanation here"></question-mark>
+            </div>
+          </div>
+          <div class="checkboxContainer" click.delegate="toggleLegalDisclaimer()">
+            <i class="fas fa-check yes"></i>
+            <i class="fas fa-times no"></i>
+            <div class="checkbox">
+              <input
+                id="legalDisclaimer" type="checkbox"
+                checked.bind="lbpConfig.lbpDetails.legalDisclaimer" />
+              <label for="legalDisclaimer" />
+            </div>
+          </div>
+        </div>
+
 
         <div class="buttonContainer">
           <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>

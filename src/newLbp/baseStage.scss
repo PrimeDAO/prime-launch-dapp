@@ -134,6 +134,11 @@
 }
 
 .page.stageContainer {
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: $Border03;
+  }
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -606,6 +611,26 @@
         }
       }
     }
+
+    .launchPreview {
+      display: inline-grid;
+      width: -webkit-fill-available;
+      grid-template-rows: 22px auto;
+      row-gap: 20px;
+      min-height: 203px;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 16px;
+      background-color: $BG01;
+      h3 {
+        font-family: 'Aeonik';
+        font-size: 24px;
+        font-weight: 700;
+        color: $Secondary02;
+        line-height: 22px;
+        margin: 0;
+      }
+    }
   }
 
   &.stage5 {
@@ -668,11 +693,6 @@
               position: relative;
               top: 1px;
             }
-          }
-          hr {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background-color: $Shade03;
           }
         }
         &:not(:first-child) {
