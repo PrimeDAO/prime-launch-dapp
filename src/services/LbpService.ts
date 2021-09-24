@@ -202,7 +202,6 @@ export class LbpService {
       Date.parse(config.lbpDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.lbpDetails.endDate) / 1000,
-      [config.lbpDetails.vestingPeriod, config.lbpDetails.vestingCliff],
       !!config.lbpDetails.whitelist,
       toWei(LbpService.lbpFee),
       this.asciiToHex(metaDataHash),

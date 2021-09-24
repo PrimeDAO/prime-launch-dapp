@@ -403,6 +403,11 @@
           align-self: center;
           color: $Neutral02;
         }
+        .warning {
+          color: $AlertOrange;
+          font-size: small;
+          width: 225px;
+        }
         input {
           width: 72px;
         }

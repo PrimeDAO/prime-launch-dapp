@@ -35,12 +35,14 @@
             <numeric-input
               output-as-string="true"
               id="ppt"
-              value.bind="lbpConfig.tokenDetails.maxLbpSupply"
+              value.bind="lbpConfig.lbpDetails.amountProjectToken"
+              disabled.bind="!wizardState.projectTokenInfo.name"
               placeholder="">
             </numeric-input>
+            <div if.bind="!lbpConfig.tokenDetails.projectTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
             <img
               ref="logoIcon"
-              to-view.bind="wizardState.fundingTokenInfo.logoURI"
+              if.bind="wizardState.projectTokenInfo.logoURI"
               src.bind="wizardState.projectTokenInfo.logoURI"
             />
             <div class="text">
@@ -53,11 +55,13 @@
               output-as-string="true"
               id="ppt"
               value.bind="lbpConfig.lbpDetails.amountFundingToken"
+              disabled.bind="!wizardState.fundingTokenInfo.name"
               placeholder="">
             </numeric-input>
+            <div if.bind="!lbpConfig.lbpDetails.fundingTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
             <img
               ref="logoIcon"
-              to-view.bind="wizardState.fundingTokenInfo.logoURI"
+              if.bind="wizardState.fundingTokenInfo.logoURI"
               src.bind="wizardState.fundingTokenInfo.logoURI"
             />
             <div class="text">

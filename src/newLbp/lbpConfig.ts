@@ -66,12 +66,9 @@ export interface ILbpDetails {
   fundingTokenAddress: string,
   amountProjectToken: string,
   amountFundingToken: string,
-  vestingPeriod: number,
-  vestingCliff: number,
   startDate: string,
   endDate: string,
   whitelist: string,
-  geoBlock: boolean,
   legalDisclaimer: string,
   adminAddress: string,
 }
@@ -121,11 +118,13 @@ export class LbpConfig implements ILbpConfig {
     this.tokenDetails = {
       tokenDistrib: [],
     } as ITokenDetails;
+    this.lbpDetails = {
+      fundingTokenAddress: "",
+      amountFundingToken: "",
+      amountProjectToken: "",
+    } as ILbpDetails;
     this.contactDetails={
       remarks: "",
     } as IContactDetails;
-    this.lbpDetails = {
-      geoBlock: false,
-    } as ILbpDetails;
   }
 }

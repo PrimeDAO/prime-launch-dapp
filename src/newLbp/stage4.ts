@@ -91,10 +91,6 @@ export class Stage4 extends BaseStage {
     return this.lastWhitelistUrlValidated === this.lbpConfig.lbpDetails.whitelist;
   }
 
-  toggleGeoBlocking(): void {
-    this.lbpConfig.lbpDetails.geoBlock = !this.lbpConfig.lbpDetails.geoBlock;
-  }
-
   setLbpConfigStartDate(): Date {
     // Set the ISO time
     // Get the start and end time
@@ -138,12 +134,12 @@ export class Stage4 extends BaseStage {
     }
     if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
-    } else if (!(this.lbpConfig.lbpDetails.vestingPeriod >= 0)) {
-      message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
-    } else if (!(this.lbpConfig.lbpDetails.vestingCliff >= 0)) {
-      message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.lbpConfig.lbpDetails.vestingCliff > this.lbpConfig.lbpDetails.vestingPeriod) {
-      message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for \"";
+    } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountFundingToken) >= 0)) {
+      message = "Please enter a number greater than zero for \"Funding tokens amount\" ";
+    } else if (!Utils.isAddress(this.lbpConfig.tokenDetails.projectTokenAddress)) {
+      message = "Please select a Project Token";
+    } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountProjectToken) >= 0)) {
+      message = "Please enter a number greater than or equal to zero for \"Project token amount\" " + this.lbpConfig.lbpDetails.amountProjectToken;
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
@@ -179,8 +175,6 @@ export class Stage4 extends BaseStage {
     } else if (this.lbpConfig.lbpDetails.legalDisclaimer &&
       !await this.disclaimerService.confirmMarkdown(this.lbpConfig.lbpDetails.legalDisclaimer)) {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
-    } else if (!Utils.isAddress(this.lbpConfig.lbpDetails.adminAddress)) {
-      message = "Please enter a valid wallet address for Lbp Administrator";
     }
 
     this.stageState.verified = !message;
