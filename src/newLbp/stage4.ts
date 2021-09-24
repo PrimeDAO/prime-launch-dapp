@@ -9,7 +9,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 // import { BigNumber } from "ethers";
-import { Address, EthereumService } from "services/EthereumService";
+import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 
 @autoinject
@@ -138,20 +138,23 @@ export class Stage4 extends BaseStage {
     let startTimes = [];
     let endTimes = [];
     const re = /^[-+]?(\d+)$/;
+
     if (this.startTime) {
       startTimes = this.startTime.split(":");
     }
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
-      message = "Please select a Funding Token";
-    } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountFundingToken) >= 0)) {
-      message = "Please enter a number greater than zero for \"Funding tokens amount\" ";
-    } else if (!Utils.isAddress(this.lbpConfig.tokenDetails.projectTokenAddress)) {
+    if (!Utils.isAddress(this.lbpConfig.tokenDetails.projectTokenAddress)) {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountProjectToken) >= 0)) {
-      message = "Please enter a number greater than or equal to zero for \"Project token amount\" " + this.lbpConfig.lbpDetails.amountProjectToken;
+      message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
+    } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) >= this.numberService.fromString(this.lbpConfig.tokenDetails.maxLbpSupply)) {
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxLbpSupply)} tokens`;
+    } else if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
+      message = "Please select a Funding Token";
+    } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountFundingToken) >= 0)) {
+      message = `Please enter the amount of ${this.wizardState.fundingTokenInfo.name}, you like to provide for launch`;
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
@@ -180,6 +183,8 @@ export class Stage4 extends BaseStage {
       message = `The ${this.wizardState.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setLbpConfigEndDate() <= this.setLbpConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
+    } else if (this.setLbpConfigEndDate().getTime() >= this.setLbpConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
+      message = "Launch duration can not exceed 30 days";
     } else if (!this.lbpConfig.lbpDetails.legalDisclaimer) {
       message = "Please confirm the Legal Disclaimer";
     }
