@@ -29,7 +29,7 @@ html {
     min-height: 100vh;
     width: clamp(0px, calc(100% - 100px), 1440px);
     margin: auto;
-    overflow: overlay;
+    overflow: auto;
 
     input {
       font-family: Aeonik;
@@ -275,6 +275,14 @@ html {
           margin-bottom: 22px;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 680px) {
+  html {
+    body {
+      width: calc(100% - 40px);
     }
   }
 }

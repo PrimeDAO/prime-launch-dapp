@@ -8,7 +8,10 @@
     align-items: center;
     justify-content: center;
     flex-flow: column;
-    padding-bottom: 78px;
+    width: auto;
+    margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;    padding-bottom: 78px;
     background: $BG01;
 
     > .subtext {
@@ -118,7 +121,7 @@
   & > .bg-image {
     position: absolute;
     z-index: -1;
-    right: -20px;
+    right: -50px;
     height: 650px;
     object-fit: cover;
   }
@@ -127,7 +130,7 @@
 @media screen and (min-width: 1070px) {
   .page.launch {
     & > .bg-image {
-      right: -160px;
+      right: calc((min(1440px, 100%) - 100vw) / 2);
     }
   }
 }
@@ -157,6 +160,17 @@
           justify-content: center;
         }
       }
+    }
+    & > .bg-image {
+      right: -50px;
+    }
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .page.launch {
+    & > .bg-image {
+      right: -20px;
     }
   }
 }

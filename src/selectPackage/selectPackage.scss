@@ -8,7 +8,8 @@
 
   .launchBG {
     position: absolute;
-    right: 0;
+    top: 150px;
+    right: calc((min(1440px, 100%) - 100vw + 15px) / 2);
     z-index: -1;
     object-fit: cover;
   }

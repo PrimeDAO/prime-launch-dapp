@@ -12,7 +12,7 @@
   grid-template-columns: minmax(50px, calc((100% - 1440px) / 2)) auto 130px auto;
   grid-template-areas: "logo products networkFeedback connect" "subPages subPages subPages subPages";
   background-color: $BG01;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  box-shadow: inset 0px -1px 0px $BG02;
   padding-right: 5px;  // Place for scrollbar
 
   .logo {
@@ -49,7 +49,7 @@
         text-align: center;
         border-bottom: 3px solid transparent;
         cursor: pointer;
-        color: $Neutral02;
+        color: $Neutral04;
         column-gap: 2px;
         padding-left: 4px;
         padding-right: 8px;
@@ -67,7 +67,6 @@
 
         &.active {
           border-bottom-color: $Secondary01;
-          color: $Neutral04;
 
           .icon {
             img {
@@ -190,7 +189,7 @@
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 680px) {
   .navbar-container {
     .products {
       grid-area: products;

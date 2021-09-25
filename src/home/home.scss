@@ -251,6 +251,7 @@
           left: 0;
           top: 0;
           overflow: hidden;
+          transform: translateX(40px);
           img {
             opacity: 0.25;
           }
@@ -334,6 +335,44 @@
           }
         }
       }
+
+      &.top {
+        .moonshot {
+          transform: translateX(20px);
+        }
+      }
+
+      &.launches {
+        .scrollerContainer {
+          margin-bottom: 0;
+        }
+      }
+
+      &.nomiss {
+        grid-template-columns: auto;
+        height: unset;
+        justify-content: space-around;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 20px;
+
+        .emailColumn {
+          .form {
+            flex-direction: column;
+            width: -webkit-fill-available;
+            .emailInput {
+              width: -webkit-fill-available;
+              border-radius: 6px 6px 0 0;
+            }
+            .notifyButton {
+              width: -webkit-fill-available;
+              border-radius: 0 0 6px 6px;
+              margin-top: 0;
+            }
+          }
+        }
+      }
     }
   }
+
 }
