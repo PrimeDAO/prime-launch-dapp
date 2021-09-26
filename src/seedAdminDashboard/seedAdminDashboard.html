@@ -19,7 +19,7 @@
                     Fund Seed
                   </div>
                   <div class="featureDescription">
-                    Required funding tokens: Amount Ticker Symbol
+                    Required funding tokens: ${convertProjectTokenAmount(selectedSeed.feeRemainder.add(selectedSeed.seedRemainder))} ${selectedSeed.projectTokenInfo.symbol} <img src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>
                   </div>
                   <div class="button1" click.delegate="selectedSeed.fund()">
                     Fund Project
@@ -60,12 +60,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="featureContainer" if.bind="selectedSeed.isClosed || selectedSeed.claimingIsOpen">
+                <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen)">
                   <div class="featureTitle">
                     Retrieve Project Tokens
                   </div>
                   <div class="featureDescription">
-                    There are xxx amount of Project Tokens which will be transferred to the address you mention below.
+                    There are ${convertProjectTokenAmount(selectedSeed.projectTokenBalance)} ${selectedSeed.projectTokenInfo.symbol} <img src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> amount of Project Tokens which will be transferred to the address you mention below.
                   </div>
                   <div>
                     <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
@@ -79,7 +79,7 @@
                     Withdraw Funding Tokens
                   </div>
                   <div class="featureDescription">
-                    There are xxx amount of funding tokens which will be transfered to admin address once you click Withdraw
+                    There are ${convertFundingTokenAmount(selectedSeed.amountRaised)} ${selectedSeed.fundingTokenInfo.symbol} <img src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> amount of funding tokens which will be transfered to admin address once you click Withdraw
                   </div>
                   <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                     Withdraw

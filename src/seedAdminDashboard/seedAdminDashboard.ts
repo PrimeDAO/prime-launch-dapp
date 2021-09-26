@@ -8,7 +8,8 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
-import TransactionsService from "services/TransactionsService";
+import { BigNumber } from "ethers";
+import { formatUnits } from "@ethersproject/units";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -31,7 +32,6 @@ export class SeedAdminDashboard {
     private seedService: SeedService,
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
-    private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -68,6 +68,14 @@ export class SeedAdminDashboard {
 
   setSeed(index): void {
     this.selectedSeed = this.seeds[index];
+  }
+
+  convertFundingTokenAmount(amount: BigNumber): string {
+    return formatUnits(amount, this.selectedSeed.fundingTokenInfo.decimals);
+  }
+
+  convertProjectTokenAmount(amount: BigNumber): string {
+    return formatUnits(amount, this.selectedSeed.projectTokenInfo.decimals);
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
