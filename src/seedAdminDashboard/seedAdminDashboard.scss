@@ -1,4 +1,26 @@
 .page.adminContainer {
-  .formContainer {
+  .seedAdministrationHeader {
+    font-size: 48px;
+    color: #FF497A;
+  }
+
+  .horizontalLine{
+    margin: 25px 0px 25px 0px;
+    border: 1px solid #A258A7;
+  }
+
+  .featureContainer{
+    margin: 15px 0px;
+  }
+
+  .featureTitle{
+    font-size: 18px;
+    color: #A258A7;
+    font-weight: 600;
+  }
+
+  .featureDescription{
+    color: #98979B;
+    font-size: 16px;
   }
 }
