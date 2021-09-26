@@ -110,6 +110,10 @@ export class Seed {
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
+  /**
+   * balance of project tokens in this contract
+   */
+  public fundingTokenBalance: BigNumber;
 
   public userIsWhitelisted: boolean;
   /**
@@ -367,6 +371,7 @@ export class Seed {
     this.seedAmountRequired = await this.contract.seedAmountRequired();
     this.feeRemainder = await this.contract.feeRemainder();
     this.projectTokenBalance = await this.projectTokenContract.balanceOf(this.address);
+    this.fundingTokenBalance = await this.fundingTokenContract.balanceOf(this.address);
     this.hasEnoughProjectTokens =
       this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
   }
@@ -383,7 +388,7 @@ export class Seed {
 
   async fund(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
-      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired),
+      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired?.add(this.feeRemainder)),
     );
   }
 
@@ -421,25 +426,29 @@ export class Seed {
   }
 
   async addToWhitelist(address: Address): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.whitelist(address),
-    ).then((receipt) => {
-      if (receipt){
-        this.hydrateUser();
-        return receipt;
-      }
-    });
+    if (address){
+      return this.transactionsService.send(
+        () => this.contract.whitelist(address),
+      ).then((receipt) => {
+        if (receipt){
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+    }
   }
 
   async removeFromWhitelist(address: Address): Promise<TransactionReceipt> {
-    return this.transactionsService.send(
-      () => this.contract.unwhitelist(address),
-    ).then((receipt) => {
-      if (receipt){
-        this.hydateClosedOrPaused();
-        return receipt;
-      }
-    });
+    if (address){
+      return this.transactionsService.send(
+        () => this.contract.unwhitelist(address),
+      ).then((receipt) => {
+        if (receipt){
+          this.hydateClosedOrPaused();
+          return receipt;
+        }
+      });
+    }
   }
 
   async pause (): Promise<TransactionReceipt> {
@@ -492,14 +501,16 @@ export class Seed {
   }
 
   public retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
-      .then((receipt) => {
-        if (receipt) {
-          this.hydrateTokensState();
-          this.hydrateUser();
-          return receipt;
-        }
-      });
+    if (receiver){
+      return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateTokensState();
+            this.hydrateUser();
+            return receipt;
+          }
+        });
+    }
   }
 
   public withdrawFundingTokens(): Promise<TransactionReceipt> {
