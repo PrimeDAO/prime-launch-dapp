@@ -1,13 +1,11 @@
 @import "styles/colors.scss";
 
 @mixin logo($url) {
-  -webkit-mask: url("../../static/logos/" + $url) no-repeat center;
-  mask: url("../../static/logos/" + $url) no-repeat center;
+  -webkit-mask: url("../../static/" + $url) no-repeat center;
+  mask: url("../../static/" + $url) no-repeat center;
 }
 
 .footerContainer {
-  position: absolute;
-  left: 0;
   width: calc(100% - 40px);
   padding: 0 20px;
   color: $Border01;

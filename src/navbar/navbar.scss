@@ -1,0 +1,205 @@
+@import "styles/styles.scss";
+
+.navbar-container {
+  position: fixed;
+  z-index: 998;
+  top: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  grid-template-columns: $BodyPaddingLeftRight auto auto auto;
+  grid-template-areas: "logo products networkFeedback connect" "subPages subPages subPages subPages";
+  background-color: $BG01;
+
+  .logo {
+    grid-area: logo;
+    width: max-content;
+    padding: 6px;
+    padding-left: 20px;
+
+    img {
+      position: relative;
+      top: -4px;
+    }
+  }
+
+  .products {
+    grid-area: products;
+    // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
+
+    .container {
+      list-style-type: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: start;
+      column-gap: 16px;
+
+      > .item {
+        font-family: Aeonik;
+        font-size: 18px;
+        line-height: 24px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        text-align: center;
+        border-bottom: 3px solid $BG01;
+        cursor: pointer;
+        color: $Neutral02;
+        column-gap: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        align-items: center;
+
+        .icon {
+          img {
+            width: 42px;
+            height: 42px;
+            &.color {
+              display: none;
+            }
+          }
+        }
+
+        &.active {
+          border-bottom-color: $Secondary01;
+          color: $Neutral04;
+
+          .icon {
+            img {
+              &.color {
+                display: inline-block;
+              }
+              &.mono {
+                display: none;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          background-color: $BG02;
+
+          .icon {
+            img {
+              &.color {
+                display: inline-block;
+              }
+              &.mono {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .productSubpages {
+    transition: height 0.25s ease-in;
+    overflow-y: hidden;
+    height: 0;
+    grid-area: subPages;
+    background-color: $BG02;
+
+    &.showing {
+      height: 40px;
+    }
+
+    .container {
+      list-style-type: none;
+      padding: 0 20px;
+      margin: 0;
+      padding-left: $BodyPaddingLeftRight;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      justify-content: start;
+
+      column-gap: 20px;
+      // grid-template-columns: repeat(auto-fill, min-content);
+      text-align: left;
+      // width: clamp(250px, 100%, calc(1084px));
+      > .item {
+        cursor: pointer;
+        padding: 10px 0;
+
+        color: $Neutral02;
+
+        &:hover {
+          color: $Neutral04;
+          text-decoration: none;
+        }
+
+        &.active {
+          color: $Secondary01;
+        }
+      }
+    }
+  }
+
+  .networkFeedback {
+    grid-area: networkFeedback;
+    font-family: Inter;
+    color: $White;
+    text-align: right;
+    .testnet {
+      color: $Shade01;
+    }
+  }
+
+  /**
+     * header connectButton
+     */
+  .headerConnectButton {
+    grid-area: connect;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: right;
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .navbar-container {
+    grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
+    grid-template-areas: "logo products connect" "subPages subPages subPages";
+
+    .products {
+      .container {
+        justify-content: center;
+        column-gap: 2px;
+        .item {
+          grid-template-columns: auto;
+
+          .text {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .productSubpages {
+      .container {
+        padding-left: 0;
+        justify-content: center;
+      }
+    }
+    .networkFeedback {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .navbar-container {
+    .products {
+      grid-area: products;
+      // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
+
+      .container {
+        column-gap: 0;
+      }
+    }
+  }
+}

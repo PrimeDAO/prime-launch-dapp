@@ -26,7 +26,6 @@ export class ConnectButton {
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
   private primeAddress: Address;
-  private daiAddress: Address;
   @bindable.booleanAttr private hideBalances: boolean;
 
   constructor(
@@ -63,7 +62,7 @@ export class ConnectButton {
     this.primeAddress = ContractsService.getContractAddress(ContractNames.PRIMETOKEN);
     // this.bPrimeAddress = this.contractsService.getContractAddress(ContractNames.ConfigurableRightsPool);
     // this.wethAddress = this.contractsService.getContractAddress(ContractNames.WETH);
-    this.daiAddress = ContractsService.getContractAddress(ContractNames.DAI);
+    // this.daiAddress = ContractsService.getContractAddress(ContractNames.DAI);
   }
 
   public dispose(): void {

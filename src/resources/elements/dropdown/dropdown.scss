@@ -1,14 +1,32 @@
 @import "styles/styles.scss";
 
+@mixin defaultTransition($properties...) {
+  $transition: ();
+  @each $property in $properties {
+    $transition: append($transition, ($property 0.16s ease-in-out), $separator: comma);
+  }
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;}
+
 .dropdown {
-  border: 1px solid $Secondary02;
+  border: 1px solid $Border01;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   background: $BG01;
   color: $Neutral02;
+  border: 1px solid $Border01;
   border-radius: 10px;
   font-family: Inter;
   width: fit-content;
   height: fit-content;
+  position: relative;
+  &:focus-within, &:active, &.menuShowing {
+    border-color: $Secondary02;
+  }
+
+  @include defaultTransition(border-radius, box-shadow, border-color);
 
   > .selectedLabel {
     display: flex;
@@ -21,39 +39,71 @@
       margin-right: 8px;
     }
 
-    .up {
-      display: none;
-    }
-
-    &.menuShowing {
-      .up {
-        display: initial;
-      }
-      .down {
-        display: none;
-      }
-    }
-
-    div.up,
-    div.down {
+    div.el-icon-arrow {
       margin-right: 0.7em;
+      transition: all 0.3s;
+    }
+  }
+
+  &.menuShowing{
+    border-radius: 10px 10px 0 0;
+    &>.selectedLabel {
+      .el-icon-arrow {
+        transform: rotate(-180deg);
+      }
     }
   }
 
   > .menu {
-    border-top: 1px solid $Border01;
-    transition: max-height 0.5s ease-out;
     overflow: hidden;
     cursor: pointer;
+    position: absolute;
+    width: inherit;
+    background: #1b1722;
+    border: 1px solid #a258a7;
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid #403453;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    left: -1px;
+    z-index: 1;
+    opacity: 1;
+    height: fit-content;
+    overflow-y: auto;
+    // max-height: 225px;
+    @include defaultTransition(transform, opacity, border-radius);
+
+    &::-webkit-scrollbar-button:vertical {
+      display: block;
+      height: 2px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: $Neutral02;
+      border: 3px solid $BG01;
+    }
+
+    transform: scaleY(1);
+    transform-origin: top;
 
     &.hide {
       // doing it this way retains the width, for sizing the dropdown
-      visibility: hidden;
-      height: 0;
+      // visibility: hidden;
+      transform: scaleY(0);
+      border-radius: 10px;
+      border-top: unset;
+      opacity: 0;
     }
 
     > .option {
-      color: $White;
+      color: $Neutral04;
       padding-top: 6px;
       padding-bottom: 6px;
       padding-left: 12px;

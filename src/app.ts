@@ -138,13 +138,6 @@ export class App {
         title: "Home",
       },
       {
-        moduleId: PLATFORM.moduleName("./contribute/contribute"),
-        nav: true,
-        name: "contribute",
-        route: ["contribute"],
-        title: "Contribute",
-      },
-      {
         moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: false,
         name: "launch",
