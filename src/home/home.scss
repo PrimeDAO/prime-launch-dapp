@@ -247,11 +247,10 @@
         margin-bottom: 100px;
         width: 100%;
         .moonshot {
-          right: 0;
+          right: -40px;
           left: 0;
           top: 0;
           overflow: hidden;
-          transform: translateX(40px);
           img {
             opacity: 0.25;
           }
@@ -338,7 +337,7 @@
 
       &.top {
         .moonshot {
-          transform: translateX(20px);
+          right: -20px;
         }
       }
 
@@ -347,7 +346,14 @@
           margin-bottom: 0;
         }
       }
+    }
+  }
+}
 
+@media screen and (max-width: 480px) {
+
+  .page.home {
+    .section {
       &.nomiss {
         grid-template-columns: auto;
         height: unset;
@@ -374,5 +380,4 @@
       }
     }
   }
-
 }
