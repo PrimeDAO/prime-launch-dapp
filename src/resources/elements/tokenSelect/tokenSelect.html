@@ -5,7 +5,13 @@
     selected-item-index.to-view="selectedTokenIndex"
     placeholder="Select a token...">
     <div repeat.for="tokenInfo of tokenInfos">
-      <div class="tokenItem">
+      <!-- Loading tokens - show spinner -->
+      <div class="tokenItem" if.to-view="!tokenInfo.address">
+        <div><i class="spinner fas fa-circle-notch fa-spin"></i></div>
+        <div>Loading...</div>
+      </div>
+      <!-- Done loading -->
+      <div else class="tokenItem">
         <div><img src.to-view="tokenInfo.logoURI"></img></div>
         <div>${tokenInfo.name}</div>
         <div>(${tokenInfo.symbol})</div>

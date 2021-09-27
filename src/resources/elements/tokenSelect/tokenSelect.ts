@@ -30,6 +30,7 @@ export class TokenSelect {
 
   async attached(): Promise<void> {
     if (!this.tokenInfos) {
+      this.tokenInfos = Array(this.tokenAddresses.length).fill({} as ITokenInfo);
       this.tokenInfos = await this.getTokeninfos();
     }
     if (this.selectedTokenAddress) {

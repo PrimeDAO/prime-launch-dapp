@@ -9,10 +9,18 @@
     align-items: center;
     height: 23px;
 
-    img {
+    img, i {
       @include tokenIcon;
       position: relative;
+      text-align: center
+    }
+
+    img {
       top: 2px;
+    }
+
+    i {
+      margin-top: 2px;
     }
 
     > div:not(:last-child) {
