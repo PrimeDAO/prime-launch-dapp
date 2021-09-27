@@ -15,6 +15,7 @@ import { formatUnits } from "@ethersproject/units";
 export class SeedAdminDashboard {
 
   seeds: Array<Seed> = [];
+  defaultSeedAddress: Address;
   selectedSeed: Seed;
   addressToRemove = "";
   addressToAdd = "";
@@ -36,6 +37,10 @@ export class SeedAdminDashboard {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
     }));
+  }
+
+  async activate(params: { address: Address }): Promise<void> {
+    this.defaultSeedAddress = params?.address;
   }
 
   async attached(): Promise<void> {
@@ -64,9 +69,15 @@ export class SeedAdminDashboard {
     } else {
       this.seeds = [];
     }
+    if (this.defaultSeedAddress) {
+      const defaultSeed = this.seeds.filter((seed) => seed.address === this.defaultSeedAddress);
+      if (defaultSeed.length === 1) {
+        this.selectedSeed = defaultSeed[0];
+      }
+    }
   }
 
-  setSeed(index): void {
+  selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
   }
 

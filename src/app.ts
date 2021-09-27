@@ -183,8 +183,8 @@ export class App {
         moduleId: PLATFORM.moduleName("./seedAdminDashboard/seedAdminDashboard"),
         nav: false,
         name: "seedAdminDashboard",
-        route: ["seedAdminDashboard"],
-        title: "Administer a Launch",
+        route: ["admin/seeds/dashboard/:address?"],
+        title: "Administer a Seed Launch",
       },
 
     ]);
