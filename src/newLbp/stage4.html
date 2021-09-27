@@ -4,7 +4,7 @@
     <div class="infoContainer">
       <div class="heading heading2 title">Launch Details</div>
       <div class="subtext">
-        Use the <a href="/documentation/#" target="_blank" rel="noopener noreferrer">Launch Guide</a> to select suitable launch details or 
+        Use the <a href="/documentation/contribute-to-a-launch" target="_blank" rel="noopener noreferrer">Launch Guide</a> to select suitable launch details or 
         <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> with a Launch expert.
       </div>
       <div>
@@ -92,6 +92,7 @@
               <div class="vestingDates">
                 <input
                   id="startTime"
+                  type="time"
                   value.bind="startTime"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -134,7 +135,9 @@
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
-                  id="endTime" value.bind="endTime"
+                  id="endTime" 
+                  value.bind="endTime"
+                  type="time"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
