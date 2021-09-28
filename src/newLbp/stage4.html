@@ -92,7 +92,6 @@
               <div class="vestingDates">
                 <input
                   id="startTime"
-                  type="time"
                   value.bind="startTime"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -104,7 +103,6 @@
           </div>
           <div>
             <label for="startWeight">Start Weights</label>
-            <!-- <input type="range" min="1" max="100" value="20" /> -->
             <range-input name="start-weight" 
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
@@ -137,7 +135,6 @@
                 <input
                   id="endTime" 
                   value.bind="endTime"
-                  type="time"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>

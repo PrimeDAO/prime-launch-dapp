@@ -17,9 +17,9 @@ export class Stage4 extends BaseStage {
   startDateRef: HTMLElement | HTMLInputElement;
   endDateRef: HTMLElement | HTMLInputElement;
   startDate: Date;
-  startTime = ""
+  startTime = "00:00"
   endDate: Date;
-  endTime = "";
+  endTime = "00:00";
   dateService = new DateService();
   startDatePicker: Litepicker;
   endDatePicker: Litepicker;
