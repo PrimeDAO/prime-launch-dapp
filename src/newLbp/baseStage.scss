@@ -23,8 +23,6 @@
     margin-bottom: 48px;
   }
   .infoInput {
-    display: grid;
-    row-gap: 10px;
     margin-bottom: 32px;
     > textarea {
       resize: none;
@@ -420,6 +418,9 @@
           align-self: center;
           -webkit-text-fill-color: $White;
           font-weight: normal;
+        }
+        &:not(:last-child) {
+          margin-bottom: 10px;
         }
       }
       &.maxTarget {
