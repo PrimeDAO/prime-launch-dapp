@@ -15,27 +15,21 @@
 
   .logo {
     grid-area: logo;
-    width: max-content;
-    padding: 6px;
     padding-left: 20px;
 
     img {
-      position: relative;
-      top: -4px;
+      height: 32px;
     }
   }
 
   .products {
     grid-area: products;
-    // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
 
     .container {
       list-style-type: none;
-      padding: 0;
       display: grid;
       grid-template-columns: auto auto auto auto;
-      justify-content: start;
-      column-gap: 16px;
+      justify-content: space-between;
 
       > .item {
         font-family: Aeonik;
@@ -47,39 +41,25 @@
         border-bottom: 3px solid $BG01;
         cursor: pointer;
         color: $Neutral02;
-        column-gap: 2px;
-        padding-left: 4px;
-        padding-right: 4px;
+        padding: 12px 8px;
         align-items: center;
+        justify-items: start;
+        column-gap: 12px;
 
         .icon {
+          display: inline-grid; // to get vertical alignment
           img {
-            width: 42px;
-            height: 42px;
+            width: 32px;
+            height: 30px;
             &.color {
               display: none;
             }
           }
         }
 
-        &.active {
-          border-bottom-color: $Secondary01;
-          color: $Neutral04;
-
-          .icon {
-            img {
-              &.color {
-                display: inline-block;
-              }
-              &.mono {
-                display: none;
-              }
-            }
-          }
-        }
-
         &:hover {
           background-color: $BG02;
+          border-bottom-color: $Secondary01;
 
           .icon {
             img {
@@ -117,9 +97,7 @@
       justify-content: start;
 
       column-gap: 20px;
-      // grid-template-columns: repeat(auto-fill, min-content);
       text-align: left;
-      // width: clamp(250px, 100%, calc(1084px));
       > .item {
         cursor: pointer;
         padding: 10px 0;
@@ -129,10 +107,6 @@
         &:hover {
           color: $Neutral04;
           text-decoration: none;
-        }
-
-        &.active {
-          color: $Secondary01;
         }
       }
     }
@@ -195,7 +169,6 @@
   .navbar-container {
     .products {
       grid-area: products;
-      // width: clamp(250px, 100%, calc(1084px - 50px - 300px));
 
       .container {
         column-gap: 0;
