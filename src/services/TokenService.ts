@@ -92,7 +92,7 @@ export class TokenService {
         // eslint-disable-next-line require-atomic-updates
         tokenInfo.id = await this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
       } else {
-        // is not a valid token contractz, or some other error occurred
+        // is not a valid token contract, or some other error occurred
         reject(`Token does not appear to be a token contract: ${tokenAddress}`);
         return;
       }
@@ -112,12 +112,12 @@ export class TokenService {
       if (!tokenInfo.decimals) {
         tokenInfo.decimals = TokenService.DefaultDecimals;
       } else if (tokenInfo.decimals !== 18) {
-        reject(`Token must have 18 decimals: ${tokenAddress}`);
+        reject(`Token must have 18 decimals: (${tokenInfo.name}/${tokenInfo.symbol}) : ${tokenAddress}`);
         return;
       }
 
       if (!await this.isERC20Token(tokenInfo.address)) {
-        reject(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
+        reject(`Token address does not reference an IERC20 contract: (${tokenInfo.name}/${tokenInfo.symbol}) : ${tokenAddress}`);
         return;
       }
 
@@ -160,7 +160,10 @@ export class TokenService {
       reject: (reason?: any) => void,
     ): void => {
       resolver = resolve;
-      rejector = reject;
+      rejector = (reason?: any) => {
+        this.consoleLogService.logMessage(reason, "error");
+        reject(reason);
+      };
     });
 
     /**
@@ -173,14 +176,26 @@ export class TokenService {
   }
 
   public async getTokenInfoFromAddresses(tokenAddresses: Array<Address>): Promise<Array<ITokenInfo>> {
-    const promises = new Array<Promise<ITokenInfo>>();
+    const tokenInfos = new Array<ITokenInfo>();
 
-    tokenAddresses.forEach((address: Address) =>
-    {
-      promises.push(this.getTokenInfoFromAddress(address));
-    });
+    for (const address of tokenAddresses) {
+      try {
+        const tokenInfo = await this.getTokenInfoFromAddress(address);
+        tokenInfos.push(tokenInfo);
+        // eslint-disable-next-line no-empty
+      } catch { }
+    }
 
-    return Promise.all(promises);
+    return tokenInfos;
+  }
+
+  /**
+   * Get the tokenInfos from a specified list
+   * @param tokenListUri
+   * @returns
+   */
+  public getTokenInfosFromTokenList(tokenListUri: string): Array<ITokenInfo> {
+    return this.tokenLists[tokenListUri].tokens;
   }
 
   geckoCoinInfo: Map<string, string>;

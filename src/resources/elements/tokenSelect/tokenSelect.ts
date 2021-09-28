@@ -30,10 +30,16 @@ export class TokenSelect {
 
   async attached(): Promise<void> {
     if (!this.tokenInfos) {
-      this.tokenInfos = await this.getTokeninfos();
+      await this.tokenAddressesChanged();
     }
-    if (this.selectedTokenAddress) {
-      this.selectedTokenInfo = this.tokenInfos.filter((info) => info.address === this.selectedTokenAddress)?.[0];
+  }
+
+  async tokenAddressesChanged(): Promise<void> {
+    if (this.tokenAddresses) {
+      this.tokenInfos = await this.getTokeninfos();
+      if (this.selectedTokenAddress) {
+        this.selectedTokenInfo = this.tokenInfos.filter((info) => info.address === this.selectedTokenAddress)?.[0];
+      }
     }
   }
 
