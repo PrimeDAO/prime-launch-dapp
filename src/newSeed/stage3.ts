@@ -43,18 +43,11 @@ export class Stage3 extends BaseStage {
   }
 
 
-  private isValidImageFormat(file: string): boolean {
-    const re = /(\.jpg|\.bmp|\.gif|\.png)($|\?)/i;
-    return re.test(String(file).toLowerCase());
-  }
-
   private isValidSeedLogo(): string {
     let message;
 
     if (!Utils.isValidUrl(encodeURI(this.wizardState.projectTokenInfo.logoURI))) {
       message = "Please enter a valid URL for project token logo";
-    } else if (!this.isValidImageFormat(this.wizardState.projectTokenInfo.logoURI)) {
-      message = "Please supply a valid image file type for project token logo";
     }
     this.seedLogoIsValid = !message;
     if (!this.seedLogoIsValid) {

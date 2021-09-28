@@ -1,4 +1,7 @@
 export interface ITokenListConfigMap {
+  PrimeDao: {
+    Payments: string;
+  }
   Balancer: {
     Default: string;
     Vetted: string;
@@ -15,6 +18,10 @@ export interface ITokenListMapByNetwork {
  */
 export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   "mainnet": {
+    PrimeDao: {
+      Payments:
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+    },
     Balancer: {
       Default:
         "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",
@@ -31,6 +38,10 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
     ],
   },
   "rinkeby": {
+    PrimeDao: {
+      Payments:
+        "",
+    },
     Balancer: {
       Default:
         "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",

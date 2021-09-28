@@ -8,6 +8,10 @@ import { ITokenInfo } from "services/TokenTypes";
 
 interface ITokenListUris {
   All: string[];
+  PrimeDao: {
+    All: string[];
+    Payments: string;
+  };
   Balancer: {
     All: string[];
     // Compliant list for exchange
@@ -52,15 +56,20 @@ export class TokenListService {
    * Return all token list URIs for the app network in
    * a structured object.
    */
-  private get uris(): ITokenListUris {
-    const { Balancer, External } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
+  public get tokenLists(): ITokenListUris {
+    const { PrimeDao, Balancer, External } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
 
+    const primeDaoLists = [PrimeDao.Payments];
     const balancerLists = [Balancer.Default, Balancer.Vetted];
-    const All = [...balancerLists, ...External];
+    const All = [...primeDaoLists, ...balancerLists, ...External];
     const Approved = [Balancer.Default, ...External];
 
     return {
       All,
+      PrimeDao: {
+        All: primeDaoLists,
+        ...PrimeDao,
+      },
       Balancer: {
         All: balancerLists,
         ...Balancer,
@@ -72,18 +81,27 @@ export class TokenListService {
 
   private async fetch(uri: string): Promise<ITokenList> {
     try {
-      const [protocol, path] = uri.split("://");
+      if (uri) {
+        const [protocol, path] = uri.split("://");
 
-      if (uri.endsWith(".eth")) {
-        return await this.getByEns(uri);
-      } else if (protocol === "https") {
-        const { data } = await axios.get<ITokenList>(uri);
-        return data;
-      } else if (protocol === "ipns") {
-        return await this.ipfsService.getObjectFromHash(path, protocol);
+        if (uri.endsWith(".eth")) {
+          return await this.getByEns(uri);
+        } else if (protocol === "https") {
+          const { data } = await axios.get<ITokenList>(uri);
+          return data;
+        } else if (protocol === "ipns") {
+          return await this.ipfsService.getObjectFromHash(path, protocol);
+        } else {
+          this.consoleLogService.logMessage(`Unhandled TokenList protocol: ${uri}`);
+          throw new Error("Unhandled TokenList protocol");
+        }
       } else {
-        this.consoleLogService.logMessage(`Unhandled TokenList protocol: ${uri}`);
-        throw new Error("Unhandled TokenList protocol");
+        return {
+          name: null,
+          timestamp: null,
+          version: null,
+          tokens: [],
+        };
       }
     } catch (error) {
       this.consoleLogService.logMessage(`Failed to load TokenList: ${uri} error`);
@@ -99,12 +117,12 @@ export class TokenListService {
   }
 
   /**
-   * Fetch object with each key being the Uri to metadata for a token list.
-   * The object keys, when enumerated, will appear in the order in which they
-   * appear in `this.uris.All`.
+   * Return an object having each key as the Uri to a canonical TokenList.
+   * The keys, when enumerated, will appear in the order in which they
+   * appear in `urls` or `this.uris.All`.
    */
-  public async fetchLists(): Promise<TokenListMap> {
-    const uris = this.uris.All;
+  public async fetchLists(urls?: Array<string>): Promise<TokenListMap> {
+    const uris = urls ?? this.tokenLists.All;
     /**
      * each call to `fetch` fetches a list
      */
