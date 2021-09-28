@@ -33,8 +33,8 @@ export class Dropdown {
       }
     });
 
-    this.dropdown.addEventListener("click", (e) => {
-      this.toggleMenuDisplay(e);
+    this.dropdown.addEventListener("click", (e: MouseEvent) => {
+      if (this.dropdownOptions && this.dropdownOptions.length) this.toggleMenuDisplay(e);
     });
 
     this.menuChanged();
