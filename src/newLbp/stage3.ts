@@ -108,7 +108,7 @@ export class Stage3 extends BaseStage {
       message = "No valid image found at the provided project token logo URL";
     }
 
-    if (!message && !this.lbpConfig.tokenDetails.maxLbpSupply || this.lbpConfig.tokenDetails.maxLbpSupply === "0") {
+    if (!message && !this.lbpConfig.tokenDetails.maxProjectTokenSupply || this.lbpConfig.tokenDetails.maxProjectTokenSupply === "0") {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else {
       // Check the token distribution
@@ -126,7 +126,7 @@ export class Stage3 extends BaseStage {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
       });
-      if (!message && totalDistribAmount.gt(this.lbpConfig.tokenDetails.maxLbpSupply)) {
+      if (!message && totalDistribAmount.gt(this.lbpConfig.tokenDetails.maxProjectTokenSupply)) {
         message = "The sum of the Project Token Global Distributions should not be greater than the Maximum Supply of Project tokens";
       }
     }

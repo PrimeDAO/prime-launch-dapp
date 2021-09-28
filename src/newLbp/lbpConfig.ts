@@ -44,7 +44,7 @@ export interface ITokenDetails {
   /**
    * In wei, maximum ever total supply of project tokens
    */
-  maxLbpSupply: string,
+  maxProjectTokenSupply: string,
   /**
    * In wei,
    */

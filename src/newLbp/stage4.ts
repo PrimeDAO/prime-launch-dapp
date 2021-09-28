@@ -149,8 +149,8 @@ export class Stage4 extends BaseStage {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
-    } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) >= this.numberService.fromString(this.lbpConfig.tokenDetails.maxLbpSupply)) {
-      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxLbpSupply)} tokens`;
+    } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) >= this.numberService.fromString(this.lbpConfig.tokenDetails.maxProjectTokenSupply)) {
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxProjectTokenSupply)} tokens`;
     } else if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountFundingToken) >= 0)) {

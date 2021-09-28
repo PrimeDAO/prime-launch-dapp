@@ -77,15 +77,15 @@
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
-            <label for="maxLbpSupply">Maximum Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel> Supply</label>
+            <label for="maxProjectTokenSupply">Maximum Project Token <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel> Supply</label>
             <div class="questionMark">
               <question-mark text="The maximum supply of project tokens to exist over the project's lifetime. If there is no maximum, provide a reasonable estimate"></question-mark>
             </div>
           </div>
           <numeric-input
             output-as-string="true"
-            id="maxLbpSupply"
-            value.bind="lbpConfig.tokenDetails.maxLbpSupply">
+            id="maxProjectTokenSupply"
+            value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply">
           </numeric-input>
         </div>
         <div class="tokenDistribution">
