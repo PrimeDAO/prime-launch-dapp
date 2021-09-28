@@ -7,20 +7,12 @@
   .tokenItem {
     display: flex;
     align-items: center;
-    height: 23px;
-
-    img, i {
-      @include tokenIcon;
-      position: relative;
-      text-align: center
-    }
+    height: 19px;
 
     img {
+      @include tokenIcon;
+      position: relative;
       top: 2px;
-    }
-
-    i {
-      margin-top: 2px;
     }
 
     > div:not(:last-child) {
