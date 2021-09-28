@@ -1,37 +1,37 @@
 <template>
   <nav class="navbar-container">
     <div class="logo">
-      <img src="/primeDAOLogo.svg" alt="PrimeDAO">
+      <img src="/logomark.svg" alt="PrimeDAO">
     </div>
 
     <div class="products ${vertical ? 'vertical' : ''}">
-      <ul class="container">
-        <li click.delegate="toggleSubmenu()" class="item active">
+      <div class="container">
+        <div click.delegate="toggleSubmenu()" class="item active">
           <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
           <div class="text">Launch</div>
-        </li>
-        <li class="item">
+        </div>
+        <div class="item">
           <div class="icon pools"><img class="mono" src="/pools-mono.svg" /><img class="color" src="/pools.svg" /></div>
           <div class="text">Pools</div>
-        </li>
-        <li class="item">
+        </div>
+        <div class="item">
           <div class="icon rating"><img class="mono" src="/rating-mono.svg" /><img class="color" src="/rating.svg" /></div>
           <div class="text">Rating</div>
-        </li>
-        <li class="item">
+        </div>
+        <div class="item">
           <div class="icon deals"><img class="mono" src="/deals-mono.svg" /><img class="color" src="/deals.svg" /></div>
           <div class="text">Deals</div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
 
     <div class="productSubpages ${submenuVisible ? 'showing' : ''}">
-      <ul class="container">
-        <li click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</li>
-        <li click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Launch</li>
-        <li click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</li>
-        <li click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</li>
-      </ul>
+      <div class="container">
+        <div click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</div>
+        <div click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Launch</div>
+        <div click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
+        <div click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</div>
+      </div>
     </div>
 
     <div class="networkFeedback">
