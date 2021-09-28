@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
-      <div class="heading heading2 title">Lbp Summary</div>
+      <div class="heading heading2 title">LBP Summary</div>
       <div class="subtext">Please review the details of your LBP submission before proceeding.</div>
       <div class="summaryContainer">
         <div class="heading heading3">General Information</div>
@@ -91,32 +91,21 @@
         <div class="heading heading3">Token Details</div>
         <div class="stageLbpDetails">
           <div class="heading heading4">
-            Funding Token Address
-          </div>
-          <div class="tokenInfo">
-            <etherscanlink address.to-view="lbpConfig.tokenDetails.fundingTokenAddress" text.to-view="lbpConfig.tokenDetails.fundingTokenAddress | smallHexString"></etherscanlink>
-            <div>${wizardState.fundingTokenInfo.symbol}</div>
-            <img class="logoImage"
-              src.to-view="wizardState.fundingTokenInfo.logoURI"
-              show.to-view="wizardState.fundingTokenInfo.logoURI" />
-          </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
             Project Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink address.to-view="lbpConfig.tokenDetails.projectTokenAddress" text.to-view="lbpConfig.tokenDetails.projectTokenAddress | smallHexString"></etherscanlink>
-            <div>${wizardState.projectTokenSymbol}</div>
+            <etherscanlink 
+              address.to-view="lbpConfig.tokenDetails.projectTokenAddress" 
+              text.to-view="lbpConfig.tokenDetails.projectTokenAddress | smallHexString">
+            </etherscanlink>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
             <img class="logoImage"
-              src.to-view="wizardState.projectTokenIcon"
-              show.to-view="wizardState.projectTokenIcon" />
+              src.to-view="wizardState.projectTokenInfo.logoURI"
+              show.to-view="wizardState.projectTokenInfo.logoURI" />
           </div>
         </div>
         <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Maximum Project Token Supply
-          </div>
+          <div class="heading heading4">Maximum Project Token</div>
           <div class="tokenInfo">
             <div>
               <formatted-number value.bind="lbpConfig.tokenDetails.maxLbpSupply | ethwei" />
@@ -148,54 +137,41 @@
         <div class="heading heading3">Launch Details</div>
         <div class="stageLbpDetails">
           <div class="heading heading4">
-            Project Token Exchange Ratio
+            Funding Token Address
+          </div>
+          <div class="tokenInfo">
+            <etherscanlink 
+              address.to-view="lbpConfig.lbpDetails.fundingTokenAddress" 
+              text.to-view="lbpConfig.lbpDetails.fundingTokenAddress | smallHexString">
+            </etherscanlink>
+            <div>${wizardState.fundingTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.fundingTokenInfo.logoURI"
+              show.to-view="wizardState.fundingTokenInfo.logoURI" />
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Number of tokens provided to launch
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.pricePerToken | ethwei" />
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei" />
+            </div>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.projectTokenInfo.logoURI"
+              show.to-view="wizardState.projectTokenInfo.logoURI" />
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei" />
             </div>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.fundingTokenInfo.logoURI"
+              show.to-view="wizardState.fundingTokenInfo.logoURI" />
           </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Funding Target
-          </div>
-          <div class="tokenInfo">
-            <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.fundingTarget | ethwei" />
-            </div>
-            <div if.to-view="wizardState.fundingToken">${wizardState.fundingTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.fundingToken">
-              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-            </div>
-          </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Funding Maximum
-          </div>
-          <div class="tokenInfo">
-            <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.fundingMax | ethwei" />
-            </div>
-            <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.fundingTokenInfo">
-              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-            </div>
-          </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Project tokens vested for
-          </div>
-          <div>${(lbpConfig.lbpDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            with a cliff of
-          </div>
-          <div>${(lbpConfig.lbpDetails.vestingCliff * 1000) | timespan:"minutes":largest}</div>
         </div>
         <div class="stageLbpDetails">
           <div class="heading heading4">
@@ -203,6 +179,14 @@
           </div>
           <div>
             ${lbpConfig.lbpDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Start Weights
+          </div>
+          <div>
+            ${lbpConfig.lbpDetails.startWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -215,13 +199,10 @@
         </div>
         <div class="stageLbpDetails">
           <div class="heading heading4">
-            Whitelist
+            End Weights
           </div>
-          <div class="ellipses" if.to-view="lbpConfig.lbpDetails.whitelist">
-            <a href="${lbpConfig.lbpDetails.whitelist}" target="_blank" rel="noopener noreferrer">${lbpConfig.lbpDetails.whitelist}</a>
-          </div>
-          <div else>
-            [optional input not supplied]
+          <div>
+            ${lbpConfig.lbpDetails.endWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -234,20 +215,6 @@
           <div else>
             [optional input not supplied]
           </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Geoblock
-          </div>
-          <div>
-            ${lbpConfig.lbpDetails.geoBlock ? "Yes" : "No"}
-          </div>
-        </div>
-        <div class="stageLbpDetails">
-          <div class="heading heading4">
-            Admin Address
-          </div>
-          <etherscanlink address.to-view="lbpConfig.lbpDetails.adminAddress" text.to-view="lbpConfig.lbpDetails.adminAddress | smallHexString"></etherscanlink>
         </div>
       </div>
       <hr />
