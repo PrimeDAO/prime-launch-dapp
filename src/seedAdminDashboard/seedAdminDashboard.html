@@ -1,16 +1,20 @@
 <template>
   <div class="page animated-page adminContainer au-animate ">
     <div show.bind="!loading">
-      <div class="seedAdministrationHeader margin-bottom-74">
-        Seed Administration
-      </div>
       <div class="connectContainer" if.bind="!connected">
-        <button class="button1" click.delegate="connect()">Connect...</button>
-        <div class="connectButtonSupportText">
-          Connect your wallet to Administer your Seeds.
+        <div class="buttonContainer">
+          <div class="button1" click.delegate="connect()">Connect</div>
+        </div>
+        <div class="supportTextContainer">
+          <div class="connectButtonSupportText">
+            Connect your wallet to access Seed Administration panel.
+          </div>
         </div>
       </div>
       <div else class="formContainer">
+        <div class="seedAdministrationHeader margin-bottom-74">
+          Seed Administration
+        </div>
         <div if.bind="seeds.length">
           <dropdown 
             class="seedsDropdown"
