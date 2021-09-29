@@ -2,7 +2,7 @@ import { ITokenInfo } from "services/TokenTypes";
 import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
-import { ISeedConfig } from "./seedConfig";
+import { ISeedConfig } from "./seed/seedConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";

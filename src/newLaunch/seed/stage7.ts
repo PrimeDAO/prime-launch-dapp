@@ -1,6 +1,6 @@
-import { EthereumService } from "./../services/EthereumService";
+import { EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { BaseStage } from "newSeed/baseStage";
+import { BaseStage } from "newLaunch/baseStage";
 import { Router, RouteConfig, Redirect } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
