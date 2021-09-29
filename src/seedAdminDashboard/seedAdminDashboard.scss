@@ -4,32 +4,52 @@
     font-style: normal;
     font-weight: bold;
     line-height: 46px;
+    margin-bottom: 74px;
     background-image: linear-gradient(220deg, #FF497A 0%, #A258A7 100%);
     background-clip: text;
     color: transparent;
   }
 
-  .connectContainer{
-    margin-top: 10px;
+  .seedsDropdown{
+    margin-bottom: 40px;
   }
 
-  .connectButtonSupportText{
-    color: #98979B;
-    font-size: 12px;
+  .connectContainer{
+    margin-top: 10px;
+
+    .connectButtonSupportText{
+      color: #98979B;
+      font-size: 12px;
+    }
+  }
+
+  .projectTitle{
+    font-size: 20px;
+    color: #A258A7;
+    font-weight: 600;
+    margin-bottom: 40px;
   }
 
   .featureContainer{
+    padding: 5px;
     margin: 15px 0px;
+
+    .featureTitle{
+      font-size: 18px;
+      margin-bottom: 11px;
+      color: #A258A7;
+      font-weight: 300;
+    }
+  
+    .featureDescription{
+      color: #98979B;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
   }
 
-  .featureTitle{
-    font-size: 18px;
-    color: #A258A7;
-    font-weight: 600;
-  }
-
-  .featureDescription{
-    color: #98979B;
-    font-size: 16px;
+  .tokenImage{
+    width: 18px;
+    height: 18px;
   }
 }

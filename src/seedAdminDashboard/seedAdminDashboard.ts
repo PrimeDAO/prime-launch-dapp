@@ -17,6 +17,7 @@ export class SeedAdminDashboard {
   seeds: Array<Seed> = [];
   defaultSeedAddress: Address;
   selectedSeed: Seed;
+  selectedSeedIndex: Number;
   addressToRemove = "";
   addressToAdd = "";
   receiverAddress = "";
@@ -66,6 +67,10 @@ export class SeedAdminDashboard {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.seeds = this.seedService.seedsArray
         .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
+      if(this.seeds.length === 1){
+        this.selectedSeed = this.seeds[0];
+        this.selectedSeedIndex = 0;
+      }
     } else {
       this.seeds = [];
     }
@@ -73,12 +78,14 @@ export class SeedAdminDashboard {
       const defaultSeed = this.seeds.filter((seed) => seed.address === this.defaultSeedAddress);
       if (defaultSeed.length === 1) {
         this.selectedSeed = defaultSeed[0];
+        this.selectedSeedIndex = 0;
       }
     }
   }
 
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
+    this.selectedSeedIndex = index;
   }
 
   convertFundingTokenAmount(amount: BigNumber): string {

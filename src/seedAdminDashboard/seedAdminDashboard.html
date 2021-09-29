@@ -1,7 +1,7 @@
 <template>
   <div class="page animated-page adminContainer au-animate ">
     <div show.bind="!loading">
-      <div class="seedAdministrationHeader">
+      <div class="seedAdministrationHeader margin-bottom-74">
         Seed Administration
       </div>
       <div class="connectContainer" if.bind="!connected">
@@ -12,18 +12,24 @@
       </div>
       <div else class="formContainer">
         <div if.bind="seeds.length">
-          <dropdown item-changed.call="selectSeed(index)"
-            selected-item-index.to-view="selectedSeed.metadata.general.projectName"
+          <dropdown 
+            class="seedsDropdown"
+            if.bind="!defaultSeedAddress || (seeds.length === 1)"
+            item-changed.call="selectSeed(index)"
+            selected-item-index.to-view="selectedSeedIndex"
             placeholder="Select a Seed...">
             <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
           </dropdown>
+          <div else class="projectTitle margin-bottom-74">
+            Project: ${selectedSeed.metadata.general.projectName}
+          </div>
           <div if.bind="selectedSeed.address">
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens">
               <div class="featureTitle">
                 Fund Seed
               </div>
               <div class="featureDescription">
-                Required funding tokens: ${convertProjectTokenAmount(selectedSeed.feeRemainder.add(selectedSeed.seedRemainder))} ${selectedSeed.projectTokenInfo.symbol} <img src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>
+                Required funding tokens: ${convertProjectTokenAmount(selectedSeed.feeRemainder.add(selectedSeed.seedRemainder))} ${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>
               </div>
               <div class="button1" click.delegate="selectedSeed.fund()">
                 Fund Project
@@ -69,7 +75,7 @@
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                There are ${convertProjectTokenAmount(selectedSeed.projectTokenBalance)} ${selectedSeed.projectTokenInfo.symbol} <img src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> amount of Project Tokens which will be transferred to the address you mention below.
+                There are ${convertProjectTokenAmount(selectedSeed.projectTokenBalance)} ${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> amount of Project Tokens which will be transferred to the address you mention below.
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
@@ -83,7 +89,7 @@
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                There are ${convertFundingTokenAmount(selectedSeed.amountRaised)} ${selectedSeed.fundingTokenInfo.symbol} <img src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> amount of funding tokens which will be transfered to admin address once you click Withdraw
+                There are ${convertFundingTokenAmount(selectedSeed.amountRaised)} ${selectedSeed.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> amount of funding tokens which will be transfered to admin address once you click Withdraw
               </div>
               <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
