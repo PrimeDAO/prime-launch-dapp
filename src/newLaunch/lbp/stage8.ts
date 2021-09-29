@@ -1,7 +1,7 @@
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { BaseStage } from "newLbp/baseStage";
+import { BaseStage } from "newLaunch/baseStage";
 import { IpfsService } from "services/IpfsService";
 import { TokenService } from "services/TokenService";
 

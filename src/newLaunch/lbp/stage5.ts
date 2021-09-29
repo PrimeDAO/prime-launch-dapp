@@ -1,4 +1,4 @@
-import { BaseStage } from "newLbp/baseStage";
+import { BaseStage } from "newLaunch/baseStage";
 import { Utils } from "services/utils";
 
 export class Stage5 extends BaseStage {

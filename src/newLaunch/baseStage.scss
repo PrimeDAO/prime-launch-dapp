@@ -5,7 +5,7 @@
   font-family: Inter;
   background-color: $BG02;
   border: 1px solid $Border01;
-  border-radius: 1.8px;
+  border-radius: 16px;
   padding: 24px;
   min-width: 640px;
 
@@ -132,6 +132,11 @@
 }
 
 .page.stageContainer {
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: $Border03;
+  }
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -139,10 +144,6 @@
           .dropdown {
             width: 192px;
           }
-        }
-        .optional {
-          padding-left: 0.48px;
-          font-weight: lighter;
         }
       }
 
@@ -387,9 +388,24 @@
       }
 
       .pptContainer {
+        display: grid;
+        align-items: center;
+        column-gap: 10px;
+        grid-template-columns: auto auto auto;
+        justify-content: start;
+        > img {
+          border-radius: 50%;
+          width: 23px;
+        }
         > .text {
           display: inline-block;
+          align-self: center;
           color: $Neutral02;
+        }
+        .warning {
+          color: $AlertOrange;
+          font-size: small;
+          width: 225px;
         }
         input {
           width: 72px;
@@ -398,6 +414,9 @@
           align-self: center;
           -webkit-text-fill-color: $White;
           font-weight: normal;
+        }
+        &:not(:last-child) {
+          margin-bottom: 10px;
         }
       }
       &.maxTarget {
@@ -414,6 +433,12 @@
           -webkit-text-fill-color: $White;
           font-weight: normal;
         }
+        // .questionMark {
+        //   width: 20px;
+        //   height: 20px;
+        //   align-self: center;
+        //   justify-self: center;
+        // }
         &.fundingTarget {
           flex-flow: column;
           .fundingDescrp {
@@ -479,7 +504,7 @@
           cursor: pointer;
         }
         .inputIcon {
-          width: 2.8px;
+          width: 47px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -583,6 +608,26 @@
         }
       }
     }
+
+    .launchPreview {
+      display: inline-grid;
+      width: -webkit-fill-available;
+      grid-template-rows: 22px auto;
+      row-gap: 20px;
+      min-height: 203px;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 16px;
+      background-color: $BG01;
+      h3 {
+        font-family: 'Aeonik';
+        font-size: 24px;
+        font-weight: 700;
+        color: $Secondary02;
+        line-height: 22px;
+        margin: 0;
+      }
+    }
   }
 
   &.stage5 {
@@ -601,7 +646,8 @@
         > .heading.heading3 {
           margin-bottom: 20px;
         }
-        .stageSeedDetails {
+        .stageSeedDetails,
+        .stageLbpDetails {
           display: grid;
           gap: 10px;
           margin-bottom: 20px;
@@ -646,15 +692,13 @@
               top: 1px;
             }
           }
-          hr {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background-color: $Shade03;
-          }
         }
         &:not(:first-child) {
           margin-top: 40px;
         }
+      }
+      hr {
+        background-color: $Shade03;
       }
     }
   }

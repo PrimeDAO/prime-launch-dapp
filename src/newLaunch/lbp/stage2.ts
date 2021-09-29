@@ -1,4 +1,4 @@
-import { BaseStage } from "newLbp/baseStage";
+import { BaseStage } from "newLaunch/baseStage";
 
 export class Stage2 extends BaseStage {
 

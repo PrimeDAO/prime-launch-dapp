@@ -1,6 +1,6 @@
-import { BaseStage } from "newLbp/baseStage";
-import { Utils } from "../services/utils";
-import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newLbp/lbpConfig";
+import { BaseStage } from "newLaunch/baseStage";
+import { Utils } from "../../services/utils";
+import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newLaunch/lbp/lbpConfig";
 
 export class Stage1 extends BaseStage {
 

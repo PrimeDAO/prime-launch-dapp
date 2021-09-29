@@ -13,7 +13,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/NumberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
-import { ILbpConfig } from "newLbp/lbpConfig";
+import { ILbpConfig } from "newLaunch/lbp/lbpConfig";
 
 export interface ILbpConfiguration {
   address: Address;

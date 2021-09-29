@@ -173,7 +173,7 @@ export class App {
         title: "Register New SEED",
       },
       {
-        moduleId: PLATFORM.moduleName("./newLbp/newLbp"),
+        moduleId: PLATFORM.moduleName("./newLaunch/lbp/newLbp"),
         nav: false,
         name: "newLBP",
         route: ["newLBP"],

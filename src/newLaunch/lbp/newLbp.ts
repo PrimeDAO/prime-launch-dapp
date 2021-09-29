@@ -3,7 +3,7 @@ import { PLATFORM } from "aurelia-pal";
 import { singleton, computedFrom } from "aurelia-framework";
 import { ILbpConfig, LbpConfig } from "./lbpConfig";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
-import { IStageState, IWizardState } from "newLbp/baseStage";
+import { IStageState, IWizardState } from "newLaunch/baseStage";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
