@@ -17,7 +17,7 @@ export class SeedAdminDashboard {
   seeds: Array<Seed> = [];
   defaultSeedAddress: Address;
   selectedSeed: Seed;
-  selectedSeedIndex: Number;
+  selectedSeedIndex: number;
   addressToRemove = "";
   addressToAdd = "";
   receiverAddress = "";
@@ -67,7 +67,7 @@ export class SeedAdminDashboard {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.seeds = this.seedService.seedsArray
         .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
-      if(this.seeds.length === 1){
+      if (this.seeds.length === 1){
         this.selectedSeed = this.seeds[0];
         this.selectedSeedIndex = 0;
       }
