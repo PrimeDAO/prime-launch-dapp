@@ -94,7 +94,7 @@
             Funding Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink address.to-view="seedConfig.tokenDetails.fundingTokenAddress" text.to-view="seedConfig.tokenDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+            <etherscanlink address.to-view="seedConfig.seedDetails.fundingTokenAddress" text.to-view="seedConfig.seedDetails.fundingTokenAddress | smallHexString"></etherscanlink>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
             <img class="logoImage"
               src.to-view="wizardState.fundingTokenInfo.logoURI"
@@ -107,10 +107,10 @@
           </div>
           <div class="tokenInfo">
             <etherscanlink address.to-view="seedConfig.tokenDetails.projectTokenAddress" text.to-view="seedConfig.tokenDetails.projectTokenAddress | smallHexString"></etherscanlink>
-            <div>${wizardState.projectTokenSymbol}</div>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
             <img class="logoImage"
-              src.to-view="wizardState.projectTokenIcon"
-              show.to-view="wizardState.projectTokenIcon" />
+              src.to-view="wizardState.projectTokenInfo.logoURI"
+              show.to-view="wizardState.projectTokenInfo.logoURI" />
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -121,7 +121,7 @@
             <div>
               <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" />
             </div>
-            <div>${wizardState.projectTokenSymbol}</div>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
           </div>
         </div>
         <div class="stageSeedDetails">
