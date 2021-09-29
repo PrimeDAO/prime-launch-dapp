@@ -1,9 +1,14 @@
 <template>
   <div class="page animated-page adminContainer au-animate ">
     <div show.bind="!loading">
-      <div if.bind="!connected"><button class="button1" click.delegate="connect()">Connect...</button></div>
       <div class="seedAdministrationHeader">
         Seed Administration
+      </div>
+      <div class="connectContainer" if.bind="!connected">
+        <button class="button1" click.delegate="connect()">Connect...</button>
+        <div class="connectButtonSupportText">
+          Connect your wallet to Administer your Seeds.
+        </div>
       </div>
       <div else class="formContainer">
         <div if.bind="seeds.length">

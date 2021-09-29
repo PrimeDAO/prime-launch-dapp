@@ -1,7 +1,21 @@
 .page.adminContainer {
   .seedAdministrationHeader {
     font-size: 48px;
-    color: #FF497A;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 46px;
+    background-image: linear-gradient(220deg, #FF497A 0%, #A258A7 100%);
+    background-clip: text;
+    color: transparent;
+  }
+
+  .connectContainer{
+    margin-top: 10px;
+  }
+
+  .connectButtonSupportText{
+    color: #98979B;
+    font-size: 12px;
   }
 
   .featureContainer{
