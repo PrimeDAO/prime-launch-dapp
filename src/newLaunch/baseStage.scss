@@ -132,11 +132,6 @@
 }
 
 .page.stageContainer {
-  hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: $Border03;
-  }
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -144,6 +139,10 @@
           .dropdown {
             width: 192px;
           }
+        }
+        .optional {
+          padding-left: 0.48px;
+          font-weight: lighter;
         }
       }
 
@@ -433,12 +432,6 @@
           -webkit-text-fill-color: $White;
           font-weight: normal;
         }
-        // .questionMark {
-        //   width: 20px;
-        //   height: 20px;
-        //   align-self: center;
-        //   justify-self: center;
-        // }
         &.fundingTarget {
           flex-flow: column;
           .fundingDescrp {
@@ -692,13 +685,15 @@
               top: 1px;
             }
           }
+          hr {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: $Shade03;
+          }
         }
         &:not(:first-child) {
           margin-top: 40px;
         }
-      }
-      hr {
-        background-color: $Shade03;
       }
     }
   }
