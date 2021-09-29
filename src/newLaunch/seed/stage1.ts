@@ -1,6 +1,6 @@
-import { BaseStage } from "./baseStage";
-import { Utils } from "../services/utils";
-import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newSeed/seedConfig";
+import { BaseStage } from "../baseStage";
+import { Utils } from "../../services/utils";
+import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newLaunch/seed/seedConfig";
 
 export class Stage1 extends BaseStage {
 

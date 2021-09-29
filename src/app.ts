@@ -166,7 +166,7 @@ export class App {
         title: "SEED Dashboard",
       },
       {
-        moduleId: PLATFORM.moduleName("./newSeed/newSeed"),
+        moduleId: PLATFORM.moduleName("./newLaunch/seed/newSeed"),
         nav: false,
         name: "newSeed",
         route: ["newSeed"],

@@ -13,7 +13,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/NumberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
-import { ISeedConfig } from "newSeed/seedConfig";
+import { ISeedConfig } from "newLaunch/seed/seedConfig";
 
 export interface ISeedConfiguration {
   address: Address;

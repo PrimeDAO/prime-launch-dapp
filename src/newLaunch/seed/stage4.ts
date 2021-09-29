@@ -1,8 +1,8 @@
-import { WhiteListService } from "./../services/WhiteListService";
+import { WhiteListService } from "../../services/WhiteListService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import { DateService } from "./../services/DateService";
-import { BaseStage } from "newSeed/baseStage";
+import { DateService } from "../../services/DateService";
+import { BaseStage } from "newLaunch/baseStage";
 import Litepicker from "litepicker";
 import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
