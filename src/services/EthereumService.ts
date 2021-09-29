@@ -2,14 +2,14 @@ import detectEthereumProvider from "@metamask/detect-provider";
 // import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { BigNumber, ethers, Signer } from "ethers";
+import { BigNumber, BigNumberish, ethers, Signer } from "ethers";
 import { BaseProvider, ExternalProvider, Web3Provider, Network } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Torus from "@toruslabs/torus-embed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { formatEther, getAddress, parseEther } from "ethers/lib/utils";
+import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 
 interface IEIP1193 {
@@ -473,12 +473,36 @@ export class EthereumService {
   }
 }
 
-export const toWei = (ethValue: BigNumber | string | number): BigNumber => {
-  return parseEther(ethValue.toString());
+/**
+ * @param ethValue
+ * @param unitName Default is 18.  Can be decimal count or:
+ *  "wei",
+ *  "kwei",
+ *  "mwei",
+ *  "gwei",
+ *  "szabo",
+ *  "finney",
+ *  "ether",
+ * @returns
+ */
+export const toWei = (ethValue: BigNumber | string | number, unitName: string | BigNumberish = 18): BigNumber => {
+  return parseUnits(ethValue.toString(), unitName);
 };
 
-export const fromWei = (weiValue: BigNumber | string): string => {
-  return formatEther(weiValue.toString());
+/**
+ * @param weiValue
+ * @param unitName Default is 18.  Can be decimal count or:
+ *  "wei",
+ *  "kwei",
+ *  "mwei",
+ *  "gwei",
+ *  "szabo",
+ *  "finney",
+ *  "ether",
+ * @returns
+ */
+export const fromWei = (weiValue: BigNumber | string, unitName: string | BigNumberish = 18): string => {
+  return formatUnits(weiValue.toString(), unitName);
 };
 
 export const NULL_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";

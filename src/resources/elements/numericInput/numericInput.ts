@@ -5,7 +5,7 @@ import {
 } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { BigNumber } from "ethers";
-import { formatEther, parseEther } from "ethers/lib/utils";
+import { fromWei, toWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 
 @autoinject
@@ -58,7 +58,7 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
-          let value: BigNumber | string = this.isWei ? parseEther(newValue) : newValue;
+          let value: BigNumber | string = this.isWei ? toWei(newValue) : newValue;
           if (this.outputAsString) {
             value = value.toString();
           }
@@ -77,7 +77,7 @@ export class NumericInput {
       try {
         let newStringValue: string;
         if (this.isWei) {
-          newStringValue = formatEther(newValue.toString());
+          newStringValue = fromWei(newValue.toString());
         } else {
           newStringValue = newValue.toString();
         }

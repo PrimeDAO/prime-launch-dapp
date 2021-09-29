@@ -1,5 +1,5 @@
-﻿import { formatEther, parseEther } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
+﻿import { BigNumber } from "ethers";
+import { fromWei, toWei } from "services/EthereumService";
 /**
  * Convert between Wei (as BigNumber) in viewmodel and eth (as string) in view.
  * Note that even if the viewmodel supplies a number, modified values are saved back
@@ -20,7 +20,7 @@ export class EthweiValueConverter {
       return null;
     }
 
-    return parseEther(ethValue.toString());
+    return toWei(ethValue.toString());
   }
 
   /**
@@ -33,7 +33,7 @@ export class EthweiValueConverter {
         return "";
       }
 
-      return formatEther(weiValue);
+      return fromWei(weiValue);
     } catch (ex) {
       return weiValue.toString();
     }
