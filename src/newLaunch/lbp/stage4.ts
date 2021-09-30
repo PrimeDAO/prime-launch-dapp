@@ -162,7 +162,7 @@ export class Stage4 extends BaseStage {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
-    } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) >= this.numberService.fromString(this.lbpConfig.tokenDetails.maxProjectTokenSupply)) {
+    } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) > this.numberService.fromString(this.lbpConfig.tokenDetails.maxProjectTokenSupply)) {
       message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxProjectTokenSupply)} tokens`;
     } else if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
@@ -196,7 +196,7 @@ export class Stage4 extends BaseStage {
       message = `The ${this.wizardState.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setLbpConfigEndDate() <= this.setLbpConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.setLbpConfigEndDate().getTime() >= this.setLbpConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
+    } else if (this.setLbpConfigEndDate().getTime() > this.setLbpConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
       message = "Launch duration can not exceed 30 days";
     } else if (!this.lbpConfig.lbpDetails.legalDisclaimer) {
       message = "Please confirm the Legal Disclaimer";
