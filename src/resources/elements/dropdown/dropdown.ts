@@ -83,7 +83,5 @@ export class Dropdown {
 
   handleOptionSelected(_e: Event, index: number): void {
     this.selectItem(index);
-    //setTimeout is used so transition is properly shown
-    // setTimeout(() => this.toggleClass(icon, "rotate-90"));
   }
 }
