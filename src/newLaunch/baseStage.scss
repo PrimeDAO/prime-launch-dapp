@@ -386,7 +386,23 @@
         }
       }
 
-      .pptContainer {
+      .pptContainer,
+      .tokenAmountContainer {
+        > .text {
+          display: inline-block;
+          color: $Neutral02;
+        }
+        input {
+          width: 72px;
+        }
+        > label {
+          align-self: center;
+          -webkit-text-fill-color: $White;
+          font-weight: normal;
+        }
+      }
+
+      .tokenAmountContainer {
         display: grid;
         align-items: center;
         column-gap: 10px;
@@ -397,27 +413,18 @@
           width: 23px;
         }
         > .text {
-          display: inline-block;
           align-self: center;
-          color: $Neutral02;
         }
         .warning {
           color: $AlertOrange;
           font-size: small;
           width: 225px;
         }
-        input {
-          width: 72px;
-        }
-        > label {
-          align-self: center;
-          -webkit-text-fill-color: $White;
-          font-weight: normal;
-        }
         &:not(:last-child) {
           margin-bottom: 10px;
         }
       }
+
       &.maxTarget {
         input {
           width: 136px;

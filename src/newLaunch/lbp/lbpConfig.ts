@@ -71,6 +71,7 @@ export interface ILbpDetails {
   startWeight: number,
   endWeight: number,
   legalDisclaimer: boolean,
+  adminAddress: string,
 }
 
 export interface IContactDetails {
@@ -124,6 +125,8 @@ export class LbpConfig implements ILbpConfig {
       amountProjectToken: "",
       startWeight: 80,
       endWeight: 80,
+      legalDisclaimer: false,
+      adminAddress: "",
     } as ILbpDetails;
     this.contactDetails={
       remarks: "",

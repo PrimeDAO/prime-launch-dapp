@@ -10,7 +10,8 @@ import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 // import { BigNumber } from "ethers";
 import { Address, EthereumService, fromWei } from "services/EthereumService";
-import { TokenService } from "services/TokenService";
+import { ITokenInfo, TokenService } from "services/TokenService";
+import { TokenListService } from "services/TokenListService";
 
 @autoinject
 export class Stage4 extends BaseStage {
@@ -29,19 +30,7 @@ export class Stage4 extends BaseStage {
   whitelist: Set<Address>;
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
-  // totally faked ATM.  Don't keep any of this code.
-  tokenList=
-  (process.env.NETWORK === "mainnet") ?
-    [
-      "0xE59064a8185Ed1Fca1D17999621eFedfab4425c9",
-      "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    ] : // rinkeby of course
-    [
-      "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
-      "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-      "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
-    ];
+  tokenList: Array<string>;
 
   sliderStartWeights: HTMLInputElement;
   sliderEndWeights: HTMLInputElement;
@@ -52,6 +41,7 @@ export class Stage4 extends BaseStage {
     private ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
+    private tokenListService: TokenListService,
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
   ) {
@@ -100,6 +90,21 @@ export class Stage4 extends BaseStage {
       }
       this.lbpConfig.lbpDetails.endWeight = endWeight;
     };
+
+    if (!this.tokenList) {
+      // eslint-disable-next-line require-atomic-updates
+      if (process.env.NETWORK === "mainnet") {
+        const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
+        this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
+      } else {
+        this.tokenList =
+          [
+            "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
+            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+            "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
+          ];
+      }
+    }
   }
 
   setLbpConfigStartDate(): Date {
@@ -130,6 +135,14 @@ export class Stage4 extends BaseStage {
 
   toggleLegalDisclaimer(): void {
     this.lbpConfig.lbpDetails.legalDisclaimer = !this.lbpConfig.lbpDetails.legalDisclaimer;
+  }
+
+  connect(): void {
+    this.ethereumService.ensureConnected();
+  }
+
+  makeMeAdmin() : void {
+    this.lbpConfig.lbpDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
 
   async validateInputs(): Promise<string> {
