@@ -1,0 +1,132 @@
+<template>
+  <div class="page animated-page adminContainer au-animate ">
+    <div show.bind="!loading">
+      <div class="connectContainer" if.bind="!connected">
+        <div class="buttonContainer">
+          <div class="button1" click.delegate="connect()">Connect</div>
+        </div>
+        <div class="supportTextContainer">
+          <div class="connectButtonSupportText">
+            Connect your wallet to access Seed Administration panel.
+          </div>
+        </div>
+      </div>
+      <div else class="formContainer">
+        <div class="seedAdministrationHeader margin-bottom-74">
+          Seed Administration
+        </div>
+        <div if.bind="seeds.length">
+          <dropdown 
+            class="seedsDropdown"
+            if.bind="seeds.length !== 1"
+            item-changed.call="selectSeed(index)"
+            selected-item-index.to-view="selectedSeedIndex"
+            placeholder="Select a Seed...">
+            <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+          </dropdown>
+          <div else class="projectTitle margin-bottom-74">
+            Project: ${selectedSeed.metadata.general.projectName}
+          </div>
+          <div if.bind="selectedSeed.address">
+            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens">
+              <div class="featureTitle">
+                Fund Seed
+              </div>
+              <div class="featureDescription">
+                Required funding tokens: ${convertProjectTokenAmount(selectedSeed.feeRemainder.add(selectedSeed.seedRemainder))} ${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>
+              </div>
+              <div class="button1" click.delegate="selectedSeed.fund()">
+                Fund Project
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+              <div class="featureTitle">
+                Add Whitelists
+              </div>
+              <div class="featureDescription">
+                Add addresses from the list that was supplied during registration.
+              </div>
+              <div class="button1" click.delegate="addWhitelist()">
+                Add Whitelist
+              </div>
+              <div class="featureTitle">
+                Add a whitelist
+              </div>
+              <div class="featureDescription">
+                Add a new address to current whitelist.
+              </div>
+              <div>
+                <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
+                <div class="button1" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
+                  Add to whitelist
+                </div>
+              </div>
+              <div class="featureTitle">
+                Remove a whitelist
+              </div>
+              <div class="featureDescription">
+                Remove an address from current whitelist.
+              </div>
+              <div>
+                <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
+                <div class="button1" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
+                  Remove from whitelist
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen)">
+              <div class="featureTitle">
+                Retrieve Project Tokens
+              </div>
+              <div class="featureDescription">
+                There are ${convertProjectTokenAmount(selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)))} ${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> amount of Project Tokens which will be transferred to the address you mention below.
+              </div>
+              <div>
+                <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
+                <div class="button1" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
+                  Retrieve Project Tokens
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.claimingIsOpen && selectedSeed.fundingTokenBalance != 0">
+              <div class="featureTitle">
+                Withdraw Funding Tokens
+              </div>
+              <div class="featureDescription">
+                There are ${convertFundingTokenAmount(selectedSeed.fundingTokenBalance)} ${selectedSeed.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> amount of funding tokens which will be transfered to admin address once you click Withdraw
+              </div>
+              <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
+                Withdraw
+              </div>
+            </div>
+            <div class="featureContainer">
+              <div class="featureTitle">
+                Pause Seed
+              </div>
+              <div class="featureDescription">
+                Pausing will make seed inactive. Admin can unpause the Seed.
+              </div>
+              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.pause()">
+                Pause
+              </div>
+              <div else if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.unPause()">
+                UnPause
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="!selectedSeed.isClosed">
+              <div class="featureTitle">
+                Close seed
+              </div>
+              <div class="featureDescription">
+                Close will stop the seed permanently.
+              </div>
+              <div class="button1" click.delegate="selectedSeed.close()">
+                Close
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="noSeedCreatedMessage" else><div>You have not created any Seeds</div></div>
+      </div>
+    </div>
+</template>
