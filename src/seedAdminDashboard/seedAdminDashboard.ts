@@ -8,8 +8,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
-import { BigNumber } from "ethers";
-import { formatUnits } from "@ethersproject/units";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -75,7 +73,7 @@ export class SeedAdminDashboard {
       this.seeds = [];
     }
     if (this.defaultSeedAddress) {
-      const defaultSeedIndex = this.seeds.map((seed,index) => this.defaultSeedAddress === seed.address ? index : undefined).filter((seed) => seed);
+      const defaultSeedIndex = this.seeds.map((seed, index) => this.defaultSeedAddress === seed.address ? index : undefined).filter((seed) => seed);
       if (defaultSeedIndex.length === 1) {
         this.selectedSeedIndex = defaultSeedIndex[0];
         this.selectedSeed = this.seeds[defaultSeedIndex[0]];
@@ -86,14 +84,6 @@ export class SeedAdminDashboard {
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
-  }
-
-  convertFundingTokenAmount(amount: BigNumber): string {
-    return formatUnits(amount, this.selectedSeed.fundingTokenInfo.decimals);
-  }
-
-  convertProjectTokenAmount(amount: BigNumber): string {
-    return formatUnits(amount, this.selectedSeed.projectTokenInfo.decimals);
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
