@@ -2,15 +2,21 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./rangeInput.scss";
 
+interface IValues {
+  projectToken: number,
+  fundingToken: number,
+}
 @autoinject
 export class RangeInput {
   @bindable.string private maxAllowed? = 100;
   @bindable.string private name;
   @bindable.number public value = this.maxAllowed || 50;
   @bindable.ref private rangeInput: HTMLInputElement;
+  @bindable.string private fundingToken = "";
+  @bindable.string private projectToken = "";
 
   @computedFrom("value", "maxAllowed")
-  get values(): {left: number, right: number} {
+  get values(): IValues {
     const validValue = (this.maxAllowed) > this.value ? this.value : this.maxAllowed;
 
     this.rangeInput.style.backgroundImage = `linear-gradient(
@@ -22,8 +28,8 @@ export class RangeInput {
     )`;
 
     return {
-      left: validValue,
-      right: 100 - validValue,
+      projectToken: validValue,
+      fundingToken: 100 - validValue,
     };
   }
 }
