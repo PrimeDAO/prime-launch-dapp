@@ -3,7 +3,7 @@
     <div show.bind="!loading">
       <div class="connectContainer" if.bind="!connected">
         <div class="buttonContainer">
-          <div class="button1 small" click.delegate="connect()">Connect</div>
+          <div class="button1" click.delegate="connect()">Connect</div>
         </div>
         <div class="supportTextContainer">
           <div class="connectButtonSupportText">
@@ -33,7 +33,7 @@
                 Fund Seed
               </div>
               <div class="featureDescription">
-                Project tokens required to fund the Seed (${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>): ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei}
+                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> tokens required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei}
               </div>
               <div class="button1 small" click.delegate="selectedSeed.fund()">
                 Fund
@@ -79,7 +79,7 @@
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei} project tokens (${selectedSeed.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>) will be transferred to the address you provide below.
+                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below.
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
@@ -93,7 +93,7 @@
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.fundingTokenBalance | ethwei} funding tokens (${selectedSeed.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img>) will be transfered to your wallet when you click Withdraw
+                ${selectedSeed.fundingTokenBalance | ethwei} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet when you click Withdraw
               </div>
               <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw

@@ -1,15 +1,6 @@
 @import "styles/styles.scss";
 
 .page.adminContainer {
-  // .seedAdministrationHeader {
-  //   font-size: 48px;
-  //   font-style: normal;
-  //   font-weight: bold;
-  //   line-height: 46px;
-  //   margin-bottom: 74px;
-  //   @include standardTextGradient;
-  // }
-
   .seedsDropdown {
     margin-bottom: 40px;
   }
@@ -68,6 +59,7 @@
   .tokenImage {
     @include tokenIcon;
     margin-left: 6px;
+    margin-right: 6px;
   }
 
   .noSeedCreatedMessage {

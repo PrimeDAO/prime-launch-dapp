@@ -1,9 +1,9 @@
 import { TransactionReceipt } from "services/TransactionsService";
-import { Seed } from "../entities/Seed";
+import { Seed } from "entities/Seed";
 import { Address, EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
-import "./seedAdminDashboard.scss";
+import "./dashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
