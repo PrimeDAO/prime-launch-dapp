@@ -1,15 +1,15 @@
 @import "styles/styles.scss";
 
-@mixin defaultTransition($properties...) {
-  $transition: ();
-  @each $property in $properties {
-    $transition: append($transition, ($property 0.16s ease-in-out), $separator: comma);
-  }
-  -webkit-transition: $transition;
-  -moz-transition: $transition;
-  -ms-transition: $transition;
-  -o-transition: $transition;
-  transition: $transition;}
+// @mixin defaultTransition($properties...) {
+//   $transition: ();
+//   @each $property in $properties {
+//     $transition: append($transition, ($property 300ms ease-in-out), $separator: comma);
+//   }
+//   -webkit-transition: $transition;
+//   -moz-transition: $transition;
+//   -ms-transition: $transition;
+//   -o-transition: $transition;
+//   transition: $transition;}
 
 .dropdown {
   border: 1px solid $Border01;
@@ -41,7 +41,7 @@
 
     div.el-icon-arrow {
       margin-right: 0.7em;
-      transition: transform 0.3s;
+      transition: transform 800ms;
     }
   }
 
@@ -66,11 +66,15 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
     left: -1px;
     z-index: 1;
-    opacity: 1;
     height: fit-content;
     overflow-y: auto;
     // max-height: 225px;
-    @include defaultTransition(transform, opacity/*, border-radius*/);
+    transition: transform 200ms ease-in-out 100ms, opacity 300ms ease-in-out;
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+
+    // @include defaultTransition(transform, opacity, border-radius);
 
     &::-webkit-scrollbar-button:vertical {
       display: block;
@@ -90,16 +94,13 @@
       border: 3px solid $BG01;
     }
 
-    transform: scaleY(1);
-    transform-origin: top;
-
     &.hide {
       // doing it this way retains the width, for sizing the dropdown
       // visibility: hidden;
       transform: scaleY(0);
+      opacity: 0;
       border-radius: 10px;
       border-top: unset;
-      opacity: 0;
     }
 
     > .option {
