@@ -108,6 +108,7 @@
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
               set-weight.bind="setLbpConfigStartWeight"
               value.bind="lbpConfig.lbpDetails.startWeight"
+              input.delegate="handleStartWeightChange($event)"
               ref="sliderStartWeights"
             >
             </range-input>
@@ -150,6 +151,7 @@
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
               value.bind="lbpConfig.lbpDetails.endWeight"
               max-allowed.bind="lbpConfig.lbpDetails.startWeight"
+              input.delegate="handleEndWeightChange($event)"
               ref="sliderEndWeights"
             >
             </range-input>

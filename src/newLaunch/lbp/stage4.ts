@@ -73,24 +73,6 @@ export class Stage4 extends BaseStage {
       this.endDate = date.toJSDate();
     });
 
-    this.sliderStartWeights.oninput = (event: Event) => {
-      this.lbpConfig.lbpDetails.startWeight = Number.parseFloat((event.target as HTMLInputElement).value);
-      // Move the end weight to the same value as the start weight
-      // if its greater than the start weight.
-      if (this.lbpConfig.lbpDetails.startWeight < this.lbpConfig.lbpDetails.endWeight) {
-        this.lbpConfig.lbpDetails.endWeight = this.lbpConfig.lbpDetails.startWeight;
-      }
-    };
-
-    this.sliderEndWeights.oninput = (event: Event) => {
-      let endWeight = Number.parseFloat((event.target as HTMLInputElement).value);
-      if (endWeight > this.lbpConfig.lbpDetails.startWeight) {
-        endWeight = this.lbpConfig.lbpDetails.startWeight;
-        (event.target as HTMLInputElement).value = endWeight.toString();
-      }
-      this.lbpConfig.lbpDetails.endWeight = endWeight;
-    };
-
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
       if (process.env.NETWORK === "mainnet") {
@@ -105,6 +87,30 @@ export class Stage4 extends BaseStage {
           ];
       }
     }
+  }
+
+  handleStartWeightChange(event: Event): void {
+    // Move the end weight to the same value as the start weight
+    // if its greater than the start weight.
+    const target = event.target as HTMLInputElement;
+    const value = parseInt(target.value);
+
+    if (value < this.lbpConfig.lbpDetails.endWeight) {
+      this.lbpConfig.lbpDetails.endWeight = value;
+    }
+    this.lbpConfig.lbpDetails.startWeight = value;
+  }
+
+  handleEndWeightChange(event: Event): void {
+    // Controls that the end weight is always less then or equal
+    // to the start weight
+    const target = event.target as HTMLInputElement;
+    const value = parseInt(target.value);
+
+    if (value > this.lbpConfig.lbpDetails.startWeight) {
+      target.value = this.lbpConfig.lbpDetails.startWeight.toString();
+    }
+    this.lbpConfig.lbpDetails.endWeight = value;
   }
 
   setLbpConfigStartDate(): Date {
