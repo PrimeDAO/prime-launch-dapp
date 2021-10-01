@@ -154,7 +154,7 @@
 
 @media screen and (max-width: 1072px) {
   .navbar-container {
-    grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
+    grid-template-columns: calc(#{$BodyPaddingLeftRight} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
 
     .products {
