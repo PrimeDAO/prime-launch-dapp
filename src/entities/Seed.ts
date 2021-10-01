@@ -388,8 +388,14 @@ export class Seed {
 
   async fund(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
-      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired?.add(this.feeRemainder)),
-    );
+      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired?.add(this.feeRemainder)))
+      .then(async (receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {

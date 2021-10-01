@@ -33,7 +33,7 @@
                 Fund Seed
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> tokens required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei}
+                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei}
               </div>
               <div class="button1 small" click.delegate="selectedSeed.fund()">
                 Fund
@@ -44,16 +44,18 @@
                 Add Whitelists
               </div>
               <div class="featureDescription">
-                Add addresses from the list that was supplied during registration.
+                Add addresses from the list that was supplied during registration
               </div>
               <div class="button1 small" click.delegate="addWhitelist()">
                 Add Whitelist
               </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
-                Add a whitelist
+                Whitelist an account
               </div>
               <div class="featureDescription">
-                Add a new address to current whitelist.
+                Add an account to the whitelist
               </div>
               <div>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
@@ -61,11 +63,13 @@
                   Add to whitelist
                 </div>
               </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
-                Remove a whitelist
+                Unwhitelist an account
               </div>
               <div class="featureDescription">
-                Remove an address from current whitelist.
+                Remove an account from the whitelist
               </div>
               <div>
                 <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
@@ -79,7 +83,7 @@
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below.
+                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
@@ -93,7 +97,7 @@
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.fundingTokenBalance | ethwei} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet when you click Withdraw
+                ${selectedSeed.fundingTokenBalance | ethwei} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
               </div>
               <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
@@ -104,7 +108,7 @@
                 Pause Seed
               </div>
               <div class="featureDescription">
-                Pausing will make seed inactive. Admin can unpause the Seed.
+                Pausing will make seed inactive. As the administrator, you will be able to unpause the Seed.
               </div>
               <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.pause()">
                 Pause
@@ -118,7 +122,7 @@
                 Close seed
               </div>
               <div class="featureDescription">
-                Close will stop the seed permanently.
+                Close will permanently stop the seed. The seed cannot be unclosed.
               </div>
               <div class="button1 small" click.delegate="selectedSeed.close()">
                 Close
