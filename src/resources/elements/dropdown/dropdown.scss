@@ -26,7 +26,7 @@
     border-color: $Secondary02;
   }
 
-  @include defaultTransition(border-radius, box-shadow, border-color);
+  // @include defaultTransition(border-radius, box-shadow, border-color);
 
   > .selectedLabel {
     display: flex;
@@ -70,7 +70,7 @@
     height: fit-content;
     overflow-y: auto;
     // max-height: 225px;
-    @include defaultTransition(transform, opacity, border-radius);
+    @include defaultTransition(transform, opacity/*, border-radius*/);
 
     &::-webkit-scrollbar-button:vertical {
       display: block;
