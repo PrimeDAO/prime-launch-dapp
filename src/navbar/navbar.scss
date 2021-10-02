@@ -41,7 +41,7 @@
         border-bottom: 3px solid $BG01;
         cursor: pointer;
         color: $Neutral04;
-        padding: 12px 8px;
+        padding: 12px 12px 12px 8px;
         align-items: center;
         justify-items: start;
         column-gap: 12px;
@@ -154,7 +154,7 @@
 
 @media screen and (max-width: 1072px) {
   .navbar-container {
-    grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
+    grid-template-columns: calc(#{$BodyPaddingLeftRight} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
 
     .products {

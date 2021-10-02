@@ -1,17 +1,24 @@
-import { EthereumService } from "services/EthereumService";
+import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
+import { Address, EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
-import "./adminDashboard.scss";
+import "./dashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
-import { Utils } from "services/utils";
+import { WhiteListService } from "services/WhiteListService";
 
 @autoinject
-export class AdminDashboard {
+export class SeedAdminDashboard {
 
   seeds: Array<Seed> = [];
+  defaultSeedAddress: Address;
+  selectedSeed: Seed;
+  selectedSeedIndex: number;
+  addressToRemove = "";
+  addressToAdd = "";
+  receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
 
@@ -24,10 +31,15 @@ export class AdminDashboard {
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
     private ethereumService: EthereumService,
+    private whiteListService: WhiteListService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
     }));
+  }
+
+  async activate(params: { address: Address }): Promise<void> {
+    this.defaultSeedAddress = params?.address;
   }
 
   async attached(): Promise<void> {
@@ -50,15 +62,36 @@ export class AdminDashboard {
 
   async hydrate(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      const defaultAccount = this.ethereumService.defaultAccountAddress.toLowerCase();
+      const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.seeds = this.seedService.seedsArray
         .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
+      if (this.seeds.length === 1){
+        this.selectedSeed = this.seeds[0];
+        this.selectedSeedIndex = 0;
+      }
     } else {
       this.seeds = [];
     }
+    if (this.defaultSeedAddress) {
+      const defaultSeedIndex = this.seeds.map((seed, index) => this.defaultSeedAddress === seed.address ? index : undefined).filter((seed) => seed);
+      if (defaultSeedIndex.length === 1) {
+        this.selectedSeedIndex = defaultSeedIndex[0];
+        this.selectedSeed = this.seeds[defaultSeedIndex[0]];
+      }
+    }
   }
 
-  connect():void {
+  selectSeed(index: number): void {
+    this.selectedSeed = this.seeds[index];
+    this.selectedSeedIndex = index;
+  }
+
+  async addWhitelist(): Promise<TransactionReceipt> {
+    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.seedDetails.whitelist);
+    return await this.selectedSeed.addWhitelist(whitelistAddress);
+  }
+
+  connect(): void {
     this.ethereumService.ensureConnected();
   }
 }

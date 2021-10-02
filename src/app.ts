@@ -180,11 +180,11 @@ export class App {
         title: "Select Your Package",
       },
       {
-        moduleId: PLATFORM.moduleName("./adminDashboard/adminDashboard"),
+        moduleId: PLATFORM.moduleName("./admin/seeds/dashboard/dashboard"),
         nav: false,
-        name: "adminDashboard",
-        route: ["adminDashboard"],
-        title: "Administer a Launch",
+        name: "seedAdminDashboard",
+        route: ["admin/seeds/dashboard/:address?"],
+        title: "Administer a Seed Launch",
       },
 
     ]);
