@@ -16,6 +16,7 @@ export class Dropdown {
   private dropdownOptions: Array<Element>;
   private title: HTMLElement;
   private menu: HTMLElement;
+  private options: HTMLElement;
   private titleText: string;
 
   async attached(): Promise<void> {
@@ -33,8 +34,7 @@ export class Dropdown {
     });
 
     this.dropdown.addEventListener("click", (e: MouseEvent) => {
-      // There is always one option - the HR element, so we can ignore it
-      if (this.dropdownOptions && this.dropdownOptions.length > 1) this.toggleMenuDisplay(e);
+      if (this.dropdownOptions && this.dropdownOptions.length) this.toggleMenuDisplay(e);
     });
 
     this.menuChanged();
@@ -44,7 +44,7 @@ export class Dropdown {
     /**
      * add class to each
      */
-    this.dropdownOptions = Array.from(this.menu.children);
+    this.dropdownOptions = Array.from(this.options.children);
     this.dropdownOptions.forEach((item, index) => {
       if (item.tagName !== "HR") {
         item.classList.add("option");

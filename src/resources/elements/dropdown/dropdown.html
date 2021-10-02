@@ -7,7 +7,9 @@
     <div ref="menu" class="menu" mutation-observer.call="menuChanged()">
       <hr />
       <!-- array of divs each containing whatever you want to be displayed in the dropdown menu -->
-      <slot></slot>
+      <div ref="options" class="options">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
