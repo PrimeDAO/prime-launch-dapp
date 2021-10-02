@@ -22,19 +22,19 @@ export class Dropdown {
     document.addEventListener("click", (e: MouseEvent) => {
       // Close the menu if the user clicks outside the dropdown
       const clickedElement = e.target as HTMLElement;
+
       if (
         this.dropdown &&
         clickedElement.closest(".dropdown") === null && // Clicked element is not part of the dropdown element
-        !this.menu.classList.contains("hide") &&
-        this.dropdown.classList.contains("menuShowing")
+        this.dropdown.classList.contains("show")
       ) {
-        this.dropdown.classList.remove("menuShowing");
-        this.menu.classList.add("hide");
+        this.dropdown.classList.remove("show");
       }
     });
 
     this.dropdown.addEventListener("click", (e: MouseEvent) => {
-      if (this.dropdownOptions && this.dropdownOptions.length) this.toggleMenuDisplay(e);
+      // There is always one option - the HR element, so we can ignore it
+      if (this.dropdownOptions && this.dropdownOptions.length > 1) this.toggleMenuDisplay(e);
     });
 
     this.menuChanged();
@@ -46,8 +46,10 @@ export class Dropdown {
      */
     this.dropdownOptions = Array.from(this.menu.children);
     this.dropdownOptions.forEach((item, index) => {
-      item.classList.add("option");
-      item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
+      if (item.tagName !== "HR") {
+        item.classList.add("option");
+        item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
+      }
     });
     if (this.hasSelectedItemIndex) {
       this.selectItem(this.selectedItemIndex);
@@ -65,8 +67,7 @@ export class Dropdown {
   }
 
   toggleMenuDisplay(_e: Event): void {
-    this.toggleClass(this.menu, "hide");
-    this.toggleClass(this.dropdown, "menuShowing");
+    this.toggleClass(this.dropdown, "show");
   }
 
   @computedFrom("selectedItemIndex")
