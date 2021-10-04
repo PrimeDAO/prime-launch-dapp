@@ -1,0 +1,37 @@
+<template>
+  <div class="page animated-page stageContainer stage5 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading2 title">Contact Details</div>
+      <div class="subtext">
+        Please provide your contact details.
+      </div>
+      <div>
+        <div class="infoInput">
+          <label for="email">Contact Email</label>
+          <input id="email" type="email"
+            value.bind="lbpConfig.contactDetails.contactEmail" />
+        </div>
+        <div class="infoInput">
+          <div class="labelContainer">
+            <label for="remarks">Additional Remarks</label>
+            <span value.from-view="lbpConfig.contactDetails.remarks">
+              ${lbpConfig.contactDetails.remarks.length}/250
+            </span>
+          </div>
+          <textarea
+            id="remarks"
+            value.bind="lbpConfig.contactDetails.remarks"
+            placeholder="(Optional)"
+            maxlength="250"></textarea>
+        </div>
+        <div class="buttonContainer">
+          <div class="stageButton cancel" click.delegate="back()">
+            PREVIOUS
+          </div>
+          <div
+            class="stageButton proceed button1"
+            click.delegate="proceed()">NEXT</div>
+        </div>
+      </div>
+    </div>
+</template>

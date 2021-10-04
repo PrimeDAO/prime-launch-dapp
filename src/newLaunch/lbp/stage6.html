@@ -1,0 +1,246 @@
+<template>
+  <div class="page animated-page stageContainer stage6 au-animate ">
+    <div class="infoContainer">
+      <div class="heading heading2 title">LBP Summary</div>
+      <div class="subtext">Please review the details of your LBP submission before proceeding.</div>
+      <div class="summaryContainer">
+        <div class="heading heading3">General Information</div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Project Name
+          </div>
+          <div>
+            ${lbpConfig.general.projectName}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Project Website
+          </div>
+          <div>
+            <a href=${lbpConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${lbpConfig.general.projectWebsite}</a>
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Project Category
+          </div>
+          <div>
+            ${lbpConfig.general.category}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Whitepaper
+          </div>
+          <div class="ellipses">
+            <a href=${lbpConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${lbpConfig.general.whitepaper}</a>
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Github Link
+          </div>
+          <div class="ellipses">
+            <a href=${lbpConfig.general.github} target="_blank" rel="noopener noreferrer">${lbpConfig.general.github}</a>
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">Custom Links</div>
+          <div class="customLinks" if.to-view="lbpConfig.general.customLinks.length > 0">
+            <template repeat.for="customLink of lbpConfig.general.customLinks">
+              <div class="header">Custom Link</div>
+              <div class="header">URL</div>
+              <div class="cell">${customLink.media}</div>
+              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+            </template>
+          </div>
+          <div else>[optional input not supplied]</div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Project Details</div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Short Description
+          </div>
+          <div>
+            ${lbpConfig.projectDetails.summary}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Value Proposition
+          </div>
+          <div>
+            ${lbpConfig.projectDetails.proposition}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Team Description
+          </div>
+          <div>
+            ${lbpConfig.projectDetails.teamDescription}
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Token Details</div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Project Token Address
+          </div>
+          <div class="tokenInfo">
+            <etherscanlink 
+              address.to-view="lbpConfig.tokenDetails.projectTokenAddress" 
+              text.to-view="lbpConfig.tokenDetails.projectTokenAddress | smallHexString">
+            </etherscanlink>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.projectTokenInfo.logoURI"
+              show.to-view="wizardState.projectTokenInfo.logoURI" />
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">Maximum Project Token</div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply | ethwei" />
+            </div>
+            <div>${wizardState.projectTokenSymbol}</div>
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">Project Token Global Distribution</div>
+          <div class="tokenDist" if.to-view="lbpConfig.tokenDetails.tokenDistrib.length > 0">
+            <template repeat.for="distrib of lbpConfig.tokenDetails.tokenDistrib">
+              <div class="header">Stakeholder</div>
+              <div class="header">Amount</div>
+              <div class="header">Cliff (in days)</div>
+              <div class="header">Vesting (in days)</div>
+              <div class="cell">${distrib.stakeHolder}</div>
+              <div class="cell">
+                <formatted-number value.bind="distrib.amount | ethwei" />
+              </div>
+              <div class="cell">${distrib.cliff}</div>
+              <div class="cell">${distrib.vest}</div>
+            </template>
+          </div>
+          <div else>[optional input not supplied]</div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Launch Details</div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Funding Token Address
+          </div>
+          <div class="tokenInfo">
+            <etherscanlink 
+              address.to-view="lbpConfig.lbpDetails.fundingTokenAddress" 
+              text.to-view="lbpConfig.lbpDetails.fundingTokenAddress | smallHexString">
+            </etherscanlink>
+            <div>${wizardState.fundingTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.fundingTokenInfo.logoURI"
+              show.to-view="wizardState.fundingTokenInfo.logoURI" />
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Number of tokens provided to launch
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei" />
+            </div>
+            <div>${wizardState.projectTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.projectTokenInfo.logoURI"
+              show.to-view="wizardState.projectTokenInfo.logoURI" />
+          </div>
+          <div class="tokenInfo">
+            <div>
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei" />
+            </div>
+            <div>${wizardState.fundingTokenInfo.symbol}</div>
+            <img class="logoImage"
+              src.to-view="wizardState.fundingTokenInfo.logoURI"
+              show.to-view="wizardState.fundingTokenInfo.logoURI" />
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Start Date (GMT)
+          </div>
+          <div>
+            ${lbpConfig.lbpDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Start Weights
+          </div>
+          <div>
+            ${lbpConfig.lbpDetails.startWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            End Date (GMT)
+          </div>
+          <div>
+            ${lbpConfig.lbpDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            End Weights
+          </div>
+          <div>
+            ${lbpConfig.lbpDetails.endWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Legal Disclaimer
+          </div>
+          <div class="ellipses" if.to-view="lbpConfig.lbpDetails.legalDisclaimer">
+            <a href=${lbpConfig.lbpDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${lbpConfig.lbpDetails.legalDisclaimer}</a>
+          </div>
+          <div else>
+            [optional input not supplied]
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="summaryContainer">
+        <div class="heading heading3">Contact Details</div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Contact Email
+          </div>
+          <div>
+            ${lbpConfig.contactDetails.contactEmail}
+          </div>
+        </div>
+        <div class="stageLbpDetails">
+          <div class="heading heading4">
+            Additional Remark
+          </div>
+          <div>
+            ${lbpConfig.contactDetails.remarks || "[optional input not supplied]"}
+          </div>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="next()">PROCEED</div>
+      </div>
+    </div>
+  </div>
+</template>

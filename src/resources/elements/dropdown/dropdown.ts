@@ -16,20 +16,21 @@ export class Dropdown {
   private dropdownOptions: Array<Element>;
   private title: HTMLElement;
   private menu: HTMLElement;
+  private options: HTMLElement;
   private titleText: string;
+  private divider: HTMLHRElement;
 
   async attached(): Promise<void> {
     document.addEventListener("click", (e: MouseEvent) => {
       // Close the menu if the user clicks outside the dropdown
       const clickedElement = e.target as HTMLElement;
+
       if (
         this.dropdown &&
         clickedElement.closest(".dropdown") === null && // Clicked element is not part of the dropdown element
-        !this.menu.classList.contains("hide") &&
-        this.dropdown.classList.contains("menuShowing")
+        this.dropdown.classList.contains("show")
       ) {
-        this.dropdown.classList.remove("menuShowing");
-        this.menu.classList.add("hide");
+        this.dropdown.classList.remove("show");
       }
     });
 
@@ -44,10 +45,12 @@ export class Dropdown {
     /**
      * add class to each
      */
-    this.dropdownOptions = Array.from(this.menu.children);
+    this.dropdownOptions = Array.from(this.options.children);
     this.dropdownOptions.forEach((item, index) => {
-      item.classList.add("option");
-      item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
+      if (item !== this.divider) {
+        item.classList.add("option");
+        item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
+      }
     });
     if (this.hasSelectedItemIndex) {
       this.selectItem(this.selectedItemIndex);
@@ -65,8 +68,7 @@ export class Dropdown {
   }
 
   toggleMenuDisplay(_e: Event): void {
-    this.toggleClass(this.menu, "hide");
-    this.toggleClass(this.dropdown, "menuShowing");
+    this.toggleClass(this.dropdown, "show");
   }
 
   @computedFrom("selectedItemIndex")
@@ -83,7 +85,5 @@ export class Dropdown {
 
   handleOptionSelected(_e: Event, index: number): void {
     this.selectItem(index);
-    //setTimeout is used so transition is properly shown
-    // setTimeout(() => this.toggleClass(icon, "rotate-90"));
   }
 }
