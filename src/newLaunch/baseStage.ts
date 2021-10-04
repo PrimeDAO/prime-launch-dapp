@@ -3,6 +3,7 @@ import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
 import { ISeedConfig } from "./seed/seedConfig";
+import { ILbpConfig } from "./lbp/lbpConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -16,6 +17,7 @@ export interface IStageState {
 
 export interface IWizardState {
   seedHash?: Hash;
+  lbpHash?: Hash;
   whiteList?: string;
   fundingTokenInfo?: ITokenInfo;
   projectTokenInfo?: ITokenInfo;
@@ -29,6 +31,7 @@ export interface IWizardState {
 @autoinject
 export abstract class BaseStage {
   protected seedConfig: ISeedConfig;
+  protected lbpConfig: ILbpConfig;
   protected stageNumber: number;
   protected maxStage: number;
   protected stageStates: Array<IStageState>;

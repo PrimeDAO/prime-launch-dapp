@@ -1,4 +1,4 @@
-<template bindable="name, subTitle1, btnText, poweredBy, logo, disabled">
+<template bindable="name, subTitle1, btnText, poweredBy, logo, route, disabled">
   <div class="launch-box-container">
     <div class="topSection">
       <div class="heading heading3 title">${name}</div>
@@ -6,7 +6,7 @@
     </div>
     <div class="buttons">
       <div class="buttonContainer">
-        <a class="button1 ${disabled}" route-href="route: selectPackage">${btnText}</a>
+        <a class="button1 ${disabled}" route-href.bind="route">${btnText}</a>
       </div>
       <div class="moreInfoContainer">
         <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">Request Information</a>
