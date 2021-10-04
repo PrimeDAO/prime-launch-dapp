@@ -40,8 +40,8 @@
         text-align: center;
         border-bottom: 3px solid $BG01;
         cursor: pointer;
-        color: $Neutral02;
-        padding: 12px 8px;
+        color: $Neutral04;
+        padding: 12px 12px 12px 8px;
         align-items: center;
         justify-items: start;
         column-gap: 12px;
@@ -57,9 +57,24 @@
           }
         }
 
+        &.active,
+        &:active {
+          border-bottom-color: $Secondary01;
+
+          .icon {
+            img {
+              &.color {
+                display: inline-block;
+              }
+              &.mono {
+                display: none;
+              }
+            }
+          }
+        }
+
         &:hover {
           background-color: $BG02;
-          border-bottom-color: $Secondary01;
 
           .icon {
             img {
@@ -108,6 +123,9 @@
           color: $Neutral04;
           text-decoration: none;
         }
+        &.active {
+          color: $Secondary01;
+        }
       }
     }
   }
@@ -136,7 +154,7 @@
 
 @media screen and (max-width: 1072px) {
   .navbar-container {
-    grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
+    grid-template-columns: calc(#{$BodyPaddingLeftRight} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
 
     .products {

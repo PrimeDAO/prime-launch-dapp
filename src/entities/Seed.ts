@@ -13,7 +13,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { NumberService } from "services/NumberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
-import { ISeedConfig } from "newSeed/seedConfig";
+import { ISeedConfig } from "newLaunch/seed/seedConfig";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -110,6 +110,10 @@ export class Seed {
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
+  /**
+   * balance of project tokens in this contract
+   */
+  public fundingTokenBalance: BigNumber;
 
   public userIsWhitelisted: boolean;
   /**
@@ -367,6 +371,7 @@ export class Seed {
     this.seedAmountRequired = await this.contract.seedAmountRequired();
     this.feeRemainder = await this.contract.feeRemainder();
     this.projectTokenBalance = await this.projectTokenContract.balanceOf(this.address);
+    this.fundingTokenBalance = await this.fundingTokenContract.balanceOf(this.address);
     this.hasEnoughProjectTokens =
       this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
   }
@@ -379,6 +384,18 @@ export class Seed {
     } else {
       return BigNumber.from(0);
     }
+  }
+
+  async fund(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.projectTokenContract.transfer(this.contract.address, this.seedAmountRequired?.add(this.feeRemainder)))
+      .then(async (receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
   }
 
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
@@ -403,6 +420,73 @@ export class Seed {
       });
   }
 
+  async addWhitelist(whitelistAddress: Set<Address>): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.whitelistBatch([...whitelistAddress]),
+    ).then((receipt) => {
+      if (receipt){
+        this.hydrateUser();
+        return receipt;
+      }
+    });
+  }
+
+  async addToWhitelist(address: Address): Promise<TransactionReceipt> {
+    if (address){
+      return this.transactionsService.send(
+        () => this.contract.whitelist(address),
+      ).then((receipt) => {
+        if (receipt){
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+    }
+  }
+
+  async removeFromWhitelist(address: Address): Promise<TransactionReceipt> {
+    if (address){
+      return this.transactionsService.send(
+        () => this.contract.unwhitelist(address),
+      ).then((receipt) => {
+        if (receipt){
+          this.hydateClosedOrPaused();
+          return receipt;
+        }
+      });
+    }
+  }
+
+  async pause (): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.pause())
+      .then((receipt) => {
+        if (receipt){
+          this.hydateClosedOrPaused();
+          return receipt;
+        }
+      });
+  }
+
+  async unPause(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.unpause())
+      .then((receipt) => {
+        if (receipt){
+          this.hydateClosedOrPaused();
+          return receipt;
+        }
+      });
+  }
+
+  async close(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.close())
+      .then((receipt) => {
+        if (receipt){
+          this.hydateClosedOrPaused();
+          return receipt;
+        }
+      });
+  }
+
   public fundingTokenAllowance(): Promise<BigNumber> {
     return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
   }
@@ -413,6 +497,30 @@ export class Seed {
 
   public retrieveFundingTokens(): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.retrieveFundingTokens())
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  public retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
+    if (receiver){
+      return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateTokensState();
+            this.hydrateUser();
+            return receipt;
+          }
+        });
+    }
+  }
+
+  public withdrawFundingTokens(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.withdraw())
       .then((receipt) => {
         if (receipt) {
           this.hydrateTokensState();

@@ -1,126 +1,78 @@
 @import "styles/styles.scss";
 
-@mixin defaultTransition($properties...) {
-  $transition: ();
-  @each $property in $properties {
-    $transition: append($transition, ($property 0.16s ease-in-out), $separator: comma);
-  }
-  -webkit-transition: $transition;
-  -moz-transition: $transition;
-  -ms-transition: $transition;
-  -o-transition: $transition;
-  transition: $transition;}
-
 .dropdown {
-  border: 1px solid $Border01;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-  background: $BG01;
   color: $Neutral02;
-  border: 1px solid $Border01;
-  border-radius: 10px;
-  font-family: Inter;
-  width: fit-content;
-  height: fit-content;
+  transition: all 300ms;
   position: relative;
-  &:focus-within, &:active, &.menuShowing {
-    border-color: $Secondary02;
+  .selectedLabel, .menu {
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid #403453;
+    box-sizing: border-box;
+    width: 100%;
   }
-
-  @include defaultTransition(border-radius, box-shadow, border-color);
-
-  > .selectedLabel {
+  .selectedLabel {
     display: flex;
+    background: $BG01;
     justify-content: space-between;
-    cursor: pointer;
-    margin: 11px;
-    margin-right: 0;
-
+    align-items: center;
+    line-height: 33px;
+    white-space: nowrap;
+    padding: 6px 10px;
     .itemContent {
-      margin-right: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
-    div.el-icon-arrow {
-      margin-right: 0.7em;
-      transition: all 0.3s;
-    }
-  }
-
-  &.menuShowing{
-    border-radius: 10px 10px 0 0;
-    &>.selectedLabel {
-      .el-icon-arrow {
-        transform: rotate(-180deg);
-      }
+    i {
+      transform: rotateX(0deg);
+      transition: transform 300ms ease-in-out;
     }
   }
 
-  > .menu {
-    overflow: hidden;
-    cursor: pointer;
-    position: absolute;
-    width: inherit;
-    background: #1b1722;
-    border: 1px solid #a258a7;
-    border-radius: 0 0 10px 10px;
-    border-top: 1px solid #403453;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-    left: -1px;
-    z-index: 1;
-    opacity: 1;
-    height: fit-content;
-    overflow-y: auto;
-    // max-height: 225px;
-    @include defaultTransition(transform, opacity, border-radius);
-
-    &::-webkit-scrollbar-button:vertical {
-      display: block;
-      height: 2px;
-    }
-    &::-webkit-scrollbar-track {
-      border-radius: 5px;
+  z-index: 1;
+  &.show {
+    i {
+      transform: rotateX(-180deg);
     }
 
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      background-color: $Neutral02;
-      border: 3px solid $BG01;
-    }
-
-    transform: scaleY(1);
-    transform-origin: top;
-
-    &.hide {
-      // doing it this way retains the width, for sizing the dropdown
-      // visibility: hidden;
-      transform: scaleY(0);
-      border-radius: 10px;
-      border-top: unset;
-      opacity: 0;
-    }
-
-    > .option {
-      color: $Neutral04;
-      padding-top: 6px;
-      padding-bottom: 6px;
-      padding-left: 12px;
-      padding: 12px;
-    }
-
-    > .option:last-of-type {
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-    }
-
-    > .option:hover {
-      background: $Border01;
+    .menu {
+      opacity: 1;
+      clip-path: circle(250% at 50% 20px);
     }
   }
 }
 
-.rotate-90 {
-  transform: rotate(90deg);
+.menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 36px;
+  opacity: 1;
+  background: transparent;
+  transition: clip-path 300ms ease-out;
+  clip-path: circle(0 at 50% 20px);
+  border-color: $Secondary02 !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+
+  hr {
+    border: none;
+    border-bottom: 1px solid $Border01;
+    background: $BG01;
+    padding: 0px;
+    margin: 0;
+    padding-bottom: 7px;
+  }
+
+  .option {
+    padding: 12px;
+    background: $BG01;
+    transition: all 300ms;
+    &:hover {
+      background: $Border01;
+      color: $Neutral04;
+    }
+    &:last-child {
+      border-radius: 0 0 10px 10px;
+    }
+  }
 }

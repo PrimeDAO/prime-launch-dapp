@@ -5,13 +5,14 @@
       value.bind="value" 
       min.bind="min" 
       step.bind="step" 
-      max.bind="max" id="range1" 
-      data.bind="name"/>
+      max.bind="max" 
+      id.bind="name"
+    />
     <output class="first output left">
-      <span>${val1}</span> ${projectToken}
+      <span>${values.projectToken}%</span> ${projectToken}
     </output>
     <output class="first output right">
-      <span>${val2}</span> ${fundingToken}
+      <span>${values.fundingToken}%</span> ${fundingToken}
     </output>
   </span>
 </template>

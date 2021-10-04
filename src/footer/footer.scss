@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
 
 @mixin logo($url) {
   -webkit-mask: url("../../static/" + $url) no-repeat center;
@@ -6,19 +6,16 @@
 }
 
 .footerContainer {
-  width: calc(100% - 40px);
-  padding: 0 20px;
-  color: $Border01;
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
-
   .sections {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     column-gap: 5px;
-    padding: 5px 0;
+    padding: 0 20px;
+    color: $Border01;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
 
     .section {
       &.governed-by,
@@ -89,9 +86,15 @@
   > hr {
     background-color: $Border01;
     height: 1px;
-    width: 100vw;
-    position: absolute;
-    margin: 0 -20px;
+    margin-left: -$BodyPaddingLeftRight;
+    margin-right: -$BodyPaddingLeftRight;
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  > hr {
+    margin-left: -$BodyPaddingLeftRightMobile;
+    margin-right: -$BodyPaddingLeftRightMobile;
   }
 }
 

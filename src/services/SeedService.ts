@@ -2,7 +2,7 @@ import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { SortService } from "services/SortService";
-import { ISeedConfig } from "./../newSeed/seedConfig";
+import { ISeedConfig } from "../newLaunch/seed/seedConfig";
 import { IpfsService } from "./IpfsService";
 import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";

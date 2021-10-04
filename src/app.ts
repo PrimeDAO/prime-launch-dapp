@@ -166,14 +166,14 @@ export class App {
         title: "SEED Dashboard",
       },
       {
-        moduleId: PLATFORM.moduleName("./newSeed/newSeed"),
+        moduleId: PLATFORM.moduleName("./newLaunch/seed/newSeed"),
         nav: false,
         name: "newSeed",
         route: ["newSeed"],
         title: "Register New SEED",
       },
       {
-        moduleId: PLATFORM.moduleName("./newLbp/newLbp"),
+        moduleId: PLATFORM.moduleName("./newLaunch/lbp/newLbp"),
         nav: false,
         name: "newLBP",
         route: ["newLBP"],
@@ -194,11 +194,11 @@ export class App {
         title: "Select Your Package",
       },
       {
-        moduleId: PLATFORM.moduleName("./adminDashboard/adminDashboard"),
+        moduleId: PLATFORM.moduleName("./admin/seeds/dashboard/dashboard"),
         nav: false,
-        name: "adminDashboard",
-        route: ["adminDashboard"],
-        title: "Administer a Launch",
+        name: "seedAdminDashboard",
+        route: ["admin/seeds/dashboard/:address?"],
+        title: "Administer a Seed Launch",
       },
 
     ]);

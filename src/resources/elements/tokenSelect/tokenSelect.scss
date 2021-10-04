@@ -4,6 +4,18 @@
   .dropdown {
     width: 300px;
   }
+
+  .placeholder {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: left;
+    .spinner {
+      color: $Secondary03-dev;
+    }
+  }
+
   .tokenItem {
     display: flex;
     align-items: center;
