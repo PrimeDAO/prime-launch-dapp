@@ -4,7 +4,6 @@
   color: $Neutral02;
   transition: all 300ms;
   position: relative;
-  width: 200px;
   .selectedLabel, .menu {
     cursor: pointer;
     border-radius: 10px;
@@ -17,8 +16,13 @@
     background: $BG01;
     justify-content: space-between;
     align-items: center;
-    height: 46px;
+    line-height: 33px;
+    white-space: nowrap;
     padding: 6px 10px;
+    .itemContent {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     i {
       transform: rotateX(0deg);
       transition: transform 300ms ease-in-out;
