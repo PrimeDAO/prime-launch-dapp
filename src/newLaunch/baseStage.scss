@@ -709,6 +709,10 @@
       line-height: 20px;
       margin-bottom: 5px;
     }
+
+    #geoBlock+label {
+      margin-bottom: unset;
+    }
     .summaryContainer {
       margin-bottom: 30px;
       word-break: break-word;
