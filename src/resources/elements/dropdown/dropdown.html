@@ -5,7 +5,7 @@
       <div class="el-icon-arrow"><i class="fa fa-angle-down"></i></div>
     </div>
     <div ref="menu" class="menu" mutation-observer.call="menuChanged()">
-      <hr />
+      <hr ref="divider" />
       <!-- array of divs each containing whatever you want to be displayed in the dropdown menu -->
       <div ref="options" class="options">
         <slot></slot>

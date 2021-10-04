@@ -18,6 +18,7 @@ export class Dropdown {
   private menu: HTMLElement;
   private options: HTMLElement;
   private titleText: string;
+  private divider: HTMLHRElement;
 
   async attached(): Promise<void> {
     document.addEventListener("click", (e: MouseEvent) => {
@@ -46,7 +47,7 @@ export class Dropdown {
      */
     this.dropdownOptions = Array.from(this.options.children);
     this.dropdownOptions.forEach((item, index) => {
-      if (item.tagName !== "HR") {
+      if (item !== this.divider) {
         item.classList.add("option");
         item.addEventListener("click", (e) => this.handleOptionSelected(e, index));
       }
