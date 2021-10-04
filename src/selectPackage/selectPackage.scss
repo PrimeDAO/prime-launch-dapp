@@ -66,19 +66,16 @@
           margin-bottom: 11px;
           .check, .noCheck {
             display: grid;
-            align-items: center;
+            align-items: start;
             justify-content: center;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            padding: 3px;
-            color: $Black;
+            line-height: 25px; // align with header
+            font-size: 20px;
           }
           .check {
-            background-color: $AlertGreen;
+            color: $AlertGreen;
           }
           .noCheck {
-            background-color: $AlertOrange;
+            color: $AlertOrange;
           }
           .benefit-header {
             line-height: 25px;
