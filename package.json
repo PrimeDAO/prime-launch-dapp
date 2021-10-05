@@ -35,6 +35,7 @@
     "aurelia-bootstrapper": "^2.3.3",
     "aurelia-dialog": "^2.0.0",
     "aurelia-event-aggregator": "^1.0.3",
+    "aurelia-path": "^1.1.7",
     "aurelia-typed-observable-plugin": "^0.4.2",
     "axios": "^0.21.1",
     "cids": "^1.1.7",
