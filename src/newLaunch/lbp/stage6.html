@@ -18,7 +18,7 @@
             Project Website
           </div>
           <div>
-            <a href=${lbpConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${lbpConfig.general.projectWebsite}</a>
+            <a href.bind="lbpConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${lbpConfig.general.projectWebsite}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -34,7 +34,7 @@
             Whitepaper
           </div>
           <div class="ellipses">
-            <a href=${lbpConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${lbpConfig.general.whitepaper}</a>
+            <a href.bind="lbpConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${lbpConfig.general.whitepaper}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -42,7 +42,7 @@
             Github Link
           </div>
           <div class="ellipses">
-            <a href=${lbpConfig.general.github} target="_blank" rel="noopener noreferrer">${lbpConfig.general.github}</a>
+            <a href.bind="lbpConfig.general.github" target="_blank" rel="noopener noreferrer">${lbpConfig.general.github}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -52,7 +52,7 @@
               <div class="header">Custom Link</div>
               <div class="header">URL</div>
               <div class="cell">${customLink.media}</div>
-              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+              <div class="cell ellipses"><a href.bind="customLink.url" target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
