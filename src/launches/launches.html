@@ -36,9 +36,9 @@
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
             </div>
-            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
+            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
             </div> -->
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="eslink cell body ${seed.canGoToDashboard ? 'hot' : '' }"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(seed, $event)"></i></div>
@@ -71,9 +71,9 @@
               <time-left seed.to-view="seed" hide-icons largest></time-left>
             </div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei"></formatted-number>
+            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
             </div>
-            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei"></formatted-number>
+            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
             </div> -->
             <div class="eslink cell body ${seed.canGoToDashboard ? 'hot' : '' }" click.trigger="gotoEtherscan(seed, $event)"><i class="fa fa-external-link-alt"></i></div>
           </a>

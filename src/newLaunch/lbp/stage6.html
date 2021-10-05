@@ -108,7 +108,7 @@
           <div class="heading heading4">Maximum Project Token</div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply | ethwei" />
+              <formatted-number value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply | ethwei:wizardState.projectTokenInfo.decimals" />
             </div>
             <div>${wizardState.projectTokenSymbol}</div>
           </div>
@@ -123,7 +123,7 @@
               <div class="header">Vesting (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei" />
+                <formatted-number value.bind="distrib.amount | ethwei:wizardState.projectTokenInfo.decimals" />
               </div>
               <div class="cell">${distrib.cliff}</div>
               <div class="cell">${distrib.vest}</div>
@@ -156,7 +156,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei" />
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei:wizardState.projectTokenInfo.decimals" />
             </div>
             <div>${wizardState.projectTokenInfo.symbol}</div>
             <img class="logoImage"
@@ -165,7 +165,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei" />
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
             <img class="logoImage"
