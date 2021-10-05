@@ -6,6 +6,7 @@
   top: 0;
   left: 0;
   width: -webkit-fill-available;
+  width: -moz-available;
   display: grid;
   grid-auto-flow: column;
   align-items: center;
