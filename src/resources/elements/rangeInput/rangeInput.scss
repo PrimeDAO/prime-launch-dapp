@@ -51,7 +51,7 @@ $track-background: linear-gradient(90deg, #a258a7 0%, #ff497a 50%, #8668fc 50%, 
     grid-area: range;
     width: 100%;
     box-shadow: 0 0 10px transparent;
-    height: 0px !important;
+    height: 0px;
     border: none;
     padding: 5px 0;
     &:focus {
