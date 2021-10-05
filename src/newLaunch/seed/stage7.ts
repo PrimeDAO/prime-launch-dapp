@@ -40,8 +40,8 @@ export class Stage7 extends BaseStage {
     // this.seedConfig.seedDetails.fundingMax = toWei("100").toString();
     // this.seedConfig.seedDetails.pricePerToken = toWei(".5").toString();
     // this.wizardState.projectTokenInfo.symbol = "PRIME";
-    const distributableSeeds = this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax))
-      / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken));
+    const distributableSeeds = this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals))
+      / this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals));
     this.wizardState.requiredSeedFee = distributableSeeds * this.seedFee;
     this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredSeedFee;
   }
