@@ -3,7 +3,7 @@
     <formatted-number
       class="tokenbalance"
       average
-      value.to-view="balance | ethwei"
+      value.to-view="balance | ethwei:tokenInfo.decimals"
       placement.to-view="placement"></formatted-number>
   </span>
   <span else class="tokenbalance">--</span>

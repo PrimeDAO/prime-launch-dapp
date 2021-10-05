@@ -1,3 +1,4 @@
+import { ITokenInfo } from "services/TokenTypes";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, containerless, customElement, bindable } from "aurelia-framework";
 import { DisposableCollection } from "services/DisposableCollection";
@@ -17,6 +18,7 @@ export class TokenBalance {
   private checking = false;
   private account: string;
   private contract: IErc20Token;
+  private tokenInfo: ITokenInfo;
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -41,6 +43,7 @@ export class TokenBalance {
     this.account = this.ethereumService.defaultAccountAddress;
 
     this.contract = this.tokenService.getTokenContract(this.tokenAddress);
+    this.tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.tokenAddress);
     this.getBalance();
   }
 

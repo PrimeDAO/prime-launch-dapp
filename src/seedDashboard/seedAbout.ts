@@ -1,4 +1,5 @@
-import { containerless } from "aurelia-framework";
+import { EthereumService } from "services/EthereumService";
+import { containerless, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { Seed } from "entities/Seed";
 
@@ -7,6 +8,8 @@ export class SeedAbout{
 
   @bindable seed: Seed;
   @bindable type: string;
+
+  constructor(private ethereumService: EthereumService) {}
 
   linkIcons = new Map<string, string>([
     ["twitter", "fab fa-twitter"],
@@ -30,5 +33,10 @@ export class SeedAbout{
 
   iconClassForLinkType(type: string): string {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
+  }
+
+  @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
+  get showAdminDashboardLink(): boolean {
+    return this.seed?.userHydrated && (this.ethereumService.defaultAccountAddress === this.seed?.admin);
   }
 }

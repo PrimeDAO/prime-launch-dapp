@@ -161,7 +161,7 @@
         background-color: $BG02;
         border-radius: 8px;
         align-items: start;
-        padding: 28px 28px;
+        padding: 28px;
 
         &:not(:last-child) {
           margin-bottom: 18px;
@@ -365,6 +365,7 @@
       .links {
         display: flex;
         flex-wrap: wrap;
+        margin-bottom: 42px;
 
         a {
           color: $Neutral02;
@@ -402,6 +403,37 @@
 
         a > div {
           display: inline-block;
+        }
+      }
+
+      .adminPage {
+        border-radius: 8px;
+        background-color: $BG02;
+        padding: 28px;
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "title title"
+          "body doit";
+        align-items: self-end;
+        row-gap: 8px;
+        column-gap: 12px;
+
+        .description {
+          grid-area: title;
+          font-size: 22px;
+          padding-top: 16px;
+          padding-bottom: 8px;
+        }
+
+        .body {
+          grid-area: body;
+          margin-bottom: 0;
+        }
+
+        .doit {
+          grid-area: doit;
         }
       }
     }
@@ -559,6 +591,7 @@
       .seedAbout {
         margin: 0 10%;
         text-align: center;
+        justify-self: center;
 
         &.onecolumn {
           display: unset;
@@ -583,6 +616,16 @@
               margin-right: 0;
             }
           }
+        }
+
+        .adminPage {
+          grid-template-columns: auto;
+          grid-template-areas:
+            "title"
+            "body"
+            "doit";
+
+          row-gap: 16px;
         }
       }
     }

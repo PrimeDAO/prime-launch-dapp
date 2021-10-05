@@ -27,7 +27,7 @@
         </div>
         <div class="raised">
           <div class="amount">$<formatted-number
-              value.to-view="seed.amountRaised | ethwei"
+              value.to-view="seed.amountRaised | ethwei:seed.fundingTokenInfo.decimals"
               thousands-separated></formatted-number>
           </div>
           <div class="denomination">USD raised</div>
@@ -129,7 +129,7 @@
               <div class="container">
                 <div class="token">${seed.projectTokenInfo.symbol}</div>
                 <div class="subsection subtext">Claimable: <formatted-number
-                    value.to-view="seed.userClaimableAmount | ethwei"
+                    value.to-view="seed.userClaimableAmount | ethwei:seed.projectTokenInfo.decimals"
                     thousands-separated></formatted-number>
                 </div>
               </div>
@@ -137,7 +137,7 @@
             <div class="equals">&nbsp;</div>
             <div class="output">
               <formatted-number
-                value.to-view="seed.userPendingAmount | ethwei"
+                value.to-view="seed.userPendingAmount | ethwei:seed.projectTokenInfo.decimals"
                 average></formatted-number>
             </div>
             <div class="units2">
@@ -169,7 +169,7 @@
           <div class="help">
             <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all of your previously-submitted contributions"></question-mark>
           </div>
-          <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei" thousands-separated></formatted-number>
+          <div class="vestedMessage subtext">You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>
             ${seed.fundingTokenInfo.symbol} tokens</div>
           <div class="doit"><button class="submitButton button1" disabled.to-view="!seed.userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
@@ -189,11 +189,11 @@
       <div class="section seedSummary">
         <div class="label targetLabel">FUNDING TARGET</div>
         <div class="value target">
-          <formatted-number value.to-view="seed.target | ethwei" average></formatted-number>
+          <formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
         </div>
         <div class="label maxLabel">MAX</div>
         <div class="value max">
-          <formatted-number value.to-view="seed.cap | ethwei" average></formatted-number>
+          <formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
         </div>
         <div class="label valuationLabel">VALUATION</div>
         <div class="value valuation">$ <formatted-number

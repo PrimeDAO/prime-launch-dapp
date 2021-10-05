@@ -22,5 +22,10 @@
         </a>
       </template>
     </div>
+    <div class="adminPage" if.bind="showAdminDashboardLink">
+      <div class="description">Administration Dashboard</div>
+      <div class="body subtext">Access the Administration Dashboard to carry out administrative actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your seed.</div>
+      <div class="doit"><a class="button1" href="${`/admin/seeds/dashboard/${seed.address}`}">Access</a></div>
+    </div>
   </div>
 </template>

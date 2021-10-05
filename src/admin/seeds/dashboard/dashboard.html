@@ -33,7 +33,7 @@
                 Fund Seed
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei}
+                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
               </div>
               <div class="button1 small" click.delegate="selectedSeed.fund()">
                 Fund
@@ -83,7 +83,7 @@
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />

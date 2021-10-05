@@ -100,8 +100,7 @@ export class TokenService {
        * at this point we have at least some of the metadata, if not all, and
        * having the tokenInfo.id, we have a shot at getting a price for it from coingecko.
        *
-       * We'll go ahead an fill in some default values for the token.  But will reject
-       * tokens with decimals !== 18.
+       * We'll go ahead an fill in some default values for the token.
        */
       if (!tokenInfo.name) {
         tokenInfo.name = TokenService.DefaultNameSymbol;
@@ -111,9 +110,6 @@ export class TokenService {
       }
       if (!tokenInfo.decimals) {
         tokenInfo.decimals = TokenService.DefaultDecimals;
-      } else if (tokenInfo.decimals !== 18) {
-        reject(`Token must have 18 decimals: (${tokenInfo.name}/${tokenInfo.symbol}) : ${tokenAddress}`);
-        return;
       }
 
       if (!await this.isERC20Token(tokenInfo.address)) {

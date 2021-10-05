@@ -18,7 +18,7 @@
             Project Website
           </div>
           <div>
-            <a href=${seedConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${seedConfig.general.projectWebsite}</a>
+            <a href.bind="seedConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${seedConfig.general.projectWebsite}</a>
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -34,7 +34,7 @@
             Whitepaper
           </div>
           <div class="ellipses">
-            <a href=${seedConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${seedConfig.general.whitepaper}</a>
+            <a href.bind="seedConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${seedConfig.general.whitepaper}</a>
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -42,7 +42,7 @@
             Github Link
           </div>
           <div class="ellipses">
-            <a href=${seedConfig.general.github} target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
+            <a href.bind="seedConfig.general.github" target="_blank" rel="noopener noreferrer">${seedConfig.general.github}</a>
           </div>
         </div>
         <div class="stageSeedDetails">
@@ -52,7 +52,7 @@
               <div class="header">Custom Link</div>
               <div class="header">URL</div>
               <div class="cell">${customLink.media}</div>
-              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+              <div class="cell ellipses"><a href.bind="customLink.url" target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
@@ -119,7 +119,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei" />
+              <formatted-number value.bind="seedConfig.tokenDetails.maxSeedSupply | ethwei:wizardState.projectTokenInfo.decimals" />
             </div>
             <div>${wizardState.projectTokenInfo.symbol}</div>
           </div>
@@ -134,7 +134,7 @@
               <div class="header">Vesting (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei" />
+                <formatted-number value.bind="distrib.amount | ethwei:wizardState.projectTokenInfo.decimals" />
               </div>
               <div class="cell">${distrib.cliff}</div>
               <div class="cell">${distrib.vest}</div>
@@ -152,7 +152,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei" />
+              <formatted-number value.bind="seedConfig.seedDetails.pricePerToken | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
           </div>
@@ -163,7 +163,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei" />
+              <formatted-number value.bind="seedConfig.seedDetails.fundingTarget | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div if.to-view="wizardState.fundingToken">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingToken">
@@ -177,7 +177,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei" />
+              <formatted-number value.bind="seedConfig.seedDetails.fundingMax | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingTokenInfo">
@@ -218,7 +218,7 @@
             Whitelist
           </div>
           <div class="ellipses" if.to-view="seedConfig.seedDetails.whitelist">
-            <a href="${seedConfig.seedDetails.whitelist}" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
+            <a href.bind="seedConfig.seedDetails.whitelist" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
           </div>
           <div else>
             [optional input not supplied]
@@ -229,7 +229,7 @@
             Legal Disclaimer
           </div>
           <div class="ellipses" if.to-view="seedConfig.seedDetails.legalDisclaimer">
-            <a href=${seedConfig.seedDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
+            <a href.bind="seedConfig.seedDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
           </div>
           <div else>
             [optional input not supplied]

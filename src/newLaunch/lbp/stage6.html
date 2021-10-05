@@ -18,7 +18,7 @@
             Project Website
           </div>
           <div>
-            <a href=${lbpConfig.general.projectWebsite} target="_blank" rel="noopener noreferrer">${lbpConfig.general.projectWebsite}</a>
+            <a href.bind="lbpConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${lbpConfig.general.projectWebsite}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -34,7 +34,7 @@
             Whitepaper
           </div>
           <div class="ellipses">
-            <a href=${lbpConfig.general.whitepaper} target="_blank" rel="noopener noreferrer">${lbpConfig.general.whitepaper}</a>
+            <a href.bind="lbpConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${lbpConfig.general.whitepaper}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -42,7 +42,7 @@
             Github Link
           </div>
           <div class="ellipses">
-            <a href=${lbpConfig.general.github} target="_blank" rel="noopener noreferrer">${lbpConfig.general.github}</a>
+            <a href.bind="lbpConfig.general.github" target="_blank" rel="noopener noreferrer">${lbpConfig.general.github}</a>
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -52,7 +52,7 @@
               <div class="header">Custom Link</div>
               <div class="header">URL</div>
               <div class="cell">${customLink.media}</div>
-              <div class="cell ellipses"><a href=${customLink.url} target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+              <div class="cell ellipses"><a href.bind="customLink.url" target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
             </template>
           </div>
           <div else>[optional input not supplied]</div>
@@ -94,8 +94,8 @@
             Project Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink 
-              address.to-view="lbpConfig.tokenDetails.projectTokenAddress" 
+            <etherscanlink
+              address.to-view="lbpConfig.tokenDetails.projectTokenAddress"
               text.to-view="lbpConfig.tokenDetails.projectTokenAddress | smallHexString">
             </etherscanlink>
             <div>${wizardState.projectTokenInfo.symbol}</div>
@@ -108,7 +108,7 @@
           <div class="heading heading4">Maximum Project Token</div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply | ethwei" />
+              <formatted-number value.bind="lbpConfig.tokenDetails.maxProjectTokenSupply | ethwei:wizardState.projectTokenInfo.decimals" />
             </div>
             <div>${wizardState.projectTokenSymbol}</div>
           </div>
@@ -123,7 +123,7 @@
               <div class="header">Vesting (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei" />
+                <formatted-number value.bind="distrib.amount | ethwei:wizardState.projectTokenInfo.decimals" />
               </div>
               <div class="cell">${distrib.cliff}</div>
               <div class="cell">${distrib.vest}</div>
@@ -140,8 +140,8 @@
             Funding Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink 
-              address.to-view="lbpConfig.lbpDetails.fundingTokenAddress" 
+            <etherscanlink
+              address.to-view="lbpConfig.lbpDetails.fundingTokenAddress"
               text.to-view="lbpConfig.lbpDetails.fundingTokenAddress | smallHexString">
             </etherscanlink>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
@@ -156,7 +156,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei" />
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountProjectToken | ethwei:wizardState.projectTokenInfo.decimals" />
             </div>
             <div>${wizardState.projectTokenInfo.symbol}</div>
             <img class="logoImage"
@@ -165,7 +165,7 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei" />
+              <formatted-number value.bind="lbpConfig.lbpDetails.amountFundingToken | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div>${wizardState.fundingTokenInfo.symbol}</div>
             <img class="logoImage"
@@ -186,7 +186,7 @@
             Start Weights
           </div>
           <div>
-            ${lbpConfig.lbpDetails.startWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${lbpConfig.lbpDetails.startWeight} ${wizardState.projectTokenInfo.symbol} &lt;-&gt; ${100 - lbpConfig.lbpDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -202,7 +202,7 @@
             End Weights
           </div>
           <div>
-            ${lbpConfig.lbpDetails.endWeight} ${wizardState.projectTokenInfo.symbol} <-> ${100 - lbpConfig.lbpDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${lbpConfig.lbpDetails.endWeight} ${wizardState.projectTokenInfo.symbol} &lt;-&gt; ${100 - lbpConfig.lbpDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLbpDetails">
@@ -210,7 +210,7 @@
             Legal Disclaimer
           </div>
           <div class="ellipses" if.to-view="lbpConfig.lbpDetails.legalDisclaimer">
-            <a href=${lbpConfig.lbpDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${lbpConfig.lbpDetails.legalDisclaimer}</a>
+            <a href.bind="lbpConfig.lbpDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${lbpConfig.lbpDetails.legalDisclaimer}</a>
           </div>
           <div else>
             [optional input not supplied]
