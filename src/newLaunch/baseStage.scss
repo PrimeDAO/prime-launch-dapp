@@ -599,7 +599,7 @@
           width: 22px;
           height: 22px;
           position: absolute;
-          left: 2px;
+          left: 4px;
           background: white;
           border-radius: 50%;
           transition: all 0.3s ease;
@@ -754,6 +754,10 @@
     label {
       line-height: 20px;
       margin-bottom: 5px;
+    }
+
+    #geoBlock+label {
+      margin-bottom: unset;
     }
     .summaryContainer {
       margin-bottom: 30px;
