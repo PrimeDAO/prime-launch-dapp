@@ -69,7 +69,11 @@
           <div class="form">
             <div class="input">
               <div class="fundingInput">
-                <numeric-input disabled.to-view="!seed.contributingIsOpen" value.bind="fundingTokenToPay" placeholder="0.0"></numeric-input>
+                <numeric-input
+                  disabled.to-view="!seed.contributingIsOpen"
+                  value.bind="fundingTokenToPay"
+                  decimals.bind="seed.fundingTokenInfo.decimals"
+                  placeholder="0.0"></numeric-input>
                 <div if.to-view="seed.contributingIsOpen" class="maxButton">
                   <a href="#" click.delegate="handleMaxBuy()">MAX</a>
                 </div>
@@ -119,6 +123,7 @@
                 <numeric-input
                   disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
                   value.bind="projectTokenToReceive"
+                  decimals.bind="seed.projectTokenInfo.decimals"
                   placeholder="0.0"></numeric-input>
                 <div class="maxButton" if.to-view="seed.claimingIsOpen && seed.userCanClaim">
                   <a href="#" click.delegate="handleMaxClaim()">MAX</a>

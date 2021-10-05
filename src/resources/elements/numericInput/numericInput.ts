@@ -35,6 +35,10 @@ export class NumericInput {
    * if true then value is converted from wei to eth for editing
    */
   @bindable.booleanAttr public isWei?: boolean = true;
+  /**
+   * if isWei, then the number of decimals involved in the conversion
+   */
+  @bindable.number public decimals?: number = 18;
   @bindable.booleanAttr public outputAsString?: boolean = false;
   @bindable.string public placeholder = "";
 
@@ -58,7 +62,7 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
-          let value: BigNumber | string = this.isWei ? toWei(newValue) : newValue;
+          let value: BigNumber | string = this.isWei ? toWei(newValue, this.decimals) : newValue;
           if (this.outputAsString) {
             value = value.toString();
           }
@@ -77,7 +81,7 @@ export class NumericInput {
       try {
         let newStringValue: string;
         if (this.isWei) {
-          newStringValue = fromWei(newValue.toString());
+          newStringValue = fromWei(newValue.toString(), this.decimals);
         } else {
           newStringValue = newValue.toString();
         }

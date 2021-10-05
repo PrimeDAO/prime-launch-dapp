@@ -37,6 +37,7 @@
               output-as-string="true"
               id="ppt"
               value.bind="seedConfig.seedDetails.pricePerToken"
+              decimals.bind="wizardState.fundingTokenInfo.decimals"
               placeholder="1.5">
             </numeric-input>
 
@@ -55,6 +56,7 @@
                 output-as-string="true"
                 id="fundingTarget"
                 value.bind="seedConfig.seedDetails.fundingTarget"
+                decimals.bind="wizardState.fundingTokenInfo.decimals"
                 placeholder="100">
               </numeric-input>
             </div>
@@ -73,6 +75,7 @@
               output-as-string="true"
               id="fundingMax"
               value.bind="seedConfig.seedDetails.fundingMax"
+              decimals.bind="wizardState.fundingTokenInfo.decimals"
               placeholder="1000">
             </numeric-input>
           </div>
