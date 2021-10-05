@@ -218,7 +218,7 @@
             Whitelist
           </div>
           <div class="ellipses" if.to-view="seedConfig.seedDetails.whitelist">
-            <a href="${seedConfig.seedDetails.whitelist}" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
+            <a href.bind="seedConfig.seedDetails.whitelist" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.whitelist}</a>
           </div>
           <div else>
             [optional input not supplied]
@@ -229,7 +229,7 @@
             Legal Disclaimer
           </div>
           <div class="ellipses" if.to-view="seedConfig.seedDetails.legalDisclaimer">
-            <a href=${seedConfig.seedDetails.legalDisclaimer} target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
+            <a href.bind="seedConfig.seedDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${seedConfig.seedDetails.legalDisclaimer}</a>
           </div>
           <div else>
             [optional input not supplied]
