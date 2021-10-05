@@ -1,15 +1,42 @@
 @import "styles/colors.scss";
 
+$track-background: linear-gradient(90deg, #a258a7 0%, #ff497a 50%, #8668fc 50%, #a258a7 100%);
+
+@mixin track-style {
+  display: flex;
+  align-items: center;
+  height: 10px;
+  border-radius: 5px;
+  background-image: var(--track-background, $track-background);
+    &:focus {
+      outline: none;
+      box-shadow: 0px 0px 10px #8668FC;
+    }
+}
+
+@mixin thumb-style {
+  position: relative;
+  top: calc(-50% - 2px);
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: ew-resize;
+}
+
 .range-input {
   display: inline-grid;
   grid-template-areas: "range range" "token1 token2";
   font-size: 14px;
+  margin: 0 -15px;
 
   .output {
     color: $Neutral03;
     text-transform: uppercase;
     line-height: 17px;
     padding-top: 7px;
+    margin: 0 15px;
 
     &.left {
       grid-area: token1;
@@ -25,41 +52,29 @@
   input[type="range"] {
     grid-area: range;
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    grid-area: range;
     width: 100%;
-    height: 0;
-    background: #8668fc; 
-    border-radius: 5px;
-    background-image: linear-gradient(
-      90deg, #a258a7 0%, 
-      #ff497a 80%, 
-      #8668fc 80%, 
-      #a258a7 100%);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    box-sizing: border-box;
-    background: #f9f6f9; /* Neutral04 */
-    border: 2.5px solid #292235; /* BG02 */
-    cursor: ew-resize;
-  }
-
-  input[type=range]::-webkit-slider-runnable-track  {
-    -webkit-appearance: none;
-    box-shadow: none;
+    box-shadow: 0 0 10px transparent;
+    height: 0px; // for FF
     border: none;
-    background: transparent;
-    margin: 0 -15px;
-  }
 
-  input[type="range"]:focus-within,
-  input[type="range"]:focus-visible {
-    outline: none;
-    box-shadow: 0px 0px 10px #8668FC;
+    &::-webkit-slider-runnable-track {
+      @include track-style;
+      border-radius: 6px;
+    }
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      @include thumb-style;
+    }
+    &::-moz-range-track {
+      -moz-appearance: none;
+      @include track-style;
+    }
+    &::-moz-range-thumb {
+      @include thumb-style;
+    }
   }
 }
