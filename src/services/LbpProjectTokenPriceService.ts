@@ -41,15 +41,29 @@ export class LbpProjectTokenPriceService {
     this.pricePerFundingToken = pricePerFundingToken;
   }
 
-  getMarketCap(projectTokenInPool: number, fundingTokenInPool: number, projectTokenWeight: number): number {
+  getMarketCap(
+    projectTokenInPool: number,
+    fundingTokenInPool: number,
+    projectTokenWeight: number,
+  ): number {
     const projectTokenMcap =
-      this.getPriceAtWeight(projectTokenInPool, fundingTokenInPool, projectTokenWeight, this.pricePerFundingToken) *
+      this.getPriceAtWeight(
+        projectTokenInPool,
+        fundingTokenInPool,
+        projectTokenWeight,
+        this.pricePerFundingToken,
+      ) *
       this.projectTokenTotalSupply;
 
     return Math.round(projectTokenMcap);
   }
 
-  getPriceAtWeight(projectTokenInPool: number, fundingTokenInPool: number, projectTokenWeight: number, pricePerFundingToken: number): number {
+  getPriceAtWeight(
+    projectTokenInPool: number,
+    fundingTokenInPool: number,
+    projectTokenWeight: number,
+    pricePerFundingToken: number,
+  ): number {
     const fundingTokenValue = fundingTokenInPool * pricePerFundingToken;
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
     const projectTokenValue = scalingFactor * fundingTokenValue;
