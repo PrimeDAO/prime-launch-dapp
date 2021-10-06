@@ -94,6 +94,7 @@
                 <input
                   id="startTime"
                   value.bind="startTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
@@ -136,6 +137,7 @@
                 <input
                   id="endTime"
                   value.bind="endTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
@@ -159,7 +161,13 @@
 
         <!-- TODO: Launch Preview -->
         <div class="infoInput launchPreview">
-          <launch-preview class="previewBox"></launch-preview>
+          <launch-preview class="previewBox"
+            duration.bind="launchDuration",
+            startWeight.bind = "lbpConfig.lbpDetails.startWeight",
+            endWeight.bind = "lbpConfig.lbpDetails.endWeight",
+            fee.bind = "seedFee"
+          >
+          </launch-preview>
         </div>
 
         <!-- TODO: Disclaimer -->

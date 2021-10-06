@@ -35,6 +35,8 @@ export class Stage4 extends BaseStage {
   sliderStartWeights: HTMLInputElement;
   sliderEndWeights: HTMLInputElement;
 
+  launchDuration = -1;
+
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
@@ -62,6 +64,7 @@ export class Stage4 extends BaseStage {
 
     this.startDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.startDate = date.toJSDate();
+      this.setLaunchDuration();
     });
 
     this.endDatePicker = new Litepicker({
@@ -71,6 +74,7 @@ export class Stage4 extends BaseStage {
 
     this.endDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.endDate = date.toJSDate();
+      this.setLaunchDuration();
     });
 
     if (!this.tokenList) {
@@ -152,6 +156,11 @@ export class Stage4 extends BaseStage {
     this.lbpConfig.lbpDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
 
+  setLaunchDuration(): void {
+    if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) return;
+    this.launchDuration = (this.setLbpConfigEndDate().getTime() - this.setLbpConfigStartDate().getTime()) / 1000 / 60 / 60 / 24 || 0;
+  }
+
   async validateInputs(): Promise<string> {
     let message: string;
     // Split the start and endt time
@@ -212,5 +221,4 @@ export class Stage4 extends BaseStage {
     this.stageState.verified = !message;
     return Promise.resolve(message);
   }
-
 }

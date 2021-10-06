@@ -1,4 +1,5 @@
 import { autoinject } from "aurelia-framework";
+import { bindable } from "aurelia-typed-observable-plugin";
 import "./launch-preview.scss";
 
 interface IHighLow {
@@ -17,19 +18,14 @@ interface ILaunchPreviewConfig {
 export class LaunchPreview {
 
   private launchPreviewConfig: ILaunchPreviewConfig;
+  private marketCapLow: number;
+  private marketCapHigh: number;
+  private priceRangeLow: number;
+  private priceRangeHigh: number;
 
-  constructor() {
-    this.launchPreviewConfig = {
-      marketCap: {
-        low: 250200000,
-        high: 16500000,
-      },
-      priceRange: {
-        low: 250200000,
-        high: 16500000,
-      },
-      duration: -1,
-      fee: Math.round(0.01 * 100),
-    };
-  }
+  @bindable duration: number;
+  @bindable fee: number;
+  @bindable startWeight: number;
+  @bindable endWeight: number;
+
 }

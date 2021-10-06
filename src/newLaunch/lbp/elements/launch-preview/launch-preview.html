@@ -34,11 +34,14 @@
       </div>
       <div class="duration">
         <h1>Duration</h1>
-        <p>${launchPreviewConfig.duration} days</p>
+        <p if.bind="duration >= 0">
+          ${ duration.toFixed(1) } days
+        </p>
+        <p else> -- </p>
       </div>
       <div class="fee">
         <h1>Swap Fee</h1>
-        <p>${launchPreviewConfig.fee}%</p>
+        <p>${(fee * 100).toFixed(1)}%</p>
       </div>
     </div>
   </div>
