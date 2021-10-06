@@ -370,9 +370,8 @@
         a {
           color: $Neutral02;
           margin-bottom: 16px;
-          display: grid;
-          grid-template-columns: auto auto;
-          column-gap: 8px;
+          display: flex;
+          align-items: baseline;
 
           &:hover {
             text-decoration: none;
@@ -380,15 +379,16 @@
 
           .icon {
             font-size: 14px;
-            border-radius: 12px;
+            border-radius: 50%;
             color: $BG01;
             background-color: $Neutral02;
-            padding: 2px;
+            padding: 13px;
             width: 16px;
             height: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            margin-inline-end: 8px;
           }
 
           .name {
@@ -610,7 +610,6 @@
           flex-direction: column;
 
           a {
-            display: flex;
             justify-content: center;
             .name {
               margin-right: 0;
