@@ -19,13 +19,15 @@ export class RangeInput {
   get values(): IValues {
     const validValue = (this.maxAllowed) > this.value ? this.value : this.maxAllowed;
 
-    this.rangeInput.style.backgroundImage = `linear-gradient(
+    const style = `linear-gradient(
       90deg, 
       #a258a7 0%, 
-      #ff497a ${(validValue)}%, 
-      #8668fc ${(validValue)}%, 
+      #ff497a ${validValue}%, 
+      #8668fc ${validValue}%, 
       #a258a7 100%
     )`;
+
+    this.rangeInput.style.setProperty("--track-background", style);
 
     return {
       projectToken: validValue,
