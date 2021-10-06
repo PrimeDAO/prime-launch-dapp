@@ -101,10 +101,12 @@ export class Stage3 extends BaseStage {
       message = "No valid image found at the provided project token logo URL";
     }
 
-    if (!message && !this.seedConfig.tokenDetails.maxSeedSupply || this.seedConfig.tokenDetails.maxSeedSupply === "0") {
+    if (!message && (!this.seedConfig.tokenDetails.maxSeedSupply || (this.seedConfig.tokenDetails.maxSeedSupply === "0"))) {
       message = "Please enter a number greater than zero for Maximum Supply";
     } else if (this.seedConfig.seedDetails.fundingMax && this.seedConfig.seedDetails.pricePerToken &&
-      this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
+      this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
+      this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply, this.wizardState.projectTokenInfo.decimals)) *
+        this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else {
       // Check the token distribution

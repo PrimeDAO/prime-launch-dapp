@@ -612,6 +612,7 @@
     .launchPreview {
       display: inline-grid;
       width: -webkit-fill-available;
+      width: -moz-available;
       grid-template-rows: 22px auto;
       row-gap: 20px;
       min-height: 203px;
@@ -620,7 +621,7 @@
       margin-top: 16px;
       background-color: $BG01;
       h3 {
-        font-family: 'Aeonik';
+        font-family: "Aeonik";
         font-size: 24px;
         font-weight: 700;
         color: $Secondary02;
@@ -756,7 +757,7 @@
       margin-bottom: 5px;
     }
 
-    #geoBlock+label {
+    #geoBlock + label {
       margin-bottom: unset;
     }
     .summaryContainer {

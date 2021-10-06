@@ -5,7 +5,7 @@
     <div class="infoContainer">
       <div class="heading heading2 title">Launch Details</div>
       <div class="subtext">
-        Use the <a href="/documentation/contribute-to-a-launch" target="_blank" rel="noopener noreferrer">Launch Guide</a> to select suitable launch details or 
+        Use the <a href="/documentation/contribute-to-a-launch" target="_blank" rel="noopener noreferrer">Launch Guide</a> to select suitable launch details or
         <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> with a Launch expert.
       </div>
       <div>
@@ -37,6 +37,7 @@
               output-as-string="true"
               id="amountProjectToken"
               value.bind="lbpConfig.lbpDetails.amountProjectToken"
+              decimals.bind="wizardState.projectTokenInfo.decimals"
               disabled.bind="!wizardState.projectTokenInfo.name"
               placeholder="">
             </numeric-input>
@@ -44,10 +45,9 @@
             <img
               ref="logoIcon"
               if.bind="wizardState.projectTokenInfo.logoURI"
-              src.bind="wizardState.projectTokenInfo.logoURI"
-            />
+              src.bind="wizardState.projectTokenInfo.logoURI" />
             <div class="text">
-              ${wizardState.projectTokenInfo.name} 
+              ${wizardState.projectTokenInfo.name}
               <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel>
             </div>
           </div>
@@ -56,6 +56,7 @@
               output-as-string="true"
               id="amountFundingToken"
               value.bind="lbpConfig.lbpDetails.amountFundingToken"
+              decimals.bind="wizardState.fundingTokenInfo.decimals"
               disabled.bind="!wizardState.fundingTokenInfo.name"
               placeholder="">
             </numeric-input>
@@ -63,10 +64,9 @@
             <img
               ref="logoIcon"
               if.bind="wizardState.fundingTokenInfo.logoURI"
-              src.bind="wizardState.fundingTokenInfo.logoURI"
-            />
+              src.bind="wizardState.fundingTokenInfo.logoURI" />
             <div class="text">
-              ${wizardState.fundingTokenInfo.name} 
+              ${wizardState.fundingTokenInfo.name}
               <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel>
             </div>
           </div>
@@ -104,14 +104,13 @@
           </div>
           <div>
             <label for="startWeight">Start Weights</label>
-            <range-input name="start-weight" 
+            <range-input name="start-weight"
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
               set-weight.bind="setLbpConfigStartWeight"
               value.bind="lbpConfig.lbpDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
-              ref="sliderStartWeights"
-            >
+              ref="sliderStartWeights">
             </range-input>
           </div>
         </div>
@@ -135,7 +134,7 @@
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
-                  id="endTime" 
+                  id="endTime"
                   value.bind="endTime"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -147,14 +146,13 @@
           </div>
           <div>
             <label for="endWeight">End Weights</label>
-            <range-input name="end-weight" 
+            <range-input name="end-weight"
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
               value.bind="lbpConfig.lbpDetails.endWeight"
               max-allowed.bind="lbpConfig.lbpDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"
-              ref="sliderEndWeights"
-            >
+              ref="sliderEndWeights">
             </range-input>
           </div>
         </div>

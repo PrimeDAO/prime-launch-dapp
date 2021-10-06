@@ -284,22 +284,22 @@ export class Seed {
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-      this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price()));
+      this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price(), this.fundingTokenInfo.decimals));
       /**
        * in units of fundingToken
        */
       this.target = await this.contract.softCap();
-      // this.targetPrice = this.numberService.fromString(fromWei(this.target)) * (this.fundingTokenInfo.price ?? 0);
+      // this.targetPrice = this.numberService.fromString(fromWei(this.target, this.fundingTokenInfo.decimals)) * (this.fundingTokenInfo.price ?? 0);
       /**
        * in units of fundingToken
        */
       this.cap = await this.contract.hardCap();
       await this.hydateClosedOrPaused();
-      // this.capPrice = this.numberService.fromString(fromWei(this.cap)) * (this.fundingTokenInfo.price ?? 0);
+      // this.capPrice = this.numberService.fromString(fromWei(this.cap, this.fundingTokenInfo.decimals)) * (this.fundingTokenInfo.price ?? 0);
       this.whitelisted = await this.contract.permissionedSeed();
       this.vestingDuration = (await this.contract.vestingDuration());
       this.vestingCliff = (await this.contract.vestingCliff());
-      this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply()))
+      this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply(), this.fundingTokenInfo.decimals))
               * (this.fundingTokenInfo.price ?? 0);
 
       await this.hydrateTokensState();

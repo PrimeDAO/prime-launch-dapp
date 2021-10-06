@@ -60,8 +60,8 @@ export class SeedDashboard {
 
     let fraction = 0;
     if (this.seed?.target) {
-      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised)) /
-        this.numberService.fromString(fromWei(this.seed.target));
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised, this.seed.fundingTokenInfo.decimals)) /
+        this.numberService.fromString(fromWei(this.seed.target, this.seed.fundingTokenInfo.decimals));
     }
 
     if (fraction === 0) {
@@ -80,7 +80,7 @@ export class SeedDashboard {
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
   get projectTokenReward(): number {
     return (this.seed?.fundingTokensPerProjectToken > 0) ?
-      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0"))) / this.seed?.fundingTokensPerProjectToken
+      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0", this.seed.fundingTokenInfo.decimals))) / this.seed?.fundingTokensPerProjectToken
       : 0;
   }
 
@@ -88,8 +88,8 @@ export class SeedDashboard {
   @computedFrom("seed.seedRemainder", "seed.seedAmountRequired")
   get percentProjectTokensLeft(): number {
     return this.seed?.seedAmountRequired?.gt(0) ?
-      ((this.numberService.fromString(fromWei(this.seed.seedRemainder)) /
-        this.numberService.fromString(fromWei(this.seed.seedAmountRequired))) * 100)
+      ((this.numberService.fromString(fromWei(this.seed.seedRemainder, this.seed.projectTokenInfo.decimals)) /
+        this.numberService.fromString(fromWei(this.seed.seedAmountRequired, this.seed.projectTokenInfo.decimals))) * 100)
       : 0;
   }
 
@@ -253,7 +253,7 @@ export class SeedDashboard {
         .then(async (receipt) => {
           if (receipt) {
             await this.hydrateUserData();
-            this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
+            this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
           }
         });

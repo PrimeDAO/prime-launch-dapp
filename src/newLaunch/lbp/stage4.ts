@@ -84,6 +84,7 @@ export class Stage4 extends BaseStage {
             "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
+            "0x7ba433d48c43e3ceeb2300bfbf21db58eecdcd1a", // USDC having 6 decimals
           ];
       }
     }
@@ -169,7 +170,7 @@ export class Stage4 extends BaseStage {
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.lbpConfig.lbpDetails.amountProjectToken) > this.numberService.fromString(this.lbpConfig.tokenDetails.maxProjectTokenSupply)) {
-      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxProjectTokenSupply)} tokens`;
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.lbpConfig.tokenDetails.maxProjectTokenSupply, this.wizardState.projectTokenInfo.decimals)} tokens`;
     } else if (!Utils.isAddress(this.lbpConfig.lbpDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token";
     } else if (!(parseFloat(this.lbpConfig.lbpDetails.amountFundingToken) >= 0)) {

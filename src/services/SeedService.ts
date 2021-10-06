@@ -1,3 +1,4 @@
+import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
@@ -51,6 +52,7 @@ export class SeedService {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
+    private tokenService: TokenService,
   ) {
     /**
      * otherwise singleton is the default
@@ -193,6 +195,8 @@ export class SeedService {
       operation: 0,
     } as any;
 
+    const projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(config.tokenDetails.projectTokenAddress);
+
     const seedArguments = [
       safeAddress,
       config.seedDetails.adminAddress,
@@ -205,7 +209,7 @@ export class SeedService {
       Date.parse(config.seedDetails.endDate) / 1000,
       [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
-      toWei(SeedService.seedFee),
+      toWei(SeedService.seedFee, projectTokenInfo.decimals),
       this.asciiToHex(metaDataHash),
     ];
 

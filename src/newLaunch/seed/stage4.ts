@@ -81,6 +81,7 @@ export class Stage4 extends BaseStage {
             "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
             "0xc778417E063141139Fce010982780140Aa0cD5Ab",
             "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
+            "0x7ba433d48c43e3ceeb2300bfbf21db58eecdcd1a", // USDC having 6 decimals
           ];
       }
     }
@@ -151,7 +152,10 @@ export class Stage4 extends BaseStage {
       message = "Please enter a number greater than zero for the Funding Maximum";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
-    } else if (this.seedConfig.tokenDetails.maxSeedSupply && this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax)) > this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply)) * this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken))) {
+    } else if (this.seedConfig.tokenDetails.maxSeedSupply &&
+      this.numberService.fromString(fromWei(this.seedConfig.seedDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
+      this.numberService.fromString(fromWei(this.seedConfig.tokenDetails.maxSeedSupply, this.wizardState.projectTokenInfo.decimals)) *
+        this.numberService.fromString(fromWei(this.seedConfig.seedDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!(this.seedConfig.seedDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";

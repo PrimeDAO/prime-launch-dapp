@@ -85,6 +85,7 @@
           <numeric-input
             output-as-string="true"
             id="maxSeedSupply"
+            decimals.bind="wizardState.projectTokenInfo.decimals"
             value.bind="seedConfig.tokenDetails.maxSeedSupply">
           </numeric-input>
         </div>
@@ -110,6 +111,7 @@
                 <div class="columnHeaders">Amount</div>
                 <numeric-input
                   output-as-string="true"
+                  decimals.bind="wizardState.projectTokenInfo.decimals"
                   value.bind="distrib.amount"
                   placeholder="0" class="numberInput">
                 </numeric-input>
