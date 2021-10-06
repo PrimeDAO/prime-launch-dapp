@@ -54,7 +54,6 @@ export class ContractsService {
         (this.networkInfo?.chainName !== info?.chainName) ||
         (this.networkInfo?.provider !== info?.provider)) {
         this.networkInfo = info;
-        this.initializeContracts();
       }
     };
 
@@ -97,7 +96,7 @@ export class ContractsService {
 
   public createProvider(): any {
     let signerOrProvider;
-    if (this.accountAddress) {
+    if (this.accountAddress && this.networkInfo?.provider) {
       signerOrProvider = Signer.isSigner(this.accountAddress) ? this.accountAddress : this.networkInfo.provider.getSigner(this.accountAddress);
     } else {
       signerOrProvider = this.ethereumService.readOnlyProvider;
