@@ -568,6 +568,9 @@
       margin-bottom: 32px;
       background: $Gradient01;
       cursor: pointer;
+      &.isInactive {
+        background: $Secondary05;
+      }
       i.yes {
         position: absolute;
         left: 10px;
