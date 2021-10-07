@@ -21,12 +21,12 @@ export interface ILBPManagerDeployedEventArgs {
 @autoinject
 export class LbpManagerService {
 
-  public lbpMgrs: Map<Address, LbpManager>;
+  public lbpManagers: Map<Address, LbpManager>;
   public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
 
   @computedFrom("lbps.size")
-  public get lbpsArray(): Array<LbpManager> {
-    return this.lbpMgrs ? Array.from(this.lbpMgrs.values()) : [];
+  public get lbpManagersArray(): Array<LbpManager> {
+    return this.lbpManagers ? Array.from(this.lbpManagers.values()) : [];
   }
 
   public initializing = true;
@@ -55,7 +55,7 @@ export class LbpManagerService {
     this.container.registerTransient(LbpManager);
 
     this.eventAggregator.subscribe("Lbp.InitializationFailed", async (lbpAddress: string) => {
-      this.lbpMgrs.delete(lbpAddress);
+      this.lbpManagers.delete(lbpAddress);
     });
 
     this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
@@ -91,7 +91,7 @@ export class LbpManagerService {
 
   public async ensureAllLbpsInitialized(): Promise<void> {
     await this.ensureInitialized();
-    for (const lbp of this.lbpsArray) {
+    for (const lbp of this.lbpManagersArray) {
       await lbp.ensureInitialized();
     }
   }
@@ -100,7 +100,7 @@ export class LbpManagerService {
     return this.initializedPromise = new Promise(
       (resolve: (value: void | PromiseLike<void>) => void,
         reject: (reason?: any) => void): void => {
-        if (!this.lbpMgrs?.size) {
+        if (!this.lbpManagers?.size) {
           try {
             const lbpMgrsMap = new Map<Address, LbpManager>();
             const filter = this.lbpManagerFactory.filters.LBPManagerDeployed();
@@ -114,19 +114,19 @@ export class LbpManagerService {
                    */
                   this.aureliaHelperService.createPropertyWatch(lbpMgr, "corrupt", (newValue: boolean) => {
                     if (newValue) { // pretty much the only case
-                      this.lbpMgrs.delete(lbpMgr.address);
+                      this.lbpManagers.delete(lbpMgr.address);
                     }
                   });
                   this.consoleLogService.logMessage(`loaded LBP: ${lbpMgr.address}`, "info");
                   lbpMgr.initialize(); // set this off asyncronously.
                 }
-                this.lbpMgrs = lbpMgrsMap;
+                this.lbpManagers = lbpMgrsMap;
                 this.initializing = false;
                 resolve();
               });
           }
           catch (error) {
-            this.lbpMgrs = new Map();
+            this.lbpManagers = new Map();
             this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
             this.initializing = false;
             reject();

@@ -23,19 +23,19 @@ export class FeaturedLaunches {
 
   constructor(
     private seedService: SeedService,
-    private lbpService: LbpManagerService,
+    private lbpManagerService: LbpManagerService,
   ) {}
 
   async attached(): Promise<void> {
     this.loading = true;
 
     await this.seedService.ensureAllSeedsInitialized();
-    await this.lbpService.ensureAllLbpsInitialized();
+    await this.lbpManagerService.ensureAllLbpsInitialized();
 
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
       .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
-      .concat((this.lbpService.lbpsArray as Array<ILaunch>)
-        .filter((lbp: LbpManager) => { return !lbp.uninitialized && !lbp.corrupt && lbp.hasNotStarted; }))
+      .concat((this.lbpManagerService.lbpManagersArray as Array<ILaunch>)
+        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && lbpMgr.hasNotStarted; }))
       .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
       .slice(0, 3)
     ;

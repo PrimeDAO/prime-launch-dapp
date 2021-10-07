@@ -25,6 +25,7 @@ export class LbpManager implements ILaunch {
   public contract: any;
   public address: Address;
   public lbpInitialized: boolean;
+  public poolFunded: boolean;
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
@@ -33,7 +34,6 @@ export class LbpManager implements ILaunch {
   /**
     * Is the lbp contract initialized and have enough project tokens to pay its obligations
     */
-  public hasEnoughProjectTokens: boolean;
   public initializing = true;
   public metadata: ILbpConfig;
   public metadataHash: Hash;
@@ -83,15 +83,19 @@ export class LbpManager implements ILaunch {
     return (this._now >= this.endTime);
   }
 
-  @computedFrom("hasEnoughProjectTokens")
+  @computedFrom("uninitialized")
+  get canGoToDashboard(): boolean {
+    return !this.uninitialized;
+  }
+
+  @computedFrom("lbpInitialized", "poolFunded")
   get uninitialized(): boolean {
-    return !this.hasEnoughProjectTokens;
+    return !this.lbpInitialized || !this.poolFunded;
   }
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
-
 
   constructor(
     private contractsService: ContractsService,
@@ -147,6 +151,7 @@ export class LbpManager implements ILaunch {
       await this.hydrateMetadata();
 
       this.lbpInitialized = await this.contract.initialized();
+      this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
       this.projectTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
