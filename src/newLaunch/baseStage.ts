@@ -40,8 +40,6 @@ export abstract class BaseStage {
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
 
-  protected readonly seedFee = .01;
-
   constructor(
     protected router: Router,
     protected eventAggregator: EventAggregator,
