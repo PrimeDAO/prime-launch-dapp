@@ -1,5 +1,5 @@
 import { toBigNumberJs } from "services/BigNumberService";
-import { IpfsService } from "./../services/IpfsService";
+import { IpfsService } from "services/IpfsService";
 import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
@@ -14,6 +14,7 @@ import { NumberService } from "services/NumberService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/seedConfig";
+import { ILaunch, LaunchType } from "services/launchTypes";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -27,9 +28,9 @@ interface IFunderPortfolio {
   feeClaimed: BigNumber;
 }
 
-
 @autoinject
-export class Seed {
+export class Seed implements ILaunch {
+  public launchType = LaunchType.Seed;
   public contract: any;
   public address: Address;
   public seedInitialized: boolean;

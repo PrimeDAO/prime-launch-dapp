@@ -1,0 +1,16 @@
+<template>
+  <div if.to-view="!loading">
+    <horizontal-scroller item-count.to-view="launches.length">
+      <template repeat.for="launch of launches">
+        <compose
+          view-model="../launchCards/launchCard"
+          view='${ launch.launchType === "seed" ? "../launchCards/seedCard.html" : "../launchCards/lbpCard.html" }'
+          model.bind="launch">
+        </compose>
+      </template>
+    </horizontal-scroller>
+  </div>
+  <div else class="loading">
+    <i class="fas fa-circle-notch fa-spin"></i>
+  </div>
+</template>

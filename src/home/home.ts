@@ -4,7 +4,6 @@ import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import "./home.scss";
-import { Seed } from "entities/Seed";
 import { Utils } from "services/utils";
 import axios from "axios";
 
@@ -12,8 +11,8 @@ import axios from "axios";
 @autoinject
 export class Home {
 
-  featuredSeeds: Array<Seed> = null;
   subscriberEmail: string;
+  loading: boolean;
 
   constructor(
     private router: Router,
@@ -21,12 +20,6 @@ export class Home {
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService,
   ) {
-  }
-
-  attached(): void {
-    this.seedService.getFeaturedSeeds().then((seeds) => {
-      this.featuredSeeds = seeds;
-    });
   }
 
   navigate(href: string): void {
