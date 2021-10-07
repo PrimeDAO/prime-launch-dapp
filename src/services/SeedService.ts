@@ -2,7 +2,6 @@ import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
-import { SortService } from "services/SortService";
 import { ISeedConfig } from "../newLaunch/seed/seedConfig";
 import { IpfsService } from "./IpfsService";
 import { Hash, Address } from "./EthereumService";
@@ -150,28 +149,6 @@ export class SeedService {
     await this.ensureInitialized();
     for (const seed of this.seedsArray) {
       await seed.ensureInitialized();
-    }
-  }
-
-  private _featuredSeeds: Array<Seed>;
-
-  public async getFeaturedSeeds(): Promise<Array<Seed>> {
-
-    if (this._featuredSeeds) {
-      return this._featuredSeeds;
-    }
-    else {
-      await this.ensureAllSeedsInitialized();
-      // const network = this.featuredSeedsJson[this.ethereumService.targetedNetwork];
-      /**
-       * take the first three seeds in order of when they start(ed), if they either haven't
-       * started or are live.
-       */
-      // return network ? this._featuredSeeds = network.seeds
-      return this._featuredSeeds = this.seedsArray
-        .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
-        .sort((a: Seed, b: Seed) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
-        .slice(0, 3);
     }
   }
 

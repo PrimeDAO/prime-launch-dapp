@@ -1,19 +1,19 @@
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
-import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import "./launches.scss";
 import { Seed } from "entities/Seed";
 import { SortService } from "services/SortService";
 import { Utils } from "services/utils";
+import { SeedService } from "services/SeedService";
 
 @singleton(false)
 @autoinject
 export class Launches {
 
-  featuredSeeds: Array<Seed> = null;
   seeingMore = false;
+  loading: boolean;
 
   constructor(
     private router: Router,
@@ -21,10 +21,6 @@ export class Launches {
     private seedService: SeedService,
   ) {
     this.sort("starts"); // sort order will be ASC
-  }
-
-  async attached(): Promise<void> {
-    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
   }
 
   seeMore(yesNo: boolean): void {

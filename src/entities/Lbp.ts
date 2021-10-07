@@ -7,6 +7,7 @@ import { DateService } from "services/DateService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { Address, EthereumService, Hash } from "services/EthereumService";
 import { IpfsService } from "services/IpfsService";
+import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService from "services/TransactionsService";
@@ -18,7 +19,8 @@ export interface ILbpConfiguration {
 }
 
 @autoinject
-export class Lbp {
+export class Lbp implements ILaunch {
+  public launchType = LaunchType.LBP;
   public contract: any;
   public address: Address;
   public lbpInitialized: boolean;

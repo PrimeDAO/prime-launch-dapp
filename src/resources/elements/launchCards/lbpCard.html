@@ -2,7 +2,7 @@
   <a
     class="launchSummaryContainer ${seed.canGoToDashboard ? 'hot' : '' }"
     ref="container"
-    href.to-view="seed.canGoToDashboard ? `seed/${address}` : `${router.currentInstruction.fragment}`">
+    href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : `${router.currentInstruction.fragment}`">
     <div if.to-view="!loading" class="launchSummary">
       <div class="icon"><img src.to-view="seed.projectTokenInfo.logoURI" /></div>
       <div class="title ellipses">${seed.metadata.general.projectName}</div>

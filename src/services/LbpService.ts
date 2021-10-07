@@ -1,7 +1,6 @@
 import { Lbp } from "entities/Lbp";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Address } from "services/EthereumService";
-import { SortService } from "services/SortService";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks } from "services/EthereumService";
@@ -33,7 +32,6 @@ export class LbpService {
 
   private lbpFactory: any;
   private initializedPromise: Promise<void>;
-  private _featuredLps: Array<Lbp>;
   /**
    * when the factory was created, pulled by hand from etherscan.io
    */
@@ -97,26 +95,6 @@ export class LbpService {
     }
   }
 
-  public async getFeaturedLbps(): Promise<Array<Lbp>> {
-
-    if (this._featuredLps) {
-      return this._featuredLps;
-    }
-    else {
-      await this.ensureAllLbpsInitialized();
-      // const network = this.featuredLbpsJson[this.ethereumService.targetedNetwork];
-      /**
-       * take the first three lbps in order of when they start(ed), if they either haven't
-       * started or are live.
-       */
-      // return network ? this._featuredLbps = network.lbps
-      return this._featuredLps = this.lbpsArray
-        .filter((lbp: Lbp) => { return !lbp.uninitialized && !lbp.corrupt && lbp.hasNotStarted; })
-        .sort((a: Lbp, b: Lbp) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
-        .slice(0, 3);
-    }
-  }
-
 
   private async getLbps(): Promise<void> {
     return this.initializedPromise = new Promise(
@@ -128,20 +106,20 @@ export class LbpService {
             const filter = this.lbpFactory.filters.SeedCreated();
             this.lbpFactory.queryFilter(filter, this.startingBlockNumber)
               .then(async (txEvents: Array<IStandardEvent<ILbpCreatedEventArgs>>) => {
-                for (const event of txEvents) {
-                  const lbp = this.createLbpFromConfig(event);
-                  lbpsMap.set(lbp.address, lbp);
-                  /**
-                   * remove the seed if it is corrupt
-                   */
-                  this.aureliaHelperService.createPropertyWatch(lbp, "corrupt", (newValue: boolean) => {
-                    if (newValue) { // pretty much the only case
-                      this.lbps.delete(lbp.address);
-                    }
-                  });
-                  this.consoleLogService.logMessage(`loaded seed: ${lbp.address}`, "info");
-                  lbp.initialize(); // set this off asyncronously.
-                }
+                // for (const event of txEvents) {
+                //   const lbp = this.createLbpFromConfig(event);
+                //   lbpsMap.set(lbp.address, lbp);
+                //   /**
+                //    * remove the seed if it is corrupt
+                //    */
+                //   this.aureliaHelperService.createPropertyWatch(lbp, "corrupt", (newValue: boolean) => {
+                //     if (newValue) { // pretty much the only case
+                //       this.lbps.delete(lbp.address);
+                //     }
+                //   });
+                //   this.consoleLogService.logMessage(`loaded seed: ${lbp.address}`, "info");
+                //   lbp.initialize(); // set this off asyncronously.
+                // }
                 this.lbps = lbpsMap;
                 this.initializing = false;
                 resolve();

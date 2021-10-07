@@ -1,18 +1,16 @@
 <template>
   <div class="page animated-page au-animate launches">
-    <div class="section featured" if.to-view="featuredSeeds && featuredSeeds.length">
+    <div class="section featured" show.to-view="!loading">
       <div class="title heading heading1">Featured</div>
       <div class="launches">
-        <horizontal-scroller item-count.to-view="featuredSeeds.length">
-          <launch-summary repeat.for="seed of featuredSeeds" address.to-view="seed.address"></launch-summary>
-        </horizontal-scroller>
+        <featuredlaunches loading.bind="loading"></featuredlaunches>
       </div>
     </div>
     <div class="section launches">
       <div class="title heading heading1">Launches</div>
-      <div if.to-view="featuredSeeds === null" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+      <div if.to-view="loading" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
       <!-- Desktop grid -->
-      <div if.to-view="featuredSeeds !== null" class="grid launchGrid">
+      <div if.to-view="!loading" class="grid launchGrid">
         <div class="row header">
           <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
           <div class="cell projectToken header sortable" click.delegate="sort('projectToken')">PROJECT TOKEN</div>
@@ -46,7 +44,7 @@
         </template>
       </div>
       <!-- Mobile grid -->
-      <div if.to-view="featuredSeeds !== null" class="grid launchGridMobile">
+      <div if.to-view="!loading" class="grid launchGridMobile">
         <div class="row header">
           <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
           <div class="cell projectToken header sortable" click.delegate="sort('projectToken')">PROJECT TOKEN</div>
@@ -80,11 +78,11 @@
         </template>
       </div>
       <template if.to-view="seedService.seedsArray.length > 4">
-        <div if.to-view="featuredSeeds !== null && !seeingMore" class="seeMore">
+        <div if.to-view="!loading && !seeingMore" class="seeMore">
           <div class="arrow">&darr;</div>
           <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
         </div>
-        <div if.to-view="featuredSeeds !== null && seeingMore" class="seeMore">
+        <div if.to-view="!loading && seeingMore" class="seeMore">
           <div class="arrow">&uarr;</div>
           <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
         </div>
