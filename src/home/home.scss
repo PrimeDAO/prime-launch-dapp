@@ -32,15 +32,15 @@
       .title {
         white-space: normal;
         color: $Shade06;
-        padding-bottom: 0.1em;
+        padding-bottom: 1.6px;
         max-width: 645px;
       }
 
       > .subtitle {
         font-family: "Inter";
         font-weight: bold;
-        font-size: 1.4rem;
-        max-width: 35rem;
+        font-size: 24px;
+        max-width: 560px;
         color: $Neutral03;
         margin-bottom: 200px;
         white-space: normal;
@@ -89,7 +89,7 @@
             }
           }
 
-          .subtitle {
+          > .subtitle {
             color: $Neutral03;
             font-size: 16px;
             font-family: "Inter";
@@ -203,7 +203,7 @@
           font-size: 16px;
           line-height: 24px;
           div {
-            margin-bottom: 1em;
+            margin-bottom: 16px;
           }
         }
         .launchButton,
