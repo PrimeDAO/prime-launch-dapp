@@ -172,7 +172,7 @@
               <question-mark allow-html text="TODO: Explanation here"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer" click.delegate="toggleLegalDisclaimer()">
+          <div class="checkboxContainer ${!lbpConfig.lbpDetails.legalDisclaimer ? 'isInactive' : ''}" click.delegate="toggleLegalDisclaimer()">
             <i class="fas fa-check yes"></i>
             <i class="fas fa-times no"></i>
             <div class="checkbox">
