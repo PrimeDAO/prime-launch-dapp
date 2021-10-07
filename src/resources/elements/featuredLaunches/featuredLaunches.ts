@@ -1,9 +1,9 @@
 import { autoinject, bindingMode, customElement } from "aurelia-framework";
 import { PLATFORM } from "aurelia-pal";
-import { Lbp } from "entities/Lbp";
+import { LbpManager } from "entities/LbpManager";
 import { Seed } from "entities/Seed";
 import { ILaunch } from "services/launchTypes";
-import { LbpService } from "services/LbpService";
+import { LbpManagerService } from "services/LbpManagerService";
 import { SeedService } from "services/SeedService";
 import { SortService } from "services/SortService";
 import { bindable } from "aurelia-typed-observable-plugin";
@@ -23,7 +23,7 @@ export class FeaturedLaunches {
 
   constructor(
     private seedService: SeedService,
-    private lbpService: LbpService,
+    private lbpService: LbpManagerService,
   ) {}
 
   async attached(): Promise<void> {
@@ -35,7 +35,7 @@ export class FeaturedLaunches {
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
       .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
       .concat((this.lbpService.lbpsArray as Array<ILaunch>)
-        .filter((lbp: Lbp) => { return !lbp.uninitialized && !lbp.corrupt && lbp.hasNotStarted; }))
+        .filter((lbp: LbpManager) => { return !lbp.uninitialized && !lbp.corrupt && lbp.hasNotStarted; }))
       .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
       .slice(0, 3)
     ;

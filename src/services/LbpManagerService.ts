@@ -1,4 +1,4 @@
-import { Lbp } from "entities/Lbp";
+import { LbpManager } from "entities/LbpManager";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Address } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
@@ -12,25 +12,26 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { ContractNames, ContractsService, IStandardEvent } from "services/ContractsService";
 import { EventConfigException } from "services/GeneralEvents";
 
-export interface ILbpCreatedEventArgs {
-  newLbp: Address;
-  beneficiary: Address;
+export interface ILBPManagerDeployedEventArgs {
+  lbpManager: Address;
+  admin: Address;
+  metadata: string;
 }
 
 @autoinject
-export class LbpService {
+export class LbpManagerService {
 
-  public lbps: Map<Address, Lbp>;
+  public lbpMgrs: Map<Address, LbpManager>;
   public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
 
   @computedFrom("lbps.size")
-  public get lbpsArray(): Array<Lbp> {
-    return this.lbps ? Array.from(this.lbps.values()) : [];
+  public get lbpsArray(): Array<LbpManager> {
+    return this.lbpMgrs ? Array.from(this.lbpMgrs.values()) : [];
   }
 
   public initializing = true;
 
-  private lbpFactory: any;
+  private lbpManagerFactory: any;
   private initializedPromise: Promise<void>;
   /**
    * when the factory was created, pulled by hand from etherscan.io
@@ -51,14 +52,14 @@ export class LbpService {
     /**
      * otherwise singleton is the default
      */
-    this.container.registerTransient(Lbp);
+    this.container.registerTransient(LbpManager);
 
     this.eventAggregator.subscribe("Lbp.InitializationFailed", async (lbpAddress: string) => {
-      this.lbps.delete(lbpAddress);
+      this.lbpMgrs.delete(lbpAddress);
     });
 
     this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
-      12787753 : 8896151;
+      13372668 : 9423409;
   }
 
 
@@ -77,7 +78,7 @@ export class LbpService {
     /**
      * don't need to reload the seedfactory on account change because we never send txts to it.
      */
-    this.lbpFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    this.lbpManagerFactory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
     /**
      * seeds will take care of themselves on account changes
      */
@@ -95,38 +96,37 @@ export class LbpService {
     }
   }
 
-
   private async getLbps(): Promise<void> {
     return this.initializedPromise = new Promise(
       (resolve: (value: void | PromiseLike<void>) => void,
         reject: (reason?: any) => void): void => {
-        if (!this.lbps?.size) {
+        if (!this.lbpMgrs?.size) {
           try {
-            const lbpsMap = new Map<Address, Lbp>();
-            const filter = this.lbpFactory.filters.SeedCreated();
-            this.lbpFactory.queryFilter(filter, this.startingBlockNumber)
-              .then(async (txEvents: Array<IStandardEvent<ILbpCreatedEventArgs>>) => {
-                // for (const event of txEvents) {
-                //   const lbp = this.createLbpFromConfig(event);
-                //   lbpsMap.set(lbp.address, lbp);
-                //   /**
-                //    * remove the seed if it is corrupt
-                //    */
-                //   this.aureliaHelperService.createPropertyWatch(lbp, "corrupt", (newValue: boolean) => {
-                //     if (newValue) { // pretty much the only case
-                //       this.lbps.delete(lbp.address);
-                //     }
-                //   });
-                //   this.consoleLogService.logMessage(`loaded seed: ${lbp.address}`, "info");
-                //   lbp.initialize(); // set this off asyncronously.
-                // }
-                this.lbps = lbpsMap;
+            const lbpMgrsMap = new Map<Address, LbpManager>();
+            const filter = this.lbpManagerFactory.filters.LBPManagerDeployed();
+            this.lbpManagerFactory.queryFilter(filter, this.startingBlockNumber)
+              .then(async (txEvents: Array<IStandardEvent<ILBPManagerDeployedEventArgs>>) => {
+                for (const event of txEvents) {
+                  const lbpMgr = this.createLbpManagerFromConfig(event);
+                  lbpMgrsMap.set(lbpMgr.address, lbpMgr);
+                  /**
+                   * remove the seed if it is corrupt
+                   */
+                  this.aureliaHelperService.createPropertyWatch(lbpMgr, "corrupt", (newValue: boolean) => {
+                    if (newValue) { // pretty much the only case
+                      this.lbpMgrs.delete(lbpMgr.address);
+                    }
+                  });
+                  this.consoleLogService.logMessage(`loaded LBP: ${lbpMgr.address}`, "info");
+                  lbpMgr.initialize(); // set this off asyncronously.
+                }
+                this.lbpMgrs = lbpMgrsMap;
                 this.initializing = false;
                 resolve();
               });
           }
           catch (error) {
-            this.lbps = new Map();
+            this.lbpMgrs = new Map();
             this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
             this.initializing = false;
             reject();
@@ -136,9 +136,10 @@ export class LbpService {
     );
   }
 
-  private createLbpFromConfig(config: IStandardEvent<ILbpCreatedEventArgs>): Lbp {
-    const lbp = this.container.get(Lbp);
-    return lbp.create({ beneficiary: config.args.beneficiary, address: config.args.newLbp });
+  private createLbpManagerFromConfig(config: IStandardEvent<ILBPManagerDeployedEventArgs>): LbpManager {
+    const lbpMgr = this.container.get(LbpManager);
+    return lbpMgr.create({ admin: config.args.admin, address: config.args.lbpManager, metadata: config.args.metadata });
+    return null;
   }
 
 }

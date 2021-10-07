@@ -13,13 +13,14 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService from "services/TransactionsService";
 import { Utils } from "services/utils";
 
-export interface ILbpConfiguration {
+export interface ILbpManagerConfiguration {
   address: Address;
-  beneficiary: Address;
+  admin: Address;
+  metadata: Address;
 }
 
 @autoinject
-export class Lbp implements ILaunch {
+export class LbpManager implements ILaunch {
   public launchType = LaunchType.LBP;
   public contract: any;
   public address: Address;
@@ -186,7 +187,7 @@ export class Lbp implements ILaunch {
     return this.isPaused || this.isClosed;
   }
 
-  public create(config: ILbpConfiguration): Lbp {
+  public create(config: ILbpManagerConfiguration): LbpManager {
     this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
     return Object.assign(this, config);
   }
