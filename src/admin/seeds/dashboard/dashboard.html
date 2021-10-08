@@ -78,12 +78,12 @@
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen || selectedSeed.incomplete)">
+            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+                ${retrievableProjectTokenAmount() | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
