@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen)">
+            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen || selectedSeed.incomplete)">
               <div class="featureTitle">
                 Retrieve Project Tokens
               </div>
