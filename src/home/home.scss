@@ -228,6 +228,20 @@
   }
 }
 
+@media screen and (max-width: 1330px) {
+  .page.home {
+    .section {
+      &.top {
+        .moonshot {
+          img {
+            opacity: 0.25;
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 1072px) {
   .page.home {
     .section {
@@ -251,9 +265,6 @@
           left: 0;
           top: 0;
           overflow: hidden;
-          img {
-            opacity: 0.25;
-          }
         }
 
         > .subtitle {
