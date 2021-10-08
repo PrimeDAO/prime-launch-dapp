@@ -3,7 +3,7 @@ import { EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
 import { Router, RouteConfig, Redirect } from "aurelia-router";
-import { LbpService } from "services/LbpService";
+// import { LbpService } from "services/LbpService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 // import { fromWei } from "services/EthereumService";
@@ -16,7 +16,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
-    private lbpService: LbpService,
+    // private lbpService: LbpService,
     private ethereumService: EthereumService,
     tokenService: TokenService,
     private numberService: NumberService) {
