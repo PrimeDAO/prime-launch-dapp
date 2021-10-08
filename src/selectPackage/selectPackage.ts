@@ -7,7 +7,7 @@ export class SelectPackage {
   private nextRoute = "launch";
 
   constructor() {
-    this.launchFee = SeedService.launchFee * 100;
+    this.launchFee = SeedService.seedFee * 100;
   }
 
   activate(params: any, routeConfig: RouteConfig): void {
