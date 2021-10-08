@@ -2,8 +2,6 @@ import { ITokenInfo } from "services/TokenTypes";
 import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
-import { ISeedConfig } from "./seed/seedConfig";
-import { ILbpConfig } from "./lbp/lbpConfig";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -16,22 +14,20 @@ export interface IStageState {
 }
 
 export interface IWizardState {
-  seedHash?: Hash;
-  lbpHash?: Hash;
+  launchHash?: Hash;
   whiteList?: string;
   fundingTokenInfo?: ITokenInfo;
   projectTokenInfo?: ITokenInfo;
   requiredSeedDeposit?: number;
-  requiredSeedFee?: number;
-  seedAdminAddress?: Address;
-  seedStartDate?: string;
+  requiredLaunchFee?: number;
+  launchAdminAddress?: Address;
+  launchStartDate?: string;
 }
 
 @singleton(false)
 @autoinject
-export abstract class BaseStage {
-  protected seedConfig: ISeedConfig;
-  protected lbpConfig: ILbpConfig;
+export abstract class BaseStage<IConfig> {
+  protected launchConfig: IConfig;
   protected stageNumber: number;
   protected maxStage: number;
   protected stageStates: Array<IStageState>;
@@ -40,7 +36,7 @@ export abstract class BaseStage {
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
 
-  protected readonly seedFee = .01;
+  protected readonly launchFee = .01;
 
   constructor(
     protected router: Router,
