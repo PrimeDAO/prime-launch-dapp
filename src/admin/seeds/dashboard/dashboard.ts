@@ -8,6 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
+import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -84,6 +85,12 @@ export class SeedAdminDashboard {
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
+  }
+
+  retrievableProjectTokenAmount(): BigNumber {
+    return this.selectedSeed.minimumReached ? 
+      this.selectedSeed.projectTokenBalance.sub(this.selectedSeed.seedRemainder.add(this.selectedSeed.feeRemainder)) :
+      this.selectedSeed.projectTokenBalance;
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
