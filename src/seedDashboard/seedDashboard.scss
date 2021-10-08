@@ -502,13 +502,21 @@
 
       .tokenpriceLabel {
         grid-area: tokenpriceLabel;
+
+        .tokenPairContainer {
+          > img {
+            height: 25.75px;
+            width: 25.75px;
+          }
+        }
       }
 
       .tokenprice {
         grid-area: tokenprice;
-        font-size: 14px;
+        font-size: 15px;
         line-height: 17px;
         padding-top: 8px;
+        font-weight: 400;
 
         .symbol {
           display: inline-block;

@@ -142,7 +142,7 @@
         }
         .optional {
           padding-left: 0.48px;
-          font-weight: lighter;
+          font-weight: 300;
         }
       }
 
@@ -334,7 +334,7 @@
     .tokenDistribution {
       .columnHeaders {
         font-size: 14px;
-        font-weight: normal;
+        font-weight: 400;
         line-height: 32px;
         text-align: left;
       }
@@ -398,7 +398,7 @@
         > label {
           align-self: center;
           -webkit-text-fill-color: $White;
-          font-weight: normal;
+          font-weight: 400;
         }
       }
 
@@ -437,7 +437,7 @@
           font-size: 14px;
           line-height: 48px;
           -webkit-text-fill-color: $White;
-          font-weight: normal;
+          font-weight: 400;
         }
         &.fundingTarget {
           flex-flow: column;
@@ -575,13 +575,13 @@
         position: absolute;
         left: 10px;
         color: black;
-        font-weight: 700;
+        font-weight: 800;
       }
       i.no {
         position: absolute;
         right: 10px;
         color: black;
-        font-weight: 700;
+        font-weight: 800;
       }
       .checkbox {
         width: 28px;
@@ -626,7 +626,7 @@
       h3 {
         font-family: "Aeonik";
         font-size: 24px;
-        font-weight: 700;
+        font-weight: 800;
         color: $Secondary02;
         line-height: 22px;
         margin: 0;
