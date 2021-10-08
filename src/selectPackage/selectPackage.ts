@@ -3,11 +3,11 @@ import { SeedService } from "services/SeedService";
 import "./selectPackage.scss";
 
 export class SelectPackage {
-  private seedFee: number;
+  private launchFee: number;
   private nextRoute = "launch";
 
   constructor() {
-    this.seedFee = SeedService.seedFee * 100;
+    this.launchFee = SeedService.launchFee * 100;
   }
 
   activate(params: any, routeConfig: RouteConfig): void {

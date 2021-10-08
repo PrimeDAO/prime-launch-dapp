@@ -2,7 +2,7 @@ import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
-import { ISeedConfig } from "../newLaunch/seed/seedConfig";
+import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
 import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
@@ -27,7 +27,7 @@ export interface ISeedCreatedEventArgs {
 export class SeedService {
 
   public seeds: Map<Address, Seed>;
-  public static seedFee = 0.0; //If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
+  public static launchFee = 0.0; //If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
 
   @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
@@ -186,7 +186,7 @@ export class SeedService {
       Date.parse(config.seedDetails.endDate) / 1000,
       [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
       !!config.seedDetails.whitelist,
-      toWei(SeedService.seedFee, projectTokenInfo.decimals),
+      toWei(SeedService.launchFee, projectTokenInfo.decimals),
       this.asciiToHex(metaDataHash),
     ];
 
