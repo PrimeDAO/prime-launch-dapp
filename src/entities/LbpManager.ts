@@ -13,17 +13,19 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService from "services/TransactionsService";
 import { Utils } from "services/utils";
 
-export interface ILbpConfiguration {
+export interface ILbpManagerConfiguration {
   address: Address;
-  beneficiary: Address;
+  admin: Address;
+  metadata: Address;
 }
 
 @autoinject
-export class Lbp implements ILaunch {
+export class LbpManager implements ILaunch {
   public launchType = LaunchType.LBP;
   public contract: any;
   public address: Address;
   public lbpInitialized: boolean;
+  public poolFunded: boolean;
   public beneficiary: Address;
   public startTime: Date;
   public endTime: Date;
@@ -32,7 +34,6 @@ export class Lbp implements ILaunch {
   /**
     * Is the lbp contract initialized and have enough project tokens to pay its obligations
     */
-  public hasEnoughProjectTokens: boolean;
   public initializing = true;
   public metadata: ILbpConfig;
   public metadataHash: Hash;
@@ -82,15 +83,19 @@ export class Lbp implements ILaunch {
     return (this._now >= this.endTime);
   }
 
-  @computedFrom("hasEnoughProjectTokens")
+  @computedFrom("uninitialized")
+  get canGoToDashboard(): boolean {
+    return !this.uninitialized;
+  }
+
+  @computedFrom("lbpInitialized", "poolFunded")
   get uninitialized(): boolean {
-    return !this.hasEnoughProjectTokens;
+    return !this.lbpInitialized || !this.poolFunded;
   }
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
-
 
   constructor(
     private contractsService: ContractsService,
@@ -146,6 +151,7 @@ export class Lbp implements ILaunch {
       await this.hydrateMetadata();
 
       this.lbpInitialized = await this.contract.initialized();
+      this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
       this.projectTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
@@ -186,7 +192,7 @@ export class Lbp implements ILaunch {
     return this.isPaused || this.isClosed;
   }
 
-  public create(config: ILbpConfiguration): Lbp {
+  public create(config: ILbpManagerConfiguration): LbpManager {
     this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
     return Object.assign(this, config);
   }

@@ -36,8 +36,6 @@ export abstract class BaseStage<IConfig> {
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
 
-  protected readonly launchFee = .01;
-
   constructor(
     protected router: Router,
     protected eventAggregator: EventAggregator,

@@ -1,0 +1,40 @@
+<template>
+  <div class="timeLeftContainer ${contained ? 'contained' : ''}">
+    <div class="mainStatus">
+      <div
+        if.to-view="!launch.uninitialized && launch.hasNotStarted"
+        ref="timeLeft"
+        class="timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}">
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${launch.startsInMilliseconds | timespan:"minutes":largest}
+      </div>
+      <div
+        if.to-view="launch.contributingIsOpen"
+        class="live">
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE
+      </div>
+      <div
+        if.to-view="launch.claimingIsOpen"
+        class="complete">
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>COMPLETE
+      </div>
+      <div
+        if.to-view="launch.incomplete"
+        class="incomplete">
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>INCOMPLETE
+      </div>
+      <div
+        if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused"
+        class="uninitialized">
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>UNINITIALIZED
+      </div>
+    </div>
+    <div class="adminStatus">
+      <div
+        if.to-view="launch.isPaused"
+        class="paused">PAUSED</div>
+      <div
+        if.to-view="launch.isClosed"
+        class="closed">CLOSED</div>
+    </div>
+  </div>
+</template>
