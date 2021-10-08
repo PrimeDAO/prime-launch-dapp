@@ -74,7 +74,7 @@ export class NewSeed {
       {
         route: ["", "stage1"],
         nav: true,
-        moduleId: PLATFORM.moduleName("../stages/stage1"),
+        moduleId: PLATFORM.moduleName("newLaunch/stages/stage1"),
         name: "stage1",
         title: this.stageStates[1].title,
         settings: {
@@ -88,7 +88,7 @@ export class NewSeed {
       {
         route: ["stage2"],
         nav: true,
-        moduleId: PLATFORM.moduleName("../stages/stage2"),
+        moduleId: PLATFORM.moduleName("newLaunch/stages/stage2"),
         name: "stage2",
         title: this.stageStates[2].title,
         settings: {
@@ -102,7 +102,7 @@ export class NewSeed {
       {
         route: ["stage3"],
         nav: true,
-        moduleId: PLATFORM.moduleName("../stages/stage3"),
+        moduleId: PLATFORM.moduleName("newLaunch/stages/stage3"),
         name: "stage3",
         title: this.stageStates[3].title,
         settings: {
@@ -116,7 +116,7 @@ export class NewSeed {
       {
         route: ["stage4"],
         nav: true,
-        moduleId: PLATFORM.moduleName("./stages/stage4"), // seed specific stage
+        moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage4"), // seed specific stage
         name: "stage4",
         title: this.stageStates[4].title,
         settings: {
@@ -130,7 +130,7 @@ export class NewSeed {
       {
         route: ["stage5"],
         nav: true,
-        moduleId: PLATFORM.moduleName("../stages/stage5"),
+        moduleId: PLATFORM.moduleName("newLaunch/stages/stage5"),
         name: "stage5",
         title: this.stageStates[5].title,
         settings: {
@@ -144,7 +144,7 @@ export class NewSeed {
       {
         route: ["stage6"],
         nav: false,
-        moduleId: PLATFORM.moduleName("./stages/stage6"), // seed specific stage
+        moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage6"), // seed specific stage
         name: "stage6",
         title: this.stageStates[6].title,
         settings: {
@@ -158,7 +158,7 @@ export class NewSeed {
       {
         route: ["stage7"],
         nav: false,
-        moduleId: PLATFORM.moduleName("./stages/stage7"), // seed specific stage
+        moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage7"), // seed specific stage
         name: "stage7",
         title: this.stageStates[7].title,
         settings: {
@@ -172,7 +172,7 @@ export class NewSeed {
       {
         route: ["stage8"],
         nav: false,
-        moduleId: PLATFORM.moduleName("../stages/stage8"),
+        moduleId: PLATFORM.moduleName("newLaunch/stages/stage8"),
         name: "stage8",
         title: this.stageStates[8].title,
         settings: {
