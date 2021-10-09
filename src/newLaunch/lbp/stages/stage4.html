@@ -18,13 +18,13 @@
             </div>
             <div class="tokenSelector">
               <token-select
-                selected-token-address.bind="launchConfig.lbpDetails.fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenAddress"
                 selected-token-info.bind="wizardState.fundingTokenInfo"
                 token-addresses.to-view="tokenList">
               </token-select>
-              <div if.to-view="launchConfig.lbpDetails.fundingTokenAddress">
-                <etherscanlink address.to-view="launchConfig.lbpDetails.fundingTokenAddress"
-                  text.to-view="launchConfig.lbpDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenAddress">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress"
+                  text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -35,7 +35,7 @@
             <numeric-input
               output-as-string="true"
               id="amountProjectToken"
-              value.bind="launchConfig.lbpDetails.amountProjectToken"
+              value.bind="launchConfig.launchDetails.amountProjectToken"
               decimals.bind="wizardState.projectTokenInfo.decimals"
               disabled.bind="!wizardState.projectTokenInfo.name"
               placeholder="">
@@ -54,12 +54,12 @@
             <numeric-input
               output-as-string="true"
               id="amountFundingToken"
-              value.bind="launchConfig.lbpDetails.amountFundingToken"
+              value.bind="launchConfig.launchDetails.amountFundingToken"
               decimals.bind="wizardState.fundingTokenInfo.decimals"
               disabled.bind="!wizardState.fundingTokenInfo.name"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.lbpDetails.fundingTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
+            <div if.bind="!launchConfig.launchDetails.fundingTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
             <img
               ref="logoIcon"
               if.bind="wizardState.fundingTokenInfo.logoURI"
@@ -107,7 +107,7 @@
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
               set-weight.bind="setlaunchConfigStartWeight"
-              value.bind="launchConfig.lbpDetails.startWeight"
+              value.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
               ref="sliderStartWeights">
             </range-input>
@@ -148,8 +148,8 @@
             <range-input name="end-weight"
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
               project-token.bind="wizardState.projectTokenInfo.symbol || ''"
-              value.bind="launchConfig.lbpDetails.endWeight"
-              max-allowed.bind="launchConfig.lbpDetails.startWeight"
+              value.bind="launchConfig.launchDetails.endWeight"
+              max-allowed.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"
               ref="sliderEndWeights">
             </range-input>
@@ -172,13 +172,13 @@
               <question-mark allow-html text="TODO: Explanation here"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer ${!lbpConfig.lbpDetails.legalDisclaimer ? 'isInactive' : ''}" click.delegate="toggleLegalDisclaimer()">
+          <div class="checkboxContainer ${!launchConfig.launchDetails.legalDisclaimer ? 'isInactive' : ''}" click.delegate="toggleLegalDisclaimer()">
             <i class="fas fa-check yes"></i>
             <i class="fas fa-times no"></i>
             <div class="checkbox">
               <input
                 id="legalDisclaimer" type="checkbox"
-                checked.bind="launchConfig.lbpDetails.legalDisclaimer" />
+                checked.bind="launchConfig.launchDetails.legalDisclaimer" />
               <label for="legalDisclaimer" />
             </div>
           </div>
@@ -193,9 +193,9 @@
           </div>
           <input
             id="admin"
-            value.bind="launchConfig.lbpDetails.adminAddress"
+            value.bind="launchConfig.launchDetails.adminAddress"
             placeholder="Administrator wallet address" />
-          <template if.to-view="!launchConfig.lbpDetails.adminAddress">
+          <template if.to-view="!launchConfig.launchDetails.adminAddress">
             <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
             <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
           </template>

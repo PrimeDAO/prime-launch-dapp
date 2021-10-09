@@ -5,7 +5,7 @@
       <div class="subtext">Please review the details of your seed submission before proceeding.</div>
       <div class="summaryContainer">
         <div class="heading heading3">General Information</div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project Name
           </div>
@@ -13,7 +13,7 @@
             ${launchConfig.general.projectName}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project Website
           </div>
@@ -21,7 +21,7 @@
             <a href.bind="launchConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${launchConfig.general.projectWebsite}</a>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project Category
           </div>
@@ -29,7 +29,7 @@
             ${launchConfig.general.category}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Whitepaper
           </div>
@@ -37,7 +37,7 @@
             <a href.bind="launchConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${launchConfig.general.whitepaper}</a>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Github Link
           </div>
@@ -45,7 +45,7 @@
             <a href.bind="launchConfig.general.github" target="_blank" rel="noopener noreferrer">${launchConfig.general.github}</a>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">Custom Links</div>
           <div class="customLinks" if.to-view="launchConfig.general.customLinks.length > 0">
             <template repeat.for="customLink of launchConfig.general.customLinks">
@@ -61,7 +61,7 @@
       <hr />
       <div class="summaryContainer">
         <div class="heading heading3">Project Details</div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Short Description
           </div>
@@ -69,7 +69,7 @@
             ${launchConfig.projectDetails.summary}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Value Proposition
           </div>
@@ -77,7 +77,7 @@
             ${launchConfig.projectDetails.proposition}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Team Description
           </div>
@@ -89,19 +89,19 @@
       <hr />
       <div class="summaryContainer">
         <div class="heading heading3">Token Details</div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Funding Token Address
           </div>
           <div class="tokenInfo">
-            <etherscanlink address.to-view="launchConfig.seedDetails.fundingTokenAddress" text.to-view="launchConfig.seedDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+            <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress" text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString"></etherscanlink>
             <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingTokenInfo">
               <img src.bind="wizardState.fundingTokenInfo.logoURI" />
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project Token Address
           </div>
@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Maximum Project Token Supply
           </div>
@@ -127,7 +127,7 @@
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">Project Token Global Distribution</div>
           <div class="tokenDist" if.to-view="launchConfig.tokenDetails.tokenDistrib.length > 0">
             <template repeat.for="distrib of launchConfig.tokenDetails.tokenDistrib">
@@ -149,13 +149,13 @@
       <hr />
       <div class="summaryContainer">
         <div class="heading heading3">SEED Details</div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project Token Exchange Ratio
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="launchConfig.seedDetails.pricePerToken | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.pricePerToken | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingTokenInfo">
@@ -163,13 +163,13 @@
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Funding Target
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="launchConfig.seedDetails.fundingTarget | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.fundingTarget | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingTokenInfo">
@@ -177,13 +177,13 @@
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Funding Maximum
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="launchConfig.seedDetails.fundingMax | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.fundingMax | ethwei:wizardState.fundingTokenInfo.decimals" />
             </div>
             <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
             <div if.to-view="wizardState.fundingTokenInfo">
@@ -191,75 +191,75 @@
             </div>
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Project tokens vested for
           </div>
-          <div>${(launchConfig.seedDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
+          <div>${(launchConfig.launchDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             with a cliff of
           </div>
-          <div>${(launchConfig.seedDetails.vestingCliff * 1000) | timespan:"minutes":largest}</div>
+          <div>${(launchConfig.launchDetails.vestingCliff * 1000) | timespan:"minutes":largest}</div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Start Date (GMT)
           </div>
           <div>
-            ${launchConfig.seedDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+            ${launchConfig.launchDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             End Date (GMT)
           </div>
           <div>
-            ${launchConfig.seedDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+            ${launchConfig.launchDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Whitelist
           </div>
-          <div class="ellipses" if.to-view="launchConfig.seedDetails.whitelist">
-            <a href.bind="launchConfig.seedDetails.whitelist" target="_blank" rel="noopener noreferrer">${launchConfig.seedDetails.whitelist}</a>
+          <div class="ellipses" if.to-view="launchConfig.launchDetails.whitelist">
+            <a href.bind="launchConfig.launchDetails.whitelist" target="_blank" rel="noopener noreferrer">${launchConfig.launchDetails.whitelist}</a>
           </div>
           <div else>
             [optional input not supplied]
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Legal Disclaimer
           </div>
-          <div class="ellipses" if.to-view="launchConfig.seedDetails.legalDisclaimer">
-            <a href.bind="launchConfig.seedDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${launchConfig.seedDetails.legalDisclaimer}</a>
+          <div class="ellipses" if.to-view="launchConfig.launchDetails.legalDisclaimer">
+            <a href.bind="launchConfig.launchDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${launchConfig.launchDetails.legalDisclaimer}</a>
           </div>
           <div else>
             [optional input not supplied]
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Geoblock
           </div>
           <div>
-            ${launchConfig.seedDetails.geoBlock ? "Yes" : "No"}
+            ${launchConfig.launchDetails.geoBlock ? "Yes" : "No"}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Admin Address
           </div>
-          <etherscanlink address.to-view="launchConfig.seedDetails.adminAddress" text.to-view="launchConfig.seedDetails.adminAddress | smallHexString"></etherscanlink>
+          <etherscanlink address.to-view="launchConfig.launchDetails.adminAddress" text.to-view="launchConfig.launchDetails.adminAddress | smallHexString"></etherscanlink>
         </div>
       </div>
       <hr />
       <div class="summaryContainer">
         <div class="heading heading3">Contact Details</div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Contact Email
           </div>
@@ -267,7 +267,7 @@
             ${launchConfig.contactDetails.contactEmail}
           </div>
         </div>
-        <div class="stageSeedDetails">
+        <div class="stageLaunchDetails">
           <div class="heading heading4">
             Additional Remark
           </div>

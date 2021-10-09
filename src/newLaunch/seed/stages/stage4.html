@@ -18,13 +18,13 @@
             </div>
             <div class="tokenSelector">
               <token-select
-                selected-token-address.bind="launchConfig.seedDetails.fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenAddress"
                 selected-token-info.bind="wizardState.fundingTokenInfo"
                 token-addresses.to-view="tokenList">
               </token-select>
-              <div if.to-view="launchConfig.seedDetails.fundingTokenAddress">
-                <etherscanlink address.to-view="launchConfig.seedDetails.fundingTokenAddress"
-                  text.to-view="launchConfig.seedDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenAddress">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress"
+                  text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
             <numeric-input
               output-as-string="true"
               id="ppt"
-              value.bind="launchConfig.seedDetails.pricePerToken"
+              value.bind="launchConfig.launchDetails.pricePerToken"
               decimals.bind="wizardState.fundingTokenInfo.decimals"
               placeholder="1.5">
             </numeric-input>
@@ -55,7 +55,7 @@
               <numeric-input
                 output-as-string="true"
                 id="fundingTarget"
-                value.bind="launchConfig.seedDetails.fundingTarget"
+                value.bind="launchConfig.launchDetails.fundingTarget"
                 decimals.bind="wizardState.fundingTokenInfo.decimals"
                 placeholder="100">
               </numeric-input>
@@ -74,7 +74,7 @@
             <numeric-input
               output-as-string="true"
               id="fundingMax"
-              value.bind="launchConfig.seedDetails.fundingMax"
+              value.bind="launchConfig.launchDetails.fundingMax"
               decimals.bind="wizardState.fundingTokenInfo.decimals"
               placeholder="1000">
             </numeric-input>
@@ -93,7 +93,7 @@
               <input
                 placeholder="100.2"
                 id="vestingPeriod"
-                value.bind="launchConfig.seedDetails.vestingPeriod | secondsDays">
+                value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
               </input>
               <div>days</div>
             </div>
@@ -104,7 +104,7 @@
               <input
                 placeholder="20.8"
                 id="vestingCliff"
-                value.bind="launchConfig.seedDetails.vestingCliff | secondsDays">
+                value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
               </input>
               <div>days</div>
             </div>
@@ -181,7 +181,7 @@
             </div>
           </div>
           <input id="whitelist"
-            value.bind="launchConfig.seedDetails.whitelist"
+            value.bind="launchConfig.launchDetails.whitelist"
             input.trigger="getWhiteListFeedback()"
             placeholder="(Optional) URL to a whitelist" />
           <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
@@ -198,7 +198,7 @@
           </div>
           <input
             id="disclaimer"
-            value.bind="launchConfig.seedDetails.legalDisclaimer"
+            value.bind="launchConfig.launchDetails.legalDisclaimer"
             placeholder="(Optional) URL to a disclaimer" />
         </div>
         <div class="infoInput">
@@ -212,13 +212,13 @@
               <p>Afghanistan, Cuba, Ethiopia, Guyana, Iran, Iraq, North Korea, Sudan, Syria, United States, United States Minor Outlying Islands, Venezuela, Yemen, the Crimea.</p></p>"></question-mark>
             </div>
           </div>
-          <div class="checkboxContainer ${!seedConfig.seedDetails.geoBlock ? 'isInactive' : ''}" click.delegate="toggleGeoBlocking()">
+          <div class="checkboxContainer ${!launchConfig.launchDetails.geoBlock ? 'isInactive' : ''}" click.delegate="toggleGeoBlocking()">
             <i class="fas fa-check yes"></i>
             <i class="fas fa-times no"></i>
             <div class="checkbox">
               <input
                 id="geoBlock" type="checkbox"
-                checked.bind="launchConfig.seedDetails.geoBlock" />
+                checked.bind="launchConfig.launchDetails.geoBlock" />
               <label for="geoBlock" />
             </div>
           </div>
@@ -232,9 +232,9 @@
           </div>
           <input
             id="admin"
-            value.bind="launchConfig.seedDetails.adminAddress"
+            value.bind="launchConfig.launchDetails.adminAddress"
             placeholder="Administrator wallet address" />
-          <template if.to-view="!launchConfig.seedDetails.adminAddress">
+          <template if.to-view="!launchConfig.launchDetails.adminAddress">
             <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
             <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
           </template>
