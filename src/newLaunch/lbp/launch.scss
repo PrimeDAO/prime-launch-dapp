@@ -4,7 +4,7 @@
   grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
-  &.stage8{
+  &.stage8 {
     grid-template-columns: 1fr;
     .currentStageSidebar {
       display: none;
@@ -17,7 +17,7 @@
       font-family: Inter;
       color: $Secondary02;
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 600;
       padding-bottom: 32px;
     }
   }

@@ -42,7 +42,7 @@
 
     > .title {
       grid-area: title;
-      font-weight: bold;
+      font-weight: 600;
       font-size: 22px;
       white-space: normal;
       overflow-x: clip;
@@ -74,7 +74,7 @@
       row-gap: 4px;
 
       > .title {
-        font-weight: bold;
+        font-weight: 600;
         font-size: 13px;
       }
 
@@ -99,7 +99,7 @@
       > .targetValue {
         grid-area: targetValue;
         font-size: 26px;
-        font-weight: bold;
+        font-weight: 600;
       }
     }
   }

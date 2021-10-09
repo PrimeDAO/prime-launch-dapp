@@ -56,7 +56,7 @@
         .timer {
           color: $AlertOrange;
           font-size: 22px;
-          font-weight: bold;
+          font-weight: 600;
         }
       }
     }
@@ -75,7 +75,7 @@
         display: flex;
         margin-bottom: 13px;
         font-family: Inter;
-        font-weight: bold;
+        font-weight: 600;
         font-size: 24px;
         line-height: 29px;
 
@@ -130,7 +130,7 @@
 
         .amount {
           // margin-right: 8px;
-          font-weight: bold;
+          font-weight: 600;
         }
 
         .denomination {
@@ -341,107 +341,10 @@
       }
     }
 
-    .seedAbout {
-      &.onecolumn {
-        grid-area: seedAboutOneColumn;
-        display: none;
-      }
-
-      &.twocolumn {
-        grid-area: seedAboutTwoColumn;
-      }
-
-      align-self: self-end;
-
-      .title {
-        margin-bottom: 8px;
-        white-space: normal;
-      }
-
-      .body {
-        margin-bottom: 19px;
-      }
-
-      .links {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 42px;
-
-        a {
-          color: $Neutral02;
-          margin-bottom: 16px;
-          display: flex;
-          align-items: baseline;
-
-          &:hover {
-            text-decoration: none;
-          }
-
-          .icon {
-            font-size: 14px;
-            border-radius: 50%;
-            color: $BG01;
-            background-color: $Neutral02;
-            padding: 13px;
-            width: 16px;
-            height: 16px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-inline-end: 8px;
-          }
-
-          .name {
-            white-space: normal;
-            text-transform: capitalize;
-            margin-right: 18px;
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
-
-        a > div {
-          display: inline-block;
-        }
-      }
-
-      .adminPage {
-        border-radius: 8px;
-        background-color: $BG02;
-        padding: 28px;
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-template-rows: auto;
-        grid-template-areas:
-          "title title"
-          "body doit";
-        align-items: self-end;
-        row-gap: 8px;
-        column-gap: 12px;
-
-        .description {
-          grid-area: title;
-          font-size: 22px;
-          padding-top: 16px;
-          padding-bottom: 8px;
-        }
-
-        .body {
-          grid-area: body;
-          margin-bottom: 0;
-        }
-
-        .doit {
-          grid-area: doit;
-        }
-      }
-    }
-
     .seedSummary {
       grid-area: seedSummary;
       display: grid;
-      grid-template-columns: auto auto auto;
+      grid-template-columns: 1.1fr 1fr auto;
       grid-template-rows: auto 46px auto 88px auto;
       grid-template-areas:
         "targetLabel maxLabel valuationLabel"
@@ -454,7 +357,7 @@
       .label {
         font-size: 14px;
         line-height: 24px;
-        font-weight: bold;
+        font-weight: 600;
         text-transform: uppercase;
         color: $Neutral03;
         opacity: 0.4;
@@ -463,7 +366,7 @@
       .value {
         font-family: Inter;
         font-style: normal;
-        font-weight: bold;
+        font-weight: 600;
         font-size: 28px;
         @include standardTextGradient;
       }
@@ -502,13 +405,21 @@
 
       .tokenpriceLabel {
         grid-area: tokenpriceLabel;
+
+        .tokenPairContainer {
+          > img {
+            height: 25.75px;
+            width: 25.75px;
+          }
+        }
       }
 
-      .tokenprice {
+      .value.tokenprice {
         grid-area: tokenprice;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 17px;
         padding-top: 8px;
+        font-weight: 400;
 
         .symbol {
           display: inline-block;
@@ -586,45 +497,9 @@
           "target max valuation"
           "tokensleftLabel tokenpriceLabel tokenpriceLabel"
           "tokensleft tokenprice tokenprice";
-      }
 
-      .seedAbout {
-        margin: 0 10%;
-        text-align: center;
-        justify-self: center;
-
-        &.onecolumn {
-          display: unset;
-        }
-
-        &.twocolumn {
-          display: none;
-        }
-
-        .title {
-          width: 100%;
-        }
-
-        .links {
-          margin: 0 10%;
-          flex-direction: column;
-
-          a {
-            justify-content: center;
-            .name {
-              margin-right: 0;
-            }
-          }
-        }
-
-        .adminPage {
-          grid-template-columns: auto;
-          grid-template-areas:
-            "title"
-            "body"
-            "doit";
-
-          row-gap: 16px;
+        .value.tokenprice {
+          line-height: 17px;
         }
       }
     }
@@ -682,15 +557,6 @@
         }
         .tokenprice {
           padding-top: 4px;
-        }
-      }
-
-      .seedAbout {
-        .links {
-          a {
-            text-align: left;
-            justify-content: flex-start;
-          }
         }
       }
     }

@@ -50,7 +50,6 @@ export class LbpManager implements ILaunch {
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
   public isPaused: boolean;
-  public isClosed: boolean;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -169,7 +168,7 @@ export class LbpManager implements ILaunch {
       // this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply(), this.fundingTokenInfo.decimals))
       //   * (this.fundingTokenInfo.price ?? 0);
 
-      await this.hydateClosedOrPaused();
+      await this.hydatePaused();
       await this.hydrateTokensState();
 
       await this.hydrateUser();
@@ -186,10 +185,9 @@ export class LbpManager implements ILaunch {
     return this.initializedPromise;
   }
 
-  public async hydateClosedOrPaused(): Promise<boolean> {
+  public async hydatePaused(): Promise<boolean> {
     this.isPaused = await this.contract.paused();
-    this.isClosed = await this.contract.closed();
-    return this.isPaused || this.isClosed;
+    return this.isPaused;
   }
 
   public create(config: ILbpManagerConfiguration): LbpManager {

@@ -131,7 +131,7 @@ export class SeedDashboard {
     try {
       if (this.seedService.initializing) {
         await Utils.sleep(200);
-        this.eventAggregator.publish("seeds.loading", true);
+        this.eventAggregator.publish("launches.loading", true);
         waiting = true;
         await this.seedService.ensureInitialized();
       }
@@ -139,7 +139,7 @@ export class SeedDashboard {
       if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
-          this.eventAggregator.publish("seeds.loading", true);
+          this.eventAggregator.publish("launches.loading", true);
           waiting = true;
         }
         await seed.ensureInitialized();
@@ -156,7 +156,7 @@ export class SeedDashboard {
     }
     finally {
       if (waiting) {
-        this.eventAggregator.publish("seeds.loading", false);
+        this.eventAggregator.publish("launches.loading", false);
       }
       this.loading = false;
     }
