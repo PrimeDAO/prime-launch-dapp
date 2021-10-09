@@ -2,52 +2,51 @@
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
-        <div class="tokenId">
-          <div class="icon"><img src.to-view="lbpMgr.projectTokenInfo.logoURI"></img></div>
-          <div class="name">${lbpMgr.projectTokenInfo.name}</div>
-          <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
+        <div class="leftSection">
+          <div class="tokenId">
+            <div class="icon"><img src.to-view="lbpMgr.projectTokenInfo.logoURI"></img></div>
+            <div class="name">${lbpMgr.projectTokenInfo.name}</div>
+            <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
+          </div>
+          <div class="ratingInfo"></div>
+          <div class="projectTokenPrice">caret $ 3.14</div>
+          <div class="statusInfo">
+            <time-left launch.to-view="lbpMgr"></time-left>
+          </div>
+          <div class="projectTokenPriceChange">-0.12 (4.20%)</div>
         </div>
-        <div class="statusInfo">
-          <time-left launch.to-view="lbpMgr"></time-left>
-        </div>
-        <div class="projectTokenPriceChange">caret $ 3.14</div>
-        <div class="projectTokenPrice">-0.12 (4.20%)</div>
-        <div class="ratingInfo"></div>
-        <div class="timeRemaining">
-          <div class="label">TIME REMAINING</div>
-          <div class="value">hourglass 16:32 hr</div>
-        </div>
-        <div class="launchSupply">
-          <div class="label">LAUNCH SUPPLY</div>
-          <div class="value">145.000</div>
-        </div>
-        <div class="averagePrice">
-          <div class="label">AVERAGE PRICE</div>
-          <div class="value">$ 1.62</div>
+        <div class="rightSection">
+          <div class="timeRemaining label">TIME REMAINING</div>
+          <div class="timeRemaining value">hourglass 16:32 hr</div>
+          <div class="launchSupply label">LAUNCH SUPPLY</div>
+          <div class="launchSupply value">145.000</div>
+          <div class="averagePrice label">AVERAGE PRICE</div>
+          <div class="averagePrice value">$ 1.62</div>
         </div>
       </div>
-      <div class="section section2">
-        <div class="grap">the graph</div>
-        <div class="form">the form</div>
+    </div>
+    <div class="section section2">
+      <div class="graph">the graph</div>
+      <div class="form">the form</div>
+    </div>
+    <div class="section section3">
+      <div class="about">
+        <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
       </div>
-      <div class="section section3">
-        <div class="about">
-          <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
-        </div>
-        <div class="tokenDistribution">
-          <div class="title heading heading3">Token Distrubution</div>
-          <div class="piechart">piechart</div>
-          <div class="breakdown">
-            <div class="category">
-              <div class="name">square 20% - Team</div>
-              <div class="locked">lock 3 years locked</div>
-            </div>
-            <div class="category">
-              <div class="name">square 15% - Foundation</div>
-            </div>
+      <div class="tokenDistribution">
+        <div class="title heading heading3">Token Distrubution</div>
+        <div class="piechart">piechart</div>
+        <div class="breakdown">
+          <div class="category">
+            <div class="name">square 20% - Team</div>
+            <div class="locked">lock 3 years locked</div>
+          </div>
+          <div class="category">
+            <div class="name">square 15% - Foundation</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
