@@ -18,8 +18,8 @@ export const CategoryNames = [
 ];
 
 export class SocialLinkSpec {
-  public media: string
-  public url: string
+  public media: string;
+  public url: string;
 }
 
 export interface IGeneral {
@@ -34,8 +34,7 @@ export interface IGeneral {
 export interface IProjectDetails {
   summary: string,
   proposition: string,
-  teamDescription: string,
-  logo?: string
+  teamDescription: string
 }
 
 export interface ITokenDetails {
@@ -70,12 +69,12 @@ export interface ILaunchConfig {
   /**
    * semantic version of this interface. This value must be updated upon any released changes.
    */
-  version: string
+  version: string,
   general: IGeneral,
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
-  clearState: () => void,
+  clearState: () => void
 }
 
 export class LaunchConfig implements ILaunchConfig {
