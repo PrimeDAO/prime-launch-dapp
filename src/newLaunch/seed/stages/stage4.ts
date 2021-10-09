@@ -89,18 +89,18 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-  @computedFrom("launchConfig.seedDetails.whitelist")
+  @computedFrom("launchConfig.launchDetails.whitelist")
   get whitelistUrlIsValid(): boolean {
-    return Utils.isValidUrl(this.launchConfig.seedDetails.whitelist);
+    return Utils.isValidUrl(this.launchConfig.launchDetails.whitelist);
   }
 
-  @computedFrom("launchConfig.seedDetails.whitelist", "lastWhitelistUrlValidated")
+  @computedFrom("launchConfig.launchDetails.whitelist", "lastWhitelistUrlValidated")
   get currentWhitelistIsValidated(): boolean {
-    return this.lastWhitelistUrlValidated === this.launchConfig.seedDetails.whitelist;
+    return this.lastWhitelistUrlValidated === this.launchConfig.launchDetails.whitelist;
   }
 
   toggleGeoBlocking(): void {
-    this.launchConfig.seedDetails.geoBlock = !this.launchConfig.seedDetails.geoBlock;
+    this.launchConfig.launchDetails.geoBlock = !this.launchConfig.launchDetails.geoBlock;
   }
 
   setlaunchConfigStartDate(): Date {
@@ -109,8 +109,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     const startTimes = this.startTime.split(":");
     const temp = this.startDate;
     temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-    this.launchConfig.seedDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    return new Date(this.launchConfig.seedDetails.startDate);
+    this.launchConfig.launchDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    return new Date(this.launchConfig.launchDetails.startDate);
   }
 
   setlaunchConfigEndDate(): Date {
@@ -119,17 +119,17 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     const endTimes = this.endTime.split(":");
     const temp = this.endDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-    this.launchConfig.seedDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    return new Date(this.launchConfig.seedDetails.endDate);
+    this.launchConfig.launchDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    return new Date(this.launchConfig.launchDetails.endDate);
   }
 
   persistData(): void {
     this.setlaunchConfigStartDate();
     this.setlaunchConfigEndDate();
     // Save the seed admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
-    this.wizardState.launchAdminAddress = this.launchConfig.seedDetails.adminAddress;
-    this.wizardState.whiteList = this.launchConfig.seedDetails.whitelist;
-    this.wizardState.launchStartDate = this.launchConfig.seedDetails.startDate;
+    this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
+    this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
+    this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 
   async validateInputs(): Promise<string> {
@@ -144,26 +144,26 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!Utils.isAddress(this.launchConfig.seedDetails.fundingTokenAddress)) {
+    if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token seed";
-    } else if (!this.launchConfig.seedDetails.pricePerToken || this.launchConfig.seedDetails.pricePerToken === "0") {
+    } else if (!this.launchConfig.launchDetails.pricePerToken || this.launchConfig.launchDetails.pricePerToken === "0") {
       message = "Please enter a value for Project Token Exchange Ratio";
-    } else if (!this.launchConfig.seedDetails.fundingTarget || this.launchConfig.seedDetails.fundingTarget === "0") {
+    } else if (!this.launchConfig.launchDetails.fundingTarget || this.launchConfig.launchDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
-    } else if (!this.launchConfig.seedDetails.fundingMax || this.launchConfig.seedDetails.fundingMax === "0") {
+    } else if (!this.launchConfig.launchDetails.fundingMax || this.launchConfig.launchDetails.fundingMax === "0") {
       message = "Please enter a number greater than zero for the Funding Maximum";
-    } else if (BigNumber.from(this.launchConfig.seedDetails.fundingTarget).gt(this.launchConfig.seedDetails.fundingMax)) {
+    } else if (BigNumber.from(this.launchConfig.launchDetails.fundingTarget).gt(this.launchConfig.launchDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
-      this.numberService.fromString(fromWei(this.launchConfig.seedDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
+      this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
       this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.wizardState.projectTokenInfo.decimals)) *
-        this.numberService.fromString(fromWei(this.launchConfig.seedDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
+        this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
-    } else if (!(this.launchConfig.seedDetails.vestingPeriod >= 0)) {
+    } else if (!(this.launchConfig.launchDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
-    } else if (!(this.launchConfig.seedDetails.vestingCliff >= 0)) {
+    } else if (!(this.launchConfig.launchDetails.vestingCliff >= 0)) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.launchConfig.seedDetails.vestingCliff > this.launchConfig.seedDetails.vestingPeriod) {
+    } else if (this.launchConfig.launchDetails.vestingCliff > this.launchConfig.launchDetails.vestingPeriod) {
       message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for \"";
     } else if (!this.startDate) {
       message = "Please select a Start Date";
@@ -191,16 +191,16 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "Please enter a valid value for End Time";
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (!Utils.isValidUrl(this.launchConfig.seedDetails.whitelist, true)) {
+    } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.whitelist, true)) {
       message = "Please enter a valid URL for Whitelist";
-    } else if (!!this.launchConfig.seedDetails.whitelist && !(await this.whiteListService.getWhiteList(this.launchConfig.seedDetails.whitelist))) {
+    } else if (!!this.launchConfig.launchDetails.whitelist && !(await this.whiteListService.getWhiteList(this.launchConfig.launchDetails.whitelist))) {
       message = "Whitelist cannot be fetched or parsed. Please enter a URL to a whitelist that conforms to the given formatting rules";
-    } else if (!Utils.isValidUrl(this.launchConfig.seedDetails.legalDisclaimer, true)) {
+    } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
-    } else if (this.launchConfig.seedDetails.legalDisclaimer &&
-      !await this.disclaimerService.confirmMarkdown(this.launchConfig.seedDetails.legalDisclaimer)) {
+    } else if (this.launchConfig.launchDetails.legalDisclaimer &&
+      !await this.disclaimerService.confirmMarkdown(this.launchConfig.launchDetails.legalDisclaimer)) {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
-    } else if (!Utils.isAddress(this.launchConfig.seedDetails.adminAddress)) {
+    } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
       message = "Please enter a valid wallet address for Seed Administrator";
     }
 
@@ -213,14 +213,14 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   }
 
   makeMeAdmin() : void {
-    this.launchConfig.seedDetails.adminAddress = this.ethereumService.defaultAccountAddress;
+    this.launchConfig.launchDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
 
   async getWhiteListFeedback(): Promise<void> {
-    if (this.launchConfig.seedDetails.whitelist) {
+    if (this.launchConfig.launchDetails.whitelist) {
       this.loadingWhitelist = true;
-      this.whitelist = await this.whiteListService.getWhiteList(this.launchConfig.seedDetails.whitelist);
-      this.lastWhitelistUrlValidated = this.launchConfig.seedDetails.whitelist;
+      this.whitelist = await this.whiteListService.getWhiteList(this.launchConfig.launchDetails.whitelist);
+      this.lastWhitelistUrlValidated = this.launchConfig.launchDetails.whitelist;
       this.loadingWhitelist = false;
     } else {
       this.whitelist = null;

@@ -4,31 +4,28 @@ import {
   IProjectDetails,
   ITokenDetails,
   IContactDetails,
+  ILaunchDetails,
 } from "newLaunch/launchConfig";
 
-export interface ILbpDetails {
+export interface ILbpDetails extends ILaunchDetails {
   fundingTokenAddress: string,
   amountProjectToken: string,
   amountFundingToken: string,
-  startDate: string,
-  endDate: string,
   startWeight: number,
   endWeight: number,
   legalDisclaimer: boolean,
-  adminAddress: string,
 }
 
 export interface ILbpConfig extends ILaunchConfig {
-  lbpDetails: ILbpDetails,
+  launchDetails: ILbpDetails,
 }
-
-export class LbpConfig implements ILbpConfig {
+export class LbpConfig implements ILaunchConfig {
   public version: string;
   public general: IGeneral;
   public projectDetails:IProjectDetails;
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
-  public lbpDetails: ILbpDetails;
+  public launchDetails: ILbpDetails;
 
   constructor() {
     this.clearState();
@@ -62,7 +59,7 @@ export class LbpConfig implements ILbpConfig {
       remarks: "",
     };
 
-    this.lbpDetails = {
+    this.launchDetails = {
       fundingTokenAddress: "",
       amountFundingToken: "",
       amountProjectToken: "",

@@ -65,6 +65,12 @@ export interface IContactDetails {
   remarks: string
 }
 
+export interface ILaunchDetails {
+  startDate: string,
+  endDate: string,
+  adminAddress: string,
+}
+
 export interface ILaunchConfig {
   /**
    * semantic version of this interface. This value must be updated upon any released changes.
@@ -74,6 +80,7 @@ export interface ILaunchConfig {
   projectDetails: IProjectDetails,
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
+  launchDetails: ILaunchDetails,
   clearState: () => void
 }
 
@@ -83,6 +90,7 @@ export class LaunchConfig implements ILaunchConfig {
   public projectDetails:IProjectDetails;
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
+  public launchDetails: ILaunchDetails;
 
   constructor() {
     this.clearState();

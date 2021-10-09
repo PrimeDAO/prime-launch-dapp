@@ -172,16 +172,16 @@ export class SeedService {
 
     const seedArguments = [
       safeAddress,
-      config.seedDetails.adminAddress,
-      [config.tokenDetails.projectTokenAddress, config.seedDetails.fundingTokenAddress],
-      [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
-      config.seedDetails.pricePerToken,
+      config.launchDetails.adminAddress,
+      [config.tokenDetails.projectTokenAddress, config.launchDetails.fundingTokenAddress],
+      [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
+      config.launchDetails.pricePerToken,
       // convert from ISO string to Unix epoch seconds
-      Date.parse(config.seedDetails.startDate) / 1000,
+      Date.parse(config.launchDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
-      Date.parse(config.seedDetails.endDate) / 1000,
-      [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
-      !!config.seedDetails.whitelist,
+      Date.parse(config.launchDetails.endDate) / 1000,
+      [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
+      !!config.launchDetails.whitelist,
       toWei(SeedService.seedFee),
       this.asciiToHex(metaDataHash),
     ];

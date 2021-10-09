@@ -98,10 +98,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     const target = event.target as HTMLInputElement;
     const value = parseInt(target.value);
 
-    if (value < this.launchConfig.lbpDetails.endWeight) {
-      this.launchConfig.lbpDetails.endWeight = value;
+    if (value < this.launchConfig.launchDetails.endWeight) {
+      this.launchConfig.launchDetails.endWeight = value;
     }
-    this.launchConfig.lbpDetails.startWeight = value;
+    this.launchConfig.launchDetails.startWeight = value;
   }
 
   handleEndWeightChange(event: Event): void {
@@ -110,10 +110,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     const target = event.target as HTMLInputElement;
     const value = parseInt(target.value);
 
-    if (value > this.launchConfig.lbpDetails.startWeight) {
-      target.value = this.launchConfig.lbpDetails.startWeight.toString();
+    if (value > this.launchConfig.launchDetails.startWeight) {
+      target.value = this.launchConfig.launchDetails.startWeight.toString();
     }
-    this.launchConfig.lbpDetails.endWeight = value;
+    this.launchConfig.launchDetails.endWeight = value;
   }
 
   setlaunchConfigStartDate(): Date {
@@ -122,8 +122,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     const startTimes = this.startTime.split(":");
     const temp = this.startDate;
     temp.setHours(Number.parseInt(startTimes[0]), Number.parseInt(startTimes[1]));
-    this.launchConfig.lbpDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    return new Date(this.launchConfig.lbpDetails.startDate);
+    this.launchConfig.launchDetails.startDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    return new Date(this.launchConfig.launchDetails.startDate);
   }
 
   setlaunchConfigEndDate(): Date {
@@ -132,18 +132,18 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     const endTimes = this.endTime.split(":");
     const temp = this.endDate;
     temp.setHours(Number.parseInt(endTimes[0]), Number.parseInt(endTimes[1]));
-    this.launchConfig.lbpDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
-    return new Date(this.launchConfig.lbpDetails.endDate);
+    this.launchConfig.launchDetails.endDate = this.dateService.toISOString(this.dateService.translateLocalToUtc(temp));
+    return new Date(this.launchConfig.launchDetails.endDate);
   }
 
   // persistData(): void {
   //   this.setlaunchConfigStartDate();
   //   this.setlaunchConfigEndDate();
-  //   this.wizardState.lbpStartDate = this.launchConfig.lbpDetails.startDate;
+  //   this.wizardState.lbpStartDate = this.launchConfig.launchDetails.startDate;
   // }
 
   toggleLegalDisclaimer(): void {
-    this.launchConfig.lbpDetails.legalDisclaimer = !this.launchConfig.lbpDetails.legalDisclaimer;
+    this.launchConfig.launchDetails.legalDisclaimer = !this.launchConfig.launchDetails.legalDisclaimer;
   }
 
   connect(): void {
@@ -151,7 +151,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   makeMeAdmin() : void {
-    this.launchConfig.lbpDetails.adminAddress = this.ethereumService.defaultAccountAddress;
+    this.launchConfig.launchDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
 
   async validateInputs(): Promise<string> {
@@ -169,13 +169,13 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     }
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
       message = "Please select a Project Token";
-    } else if (!(parseFloat(this.launchConfig.lbpDetails.amountProjectToken) >= 0)) {
+    } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
-    } else if (this.numberService.fromString(this.launchConfig.lbpDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
+    } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
       message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.wizardState.projectTokenInfo.decimals)} tokens`;
-    } else if (!Utils.isAddress(this.launchConfig.lbpDetails.fundingTokenAddress)) {
+    } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token lbp";
-    } else if (!(parseFloat(this.launchConfig.lbpDetails.amountFundingToken) >= 0)) {
+    } else if (!(parseFloat(this.launchConfig.launchDetails.amountFundingToken) >= 0)) {
       message = `Please enter the amount of ${this.wizardState.fundingTokenInfo.name}, you like to provide for launch`;
     } else if (!this.startDate) {
       message = "Please select a Start Date";
@@ -201,13 +201,13 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
-    } else if (this.launchConfig.lbpDetails.endWeight > this.launchConfig.lbpDetails.startWeight) {
+    } else if (this.launchConfig.launchDetails.endWeight > this.launchConfig.launchDetails.startWeight) {
       message = `The ${this.wizardState.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
     } else if (this.setlaunchConfigEndDate().getTime() > this.setlaunchConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
       message = "Launch duration can not exceed 30 days";
-    } else if (!this.launchConfig.lbpDetails.legalDisclaimer) {
+    } else if (!this.launchConfig.launchDetails.legalDisclaimer) {
       message = "Please confirm the Legal Disclaimer";
     }
 

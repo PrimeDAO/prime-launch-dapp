@@ -4,9 +4,10 @@ import {
   IProjectDetails,
   ITokenDetails,
   IContactDetails,
+  ILaunchDetails,
 } from "newLaunch/launchConfig";
 
-export interface ISeedDetails {
+export interface ISeedDetails extends ILaunchDetails {
   fundingTokenAddress: string,
   /**
    * The price of one project token in units of funding tokens
@@ -23,16 +24,13 @@ export interface ISeedDetails {
   fundingMax: string,
   vestingPeriod: number,
   vestingCliff: number,
-  startDate: string,
-  endDate: string,
   whitelist: string,
   geoBlock: boolean,
   legalDisclaimer: string,
-  adminAddress: string,
 }
 
 export interface ISeedConfig extends ILaunchConfig {
-  seedDetails: ISeedDetails;
+  launchDetails: ISeedDetails,
 }
 
 export class SeedConfig implements ISeedConfig {
@@ -41,7 +39,7 @@ export class SeedConfig implements ISeedConfig {
   public projectDetails:IProjectDetails;
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
-  public seedDetails: ISeedDetails;
+  public launchDetails: ISeedDetails;
 
   constructor() {
     this.clearState();
@@ -75,7 +73,7 @@ export class SeedConfig implements ISeedConfig {
       remarks: "",
     };
 
-    this.seedDetails = {
+    this.launchDetails = {
       fundingTokenAddress: "",
       pricePerToken: "",
       fundingTarget: "",
