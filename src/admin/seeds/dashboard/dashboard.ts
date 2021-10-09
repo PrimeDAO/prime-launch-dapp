@@ -87,7 +87,7 @@ export class SeedAdminDashboard {
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
-    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.seedDetails.whitelist);
+    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
     return await this.selectedSeed.addWhitelist(whitelistAddress);
   }
 

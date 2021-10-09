@@ -1,6 +1,6 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { ILbpConfig } from "newLaunch/lbp/lbpConfig";
+import { ILbpConfig } from "newLaunch/lbp/config";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
