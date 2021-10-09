@@ -66,6 +66,7 @@ export interface IContactDetails {
 }
 
 export interface ILaunchDetails {
+  fundingTokenAddress: "",
   startDate: string,
   endDate: string,
   adminAddress: string,
@@ -122,6 +123,13 @@ export class LaunchConfig implements ILaunchConfig {
     this.contactDetails = {
       contactEmail: "",
       remarks: "",
+    };
+
+    this.launchDetails = {
+      fundingTokenAddress: "",
+      startDate: "",
+      endDate: "",
+      adminAddress: "",
     };
   }
 }

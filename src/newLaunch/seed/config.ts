@@ -8,7 +8,6 @@ import {
 } from "newLaunch/launchConfig";
 
 export interface ISeedDetails extends ILaunchDetails {
-  fundingTokenAddress: string,
   /**
    * The price of one project token in units of funding tokens
    * In wei.
@@ -78,8 +77,8 @@ export class SeedConfig implements ISeedConfig {
       pricePerToken: "",
       fundingTarget: "",
       fundingMax: "",
-      vestingPeriod: 0,
-      vestingCliff: 0,
+      vestingPeriod: null,
+      vestingCliff: null,
       startDate: "",
       endDate: "",
       whitelist: "",

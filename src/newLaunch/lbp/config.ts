@@ -8,7 +8,6 @@ import {
 } from "newLaunch/launchConfig";
 
 export interface ILbpDetails extends ILaunchDetails {
-  fundingTokenAddress: string,
   amountProjectToken: string,
   amountFundingToken: string,
   startWeight: number,
