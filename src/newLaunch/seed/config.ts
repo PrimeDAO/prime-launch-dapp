@@ -25,7 +25,6 @@ export interface ISeedDetails extends ILaunchDetails {
   vestingCliff: number,
   whitelist: string,
   geoBlock: boolean,
-  legalDisclaimer: string,
 }
 
 export interface ISeedConfig extends ILaunchConfig {
@@ -83,8 +82,8 @@ export class SeedConfig implements ISeedConfig {
       endDate: "",
       whitelist: "",
       geoBlock: false,
-      legalDisclaimer: "",
       adminAddress: "",
+      legalDisclaimer: "",
     };
   }
 }

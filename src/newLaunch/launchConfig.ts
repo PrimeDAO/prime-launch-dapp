@@ -70,6 +70,7 @@ export interface ILaunchDetails {
   startDate: string,
   endDate: string,
   adminAddress: string,
+  legalDisclaimer: string,
 }
 
 export interface ILaunchConfig {
@@ -130,6 +131,7 @@ export class LaunchConfig implements ILaunchConfig {
       startDate: "",
       endDate: "",
       adminAddress: "",
+      legalDisclaimer: "",
     };
   }
 }
