@@ -12,7 +12,6 @@ export interface ILbpDetails extends ILaunchDetails {
   amountFundingToken: string,
   startWeight: number,
   endWeight: number,
-  legalDisclaimer: boolean,
 }
 
 export interface ILbpConfig extends ILaunchConfig {
@@ -66,8 +65,8 @@ export class LbpConfig implements ILaunchConfig {
       endDate: "",
       startWeight: 80,
       endWeight: 80,
-      legalDisclaimer: false,
       adminAddress: "",
+      legalDisclaimer: "",
     };
   }
 }
