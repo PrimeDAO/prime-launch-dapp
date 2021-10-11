@@ -40,4 +40,16 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ISeedDetails;
+
+  clearState(): void {
+    super.clearState();
+    this.launchDetails.pricePerToken = "";
+    this.launchDetails.fundingTarget = "";
+    this.launchDetails.fundingMax = "";
+    this.launchDetails.vestingPeriod = null;
+    this.launchDetails.vestingCliff = null;
+    this.launchDetails.whitelist = "";
+    this.launchDetails.geoBlock = false;
+    this.launchDetails.legalDisclaimer = "";
+  }
 }

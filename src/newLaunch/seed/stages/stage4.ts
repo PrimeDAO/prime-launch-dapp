@@ -1,5 +1,5 @@
 import { WhiteListService } from "services/WhiteListService";
-import { autoinject, computedFrom } from "aurelia-framework";
+import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "services/DateService";
 import { BaseStage } from "newLaunch/baseStage";
@@ -14,6 +14,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
 
+@singleton(false)
 @autoinject
 export class Stage4 extends BaseStage<ISeedConfig> {
   launchConfig: ISeedConfig;

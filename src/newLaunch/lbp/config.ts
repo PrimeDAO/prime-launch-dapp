@@ -25,4 +25,12 @@ export class LbpConfig extends LaunchConfig implements ILaunchConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ILbpDetails;
+
+  clearState(): void {
+    super.clearState();
+    this.launchDetails.amountProjectToken = "";
+    this.launchDetails.amountFundingToken = "";
+    this.launchDetails.startWeight = 80;
+    this.launchDetails.endWeight = 80;
+  }
 }
