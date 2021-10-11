@@ -1,5 +1,5 @@
 import { WhiteListService } from "services/WhiteListService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "services/DateService";
 import { BaseStage } from "newLaunch/baseStage";
@@ -14,6 +14,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ILbpConfig } from "newLaunch/lbp/config";
 
+@singleton(false)
 @autoinject
 export class Stage4 extends BaseStage<ILbpConfig> {
   launchConfig: ILbpConfig;
@@ -136,11 +137,11 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     return new Date(this.launchConfig.launchDetails.endDate);
   }
 
-  // persistData(): void {
-  //   this.setlaunchConfigStartDate();
-  //   this.setlaunchConfigEndDate();
-  //   this.wizardState.lbpStartDate = this.launchConfig.launchDetails.startDate;
-  // }
+  persistData(): void {
+    this.setlaunchConfigStartDate();
+    this.setlaunchConfigEndDate();
+    this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
+  }
 
   connect(): void {
     this.ethereumService.ensureConnected();
