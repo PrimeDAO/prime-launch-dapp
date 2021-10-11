@@ -46,7 +46,7 @@ export class SeedAdminDashboard {
 
     try {
       if (this.seedService.initializing) {
-        this.eventAggregator.publish("seeds.loading", true);
+        this.eventAggregator.publish("launches.loading", true);
         await this.seedService.ensureAllSeedsInitialized();
       }
       await this.hydrate();
@@ -55,7 +55,7 @@ export class SeedAdminDashboard {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
     finally {
-      this.eventAggregator.publish("seeds.loading", false);
+      this.eventAggregator.publish("launches.loading", false);
       this.loading = false;
     }
   }
@@ -87,7 +87,7 @@ export class SeedAdminDashboard {
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
-    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.seedDetails.whitelist);
+    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
     return await this.selectedSeed.addWhitelist(whitelistAddress);
   }
 

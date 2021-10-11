@@ -1,5 +1,4 @@
 <template>
-  <require from="./seedAbout"></require>
   <div class="page animated-page au-animate seedDashboardContainer">
     <div show.to-view="!loading" class="seedDashboard">
       <div class="seedBanner">
@@ -216,9 +215,9 @@
         </div>
         <div class="value tokenprice">1 <div class="symbol">${seed.projectTokenInfo.symbol}</div> = ${seed.fundingTokensPerProjectToken} <div class="symbol">${seed.fundingTokenInfo.symbol}</div>
         </div>
-        <seed-about seed.to-view="seed" type="twocolumn"></seed-about>
+        <launch-about launch.to-view="seed" layout-type="twocolumn" launch-type="seed"></launch-about>
       </div>
-      <seed-about seed.to-view="seed" type="onecolumn"></seed-about>
+      <launch-about launch.to-view="seed" layout-type="onecolumn" launch-type="seed"></launch-about>
     </div>
   </div>
 </template>

@@ -36,7 +36,7 @@ html {
     input {
       font-family: Aeonik;
       font-style: normal;
-      font-weight: normal;
+      font-weight: 400;
       font-size: 16px;
       line-height: 33px;
       border: 1px solid $Neutral02;
@@ -74,7 +74,7 @@ html {
     textarea {
       font-family: Inter;
       font-style: normal;
-      font-weight: normal;
+      font-weight: 400;
       font-size: 16px;
       line-height: 23px;
       border-radius: 10px;
@@ -131,7 +131,7 @@ html {
     .heading {
       font-family: Aeonik;
       font-style: normal;
-      font-weight: bold;
+      font-weight: 600;
       width: fit-content; // so gradients look right
       white-space: nowrap;
 
@@ -181,7 +181,7 @@ html {
 
       font-family: Inter;
       font-style: normal;
-      font-weight: bold;
+      font-weight: 600;
       font-size: 16px;
       line-height: 19px;
       text-align: center;

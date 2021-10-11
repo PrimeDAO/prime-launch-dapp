@@ -1,0 +1,37 @@
+<template>
+  <div class="section launchAbout ${layoutType}">
+    <div class="title heading heading3">About ${launch.metadata.general.projectName}</div>
+    <div class="body subtext">${launch.metadata.projectDetails.summary}</div>
+    <div class="links">
+      <a href.to-view="launch.metadata.general.projectWebsite" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${launchService.iconClassForLinkType('home')}"></div>
+        <div class="name">${launch.metadata.general.projectName}</div>
+      </a>
+      <a href.to-view="launch.metadata.general.whitepaper" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${launchService.iconClassForLinkType('misc')}"></div>
+        <div class="name">Whitepaper</div>
+      </a>
+      <a href.to-view="launch.metadata.general.github" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${launchService.iconClassForLinkType('github')}"></div>
+        <div class="name">Github</div>
+      </a>
+      <template if.to-view="launch.metadata.general.customLinks.length">
+        <a repeat.for="link of launch.metadata.general.customLinks" href.to-view="formatLink(link.url)" target="_blank" rel="noopener noreferrer">
+          <div class="icon ${launchService.iconClassForLinkType(link.media)}"></div>
+          <div class="name">${link.media}</div>
+        </a>
+      </template>
+    </div>
+    <div class="adminPage" if.bind="showAdminDashboardLink">
+      <div class="description">Administration Dashboard</div>
+      <template if.bind="launchType === 'seed'">
+        <div class="body subtext">Access the Administration Dashboard to carry out administrative actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
+        <div class="doit"><a class="button1" href="${`/admin/seeds/dashboard/${launch.address}`}">Access</a></div>
+      </template>
+      <template if.bind="launchType === 'lbp'">
+        <div class="body subtext">Access the Administration Dashboard to carry out administrative actions for your project such as [TBD]</div>
+        <div class="doit"><a class="button1" href="${`/admin/lbps/dashboard/${launch.address}`}">Access</a></div>
+      </template>
+    </div>
+  </div>
+</template>
