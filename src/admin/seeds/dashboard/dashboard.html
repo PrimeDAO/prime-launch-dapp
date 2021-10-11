@@ -83,7 +83,7 @@
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${retrievableProjectTokenAmount() | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+                ${retrievableProjectTokenAmount(selectedSeed) | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
