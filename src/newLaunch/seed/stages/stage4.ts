@@ -153,7 +153,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else if (!this.launchConfig.launchDetails.fundingMax || this.launchConfig.launchDetails.fundingMax === "0") {
       message = "Please enter a number greater than zero for the Funding Maximum";
     } else if (this.launchConfig.tokenDetails.projectTokenAddress === this.launchConfig.launchDetails.fundingTokenAddress) {
-      message = "Funding Token and Project Token cannot be same. Please change one of the addresses.";
+      message = "Funding Token and Project Token cannot be same. Please reenter one or the other.";
     } else if (BigNumber.from(this.launchConfig.launchDetails.fundingTarget).gt(this.launchConfig.launchDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
