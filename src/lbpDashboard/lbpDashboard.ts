@@ -12,7 +12,6 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
-//import { GeoBlockService } from "services/GeoBlockService";
 import { CongratulationsService } from "services/CongratulationsService";
 
 @autoinject
@@ -21,14 +20,12 @@ export class lbpDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   lbpMgr: LbpManager;
   loading = true;
-  // geoBlocked: boolean;
 
   constructor(
     private eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
     private numberService: NumberService,
     private ethereumService: EthereumService,
-    // private geoBlockService: GeoBlockService,
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
@@ -62,7 +59,6 @@ export class lbpDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
-    // this.geoBlocked = this.geoBlockService.blackisted;
   }
 
   async attached(): Promise<void> {
@@ -85,7 +81,6 @@ export class lbpDashboard {
         await seed.ensureInitialized();
       }
       this.lbpMgr = seed;
-      // this.geoBlocked = this.geoBlocked && this.lbpMgr.metadata.lbpDetails.geoBlock;
 
       await this.hydrateUserData();
 

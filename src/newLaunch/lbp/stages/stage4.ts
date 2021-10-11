@@ -142,10 +142,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   //   this.wizardState.lbpStartDate = this.launchConfig.launchDetails.startDate;
   // }
 
-  toggleLegalDisclaimer(): void {
-    this.launchConfig.launchDetails.legalDisclaimer = !this.launchConfig.launchDetails.legalDisclaimer;
-  }
-
   connect(): void {
     this.ethereumService.ensureConnected();
   }
@@ -207,8 +203,11 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       message = "Please select an End Date greater than the Start Date";
     } else if (this.setlaunchConfigEndDate().getTime() > this.setlaunchConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
       message = "Launch duration can not exceed 30 days";
-    } else if (!this.launchConfig.launchDetails.legalDisclaimer) {
-      message = "Please confirm the Legal Disclaimer";
+    } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.legalDisclaimer, true)) {
+      message = "Please enter a valid URL for Legal Disclaimer";
+    } else if (this.launchConfig.launchDetails.legalDisclaimer &&
+      !await this.disclaimerService.confirmMarkdown(this.launchConfig.launchDetails.legalDisclaimer)) {
+      message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     }
 
     this.stageState.verified = !message;

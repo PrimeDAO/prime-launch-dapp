@@ -13,7 +13,6 @@ export interface ILbpDetails extends ILaunchDetails {
   amountFundingToken: string,
   startWeight: number,
   endWeight: number,
-  legalDisclaimer: boolean,
 }
 
 export interface ILbpConfig extends ILaunchConfig {

@@ -164,24 +164,18 @@
           </div>
         </div>
 
-        <!-- TODO: Disclaimer -->
         <div class="infoInput">
           <div class="labeledQuestion">
-            <label for="legalDisclaimer">Legal Disclaimer</label>
+            <label for="disclaimer">Legal Disclaimer</label>
             <div class="questionMark">
-              <question-mark allow-html text="TODO: Explanation here"></question-mark>
+              <question-mark allow-html text='If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or Markdown. <a target="_blank" href="https://www.markdownguide.org/getting-started/" rel="noopener noreferrer">(More info about Markdown)</a>'>
+              </question-mark>
             </div>
           </div>
-          <div class="checkboxContainer ${!launchConfig.launchDetails.legalDisclaimer ? 'isInactive' : ''}" click.delegate="toggleLegalDisclaimer()">
-            <i class="fas fa-check yes"></i>
-            <i class="fas fa-times no"></i>
-            <div class="checkbox">
-              <input
-                id="legalDisclaimer" type="checkbox"
-                checked.bind="launchConfig.launchDetails.legalDisclaimer" />
-              <label for="legalDisclaimer" />
-            </div>
-          </div>
+          <input
+            id="disclaimer"
+            value.bind="launchConfig.launchDetails.legalDisclaimer"
+            placeholder="(Optional) URL to a disclaimer" />
         </div>
 
         <div class="infoInput admin">
