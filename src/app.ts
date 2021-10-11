@@ -48,7 +48,7 @@ export class App {
       this.handleScrollEvent();
     });
 
-    this.eventAggregator.subscribe("seeds.loading", async (onOff: boolean) => {
+    this.eventAggregator.subscribe("launches.loading", async (onOff: boolean) => {
       this.modalMessage = "Thank you for your patience while we initialize for a few moments...";
       this.handleOnOff(onOff);
     });
@@ -166,14 +166,14 @@ export class App {
         title: "SEED Dashboard",
       },
       {
-        moduleId: PLATFORM.moduleName("./newLaunch/seed/newSeed"),
+        moduleId: PLATFORM.moduleName("./newLaunch/seed/launch"),
         nav: false,
         name: "newSeed",
         route: ["newSeed"],
         title: "Register New SEED",
       },
       {
-        moduleId: PLATFORM.moduleName("./newLaunch/lbp/newLbp"),
+        moduleId: PLATFORM.moduleName("./newLaunch/lbp/launch"),
         nav: false,
         name: "newLBP",
         route: ["newLBP"],

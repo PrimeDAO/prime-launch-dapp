@@ -19,6 +19,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/horizontal-scroller/horizontal-scroller"),
     PLATFORM.moduleName("./elements/timeLeft/timeLeft"),
     PLATFORM.moduleName("./elements/featuredLaunches/featuredLaunches"),
+    PLATFORM.moduleName("../launchAbout/launchAbout"),
     PLATFORM.moduleName("./elements/circledNumber/circledNumber"),
     PLATFORM.moduleName("./elements/questionMark/questionMark"),
     PLATFORM.moduleName("./elements/rangeInput/rangeInput"),

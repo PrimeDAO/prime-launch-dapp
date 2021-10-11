@@ -31,7 +31,7 @@
             <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.logoURI"></img>${seed.projectTokenInfo.symbol}</div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <time-left seed.to-view="seed" hide-icons largest></time-left>
+              <time-left launch.to-view="seed" hide-icons largest></time-left>
             </div>
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
             <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
@@ -66,7 +66,7 @@
             <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
             <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
             <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <time-left seed.to-view="seed" hide-icons largest></time-left>
+              <time-left launch.to-view="seed" hide-icons largest></time-left>
             </div>
             <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
             <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>

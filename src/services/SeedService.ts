@@ -1,8 +1,7 @@
-import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
-import { ISeedConfig } from "../newLaunch/seed/seedConfig";
+import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
 import { Hash, Address } from "./EthereumService";
 import { ConsoleLogService } from "./ConsoleLogService";
@@ -51,7 +50,6 @@ export class SeedService {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
-    private tokenService: TokenService,
   ) {
     /**
      * otherwise singleton is the default
@@ -172,21 +170,19 @@ export class SeedService {
       operation: 0,
     } as any;
 
-    const projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(config.tokenDetails.projectTokenAddress);
-
     const seedArguments = [
       safeAddress,
-      config.seedDetails.adminAddress,
-      [config.tokenDetails.projectTokenAddress, config.seedDetails.fundingTokenAddress],
-      [config.seedDetails.fundingTarget, config.seedDetails.fundingMax],
-      config.seedDetails.pricePerToken,
+      config.launchDetails.adminAddress,
+      [config.tokenDetails.projectTokenAddress, config.launchDetails.fundingTokenAddress],
+      [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
+      config.launchDetails.pricePerToken,
       // convert from ISO string to Unix epoch seconds
-      Date.parse(config.seedDetails.startDate) / 1000,
+      Date.parse(config.launchDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
-      Date.parse(config.seedDetails.endDate) / 1000,
-      [config.seedDetails.vestingPeriod, config.seedDetails.vestingCliff],
-      !!config.seedDetails.whitelist,
-      toWei(SeedService.seedFee, projectTokenInfo.decimals),
+      Date.parse(config.launchDetails.endDate) / 1000,
+      [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
+      !!config.launchDetails.whitelist,
+      toWei(SeedService.seedFee),
       this.asciiToHex(metaDataHash),
     ];
 

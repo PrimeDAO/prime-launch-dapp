@@ -32,15 +32,15 @@
       .title {
         white-space: normal;
         color: $Shade06;
-        padding-bottom: 0.1em;
+        padding-bottom: 1.6px;
         max-width: 645px;
       }
 
       > .subtitle {
         font-family: "Inter";
-        font-weight: bold;
-        font-size: 1.4rem;
-        max-width: 35rem;
+        font-weight: 600;
+        font-size: 24px;
+        max-width: 560px;
         color: $Neutral03;
         margin-bottom: 200px;
         white-space: normal;
@@ -77,7 +77,7 @@
             margin-right: 6px;
 
             .header {
-              font-weight: bold;
+              font-weight: 600;
               font-family: "Aeonik";
               font-size: 28px;
               white-space: nowrap;
@@ -89,7 +89,7 @@
             }
           }
 
-          .subtitle {
+          > .subtitle {
             color: $Neutral03;
             font-size: 16px;
             font-family: "Inter";
@@ -203,7 +203,7 @@
           font-size: 16px;
           line-height: 24px;
           div {
-            margin-bottom: 1em;
+            margin-bottom: 16px;
           }
         }
         .launchButton,
@@ -213,7 +213,7 @@
 
         .learnMore {
           @include standardTextGradient();
-          font-weight: bold;
+          font-weight: 600;
 
           &:hover {
             border-bottom: 1px solid $Secondary02;
@@ -222,6 +222,20 @@
 
         .launchButton {
           margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1330px) {
+  .page.home {
+    .section {
+      &.top {
+        .moonshot {
+          img {
+            opacity: 0.25;
+          }
         }
       }
     }
@@ -251,9 +265,6 @@
           left: 0;
           top: 0;
           overflow: hidden;
-          img {
-            opacity: 0.25;
-          }
         }
 
         > .subtitle {
