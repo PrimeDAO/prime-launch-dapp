@@ -148,6 +148,8 @@ export class Stage4 extends BaseStage {
       message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.seedConfig.seedDetails.fundingTarget || this.seedConfig.seedDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
+    } else if (this.seedConfig.tokenDetails.projectTokenAddress === this.seedConfig.seedDetails.fundingTokenAddress) {
+      message = "Funding Token and Project Token cannot be same. Please change one of the addresses.";
     } else if (!this.seedConfig.seedDetails.fundingMax || this.seedConfig.seedDetails.fundingMax === "0") {
       message = "Please enter a number greater than zero for the Funding Maximum";
     } else if (BigNumber.from(this.seedConfig.seedDetails.fundingTarget).gt(this.seedConfig.seedDetails.fundingMax)) {
