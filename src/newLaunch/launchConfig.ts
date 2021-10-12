@@ -37,8 +37,17 @@ export interface IProjectDetails {
   teamDescription: string
 }
 
+export interface ITokenConfig {
+  manuallyEntered: boolean;
+  decimals: number;
+  logoURI: string;
+  name: string;
+  symbol: string;
+}
+
 export interface ITokenDetails {
   projectTokenAddress: string,
+  projectTokenConfig?: ITokenConfig,
   /**
    * In wei, maximum ever total supply of project tokens
    */
@@ -89,7 +98,7 @@ export interface ILaunchConfig {
 export class LaunchConfig implements ILaunchConfig {
   public version: string;
   public general: IGeneral;
-  public projectDetails:IProjectDetails;
+  public projectDetails: IProjectDetails;
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ILaunchDetails;

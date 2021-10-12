@@ -17,7 +17,6 @@ export interface IWizardState {
   launchHash?: Hash;
   whiteList?: string;
   fundingTokenInfo?: ITokenInfo;
-  projectTokenInfo?: ITokenInfo;
   requiredSeedDeposit?: number;
   requiredLaunchFee?: number;
   launchAdminAddress?: Address;

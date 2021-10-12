@@ -20,7 +20,8 @@
               <token-select
                 selected-token-address.bind="launchConfig.launchDetails.fundingTokenAddress"
                 selected-token-info.bind="wizardState.fundingTokenInfo"
-                token-addresses.to-view="tokenList">
+                token-addresses.to-view="tokenList"
+                item-changed.call="tokenChanged(value,index)">
               </token-select>
               <div if.to-view="launchConfig.launchDetails.fundingTokenAddress">
                 <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress"
@@ -41,7 +42,7 @@
               placeholder="1.5">
             </numeric-input>
 
-            <div class="text">Project Tokens <tokenlabel token-info.bind="wizardState.projectTokenInfo"></tokenlabel>
+            <div class="text">Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel>
             </div>
           </div>
         </div>

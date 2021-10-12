@@ -277,7 +277,8 @@
               color: $White;
             }
 
-            &.symbolInput {
+            &.symbolInput,
+            &.decimalInput {
               input {
                 width: 100px;
               }
