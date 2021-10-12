@@ -21,6 +21,14 @@ export interface IWizardState {
   requiredLaunchFee?: number;
   launchAdminAddress?: Address;
   launchStartDate?: string;
+  stage3State?: {
+    formIsEditable: boolean;
+    tiNameInputPresupplied: boolean;
+    tiSymbolInputPresupplied: boolean;
+    tiLogoInputPresupplied: boolean;
+    tiDecimalsInputPresupplied: boolean;
+    projectTokenErrorMessage: string;
+  }
 }
 
 @autoinject

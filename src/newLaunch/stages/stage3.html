@@ -25,32 +25,32 @@
                 <div class="looksGood" show.bind="!loadingToken && projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
                 <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
               </div>
-              <div if.bind="!loadingToken && launchConfig.tokenDetails.projectTokenAddress && projectTokenErrorMessage" class="looksBad"><i class="fas fa-exclamation-triangle"></i> ${projectTokenErrorMessage}</div>
+              <div if.bind="!loadingToken && launchConfig.tokenDetails.projectTokenAddress && wizardState.stage3State.projectTokenErrorMessage" class="looksBad"><i class="fas fa-exclamation-triangle"></i> ${wizardState.stage3State.projectTokenErrorMessage}</div>
               <!-- <div if.to-view="launchConfig.tokenDetails.projectTokenConfig && !projectTokenMissingMetadata" class="ticker">
                 <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" /> ${launchConfig.tokenDetails.projectTokenConfig.name} (${launchConfig.tokenDetails.projectTokenConfig.symbol})
               </div> -->
               <div if.bind="launchConfig.tokenDetails.projectTokenConfig" class="projectTokenInfoFormContainer">
                 <div if.bind="formIsEditable" class="explanation">You have provided a valid token address, but we can't find some or all of the information we need to describe the token. Please fill in the missing token information below.</div>
                 <div class="tokenForm">
-                  <div class="field nameInput ${tiNameInputPresupplied ? 'presupplied' : ''}
+                  <div class="field nameInput ${wizardState.stage3State.tiNameInputPresupplied ? 'presupplied' : ''}
                                               ${launchConfig.tokenDetails.projectTokenConfig.name ? 'supplied' : ''}">
                     <label>Name</label>
                     <input type="text" value.bind="launchConfig.tokenDetails.projectTokenConfig.name" class="textInput inputElement" />
                     <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.name}</div>
                   </div>
-                  <div class="field symbolInput ${tiSymbolInputPresupplied ? 'presupplied' : ''}
+                  <div class="field symbolInput ${wizardState.stage3State.tiSymbolInputPresupplied ? 'presupplied' : ''}
                                                 ${launchConfig.tokenDetails.projectTokenConfig.symbol ? 'supplied' : ''}">
                     <label>Symbol</label>
                     <input type="text" value.bind="launchConfig.tokenDetails.projectTokenConfig.symbol" class="textInput inputElement" />
                     <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
                   </div>
-                  <div class="field decimalsInput ${tiDecimalsInputPresupplied ? 'presupplied' : ''}
+                  <div class="field decimalsInput ${wizardState.stage3State.tiDecimalsInputPresupplied ? 'presupplied' : ''}
                                                   ${launchConfig.tokenDetails.projectTokenConfig.decimals ? 'supplied' : ''}">
                     <label>Decimals</label>
                     <input type="text" type="number" step="1" value.bind="launchConfig.tokenDetails.projectTokenConfig.decimals | number" class="textInput inputElement" />
                     <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.decimals}</div>
                   </div>
-                  <div class="field logoInput ${tiLogoInputPresupplied ? 'presupplied' : ''}
+                  <div class="field logoInput ${wizardState.stage3State.tiLogoInputPresupplied ? 'presupplied' : ''}
                                               ${logoIsLoaded ? 'supplied' : ''}">
                     <label>
                       <div>Logo</div>
@@ -60,7 +60,7 @@
                         src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
                         error.trigger="isLoadedLogo(false)"
                         load.trigger="isLoadedLogo(true)" />
-                      <a show.bind="tiLogoInputPresupplied" class="logoUri ellipses" href.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" target="_blank" rel="noopener noreferrer">${launchConfig.tokenDetails.projectTokenConfig.logoURI}</a>
+                      <a show.bind="wizardState.stage3State.tiLogoInputPresupplied" class="logoUri ellipses" href.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" target="_blank" rel="noopener noreferrer">${launchConfig.tokenDetails.projectTokenConfig.logoURI}</a>
                     </label>
                     <div class="inputNote inputElement">
                       <input type="text"

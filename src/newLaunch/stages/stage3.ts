@@ -13,15 +13,9 @@ import { NumberService } from "services/NumberService";
 @autoinject
 export class Stage3 extends BaseStage<ILaunchConfig> {
   private lastCheckedAddress: string;
-  formIsEditable: boolean;
-  tiNameInputPresupplied: boolean;
-  tiSymbolInputPresupplied: boolean;
-  tiLogoInputPresupplied: boolean;
-  tiDecimalsInputPresupplied: boolean;
   loadingToken = false;
   logoIcon: HTMLElement;
   logoIsLoaded = false;
-  projectTokenErrorMessage: string;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -34,10 +28,13 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
   }
 
   attached(): void {
-    this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenAddress;
-    if (this.launchConfig.tokenDetails.projectTokenConfig) {
-      this.getTokenInfo();
+    if (!this.wizardState.stage3State) {
+      this.wizardState.stage3State = {} as any;
     }
+    this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenAddress;
+    // if (this.launchConfig.tokenDetails.projectTokenConfig && (this.wizardState.stage3State.formIsEditable === undefined)) {
+    //   this.getTokenInfo();
+    // }
   }
 
   addTokenDistribution(): void {
@@ -67,16 +64,18 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     } else if (!this.logoIsLoaded) {
       message = "No valid image found at the provided project token logo URL";
     }
-    return this.projectTokenErrorMessage = message;
+    return this.wizardState.stage3State.projectTokenErrorMessage = message;
   }
 
   private isLoadedLogo(valid: boolean): void {
     this.logoIsLoaded = valid;
     if (!valid) {
-      this.tiLogoInputPresupplied = false;
-      this.formIsEditable = true;
+      this.wizardState.stage3State.tiLogoInputPresupplied = false;
+      this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered =
+      this.wizardState.stage3State.formIsEditable = true;
+      this.isValidProjectTokenInfo();
     } else {
-      this.projectTokenErrorMessage = null;
+      this.wizardState.stage3State.projectTokenErrorMessage = null;
     }
   }
 
@@ -139,11 +138,14 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     return Promise.resolve(message);
   }
 
-  // TODO: Add a loading comp to the view while fetching
   async getTokenInfo(): Promise<void> {
 
     if (Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
 
+      /**
+       * note that launchConfig.tokenDetails.projectTokenAddress may have been set in a previous instance of this viewmodel
+       * wizardState.stage3State gives us clues about whether/how it should be editable.
+       */
       if (this.lastCheckedAddress !== this.launchConfig.tokenDetails.projectTokenAddress) {
 
         this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenAddress;
@@ -167,7 +169,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           this.consoleLogService.logMessage(`error loading project token info: ${error?.message ?? error}`, "info");
           this.launchConfig.tokenDetails.projectTokenConfig = null;
           this.launchConfig.tokenDetails.maxSupply = null; // because decimals may have changed
-          this.formIsEditable = false;
+          this.wizardState.stage3State.formIsEditable = false;
           this.isValidProjectTokenInfo();
         }
       }
@@ -175,49 +177,49 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
       if (this.launchConfig.tokenDetails.projectTokenConfig) {
         if (this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenConfig)) {
-          if (!this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered && (this.launchConfig.tokenDetails.projectTokenConfig.name !== TokenService.DefaultNameSymbol)) {
-            this.tiNameInputPresupplied = true;
+          if (this.launchConfig.tokenDetails.projectTokenConfig.name !== TokenService.DefaultNameSymbol) {
+            this.wizardState.stage3State.tiNameInputPresupplied = true;
           } else {
-            this.tiNameInputPresupplied = false;
+            this.wizardState.stage3State.tiNameInputPresupplied = false;
             this.launchConfig.tokenDetails.projectTokenConfig.name = "";
-            this.formIsEditable = true;
+            this.wizardState.stage3State.formIsEditable = true;
           }
-          if (!this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered && (this.launchConfig.tokenDetails.projectTokenConfig.symbol !== TokenService.DefaultNameSymbol)) {
-            this.tiSymbolInputPresupplied = true;
+          if (this.launchConfig.tokenDetails.projectTokenConfig.symbol !== TokenService.DefaultNameSymbol) {
+            this.wizardState.stage3State.tiSymbolInputPresupplied = true;
           } else {
-            this.tiSymbolInputPresupplied = false;
+            this.wizardState.stage3State.tiSymbolInputPresupplied = false;
             this.launchConfig.tokenDetails.projectTokenConfig.symbol = "";
-            this.formIsEditable = true;
+            this.wizardState.stage3State.formIsEditable = true;
           }
-          if (!this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered && (this.launchConfig.tokenDetails.projectTokenConfig.decimals !== TokenService.DefaultDecimals)) {
-            this.tiDecimalsInputPresupplied = true;
+          if (this.launchConfig.tokenDetails.projectTokenConfig.decimals !== TokenService.DefaultDecimals) {
+            this.wizardState.stage3State.tiDecimalsInputPresupplied = true;
           } else {
-            this.tiDecimalsInputPresupplied = false;
+            this.wizardState.stage3State.tiDecimalsInputPresupplied = false;
             this.launchConfig.tokenDetails.projectTokenConfig.decimals = 0;
-            this.formIsEditable = true;
+            this.wizardState.stage3State.formIsEditable = true;
           }
-          if (!this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered && (this.launchConfig.tokenDetails.projectTokenConfig.logoURI !== TokenService.DefaultLogoURI)) {
-            this.tiLogoInputPresupplied = true;
+          if (this.launchConfig.tokenDetails.projectTokenConfig.logoURI !== TokenService.DefaultLogoURI) {
+            this.wizardState.stage3State.tiLogoInputPresupplied = true;
           } else {
-            this.tiLogoInputPresupplied = false;
+            this.wizardState.stage3State.tiLogoInputPresupplied = false;
             this.launchConfig.tokenDetails.projectTokenConfig.logoURI = "";
-            this.formIsEditable = true;
+            this.wizardState.stage3State.formIsEditable = true;
           }
         } else { // tokenConfig metadata is complete
-          this.formIsEditable = false;
-          this.tiLogoInputPresupplied =
-            this.tiSymbolInputPresupplied =
-            this.tiDecimalsInputPresupplied =
-            this.tiNameInputPresupplied = true;
+          this.wizardState.stage3State.formIsEditable = false;
+          this.wizardState.stage3State.tiLogoInputPresupplied =
+            this.wizardState.stage3State.tiSymbolInputPresupplied =
+            this.wizardState.stage3State.tiDecimalsInputPresupplied =
+            this.wizardState.stage3State.tiNameInputPresupplied = true;
         }
-        this.projectTokenErrorMessage = null;
-        this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = this.formIsEditable;
-        this.isValidProjectTokenInfo();
       }
+      this.wizardState.stage3State.projectTokenErrorMessage = null;
+      this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = this.wizardState.stage3State.formIsEditable;
+      this.isValidProjectTokenInfo();
     } else { // not isAddress
       this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenConfig = null;
       this.launchConfig.tokenDetails.maxSupply = null; // because decimals may have changed
-      this.formIsEditable = false;
+      this.wizardState.stage3State.formIsEditable = false;
       this.isValidProjectTokenInfo();
     }
   }
