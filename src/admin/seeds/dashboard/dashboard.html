@@ -57,7 +57,7 @@
               <div class="featureDescription">
                 Add an account to the whitelist
               </div>
-              <div>
+              <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
                 <div class="button1 small" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
                   Add to whitelist
@@ -71,7 +71,7 @@
               <div class="featureDescription">
                 Remove an account from the whitelist
               </div>
-              <div>
+              <div class='inputWrapper'>
                 <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
                 <div class="button1 small" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
                   Remove from whitelist
@@ -85,7 +85,7 @@
               <div class="featureDescription">
                 ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
-              <div>
+              <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
                 <div class="button1 small" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
                   Retrieve Project Tokens

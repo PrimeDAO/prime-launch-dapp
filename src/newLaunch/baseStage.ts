@@ -1,6 +1,6 @@
 import { ITokenInfo } from "services/TokenTypes";
 import { EventConfigFailure } from "../services/GeneralEvents";
-import { autoinject, singleton, computedFrom } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
@@ -17,14 +17,20 @@ export interface IWizardState {
   launchHash?: Hash;
   whiteList?: string;
   fundingTokenInfo?: ITokenInfo;
-  projectTokenInfo?: ITokenInfo;
   requiredSeedDeposit?: number;
   requiredLaunchFee?: number;
   launchAdminAddress?: Address;
   launchStartDate?: string;
+  stage3State?: {
+    formIsEditable: boolean;
+    tiNameInputPresupplied: boolean;
+    tiSymbolInputPresupplied: boolean;
+    tiLogoInputPresupplied: boolean;
+    tiDecimalsInputPresupplied: boolean;
+    projectTokenErrorMessage: string;
+  }
 }
 
-@singleton(false)
 @autoinject
 export abstract class BaseStage<IConfig> {
   protected launchConfig: IConfig;

@@ -1,5 +1,6 @@
+import { AureliaHelperService } from "services/AureliaHelperService";
 import { WhiteListService } from "services/WhiteListService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "services/DateService";
 import { BaseStage } from "newLaunch/baseStage";
@@ -14,6 +15,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ILbpConfig } from "newLaunch/lbp/config";
 
+@singleton(false)
 @autoinject
 export class Stage4 extends BaseStage<ILbpConfig> {
   launchConfig: ILbpConfig;
@@ -36,6 +38,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   sliderStartWeights: HTMLInputElement;
   sliderEndWeights: HTMLInputElement;
+  projectTokenObserved = false;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -46,6 +49,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private tokenListService: TokenListService,
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
+    private aureliaHelperService: AureliaHelperService,
   ) {
     super(router, eventAggregator, tokenService);
     this.eventAggregator.subscribe("lbp.clearState", () => {
@@ -57,6 +61,13 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   attached(): void {
+    if (!this.projectTokenObserved) {
+      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenAddress",
+        () => {
+          this.launchConfig.launchDetails.amountProjectToken = null;
+        });
+      this.projectTokenObserved = true;
+    }
     this.startDatePicker = new Litepicker({
       element: this.startDateRef,
       minDate: Date.now(),
@@ -90,6 +101,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
           ];
       }
     }
+  }
+
+  tokenChanged(_value: string, _index: number): void {
+    this.launchConfig.launchDetails.amountFundingToken = null;
   }
 
   handleStartWeightChange(event: Event): void {
@@ -136,11 +151,11 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     return new Date(this.launchConfig.launchDetails.endDate);
   }
 
-  // persistData(): void {
-  //   this.setlaunchConfigStartDate();
-  //   this.setlaunchConfigEndDate();
-  //   this.wizardState.lbpStartDate = this.launchConfig.launchDetails.startDate;
-  // }
+  persistData(): void {
+    this.setlaunchConfigStartDate();
+    this.setlaunchConfigEndDate();
+    this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
+  }
 
   connect(): void {
     this.ethereumService.ensureConnected();
@@ -166,9 +181,9 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
-      message = `Please enter the amount of ${this.wizardState.projectTokenInfo.name}, you like to provide for launch`;
+      message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenConfig.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
-      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.wizardState.projectTokenInfo.decimals)} tokens`;
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenConfig.decimals)} tokens`;
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token lbp";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountFundingToken) >= 0)) {

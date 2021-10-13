@@ -107,9 +107,9 @@
           </div>
           <div class="tokenInfo">
             <etherscanlink address.to-view="launchConfig.tokenDetails.projectTokenAddress" text.to-view="launchConfig.tokenDetails.projectTokenAddress | smallHexString"></etherscanlink>
-            <div if.to-view="wizardState.projectTokenInfo">${wizardState.projectTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.projectTokenInfo">
-              <img src.bind="wizardState.projectTokenInfo.logoURI" />
+            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
+            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">
+              <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
             </div>
           </div>
         </div>
@@ -119,11 +119,11 @@
           </div>
           <div class="tokenInfo">
             <div>
-              <formatted-number value.bind="launchConfig.tokenDetails.maxSupply | ethwei:wizardState.projectTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
             </div>
-            <div if.to-view="wizardState.projectTokenInfo">${wizardState.projectTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.projectTokenInfo">
-              <img src.bind="wizardState.projectTokenInfo.logoURI" />
+            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
+            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">
+              <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
               <div class="header">Vesting (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei:wizardState.projectTokenInfo.decimals" />
+                <formatted-number value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
               </div>
               <div class="cell">${distrib.cliff}</div>
               <div class="cell">${distrib.vest}</div>
