@@ -88,7 +88,12 @@
             </div>
           </div>
           <div>
-            <label for="startTime">Start Time (GMT)</label>
+            <div class="labeledQuestion">
+              <label for="startTime">Start Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The start time for the launch, in GMT"></question-mark>
+              </div>
+            </div>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
@@ -96,9 +101,6 @@
                   value.bind="startTime"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
-              </div>
-              <div class="questionMark">
-                <question-mark text="The start time for the launch, in GMT"></question-mark>
               </div>
             </div>
           </div>
@@ -129,8 +131,13 @@
               <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
           </div>
-          <div>
-            <label for="endTime">End Time (GMT)</label>
+          <div class="infoInput">
+            <div class="labeledQuestion">
+              <label for="endTime">End Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+              </div>
+            </div>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
@@ -138,9 +145,6 @@
                   value.bind="endTime"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
-              </div>
-              <div class="questionMark">
-                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
               </div>
             </div>
           </div>
