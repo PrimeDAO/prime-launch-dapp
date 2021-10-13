@@ -24,6 +24,9 @@
   }
   .infoInput {
     margin-bottom: 32px;
+    &.withCounter {
+      width: fit-content;
+    }
     > textarea {
       resize: none;
       width: 368px;
@@ -32,7 +35,7 @@
       border: 1px solid $Border01;
     }
     .labelContainer {
-      width: 384px;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -755,7 +758,7 @@
     > .heading.heading2 {
       font-size: 26px;
     }
-    label {
+    label, span {
       line-height: 20px;
       margin-bottom: 5px;
     }
