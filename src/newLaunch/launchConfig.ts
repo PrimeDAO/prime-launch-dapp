@@ -38,7 +38,7 @@ export interface IProjectDetails {
 }
 
 export interface ITokenConfig {
-  manuallyEntered: boolean;
+  // manuallyEntered: boolean;
   decimals: number;
   logoURI: string;
   name: string;
