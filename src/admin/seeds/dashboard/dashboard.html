@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="retrievableProjectTokenAmount != 0 && selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
+            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
                 Retrieve Project Tokens
               </div>

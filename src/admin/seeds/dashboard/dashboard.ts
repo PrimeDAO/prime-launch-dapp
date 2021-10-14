@@ -8,7 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
-import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class SeedAdminDashboard {
