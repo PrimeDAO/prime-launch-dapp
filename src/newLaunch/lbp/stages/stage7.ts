@@ -46,6 +46,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   }
 
   async submit(): Promise<void> {
+    console.log("this.launchConfig", this.launchConfig, this.wizardState);
     try {
       this.eventAggregator.publish("launch.creating", true);
       this.wizardState.launchHash = await this.lbpManagerService.deployLpbManager(this.launchConfig);
