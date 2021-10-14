@@ -99,7 +99,7 @@ export class SeedAdminDashboard {
   }
 
   addressActionsHandler(action:DashboardActions, address:Address):void {
-    if (!action || !address) {
+    if (!action) {
       return;
     }
 
