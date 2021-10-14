@@ -19,36 +19,37 @@
             <div class="tickerContainer">
               <div class="inputContainer">
                 <input
-                  value.bind="launchConfig.tokenDetails.projectTokenAddress"
+                  id="projectTokenAddress"
+                  value.bind="launchConfig.tokenDetails.projectTokenInfo.address"
                   input.trigger="getTokenInfo()">
                 </input>
                 <div class="looksGood" show.bind="!loadingToken && projectTokenInfoIsComplete"><i class="fas fa-check"></i> Looks good</div>
                 <div if.bind="loadingToken" class="loadingToken"><i class="fas fa-circle-notch fa-spin"></i></div>
               </div>
-              <div if.bind="!loadingToken && launchConfig.tokenDetails.projectTokenAddress && wizardState.stage3State.projectTokenErrorMessage" class="looksBad"><i class="fas fa-exclamation-triangle"></i> ${wizardState.stage3State.projectTokenErrorMessage}</div>
-              <!-- <div if.to-view="launchConfig.tokenDetails.projectTokenConfig && !projectTokenMissingMetadata" class="ticker">
-                <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" /> ${launchConfig.tokenDetails.projectTokenConfig.name} (${launchConfig.tokenDetails.projectTokenConfig.symbol})
+              <div if.bind="!loadingToken && launchConfig.tokenDetails.projectTokenInfo.address && wizardState.stage3State.projectTokenErrorMessage" class="looksBad"><i class="fas fa-exclamation-triangle"></i> ${wizardState.stage3State.projectTokenErrorMessage}</div>
+              <!-- <div if.to-view="launchConfig.tokenDetails.projectTokenInfo.address && !projectTokenMissingMetadata" class="ticker">
+                <img src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" /> ${launchConfig.tokenDetails.projectTokenInfo.name} (${launchConfig.tokenDetails.projectTokenInfo.symbol})
               </div> -->
-              <div if.bind="launchConfig.tokenDetails.projectTokenConfig" class="projectTokenInfoFormContainer">
+              <div if.bind="launchConfig.tokenDetails.projectTokenInfo.address" class="projectTokenInfoFormContainer">
                 <div if.bind="formIsEditable" class="explanation">You have provided a valid token address, but we can't find some or all of the information we need to describe the token. Please fill in the missing token information below.</div>
                 <div class="tokenForm">
                   <div class="field nameInput ${wizardState.stage3State.tiNameInputPresupplied ? 'presupplied' : ''}
-                                              ${launchConfig.tokenDetails.projectTokenConfig.name ? 'supplied' : ''}">
+                                              ${launchConfig.tokenDetails.projectTokenInfo.name ? 'supplied' : ''}">
                     <label>Name</label>
-                    <input type="text" value.bind="launchConfig.tokenDetails.projectTokenConfig.name" class="textInput inputElement" />
-                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.name}</div>
+                    <input type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.name" class="textInput inputElement" />
+                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.name}</div>
                   </div>
                   <div class="field symbolInput ${wizardState.stage3State.tiSymbolInputPresupplied ? 'presupplied' : ''}
-                                                ${launchConfig.tokenDetails.projectTokenConfig.symbol ? 'supplied' : ''}">
+                                                ${launchConfig.tokenDetails.projectTokenInfo.symbol ? 'supplied' : ''}">
                     <label>Symbol</label>
-                    <input type="text" value.bind="launchConfig.tokenDetails.projectTokenConfig.symbol" class="textInput inputElement" />
-                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
+                    <input type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.symbol" class="textInput inputElement" />
+                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.symbol}</div>
                   </div>
                   <div class="field decimalsInput ${wizardState.stage3State.tiDecimalsInputPresupplied ? 'presupplied' : ''}
-                                                  ${launchConfig.tokenDetails.projectTokenConfig.decimals ? 'supplied' : ''}">
+                                                  ${launchConfig.tokenDetails.projectTokenInfo.decimals ? 'supplied' : ''}">
                     <label>Decimals</label>
-                    <input type="text" type="number" step="1" value.bind="launchConfig.tokenDetails.projectTokenConfig.decimals | number" class="textInput inputElement" />
-                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenConfig.decimals}</div>
+                    <input type="text" type="number" step="1" value.bind="launchConfig.tokenDetails.projectTokenInfo.decimals | number" class="textInput inputElement" />
+                    <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.decimals}</div>
                   </div>
                   <div class="field logoInput ${wizardState.stage3State.tiLogoInputPresupplied ? 'presupplied' : ''}
                                               ${logoIsLoaded ? 'supplied' : ''}">
@@ -57,14 +58,14 @@
                       <img
                         ref="logoIcon"
                         show.bind="logoIsLoaded"
-                        src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
+                        src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
                         error.trigger="isLoadedLogo(false)"
                         load.trigger="isLoadedLogo(true)" />
-                      <a show.bind="wizardState.stage3State.tiLogoInputPresupplied" class="logoUri ellipses" href.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" target="_blank" rel="noopener noreferrer">${launchConfig.tokenDetails.projectTokenConfig.logoURI}</a>
+                      <a show.bind="wizardState.stage3State.tiLogoInputPresupplied" class="logoUri ellipses" href.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" target="_blank" rel="noopener noreferrer">${launchConfig.tokenDetails.projectTokenInfo.logoURI}</a>
                     </label>
                     <div class="inputNote inputElement">
                       <input type="text"
-                        value.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
+                        value.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
                         input.trigger="isValidLogo()"
                         placeholder="URL to a valid image file">
                       <div class="fileNote">
@@ -82,7 +83,7 @@
         </div>
         <div class="infoInput supply">
           <div class="labeledQuestion">
-            <label for="maxSupply">Maximum Project Token <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel> Supply</label>
+            <label for="maxSupply">Maximum Project Token <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel> Supply</label>
             <div class="questionMark">
               <question-mark text="The maximum supply of project tokens to exist over the project's lifetime. If there is no maximum, provide a reasonable estimate"></question-mark>
             </div>
@@ -90,13 +91,13 @@
           <numeric-input
             output-as-string="true"
             id="maxSupply"
-            decimals.bind="launchConfig.tokenDetails.projectTokenConfig.decimals"
+            decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
             value.bind="launchConfig.tokenDetails.maxSupply">
           </numeric-input>
         </div>
         <div class="tokenDistribution">
           <div class="labeledQuestion">
-            <label>Project Token <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel> Distribution per Stakeholder Group</label>
+            <label>Project Token <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel> Distribution per Stakeholder Group</label>
             <div class="questionMark">
               <question-mark text="The project token distribution between different stakeholders. Projects who issue tokens in multiple rounds should clearly demarcate the amount of tokens distributed in each round"></question-mark>
             </div>
@@ -116,7 +117,7 @@
                 <div class="columnHeaders">Amount</div>
                 <numeric-input
                   output-as-string="true"
-                  decimals.bind="launchConfig.tokenDetails.projectTokenConfig.decimals"
+                  decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
                   value.bind="distrib.amount"
                   placeholder="0" class="numberInput">
                 </numeric-input>

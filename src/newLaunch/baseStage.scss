@@ -662,6 +662,15 @@
           font-size: 18px;
           color: $Neutral02;
 
+          .tokenAmountContainer {
+            display: flex;
+
+            .tokenAmount {
+              padding-right: 8px;
+              display: inline-block;
+            }
+          }
+
           .customLinks {
             grid-template-columns: 0.4fr 1fr;
           }
@@ -683,23 +692,6 @@
             }
           }
 
-          .tokenInfo {
-            display: grid;
-            grid-template-columns: repeat(3, auto);
-            column-gap: 10px;
-            align-items: center;
-            width: fit-content;
-            & .etherscanlink {
-              margin-right: 10px;
-            }
-            img {
-              @include tokenIcon;
-              border-radius: 12px;
-              width: 24px;
-              position: relative;
-              top: 1px;
-            }
-          }
           hr {
             margin-top: 20px;
             margin-bottom: 20px;
@@ -759,7 +751,8 @@
     > .heading.heading2 {
       font-size: 26px;
     }
-    label, span {
+    label,
+    span {
       line-height: 20px;
       margin-bottom: 5px;
     }

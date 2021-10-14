@@ -1,6 +1,5 @@
-import "./launch.scss";
 import { PLATFORM } from "aurelia-pal";
-import { singleton, computedFrom } from "aurelia-framework";
+import { singleton, computedFrom, useView } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newLaunch/baseStage";
@@ -11,6 +10,7 @@ import { IStageState, IWizardState } from "newLaunch/baseStage";
  */
 const maxStage = 5;
 
+@useView(PLATFORM.moduleName("../launch.html"))
 @singleton(false)
 export class NewSeed {
   router: Router;

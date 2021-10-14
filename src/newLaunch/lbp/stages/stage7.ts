@@ -40,7 +40,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   attached(): void {
     // this.launchConfig.launchDetails.fundingMax = toWei("100").toString();
     // this.launchConfig.launchDetails.pricePerToken = toWei(".5").toString();
-    // this.launchConfig.tokenDetails.projectTokenConfig.symbol = "PRIME";
+    // this.launchConfig.tokenDetails.projectTokenInfo.symbol = "PRIME";
     // const distributableSeeds = this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals))
     //   / this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals));
     // this.wizardState.requiredLaunchFee = distributableSeeds * this.launchFee;

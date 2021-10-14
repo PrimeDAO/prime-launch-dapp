@@ -1,0 +1,49 @@
+@import "styles/styles.scss";
+.stageSixTokenInfo {
+  display: inline-grid;
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas:
+    "logoURI name ticker"
+    ". decimals decimals"
+    ". address address";
+  width: fit-content;
+  align-items: center;
+
+  .logoURI {
+    grid-area: logoURI;
+    padding-right: 10px;
+    img {
+      @include tokenIcon;
+      display: block;
+    }
+  }
+
+  .name {
+    grid-area: name;
+    padding-right: 8px;
+  }
+
+  .ticker {
+    grid-area: ticker;
+  }
+
+  .address {
+    grid-area: address;
+  }
+
+  .decimals {
+    grid-area: decimals;
+  }
+
+  &.short {
+    .name,
+    .decimals,
+    .address {
+      display: none;
+    }
+
+    .logoURI {
+      padding-right: 4px;
+    }
+  }
+}

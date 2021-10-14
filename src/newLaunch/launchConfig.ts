@@ -1,3 +1,5 @@
+import { ITokenInfo } from "services/TokenTypes";
+
 export const SocialLinkNames = [
   "Twitter",
   "Discord",
@@ -37,17 +39,8 @@ export interface IProjectDetails {
   teamDescription: string
 }
 
-export interface ITokenConfig {
-  // manuallyEntered: boolean;
-  decimals: number;
-  logoURI: string;
-  name: string;
-  symbol: string;
-}
-
 export interface ITokenDetails {
-  projectTokenAddress: string,
-  projectTokenConfig?: ITokenConfig,
+  projectTokenInfo: ITokenInfo,
   /**
    * In wei, maximum ever total supply of project tokens
    */
@@ -127,7 +120,7 @@ export class LaunchConfig implements ILaunchConfig {
     this.tokenDetails = {
       tokenDistrib: [],
       maxSupply: "",
-      projectTokenAddress: "",
+      projectTokenInfo: {} as unknown as ITokenInfo,
     };
 
     this.contactDetails = {

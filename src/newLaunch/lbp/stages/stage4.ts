@@ -62,7 +62,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   attached(): void {
     if (!this.projectTokenObserved) {
-      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenAddress",
+      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails.projectTokenInfo, "address",
         () => {
           this.launchConfig.launchDetails.amountProjectToken = null;
         });
@@ -178,12 +178,12 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
+    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
-      message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenConfig.name}, you like to provide for launch`;
+      message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
-      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenConfig.decimals)} tokens`;
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)} tokens`;
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
       message = "Please select a Funding Token lbp";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountFundingToken) >= 0)) {

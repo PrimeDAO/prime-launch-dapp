@@ -173,7 +173,7 @@ export class SeedService {
     const seedArguments = [
       safeAddress,
       config.launchDetails.adminAddress,
-      [config.tokenDetails.projectTokenAddress, config.launchDetails.fundingTokenAddress],
+      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
       config.launchDetails.pricePerToken,
       // convert from ISO string to Unix epoch seconds

@@ -1,10 +1,10 @@
-import { ILaunchConfig, ITokenConfig } from "../launchConfig";
+import { ILaunchConfig } from "../launchConfig";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber } from "ethers";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { BaseStage } from "newLaunch/baseStage";
-import { TokenService } from "services/TokenService";
+import { ITokenInfo, TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 // import { fromWei } from "services/EthereumService";
@@ -31,8 +31,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     if (!this.wizardState.stage3State) {
       this.wizardState.stage3State = {} as any;
     }
-    this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenAddress;
-    // if (this.launchConfig.tokenDetails.projectTokenConfig && (this.wizardState.stage3State.formIsEditable === undefined)) {
+    this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenInfo.address;
+    // if (this.launchConfig.tokenDetails.projectTokenInfo.address && (this.wizardState.stage3State.formIsEditable === undefined)) {
     //   this.getTokenInfo();
     // }
   }
@@ -50,16 +50,16 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
 
   private isValidLogo(): void {
-    if (!Utils.isValidUrl(encodeURI(this.launchConfig.tokenDetails.projectTokenConfig.logoURI))) {
+    if (!Utils.isValidUrl(encodeURI(this.launchConfig.tokenDetails.projectTokenInfo.logoURI))) {
       this.isLoadedLogo(false);
     }
   }
 
   private async isValidProjectTokenInfo(): Promise<string> {
     let message;
-    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
+    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
       message = "Please enter a valid address for the Project Token Address";
-    } else if (!this.launchConfig.tokenDetails.projectTokenConfig) {
+    } else if (!this.launchConfig.tokenDetails.projectTokenInfo.address) {
       message = "Please enter a project token address that references a valid IERC20 token contract having 18 decimals";
     } else if (!this.logoIsLoaded) {
       message = "No valid image found at the provided project token logo URL";
@@ -71,8 +71,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     this.logoIsLoaded = valid;
     if (!valid) {
       //this.wizardState.stage3State.tiLogoInputPresupplied = false;
-      // if (this.launchConfig.tokenDetails.projectTokenConfig) {
-      //   this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = true;
+      // if (this.launchConfig.tokenDetails.projectTokenInfo.address) {
+      //   this.launchConfig.tokenDetails.projectTokenInfo.manuallyEntered = true;
       // }
       this.wizardState.stage3State.formIsEditable = true;
       this.isValidProjectTokenInfo();
@@ -81,14 +81,14 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     }
   }
 
-  @computedFrom("launchConfig.tokenDetails.projectTokenConfig", "logoIsLoaded")
+  @computedFrom("launchConfig.tokenDetails.projectTokenInfo.address", "logoIsLoaded")
   get projectTokenInfoIsComplete(): boolean {
-    return this.launchConfig.tokenDetails.projectTokenConfig &&
-      !this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenConfig) &&
+    return this.launchConfig.tokenDetails.projectTokenInfo.address &&
+      !this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenInfo) &&
       this.logoIsLoaded;
   }
 
-  private tokenIsMissingMetadata(tokenInfo: ITokenConfig): boolean {
+  private tokenIsMissingMetadata(tokenInfo: ITokenInfo): boolean {
     return (
       !tokenInfo.name || (tokenInfo.name === TokenService.DefaultNameSymbol) ||
       !tokenInfo.symbol || (tokenInfo.symbol === TokenService.DefaultNameSymbol) ||
@@ -101,7 +101,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
     message = await this.isValidProjectTokenInfo();
 
-    if (!message && this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenConfig)) {
+    if (!message && this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenInfo)) {
       message = "Please enter all information required to describe the project token";
     }
 
@@ -113,7 +113,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
       message = "Please enter a number greater than zero for Maximum Supply";
     // } else if (this.launchConfig.launchDetails.fundingMax && this.launchConfig.launchDetails.pricePerToken &&
     //   this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
-    //   this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenConfig.decimals)) *
+    //   this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
     //     this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
     //   message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else {
@@ -142,26 +142,27 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
   async getTokenInfo(): Promise<void> {
 
-    if (Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
+    if (Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
 
       /**
-       * note that launchConfig.tokenDetails.projectTokenAddress may have been set in a previous instance of this viewmodel
+       * note that launchConfig.tokenDetails.projectTokenInfo.address may have been set in a previous instance of this viewmodel
        * wizardState.stage3State gives us clues about whether/how it should be editable.
        */
-      if (this.lastCheckedAddress !== this.launchConfig.tokenDetails.projectTokenAddress) {
+      if (this.lastCheckedAddress !== this.launchConfig.tokenDetails.projectTokenInfo.address) {
 
-        this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenAddress;
+        this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenInfo.address;
         this.loadingToken = true;
 
         try {
-          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.launchConfig.tokenDetails.projectTokenAddress);
+          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.launchConfig.tokenDetails.projectTokenInfo.address);
 
-          this.launchConfig.tokenDetails.projectTokenConfig = Object.assign({
+          this.launchConfig.tokenDetails.projectTokenInfo = Object.assign({
+            address: tokenInfo.address,
             decimals: tokenInfo.decimals,
             logoURI: tokenInfo.logoURI,
             name: tokenInfo.name,
             symbol: tokenInfo.symbol,
-          }) as ITokenConfig;
+          }) as ITokenInfo;
 
           this.launchConfig.tokenDetails.maxSupply = null; // because decimals may have changed
 
@@ -169,7 +170,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           // then is probably not a valid token contract
           // this.validationError("Could not obtain project token information from the address supplied");
           this.consoleLogService.logMessage(`error loading project token info: ${error?.message ?? error}`, "info");
-          this.launchConfig.tokenDetails.projectTokenConfig = null;
+          this.launchConfig.tokenDetails.projectTokenInfo = {} as unknown as ITokenInfo;
           this.launchConfig.tokenDetails.maxSupply = null; // because decimals may have changed
           this.wizardState.stage3State.formIsEditable = false;
           this.isValidProjectTokenInfo();
@@ -177,36 +178,36 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
       }
       this.loadingToken = false;
 
-      if (this.launchConfig.tokenDetails.projectTokenConfig) {
-        if (this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenConfig)) {
-          if (this.launchConfig.tokenDetails.projectTokenConfig.name !== TokenService.DefaultNameSymbol) {
+      if (this.launchConfig.tokenDetails.projectTokenInfo.address) {
+        if (this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenInfo)) {
+          if (this.launchConfig.tokenDetails.projectTokenInfo.name !== TokenService.DefaultNameSymbol) {
             this.wizardState.stage3State.tiNameInputPresupplied = true;
           } else {
             this.wizardState.stage3State.tiNameInputPresupplied = false;
-            this.launchConfig.tokenDetails.projectTokenConfig.name = "";
+            this.launchConfig.tokenDetails.projectTokenInfo.name = "";
             this.wizardState.stage3State.formIsEditable = true;
           }
-          if (this.launchConfig.tokenDetails.projectTokenConfig.symbol !== TokenService.DefaultNameSymbol) {
+          if (this.launchConfig.tokenDetails.projectTokenInfo.symbol !== TokenService.DefaultNameSymbol) {
             this.wizardState.stage3State.tiSymbolInputPresupplied = true;
           } else {
             this.wizardState.stage3State.tiSymbolInputPresupplied = false;
-            this.launchConfig.tokenDetails.projectTokenConfig.symbol = "";
+            this.launchConfig.tokenDetails.projectTokenInfo.symbol = "";
             this.wizardState.stage3State.formIsEditable = true;
           }
-          if (this.launchConfig.tokenDetails.projectTokenConfig.decimals !== TokenService.DefaultDecimals) {
+          if (this.launchConfig.tokenDetails.projectTokenInfo.decimals !== TokenService.DefaultDecimals) {
             this.wizardState.stage3State.tiDecimalsInputPresupplied = true;
           } else {
             this.wizardState.stage3State.tiDecimalsInputPresupplied = false;
-            this.launchConfig.tokenDetails.projectTokenConfig.decimals = 0;
+            this.launchConfig.tokenDetails.projectTokenInfo.decimals = 0;
             this.wizardState.stage3State.formIsEditable = true;
           }
           this.wizardState.stage3State.tiLogoInputPresupplied = false;
           this.wizardState.stage3State.formIsEditable = true;
-          if (this.launchConfig.tokenDetails.projectTokenConfig.logoURI !== TokenService.DefaultLogoURI) {
+          if (this.launchConfig.tokenDetails.projectTokenInfo.logoURI !== TokenService.DefaultLogoURI) {
             this.wizardState.stage3State.tiLogoInputPresupplied = false; // true;
           } else {
             this.wizardState.stage3State.tiLogoInputPresupplied = false;
-            this.launchConfig.tokenDetails.projectTokenConfig.logoURI = "";
+            this.launchConfig.tokenDetails.projectTokenInfo.logoURI = "";
             this.wizardState.stage3State.formIsEditable = true;
           }
         } else { // tokenConfig metadata is complete
@@ -216,9 +217,9 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
             this.wizardState.stage3State.tiDecimalsInputPresupplied =
             this.wizardState.stage3State.tiNameInputPresupplied = true;
         }
-        // this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = this.wizardState.stage3State.formIsEditable;
+        // this.launchConfig.tokenDetails.projectTokenInfo.manuallyEntered = this.wizardState.stage3State.formIsEditable;
       } else { // no projectTokenConfig
-        this.wizardState.stage3State.formIsEditable = true;
+        this.wizardState.stage3State.formIsEditable = false;
         this.wizardState.stage3State.tiLogoInputPresupplied =
           this.wizardState.stage3State.tiSymbolInputPresupplied =
           this.wizardState.stage3State.tiDecimalsInputPresupplied =
@@ -226,7 +227,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
       }
       this.isValidProjectTokenInfo();
     } else { // not isAddress
-      this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenConfig = null;
+      this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenInfo.address;
       this.launchConfig.tokenDetails.maxSupply = null; // because decimals may have changed
       this.wizardState.stage3State.formIsEditable = false;
       this.isValidProjectTokenInfo();

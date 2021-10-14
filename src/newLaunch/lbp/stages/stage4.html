@@ -37,18 +37,18 @@
               output-as-string="true"
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
-              decimals.bind="launchConfig.tokenDetails.projectTokenConfig.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenConfig.name"
+              decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.name"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.tokenDetails.projectTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
+            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
             <img
               ref="logoIcon"
-              if.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
-              src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
+              if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
+              src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.tokenDetails.projectTokenConfig.name}
-              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel>
+              ${launchConfig.tokenDetails.projectTokenInfo.name}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
             </div>
           </div>
           <div class="tokenAmountContainer">
@@ -107,7 +107,7 @@
             <label for="startWeight">Start Weights</label>
             <range-input name="start-weight"
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               set-weight.bind="setlaunchConfigStartWeight"
               value.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
@@ -151,7 +151,7 @@
             <label for="endWeight">End Weights</label>
             <range-input name="end-weight"
               funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               value.bind="launchConfig.launchDetails.endWeight"
               max-allowed.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"
