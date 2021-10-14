@@ -78,12 +78,12 @@
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.projectTokenBalance >= selectedSeed.seedRemainder && (selectedSeed.isClosed || selectedSeed.claimingIsOpen)">
+            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenBalance.sub(selectedSeed.seedRemainder.add(selectedSeed.feeRemainder)) | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+                ${retrievableProjectTokenAmount | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
@@ -97,7 +97,7 @@
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.fundingTokenBalance | ethwei} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
+                ${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
               </div>
               <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
