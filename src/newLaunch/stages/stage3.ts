@@ -71,7 +71,9 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     this.logoIsLoaded = valid;
     if (!valid) {
       this.wizardState.stage3State.tiLogoInputPresupplied = false;
-      this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered =
+      if (this.launchConfig.tokenDetails.projectTokenConfig) {
+        this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = true;
+      }
       this.wizardState.stage3State.formIsEditable = true;
       this.isValidProjectTokenInfo();
     } else {
@@ -212,9 +214,14 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
             this.wizardState.stage3State.tiDecimalsInputPresupplied =
             this.wizardState.stage3State.tiNameInputPresupplied = true;
         }
+        this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = this.wizardState.stage3State.formIsEditable;
+      } else { // no projectTokenConfig
+        this.wizardState.stage3State.formIsEditable = true;
+        this.wizardState.stage3State.tiLogoInputPresupplied =
+          this.wizardState.stage3State.tiSymbolInputPresupplied =
+          this.wizardState.stage3State.tiDecimalsInputPresupplied =
+          this.wizardState.stage3State.tiNameInputPresupplied = false;
       }
-      this.wizardState.stage3State.projectTokenErrorMessage = null;
-      this.launchConfig.tokenDetails.projectTokenConfig.manuallyEntered = this.wizardState.stage3State.formIsEditable;
       this.isValidProjectTokenInfo();
     } else { // not isAddress
       this.lastCheckedAddress = this.launchConfig.tokenDetails.projectTokenConfig = null;
