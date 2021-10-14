@@ -89,13 +89,13 @@ export class SeedAdminDashboard {
 
   @computedFrom("selectedSeed")
   get retrievableProjectTokenAmount(): BigNumber {
-    if(!this.selectedSeed.address){
+    if (!this.selectedSeed.address){
       return BigNumber.from(0);
     }
     const tokenToBeDistributed = this.selectedSeed.seedAmountRequired.sub(this.selectedSeed.seedRemainder).sub(this.selectedSeed.feeRemainder);
-    return this.selectedSeed.minimumReached ? 
-    this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
-    this.selectedSeed.projectTokenBalance;
+    return this.selectedSeed.minimumReached ?
+      this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
+      this.selectedSeed.projectTokenBalance;
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
