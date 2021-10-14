@@ -1,0 +1,67 @@
+<template>
+  <div class="page animated-page stageContainer stage2 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading2 title">Project Details</div>
+      <div class="subtext">Description of your project and team.</div>
+
+      <div class="infoInput withCounter">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="projSummary">Short Description</label>
+            <div class="questionMark">
+              <question-mark text="Describe your project. This short description will be visible to users on Featured Launch cards and the Launch Dashboard page"></question-mark>
+            </div>
+          </div>
+          <span>
+            ${launchConfig.projectDetails.summary.length}/200
+          </span>
+        </div>
+        <textarea
+          id="projSummary"
+          value.bind="launchConfig.projectDetails.summary"
+          maxlength="200"></textarea>
+      </div>
+      <div class="infoInput withCounter">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="valueProp">Value Proposition</label>
+            <div class="questionMark">
+              <question-mark text="Describe why contributors should engage your project. This will be will be prominently displayed on the Launch Dashboard page"></question-mark>
+            </div>
+          </div>
+          <span>
+            ${launchConfig.projectDetails.proposition.length}/300
+          </span>
+        </div>
+        <textarea
+          id="valueProp"
+          value.bind="launchConfig.projectDetails.proposition"
+          maxlength="300">
+          </textarea>
+      </div>
+      <div class="infoInput withCounter">
+        <div class="labelContainer">
+          <div class="labeledQuestion">
+            <label for="teamDesc">Team Description</label>
+            <div class="questionMark">
+              <question-mark text="Describe the team behind the project. Provide responsibilities and any useful background"></question-mark>
+            </div>
+          </div>
+          <span>
+            ${launchConfig.projectDetails.teamDescription.length}/200
+          </span>
+        </div>
+        <textarea
+          id="teamDesc"
+          value.bind="launchConfig.projectDetails.teamDescription"
+          maxlength="200">
+          </textarea>
+      </div>
+
+      <div class="buttonContainer">
+        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
+      </div>
+    </div>
+  </div>
+</template>

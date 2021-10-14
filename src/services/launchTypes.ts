@@ -20,4 +20,5 @@ export interface ILaunch {
   isDead: boolean;
   uninitialized: boolean;
   canGoToDashboard: boolean;
+  userHydrated: boolean;
 }

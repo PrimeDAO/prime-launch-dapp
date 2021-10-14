@@ -102,24 +102,34 @@ export default class TokenMetadataService {
           ContractsService.getContractAbi(ContractNames.ERC20),
           this.ethereumService.readOnlyProvider);
 
+        try {
+          await tokenContract.deployed();
+        } catch {
+          continue; // no contract at the address. save nothing to the metadict.
+        }
+
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
         try {
           const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
           const logoFound = await axios.get(logoURI).catch(() => null);
           tokenInfo.logoURI = logoFound ? logoURI : null;
           /**
-           * none of the following functions are required by IERC20, so we will tolerate their
-           * absence since we have fallbacks.  But we must nevertheless fail here if decimals
-           * is missing.
+           * It is up to the caller to decide what to tolerate
+           * in the way of incomplete information
            */
           try {
             tokenInfo.name = await tokenContract.name();
+          // eslint-disable-next-line no-empty
+          } catch { }
+          try {
             tokenInfo.symbol = await tokenContract.symbol();
           // eslint-disable-next-line no-empty
           } catch { }
-          tokenInfo.decimals = await tokenContract.decimals();
+          try {
+            tokenInfo.decimals = await tokenContract.decimals();
+          // eslint-disable-next-line no-empty
+          } catch { }
           metaDict[address] = tokenInfo as unknown as ITokenInfo;
-        // eslint-disable-next-line no-empty
         } catch (ex) {
           this.consoleLogService.logMessage(`getMetaOnchain: ${ex.message ?? ex} `, "error");
         }

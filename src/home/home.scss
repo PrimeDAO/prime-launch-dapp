@@ -38,7 +38,7 @@
 
       > .subtitle {
         font-family: "Inter";
-        font-weight: bold;
+        font-weight: 600;
         font-size: 24px;
         max-width: 560px;
         color: $Neutral03;
@@ -77,7 +77,7 @@
             margin-right: 6px;
 
             .header {
-              font-weight: bold;
+              font-weight: 600;
               font-family: "Aeonik";
               font-size: 28px;
               white-space: nowrap;
@@ -187,13 +187,6 @@
       column-gap: 80px;
       font-family: Inter;
 
-      // .pic {
-      //   img {
-      //     width: 450px;
-      //     height: 450px;
-      //   }
-      // }
-
       .rightColumn {
         > .heading1 {
           -webkit-text-fill-color: $Secondary02;
@@ -213,15 +206,33 @@
 
         .learnMore {
           @include standardTextGradient();
-          font-weight: bold;
+          font-weight: 600;
 
           &:hover {
             border-bottom: 1px solid $Secondary02;
+          }
+
+          a:hover {
+            text-decoration: none;
           }
         }
 
         .launchButton {
           margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1330px) {
+  .page.home {
+    .section {
+      &.top {
+        .moonshot {
+          img {
+            opacity: 0.25;
+          }
         }
       }
     }
@@ -251,9 +262,6 @@
           left: 0;
           top: 0;
           overflow: hidden;
-          img {
-            opacity: 0.25;
-          }
         }
 
         > .subtitle {
