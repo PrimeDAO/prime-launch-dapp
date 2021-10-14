@@ -432,16 +432,8 @@ export class Seed implements ILaunch {
     });
   }
 
-  private hasValidatedAddress(address:Address): boolean {
-    if (!Utils.isAddress(address)){
-      this.eventAggregator.publish("handleValidationError", "Invalid address");
-      return false;
-    }
-    return true;
-  }
-
   async addToWhitelist(address: Address): Promise<TransactionReceipt> {
-    if (address && this.hasValidatedAddress(address)){
+    if (address){
       return this.transactionsService.send(
         () => this.contract.whitelist(address),
       ).then((receipt) => {
@@ -454,7 +446,7 @@ export class Seed implements ILaunch {
   }
 
   async removeFromWhitelist(address: Address): Promise<TransactionReceipt> {
-    if (address && this.hasValidatedAddress(address)){
+    if (address){
       return this.transactionsService.send(
         () => this.contract.unwhitelist(address),
       ).then((receipt) => {
@@ -516,7 +508,7 @@ export class Seed implements ILaunch {
   }
 
   public retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
-    if (receiver && this.hasValidatedAddress(receiver)){
+    if (receiver){
       return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
         .then((receipt) => {
           if (receipt) {

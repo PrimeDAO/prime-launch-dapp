@@ -1,3 +1,4 @@
+import { Utils } from "services/utils";
 import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
 import { Address, EthereumService } from "services/EthereumService";
@@ -8,6 +9,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
+import { AddressValidationMessages, DashboardActions } from "admin/enums/dashboard";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -21,6 +23,7 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
+  actions = DashboardActions
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -84,6 +87,42 @@ export class SeedAdminDashboard {
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
+  }
+
+
+  private hasValidatedAddress(address:Address, message:AddressValidationMessages): boolean {
+    if (!Utils.isAddress(address)){
+      this.eventAggregator.publish("handleValidationError", message);
+      return false;
+    }
+    return true;
+  }
+
+  addressActionsHandler(action:DashboardActions, address:Address):void {
+    if (!action || !address) {
+      return;
+    }
+
+    switch (action) {
+      case DashboardActions.AddToWhiteList:
+        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidAddToWhiteList)) {
+          this.selectedSeed.addToWhitelist(address);
+        }
+        break;
+      case DashboardActions.RemoveFromWhiteList:
+        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidRemoveFromWhiteList)) {
+          this.selectedSeed.removeFromWhitelist(address);
+        }
+        break;
+      case DashboardActions.RetrieveProjectToken:
+        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidRetrieveProjectToken)) {
+          this.selectedSeed.retrieveProjectTokens(address);
+        }
+        break;
+      default:
+        this.hasValidatedAddress(address, AddressValidationMessages.InvalidAddress);
+        break;
+    }
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
