@@ -7,11 +7,13 @@
       </div>
       <div>
         <div class="infoInput">
-          <label for="email">Contact Email</label>
+          <div class="labelContainer">
+            <label for="email">Contact Email</label>
+          </div>
           <input id="email" type="email"
             value.bind="launchConfig.contactDetails.contactEmail" />
         </div>
-        <div class="infoInput">
+        <div class="infoInput withCounter">
           <div class="labelContainer">
             <label for="remarks">Additional Remarks</label>
             <span value.from-view="launchConfig.contactDetails.remarks">
