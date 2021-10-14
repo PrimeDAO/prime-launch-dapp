@@ -14,7 +14,7 @@ import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
-import { LbpService } from "services/LbpService";
+import { LbpManagerService } from "services/LbpManagerService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -58,9 +58,9 @@ export function configure(aurelia: Aurelia): void {
 
       seedService.initialize();
 
-      // const lbpService = aurelia.container.get(LbpService);
+      const lbpService = aurelia.container.get(LbpManagerService);
 
-      // lbpService.initialize();
+      lbpService.initialize();
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));

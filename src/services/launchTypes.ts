@@ -12,4 +12,13 @@ export interface ILaunch {
   endTime: Date;
   admin: Address;
   beneficiary: Address;
+
+  startsInMilliseconds: number;
+  endsInMilliseconds: number;
+  hasNotStarted: boolean;
+  isLive: boolean;
+  isDead: boolean;
+  uninitialized: boolean;
+  canGoToDashboard: boolean;
+  userHydrated: boolean;
 }
