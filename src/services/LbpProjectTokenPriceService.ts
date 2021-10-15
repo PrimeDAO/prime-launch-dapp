@@ -5,13 +5,13 @@ import Moment = moment.Moment;
 @autoinject
 export class LbpProjectTokenPriceService {
 
-  projectTokenTotalSupply: number;
+  maxSupply: number;
   projectTokenInitialLbpAmount: number;
   fundingTokenInitialLbpAmount: number;
   startWeightProjectToken: number;
   endWeightProjectToken: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   roundedStartDate: Moment;
   roundedEndDate: Moment;
   lbpDurationInHours: number;
@@ -19,16 +19,16 @@ export class LbpProjectTokenPriceService {
 
 
   constructor(
-    projectTokenTotalSupply: number,
+    maxSupply: number,
     projectTokenInitialLbpAmount: number,
     fundingTokenInitialLbpAmount: number,
     startWeightProjectToken: number,
     endWeightProjectToken: number,
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     pricePerFundingToken: number,
   ) {
-    this.projectTokenTotalSupply = projectTokenTotalSupply;
+    this.maxSupply = maxSupply;
     this.projectTokenInitialLbpAmount = projectTokenInitialLbpAmount;
     this.fundingTokenInitialLbpAmount = fundingTokenInitialLbpAmount;
     this.startWeightProjectToken = startWeightProjectToken;
@@ -37,7 +37,7 @@ export class LbpProjectTokenPriceService {
     this.endDate = endDate;
     this.roundedStartDate = moment(this.startDate).startOf("hour");
     this.roundedEndDate = moment(this.endDate).startOf("hour");
-    this.lbpDurationInHours = Math.round((this.endDate.getTime() - this.startDate.getTime()) / 36e5);
+    this.lbpDurationInHours = moment(this.roundedEndDate).diff(this.roundedStartDate, "hours");
     this.pricePerFundingToken = pricePerFundingToken;
   }
 
@@ -53,7 +53,8 @@ export class LbpProjectTokenPriceService {
         projectTokenWeight,
         this.pricePerFundingToken,
       ) *
-      this.projectTokenTotalSupply;
+      this.maxSupply;
+
 
     return Math.round(projectTokenMcap);
   }
@@ -72,7 +73,7 @@ export class LbpProjectTokenPriceService {
     return pricePerProjectToken;
   }
 
-  getInterpolatedPriceDatapoints(
+  getInterpolatedPriceDataPoints(
     projectTokenInPool: number,
     fundingTokenInPool: number,
     currentTime: Date,
@@ -81,9 +82,20 @@ export class LbpProjectTokenPriceService {
     const labels = [];
 
     const hoursPassedSinceStart = this.getHoursPassed(currentTime);
-    const hoursLeft = this.lbpDurationInHours - hoursPassedSinceStart;
+    const hoursLeft = (this.lbpDurationInHours - hoursPassedSinceStart);
 
-    for (let hoursPassed = 0; hoursPassed < hoursLeft; hoursPassed++) {
+    let timeInterval: number;
+    if (hoursLeft >= 24 * 20 /* days */) {
+      timeInterval = 24;
+    } else if (hoursLeft >= 24 * 10 /* days */) {
+      timeInterval = 12;
+    } else if (hoursLeft >= 24 * 4 /* days */) {
+      timeInterval = 4;
+    } else {
+      timeInterval = 1;
+    }
+
+    for (let hoursPassed = 0; hoursPassed < hoursLeft; hoursPassed+=timeInterval) {
       const time = moment(currentTime).add(hoursPassed, "hours");
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         time.toDate(),
@@ -116,7 +128,10 @@ export class LbpProjectTokenPriceService {
   getHoursPassed(currentTime: Date): number {
     const roundedCurrentTime = moment(currentTime).startOf("hour");
     return moment
-      .duration(roundedCurrentTime.diff(this.roundedStartDate))
+      .duration(
+        roundedCurrentTime.diff(
+          this.roundedStartDate, "hours",
+        ), "hours")
       .asHours();
   }
 
