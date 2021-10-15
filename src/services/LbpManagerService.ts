@@ -1,6 +1,7 @@
+import { ILbpConfig } from "newLaunch/lbp/config";
 import { LbpManager } from "entities/LbpManager";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { Address } from "services/EthereumService";
+import { Address, Hash, toWei } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks } from "services/EthereumService";
@@ -11,6 +12,9 @@ import { Container } from "aurelia-dependency-injection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { ContractNames, ContractsService, IStandardEvent } from "services/ContractsService";
 import { EventConfigException } from "services/GeneralEvents";
+import { Utils } from "services/utils";
+import { api } from "services/GnosisService";
+import BigNumber, { toBigNumberJs } from "services/BigNumberService";
 
 export interface ILBPManagerDeployedEventArgs {
   lbpManager: Address;
@@ -54,7 +58,7 @@ export class LbpManagerService {
      */
     this.container.registerTransient(LbpManager);
 
-    this.eventAggregator.subscribe("Lbp.InitializationFailed", async (lbpAddress: string) => {
+    this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
       this.lbpManagers.delete(lbpAddress);
     });
 
@@ -141,5 +145,129 @@ export class LbpManagerService {
     return lbpMgr.create({ admin: config.args.admin, address: config.args.lbpManager, metadata: config.args.metadata });
     return null;
   }
+
+
+  // public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
+
+  //   const seedConfigString = JSON.stringify(config);
+  //   // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
+
+  //   const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+
+  //   this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
+
+  //   const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
+  //   const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+  //   const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+  //   const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+
+  //   const transaction = {
+  //     to: seedFactory.address,
+  //     value: 0,
+  //     operation: 0,
+  //   } as any;
+
+  //   const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenAddress]))[0];
+  //   let pricePerToken: string;
+
+  //   try {
+  //     BigNumber.config({ DECIMAL_PLACES: fundingTokenInfo.decimals });
+  //     const numerator = toBigNumberJs(config.launchDetails.pricePerToken);
+
+  //     BigNumber.config({ DECIMAL_PLACES: config.tokenDetails.projectTokenInfo.decimals });
+  //     const denominator = toBigNumberJs(toWei(1, config.tokenDetails.projectTokenInfo.decimals));
+
+  //     const rawPrice = numerator.dividedBy(denominator).toString();
+  //     pricePerToken = toWei(rawPrice, 18).toString();
+  //   } catch (ex) {
+  //     throw new Error(ex);
+  //   } finally {
+  //     BigNumber.config({ DECIMAL_PLACES: 18 }); // just to reset cuz this is globally scoped
+  //   }
+
+  //   const seedArguments = [
+  //     safeAddress,
+  //     config.launchDetails.adminAddress,
+  //     [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
+  //     [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
+  //     pricePerToken,
+  //     // convert from ISO string to Unix epoch seconds
+  //     Date.parse(config.launchDetails.startDate) / 1000,
+  //     // convert from ISO string to Unix epoch seconds
+  //     Date.parse(config.launchDetails.endDate) / 1000,
+  //     [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
+  //     !!config.launchDetails.whitelist,
+  //     toWei(LpbManagerService.Fee),
+  //     Utils.asciiToHex(metaDataHash),
+  //   ];
+
+  //   transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+
+  //   // console.log("estimating transaction:");
+  //   // console.dir(transaction);
+
+  //   const estimate = (await gnosis.getEstimate(transaction)).data;
+
+  //   Object.assign(transaction, {
+  //     safeTxGas: estimate.safeTxGas,
+  //     nonce: await gnosis.getCurrentNonce(),
+  //     baseGas: 0,
+  //     gasPrice: 0,
+  //     gasToken: "0x0000000000000000000000000000000000000000",
+  //     refundReceiver: "0x0000000000000000000000000000000000000000",
+  //     safe: safeAddress,
+  //   });
+
+  //   const { hash, signature } = await signer.callStatic.generateSignature(
+  //     transaction.to,
+  //     transaction.value,
+  //     transaction.data,
+  //     transaction.operation,
+  //     transaction.safeTxGas,
+  //     transaction.baseGas,
+  //     transaction.gasPrice,
+  //     transaction.gasToken,
+  //     transaction.refundReceiver,
+  //     transaction.nonce,
+  //   );
+
+  //   // eslint-disable-next-line require-atomic-updates
+  //   transaction.contractTransactionHash = hash;
+  //   // eslint-disable-next-line require-atomic-updates
+  //   transaction.signature = signature;
+
+  //   // console.log("generating signature for transaction:");
+  //   // console.dir(transaction);
+
+  //   const result = await this.transactionsService.send(() => signer.generateSignature(
+  //     transaction.to,
+  //     transaction.value,
+  //     transaction.data,
+  //     transaction.operation,
+  //     transaction.safeTxGas,
+  //     transaction.baseGas,
+  //     transaction.gasPrice,
+  //     transaction.gasToken,
+  //     transaction.refundReceiver,
+  //     transaction.nonce,
+  //   ));
+
+  //   if (!result) {
+  //     return null;
+  //   }
+
+  //   // eslint-disable-next-line require-atomic-updates
+  //   transaction.sender = signer.address;
+
+  //   this.consoleLogService.logMessage(`sending to safe txHash: ${hash}`, "info");
+
+  //   const response = await gnosis.sendTransaction(transaction);
+
+  //   if (response.status !== 201) {
+  //     throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+  //   }
+
+  //   return metaDataHash;
+  // }
 
 }

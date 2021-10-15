@@ -14,6 +14,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
 import BigNumber, { toBigNumberJs } from "services/BigNumberService";
+import { Utils } from "services/utils";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
@@ -204,7 +205,7 @@ export class SeedService {
       [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
       !!config.launchDetails.whitelist,
       toWei(SeedService.seedFee),
-      this.asciiToHex(metaDataHash),
+      Utils.asciiToHex(metaDataHash),
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
@@ -274,15 +275,5 @@ export class SeedService {
     }
 
     return metaDataHash;
-  }
-
-  private asciiToHex(str = ""): string {
-    const res = [];
-    const { length: len } = str;
-    for (let n = 0, l = len; n < l; n++) {
-      const hex = Number(str.charCodeAt(n)).toString(16);
-      res.push(hex);
-    }
-    return `0x${res.join("")}`;
   }
 }

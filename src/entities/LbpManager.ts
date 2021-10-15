@@ -141,7 +141,7 @@ export class LbpManager implements ILaunch {
     catch (error) {
       this.corrupt = true;
       this.initializing = false;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
     }
   }
 
@@ -152,17 +152,19 @@ export class LbpManager implements ILaunch {
       this.lbpInitialized = await this.contract.initialized();
       this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
-      this.projectTokenAddress = await this.contract.seedToken();
-      this.fundingTokenAddress = await this.contract.fundingToken();
 
-      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+      // this.projectTokenAddress = await this.contract.seedToken();
+      // this.fundingTokenAddress = await this.contract.fundingToken();
 
-      this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
-      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+      // this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
+      // this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
-      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
-      this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
+      // this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
+      // this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+
+      const startEndTime = await this.contract.startTimeEndTime();
+      this.startTime = this.dateService.unixEpochToDate(startEndTime[0].toNumber());
+      this.endTime = this.dateService.unixEpochToDate(startEndTime[1].toNumber());
       // this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price(), this.fundingTokenInfo.decimals));
       // // this.capPrice = this.numberService.fromString(fromWei(this.cap, this.fundingTokenInfo.decimals)) * (this.fundingTokenInfo.price ?? 0);
       // this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply(), this.fundingTokenInfo.decimals))
@@ -210,17 +212,17 @@ export class LbpManager implements ILaunch {
     const rawMetadata = await this.contract.metadata();
     if (rawMetadata && Number(rawMetadata)) {
       this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+      this.consoleLogService.logMessage(`loaded LpbManager metadata: ${this.metadataHash}`, "info");
     } else {
-      this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-      throw new Error(`seed lacks metadata, is unusable: ${this.address}`);
+      this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
+      throw new Error(`LbpManager lacks metadata, is unusable: ${this.address}`);
     }
 
     if (this.metadataHash) {
       this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
       if (!this.metadata) {
-        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-        throw new Error(`seed metadata is not found in IPFS, seed is unusable: ${this.address}`);
+        this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
+        throw new Error(`LbpManager metadata is not found in IPFS, LbpManager is unusable: ${this.address}`);
       }
     }
   }
