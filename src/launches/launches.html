@@ -22,18 +22,18 @@
         </div>
         <template repeat.for="launch of launches | sort:sortEvaluator">
           <a
-            class="row body ${launch.canGoToDashboard ? 'hot' : '' }"
+            class="row body ${isAdmin(launch) ? 'hot' : '' }"
             if.to-view="!launch.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(launch)">
-            <div class="project cell body ellipses ${launch.canGoToDashboard ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${launch.canGoToDashboard ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
-            <div class="fundingToken cell body ${launch.canGoToDashboard ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
-            <div class="starts cell body ${launch.canGoToDashboard ? 'hot' : '' }">
+            <div class="project cell body ellipses ${isAdmin(launch) ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
+            <div class="projectToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
+            <div class="starts cell body ${isAdmin(launch) ? 'hot' : '' }">
               <time-left launch.to-view="launch" hide-icons largest></time-left>
             </div>
-            <div class="type cell body ${launch.canGoToDashboard ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
-            <div class="whitelist cell body ${launch.canGoToDashboard ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="eslink cell body ${launch.canGoToDashboard ? 'hot' : '' }"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(seed, $event)"></i></div>
+            <div class="type cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
+            <div class="whitelist cell body ${isAdmin(launch) ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="eslink cell body ${isAdmin(launch) ? 'hot' : '' }"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(seed, $event)"></i></div>
           </a>
         </template>
       </div>
@@ -47,26 +47,23 @@
           <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
           <div class="cell target header">&nbsp;</div>
-          <!-- <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div> -->
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
         <template repeat.for="launch of launches | sort:sortEvaluator">
           <a
-            class="row body ${launch.canGoToDashboard ? 'hot' : '' }"
+            class="row body ${isAdmin(launch) ? 'hot' : '' }"
             if.to-view="!launch.initializing && (($index < 4) || seeingMore)"
             click.delegate="onSeedClick(launch)">
-            <div class="project cell body ${launch.canGoToDashboard ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${launch.canGoToDashboard ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
-            <div class="type cell body ${launch.canGoToDashboard ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
-            <div class="whitelist cell body ${launch.canGoToDashboard ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="starts cell body ${launch.canGoToDashboard ? 'hot' : '' }">
+            <div class="project cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
+            <div class="projectToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
+            <div class="type cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
+            <div class="whitelist cell body ${isAdmin(launch) ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="starts cell body ${isAdmin(launch) ? 'hot' : '' }">
               <time-left launch.to-view="launch" hide-icons largest></time-left>
             </div>
-            <div class="fundingToken cell body ${launch.canGoToDashboard ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
-            <div class="cell body ${launch.canGoToDashboard ? 'hot' : '' }">&nbsp;</div>
-            <!-- <div class="cap cell body ${launch.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="launch.cap | ethwei:launch.fundingTokenInfo.decimals"></formatted-number>
-            </div> -->
-            <div class="eslink cell body ${launch.canGoToDashboard ? 'hot' : '' }" click.trigger="gotoEtherscan(launch, $event)"><i class="fa fa-external-link-alt"></i></div>
+            <div class="fundingToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
+            <div class="cell body ${isAdmin(launch) ? 'hot' : '' }">&nbsp;</div>
+            <div class="eslink cell body ${isAdmin(launch) ? 'hot' : '' }" click.trigger="gotoEtherscan(launch, $event)"><i class="fa fa-external-link-alt"></i></div>
           </a>
         </template>
       </div>

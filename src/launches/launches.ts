@@ -27,6 +27,10 @@ export class Launches {
     this.sort("starts"); // sort order will be ASC
   }
 
+  isAdmin(launch: ILaunch): boolean {
+    return launch.admin === this.ethereumService.defaultAccountAddress;
+  }
+
   async attached(): Promise<void> {
     this.loading = true;
 
@@ -89,7 +93,8 @@ export class Launches {
     return false;
   }
 
-  onSeedClick(seed: Seed): void {
-    this.router.navigate(seed.canGoToDashboard ? `seed/${seed.address}` : "launches");
+  onSeedClick(launch: ILaunch): void {
+    this.router.navigate(launch.canGoToDashboard ? `${launch.launchType}/${launch.address}` :
+      `/admin/${launch.launchType}s/dashboard/${launch.address}`);
   }
 }
