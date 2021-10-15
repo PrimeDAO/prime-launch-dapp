@@ -26,6 +26,7 @@ export class LbpManagerService {
 
   public lbpManagers: Map<Address, LbpManager>;
   public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
+  public static lbpSwapFee = .1; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
 
   @computedFrom("lbps.size")
   public get lbpManagersArray(): Array<LbpManager> {
@@ -166,7 +167,7 @@ export class LbpManagerService {
       operation: 0,
     } as any;
 
-    const seedArguments = [
+    const lbpArguments = [
       config.launchDetails.adminAddress,
       safeAddress,
       config.tokenDetails.projectTokenInfo.name,
@@ -176,11 +177,11 @@ export class LbpManagerService {
       [config.launchDetails.startWeight, 100 - config.launchDetails.startWeight],
       [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],
       [config.launchDetails.endWeight, 100 - config.launchDetails.endWeight],
-      toWei(LbpManagerService.lbpFee),
+      [toWei(LbpManagerService.lbpSwapFee), toWei(LbpManagerService.lbpFee)],
       Utils.asciiToHex(metaDataHash),
     ];
 
-    transaction.data = (await lbpManagerFactory.populateTransaction.deployLBPManager(...seedArguments)).data;
+    transaction.data = (await lbpManagerFactory.populateTransaction.deployLBPManager(...lbpArguments)).data;
 
     // console.log("estimating transaction:");
     // console.dir(transaction);

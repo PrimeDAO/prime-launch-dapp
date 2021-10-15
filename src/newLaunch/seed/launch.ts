@@ -1,8 +1,10 @@
+import { Seed } from "entities/Seed";
 import { PLATFORM } from "aurelia-pal";
 import { singleton, computedFrom, useView } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newLaunch/baseStage";
+import { LaunchType } from "services/launchTypes";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
@@ -27,7 +29,7 @@ export class NewSeed {
   constructor() {
     if (!this.launchConfig) {
       this.launchConfig = new SeedConfig();
-      this.wizardState = {};
+      this.wizardState = { launchType: LaunchType.Seed, launchTypeTitle: "Seed" };
       /**
        * stageStates is 1-based, indexed by stage number
        */

@@ -20,7 +20,7 @@
               <token-select
                 id="fundingTokenAddress"
                 selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
-                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
                 token-addresses.to-view="tokenList"
                 item-changed.call="tokenChanged(value,index)">
               </token-select>
@@ -58,7 +58,7 @@
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
               decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
-              disabled.bind="!launchConfig.launchDetails.fundingTokenInfo.name"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
             </numeric-input>
             <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>

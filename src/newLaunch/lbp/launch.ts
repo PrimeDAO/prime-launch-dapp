@@ -3,6 +3,7 @@ import { singleton, computedFrom, useView } from "aurelia-framework";
 import { ILbpConfig, LbpConfig } from "newLaunch/lbp/config";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newLaunch/baseStage";
+import { LaunchType } from "services/launchTypes";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
@@ -28,7 +29,7 @@ export class NewLbp {
   constructor() {
     if (!this.launchConfig) {
       this.launchConfig = new LbpConfig();
-      this.wizardState = {};
+      this.wizardState = { launchType: LaunchType.LBP, launchTypeTitle: "LBP" };
       /**
        * stageStates is 1-based, indexed by stage number
        */

@@ -149,23 +149,25 @@ export class LbpManager implements ILaunch {
       this.lbpInitialized = await this.contract.initialized();
       this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
-
-      // this.projectTokenAddress = await this.contract.seedToken();
-      // this.fundingTokenAddress = await this.contract.fundingToken();
-
-      // this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
-      // this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
-
-      // this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
-      // this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
-
+      const projectTokenIndex = await this.contract.projectTokenIndex();
+      const fundingTokenIndex = projectTokenIndex ? 0 : 1;
+      const tokensArray = await this.contract.tokenList();
+      // const tokenAmountsArray = await this.contract.amounts();
+      // const tokenStartWeightsArray = await this.contract.startWeights();
+      // const tokenEndWeightsArray = await this.contract.endWeights();
       const startEndTime = await this.contract.startTimeEndTime();
+
+      this.projectTokenAddress = tokensArray[projectTokenIndex];
+      this.fundingTokenAddress = tokensArray[fundingTokenIndex];
+
+      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+      this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
+      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+
       this.startTime = this.dateService.unixEpochToDate(startEndTime[0].toNumber());
       this.endTime = this.dateService.unixEpochToDate(startEndTime[1].toNumber());
-      // this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price(), this.fundingTokenInfo.decimals));
-      // // this.capPrice = this.numberService.fromString(fromWei(this.cap, this.fundingTokenInfo.decimals)) * (this.fundingTokenInfo.price ?? 0);
-      // this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply(), this.fundingTokenInfo.decimals))
-      //   * (this.fundingTokenInfo.price ?? 0);
 
       await this.hydatePaused();
       await this.hydrateTokensState();
