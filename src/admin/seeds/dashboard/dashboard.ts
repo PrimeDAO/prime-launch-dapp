@@ -74,10 +74,10 @@ export class SeedAdminDashboard {
       this.seeds = [];
     }
     if (this.defaultSeedAddress) {
-      const defaultSeedIndex = this.seeds.map((seed, index) => this.defaultSeedAddress === seed.address ? index : undefined).filter((seed) => seed);
-      if (defaultSeedIndex.length === 1) {
-        this.selectedSeedIndex = defaultSeedIndex[0];
-        this.selectedSeed = this.seeds[defaultSeedIndex[0]];
+      const defaultSeed = this.seeds.filter((seed) => this.defaultSeedAddress === seed.address);
+      if (defaultSeed.length === 1) {
+        this.selectedSeedIndex = this.seeds.indexOf(defaultSeed[0]);
+        this.selectedSeed = defaultSeed[0];
       }
     }
   }
