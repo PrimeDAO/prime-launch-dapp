@@ -40,9 +40,6 @@ export class LbpManager implements ILaunch {
   public corrupt = false;
   public userHydrated = false;
 
-  /**
- * "seed token" is a synonym for "project token"
- */
   public projectTokenAddress: Address;
   public projectTokenInfo: ITokenInfo;
   public projectTokenContract: any;
@@ -132,7 +129,7 @@ export class LbpManager implements ILaunch {
 
   private async loadContracts(): Promise<void> {
     try {
-      this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
+      this.contract = await this.contractsService.getContractAtAddress(ContractNames.LBPMANAGER, this.address);
       if (this.projectTokenAddress) {
         this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
         this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
@@ -177,7 +174,7 @@ export class LbpManager implements ILaunch {
     }
     catch (error) {
       this.corrupt = true;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lpbpmanager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
     }

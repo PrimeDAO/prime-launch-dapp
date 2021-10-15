@@ -14,7 +14,6 @@ import { ContractNames, ContractsService, IStandardEvent } from "services/Contra
 import { EventConfigException } from "services/GeneralEvents";
 import { Utils } from "services/utils";
 import { api } from "services/GnosisService";
-import BigNumber, { toBigNumberJs } from "services/BigNumberService";
 
 export interface ILBPManagerDeployedEventArgs {
   lbpManager: Address;
@@ -147,127 +146,107 @@ export class LbpManagerService {
   }
 
 
-  // public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
+  public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
 
-  //   const seedConfigString = JSON.stringify(config);
-  //   // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
+    const lbpConfigString = JSON.stringify(config);
+    // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
-  //   const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash = await this.ipfsService.saveString(lbpConfigString, `${config.general.projectName}`);
 
-  //   this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
+    this.consoleLogService.logMessage(`lbpmanager registration hash: ${metaDataHash}`, "info");
 
-  //   const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
-  //   const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
-  //   const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-  //   const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+    const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
+    const lbpManagerFactory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
+    const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
-  //   const transaction = {
-  //     to: seedFactory.address,
-  //     value: 0,
-  //     operation: 0,
-  //   } as any;
+    const transaction = {
+      to: lbpManagerFactory.address,
+      value: 0,
+      operation: 0,
+    } as any;
 
-  //   const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenAddress]))[0];
-  //   let pricePerToken: string;
+    const seedArguments = [
+      config.launchDetails.adminAddress,
+      safeAddress,
+      config.tokenDetails.projectTokenInfo.name,
+      config.tokenDetails.projectTokenInfo.symbol,
+      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
+      [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
+      [config.launchDetails.startWeight, 100 - config.launchDetails.startWeight],
+      [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],
+      [config.launchDetails.endWeight, 100 - config.launchDetails.endWeight],
+      toWei(LbpManagerService.lbpFee),
+      Utils.asciiToHex(metaDataHash),
+    ];
 
-  //   try {
-  //     BigNumber.config({ DECIMAL_PLACES: fundingTokenInfo.decimals });
-  //     const numerator = toBigNumberJs(config.launchDetails.pricePerToken);
+    transaction.data = (await lbpManagerFactory.populateTransaction.deployLBPManager(...seedArguments)).data;
 
-  //     BigNumber.config({ DECIMAL_PLACES: config.tokenDetails.projectTokenInfo.decimals });
-  //     const denominator = toBigNumberJs(toWei(1, config.tokenDetails.projectTokenInfo.decimals));
+    // console.log("estimating transaction:");
+    // console.dir(transaction);
 
-  //     const rawPrice = numerator.dividedBy(denominator).toString();
-  //     pricePerToken = toWei(rawPrice, 18).toString();
-  //   } catch (ex) {
-  //     throw new Error(ex);
-  //   } finally {
-  //     BigNumber.config({ DECIMAL_PLACES: 18 }); // just to reset cuz this is globally scoped
-  //   }
+    const estimate = (await gnosis.getEstimate(transaction)).data;
 
-  //   const seedArguments = [
-  //     safeAddress,
-  //     config.launchDetails.adminAddress,
-  //     [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
-  //     [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
-  //     pricePerToken,
-  //     // convert from ISO string to Unix epoch seconds
-  //     Date.parse(config.launchDetails.startDate) / 1000,
-  //     // convert from ISO string to Unix epoch seconds
-  //     Date.parse(config.launchDetails.endDate) / 1000,
-  //     [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
-  //     !!config.launchDetails.whitelist,
-  //     toWei(LpbManagerService.Fee),
-  //     Utils.asciiToHex(metaDataHash),
-  //   ];
+    Object.assign(transaction, {
+      safeTxGas: estimate.safeTxGas,
+      nonce: await gnosis.getCurrentNonce(),
+      baseGas: 0,
+      gasPrice: 0,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
+      safe: safeAddress,
+    });
 
-  //   transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+    const { hash, signature } = await signer.callStatic.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    );
 
-  //   // console.log("estimating transaction:");
-  //   // console.dir(transaction);
+    // eslint-disable-next-line require-atomic-updates
+    transaction.contractTransactionHash = hash;
+    // eslint-disable-next-line require-atomic-updates
+    transaction.signature = signature;
 
-  //   const estimate = (await gnosis.getEstimate(transaction)).data;
+    // console.log("generating signature for transaction:");
+    // console.dir(transaction);
 
-  //   Object.assign(transaction, {
-  //     safeTxGas: estimate.safeTxGas,
-  //     nonce: await gnosis.getCurrentNonce(),
-  //     baseGas: 0,
-  //     gasPrice: 0,
-  //     gasToken: "0x0000000000000000000000000000000000000000",
-  //     refundReceiver: "0x0000000000000000000000000000000000000000",
-  //     safe: safeAddress,
-  //   });
+    const result = await this.transactionsService.send(() => signer.generateSignature(
+      transaction.to,
+      transaction.value,
+      transaction.data,
+      transaction.operation,
+      transaction.safeTxGas,
+      transaction.baseGas,
+      transaction.gasPrice,
+      transaction.gasToken,
+      transaction.refundReceiver,
+      transaction.nonce,
+    ));
 
-  //   const { hash, signature } = await signer.callStatic.generateSignature(
-  //     transaction.to,
-  //     transaction.value,
-  //     transaction.data,
-  //     transaction.operation,
-  //     transaction.safeTxGas,
-  //     transaction.baseGas,
-  //     transaction.gasPrice,
-  //     transaction.gasToken,
-  //     transaction.refundReceiver,
-  //     transaction.nonce,
-  //   );
+    if (!result) {
+      return null;
+    }
 
-  //   // eslint-disable-next-line require-atomic-updates
-  //   transaction.contractTransactionHash = hash;
-  //   // eslint-disable-next-line require-atomic-updates
-  //   transaction.signature = signature;
+    // eslint-disable-next-line require-atomic-updates
+    transaction.sender = signer.address;
 
-  //   // console.log("generating signature for transaction:");
-  //   // console.dir(transaction);
+    this.consoleLogService.logMessage(`sending to safe txHash: ${hash}`, "info");
 
-  //   const result = await this.transactionsService.send(() => signer.generateSignature(
-  //     transaction.to,
-  //     transaction.value,
-  //     transaction.data,
-  //     transaction.operation,
-  //     transaction.safeTxGas,
-  //     transaction.baseGas,
-  //     transaction.gasPrice,
-  //     transaction.gasToken,
-  //     transaction.refundReceiver,
-  //     transaction.nonce,
-  //   ));
+    const response = await gnosis.sendTransaction(transaction);
 
-  //   if (!result) {
-  //     return null;
-  //   }
+    if (response.status !== 201) {
+      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+    }
 
-  //   // eslint-disable-next-line require-atomic-updates
-  //   transaction.sender = signer.address;
-
-  //   this.consoleLogService.logMessage(`sending to safe txHash: ${hash}`, "info");
-
-  //   const response = await gnosis.sendTransaction(transaction);
-
-  //   if (response.status !== 201) {
-  //     throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
-  //   }
-
-  //   return metaDataHash;
-  // }
+    return metaDataHash;
+  }
 
 }

@@ -53,8 +53,8 @@ export class App {
       this.handleOnOff(onOff);
     });
 
-    this.eventAggregator.subscribe("seed.creating", async (onOff: boolean) => {
-      this.modalMessage = "Thank you for your patience while we initiate the creation of a new seed...";
+    this.eventAggregator.subscribe("launch.creating", async (onOff: boolean) => {
+      this.modalMessage = "Thank you for your patience while we initiate the creation of a new launch...";
       this.handleOnOff(onOff);
     });
 
