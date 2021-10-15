@@ -1,3 +1,4 @@
+import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
@@ -12,6 +13,7 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
+import BigNumber, { toBigNumberJs } from "services/BigNumberService";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
@@ -50,6 +52,7 @@ export class SeedService {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
+    private tokenService: TokenService,
   ) {
     /**
      * otherwise singleton is the default
@@ -170,12 +173,30 @@ export class SeedService {
       operation: 0,
     } as any;
 
+    const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenAddress]))[0];
+    let pricePerToken: string;
+
+    try {
+      BigNumber.config({ DECIMAL_PLACES: fundingTokenInfo.decimals });
+      const numerator = toBigNumberJs(config.launchDetails.pricePerToken);
+
+      BigNumber.config({ DECIMAL_PLACES: config.tokenDetails.projectTokenInfo.decimals });
+      const denominator = toBigNumberJs(toWei(1, config.tokenDetails.projectTokenInfo.decimals));
+
+      const rawPrice = numerator.dividedBy(denominator).toString();
+      pricePerToken = toWei(rawPrice, 18).toString();
+    } catch (ex) {
+      throw new Error(ex);
+    } finally {
+      BigNumber.config({ DECIMAL_PLACES: 18 }); // just to reset cuz this is globally scoped
+    }
+
     const seedArguments = [
       safeAddress,
       config.launchDetails.adminAddress,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
-      config.launchDetails.pricePerToken,
+      pricePerToken,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.launchDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
