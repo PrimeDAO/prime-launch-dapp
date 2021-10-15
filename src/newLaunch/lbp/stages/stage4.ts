@@ -52,7 +52,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private aureliaHelperService: AureliaHelperService,
   ) {
     super(router, eventAggregator, tokenService);
-    this.eventAggregator.subscribe("lbp.clearState", () => {
+    this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
       this.startTime = undefined;

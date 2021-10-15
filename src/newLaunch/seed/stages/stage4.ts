@@ -46,7 +46,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     private disclaimerService: DisclaimerService,
   ) {
     super(router, eventAggregator, tokenService);
-    this.eventAggregator.subscribe("seed.clearState", () => {
+    this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
       this.startTime = undefined;

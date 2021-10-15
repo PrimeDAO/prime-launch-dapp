@@ -9,6 +9,7 @@ import { EventConfigException } from "services/GeneralEvents";
 // import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 import { TokenService } from "services/TokenService";
+import { LbpManagerService } from "services/LbpManagerService";
 
 @autoinject
 export class Stage7 extends BaseStage<ILbpConfig> {
@@ -16,7 +17,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
-    // private lbpService: LbpService,
+    private lbpManagerService: LbpManagerService,
     private ethereumService: EthereumService,
     tokenService: TokenService,
     private numberService: NumberService) {
@@ -49,22 +50,22 @@ export class Stage7 extends BaseStage<ILbpConfig> {
 
   async submit(): Promise<void> {
     try {
-      this.eventAggregator.publish("seed.creating", true);
-      // this.wizardState.launchHash = await this.lbpService.deployLbp(this.launchConfig);
+      this.eventAggregator.publish("launch.creating", true);
+      this.wizardState.launchHash = await this.lbpManagerService.deployLpbManager(this.launchConfig);
       if (this.wizardState.launchHash) {
       // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
         this.launchConfig.clearState();
         for (let i = 1; i <= this.maxStage; ++i) {
           this.stageStates[i].verified = false;
         }
-        this.eventAggregator.publish("seed.clearState", true);
+        this.eventAggregator.publish("launch.clearState", true);
         this.next();
       }
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
     finally {
-      this.eventAggregator.publish("seed.creating", false);
+      this.eventAggregator.publish("launch.creating", false);
     }
   }
 
