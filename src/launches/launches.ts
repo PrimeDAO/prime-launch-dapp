@@ -7,11 +7,14 @@ import { Seed } from "entities/Seed";
 import { SortService } from "services/SortService";
 import { Utils } from "services/utils";
 import { SeedService } from "services/SeedService";
+import { ILaunch } from "services/launchTypes";
+import { LbpManagerService } from "services/LbpManagerService";
 
 @singleton(false)
 @autoinject
 export class Launches {
 
+  launches: Array<ILaunch>;
   seeingMore = false;
   loading: boolean;
 
@@ -19,8 +22,21 @@ export class Launches {
     private router: Router,
     private ethereumService: EthereumService,
     private seedService: SeedService,
+    private lbpManagerService: LbpManagerService,
   ) {
     this.sort("starts"); // sort order will be ASC
+  }
+
+  async attached(): Promise<void> {
+    this.loading = true;
+
+    await this.seedService.ensureAllSeedsInitialized();
+    await this.lbpManagerService.ensureAllLbpsInitialized();
+
+    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
+      .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+
+    this.loading = false;
   }
 
   seeMore(yesNo: boolean): void {
