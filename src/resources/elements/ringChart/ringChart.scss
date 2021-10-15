@@ -1,1 +1,61 @@
-.ringChart {}
+
+$s-min: 20;
+$s-max: 70;
+$l-min: 30;
+$l-max: 90;
+
+@function color_range($color)
+{
+    $hsl: ();
+    $hsl-list: hue($color), saturation($color), lightness($color);
+    $hsl-range: 30, 40, 30;
+
+    @for $i from 1 to 4
+    {
+        $random: random(nth($hsl-range, $i)); //make a random within the given range
+        $range: nth($hsl-range, $i) / 2; //set the range to be half of what it is
+
+        $hsl: append($hsl, (nth($hsl-list, $i) - $range + $random), comma); //create hsl list
+    }
+
+    @return hsl($hsl...);
+}
+
+.ringChart {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .stakeholderList {
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .stakeholderListItem {
+    @for $i from 1 through 100 {
+      &:nth-child(#{$i}) .stakeholderPrimaryData::before {
+        // background: hsl(random(360),$s-min+random($s-max+-$s-min),$l-min+random($l-max+-$l-min));
+        background: color_range(pink);
+      }
+    }
+  }
+
+  .stakeholderPrimaryData {
+    color: #737074;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      // background: color_range(pink);
+      margin-right: 8px;
+    }
+
+   
+  }
+
+  .stakeholderSecondaryData {
+    color: #322e34;
+  }
+}
