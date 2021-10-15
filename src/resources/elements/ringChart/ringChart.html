@@ -1,6 +1,22 @@
 <template>
-    <div>graph</div>
-    <div>labels list
-        ${data}
+  <section class="ringChart">
+    <h3>Token Distribution</h3>
+    <div>
+      <div>graph</div>
+      <ul class="stakeholderList">
+        ${data.projectTokenAddress}
+        <li
+          class="stakeholderListItem"
+          repeat.for="stakeholder of data.tokenDistrib"
+        >
+          <div class="stakeholder">
+            <div class="stakeholderPrimaryData">${percentageHeld(data.maxSupply, stakeholder.amount)}% &ndash; ${stakeholder.stakeHolder}</div>
+            <div class="stakeholderSecondaryData" if.bind="stakeholder.vest" }>
+                <i class="fa fa-lock"></i> ${toTimeDuration(stakeholder.vest)} vested
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
+  </section>
 </template>

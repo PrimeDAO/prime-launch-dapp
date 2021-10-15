@@ -1,3 +1,4 @@
+import { ITokenDetails } from "./../../launchConfig";
 import { ILbpConfig } from "newLaunch/lbp/config";
 import { EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -45,8 +46,43 @@ export class Stage7 extends BaseStage<ILbpConfig> {
     this.wizardState.requiredFundingTokenDeposit = BigNumber.from(this.launchConfig.launchDetails.amountFundingToken);
   }
 
+  // props:ITokenDetails = {
+  //   maxSupply: "100000000000000000000",
+  //   tokenDistrib: [{
+  //     amount: "20000000000000000000",
+  //     cliff: 10,
+  //     stakeHolder: "test 1",
+  //     vest: 20,
+  //   }, {
+  //     amount: "33000000000000000000",
+  //     cliff: 12,
+  //     stakeHolder: "test 2 ",
+  //     vest: 357,
+  //   }],
+  // }
+
   async submit(): Promise<void> {
     console.log("this.launchConfig", this.launchConfig, this.wizardState);
+    console.log("this.launchConfig.launchDetails", this.launchConfig.launchDetails.amountFundingToken, this.launchConfig.launchDetails.amountProjectToken);
+    console.log("object", this.launchConfig.tokenDetails.maxSupply);
+    //     [{
+    //   amount: "20000000000000000000"
+    //
+    // cliff: "10"
+    //
+    // stakeHolder: "test 1"
+    //
+    // vest: "20"
+    // },{
+    //   amount: "33000000000000000000"
+    //
+    // cliff: "12"
+    //
+    // stakeHolder: "test 2 "
+    //
+    // vest: "357"
+    // }]
+
     try {
       this.eventAggregator.publish("launch.creating", true);
       this.wizardState.launchHash = await this.lbpManagerService.deployLpbManager(this.launchConfig);
