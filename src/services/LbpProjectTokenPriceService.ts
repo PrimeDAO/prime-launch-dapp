@@ -1,13 +1,15 @@
+import { NumberService } from "services/NumberService";
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 import Moment = moment.Moment;
+import BigNumber from "bignumber.js";
+import { toBigNumberJs } from "services/BigNumberService";
 
 @autoinject
 export class LbpProjectTokenPriceService {
 
-  maxSupply: number;
-  projectTokenInitialLbpAmount: number;
-  fundingTokenInitialLbpAmount: number;
+  projectTokenInitialLbpAmount: BigNumber;
+  fundingTokenInitialLbpAmount: BigNumber;
   startWeightProjectToken: number;
   endWeightProjectToken: number;
   startDate: string;
@@ -15,22 +17,22 @@ export class LbpProjectTokenPriceService {
   roundedStartDate: Moment;
   roundedEndDate: Moment;
   lbpDurationInHours: number;
-  pricePerFundingToken: number;
-
+  pricePerFundingToken: BigNumber;
+  private numberService: NumberService;
 
   constructor(
-    maxSupply: number,
-    projectTokenInitialLbpAmount: number,
-    fundingTokenInitialLbpAmount: number,
+    private maxSupply: number,
+    projectTokenInitialLbpAmount: BigNumber,
+    fundingTokenInitialLbpAmount: BigNumber,
     startWeightProjectToken: number,
     endWeightProjectToken: number,
     startDate: string,
     endDate: string,
-    pricePerFundingToken: number,
+    pricePerFundingToken: BigNumber,
   ) {
     this.maxSupply = maxSupply;
-    this.projectTokenInitialLbpAmount = projectTokenInitialLbpAmount;
-    this.fundingTokenInitialLbpAmount = fundingTokenInitialLbpAmount;
+    this.projectTokenInitialLbpAmount = toBigNumberJs(projectTokenInitialLbpAmount);
+    this.fundingTokenInitialLbpAmount = toBigNumberJs(fundingTokenInitialLbpAmount);
     this.startWeightProjectToken = startWeightProjectToken;
     this.endWeightProjectToken = endWeightProjectToken;
     this.startDate = startDate;
@@ -42,40 +44,38 @@ export class LbpProjectTokenPriceService {
   }
 
   getMarketCap(
-    projectTokenInPool: number,
-    fundingTokenInPool: number,
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
-  ): number {
+  ): BigNumber {
     const projectTokenMcap =
       this.getPriceAtWeight(
         projectTokenInPool,
         fundingTokenInPool,
         projectTokenWeight,
         this.pricePerFundingToken,
-      ) *
-      this.maxSupply;
+      ).multipliedBy(this.maxSupply);
 
-
-    return Math.round(projectTokenMcap);
+    return projectTokenMcap.decimalPlaces(2, BigNumber.ROUND_DOWN);
   }
 
   getPriceAtWeight(
-    projectTokenInPool: number,
-    fundingTokenInPool: number,
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
-    pricePerFundingToken: number,
-  ): number {
-    const fundingTokenValue = fundingTokenInPool * pricePerFundingToken;
+    pricePerFundingToken: BigNumber,
+  ): BigNumber {
+    const fundingTokenValue = fundingTokenInPool.multipliedBy(pricePerFundingToken);
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
-    const projectTokenValue = scalingFactor * fundingTokenValue;
-    const pricePerProjectToken = projectTokenValue / projectTokenInPool;
+    const projectTokenValue = toBigNumberJs(scalingFactor).multipliedBy(fundingTokenValue);
+    const pricePerProjectToken = projectTokenValue.dividedBy(projectTokenInPool);
 
     return pricePerProjectToken;
   }
 
   getInterpolatedPriceDataPoints(
-    projectTokenInPool: number,
-    fundingTokenInPool: number,
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     currentTime: Date,
   ): { prices, labels} {
     const prices = [];
@@ -135,10 +135,10 @@ export class LbpProjectTokenPriceService {
       .asHours();
   }
 
-  getFundsRaised(fundingTokenInPool: number): number {
+  getFundsRaised(fundingTokenInPool: BigNumber): BigNumber {
     return (
-      (fundingTokenInPool - this.fundingTokenInitialLbpAmount) *
-      this.pricePerFundingToken
+      (fundingTokenInPool.minus(this.fundingTokenInitialLbpAmount))
+        .multipliedBy(this.pricePerFundingToken)
     );
   }
 }
