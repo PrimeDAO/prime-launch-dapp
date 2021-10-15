@@ -174,7 +174,7 @@ export class SeedService {
       operation: 0,
     } as any;
 
-    const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenAddress]))[0];
+    const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenInfo.address]))[0];
     let pricePerToken: string;
 
     try {
@@ -195,7 +195,7 @@ export class SeedService {
     const seedArguments = [
       safeAddress,
       config.launchDetails.adminAddress,
-      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
+      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
       pricePerToken,
       // convert from ISO string to Unix epoch seconds

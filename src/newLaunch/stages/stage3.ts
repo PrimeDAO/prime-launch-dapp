@@ -112,9 +112,9 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     else if (!message && (!this.launchConfig.tokenDetails.maxSupply || (this.launchConfig.tokenDetails.maxSupply === "0"))) {
       message = "Please enter a number greater than zero for Maximum Supply";
     // } else if (this.launchConfig.launchDetails.fundingMax && this.launchConfig.launchDetails.pricePerToken &&
-    //   this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
+    //   this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
     //   this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
-    //     this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
+    //     this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.launchConfig.launchDetails.fundingTokenInfo.decimals))) {
     //   message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else {
       // Check the token distribution

@@ -94,7 +94,7 @@
           <div class="heading heading4">
             Funding Token
           </div>
-          <stageSixTokenInfo token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+          <stageSixTokenInfo token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
         </div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
@@ -141,9 +141,9 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.pricePerToken | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.pricePerToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -152,9 +152,9 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.fundingTarget | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -163,9 +163,9 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.fundingMax | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">

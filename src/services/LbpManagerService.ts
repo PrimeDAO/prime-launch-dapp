@@ -171,7 +171,7 @@ export class LbpManagerService {
       safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
-      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenAddress],
+      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
       [config.launchDetails.startWeight, 100 - config.launchDetails.startWeight],
       [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],

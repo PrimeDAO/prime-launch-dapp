@@ -131,7 +131,7 @@
           <div class="heading heading4">
             Funding Token
           </div>
-          <stageSixTokenInfo token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+          <stageSixTokenInfo token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
         </div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
@@ -145,9 +145,9 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:wizardState.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="wizardState.fundingTokenInfo"></stageSixTokenInfo>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -163,7 +163,7 @@
             Start Weights
           </div>
           <div>
-            ${launchConfig.launchDetails.startWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${launchConfig.launchDetails.startWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.startWeight} ${launchConfig.launchDetails.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -179,7 +179,7 @@
             End Weights
           </div>
           <div>
-            ${launchConfig.launchDetails.endWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${launchConfig.launchDetails.endWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.endWeight} ${launchConfig.launchDetails.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLaunchDetails">

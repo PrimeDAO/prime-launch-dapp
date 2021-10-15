@@ -68,7 +68,7 @@ export interface IContactDetails {
 }
 
 export interface ILaunchDetails {
-  fundingTokenAddress: "",
+  fundingTokenInfo: ITokenInfo,
   startDate: string,
   endDate: string,
   adminAddress: string,
@@ -129,7 +129,7 @@ export class LaunchConfig implements ILaunchConfig {
     };
 
     this.launchDetails = {
-      fundingTokenAddress: "",
+      fundingTokenInfo: {} as unknown as ITokenInfo,
       startDate: "",
       endDate: "",
       adminAddress: "",
