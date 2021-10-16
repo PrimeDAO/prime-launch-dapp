@@ -151,14 +151,12 @@ export class LbpManager implements ILaunch {
       this.admin = await this.contract.admin();
       const projectTokenIndex = await this.contract.projectTokenIndex();
       const fundingTokenIndex = projectTokenIndex ? 0 : 1;
-      const tokensArray = await this.contract.tokenList();
       // const tokenAmountsArray = await this.contract.amounts();
       // const tokenStartWeightsArray = await this.contract.startWeights();
       // const tokenEndWeightsArray = await this.contract.endWeights();
-      const startEndTime = await this.contract.startTimeEndTime();
 
-      this.projectTokenAddress = tokensArray[projectTokenIndex];
-      this.fundingTokenAddress = tokensArray[fundingTokenIndex];
+      this.projectTokenAddress = (await this.contract.tokenList(projectTokenIndex));
+      this.fundingTokenAddress = (await this.contract.tokenList(fundingTokenIndex));
 
       this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
@@ -166,8 +164,8 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      this.startTime = this.dateService.unixEpochToDate(startEndTime[0].toNumber());
-      this.endTime = this.dateService.unixEpochToDate(startEndTime[1].toNumber());
+      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(0)).toNumber());
+      this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
       await this.hydatePaused();
       await this.hydrateTokensState();
@@ -187,7 +185,7 @@ export class LbpManager implements ILaunch {
   }
 
   public async hydatePaused(): Promise<boolean> {
-    this.isPaused = await this.contract.paused();
+    this.isPaused = false; // TODO: await this.contract.paused();
     return this.isPaused;
   }
 

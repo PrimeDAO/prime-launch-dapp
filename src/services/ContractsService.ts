@@ -15,7 +15,7 @@ export enum ContractNames {
   , IERC20 = "IERC20"
   , ERC20 = "ERC20"
   , SAFE = "Safe"
-  , SIGNER = "Signer"
+  , SIGNER = "SignerV2"
 }
 
 export interface IStandardEvent<TArgs> {

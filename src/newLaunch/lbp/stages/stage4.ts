@@ -154,6 +154,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   persistData(): void {
     this.setlaunchConfigStartDate();
     this.setlaunchConfigEndDate();
+    // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
+    this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 

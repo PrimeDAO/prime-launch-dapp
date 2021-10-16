@@ -166,6 +166,13 @@ export class App {
         title: "SEED Dashboard",
       },
       {
+        moduleId: PLATFORM.moduleName("./lbpDashboard/lbpDashboard"),
+        nav: false,
+        name: "lbpDashboard",
+        route: ["lbp/:address"],
+        title: "LBP Dashboard",
+      },
+      {
         moduleId: PLATFORM.moduleName("./newLaunch/seed/launch"),
         nav: false,
         name: "newSeed",
