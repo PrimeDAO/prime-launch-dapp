@@ -1,45 +1,22 @@
-import { NumberService } from "services/NumberService";
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
-import Moment = moment.Moment;
 import BigNumber from "bignumber.js";
 import { toBigNumberJs } from "services/BigNumberService";
 
 @autoinject
 export class LbpProjectTokenPriceService {
 
-  projectTokenInitialLbpAmount: BigNumber;
-  fundingTokenInitialLbpAmount: BigNumber;
-  startWeightProjectToken: number;
-  endWeightProjectToken: number;
-  startDate: string;
-  endDate: string;
-  roundedStartDate: Moment;
-  roundedEndDate: Moment;
-  lbpDurationInHours: number;
-  pricePerFundingToken: BigNumber;
-  private numberService: NumberService;
-
   constructor(
-    private maxSupply: number,
-    projectTokenInitialLbpAmount: BigNumber,
-    fundingTokenInitialLbpAmount: BigNumber,
-    startWeightProjectToken: number,
-    endWeightProjectToken: number,
-    startDate: string,
-    endDate: string,
-    pricePerFundingToken: BigNumber,
+    private maxProjectTokenSupply: number,
+    private fundingTokenAmount: BigNumber,
+    private startWeightProjectToken: number,
+    private endWeightProjectToken: number,
+    private pricePerFundingToken: BigNumber,
   ) {
-    this.maxSupply = maxSupply;
-    this.projectTokenInitialLbpAmount = toBigNumberJs(projectTokenInitialLbpAmount);
-    this.fundingTokenInitialLbpAmount = toBigNumberJs(fundingTokenInitialLbpAmount);
+    this.maxProjectTokenSupply = maxProjectTokenSupply;
+    this.fundingTokenAmount = toBigNumberJs(fundingTokenAmount);
     this.startWeightProjectToken = startWeightProjectToken;
     this.endWeightProjectToken = endWeightProjectToken;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.roundedStartDate = moment(this.startDate).startOf("hour");
-    this.roundedEndDate = moment(this.endDate).startOf("hour");
-    this.lbpDurationInHours = moment(this.roundedEndDate).diff(this.roundedStartDate, "hours");
     this.pricePerFundingToken = pricePerFundingToken;
   }
 
@@ -54,7 +31,7 @@ export class LbpProjectTokenPriceService {
         fundingTokenInPool,
         projectTokenWeight,
         this.pricePerFundingToken,
-      ).multipliedBy(this.maxSupply);
+      ).multipliedBy(this.maxProjectTokenSupply);
 
     return projectTokenMcap.decimalPlaces(2, BigNumber.ROUND_DOWN);
   }
@@ -76,13 +53,29 @@ export class LbpProjectTokenPriceService {
   getInterpolatedPriceDataPoints(
     projectTokenInPool: BigNumber,
     fundingTokenInPool: BigNumber,
-    currentTime: Date,
+    startTime: Date,
+    endTime: Date,
   ): { prices, labels} {
     const prices = [];
     const labels = [];
 
-    const hoursPassedSinceStart = this.getHoursPassed(currentTime);
-    const hoursLeft = (this.lbpDurationInHours - hoursPassedSinceStart);
+    const roundedStartDate = moment(startTime).startOf("hour");
+    const roundedEndDate = moment(endTime).startOf("hour");
+    const currentTime = moment(new Date()).startOf("hour").toDate();
+
+    const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
+
+    console.log({
+      start: roundedStartDate.format("DD-MM-YYYY hh:mm"),
+      currentTime: moment(currentTime).format("DD-MM-YYYY hh:mm"),
+      end: roundedEndDate.format("DD-MM-YYYY hh:mm"),
+      lbpDurationInHours: lbpDurationInHours,
+    });
+
+    const hoursPassedSinceStart = this.getHoursPassed(currentTime, roundedStartDate.toDate());
+    const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
+
+    console.log({hoursLeft, hoursPassedSinceStart});
 
     let timeInterval: number;
     if (hoursLeft >= 24 * 20 /* days */) {
@@ -99,6 +92,7 @@ export class LbpProjectTokenPriceService {
       const time = moment(currentTime).add(hoursPassed, "hours");
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         time.toDate(),
+        currentTime,
       );
       const currentProjectTokenPrice = this.getPriceAtWeight(
         projectTokenInPool,
@@ -114,30 +108,40 @@ export class LbpProjectTokenPriceService {
     return { prices, labels };
   }
 
-  getProjectTokenWeightAtTime(currentTime: Date): number {
-    const hoursPassedSinceStart = this.getHoursPassed(currentTime);
+  getProjectTokenWeightAtTime(currentTime: Date, startTime: Date): number {
+    const hoursPassedSinceStart = this.getHoursPassed(currentTime, startTime);
+    const lbpDurationInHours = moment(currentTime).diff(startTime, "hours");
 
     const totalWeightDifference =
       this.startWeightProjectToken - this.endWeightProjectToken;
-    const weightChangePerHour = totalWeightDifference / this.lbpDurationInHours;
+    const weightChangePerHour = totalWeightDifference / lbpDurationInHours;
     const weightChange = hoursPassedSinceStart * weightChangePerHour;
 
     return this.startWeightProjectToken - weightChange;
   }
 
-  getHoursPassed(currentTime: Date): number {
+  getHoursPassed(currentTime: Date, startTime: Date): number {
     const roundedCurrentTime = moment(currentTime).startOf("hour");
-    return moment
+    const roundedStartTime = moment(startTime).startOf("hour");
+
+    const hoursPassed = moment
       .duration(
         roundedCurrentTime.diff(
-          this.roundedStartDate, "hours",
+          roundedStartTime, "hours",
         ), "hours")
       .asHours();
+
+    if (hoursPassed < 0) {
+      return 0;
+    } else {
+      return hoursPassed;
+    }
   }
 
+  /* needs clarifications */
   getFundsRaised(fundingTokenInPool: BigNumber): BigNumber {
     return (
-      (fundingTokenInPool.minus(this.fundingTokenInitialLbpAmount))
+      (fundingTokenInPool.minus(this.fundingTokenAmount))
         .multipliedBy(this.pricePerFundingToken)
     );
   }
