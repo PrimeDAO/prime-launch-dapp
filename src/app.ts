@@ -207,6 +207,13 @@ export class App {
         route: ["admin/seeds/dashboard/:address?"],
         title: "Administer a Seed Launch",
       },
+      {
+        moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
+        nav: false,
+        name: "lbpAdminDashboard",
+        route: ["admin/lbps/dashboard/:address?"],
+        title: "Administer an LBP Launch",
+      },
 
     ]);
 
