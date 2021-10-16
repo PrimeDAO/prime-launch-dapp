@@ -174,9 +174,9 @@ export class LbpManagerService {
       config.tokenDetails.projectTokenInfo.symbol,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
-      [config.launchDetails.startWeight, 100 - config.launchDetails.startWeight],
+      [toWei(config.launchDetails.startWeight / 100), toWei((100 - config.launchDetails.startWeight) / 100)],
       [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],
-      [config.launchDetails.endWeight, 100 - config.launchDetails.endWeight],
+      [toWei(config.launchDetails.endWeight / 100), toWei((100 - config.launchDetails.endWeight) / 100)],
       [toWei(LbpManagerService.lbpSwapFee), toWei(LbpManagerService.lbpFee)],
       Utils.asciiToHex(metaDataHash),
     ];
