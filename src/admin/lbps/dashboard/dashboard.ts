@@ -1,22 +1,21 @@
-import { TransactionReceipt } from "services/TransactionsService";
-import { Seed } from "entities/Seed";
+import { LbpManager } from "entities/LbpManager";
 import { Address, EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
-import { SeedService } from "services/SeedService";
 import "./dashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
-import { BigNumber } from "ethers";
+import { LbpManagerService } from "services/LbpManagerService";
+import TransactionsService from "services/TransactionsService";
 
 @autoinject
-export class SeedAdminDashboard {
+export class LbpAdminDashboard {
 
-  seeds: Array<Seed> = [];
-  defaultSeedAddress: Address;
-  selectedSeed: Seed;
-  selectedSeedIndex: number;
+  lbps: Array<LbpManager> = [];
+  defaultLbpAddress: Address;
+  selectedLbp: LbpManager;
+  selectedLbpIndex: number;
   addressToRemove = "";
   addressToAdd = "";
   receiverAddress = "";
@@ -30,9 +29,10 @@ export class SeedAdminDashboard {
 
   constructor(
     private eventAggregator: EventAggregator,
-    private seedService: SeedService,
+    private lbpManagerService: LbpManagerService,
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
+    private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -40,15 +40,15 @@ export class SeedAdminDashboard {
   }
 
   async activate(params: { address: Address }): Promise<void> {
-    this.defaultSeedAddress = params?.address;
+    this.defaultLbpAddress = params?.address;
   }
 
   async attached(): Promise<void> {
 
     try {
-      if (this.seedService.initializing) {
+      if (this.lbpManagerService.initializing) {
         this.eventAggregator.publish("launches.loading", true);
-        await this.seedService.ensureAllSeedsInitialized();
+        await this.lbpManagerService.ensureAllLbpsInitialized();
       }
       await this.hydrate();
 
@@ -64,43 +64,56 @@ export class SeedAdminDashboard {
   async hydrate(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
-      this.seeds = this.seedService.seedsArray
+      this.lbps = this.lbpManagerService.lbpManagersArray
         .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
-      if (this.seeds.length === 1){
-        this.selectedSeed = this.seeds[0];
-        this.selectedSeedIndex = 0;
+      if (this.lbps.length === 1){
+        this.selectedLbp = this.lbps[0];
+        this.selectedLbpIndex = 0;
       }
     } else {
-      this.seeds = [];
+      this.lbps = [];
     }
-    if (this.defaultSeedAddress) {
-      const defaultSeed = this.seeds.filter((seed) => this.defaultSeedAddress === seed.address);
+    if (this.defaultLbpAddress) {
+      const defaultSeed = this.lbps.filter((seed) => this.defaultLbpAddress === seed.address);
       if (defaultSeed.length === 1) {
-        this.selectedSeedIndex = this.seeds.indexOf(defaultSeed[0]);
-        this.selectedSeed = defaultSeed[0];
+        this.selectedLbpIndex = this.lbps.indexOf(defaultSeed[0]);
+        this.selectedLbp = defaultSeed[0];
       }
     }
   }
 
-  selectSeed(index: number): void {
-    this.selectedSeed = this.seeds[index];
-    this.selectedSeedIndex = index;
+  selectLbp(index: number): void {
+    this.selectedLbp = this.lbps[index];
+    this.selectedLbpIndex = index;
   }
 
-  @computedFrom("selectedSeed")
-  get retrievableProjectTokenAmount(): BigNumber {
-    if (!this.selectedSeed.address){
-      return BigNumber.from(0);
-    }
-    const tokenToBeDistributed = this.selectedSeed.seedAmountRequired.sub(this.selectedSeed.seedRemainder).sub(this.selectedSeed.feeRemainder);
-    return this.selectedSeed.minimumReached ?
-      this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
-      this.selectedSeed.projectTokenBalance;
-  }
+  // @computedFrom("selectedSeed")
+  // get retrievableProjectTokenAmount(): BigNumber {
+  //   if (!this.selectedLbp.address){
+  //     return BigNumber.from(0);
+  //   }
+  //   const tokenToBeDistributed = this.selectedLbp.seedAmountRequired.sub(this.selectedLbp.seedRemainder).sub(this.selectedLbp.feeRemainder);
+  //   return this.selectedLbp.minimumReached ?
+  //     this.selectedLbp.projectTokenBalance.sub(tokenToBeDistributed) :
+  //     this.selectedLbp.projectTokenBalance;
+  // }
 
-  async addWhitelist(): Promise<TransactionReceipt> {
-    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
-    return await this.selectedSeed.addWhitelist(whitelistAddress);
+  // async addWhitelist(): Promise<TransactionReceipt> {
+  //   const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedLbp.metadata.launchDetails.whitelist);
+  //   return await this.selectedLbp.addWhitelist(whitelistAddress);
+  // }
+
+
+  async fund(): Promise<void> {
+    const fundingAmounts = await this.selectedLbp.getTokenFundingAmounts();
+
+    await this.transactionsService.send(
+      () => this.selectedLbp.projectTokenContract.approve(this.selectedLbp.address, fundingAmounts.project));
+
+    await this.transactionsService.send(
+      () => this.selectedLbp.fundingTokenContract.approve(this.selectedLbp.address, fundingAmounts.funding));
+
+    this.selectedLbp.fund();
   }
 
   connect(): void {

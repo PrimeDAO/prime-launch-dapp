@@ -7,39 +7,39 @@
         </div>
         <div class="supportTextContainer">
           <div class="connectButtonSupportText">
-            Connect your wallet to administer your seeds
+            Connect your wallet to administer your LBPs
           </div>
         </div>
       </div>
       <div else class="formContainer">
-        <div class="heading heading1 seedAdministrationHeader">
-          Seed Administration
+        <div class="heading heading1 lbpAdministrationHeader">
+          LBP Administration
         </div>
-        <div if.bind="seeds.length">
+        <div if.bind="lbps.length">
           <dropdown
-            class="seedsDropdown"
-            if.bind="seeds.length !== 1"
-            item-changed.call="selectSeed(index)"
-            selected-item-index.to-view="selectedSeedIndex"
-            placeholder="Select a Seed...">
-            <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+            class="lbpsDropdown"
+            if.bind="lbps.length !== 1"
+            item-changed.call="selectLbp(index)"
+            selected-item-index.to-view="selectedLbpIndex"
+            placeholder="Select an LPB...">
+            <div repeat.for="lbp of lbps">${lbp.metadata.general.projectName}</div>
           </dropdown>
           <div else class="heading heading3 projectTitle">
-            ${selectedSeed.metadata.general.projectName}
+            ${selectedLbp.metadata.general.projectName}
           </div>
-          <div if.bind="selectedSeed.address">
-            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens">
+          <div if.bind="selectedLbp.address">
+            <div class="featureContainer" if.bind="!selectedLbp.hasEnoughProjectTokens">
               <div class="featureTitle">
-                Fund Seed
+                Fund LBP
               </div>
               <div class="featureDescription">
-                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.fund()">
+              <div class="button1 small" click.delegate="fund()">
                 Fund
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
               <div class="featureTitle">
                 Add Whitelists
               </div>
@@ -50,7 +50,7 @@
                 Add Whitelist
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
               <div class="featureTitle">
                 Whitelist an account
               </div>
@@ -59,12 +59,12 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
+                <div class="button1 small" click.delegate="selectedLbp.addToWhitelist(addressToAdd)">
                   Add to whitelist
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
               <div class="featureTitle">
                 Unwhitelist an account
               </div>
@@ -73,65 +73,54 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
+                <div class="button1 small" click.delegate="selectedLbp.removeFromWhitelist(addressToRemove)">
                   Remove from whitelist
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
+            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedLbp.isClosed || selectedLbp.maximumReached || selectedLbp.isDead)">
               <div class="featureTitle">
                 Retrieve Project Tokens
               </div>
               <div class="featureDescription">
-                ${retrievableProjectTokenAmount | ethwei:selectedSeed.projectTokenInfo.decimals} ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+                ${retrievableProjectTokenAmount | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
               </div>
               <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
+                <div class="button1 small" click.delegate="selectedLbp.retrieveProjectTokens(receiverAddress)">
                   Retrieve Project Tokens
                 </div>
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.claimingIsOpen && selectedSeed.fundingTokenBalance != 0">
+            <div class="featureContainer" if.bind="selectedLbp.claimingIsOpen && selectedLbp.fundingTokenBalance != 0">
               <div class="featureTitle">
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
+                ${selectedLbp.fundingTokenBalance | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
+              <div class="button1 small" click.delegate="selectedLbp.withdrawFundingTokens()">
                 Withdraw
               </div>
             </div>
             <div class="featureContainer">
               <div class="featureTitle">
-                Pause Seed
+                Pause LBP
               </div>
               <div class="featureDescription">
-                Pausing will make seed inactive. As the administrator, you will be able to unpause the Seed.
+                Pausing will make LBP inactive. As the administrator, you will be able to unpause the LBP.
               </div>
-              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.pause()">
+              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.pause()">
                 Pause
               </div>
-              <div else if.bind="!selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.unPause()">
+              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.unPause()">
                 UnPause
-              </div>
-            </div>
-            <div class="featureContainer" if.bind="!selectedSeed.isClosed">
-              <div class="featureTitle">
-                Close seed
-              </div>
-              <div class="featureDescription">
-                Close will permanently stop the seed. The seed cannot be unclosed.
-              </div>
-              <div class="button1 small" click.delegate="selectedSeed.close()">
-                Close
               </div>
             </div>
           </div>
         </div>
-        <div class="noSeedCreatedMessage" else>
-          <div>You have not created any Seeds</div>
+        <div class="noLbpCreatedMessage" else>
+          <div>You have not created any lbps</div>
         </div>
       </div>
     </div>

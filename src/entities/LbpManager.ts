@@ -1,6 +1,8 @@
+import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
+import { throwIfEmpty } from "rxjs/operators";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
@@ -10,7 +12,7 @@ import { IpfsService } from "services/IpfsService";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
 import { ITokenInfo, TokenService } from "services/TokenService";
-import TransactionsService from "services/TransactionsService";
+import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 
 export interface ILbpManagerConfiguration {
@@ -47,6 +49,8 @@ export class LbpManager implements ILaunch {
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
   public isPaused: boolean;
+  private projectTokenIndex: any;
+  private fundingTokenIndex: number;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -149,14 +153,13 @@ export class LbpManager implements ILaunch {
       this.lbpInitialized = await this.contract.initialized();
       this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
-      const projectTokenIndex = await this.contract.projectTokenIndex();
-      const fundingTokenIndex = projectTokenIndex ? 0 : 1;
-      // const tokenAmountsArray = await this.contract.amounts();
+      this.projectTokenIndex = await this.contract.projectTokenIndex();
+      this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
       // const tokenStartWeightsArray = await this.contract.startWeights();
       // const tokenEndWeightsArray = await this.contract.endWeights();
 
-      this.projectTokenAddress = (await this.contract.tokenList(projectTokenIndex));
-      this.fundingTokenAddress = (await this.contract.tokenList(fundingTokenIndex));
+      this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
+      this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
 
       this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
@@ -229,5 +232,24 @@ export class LbpManager implements ILaunch {
     // this.fundingTokenBalance = await this.fundingTokenContract.balanceOf(this.address);
     // this.hasEnoughProjectTokens =
     //   this.lbpInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
+  fund(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.initializeLBP(this.admin))
+      .then(async (receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
+    return {
+      project: await this.contract.amounts(this.projectTokenIndex),
+      funding: await this.contract.amounts(this.fundingTokenIndex),
+    };
   }
 }
