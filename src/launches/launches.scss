@@ -69,11 +69,6 @@
               text-overflow: ellipsis;
             }
 
-            &.target,
-            &.cap {
-              text-align: right;
-            }
-
             &.whitelist,
             &.starts,
             &.type,
@@ -105,7 +100,7 @@
 
       .launchGrid {
         display: grid;
-        grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr 0.75fr 0.5fr;
+        grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr 0.5fr;
         grid-template-rows: auto;
         align-items: center;
 

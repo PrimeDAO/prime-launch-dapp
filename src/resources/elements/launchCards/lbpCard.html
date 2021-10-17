@@ -1,22 +1,19 @@
 <template>
   <a
-    class="launchSummaryContainer ${seed.canGoToDashboard ? 'hot' : '' }"
+    class="launchSummaryContainer ${launch.canGoToDashboard ? 'hot' : '' }"
     ref="container"
-    href.to-view="seed.canGoToDashboard ? `seed/${seed.address}` : `${router.currentInstruction.fragment}`">
+    href.to-view="launch.canGoToDashboard ? `lbp/${launch.address}` : `${router.currentInstruction.fragment}`">
     <div if.to-view="!loading" class="launchSummary">
-      <div class="icon"><img src.to-view="seed.projectTokenInfo.logoURI" /></div>
-      <div class="title ellipses">${seed.metadata.general.projectName}</div>
+      <div class="icon"><img src.to-view="launch.projectTokenInfo.logoURI" /></div>
+      <div class="title ellipses">${launch.metadata.general.projectName}</div>
       <div class="countdown">
-        <time-left seed.to-view="seed" largest contained></time-left>
+        <time-left launch.to-view="launch" largest contained></time-left>
       </div>
-      <div class="description">${seed.metadata.projectDetails.summary}</div>
+      <div class="description">${launch.metadata.projectDetails.summary}</div>
       <div class="tokensTarget">
-        <div class="tokensTitle title subtext">${seed.projectTokenInfo.symbol}/${seed.fundingTokenInfo.symbol}</div>
-        <div class="targetTitle title subtext">TARGET</div>
+        <div class="tokensTitle title subtext">${launch.projectTokenInfo.symbol}/${launch.fundingTokenInfo.symbol}</div>
         <div class="tokens">
-          <token-pair token1.to-view="seed.projectTokenInfo.logoURI" token2.to-view="seed.fundingTokenInfo.logoURI"></token-pair>
-        </div>
-        <div class="targetValue">$ <formatted-number thousands-separated average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
+          <token-pair token1.to-view="launch.projectTokenInfo.logoURI" token2.to-view="launch.fundingTokenInfo.logoURI"></token-pair>
         </div>
       </div>
     </div>

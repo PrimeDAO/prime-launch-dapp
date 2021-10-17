@@ -1,19 +1,19 @@
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { Seed } from "entities/Seed";
-import { Lbp } from "entities/Lbp";
+import { LbpManager } from "entities/LbpManager";
 import "./launchCard.scss";
 
 @autoinject
 export class LaunchCard {
-  launch: Seed | Lbp;
+  launch: Seed | LbpManager;
   container: HTMLElement;
 
   constructor(
     private router: Router,
   ) {}
 
-  activate(model: Seed | Lbp): void {
+  activate(model: Seed | LbpManager): void {
     this.launch = model;
   }
 }

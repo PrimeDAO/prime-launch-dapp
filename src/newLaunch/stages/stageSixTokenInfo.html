@@ -1,0 +1,16 @@
+<template bindable="short, tokenInfo">
+  <require from="./stageSixTokenInfo.scss">
+  </require>
+  <div class="stageSixTokenInfo ${short ? 'short' : ''}">
+    <div class="logoURI"><img src.bind="tokenInfo.logoURI" /></div>
+    <div class="name">${tokenInfo.name}</div>
+    <div class="ticker">(${tokenInfo.symbol})</div>
+    <div class="decimals">${tokenInfo.decimals} decimals</div>
+    <div class="address">
+      <etherscanlink
+        address.to-view="tokenInfoaddress"
+        text.to-view="tokenInfo.address | smallHexString">
+      </etherscanlink>
+    </div>
+  </div>
+</template>

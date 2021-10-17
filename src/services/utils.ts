@@ -15,6 +15,22 @@ export class Utils {
     const len = str.length;
     return `${str.slice(0, 6)}...${str.slice(len - 4, len)}`;
   }
+
+  /**
+   * Converts a hash into a string representation of a hex number
+   * @param str
+   * @returns
+   */
+  public static asciiToHex(str = ""): string {
+    const res = [];
+    const { length: len } = str;
+    for (let n = 0, l = len; n < l; n++) {
+      const hex = Number(str.charCodeAt(n)).toString(16);
+      res.push(hex);
+    }
+    return `0x${res.join("")}`;
+  }
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   // public static getObjectKeys(obj: any): Array<string> {
   //   const temp = [];
