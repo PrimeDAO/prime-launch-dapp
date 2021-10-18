@@ -1,11 +1,12 @@
 import { ITokenDetails } from "./../../../newLaunch/launchConfig";
 import { bindable } from "aurelia-framework";
 import "./ringChart.scss";
-import { duration } from "moment";
 
 export class RingChart {
   @bindable data: ITokenDetails | { [key: string]: string } = {};
   // lbpManager.metadata.tokenDetails
+  // safety check for when sum exceeds total?
+  // handle when sum not equals total
   private percentageHeld(total: string, part: string): number {
     return ((100 * Number(part)) / Number(total));
   }
