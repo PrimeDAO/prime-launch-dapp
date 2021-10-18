@@ -1,25 +1,22 @@
+@import "styles/colors.scss";
 
-$s-min: 20;
-$s-max: 70;
-$l-min: 30;
-$l-max: 90;
-
-@function color_range($color)
-{
-    $hsl: ();
-    $hsl-list: hue($color), saturation($color), lightness($color);
-    $hsl-range: 30, 40, 30;
-
-    @for $i from 1 to 4
-    {
-        $random: random(nth($hsl-range, $i)); //make a random within the given range
-        $range: nth($hsl-range, $i) / 2; //set the range to be half of what it is
-
-        $hsl: append($hsl, (nth($hsl-list, $i) - $range + $random), comma); //create hsl list
-    }
-
-    @return hsl($hsl...);
-}
+$colours: (
+    1: $Shade01,
+    2: $Shade02,
+    3: $Shade03,
+    4: $Shade04,
+    5: $Shade05,
+    6: $Shade06,
+    7: $Secondary01,
+    8: $Secondary02,
+    9: $Secondary03,
+    10: $Secondary04,
+    11: $Secondary05,
+    12: $Neutral03,
+    13: $Primary01,
+    14: $Primary02,
+    15: $Secondary01-dev
+);
 
 .ringChart {
   .container {
@@ -32,30 +29,33 @@ $l-max: 90;
   }
 
   .stakeholderListItem {
-    @for $i from 1 through 100 {
+    margin-bottom: 21px;
+    @each $colour, $name in $colours{
+      $i: index($colours, $colour $name);
       &:nth-child(#{$i}) .stakeholderPrimaryData::before {
-        // background: hsl(random(360),$s-min+random($s-max+-$s-min),$l-min+random($l-max+-$l-min));
-        background: color_range(pink);
-      }
+         background: $name; }
     }
   }
-
+  
   .stakeholderPrimaryData {
     color: #737074;
-
+    margin-bottom: 6px;
+    
     &::before {
       content: "";
       display: inline-block;
       width: 15px;
       height: 15px;
-      // background: color_range(pink);
       margin-right: 8px;
     }
-
-   
   }
 
   .stakeholderSecondaryData {
-    color: #322e34;
+    color: #515151;
+    padding-left: 27px;
+  }
+
+  .emphasis {
+    font-weight: bold;
   }
 }

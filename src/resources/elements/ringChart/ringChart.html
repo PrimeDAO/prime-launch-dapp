@@ -9,7 +9,8 @@
           repeat.for="stakeholder of data.tokenDistrib"
         >
           <div class="stakeholder">
-            <div class="stakeholderPrimaryData">${percentageHeld(data.maxSupply, stakeholder.amount)}% &ndash; ${stakeholder.stakeHolder}</div>
+            <div class="stakeholderPrimaryData">
+              <span class="emphasis">${percentageHeld(data.maxSupply, stakeholder.amount)}%</span> &ndash; ${stakeholder.stakeHolder}</div>
             <div class="stakeholderSecondaryData" if.bind="stakeholder.vest" }>
                 <i class="fa fa-lock"></i> ${toTimeDuration(stakeholder.vest)} vested
             </div>

@@ -5,7 +5,7 @@ import { duration } from "moment";
 
 export class RingChart {
   @bindable data: ITokenDetails | { [key: string]: string } = {};
-
+  // lbpManager.metadata.tokenDetails
   private percentageHeld(total: string, part: string): number {
     return ((100 * Number(part)) / Number(total));
   }
