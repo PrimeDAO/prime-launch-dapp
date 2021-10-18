@@ -5,20 +5,18 @@
       <div class="subtext">
         <p>Congratulations!</p>
 
-        <p>You have created a Seed according to your specifications.</p>
+        <p>You have created a ${wizardState.launchTypeTitle} according to your specifications.</p>
 
-        <p>You may inspect the Seed configuration, stored in the JSON format in IPFS, here:
+        <p>You may inspect the ${wizardState.launchTypeTitle} configuration, stored in the JSON format in IPFS, here:
           <a href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>.
           <span class="importantText">Please save this URL.</span>
         </p>
 
-        <p>PrimeDAO Governance needs to approve and initialize your new Seed before it can appear in and be used in the PrimeLAUNCH interface. The approval takes place in the <a href="https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions" target="_blank" rel="noopener noreferrer">PrimeLAUNCH multisig wallet</a>. Reviews generally take 5-7 days.</p>
+        <p>PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can appear in and be used in the PrimeLAUNCH interface. The approval takes place in the <a href="https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions" target="_blank" rel="noopener noreferrer">PrimeLAUNCH multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
-        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.launchAdminAddress" text="Seed Admin"></etherscanlink> will have to add <formatted-number
-            value.to-view="wizardState.requiredSeedDeposit"
-            thousands-separated></formatted-number> ${launchConfig.tokenDetails.projectTokenConfig.symbol} to the Seed<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="https://admin.launch.prime.xyz" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
+        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.launchAdminAddress" text="${wizardState.launchTypeTitle} Admin"></etherscanlink> will have to fund the ${wizardState.launchTypeTitle}<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the ${wizardState.launchTypeTitle} Admin wallet to the <a href="/admin/${wizardState.launchType}/dashboard" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
 
-        <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the Seed is initialized. The Seed will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
+        <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
       </div>
       <!-- <div class="linksContainer">
         <div>

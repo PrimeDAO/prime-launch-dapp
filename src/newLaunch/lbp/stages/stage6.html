@@ -1,4 +1,5 @@
 <template>
+  <require from="../../stages/stageSixTokenInfo.html"></require>
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">LBP Summary</div>
@@ -91,26 +92,17 @@
         <div class="heading heading3">Token Details</div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
-            Project Token Address
+            Project Token
           </div>
-          <div class="tokenInfo">
-            <etherscanlink
-              address.to-view="launchConfig.tokenDetails.projectTokenAddress"
-              text.to-view="launchConfig.tokenDetails.projectTokenAddress | smallHexString">
-            </etherscanlink>
-            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
-            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">
-              <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
-            </div>
-          </div>
+          <stageSixTokenInfo token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
         </div>
         <div class="stageLaunchDetails">
-          <div class="heading heading4">Maximum Project Token</div>
-          <div class="tokenInfo">
-            <div>
-              <formatted-number value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
+          <div class="heading heading4">Maximum Project Tokens</div>
+          <div class="tokenAmountContainer">
+            <div class="tokenAmount">
+              <formatted-number value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
             </div>
-            <div>${wizardState.projectTokenSymbol}</div>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -123,7 +115,7 @@
               <div class="header">Vesting (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
+                <formatted-number value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
               </div>
               <div class="cell">${distrib.cliff}</div>
               <div class="cell">${distrib.vest}</div>
@@ -137,40 +129,25 @@
         <div class="heading heading3">Launch Details</div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
-            Funding Token Address
+            Funding Token
           </div>
-          <div class="tokenInfo">
-            <etherscanlink
-              address.to-view="launchConfig.launchDetails.fundingTokenAddress"
-              text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString">
-            </etherscanlink>
-            <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.fundingTokenInfo">
-              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-            </div>
-          </div>
+          <stageSixTokenInfo token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
         </div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
             Number of tokens provided to launch
           </div>
-          <div class="tokenInfo">
-            <div>
+          <div class="tokenAmountContainer">
+            <div class="tokenAmount">
               <formatted-number value.bind="launchConfig.launchDetails.amountProjectToken | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
             </div>
-            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">${launchConfig.tokenDetails.projectTokenConfig.symbol}</div>
-            <div if.to-view="launchConfig.tokenDetails.projectTokenConfig">
-              <img src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
-            </div>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
           </div>
-          <div class="tokenInfo">
-            <div>
-              <formatted-number value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:wizardState.fundingTokenInfo.decimals" />
+          <div class="tokenAmountContainer">
+            <div class="tokenAmount">
+              <formatted-number value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <div if.to-view="wizardState.fundingTokenInfo">${wizardState.fundingTokenInfo.symbol}</div>
-            <div if.to-view="wizardState.fundingTokenInfo">
-              <img src.bind="wizardState.fundingTokenInfo.logoURI" />
-            </div>
+            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -186,7 +163,7 @@
             Start Weights
           </div>
           <div>
-            ${launchConfig.launchDetails.startWeight} ${launchConfig.tokenDetails.projectTokenConfig.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.startWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${launchConfig.launchDetails.startWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.startWeight} ${launchConfig.launchDetails.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLaunchDetails">
@@ -202,7 +179,7 @@
             End Weights
           </div>
           <div>
-            ${launchConfig.launchDetails.endWeight} ${launchConfig.tokenDetails.projectTokenConfig.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.endWeight} ${wizardState.fundingTokenInfo.symbol}
+            ${launchConfig.launchDetails.endWeight} ${launchConfig.tokenDetails.projectTokenInfo.symbol} &lt;-&gt; ${100 - launchConfig.launchDetails.endWeight} ${launchConfig.launchDetails.fundingTokenInfo.symbol}
           </div>
         </div>
         <div class="stageLaunchDetails">

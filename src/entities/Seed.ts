@@ -277,7 +277,10 @@ export class Seed implements ILaunch {
       this.projectTokenAddress = await this.contract.seedToken();
       this.fundingTokenAddress = await this.contract.fundingToken();
 
-      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
+      this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
+      if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
+        throw new Error("project token info is not found or does not match the seed contract");
+      }
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
@@ -350,7 +353,7 @@ export class Seed implements ILaunch {
     const rawMetadata = await this.contract.metadata();
     if (rawMetadata && Number(rawMetadata)) {
       this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+      this.consoleLogService.logMessage(`loaded seed metadata: ${this.metadataHash}`, "info");
     } else {
       this.eventAggregator.publish("Seed.InitializationFailed", this.address);
       throw new Error(`seed lacks metadata, is unusable: ${this.address}`);

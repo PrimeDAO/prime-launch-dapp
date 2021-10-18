@@ -8,6 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -73,10 +74,10 @@ export class SeedAdminDashboard {
       this.seeds = [];
     }
     if (this.defaultSeedAddress) {
-      const defaultSeedIndex = this.seeds.map((seed, index) => this.defaultSeedAddress === seed.address ? index : undefined).filter((seed) => seed);
-      if (defaultSeedIndex.length === 1) {
-        this.selectedSeedIndex = defaultSeedIndex[0];
-        this.selectedSeed = this.seeds[defaultSeedIndex[0]];
+      const defaultSeed = this.seeds.filter((seed) => this.defaultSeedAddress === seed.address);
+      if (defaultSeed.length === 1) {
+        this.selectedSeedIndex = this.seeds.indexOf(defaultSeed[0]);
+        this.selectedSeed = defaultSeed[0];
       }
     }
   }
@@ -84,6 +85,17 @@ export class SeedAdminDashboard {
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
+  }
+
+  @computedFrom("selectedSeed")
+  get retrievableProjectTokenAmount(): BigNumber {
+    if (!this.selectedSeed.address){
+      return BigNumber.from(0);
+    }
+    const tokenToBeDistributed = this.selectedSeed.seedAmountRequired.sub(this.selectedSeed.seedRemainder).sub(this.selectedSeed.feeRemainder);
+    return this.selectedSeed.minimumReached ?
+      this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
+      this.selectedSeed.projectTokenBalance;
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {

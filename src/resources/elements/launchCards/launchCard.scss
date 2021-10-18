@@ -66,11 +66,11 @@
     > .tokensTarget {
       grid-area: tokensTarget;
       display: grid;
-      grid-template-columns: auto auto;
+      grid-template-columns: auto;
       grid-template-rows: auto auto;
       grid-template-areas:
-        "tokensTitle targetTitle"
-        "tokens targetValue";
+        "tokensTitle"
+        "tokens";
       row-gap: 4px;
 
       > .title {
@@ -82,10 +82,6 @@
         grid-area: tokensTitle;
       }
 
-      > .targetTitle {
-        grid-area: targetTitle;
-      }
-
       > .tokens {
         grid-area: tokens;
 
@@ -94,12 +90,6 @@
           height: 26px;
           border-radius: 16px;
         }
-      }
-
-      > .targetValue {
-        grid-area: targetValue;
-        font-size: 26px;
-        font-weight: 600;
       }
     }
   }

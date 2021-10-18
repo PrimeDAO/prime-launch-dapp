@@ -6,7 +6,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { LbpManagerService } from "services/LbpManagerService";
 import { Address } from "services/EthereumService";
 import "./lbpDashboard.scss";
-import { LbpManager } from "entities/lbpManager";
+import { LbpManager } from "entities/LbpManager";
 import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";

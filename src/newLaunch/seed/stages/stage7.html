@@ -11,7 +11,7 @@
 
         <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.launchAdminAddress" text="Seed Admin"></etherscanlink> will have to add <formatted-number
             value.to-view="wizardState.requiredSeedDeposit"
-            thousands-separated></formatted-number> ${launchConfig.tokenDetails.projectTokenConfig.symbol} to the Seed<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="https://admin.launch.prime.xyz" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
+            thousands-separated></formatted-number> ${launchConfig.tokenDetails.projectTokenInfo.symbol} to the Seed<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="https://admin.launch.prime.xyz" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
 
         <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the Seed is initialized. The Seed will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
 

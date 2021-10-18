@@ -52,7 +52,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private aureliaHelperService: AureliaHelperService,
   ) {
     super(router, eventAggregator, tokenService);
-    this.eventAggregator.subscribe("lbp.clearState", () => {
+    this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
       this.startTime = undefined;
@@ -62,7 +62,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   attached(): void {
     if (!this.projectTokenObserved) {
-      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenAddress",
+      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails.projectTokenInfo, "address",
         () => {
           this.launchConfig.launchDetails.amountProjectToken = null;
         });
@@ -154,6 +154,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   persistData(): void {
     this.setlaunchConfigStartDate();
     this.setlaunchConfigEndDate();
+    // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
+    this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 
@@ -178,16 +180,16 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenAddress)) {
+    if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
       message = "Please select a Project Token";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
-      message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenConfig.name}, you like to provide for launch`;
+      message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
-      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenConfig.decimals)} tokens`;
-    } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
+      message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)} tokens`;
+    } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenInfo.address)) {
       message = "Please select a Funding Token lbp";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountFundingToken) >= 0)) {
-      message = `Please enter the amount of ${this.wizardState.fundingTokenInfo.name}, you like to provide for launch`;
+      message = `Please enter the amount of ${this.launchConfig.launchDetails.fundingTokenInfo.name}, you like to provide for launch`;
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
@@ -213,7 +215,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
     } else if (this.launchConfig.launchDetails.endWeight > this.launchConfig.launchDetails.startWeight) {
-      message = `The ${this.wizardState.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
+      message = `The ${this.launchConfig.launchDetails.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
     } else if (this.setlaunchConfigEndDate().getTime() > this.setlaunchConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {

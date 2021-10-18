@@ -18,14 +18,15 @@
             </div>
             <div class="tokenSelector">
               <token-select
-                selected-token-address.bind="launchConfig.launchDetails.fundingTokenAddress"
-                selected-token-info.bind="wizardState.fundingTokenInfo"
+                id="fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
                 token-addresses.to-view="tokenList"
                 item-changed.call="tokenChanged(value,index)">
               </token-select>
-              <div if.to-view="launchConfig.launchDetails.fundingTokenAddress">
-                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress"
-                  text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
+                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -37,18 +38,18 @@
               output-as-string="true"
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
-              decimals.bind="launchConfig.tokenDetails.projectTokenConfig.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenConfig.name"
+              decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.name"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.tokenDetails.projectTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
+            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
             <img
               ref="logoIcon"
-              if.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
-              src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
+              if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
+              src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.tokenDetails.projectTokenConfig.name}
-              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel>
+              ${launchConfig.tokenDetails.projectTokenInfo.name}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
             </div>
           </div>
           <div class="tokenAmountContainer">
@@ -56,18 +57,18 @@
               output-as-string="true"
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
-              decimals.bind="wizardState.fundingTokenInfo.decimals"
-              disabled.bind="!wizardState.fundingTokenInfo.name"
+              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.launchDetails.fundingTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
+            <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
             <img
               ref="logoIcon"
-              if.bind="wizardState.fundingTokenInfo.logoURI"
-              src.bind="wizardState.fundingTokenInfo.logoURI" />
+              if.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI"
+              src.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI" />
             <div class="text">
-              ${wizardState.fundingTokenInfo.name}
-              <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel>
+              ${launchConfig.launchDetails.fundingTokenInfo.name}
+              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel>
             </div>
           </div>
         </div>
@@ -106,8 +107,8 @@
           <div>
             <label for="startWeight">Start Weights</label>
             <range-input name="start-weight"
-              funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               set-weight.bind="setlaunchConfigStartWeight"
               value.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
@@ -150,8 +151,8 @@
           <div>
             <label for="endWeight">End Weights</label>
             <range-input name="end-weight"
-              funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               value.bind="launchConfig.launchDetails.endWeight"
               max-allowed.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"

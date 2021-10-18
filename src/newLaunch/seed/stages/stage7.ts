@@ -40,16 +40,16 @@ export class Stage7 extends BaseStage<ISeedConfig> {
   attached(): void {
     // this.launchConfig.launchDetails.fundingMax = toWei("100").toString();
     // this.launchConfig.launchDetails.pricePerToken = toWei(".5").toString();
-    // this.launchConfig.tokenDetails.projectTokenConfig.symbol = "PRIME";
-    const distributableSeeds = this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals))
-      / this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals));
+    // this.launchConfig.tokenDetails.projectTokenInfo.symbol = "PRIME";
+    const distributableSeeds = this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
+      / this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.launchConfig.launchDetails.fundingTokenInfo.decimals));
     this.wizardState.requiredLaunchFee = distributableSeeds * SeedService.seedFee;
     this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredLaunchFee;
   }
 
   async submit(): Promise<void> {
     try {
-      this.eventAggregator.publish("seed.creating", true);
+      this.eventAggregator.publish("launch.creating", true);
       this.wizardState.launchHash = await this.seedService.deploySeed(this.launchConfig);
       if (this.wizardState.launchHash) {
       // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
@@ -57,14 +57,14 @@ export class Stage7 extends BaseStage<ISeedConfig> {
         for (let i = 1; i <= this.maxStage; ++i) {
           this.stageStates[i].verified = false;
         }
-        this.eventAggregator.publish("seed.clearState", true);
+        this.eventAggregator.publish("launch.clearState", true);
         this.next();
       }
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
     finally {
-      this.eventAggregator.publish("seed.creating", false);
+      this.eventAggregator.publish("launch.creating", false);
     }
   }
 

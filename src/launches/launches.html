@@ -17,29 +17,23 @@
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
           <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell type header">TYPE</div>
-          <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
-          <!-- <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div> -->
           <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator">
+        <template repeat.for="launch of launches | sort:sortEvaluator">
           <a
-            class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
-            if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
-            click.delegate="onSeedClick(seed)">
-            <div class="project cell body ellipses ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.logoURI"></img>${seed.projectTokenInfo.symbol}</div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
-            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <time-left launch.to-view="seed" hide-icons largest></time-left>
+            class="row body ${isAdmin(launch) ? 'hot' : '' }"
+            if.to-view="!launch.initializing && (($index < 4) || seeingMore)"
+            click.delegate="onSeedClick(launch)">
+            <div class="project cell body ellipses ${isAdmin(launch) ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
+            <div class="projectToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
+            <div class="fundingToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
+            <div class="starts cell body ${isAdmin(launch) ? 'hot' : '' }">
+              <time-left launch.to-view="launch" hide-icons largest></time-left>
             </div>
-            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
-            </div>
-            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
-            </div> -->
-            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="eslink cell body ${seed.canGoToDashboard ? 'hot' : '' }"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(seed, $event)"></i></div>
+            <div class="type cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
+            <div class="whitelist cell body ${isAdmin(launch) ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="eslink cell body ${isAdmin(launch) ? 'hot' : '' }"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(seed, $event)"></i></div>
           </a>
         </template>
       </div>
@@ -52,32 +46,28 @@
           <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
           <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
-          <div class="cell target header sortable" click.delegate="sort('target')">TARGET</div>
-          <!-- <div class="cell cap header sortable" click.delegate="sort('cap')">MAX</div> -->
+          <div class="cell target header">&nbsp;</div>
           <div class="cell eslink header">ETHERSCAN</div>
         </div>
-        <template repeat.for="seed of seedService.seedsArray | sort:sortEvaluator">
+        <template repeat.for="launch of launches | sort:sortEvaluator">
           <a
-            class="row body ${seed.canGoToDashboard ? 'hot' : '' }"
-            if.to-view="!seed.initializing && (($index < 4) || seeingMore)"
-            click.delegate="onSeedClick(seed)">
-            <div class="project cell body ${seed.canGoToDashboard ? 'hot' : '' }">${seed.metadata.general.projectName}</div>
-            <div class="projectToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.projectTokenInfo.logoURI"></img>${seed.projectTokenInfo.symbol}</div>
-            <div class="type cell body ${seed.canGoToDashboard ? 'hot' : '' }">SEED</div>
-            <div class="whitelist cell body ${seed.canGoToDashboard ? 'hot' : '' }"><span if.to-view="seed.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
-            <div class="starts cell body ${seed.canGoToDashboard ? 'hot' : '' }">
-              <time-left launch.to-view="seed" hide-icons largest></time-left>
+            class="row body ${isAdmin(launch) ? 'hot' : '' }"
+            if.to-view="!launch.initializing && (($index < 4) || seeingMore)"
+            click.delegate="onSeedClick(launch)">
+            <div class="project cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.metadata.general.projectName}</div>
+            <div class="projectToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
+            <div class="type cell body ${isAdmin(launch) ? 'hot' : '' }">${launch.launchType.toUpperCase()}</div>
+            <div class="whitelist cell body ${isAdmin(launch) ? 'hot' : '' }"><span if.to-view="launch.whitelisted" class="fa fa-check"></span><span else>&nbsp;</span></div>
+            <div class="starts cell body ${isAdmin(launch) ? 'hot' : '' }">
+              <time-left launch.to-view="launch" hide-icons largest></time-left>
             </div>
-            <div class="fundingToken cell body ${seed.canGoToDashboard ? 'hot' : '' }"><img src.to-view="seed.fundingTokenInfo.logoURI"></img>${seed.fundingTokenInfo.symbol}</div>
-            <div class="target cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
-            </div>
-            <!-- <div class="cap cell body ${seed.canGoToDashboard ? 'hot' : '' }">$ <formatted-number average value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals"></formatted-number>
-            </div> -->
-            <div class="eslink cell body ${seed.canGoToDashboard ? 'hot' : '' }" click.trigger="gotoEtherscan(seed, $event)"><i class="fa fa-external-link-alt"></i></div>
+            <div class="fundingToken cell body ${isAdmin(launch) ? 'hot' : '' }"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
+            <div class="cell body ${isAdmin(launch) ? 'hot' : '' }">&nbsp;</div>
+            <div class="eslink cell body ${isAdmin(launch) ? 'hot' : '' }" click.trigger="gotoEtherscan(launch, $event)"><i class="fa fa-external-link-alt"></i></div>
           </a>
         </template>
       </div>
-      <template if.to-view="seedService.seedsArray.length > 4">
+      <template if.to-view="launches.length > 4">
         <div if.to-view="!loading && !seeingMore" class="seeMore">
           <div class="arrow">&darr;</div>
           <div class="text" click.delegate="seeMore(true)">SEE ALL</div>

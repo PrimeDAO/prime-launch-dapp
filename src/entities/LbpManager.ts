@@ -1,6 +1,8 @@
+import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
+import { throwIfEmpty } from "rxjs/operators";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
@@ -10,7 +12,7 @@ import { IpfsService } from "services/IpfsService";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
 import { ITokenInfo, TokenService } from "services/TokenService";
-import TransactionsService from "services/TransactionsService";
+import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 
 export interface ILbpManagerConfiguration {
@@ -40,9 +42,6 @@ export class LbpManager implements ILaunch {
   public corrupt = false;
   public userHydrated = false;
 
-  /**
- * "seed token" is a synonym for "project token"
- */
   public projectTokenAddress: Address;
   public projectTokenInfo: ITokenInfo;
   public projectTokenContract: any;
@@ -50,6 +49,8 @@ export class LbpManager implements ILaunch {
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
   public isPaused: boolean;
+  private projectTokenIndex: any;
+  private fundingTokenIndex: number;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -132,7 +133,7 @@ export class LbpManager implements ILaunch {
 
   private async loadContracts(): Promise<void> {
     try {
-      this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
+      this.contract = await this.contractsService.getContractAtAddress(ContractNames.LBPMANAGER, this.address);
       if (this.projectTokenAddress) {
         this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
         this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
@@ -141,7 +142,7 @@ export class LbpManager implements ILaunch {
     catch (error) {
       this.corrupt = true;
       this.initializing = false;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
     }
   }
 
@@ -152,21 +153,25 @@ export class LbpManager implements ILaunch {
       this.lbpInitialized = await this.contract.initialized();
       this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
-      this.projectTokenAddress = await this.contract.seedToken();
-      this.fundingTokenAddress = await this.contract.fundingToken();
+      this.projectTokenIndex = await this.contract.projectTokenIndex();
+      this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
+      // const tokenStartWeightsArray = await this.contract.startWeights();
+      // const tokenEndWeightsArray = await this.contract.endWeights();
 
-      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.projectTokenAddress);
+      this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
+      this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
+
+      this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
+      if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
+        throw new Error("project token info is not found or does not match the LbpManager contract");
+      }
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
-      this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-      // this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price(), this.fundingTokenInfo.decimals));
-      // // this.capPrice = this.numberService.fromString(fromWei(this.cap, this.fundingTokenInfo.decimals)) * (this.fundingTokenInfo.price ?? 0);
-      // this.valuation = this.numberService.fromString(fromWei(await this.fundingTokenContract.totalSupply(), this.fundingTokenInfo.decimals))
-      //   * (this.fundingTokenInfo.price ?? 0);
+      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(0)).toNumber());
+      this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
       await this.hydatePaused();
       await this.hydrateTokensState();
@@ -175,7 +180,7 @@ export class LbpManager implements ILaunch {
     }
     catch (error) {
       this.corrupt = true;
-      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lpbpmanager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
     }
@@ -186,7 +191,7 @@ export class LbpManager implements ILaunch {
   }
 
   public async hydatePaused(): Promise<boolean> {
-    this.isPaused = await this.contract.paused();
+    this.isPaused = false; // TODO: await this.contract.paused();
     return this.isPaused;
   }
 
@@ -210,17 +215,17 @@ export class LbpManager implements ILaunch {
     const rawMetadata = await this.contract.metadata();
     if (rawMetadata && Number(rawMetadata)) {
       this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-      this.consoleLogService.logMessage(`loaded metadata: ${this.metadataHash}`, "info");
+      this.consoleLogService.logMessage(`loaded LpbManager metadata: ${this.metadataHash}`, "info");
     } else {
-      this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-      throw new Error(`seed lacks metadata, is unusable: ${this.address}`);
+      this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
+      throw new Error(`LbpManager lacks metadata, is unusable: ${this.address}`);
     }
 
     if (this.metadataHash) {
       this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
       if (!this.metadata) {
-        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-        throw new Error(`seed metadata is not found in IPFS, seed is unusable: ${this.address}`);
+        this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
+        throw new Error(`LbpManager metadata is not found in IPFS, LbpManager is unusable: ${this.address}`);
       }
     }
   }
@@ -230,5 +235,24 @@ export class LbpManager implements ILaunch {
     // this.fundingTokenBalance = await this.fundingTokenContract.balanceOf(this.address);
     // this.hasEnoughProjectTokens =
     //   this.lbpInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+  }
+
+  fund(): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.initializeLBP(this.admin))
+      .then(async (receipt) => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
+    return {
+      project: await this.contract.amounts(this.projectTokenIndex),
+      funding: await this.contract.amounts(this.fundingTokenIndex),
+    };
   }
 }

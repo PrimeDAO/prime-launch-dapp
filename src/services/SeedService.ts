@@ -1,3 +1,4 @@
+import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
@@ -12,6 +13,8 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
+import BigNumber, { toBigNumberJs } from "services/BigNumberService";
+import { Utils } from "services/utils";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
@@ -50,6 +53,7 @@ export class SeedService {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
+    private tokenService: TokenService,
   ) {
     /**
      * otherwise singleton is the default
@@ -61,7 +65,7 @@ export class SeedService {
     });
 
     this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
-      12787753 : 8896151;
+      12787753 : 9468353;
   }
 
   public async initialize(): Promise<void> {
@@ -170,12 +174,30 @@ export class SeedService {
       operation: 0,
     } as any;
 
+    const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenInfo.address]))[0];
+    let pricePerToken: string;
+
+    try {
+      BigNumber.config({ DECIMAL_PLACES: fundingTokenInfo.decimals });
+      const numerator = toBigNumberJs(config.launchDetails.pricePerToken);
+
+      BigNumber.config({ DECIMAL_PLACES: config.tokenDetails.projectTokenInfo.decimals });
+      const denominator = toBigNumberJs(toWei(1, config.tokenDetails.projectTokenInfo.decimals));
+
+      const rawPrice = numerator.dividedBy(denominator).toString();
+      pricePerToken = toWei(rawPrice, 18).toString();
+    } catch (ex) {
+      throw new Error(ex);
+    } finally {
+      BigNumber.config({ DECIMAL_PLACES: 18 }); // just to reset cuz this is globally scoped
+    }
+
     const seedArguments = [
       safeAddress,
       config.launchDetails.adminAddress,
-      [config.tokenDetails.projectTokenAddress, config.launchDetails.fundingTokenAddress],
+      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
-      config.launchDetails.pricePerToken,
+      pricePerToken,
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.launchDetails.startDate) / 1000,
       // convert from ISO string to Unix epoch seconds
@@ -183,7 +205,7 @@ export class SeedService {
       [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
       !!config.launchDetails.whitelist,
       toWei(SeedService.seedFee),
-      this.asciiToHex(metaDataHash),
+      Utils.asciiToHex(metaDataHash),
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
@@ -253,15 +275,5 @@ export class SeedService {
     }
 
     return metaDataHash;
-  }
-
-  private asciiToHex(str = ""): string {
-    const res = [];
-    const { length: len } = str;
-    for (let n = 0, l = len; n < l; n++) {
-      const hex = Number(str.charCodeAt(n)).toString(16);
-      res.push(hex);
-    }
-    return `0x${res.join("")}`;
   }
 }
