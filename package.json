@@ -25,9 +25,12 @@
     "lint": "eslint --ext .ts ./src ./test",
     "lint.fix": "npm run lint -- --fix",
     "fetchContracts": "node scripts/fetchContracts.js",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "precommit": "lint-staged"
   },
   "dependencies": {
+    "@commitlint/cli": "^13.2.1",
+    "@commitlint/config-conventional": "^13.2.0",
     "@metamask/detect-provider": "^1.2.0",
     "@stackoverflow/stacks": "^0.70.0",
     "@toruslabs/torus-embed": "1.8.6",
@@ -43,6 +46,7 @@
     "dompurify": "^2.2.9",
     "ethers": "^5.3.0",
     "json-to-graphql-query": "^2.0.0",
+    "lint-staged": "^11.2.3",
     "litepicker": "^2.0.11",
     "marked": "^2.0.7",
     "moment-timezone": "^0.5.31",
@@ -103,6 +107,12 @@
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=14.11.0"
