@@ -1,7 +1,8 @@
 <template>
   <require from="resources/elements/circledNumber/circledNumber.html"></require>
+  <require from="./launch.scss"></require>
 
-  <div class="newLbpContainer ${currentStage.name}">
+  <div class="newLaunchContainer ${currentStage.name}">
     <div class="sideBarDropDownContainer">
       <div click.delegate="toggleSideBar()" class="sideBarDropDown">
         ${currentStage.title}

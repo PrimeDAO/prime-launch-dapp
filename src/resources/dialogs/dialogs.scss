@@ -14,7 +14,6 @@ body > ux-dialog-container {
   bottom: 10vh;
   left: 10vw;
 
-  // -bottom: 4px; // for some reason is needed to make room for the footer
   background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
   padding-left: 4px;
   padding-top: 4px;
@@ -83,6 +82,9 @@ body > ux-dialog-container {
     }
 
     &.disclaimer {
+      .checkbox {
+        margin-right: 10px;
+      }
       .bodyContainer {
         white-space: pre-wrap;
         word-break: break-word;
@@ -91,9 +93,6 @@ body > ux-dialog-container {
           max-width: 100%;
         }
       }
-    }
-
-    &.alert {
     }
   }
 }
@@ -111,8 +110,6 @@ body > ux-dialog-overlay {
 
     ux-dialog.dialog {
       min-width: 0;
-      // border-radius: 0;
-      // background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
 
       ux-dialog-header {
         .heading {

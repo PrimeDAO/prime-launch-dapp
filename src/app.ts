@@ -53,8 +53,8 @@ export class App {
       this.handleOnOff(onOff);
     });
 
-    this.eventAggregator.subscribe("seed.creating", async (onOff: boolean) => {
-      this.modalMessage = "Thank you for your patience while we initiate the creation of a new seed...";
+    this.eventAggregator.subscribe("launch.creating", async (onOff: boolean) => {
+      this.modalMessage = "Thank you for your patience while we initiate the creation of a new launch...";
       this.handleOnOff(onOff);
     });
 
@@ -166,6 +166,13 @@ export class App {
         title: "SEED Dashboard",
       },
       {
+        moduleId: PLATFORM.moduleName("./lbpDashboard/lbpDashboard"),
+        nav: false,
+        name: "lbpDashboard",
+        route: ["lbp/:address"],
+        title: "LBP Dashboard",
+      },
+      {
         moduleId: PLATFORM.moduleName("./newLaunch/seed/launch"),
         nav: false,
         name: "newSeed",
@@ -199,6 +206,13 @@ export class App {
         name: "seedAdminDashboard",
         route: ["admin/seeds/dashboard/:address?"],
         title: "Administer a Seed Launch",
+      },
+      {
+        moduleId: PLATFORM.moduleName("./admin/lbps/dashboard/dashboard"),
+        nav: false,
+        name: "lbpAdminDashboard",
+        route: ["admin/lbps/dashboard/:address?"],
+        title: "Administer an LBP Launch",
       },
 
     ]);

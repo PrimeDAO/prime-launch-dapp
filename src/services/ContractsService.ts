@@ -5,7 +5,8 @@ import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 
 export enum ContractNames {
-  LBPMANAGERFACTORY = "LBPManagerFactory"
+  LBPMANAGERFACTORY = "LBPManagerFactory",
+  LBPMANAGER = "LBPManager"
   , SEEDFACTORY = "SeedFactory"
   , SEED = "Seed"
   // , WETH = "WETH"
@@ -14,7 +15,7 @@ export enum ContractNames {
   , IERC20 = "IERC20"
   , ERC20 = "ERC20"
   , SAFE = "Safe"
-  , SIGNER = "Signer"
+  , SIGNER = "SignerV2"
 }
 
 export interface IStandardEvent<TArgs> {
@@ -29,6 +30,7 @@ export class ContractsService {
 
   private static Contracts = new Map<ContractNames, Contract>([
     [ContractNames.LBPMANAGERFACTORY, null]
+    , [ContractNames.LBPMANAGER, null]
     , [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]

@@ -187,13 +187,6 @@
       column-gap: 80px;
       font-family: Inter;
 
-      // .pic {
-      //   img {
-      //     width: 450px;
-      //     height: 450px;
-      //   }
-      // }
-
       .rightColumn {
         > .heading1 {
           -webkit-text-fill-color: $Secondary02;
@@ -217,6 +210,10 @@
 
           &:hover {
             border-bottom: 1px solid $Secondary02;
+          }
+
+          a:hover {
+            text-decoration: none;
           }
         }
 
