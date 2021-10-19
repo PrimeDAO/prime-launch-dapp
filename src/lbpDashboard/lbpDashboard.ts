@@ -1,4 +1,3 @@
-import { ITokenDetails } from "./../newLaunch/launchConfig";
 import { BrowserStorageService } from "../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "../services/DisclaimerService";
