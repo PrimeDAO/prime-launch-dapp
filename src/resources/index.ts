@@ -27,7 +27,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/markdown/markdown"),
     PLATFORM.moduleName("./elements/tokenSelect/tokenSelect"),
     PLATFORM.moduleName("./elements/dropdown/dropdown"),
-    PLATFORM.moduleName("./elements/ringChart/ringChart"),
+    PLATFORM.moduleName("./elements/tokenDistribution/tokenDistribution"),
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
     PLATFORM.moduleName("./value-converters/date"),

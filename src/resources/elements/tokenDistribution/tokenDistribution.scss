@@ -18,11 +18,8 @@ $colours: (
   15: $Secondary01-dev,
 );
 
-.stakeholders {
-  .stakeholdersHeading {
-    font-family: "Aeonik";
-    font-size: 24px;
-    color: $Secondary02;
+.tokenDistribution {
+  .tokenDistributionHeading {
     margin: 0 0 36px;
   }
 
@@ -30,16 +27,17 @@ $colours: (
     display: grid;
   }
 
-  .stakeholderList {
+  .tokenDistributionList {
     padding: 0;
     list-style-type: none;
     margin: 0;
+    line-height: 1.2;
   }
 
-  .stakeholderListItem {
+  .tokenDistributionListItem {
     @each $colour, $name in $colours {
       $i: index($colours, $colour $name);
-      &:nth-child(#{$i}) .stakeholderPrimaryData::before {
+      &:nth-child(#{$i}) .tokenDistributionPrimaryData::before {
         background: $name;
       }
     }
@@ -48,14 +46,14 @@ $colours: (
     }
 
     &:hover, &:focus {
-      .stakeholderPrimaryData,
-      .stakeholderSecondaryData {
+      .tokenDistributionPrimaryData,
+      .tokenDistributionecondaryData {
         color: #fff;
       }
     }
   }
 
-  .stakeholderPrimaryData {
+  .tokenDistributionPrimaryData {
     color: #737074;
     margin-bottom: 6px;
 
@@ -68,9 +66,13 @@ $colours: (
     }
   }
 
-  .stakeholderSecondaryData {
+  .tokenDistributionecondaryData {
     color: #515151;
     padding-left: 27px;
+    
+    .fa {
+      margin-right: 9px;
+    }
   }
 
   .emphasis {

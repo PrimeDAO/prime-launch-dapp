@@ -192,6 +192,7 @@
         -->
       <div class="section seedSummary">
         <div class="label targetLabel">FUNDING TARGET</div>
+        <token-distribution start-date.bind='seed.metadata.launchDetails.startDate' data.bind='seed.metadata.tokenDetails'></token-distribution>
         <div class="value target">
           <formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
         </div>

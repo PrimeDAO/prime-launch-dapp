@@ -1,4 +1,3 @@
-import { ITokenDetails } from "./../launchConfig";
 import { ILaunchConfig } from "../launchConfig";
 import { BaseStage } from "../baseStage";
 import { Utils } from "../../services/utils";
@@ -8,40 +7,7 @@ export class Stage1 extends BaseStage<ILaunchConfig> {
 
   public socialLinkNames = SocialLinkNames;
   public categoryNames = CategoryNames;
-  public chartData:ITokenDetails = {
-    projectTokenAddress: "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
-    maxSupply: "100000000000000000000",
-    tokenDistrib: [
-      {
-        amount: "3000000000000000000",
-        cliff: 12,
-        stakeHolder: "Greenleaf Court",
-        vest: 3456,
-      },
-      {
-        amount: "20000000000000000000",
-        cliff: 10,
-        stakeHolder: "Decluttering Burst",
-        vest: 20,
-      }, {
-        amount: "33000000000000000000",
-        cliff: 12,
-        stakeHolder: "Pink Crescent Moon",
-        vest: 357,
-      },
-      {
-        amount: "21000000000000000000",
-        cliff: 12,
-        stakeHolder: "Dewdrops & Sunlight",
-        vest: 757,
-      },
-      {
-        amount: "3000000000000000000",
-        cliff: 12,
-        stakeHolder: "Cambridge Avenue",
-        vest: 3456,
-      }],
-  }
+
   public setCategoryName(name: string, _index: number): void {
     this.launchConfig.general.category = name;
   }

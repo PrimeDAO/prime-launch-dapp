@@ -1,0 +1,27 @@
+<template>
+  <section if.bind='data' class="tokenDistribution">
+    <header class="tokenDistributionHeading">
+      <h3 class="heading heading3">Token Distribution</h3>
+    </header>
+    <div class="container">
+      <ul class="tokenDistributionList">
+        <li
+          class="tokenDistributionListItem"
+          repeat.for="stakeholder of data.tokenDistrib"
+        >
+          <div class="tokenDistributionPrimaryData">
+            <span class="emphasis"
+              >${percentageHeld(data.maxSupply, stakeholder.amount)}%</span
+            >
+            &ndash; ${stakeholder.stakeHolder}
+          </div>
+          <div
+          class="tokenDistributionecondaryData"
+        >
+          <i class="fa fa-lock"></i>${displayLockingPeriod(startDate,stakeholder.vest, stakeholder.cliff)}
+        </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</template>
