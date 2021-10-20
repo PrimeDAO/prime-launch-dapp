@@ -2,7 +2,6 @@ import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
-import { throwIfEmpty } from "rxjs/operators";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
