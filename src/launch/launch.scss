@@ -87,6 +87,7 @@
             @include standardTextGradient;
             &:hover {
               border-bottom: 1px solid $Secondary02;
+              text-decoration: none;
             }
           }
         }
