@@ -523,8 +523,8 @@
           }
 
           .help {
-            justify-self: center;
-            align-self: center;
+            justify-self: flex-end;
+            align-self: flex-start;
           }
         }
 

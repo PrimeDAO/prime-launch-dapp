@@ -10,6 +10,7 @@ export class TokenSelect {
   @bindable tokenAddresses: Array<Address>;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenAddress?: Address;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenInfo: ITokenInfo;
+  @bindable itemChanged: ({ value: string, index: number }) => void;
   dropdown: HTMLElement;
   tokenInfos: Array<ITokenInfo>;
 
@@ -17,9 +18,12 @@ export class TokenSelect {
     private tokenService: TokenService,
   ) {}
 
-  setSelectedToken(_value: string, index: number): void {
+  setSelectedToken(value: string, index: number): void {
     this.selectedTokenInfo = this.tokenInfos[index];
     this.selectedTokenAddress = this.selectedTokenInfo?.address;
+    if (this.itemChanged) {
+      this.itemChanged({value, index});
+    }
   }
 
   @computedFrom("tokenInfos", "selectedTokenInfo")

@@ -81,9 +81,14 @@ export class TokenService {
         return;
       }
 
+      if (!await this.isERC20Token(tokenAddress)) {
+        reject(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
+        return;
+      }
+
       /**
-       * fetchTokenMetadata will throw an exception if it can't at least find an IERC20 token at the
-       * given address.
+       * fetchTokenMetadata will throw an exception if it can't at least find a contract at the
+       * given address.  Otherwise it may return an incomplete tokenInfo.
        */
       const tokenInfoMap = await this.tokenMetadataService.fetchTokenMetadata([tokenAddress], this.tokenLists);
       // eslint-disable-next-line require-atomic-updates
@@ -96,6 +101,7 @@ export class TokenService {
         reject(`Token does not appear to be a token contract: ${tokenAddress}`);
         return;
       }
+
       /**
        * at this point we have at least some of the metadata, if not all, and
        * having the tokenInfo.id, we have a shot at getting a price for it from coingecko.
@@ -110,11 +116,6 @@ export class TokenService {
       }
       if (!tokenInfo.decimals) {
         tokenInfo.decimals = TokenService.DefaultDecimals;
-      }
-
-      if (!await this.isERC20Token(tokenInfo.address)) {
-        reject(`Token address does not reference an IERC20 contract: (${tokenInfo.name}/${tokenInfo.symbol}) : ${tokenAddress}`);
-        return;
       }
 
       /**
@@ -244,6 +245,13 @@ export class TokenService {
 
     const contract = this.getTokenContract(tokenAddress);
     if (contract) {
+
+      try {
+        await contract.deployed();
+      } catch {
+        return false;
+      }
+
       try {
         if (this.ethereumService.targetedNetwork === Networks.Mainnet) {
 

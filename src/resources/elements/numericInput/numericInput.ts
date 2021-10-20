@@ -74,6 +74,10 @@ export class NumericInput {
     }
   }
 
+  private decimalsChanged() {
+    this.valueChanged(this.value, null);
+  }
+
   private valueChanged(newValue: string | BigNumber, oldValue: string | BigNumber ) {
     if (!newValue) {
       this._innerValue = this.defaultText || "";

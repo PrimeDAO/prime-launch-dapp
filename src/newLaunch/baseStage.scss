@@ -24,6 +24,9 @@
   }
   .infoInput {
     margin-bottom: 32px;
+    &.withCounter {
+      width: fit-content;
+    }
     > textarea {
       resize: none;
       width: 368px;
@@ -32,7 +35,7 @@
       border: 1px solid $Border01;
     }
     .labelContainer {
-      width: 384px;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -277,7 +280,8 @@
               color: $White;
             }
 
-            &.symbolInput {
+            &.symbolInput,
+            &.decimalInput {
               input {
                 width: 100px;
               }
@@ -435,7 +439,8 @@
         gap: 32px;
         &.maxTargetLabel label {
           font-size: 14px;
-          line-height: 48px;
+          line-height: 20px;
+          margin-bottom: 5px;
           -webkit-text-fill-color: $White;
           font-weight: 400;
         }
@@ -657,6 +662,15 @@
           font-size: 18px;
           color: $Neutral02;
 
+          .tokenAmountContainer {
+            display: flex;
+
+            .tokenAmount {
+              padding-right: 8px;
+              display: inline-block;
+            }
+          }
+
           .customLinks {
             grid-template-columns: 0.4fr 1fr;
           }
@@ -678,23 +692,6 @@
             }
           }
 
-          .tokenInfo {
-            display: grid;
-            grid-template-columns: repeat(3, auto);
-            column-gap: 10px;
-            align-items: center;
-            width: fit-content;
-            & .etherscanlink {
-              margin-right: 10px;
-            }
-            img {
-              @include tokenIcon;
-              border-radius: 12px;
-              width: 24px;
-              position: relative;
-              top: 1px;
-            }
-          }
           hr {
             margin-top: 20px;
             margin-bottom: 20px;
@@ -754,7 +751,8 @@
     > .heading.heading2 {
       font-size: 26px;
     }
-    label {
+    label,
+    span {
       line-height: 20px;
       margin-bottom: 5px;
     }
