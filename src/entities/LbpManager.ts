@@ -258,7 +258,7 @@ export class LbpManager implements ILaunch {
           this.hydrateUser();
           return receipt;
         }
-      })
+      });
   }
 
   async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
@@ -269,7 +269,7 @@ export class LbpManager implements ILaunch {
           this.hydrate();
           return receipt;
         }
-      })
+      });
   }
 
   async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
