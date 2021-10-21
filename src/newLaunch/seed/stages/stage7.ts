@@ -1,12 +1,12 @@
+import { toBigNumberJs } from "./../../../services/BigNumberService";
 import { ISeedConfig } from "newLaunch/seed/config";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
 import { Router, RouteConfig, Redirect } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 import { TokenService } from "services/TokenService";
 
@@ -17,10 +17,10 @@ export class Stage7 extends BaseStage<ISeedConfig> {
     router: Router,
     eventAggregator: EventAggregator,
     private seedService: SeedService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     tokenService: TokenService,
     private numberService: NumberService) {
-    super(router, eventAggregator, tokenService);
+    super(router, ethereumService, eventAggregator, tokenService);
   }
 
   public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
@@ -41,10 +41,15 @@ export class Stage7 extends BaseStage<ISeedConfig> {
     // this.launchConfig.launchDetails.fundingMax = toWei("100").toString();
     // this.launchConfig.launchDetails.pricePerToken = toWei(".5").toString();
     // this.launchConfig.tokenDetails.projectTokenInfo.symbol = "PRIME";
-    const distributableSeeds = this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
-      / this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.launchConfig.launchDetails.fundingTokenInfo.decimals));
-    this.wizardState.requiredLaunchFee = distributableSeeds * SeedService.seedFee;
-    this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredLaunchFee;
+    // const pricePerToken = this.seedService.projectTokenPrice(
+    //   this.launchConfig.launchDetails.fundingTokenInfo,
+    //   this.launchConfig.launchDetails.pricePerToken,
+    //   this.launchConfig.tokenDetails.projectTokenInfo);
+
+    const distributableSeeds = toBigNumberJs(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
+      .idiv(this.launchConfig.launchDetails.pricePerToken);
+    this.wizardState.requiredProjectTokenDeposit = toWei(distributableSeeds.plus(distributableSeeds.multipliedBy(SeedService.seedFee)).toString(),
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals);
   }
 
   async submit(): Promise<void> {

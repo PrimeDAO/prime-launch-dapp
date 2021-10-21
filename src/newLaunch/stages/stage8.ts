@@ -1,3 +1,4 @@
+import { EthereumService, Networks } from "./../../services/EthereumService";
 import { ILaunchConfig } from "../launchConfig";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -8,12 +9,15 @@ import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage8 extends BaseStage<ILaunchConfig> {
+
   constructor(
     router: Router,
+    ethereumService: EthereumService,
     eventAggregator: EventAggregator,
     tokenService: TokenService,
     private ipfsService: IpfsService) {
-    super(router, eventAggregator, tokenService);
+
+    super(router, ethereumService, eventAggregator, tokenService);
   }
 
   @computedFrom("wizardState.launchHash")
