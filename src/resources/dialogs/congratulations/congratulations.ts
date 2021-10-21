@@ -1,7 +1,7 @@
 import { DialogController } from "aurelia-dialog";
 import { autoinject } from "aurelia-framework";
 import "./congratulations.scss";
-import "@stackoverflow/stacks/dist/css/stacks.min.css";
+// import "@stackoverflow/stacks/dist/css/stacks.min.css";
 
 @autoinject
 export class Congratulations {
