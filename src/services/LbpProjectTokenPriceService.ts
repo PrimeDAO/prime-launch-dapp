@@ -2,7 +2,6 @@ import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 import BigNumber from "bignumber.js";
 import { toBigNumberJs } from "services/BigNumberService";
-
 @autoinject
 export class LbpProjectTokenPriceService {
 
@@ -11,7 +10,7 @@ export class LbpProjectTokenPriceService {
     private fundingTokenAmount: BigNumber,
     private startWeightProjectToken: number,
     private endWeightProjectToken: number,
-    private pricePerFundingToken: BigNumber,
+    private pricePerFundingToken: number,
   ) {
     this.maxProjectTokenSupply = maxProjectTokenSupply;
     this.fundingTokenAmount = toBigNumberJs(fundingTokenAmount);
@@ -40,7 +39,7 @@ export class LbpProjectTokenPriceService {
     projectTokenInPool: BigNumber,
     fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
-    pricePerFundingToken: BigNumber,
+    pricePerFundingToken: number,
   ): BigNumber {
     const fundingTokenValue = fundingTokenInPool.multipliedBy(pricePerFundingToken);
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
@@ -48,6 +47,10 @@ export class LbpProjectTokenPriceService {
     const pricePerProjectToken = projectTokenValue.dividedBy(projectTokenInPool);
 
     return pricePerProjectToken;
+  }
+
+  roundedTime(time: Date): moment.Moment {
+    return moment(time).startOf("hour");
   }
 
   getInterpolatedPriceDataPoints(
@@ -59,23 +62,15 @@ export class LbpProjectTokenPriceService {
     const prices = [];
     const labels = [];
 
-    const roundedStartDate = moment(startTime).startOf("hour");
-    const roundedEndDate = moment(endTime).startOf("hour");
-    const currentTime = moment(new Date()).startOf("hour").toDate();
+    const roundedStartDate = this.roundedTime(startTime);
+    const roundedEndDate = this.roundedTime(endTime);
+    const currentTime = this.roundedTime(new Date()).toDate();
 
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
-
-    console.log({
-      start: roundedStartDate.format("DD-MM-YYYY hh:mm"),
-      currentTime: moment(currentTime).format("DD-MM-YYYY hh:mm"),
-      end: roundedEndDate.format("DD-MM-YYYY hh:mm"),
-      lbpDurationInHours: lbpDurationInHours,
-    });
 
     const hoursPassedSinceStart = this.getHoursPassed(currentTime, roundedStartDate.toDate());
     const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
 
-    console.log({hoursLeft, hoursPassedSinceStart});
 
     let timeInterval: number;
     if (hoursLeft >= 24 * 20 /* days */) {
@@ -88,12 +83,15 @@ export class LbpProjectTokenPriceService {
       timeInterval = 1;
     }
 
-    for (let hoursPassed = 0; hoursPassed < hoursLeft; hoursPassed+=timeInterval) {
-      const time = moment(currentTime).add(hoursPassed, "hours");
+    const time = moment(roundedStartDate.toDate());
+
+    for (let hoursPassed = 0; hoursPassed <= hoursLeft; hoursPassed+=timeInterval) {
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         time.toDate(),
-        currentTime,
+        roundedStartDate.toDate(),
+        roundedEndDate.toDate(),
       );
+
       const currentProjectTokenPrice = this.getPriceAtWeight(
         projectTokenInPool,
         fundingTokenInPool,
@@ -103,26 +101,32 @@ export class LbpProjectTokenPriceService {
 
       labels.push(time.startOf("hour"));
       prices.push(currentProjectTokenPrice);
+
+      time.add(timeInterval, "hours");
     }
 
     return { prices, labels };
   }
 
-  getProjectTokenWeightAtTime(currentTime: Date, startTime: Date): number {
-    const hoursPassedSinceStart = this.getHoursPassed(currentTime, startTime);
-    const lbpDurationInHours = moment(currentTime).diff(startTime, "hours");
+  getProjectTokenWeightAtTime(
+    current: Date, start: Date, end: Date,
+    startWeight: number = this.startWeightProjectToken,
+    endWeight: number = this.endWeightProjectToken,
+  ): number {
+    const hoursPassedSinceStart = this.getHoursPassed(current, start);
+    const lbpDurationInHours = moment(end).diff(start, "hours");
 
     const totalWeightDifference =
-      this.startWeightProjectToken - this.endWeightProjectToken;
+      startWeight - endWeight;
     const weightChangePerHour = totalWeightDifference / lbpDurationInHours;
     const weightChange = hoursPassedSinceStart * weightChangePerHour;
 
-    return this.startWeightProjectToken - weightChange;
+    return startWeight - weightChange;
   }
 
   getHoursPassed(currentTime: Date, startTime: Date): number {
-    const roundedCurrentTime = moment(currentTime).startOf("hour");
-    const roundedStartTime = moment(startTime).startOf("hour");
+    const roundedCurrentTime = this.roundedTime(currentTime);
+    const roundedStartTime = this.roundedTime(startTime);
 
     const hoursPassed = moment
       .duration(
