@@ -3,6 +3,7 @@
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
         <div class="leftSection">
+          <project-token-info token-info.bind='lbpMgr.projectTokenInfo'></project-token-info>
           <div class="tokenId">
             <div class="icon"><img src.to-view="lbpMgr.projectTokenInfo.logoURI"></img></div>
             <div class="name">${lbpMgr.projectTokenInfo.name}</div>

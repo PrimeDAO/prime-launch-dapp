@@ -1,0 +1,22 @@
+<template>
+  <section class="projectTokenInfo">
+    <div class='column'>
+      <figure class='projectTokenInfoLogo'>
+        <img
+          src='${tokenInfo.logoURI}'
+          alt="${tokenInfo.name} token logo"
+          class='projectTokenInfoImage'
+        />
+        <figcaption class='projectTokenInfoDetails'>
+          <span class='projectTokenInfoName'> ${tokenInfo.name} </span>
+          <abbr class='projectTokenInfoAbbr' title="${tokenInfo.name}">(${tokenInfo.symbol})</abbr>
+        </figcaption>
+      </figure>
+      <span class='projectTokenInfoTicker projectTokenInfoTickerLive'>ticker</span>
+    </div class='column'>
+    <div>
+      <span>$3.14</span>
+      <span>-0.12 (4.20%)</span>
+    </div>
+  </section>
+</template>

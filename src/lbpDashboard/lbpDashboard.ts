@@ -81,7 +81,7 @@ export class lbpDashboard {
         await seed.ensureInitialized();
       }
       this.lbpMgr = seed;
-
+      console.log("this.lbpMgr", this.lbpMgr);
       await this.hydrateUserData();
 
       //this.disclaimSeed();
