@@ -33,7 +33,8 @@
                 Fund LBP
               </div>
               <div class="featureDescription">
-                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}.
+                Note this will require your approval of three transactions.
               </div>
               <div class="button1 small" click.delegate="fund()">
                 Fund
@@ -70,4 +71,3 @@
       </div>
     </div>
 </template>
-
