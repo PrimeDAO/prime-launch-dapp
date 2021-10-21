@@ -703,6 +703,11 @@
   }
 
   &.stage8 {
+    .wrappedLink{
+      white-space: normal;
+      word-break: break-all;
+    }
+    
     & .linksContainer {
       display: flex;
       flex-flow: column;
