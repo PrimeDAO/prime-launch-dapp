@@ -249,6 +249,29 @@ export class LbpManager implements ILaunch {
       });
   }
 
+  async withdraw(receiver: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.removeLiquidity(receiver))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      })
+  }
+
+  async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.setSwapEnabled(state))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrate();
+          return receipt;
+        }
+      })
+  }
+
   async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
     return {
       project: await this.contract.amounts(this.projectTokenIndex),
@@ -256,3 +279,4 @@ export class LbpManager implements ILaunch {
     };
   }
 }
+
