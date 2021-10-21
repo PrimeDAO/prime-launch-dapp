@@ -11,4 +11,11 @@ interface IProjectTokenInfo {
 }
 export class ProjectTokenInfo {
   @bindable tokenInfo: IProjectTokenInfo;
+
+  private toUSD (value:number):string {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value);}
 }
+

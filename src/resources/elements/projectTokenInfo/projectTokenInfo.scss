@@ -42,7 +42,7 @@
     margin-left: 45px;
     text-transform: uppercase;
     font-weight: 700;
-    displaY:flex;
+    display: flex;
     align-items: center;
 
     &::before {
@@ -65,5 +65,41 @@
         background: $AlertRed;
       }
     }
+  }
+
+  &Price {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+
+  &PriceValue {
+    font-size: 24px;
+    font-family: Inter;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 5px;
+      margin-right: 7px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+    &Increased {
+      &:before {
+        background: $AlertGreen;
+      }
+    }
+    &Decreased {
+      &:before {
+        background: $AlertRed;
+        clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      }
+    }
+  }
+
+  &PriceChange {
   }
 }
