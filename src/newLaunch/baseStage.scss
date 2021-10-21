@@ -211,6 +211,12 @@
     }
   }
 
+  .adminInput {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
   &.stage3 {
     .infoInput.supply {
       input {
@@ -858,6 +864,19 @@
           .tokenSelect {
             margin-right: 0;
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 875px){
+  .page.stageContainer {
+    &.stage4 {
+      .adminInput {
+        .button2 {
+          margin-top: 15px;
+          width: 351px;
         }
       }
     }

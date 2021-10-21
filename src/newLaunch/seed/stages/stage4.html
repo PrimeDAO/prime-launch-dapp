@@ -232,14 +232,16 @@
               <question-mark text="The Seed administrator has the ability to pause and close the seed, alter the whitelist and withdraw funding tokens"></question-mark>
             </div>
           </div>
-          <input
-            id="admin"
-            value.bind="launchConfig.launchDetails.adminAddress"
-            placeholder="Administrator wallet address" />
-          <template if.to-view="!launchConfig.launchDetails.adminAddress">
-            <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
-            <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
-          </template>
+          <div class="adminInput">
+            <input
+                id="admin"
+                value.bind="launchConfig.launchDetails.adminAddress"
+                placeholder="Administrator wallet address" />
+            <template if.to-view="!launchConfig.launchDetails.adminAddress">
+                <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
+                <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
+            </template>
+          </div>
         </div>
         <div class="buttonContainer">
           <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
