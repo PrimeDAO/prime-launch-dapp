@@ -30,7 +30,7 @@
               <!-- <div if.to-view="launchConfig.tokenDetails.projectTokenInfo.address && !projectTokenMissingMetadata" class="ticker">
                 <img src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" /> ${launchConfig.tokenDetails.projectTokenInfo.name} (${launchConfig.tokenDetails.projectTokenInfo.symbol})
               </div> -->
-              <div if.bind="launchConfig.tokenDetails.projectTokenInfo.address" class="projectTokenInfoFormContainer">
+              <div if.bind="wizardState.stage3State.isValidTokenAddress" class="projectTokenInfoFormContainer">
                 <div if.bind="formIsEditable" class="explanation">You have provided a valid token address, but we can't find some or all of the information we need to describe the token. Please fill in the missing token information below.</div>
                 <div class="tokenForm">
                   <div class="field nameInput ${wizardState.stage3State.tiNameInputPresupplied ? 'presupplied' : ''}

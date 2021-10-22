@@ -43,7 +43,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
     private tokenListService: TokenListService,
@@ -51,7 +51,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private disclaimerService: DisclaimerService,
     private aureliaHelperService: AureliaHelperService,
   ) {
-    super(router, eventAggregator, tokenService);
+    super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
