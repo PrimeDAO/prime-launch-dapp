@@ -1,0 +1,127 @@
+<template>
+  <div class="page animated-page adminContainer au-animate ">
+    <div show.bind="!loading">
+      <div class="connectContainer" if.bind="!connected">
+        <div class="buttonContainer">
+          <div class="button1" click.delegate="connect()">Connect</div>
+        </div>
+        <div class="supportTextContainer">
+          <div class="connectButtonSupportText">
+            Connect your wallet to administer your LBPs
+          </div>
+        </div>
+      </div>
+      <div else class="formContainer">
+        <div class="heading heading1 lbpAdministrationHeader">
+          LBP Administration
+        </div>
+        <div if.bind="lbps.length">
+          <dropdown
+            class="lbpsDropdown"
+            if.bind="lbps.length !== 1"
+            item-changed.call="selectLbp(index)"
+            selected-item-index.to-view="selectedLbpIndex"
+            placeholder="Select an LPB...">
+            <div repeat.for="lbp of lbps">${lbp.metadata.general.projectName}</div>
+          </dropdown>
+          <div else class="heading heading3 projectTitle">
+            ${selectedLbp.metadata.general.projectName}
+          </div>
+          <div if.bind="selectedLbp.address">
+            <div class="featureContainer" if.bind="!selectedLbp.hasEnoughProjectTokens">
+              <div class="featureTitle">
+                Fund LBP
+              </div>
+              <div class="featureDescription">
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}
+              </div>
+              <div class="button1 small" click.delegate="fund()">
+                Fund
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
+              <div class="featureTitle">
+                Add Whitelists
+              </div>
+              <div class="featureDescription">
+                Add addresses from the list that was supplied during registration
+              </div>
+              <div class="button1 small" click.delegate="addWhitelist()">
+                Add Whitelist
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
+              <div class="featureTitle">
+                Whitelist an account
+              </div>
+              <div class="featureDescription">
+                Add an account to the whitelist
+              </div>
+              <div class='inputWrapper'>
+                <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
+                <div class="button1 small" click.delegate="selectedLbp.addToWhitelist(addressToAdd)">
+                  Add to whitelist
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
+              <div class="featureTitle">
+                Unwhitelist an account
+              </div>
+              <div class="featureDescription">
+                Remove an account from the whitelist
+              </div>
+              <div class='inputWrapper'>
+                <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
+                <div class="button1 small" click.delegate="selectedLbp.removeFromWhitelist(addressToRemove)">
+                  Remove from whitelist
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedLbp.isClosed || selectedLbp.maximumReached || selectedLbp.isDead)">
+              <div class="featureTitle">
+                Retrieve Project Tokens
+              </div>
+              <div class="featureDescription">
+                ${retrievableProjectTokenAmount | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
+              </div>
+              <div class='inputWrapper'>
+                <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
+                <div class="button1 small" click.delegate="selectedLbp.retrieveProjectTokens(receiverAddress)">
+                  Retrieve Project Tokens
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedLbp.claimingIsOpen && selectedLbp.fundingTokenBalance != 0">
+              <div class="featureTitle">
+                Withdraw Funding Tokens
+              </div>
+              <div class="featureDescription">
+                ${selectedLbp.fundingTokenBalance | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
+              </div>
+              <div class="button1 small" click.delegate="selectedLbp.withdrawFundingTokens()">
+                Withdraw
+              </div>
+            </div>
+            <div class="featureContainer">
+              <div class="featureTitle">
+                Pause LBP
+              </div>
+              <div class="featureDescription">
+                Pausing will make LBP inactive. As the administrator, you will be able to unpause the LBP.
+              </div>
+              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.pause()">
+                Pause
+              </div>
+              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.unPause()">
+                UnPause
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="noLbpCreatedMessage" else>
+          <div>You have not created any lbps</div>
+        </div>
+      </div>
+    </div>
+</template>

@@ -17,7 +17,7 @@ If your application is not accepted, consider opening a <a href="https://daotalk
 
 ## Launch Process
 
-Once your launched is approved, you will need to finish setting it up using the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>. On the dashboard, depending on the stage of your launch, you will see buttons to:
+Once your launch is approved, you will need to finish setting it up using the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>. On the dashboard, depending on the stage of your launch, you will see buttons to:
 
 - Send the required project tokens to the launch contract
 - Set up a whitelist for contributors (if applicable for your launch)

@@ -1,30 +1,46 @@
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
-import { SeedService } from "services/SeedService";
 import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import "./launches.scss";
 import { Seed } from "entities/Seed";
 import { SortService } from "services/SortService";
 import { Utils } from "services/utils";
+import { SeedService } from "services/SeedService";
+import { ILaunch } from "services/launchTypes";
+import { LbpManagerService } from "services/LbpManagerService";
 
 @singleton(false)
 @autoinject
 export class Launches {
 
-  featuredSeeds: Array<Seed> = null;
+  launches: Array<ILaunch>;
   seeingMore = false;
+  loading: boolean;
 
   constructor(
     private router: Router,
     private ethereumService: EthereumService,
     private seedService: SeedService,
+    private lbpManagerService: LbpManagerService,
   ) {
     this.sort("starts"); // sort order will be ASC
   }
 
+  isAdmin(launch: ILaunch): boolean {
+    return launch.admin === this.ethereumService.defaultAccountAddress;
+  }
+
   async attached(): Promise<void> {
-    this.featuredSeeds = await this.seedService.getFeaturedSeeds();
+    this.loading = true;
+
+    await this.seedService.ensureAllSeedsInitialized();
+    await this.lbpManagerService.ensureAllLbpsInitialized();
+
+    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
+      .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+
+    this.loading = false;
   }
 
   seeMore(yesNo: boolean): void {
@@ -77,7 +93,8 @@ export class Launches {
     return false;
   }
 
-  onSeedClick(seed: Seed): void {
-    this.router.navigate(seed.canGoToDashboard ? `seed/${seed.address}` : "launches");
+  onSeedClick(launch: ILaunch): void {
+    this.router.navigate(launch.canGoToDashboard ? `${launch.launchType}/${launch.address}` :
+      `/admin/${launch.launchType}s/dashboard/${launch.address}`);
   }
 }

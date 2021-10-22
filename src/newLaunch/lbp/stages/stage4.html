@@ -1,0 +1,215 @@
+<template>
+  <require from="./elements/launch-preview/launch-preview"></require>
+  <require from="newLaunch/tokenLabel.html"></require>
+  <div class="page animated-page stageContainer stage4 au-animate ">
+    <div class="infoContainer">
+      <div class="heading heading2 title">Launch Details</div>
+      <div class="subtext">
+        Use the <a href="/documentation/contribute-to-a-launch" target="_blank" rel="noopener noreferrer">Launch Guide</a> to select suitable launch details or
+        <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> with a Launch expert.
+      </div>
+      <div>
+        <div class="infoInput ticker">
+          <div class="address">
+            <div class="labeledQuestion">
+              <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
+              <div class="questionMark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <div class="tokenSelector">
+              <token-select
+                id="fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
+                token-addresses.to-view="tokenList"
+                item-changed.call="tokenChanged(value,index)">
+              </token-select>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
+                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="infoInput">
+          <label for="amountProjectToken">Number of tokens that you will provide to the LBP</label>
+          <div class="tokenAmountContainer">
+            <numeric-input
+              output-as-string="true"
+              id="amountProjectToken"
+              value.bind="launchConfig.launchDetails.amountProjectToken"
+              decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.name"
+              placeholder="">
+            </numeric-input>
+            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
+            <img
+              ref="logoIcon"
+              if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
+              src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
+            <div class="text">
+              ${launchConfig.tokenDetails.projectTokenInfo.name}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+            </div>
+          </div>
+          <div class="tokenAmountContainer">
+            <numeric-input
+              output-as-string="true"
+              id="amountFundingToken"
+              value.bind="launchConfig.launchDetails.amountFundingToken"
+              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
+              placeholder="">
+            </numeric-input>
+            <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
+            <img
+              ref="logoIcon"
+              if.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI"
+              src.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI" />
+            <div class="text">
+              ${launchConfig.launchDetails.fundingTokenInfo.name}
+              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel>
+            </div>
+          </div>
+        </div>
+        <div class="infoInput maxTarget">
+          <div>
+            <label for="startDate">Start Date</label>
+            <div class="vestingDates">
+              <input
+                id="startDate"
+                placeholder="YYYY-MM-DD"
+                class="vestingDateInput"
+                value.bind="startDate | date"
+                ref="startDateRef"
+                click.delegate="startDatePicker.show()"
+                autocomplete="off" disabled />
+              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
+            </div>
+          </div>
+          <div>
+            <div class="labeledQuestion">
+              <label for="startTime">Start Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The start time for the launch, in GMT"></question-mark>
+              </div>
+            </div>
+            <div class="vestingDatesContainer">
+              <div class="vestingDates">
+                <input
+                  id="startTime"
+                  value.bind="startTime"
+                  change.delegate="setLaunchDuration()"
+                  autocomplete="off" />
+                <div class="inputIcon"><i class="far fa-clock"></i></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="startWeight">Start Weights</label>
+            <range-input name="start-weight"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
+              set-weight.bind="setlaunchConfigStartWeight"
+              value.bind="launchConfig.launchDetails.startWeight"
+              input.delegate="handleStartWeightChange($event)"
+              ref="sliderStartWeights">
+            </range-input>
+          </div>
+        </div>
+        <div class="infoInput maxTarget">
+          <div>
+            <label for="endDate">End Date</label>
+            <div class="vestingDates">
+              <input
+                id="endDate"
+                class="vestingDateInput"
+                value.bind="endDate | date"
+                placeholder="YYYY-MM-DD"
+                ref="endDateRef"
+                click.delegate="endDatePicker.show()"
+                autocomplete="off" disabled />
+              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+            </div>
+          </div>
+          <div class="infoInput">
+            <div class="labeledQuestion">
+              <label for="endTime">End Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+              </div>
+            </div>
+            <div class="vestingDatesContainer">
+              <div class="vestingDates">
+                <input
+                  id="endTime"
+                  value.bind="endTime"
+                  change.delegate="setLaunchDuration()"
+                  autocomplete="off" />
+                <div class="inputIcon"><i class="far fa-clock"></i></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="endWeight">End Weights</label>
+            <range-input name="end-weight"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
+              value.bind="launchConfig.launchDetails.endWeight"
+              max-allowed.bind="launchConfig.launchDetails.startWeight"
+              input.delegate="handleEndWeightChange($event)"
+              ref="sliderEndWeights">
+            </range-input>
+          </div>
+        </div>
+
+        <!-- TODO: Launch Preview -->
+        <div class="infoInput launchPreview">
+          <launch-preview class="previewBox"
+            duration.bind="launchDuration",
+            startWeight.bind = "lbpConfig.lbpDetails.startWeight",
+            endWeight.bind = "lbpConfig.lbpDetails.endWeight",
+            fee.bind = "seedFee"
+          >
+          </launch-preview>
+        </div>
+
+        <div class="infoInput">
+          <div class="labeledQuestion">
+            <label for="disclaimer">Legal Disclaimer</label>
+            <div class="questionMark">
+              <question-mark allow-html text='If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or Markdown. <a target="_blank" href="https://www.markdownguide.org/getting-started/" rel="noopener noreferrer">(More info about Markdown)</a>'>
+              </question-mark>
+            </div>
+          </div>
+          <input
+            id="disclaimer"
+            value.bind="launchConfig.launchDetails.legalDisclaimer"
+            placeholder="(Optional) URL to a disclaimer" />
+        </div>
+
+        <div class="infoInput admin">
+          <div class="labeledQuestion">
+            <label for="admin">Launch Administrator</label>
+            <div class="questionMark">
+              <question-mark text="The Launch administrator has the ability to pause and close the launch, alter the whitelist and withdraw funding tokens"></question-mark>
+            </div>
+          </div>
+          <input
+            id="admin"
+            value.bind="launchConfig.launchDetails.adminAddress"
+            placeholder="Administrator wallet address" />
+          <template if.to-view="!launchConfig.launchDetails.adminAddress">
+            <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
+            <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
+          </template>
+        </div>
+
+        <div class="buttonContainer">
+          <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
+          <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
+        </div>
+      </div>
+    </div>
+</template>

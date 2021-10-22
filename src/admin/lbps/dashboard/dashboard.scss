@@ -1,0 +1,73 @@
+@import "styles/styles.scss";
+
+.page.adminContainer {
+  .lbpsDropdown {
+    margin-bottom: 40px;
+  }
+
+  .connectContainer {
+    margin-top: 40px;
+
+    .buttonContainer {
+      display: flex;
+      justify-content: center;
+    }
+
+    .supportTextContainer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+
+      .connectButtonSupportText {
+        color: #dcdae5;
+        font-size: 16px;
+        text-align: center;
+        line-height: 24px;
+        font-style: normal;
+        font-weight: normal;
+      }
+    }
+  }
+
+  // .projectTitle {
+  //   font-size: 20px;
+  //   color: #a258a7;
+  //   font-weight: 600;
+  //   margin-bottom: 40px;
+  // }
+
+  .featureContainer {
+    padding: 5px;
+    margin: 15px 0px;
+
+    .featureTitle {
+      font-size: 18px;
+      margin-bottom: 11px;
+      color: #a258a7;
+      font-weight: 300;
+    }
+
+    .featureDescription {
+      display: flex;
+      align-self: center;
+      color: #98979b;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .inputWrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .tokenImage {
+    @include tokenIcon;
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+
+  .noSeedCreatedMessage {
+    padding-top: 15px;
+  }
+}

@@ -12,7 +12,7 @@
     z-index: -1;
     object-fit: cover;
   }
-  
+
   .banner {
     display: flex;
     justify-content: center;
@@ -58,13 +58,14 @@
         line-height: 24px;
         .benefit {
           display: grid;
-          grid-template-columns: .1fr 1fr;
+          grid-template-columns: 0.1fr 1fr;
           gap: 14px;
           font-family: Inter;
           font-size: 16px;
-          font-weight: bold;
+          font-weight: 600;
           margin-bottom: 11px;
-          .check, .noCheck {
+          .check,
+          .noCheck {
             display: grid;
             align-items: start;
             justify-content: center;
@@ -98,7 +99,7 @@
         text-align: center;
         font-size: 28px;
         line-height: 24px;
-        font-weight: bold;
+        font-weight: 600;
         .subtext {
           font-size: 14px;
           color: $Neutral02;

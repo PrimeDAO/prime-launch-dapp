@@ -12,15 +12,15 @@ interface ITokenListUris {
     All: string[];
     Payments: string;
   };
-  Balancer: {
-    All: string[];
-    // Compliant list for exchange
-    Default: string;
-    // Extended list to include LBP tokens
-    Vetted: string;
-  };
-  Approved: string[];
-  External: string[];
+  // Balancer: {
+  //   All: string[];
+  //   // Compliant list for exchange
+  //   Default: string;
+  //   // Extended list to include LBP tokens
+  //   Vetted: string;
+  // };
+  // Approved: string[];
+  // External: string[];
 }
 
 export interface IVersion {
@@ -57,12 +57,12 @@ export class TokenListService {
    * a structured object.
    */
   public get tokenLists(): ITokenListUris {
-    const { PrimeDao, Balancer, External } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
+    const { PrimeDao /*, Balancer, External */ } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
 
     const primeDaoLists = [PrimeDao.Payments];
-    const balancerLists = [Balancer.Default, Balancer.Vetted];
-    const All = [...primeDaoLists, ...balancerLists, ...External];
-    const Approved = [Balancer.Default, ...External];
+    // const balancerLists = [Balancer.Default, Balancer.Vetted];
+    const All = [...primeDaoLists /*, ...balancerLists, ...External*/];
+    // const Approved = [Balancer.Default, ...External];
 
     return {
       All,
@@ -70,12 +70,12 @@ export class TokenListService {
         All: primeDaoLists,
         ...PrimeDao,
       },
-      Balancer: {
-        All: balancerLists,
-        ...Balancer,
-      },
-      Approved,
-      External,
+      // Balancer: {
+      //   All: balancerLists,
+      //   ...Balancer,
+      // },
+      // Approved,
+      // External,
     };
   }
 

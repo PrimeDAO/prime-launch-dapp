@@ -131,7 +131,7 @@ export class SeedDashboard {
     try {
       if (this.seedService.initializing) {
         await Utils.sleep(200);
-        this.eventAggregator.publish("seeds.loading", true);
+        this.eventAggregator.publish("launches.loading", true);
         waiting = true;
         await this.seedService.ensureInitialized();
       }
@@ -139,13 +139,13 @@ export class SeedDashboard {
       if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
-          this.eventAggregator.publish("seeds.loading", true);
+          this.eventAggregator.publish("launches.loading", true);
           waiting = true;
         }
         await seed.ensureInitialized();
       }
       this.seed = seed;
-      this.geoBlocked = this.geoBlocked && this.seed.metadata.seedDetails.geoBlock;
+      this.geoBlocked = this.geoBlocked && this.seed.metadata.launchDetails.geoBlock;
 
       await this.hydrateUserData();
 
@@ -156,7 +156,7 @@ export class SeedDashboard {
     }
     finally {
       if (waiting) {
-        this.eventAggregator.publish("seeds.loading", false);
+        this.eventAggregator.publish("launches.loading", false);
       }
       this.loading = false;
     }
@@ -176,12 +176,12 @@ export class SeedDashboard {
 
     let disclaimed = false;
 
-    if (!this.seed.metadata.seedDetails.legalDisclaimer || this.seedDisclaimed) {
+    if (!this.seed.metadata.launchDetails.legalDisclaimer || this.seedDisclaimed) {
       disclaimed = true;
     } else {
       // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
       const response = await this.disclaimerService.showDisclaimer(
-        this.seed.metadata.seedDetails.legalDisclaimer,
+        this.seed.metadata.launchDetails.legalDisclaimer,
         `${this.seed.metadata.general.projectName} Disclaimer`,
       );
 

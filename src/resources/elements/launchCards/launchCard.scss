@@ -1,0 +1,156 @@
+@import "styles/colors.scss";
+.launchSummaryContainer {
+  display: inline-block;
+  cursor: default;
+  width: 360px;
+  min-width: 360px;
+  padding-right: 30px;
+  height: 100%;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  .launchSummary {
+    display: grid;
+    grid-template-columns: 58px 4fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "icon . timeLeft"
+      "icon title title"
+      ". description description"
+      ". . ."
+      ". . ."
+      "tokensTarget tokensTarget tokensTarget";
+    row-gap: 12px;
+    background-color: $BG02;
+    border-radius: 6px;
+    padding: 13px;
+    box-sizing: border-box;
+    height: 100%;
+
+    > .icon {
+      display: grid;
+      align-items: center;
+      grid-area: icon;
+      img {
+        height: 46px;
+        width: 46px;
+        border-radius: 22px;
+      }
+    }
+
+    > .title {
+      grid-area: title;
+      font-weight: 600;
+      font-size: 22px;
+      white-space: normal;
+      overflow-x: clip;
+      max-width: 295px;
+    }
+
+    > .description {
+      grid-area: description;
+      font-family: Inter;
+      font-size: 12px;
+      line-height: 17px;
+      color: $Neutral03;
+      white-space: normal;
+    }
+
+    > .countdown {
+      grid-area: timeLeft;
+      text-align: right;
+    }
+
+    > .tokensTarget {
+      grid-area: tokensTarget;
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "tokensTitle"
+        "tokens";
+      row-gap: 4px;
+
+      > .title {
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      > .tokensTitle {
+        grid-area: tokensTitle;
+      }
+
+      > .tokens {
+        grid-area: tokens;
+
+        .tokenPairContainer > img {
+          width: 26px;
+          height: 26px;
+          border-radius: 16px;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding-top: 32px;
+    i {
+      color: $Secondary03-dev;
+    }
+  }
+
+  &.hot {
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1072px) {
+  .launchSummaryContainer {
+    // because this is going to be vertically-aligned
+    padding-right: 0;
+    margin-bottom: 20px;
+    width: 50%;
+
+    .launchSummary {
+      grid-template-columns: 48px 4fr 1fr;
+      grid-template-areas:
+        "icon . timeLeft"
+        "icon title title"
+        ". description description"
+        ". . ."
+        ". . ."
+        "tokensTarget tokensTarget tokensTarget";
+
+      > .title {
+        max-width: unset;
+      }
+
+      > .icon {
+        img {
+          height: 36px;
+          width: 36px;
+        }
+      }
+
+      > .tokensTitle,
+      > .title,
+      > .description {
+        text-align: left;
+      }
+
+      > .timeLeft {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .launchSummaryContainer {
+    min-width: 100%;
+    width: 100%;
+  }
+}

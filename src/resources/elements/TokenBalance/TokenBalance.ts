@@ -57,7 +57,7 @@ export class TokenBalance {
     if (!this.checking) {
       try {
         this.checking = true;
-        if (this.account) {
+        if (this.account && this.contract) {
           this.balance = await this.contract.balanceOf(this.account);
         } else {
           this.balance = null;
