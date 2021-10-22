@@ -6,29 +6,87 @@
     <div class="info">
       <div class="market-cap">
         <h1>Implied Market Cap</h1>
+        <div>
+          <span if.to-view="config.marketCap.low !== '-1'">
+            $ <formatted-number
+              mantissa="1"
+              average 
+              value.to-view="config.marketCap.low">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+          &nbsp;-&nbsp;
+          <span if.to-view="config.marketCap.high !== '-1'">
+            $ <formatted-number
+              mantissa="1"
+              average
+              value.to-view="config.marketCap.high">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+        </div>
+      </div>
+      <div class="price-range">
+        <h1>Price Range</h1>
+        <div>
+          <span if.to-view="config.priceRange.low !== '-1'">
+            $ <formatted-number
+              value.to-view="config.priceRange.low">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+          &nbsp;-&nbsp;
+          <span  if.to-view="config.priceRange.high !== '-1'">
+            $ <formatted-number
+              value.to-view="config.priceRange.high">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+        </div>
+      </div>
+      <div class="duration">
+        <h1>Duration</h1>
+        <p if.bind="config.duration >= 0">
+          ${ config.duration.toFixed(1) } days
+        </p>
+        <p else> -- </p>
+      </div>
+      <div class="fee">
+        <h1>Swap Fee</h1>
+        <p>${(fee * 100).toFixed(1)}%</p>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="launch-preview-container">
+    <div class="header">
+      <h3>Launch Preview</h3>
+    </div>
+    <div class="info">
+      <div class="market-cap">
+        <h1>Implied Market Cap</h1>
         <p>
-          <formatted-number  if.to-view="launchPreviewConfig.marketCap.low"
+          <formatted-number  if.to-view="marketCapLow"
             average 
-            value.to-view="launchPreviewConfig.marketCap.low">
+            value.to-view="marketCapLow">
           </formatted-number>
           &nbsp;-&nbsp;
-          <formatted-number  if.to-view="launchPreviewConfig.marketCap.low"
+          <formatted-number  if.to-view="marketCapHigh"
             average 
-            value.to-view="launchPreviewConfig.marketCap.high">
+            value.to-view="marketCapHigh">
           </formatted-number>
         </p>
       </div>
       <div class="price-range">
         <h1>Price Range</h1>
         <p>
-          <formatted-number if.to-view="launchPreviewConfig.priceRange.low"
+          <formatted-number if.to-view="priceRangeLow"
             average 
-            value.to-view="launchPreviewConfig.priceRange.low">
+            value.to-view="priceRangeLow">
           </formatted-number>
           &nbsp;-&nbsp;
-          <formatted-number if.to-view="launchPreviewConfig.priceRange.high"
+          <formatted-number if.to-view="priceRangeHigh"
             average 
-            value.to-view="launchPreviewConfig.priceRange.high">
+            value.to-view="priceRangeHigh">
           </formatted-number>
         </p>
       </div>
@@ -44,5 +102,5 @@
         <p>${(fee * 100).toFixed(1)}%</p>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
