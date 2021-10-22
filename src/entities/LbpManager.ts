@@ -160,11 +160,16 @@ export class LbpManager implements ILaunch {
       this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
       this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
 
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
       if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
         throw new Error("project token info is not found or does not match the LbpManager contract");
       }
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+      /**
+       * TODO, set projectTokenInfo.price here, using fundingTokenInfo.price
+       */
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
