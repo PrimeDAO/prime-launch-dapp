@@ -538,7 +538,6 @@
         .button2.small {
           text-transform: none;
           position: relative;
-          bottom: 4px;
         }
       }
     }
@@ -846,6 +845,17 @@
       }
     }
   }
+
+  .page.stageContainer {
+    &.stage4 {
+      .adminInput {
+        .button2 {
+          margin-top: 15px;
+          width: 351px;
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -870,15 +880,3 @@
   }
 }
 
-@media screen and (max-width: 875px){
-  .page.stageContainer {
-    &.stage4 {
-      .adminInput {
-        .button2 {
-          margin-top: 15px;
-          width: 351px;
-        }
-      }
-    }
-  }
-}
