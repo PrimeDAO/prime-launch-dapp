@@ -1,7 +1,7 @@
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
-import BigNumber from "bignumber.js";
-import { toBigNumberJs } from "services/BigNumberService";
+// import BigNumber from "bignumber.js";
+import BigNumber, { toBigNumberJs } from "services/BigNumberService";
 @autoinject
 export class LbpProjectTokenPriceService {
 
@@ -13,7 +13,7 @@ export class LbpProjectTokenPriceService {
     private pricePerFundingToken: number,
   ) {
     this.maxProjectTokenSupply = maxProjectTokenSupply;
-    this.fundingTokenAmount = toBigNumberJs(fundingTokenAmount);
+    this.fundingTokenAmount = fundingTokenAmount;
     this.startWeightProjectToken = startWeightProjectToken;
     this.endWeightProjectToken = endWeightProjectToken;
     this.pricePerFundingToken = pricePerFundingToken;
@@ -24,13 +24,18 @@ export class LbpProjectTokenPriceService {
     fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
   ): BigNumber {
-    const projectTokenMcap =
+    if (projectTokenWeight >= 1) return undefined;
+
+    const priceAtWeight =
       this.getPriceAtWeight(
         projectTokenInPool,
         fundingTokenInPool,
         projectTokenWeight,
         this.pricePerFundingToken,
-      ).multipliedBy(this.maxProjectTokenSupply);
+      );
+
+    const projectTokenMcap =
+      priceAtWeight?.multipliedBy(this.maxProjectTokenSupply);
 
     return projectTokenMcap.decimalPlaces(2, BigNumber.ROUND_DOWN);
   }
@@ -41,6 +46,8 @@ export class LbpProjectTokenPriceService {
     projectTokenWeight: number,
     pricePerFundingToken: number,
   ): BigNumber {
+    if (projectTokenWeight >= 1) return undefined;
+
     const fundingTokenValue = fundingTokenInPool.multipliedBy(pricePerFundingToken);
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
     const projectTokenValue = toBigNumberJs(scalingFactor).multipliedBy(fundingTokenValue);
