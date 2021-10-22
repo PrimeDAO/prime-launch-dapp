@@ -181,7 +181,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       endTimes = this.endTime.split(":");
     }
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
-      message = "Please select a Project Token";
+      message = "Please select a Project Token in Stage 3 - Project Tokens";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
