@@ -1,5 +1,5 @@
 <template>
-  <section class="projectTokenInfo">
+  <section if.bind='tokenInfo' class="projectTokenInfo">
     <div class='column'>
       <figure class='projectTokenInfoLogo'>
         <img
@@ -19,4 +19,5 @@
       <span class='projectTokenInfoPriceChange projectTokenInfoPriceChangeDecreased column'>-0.12 (4.20%)</span>
     </div>
   </section>
+  <p if.bind='!tokenInfo'> No project token data available.</p>
 </template>
