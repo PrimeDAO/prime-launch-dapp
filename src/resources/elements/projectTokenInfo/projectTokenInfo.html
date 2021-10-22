@@ -3,16 +3,16 @@
     <div class='column'>
       <figure class='projectTokenInfoLogo'>
         <img
-          src='${tokenInfo.logoURI}'
-          alt="${tokenInfo.name} token logo"
+          src='${tokenInfo.projectTokenInfo.logoURI}'
+          alt="${tokenInfo.projectTokenInfo.name} token logo"
           class='projectTokenInfoImage'
         />
         <figcaption class='projectTokenInfoDetails'>
-          <span class='projectTokenInfoName'> ${tokenInfo.name} </span>
-          <abbr class='projectTokenInfoAbbr' title="${tokenInfo.name}">(${tokenInfo.symbol})</abbr>
+          <span class='projectTokenInfoName'> ${tokenInfo.projectTokenInfo.name} </span>
+          <abbr class='projectTokenInfoAbbr' title="${tokenInfo.projectTokenInfo.name}">(${tokenInfo.projectTokenInfo.symbol})</abbr>
         </figcaption>
       </figure>
-      <span class='projectTokenInfoTicker projectTokenInfoTickerLive'>live</span>
+          <time-left class='projectTokenInfoTicker' launch.to-view="tokenInfo"></time-left>
     </div class='column'>
     <div class='projectTokenInfoPrice'>
       <span class='projectTokenInfoPriceValue projectTokenInfoPriceValueDecreased'>${toUSD(342.24)}</span>
