@@ -12,9 +12,28 @@
           <span class="importantText">Please save this URL.</span>
         </p>
 
-        <p>PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can appear in and be used in the PrimeLAUNCH interface. The approval takes place in the <a href="https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions" target="_blank" rel="noopener noreferrer">PrimeLAUNCH multisig wallet</a>. Reviews generally take 5-7 days.</p>
+        <p>PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can appear in and be used in the PrimeLAUNCH interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">PrimeLAUNCH multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
-        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.launchAdminAddress" text="${wizardState.launchTypeTitle} Admin"></etherscanlink> will have to fund the ${wizardState.launchTypeTitle}<span if.to-view="!!wizardState.whiteList"> and add the whitelist</span>. This can be done by connecting the ${wizardState.launchTypeTitle} Admin wallet to the <a href="/admin/${wizardState.launchType}/dashboard" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.</p>
+        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="wizardState.launchAdminAddress" text="${wizardState.launchTypeTitle} Admin"></etherscanlink>
+
+          will have to fund the ${wizardState.launchTypeTitle} with
+
+          <span if.bind="wizardState.requiredProjectTokenDeposit">
+            <formatted-number
+              value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
+              thousands-separated></formatted-number>
+            ${launchConfig.tokenDetails.projectTokenInfo.symbol}
+          </span>
+
+          <span if.bind="wizardState.requiredProjectTokenDeposit && wizardState.requiredFundingTokenDeposit"> and </span>
+
+          <span if.bind="wizardState.requiredFundingTokenDeposit">
+            <formatted-number
+              value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.tokenDetails.fundingTokenInfo.decimals"
+              thousands-separated>
+            </formatted-number> ${launchConfig.tokenDetails.fundingTokenInfo.symbol}
+          </span><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by connecting the ${wizardState.launchTypeTitle} Admin wallet to the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
+        </p>
 
         <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
       </div>

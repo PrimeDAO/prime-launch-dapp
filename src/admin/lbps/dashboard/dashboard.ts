@@ -5,7 +5,6 @@ import "./dashboard.scss";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
-import { WhiteListService } from "services/WhiteListService";
 import { LbpManagerService } from "services/LbpManagerService";
 import TransactionsService from "services/TransactionsService";
 
@@ -31,7 +30,6 @@ export class LbpAdminDashboard {
     private eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
     private ethereumService: EthereumService,
-    private whiteListService: WhiteListService,
     private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
@@ -87,22 +85,6 @@ export class LbpAdminDashboard {
     this.selectedLbpIndex = index;
   }
 
-  // @computedFrom("selectedSeed")
-  // get retrievableProjectTokenAmount(): BigNumber {
-  //   if (!this.selectedLbp.address){
-  //     return BigNumber.from(0);
-  //   }
-  //   const tokenToBeDistributed = this.selectedLbp.seedAmountRequired.sub(this.selectedLbp.seedRemainder).sub(this.selectedLbp.feeRemainder);
-  //   return this.selectedLbp.minimumReached ?
-  //     this.selectedLbp.projectTokenBalance.sub(tokenToBeDistributed) :
-  //     this.selectedLbp.projectTokenBalance;
-  // }
-
-  // async addWhitelist(): Promise<TransactionReceipt> {
-  //   const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedLbp.metadata.launchDetails.whitelist);
-  //   return await this.selectedLbp.addWhitelist(whitelistAddress);
-  // }
-
 
   async fund(): Promise<void> {
     const fundingAmounts = await this.selectedLbp.getTokenFundingAmounts();
@@ -120,3 +102,4 @@ export class LbpAdminDashboard {
     this.ethereumService.ensureConnected();
   }
 }
+

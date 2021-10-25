@@ -33,74 +33,20 @@
                 Fund LBP
               </div>
               <div class="featureDescription">
-                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}.
+                Note this will require your approval of three transactions.
               </div>
               <div class="button1 small" click.delegate="fund()">
                 Fund
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
+            <div class="featureContainer">
               <div class="featureTitle">
-                Add Whitelists
+                Remove Liquidity
               </div>
-              <div class="featureDescription">
-                Add addresses from the list that was supplied during registration
-              </div>
-              <div class="button1 small" click.delegate="addWhitelist()">
-                Add Whitelist
-              </div>
-            </div>
-            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
-              <div class="featureTitle">
-                Whitelist an account
-              </div>
-              <div class="featureDescription">
-                Add an account to the whitelist
-              </div>
-              <div class='inputWrapper'>
-                <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedLbp.addToWhitelist(addressToAdd)">
-                  Add to whitelist
-                </div>
-              </div>
-            </div>
-            <div class="featureContainer" if.bind="selectedLbp.whitelisted && !selectedLbp.isClosed">
-              <div class="featureTitle">
-                Unwhitelist an account
-              </div>
-              <div class="featureDescription">
-                Remove an account from the whitelist
-              </div>
-              <div class='inputWrapper'>
-                <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedLbp.removeFromWhitelist(addressToRemove)">
-                  Remove from whitelist
-                </div>
-              </div>
-            </div>
-            <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedLbp.isClosed || selectedLbp.maximumReached || selectedLbp.isDead)">
-              <div class="featureTitle">
-                Retrieve Project Tokens
-              </div>
-              <div class="featureDescription">
-                ${retrievableProjectTokenAmount | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> will be transferred to the address you provide below
-              </div>
-              <div class='inputWrapper'>
-                <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedLbp.retrieveProjectTokens(receiverAddress)">
-                  Retrieve Project Tokens
-                </div>
-              </div>
-            </div>
-            <div class="featureContainer" if.bind="selectedLbp.claimingIsOpen && selectedLbp.fundingTokenBalance != 0">
-              <div class="featureTitle">
-                Withdraw Funding Tokens
-              </div>
-              <div class="featureDescription">
-                ${selectedLbp.fundingTokenBalance | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
-              </div>
-              <div class="button1 small" click.delegate="selectedLbp.withdrawFundingTokens()">
-                Withdraw
+              <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
+              <div class="button1 small" click.delegate="selectedLbp.withdraw(receiverAddress)">
+                Remove Liquidity
               </div>
             </div>
             <div class="featureContainer">
@@ -108,13 +54,13 @@
                 Pause LBP
               </div>
               <div class="featureDescription">
-                Pausing will make LBP inactive. As the administrator, you will be able to unpause the LBP.
+                Pausing will make swapping LBP inactive. As the administrator, you will be able to unpause the LBP.
               </div>
-              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.pause()">
-                Pause
+              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+                Pause Swapping
               </div>
-              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.unPause()">
-                UnPause
+              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+                UnPause Swapping
               </div>
             </div>
           </div>

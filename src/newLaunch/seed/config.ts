@@ -10,10 +10,9 @@ import {
 
 export interface ISeedDetails extends ILaunchDetails {
   /**
-   * The price of one project token in units of funding tokens
-   * In wei.
+   * The price of one project token in units in eth (no precision).
    */
-  pricePerToken: string,
+  pricePerToken: number,
   /**
    * In wei
    */
@@ -43,7 +42,7 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
 
   clearState(): void {
     super.clearState();
-    this.launchDetails.pricePerToken = "";
+    this.launchDetails.pricePerToken = null;
     this.launchDetails.fundingTarget = "";
     this.launchDetails.fundingMax = "";
     this.launchDetails.vestingPeriod = null;

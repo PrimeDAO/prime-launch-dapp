@@ -2,7 +2,6 @@ import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
-import { throwIfEmpty } from "rxjs/operators";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
@@ -161,11 +160,16 @@ export class LbpManager implements ILaunch {
       this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
       this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
 
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
       if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
         throw new Error("project token info is not found or does not match the LbpManager contract");
       }
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+      /**
+       * TODO, set projectTokenInfo.price here, using fundingTokenInfo.price
+       */
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
@@ -249,6 +253,29 @@ export class LbpManager implements ILaunch {
       });
   }
 
+  async withdraw(receiver: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.removeLiquidity(receiver))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.setSwapEnabled(state))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrate();
+          return receipt;
+        }
+      });
+  }
+
   async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
     return {
       project: await this.contract.amounts(this.projectTokenIndex),
@@ -256,3 +283,4 @@ export class LbpManager implements ILaunch {
     };
   }
 }
+

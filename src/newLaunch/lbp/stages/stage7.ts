@@ -3,13 +3,13 @@ import { EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
 import { Router, RouteConfig, Redirect } from "aurelia-router";
-// import { LbpService } from "services/LbpService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
-// import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 import { TokenService } from "services/TokenService";
 import { LbpManagerService } from "services/LbpManagerService";
+import { toBigNumberJs } from "services/BigNumberService";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class Stage7 extends BaseStage<ILbpConfig> {
@@ -18,10 +18,10 @@ export class Stage7 extends BaseStage<ILbpConfig> {
     router: Router,
     eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     tokenService: TokenService,
     private numberService: NumberService) {
-    super(router, eventAggregator, tokenService);
+    super(router, ethereumService, eventAggregator, tokenService);
   }
 
   public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
@@ -39,13 +39,10 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   }
 
   attached(): void {
-    // this.launchConfig.launchDetails.fundingMax = toWei("100").toString();
-    // this.launchConfig.launchDetails.pricePerToken = toWei(".5").toString();
-    // this.launchConfig.tokenDetails.projectTokenInfo.symbol = "PRIME";
-    // const distributableSeeds = this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
-    //   / this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.launchConfig.launchDetails.fundingTokenInfo.decimals));
-    // this.wizardState.requiredLaunchFee = distributableSeeds * this.launchFee;
-    // this.wizardState.requiredSeedDeposit = distributableSeeds + this.wizardState.requiredLaunchFee;
+    this.wizardState.requiredProjectTokenDeposit = BigNumber.from(
+      toBigNumberJs(this.launchConfig.launchDetails.amountProjectToken).plus(toBigNumberJs(this.launchConfig.launchDetails.amountProjectToken)
+        .multipliedBy(LbpManagerService.lbpFee)).toString());
+    this.wizardState.requiredFundingTokenDeposit = BigNumber.from(this.launchConfig.launchDetails.amountFundingToken);
   }
 
   async submit(): Promise<void> {
