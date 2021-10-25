@@ -83,7 +83,9 @@
     border: 1px solid $Border01;
     color: $Neutral02;
   }
-
+  range-input {
+    display: grid;
+  }
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -193,6 +195,12 @@
 
   &.stage3,
   &.stage4 {
+    .flex1 {
+      flex: 1;
+    }
+    .flex2 {
+      flex: 2;
+    }
     .tickerContainer {
       display: flex;
       align-items: center;
@@ -703,6 +711,11 @@
   }
 
   &.stage8 {
+    .wrappedLink {
+      white-space: normal;
+      word-break: break-all;
+    }
+
     & .linksContainer {
       display: flex;
       flex-flow: column;

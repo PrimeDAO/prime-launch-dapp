@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="infoInput maxTarget">
-          <div>
+          <div class='flex1'>
             <label for="startDate">Start Date</label>
             <div class="vestingDates">
               <input
@@ -87,7 +87,7 @@
               <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
             </div>
           </div>
-          <div>
+          <div class='flex1'>
             <div class="labeledQuestion">
               <label for="startTime">Start Time (GMT)</label>
               <div class="questionMark">
@@ -104,7 +104,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div class='flex2'>
             <label for="startWeight">Start Weights</label>
             <range-input name="start-weight"
               funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
@@ -117,7 +117,7 @@
           </div>
         </div>
         <div class="infoInput maxTarget">
-          <div>
+          <div class='flex1'>
             <label for="endDate">End Date</label>
             <div class="vestingDates">
               <input
@@ -131,7 +131,7 @@
               <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
           </div>
-          <div>
+          <div class='flex1'>
             <div class="labeledQuestion">
               <label for="endTime">End Time (GMT)</label>
               <div class="questionMark">
@@ -148,7 +148,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div class='flex2'>
             <label for="endWeight">End Weights</label>
             <range-input name="end-weight"
               funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
