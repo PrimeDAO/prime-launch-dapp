@@ -21,6 +21,10 @@ $colours: (
 .tokenDistribution {
   .tokenDistributionHeading {
     margin: 0 0 36px;
+      
+    .heading {
+      margin-top: 0;
+    }
   }
 
   .container {
@@ -76,6 +80,6 @@ $colours: (
   }
 
   .emphasis {
-    font-weight: bold;
+    font-weight: 700;
   }
 }
