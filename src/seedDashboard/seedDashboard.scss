@@ -87,6 +87,7 @@
           img {
             @include tokenIcon;
             width: 28px;
+            height: 28px;
             border-radius: 14px;
             position: relative;
             top: 3px;
