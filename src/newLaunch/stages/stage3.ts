@@ -81,6 +81,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
   @computedFrom("launchConfig.tokenDetails.projectTokenInfo.address", "logoIsLoaded")
   get projectTokenInfoIsComplete(): boolean {
     return this.launchConfig.tokenDetails.projectTokenInfo.address &&
+      this.wizardState.stage3State.isValidTokenAddress &&
       !this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenInfo) &&
       this.logoIsLoaded;
   }
