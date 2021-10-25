@@ -64,7 +64,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     if (!this.projectTokenObserved) {
       this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails.projectTokenInfo, "address",
         () => {
-          this.launchConfig.launchDetails.amountProjectToken = null;
+          this.launchConfig.launchDetails.amountProjectToken = "";
         });
       this.projectTokenObserved = true;
     }
@@ -104,7 +104,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   tokenChanged(_value: string, _index: number): void {
-    this.launchConfig.launchDetails.amountFundingToken = null;
+    this.launchConfig.launchDetails.amountFundingToken = "";
   }
 
   handleStartWeightChange(event: Event): void {

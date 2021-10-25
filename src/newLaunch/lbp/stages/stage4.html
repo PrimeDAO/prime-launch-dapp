@@ -39,7 +39,7 @@
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
               decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.name"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
             </numeric-input>
             <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
@@ -48,8 +48,8 @@
               if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
               src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.tokenDetails.projectTokenInfo.name}
-              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+              ${launchConfig.tokenDetails.projectTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo.address"></tokenlabel>
             </div>
           </div>
           <div class="tokenAmountContainer">
@@ -58,7 +58,7 @@
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
               decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
+              disabled.bind="!launchConfig.launchDetails.fundingTokenInfo.address"
               placeholder="">
             </numeric-input>
             <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
@@ -67,8 +67,8 @@
               if.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI"
               src.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.launchDetails.fundingTokenInfo.name}
-              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel>
+              ${launchConfig.launchDetails.fundingTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo.address"></tokenlabel>
             </div>
           </div>
         </div>
