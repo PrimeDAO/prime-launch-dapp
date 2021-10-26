@@ -10,7 +10,7 @@
       $ <formatted-number thousands-separated value.bind="currentPrice"></formatted-number>
     </div>
     <div class="timeleft">
-      <time-left launch.to-view="lbpMgr"></time-left>
+      <time-left launch.to-view="lbpMgr" largest></time-left>
     </div>
     <div class="priceChange ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') }">
       <div class="sign">${fundingTokenTrendSign === '' ? '' : '$ '}${fundingTokenTrendSign}</div>
