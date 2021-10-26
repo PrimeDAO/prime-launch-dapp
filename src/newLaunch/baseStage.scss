@@ -215,6 +215,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    .button2 {
+        margin-left: 0;
+    }
+    input#admin {
+        margin-right: 5px;
+    }
   }
 
   &.stage3 {
@@ -734,6 +740,28 @@
   }
 }
 
+@media screen and (max-width: 1357px) {
+    .page.stageContainer.stage4 {
+        .adminInput {
+            .button2 {
+                margin-top: 15px;
+                width: 360px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .page.stageContainer.stage4 {
+        .adminInput {
+            .button2 {
+                margin-top: 0px;
+                width: 242.52px;
+            }
+        }
+    }
+}
+
 @media screen and (max-width: 782px) {
   .infoContainer {
     min-width: unset;
@@ -843,15 +871,10 @@
           }
         }
       }
-    }
-  }
-
-  .page.stageContainer {
-    &.stage4 {
       .adminInput {
         .button2 {
           margin-top: 15px;
-          width: 351px;
+          width: 360px;
         }
       }
     }
@@ -879,4 +902,3 @@
     }
   }
 }
-
