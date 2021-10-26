@@ -145,7 +145,7 @@ export class NumericInput {
   private keydown(e) {
     if (!this.isNavigationOrSelectionKey(e)) {
       // If it's not a number, prevent the keypress...
-      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+      if (isNaN(Number(e.key))) {
         e.preventDefault();
       }
     }
