@@ -4,7 +4,8 @@
   color: $Neutral02;
   transition: all 300ms;
   position: relative;
-  .selectedLabel, .menu {
+  .selectedLabel,
+  .menu {
     cursor: pointer;
     border-radius: 10px;
     border: 1px solid #403453;
@@ -22,6 +23,7 @@
     .itemContent {
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-right: 6px; // separate caret from text
     }
     i {
       transform: rotateX(0deg);
