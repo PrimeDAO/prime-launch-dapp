@@ -1,13 +1,13 @@
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 // import BigNumber from "bignumber.js";
-import BigNumber, { toBigNumberJs } from "services/BigNumberService";
+import BigNumberJs, { toBigNumberJs } from "services/BigNumberService";
 @autoinject
 export class LbpProjectTokenPriceService {
 
   constructor(
     private maxProjectTokenSupply: number,
-    private fundingTokenAmount: BigNumber,
+    private fundingTokenAmount: BigNumberJs,
     private startWeightProjectToken: number,
     private endWeightProjectToken: number,
     private pricePerFundingToken: number,
@@ -20,10 +20,10 @@ export class LbpProjectTokenPriceService {
   }
 
   getMarketCap(
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenInPool: BigNumberJs,
+    fundingTokenInPool: BigNumberJs,
     projectTokenWeight: number,
-  ): BigNumber {
+  ): BigNumberJs {
     if (projectTokenWeight >= 1) return undefined;
 
     const priceAtWeight =
@@ -37,15 +37,15 @@ export class LbpProjectTokenPriceService {
     const projectTokenMcap =
       priceAtWeight?.multipliedBy(this.maxProjectTokenSupply);
 
-    return projectTokenMcap.decimalPlaces(2, BigNumber.ROUND_DOWN);
+    return projectTokenMcap.decimalPlaces(2, BigNumberJs.ROUND_DOWN);
   }
 
   getPriceAtWeight(
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenInPool: BigNumberJs,
+    fundingTokenInPool: BigNumberJs,
     projectTokenWeight: number,
     pricePerFundingToken: number,
-  ): BigNumber {
+  ): BigNumberJs {
     if (projectTokenWeight >= 1) return undefined;
 
     const fundingTokenValue = fundingTokenInPool.multipliedBy(pricePerFundingToken);
@@ -61,8 +61,8 @@ export class LbpProjectTokenPriceService {
   }
 
   getInterpolatedPriceDataPoints(
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenInPool: BigNumberJs,
+    fundingTokenInPool: BigNumberJs,
     startTime: Date,
     endTime: Date,
   ): { prices, labels} {
@@ -150,7 +150,7 @@ export class LbpProjectTokenPriceService {
   }
 
   /* needs clarifications */
-  getFundsRaised(fundingTokenInPool: BigNumber): BigNumber {
+  getFundsRaised(fundingTokenInPool: BigNumberJs): BigNumberJs {
     return (
       (fundingTokenInPool.minus(this.fundingTokenAmount))
         .multipliedBy(this.pricePerFundingToken)
