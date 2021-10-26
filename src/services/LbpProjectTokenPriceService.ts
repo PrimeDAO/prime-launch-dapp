@@ -1,29 +1,30 @@
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
-// import BigNumber from "bignumber.js";
-import BigNumberJs, { toBigNumberJs } from "services/BigNumberService";
+import { BigNumber } from "ethers";
+import { toBigNumberJs } from "services/BigNumberService";
+import { fromWei } from "./EthereumService";
+
 @autoinject
 export class LbpProjectTokenPriceService {
 
   constructor(
-    private maxProjectTokenSupply: number,
-    private fundingTokenAmount: BigNumberJs,
-    private startWeightProjectToken: number,
-    private endWeightProjectToken: number,
-    private pricePerFundingToken: number,
+    private maxProjectTokenSupply: BigNumber,
+    private projectTokenDecimals: number,
+    private startWeightProjectToken: number, // 0 to 100
+    private endWeightProjectToken: number, // 0 to 100
+    private pricePerFundingToken: number, // from tokenService
   ) {
     this.maxProjectTokenSupply = maxProjectTokenSupply;
-    this.fundingTokenAmount = fundingTokenAmount;
     this.startWeightProjectToken = startWeightProjectToken;
     this.endWeightProjectToken = endWeightProjectToken;
     this.pricePerFundingToken = pricePerFundingToken;
   }
 
-  getMarketCap(
-    projectTokenInPool: BigNumberJs,
-    fundingTokenInPool: BigNumberJs,
+  public getMarketCap(
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
-  ): BigNumberJs {
+  ): number {
     if (projectTokenWeight >= 1) return undefined;
 
     const priceAtWeight =
@@ -34,35 +35,34 @@ export class LbpProjectTokenPriceService {
         this.pricePerFundingToken,
       );
 
-    const projectTokenMcap =
-      priceAtWeight?.multipliedBy(this.maxProjectTokenSupply);
+    const projectTokenMcap = (priceAtWeight * parseFloat(fromWei(this.maxProjectTokenSupply, this.projectTokenDecimals)));
 
-    return projectTokenMcap.decimalPlaces(2, BigNumberJs.ROUND_DOWN);
+    return projectTokenMcap;
   }
 
-  getPriceAtWeight(
-    projectTokenInPool: BigNumberJs,
-    fundingTokenInPool: BigNumberJs,
+  public getPriceAtWeight(
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     projectTokenWeight: number,
     pricePerFundingToken: number,
-  ): BigNumberJs {
+  ): number {
     if (projectTokenWeight >= 1) return undefined;
 
-    const fundingTokenValue = fundingTokenInPool.multipliedBy(pricePerFundingToken);
+    const fundingTokenValue = toBigNumberJs(fundingTokenInPool.toString()).multipliedBy(pricePerFundingToken);
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
     const projectTokenValue = toBigNumberJs(scalingFactor).multipliedBy(fundingTokenValue);
-    const pricePerProjectToken = projectTokenValue.dividedBy(projectTokenInPool);
+    const pricePerProjectToken = projectTokenValue.dividedBy(toBigNumberJs(projectTokenInPool));
 
-    return pricePerProjectToken;
+    return pricePerProjectToken.toNumber();
   }
 
-  roundedTime(time: Date): moment.Moment {
+  private roundedTime(time: Date): moment.Moment {
     return moment(time).startOf("hour");
   }
 
-  getInterpolatedPriceDataPoints(
-    projectTokenInPool: BigNumberJs,
-    fundingTokenInPool: BigNumberJs,
+  public getInterpolatedPriceDataPoints(
+    projectTokenInPool: BigNumber,
+    fundingTokenInPool: BigNumber,
     startTime: Date,
     endTime: Date,
   ): { prices, labels} {
@@ -77,7 +77,6 @@ export class LbpProjectTokenPriceService {
 
     const hoursPassedSinceStart = this.getHoursPassed(currentTime, roundedStartDate.toDate());
     const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
-
 
     let timeInterval: number;
     if (hoursLeft >= 24 * 20 /* days */) {
@@ -115,7 +114,7 @@ export class LbpProjectTokenPriceService {
     return { prices, labels };
   }
 
-  getProjectTokenWeightAtTime(
+  private getProjectTokenWeightAtTime(
     current: Date, start: Date, end: Date,
     startWeight: number = this.startWeightProjectToken,
     endWeight: number = this.endWeightProjectToken,
@@ -131,7 +130,7 @@ export class LbpProjectTokenPriceService {
     return startWeight - weightChange;
   }
 
-  getHoursPassed(currentTime: Date, startTime: Date): number {
+  private getHoursPassed(currentTime: Date, startTime: Date): number {
     const roundedCurrentTime = this.roundedTime(currentTime);
     const roundedStartTime = this.roundedTime(startTime);
 
@@ -149,11 +148,12 @@ export class LbpProjectTokenPriceService {
     }
   }
 
-  /* needs clarifications */
-  getFundsRaised(fundingTokenInPool: BigNumberJs): BigNumberJs {
-    return (
-      (fundingTokenInPool.minus(this.fundingTokenAmount))
-        .multipliedBy(this.pricePerFundingToken)
-    );
-  }
+  // /* needs clarifications */
+  // public getFundsRaised(fundingTokenInPool: BigNumber): BigNumber {
+  //   return toWei(
+  //     toBigNumberJs(
+  //       toBigNumberJs(fundingTokenInPool)
+  //         .minus(toBigNumberJs(this.fundingTokenAmount)),
+  //     ).multipliedBy(this.pricePerFundingToken).toString());
+  // }
 }
