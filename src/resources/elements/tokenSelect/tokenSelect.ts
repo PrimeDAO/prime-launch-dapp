@@ -11,6 +11,7 @@ export class TokenSelect {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenAddress?: Address;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenInfo: ITokenInfo;
   @bindable itemChanged: ({ value: string, index: number }) => void;
+  @bindable.booleanAttr symbolOnly = false;
   dropdown: HTMLElement;
   tokenInfos: Array<ITokenInfo>;
 

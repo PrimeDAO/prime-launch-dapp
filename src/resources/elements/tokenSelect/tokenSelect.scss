@@ -23,12 +23,19 @@
 
     img {
       @include tokenIcon;
-      position: relative;
-      top: 2px;
     }
 
-    > div:not(:last-child) {
+    > img:not(:last-child) {
       margin-right: 6px;
+    }
+
+    &.symbolOnly {
+      height: 38px;
+      img {
+        width: 26px;
+        height: 26px;
+        border-radius: 13px;
+      }
     }
   }
 }

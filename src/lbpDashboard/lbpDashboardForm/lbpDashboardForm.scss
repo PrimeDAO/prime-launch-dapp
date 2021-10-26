@@ -1,0 +1,14 @@
+@import "styles/styles.scss";
+
+.lbpDashboardForm {
+  .tokenSelect {
+    .tokenItem {
+      font-weight: 700;
+      color: $White;
+    }
+    .dropdown {
+      width: fit-content;
+      border: none;
+    }
+  }
+}
