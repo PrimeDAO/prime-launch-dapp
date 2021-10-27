@@ -54,19 +54,17 @@ export function configure(aurelia: Aurelia): void {
 
       await tokenService.initialize();
 
-      const seedService = aurelia.container.get(SeedService);
-
-      seedService.initialize();
-
-      const lbpService = aurelia.container.get(LbpManagerService);
-
-      lbpService.initialize();
+      const geoBlockService = aurelia.container.get(GeoBlockService);
+      await geoBlockService.initialize();
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
 
-      const geoBlockService = aurelia.container.get(GeoBlockService);
-      geoBlockService.initialize();
+      const seedService = aurelia.container.get(SeedService);
+      seedService.initialize();
+
+      const lbpService = aurelia.container.get(LbpManagerService);
+      lbpService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

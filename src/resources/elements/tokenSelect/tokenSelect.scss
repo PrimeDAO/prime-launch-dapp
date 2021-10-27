@@ -26,15 +26,15 @@
     }
 
     > img:not(:last-child) {
-      margin-right: 6px;
+      margin-right: 10px;
     }
 
     &.symbolOnly {
       height: 38px;
       img {
-        width: 26px;
-        height: 26px;
-        border-radius: 13px;
+        width: 36px;
+        height: 36px;
+        border-radius: 18px;
       }
     }
   }

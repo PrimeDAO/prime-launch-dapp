@@ -1,14 +1,64 @@
 @import "styles/styles.scss";
 
 .lbpDashboardForm {
-  .tokenSelect {
-    .tokenItem {
-      font-weight: 700;
-      color: $White;
+  background-color: $BG02;
+  border-radius: 8px;
+  padding: 28px;
+
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
+
+  .connect {
+    .description {
+      padding-top: 16px;
+      padding-bottom: 8px;
+      font-size: 22px;
     }
-    .dropdown {
-      width: fit-content;
-      border: none;
+    .subdescription {
+      padding-left: 0px;
+      padding-right: 29px;
+      padding-bottom: 16px;
+    }
+
+    .doit {
+    }
+  }
+
+  .theform {
+    .body {
+      .tokenSelect {
+        .tokenItem {
+          font-weight: 700;
+          font-family: Inter;
+          font-size: 18px;
+          color: $White;
+        }
+        .dropdown {
+          width: 140px;
+          display: inline-block;
+
+          .selectedLabel {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          .menu {
+            border-top-right-radius: 0;
+          }
+        }
+      }
+
+      .fundingAmount {
+        display: inline-block;
+        border: 1px solid $Border01;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        input {
+          border: none;
+        }
+      }
     }
   }
 }
