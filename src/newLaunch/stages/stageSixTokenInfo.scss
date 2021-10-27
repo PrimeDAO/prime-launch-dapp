@@ -3,9 +3,9 @@
   display: inline-grid;
   grid-template-columns: auto auto 1fr;
   grid-template-areas:
-    "logoURI name ticker"
-    ". decimals decimals"
-    ". address address";
+    "name logoURI ticker"
+    "decimals decimals ."
+    "address address .";
   width: fit-content;
   align-items: center;
 
