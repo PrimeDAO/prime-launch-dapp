@@ -125,8 +125,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           message = `Please enter the cliff for ${tokenDistrb.stakeHolder}`;
         } else if (!tokenDistrb.vest) {
           message = `Please enter the vesting period for ${tokenDistrb.stakeHolder}`;
-        } else if (tokenDistrb.vest<tokenDistrb.cliff) {
-          message = "The vesting period cannot be less than the cliff";
+        } else if (tokenDistrb.vest < tokenDistrb.cliff) {
+          message = `Please enter for ${tokenDistrb.stakeHolder} a cliff that is less than or equal to the vesting period`;
         } else {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
