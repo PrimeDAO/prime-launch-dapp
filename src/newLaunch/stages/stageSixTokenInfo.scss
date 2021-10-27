@@ -4,8 +4,8 @@
   grid-template-columns: auto auto 1fr;
   grid-template-areas:
     "name logoURI ticker"
-    "decimals decimals ."
-    "address address .";
+    "decimals decimals decimals"
+    "address address address";
   width: fit-content;
   align-items: center;
 
