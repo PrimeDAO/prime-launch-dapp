@@ -1,13 +1,12 @@
 @import "styles/styles.scss";
 
 .lbpDashboardForm {
-  background-color: $BG02;
-  border-radius: 8px;
-  padding: 28px;
+  // border-radius: 8px;
+  // padding: 28px;
 
-  &:not(:last-child) {
-    margin-bottom: 18px;
-  }
+  // &:not(:last-child) {
+  //   margin-bottom: 18px;
+  // }
 
   .connect {
     .description {
@@ -20,43 +19,76 @@
       padding-right: 29px;
       padding-bottom: 16px;
     }
-
-    .doit {
-    }
   }
 
   .theform {
     .body {
-      .tokenSelect {
-        .tokenItem {
-          font-weight: 700;
-          font-family: Inter;
-          font-size: 18px;
-          color: $White;
-        }
-        .dropdown {
-          width: 140px;
-          display: inline-block;
+      .section1,
+      .section3 {
+        border-radius: 8px;
+        padding: 10px;
+        background-color: $BG02;
+      }
 
-          .selectedLabel {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+      .section1 {
+        .tokenSelect {
+          .tokenItem {
+            font-weight: 700;
+            font-family: Inter;
+            font-size: 18px;
+            color: $White;
           }
+          .dropdown {
+            width: 140px;
+            display: inline-block;
 
-          .menu {
-            border-top-right-radius: 0;
+            .selectedLabel {
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+            }
+
+            .menu {
+              border-top-right-radius: 0;
+            }
+          }
+        }
+
+        .fundingAmount {
+          display: inline-block;
+          border: 1px solid $Border01;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+
+          input {
+            border: none;
           }
         }
       }
 
-      .fundingAmount {
-        display: inline-block;
-        border: 1px solid $Border01;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
+      .section2 {
+        .exchangeInfo {
+          font-size: 14px;
+        }
+      }
 
-        input {
-          border: none;
+      .section3 {
+        .projectTokenInfo {
+          img {
+            @include tokenIcon;
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+          }
+        }
+
+        .priceImpact {
+          font-size: 11px;
+        }
+      }
+
+      .submitButton {
+        button {
+          width: 100%;
         }
       }
     }

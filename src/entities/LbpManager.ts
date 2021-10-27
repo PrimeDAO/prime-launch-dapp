@@ -6,7 +6,7 @@ import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
+import { Address, EthereumService, Hash } from "services/EthereumService";
 import { IpfsService } from "services/IpfsService";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
@@ -50,7 +50,7 @@ export class LbpManager implements ILaunch {
   public isPaused: boolean;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
-  private userFundingTokenBalance: BigNumber;
+  // private userFundingTokenBalance: BigNumber;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -216,7 +216,7 @@ export class LbpManager implements ILaunch {
     this.userHydrated = false;
 
     if (account) {
-      this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
+      // this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
       this.userHydrated = true;
     }
   }

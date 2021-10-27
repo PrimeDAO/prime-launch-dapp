@@ -5,7 +5,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService, fromWei } from "services/EthereumService";
+import { EthereumService } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -18,6 +18,20 @@ export class lbpDashboardForm {
   tokenList: Array<string>;
   amountToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
+
+  // @computedFrom("")
+  get projectTokensToPurchase(): BigNumber {
+    return BigNumber.from(0);
+  }
+
+  // @computedFrom("")
+  get projectTokensPerFundingToken(): BigNumber {
+    return BigNumber.from(0);
+  }
+
+  get priceImpact(): number {
+    return 0;
+  }
 
   constructor(
     private eventAggregator: EventAggregator,
