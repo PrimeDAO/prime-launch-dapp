@@ -147,6 +147,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
       if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
         this.wizardState.stage3State.isValidTokenAddress = false;
+        this.launchConfig.tokenDetails.projectTokenInfo = { address: this.launchConfig.tokenDetails.projectTokenInfo.address } as unknown as ITokenInfo;
         this.setTokenStateMessage();
       } else {
         this.loadingToken = true;
