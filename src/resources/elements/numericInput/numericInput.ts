@@ -80,7 +80,7 @@ export class NumericInput {
 
   private valueChanged(newValue: string | BigNumber | number, oldValue: string | BigNumber | number ) {
     if ((newValue === undefined) || (newValue === null)) {
-      this._innerValue = this.defaultText || "";
+      this._innerValue = this.defaultText || undefined;
     } else if (newValue.toString() !== oldValue?.toString()) {
       try {
         let newStringValue: string;
@@ -96,7 +96,7 @@ export class NumericInput {
           this._innerValue = newStringValue;
         }
       } catch {
-        this.innerValue = "NaN";
+        this._innerValue = undefined;
       }
     }
   }
