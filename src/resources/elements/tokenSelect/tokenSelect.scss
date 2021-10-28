@@ -1,6 +1,8 @@
 @import "styles/styles.scss";
 
 .tokenSelect {
+  display: inline-block;
+
   .dropdown {
     width: 300px;
   }
@@ -30,7 +32,7 @@
     }
 
     &.symbolOnly {
-      height: 38px;
+      height: 48px;
       img {
         width: 36px;
         height: 36px;
