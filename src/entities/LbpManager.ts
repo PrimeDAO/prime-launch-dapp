@@ -2,7 +2,6 @@ import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
-import { throwIfEmpty } from "rxjs/operators";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
@@ -51,6 +50,7 @@ export class LbpManager implements ILaunch {
   public isPaused: boolean;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
+  // private userFundingTokenBalance: BigNumber;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -117,6 +117,11 @@ export class LbpManager implements ILaunch {
     }));
   }
 
+  public create(config: ILbpManagerConfiguration): LbpManager {
+    this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
+    return Object.assign(this, config);
+  }
+
   /**
    * note this is called when the contracts change
    * @param config
@@ -131,6 +136,11 @@ export class LbpManager implements ILaunch {
     this.hydrate();
   }
 
+  private disable():void {
+    this.corrupt = true;
+    this.subscriptions.dispose();
+  }
+
   private async loadContracts(): Promise<void> {
     try {
       this.contract = await this.contractsService.getContractAtAddress(ContractNames.LBPMANAGER, this.address);
@@ -140,7 +150,7 @@ export class LbpManager implements ILaunch {
       }
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.initializing = false;
       this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
     }
@@ -161,11 +171,16 @@ export class LbpManager implements ILaunch {
       this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
       this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
 
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
       if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
         throw new Error("project token info is not found or does not match the LbpManager contract");
       }
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+      /**
+       * TODO, set projectTokenInfo.price here, using fundingTokenInfo.price
+       */
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
@@ -179,7 +194,7 @@ export class LbpManager implements ILaunch {
       await this.hydrateUser();
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.consoleLogService.logMessage(`LbpManager: Error initializing lpbpmanager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
@@ -195,18 +210,13 @@ export class LbpManager implements ILaunch {
     return this.isPaused;
   }
 
-  public create(config: ILbpManagerConfiguration): LbpManager {
-    this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
-    return Object.assign(this, config);
-  }
-
-
   private async hydrateUser(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
 
     this.userHydrated = false;
 
     if (account) {
+      // this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
       this.userHydrated = true;
     }
   }
@@ -249,6 +259,29 @@ export class LbpManager implements ILaunch {
       });
   }
 
+  async withdraw(receiver: Address): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.removeLiquidity(receiver))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrateTokensState();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
+  async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
+    return this.transactionsService.send(
+      () => this.contract.setSwapEnabled(state))
+      .then(async receipt => {
+        if (receipt) {
+          this.hydrate();
+          return receipt;
+        }
+      });
+  }
+
   async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
     return {
       project: await this.contract.amounts(this.projectTokenIndex),
@@ -256,3 +289,4 @@ export class LbpManager implements ILaunch {
     };
   }
 }
+

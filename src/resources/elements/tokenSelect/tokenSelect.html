@@ -1,15 +1,17 @@
 <template>
-  <!-- selected-item-index is used only for assigning the initial value -->
-  <dropdown class="tokenSelect"
-    item-changed.call="setSelectedToken(value,index)"
-    selected-item-index.to-view="selectedTokenIndex"
-    placeholder.bind="!tokenInfos?'<span class=\'placeholder\'><i class=\'spinner fas fa-circle-notch fa-spin\'></i><span>Loading...</span></span>':'Select a token...'">
-    <div repeat.for="tokenInfo of tokenInfos">
-      <div class="tokenItem">
-        <div><img src.to-view="tokenInfo.logoURI"></img></div>
-        <div>${tokenInfo.name}</div>
-        <div>(${tokenInfo.symbol})</div>
+  <div class="tokenSelect">
+    <dropdown
+      item-changed.call="setSelectedToken(value,index)"
+      selected-item-index.to-view="selectedTokenIndex"
+      placeholder.bind="!tokenInfos?'<span class=\'placeholder\'><i class=\'spinner fas fa-circle-notch fa-spin\'></i><span>Loading...</span></span>':placeholder">
+      <div repeat.for="tokenInfo of tokenInfos">
+        <div class="tokenItem ${symbolOnly ? 'symbolOnly' : '' }">
+          <img src.to-view="tokenInfo.logoURI"></img>
+          <div if.bind="!symbolOnly">${tokenInfo.name}</div>
+          <div if.bind="!symbolOnly">(${tokenInfo.symbol})</div>
+          <div if.bind="symbolOnly">${tokenInfo.symbol}</div>
+        </div>
       </div>
-    </div>
+  </div>
   </dropdown>
 </template>

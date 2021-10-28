@@ -141,7 +141,7 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.pricePerToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.pricePerToken" />
             </div>
             <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>

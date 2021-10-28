@@ -40,17 +40,17 @@
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
               decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.name"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
+            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token in Stage 3 - Project Tokens</div>
             <img
               ref="logoIcon"
               if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
               src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.tokenDetails.projectTokenInfo.name}
-              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+              ${launchConfig.tokenDetails.projectTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo.address"></tokenlabel>
             </div>
           </div>
           <div class="tokenAmountContainer">
@@ -59,7 +59,7 @@
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
               decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
+              disabled.bind="!launchConfig.launchDetails.fundingTokenInfo.address"
               placeholder="">
             </numeric-input>
             <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
@@ -68,8 +68,8 @@
               if.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI"
               src.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.launchDetails.fundingTokenInfo.name}
-              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel>
+              ${launchConfig.launchDetails.fundingTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo.address"></tokenlabel>
             </div>
           </div>
         </div>
@@ -120,20 +120,28 @@
         </div>
         <div class="infoInput maxTarget">
           <div>
-            <label for="endDate">End Date</label>
-            <div class="vestingDates">
-              <input
-                id="endDate"
-                class="vestingDateInput"
-                value.bind="endDate | date"
-                placeholder="YYYY-MM-DD"
-                ref="endDateRef"
-                click.delegate="endDatePicker.show()"
-                autocomplete="off" disabled />
-              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+            <div class="labeledQuestion">
+              <label for="endDate">End Date</label>
+              <div class="questionMark">
+                <question-mark text="Please note that a Liquidity Bootstrapping Pool cannot last longer than 30 days"></question-mark>
+              </div>
             </div>
+            <div class="vestingDatesContainer">
+              <div class="vestingDates">
+                <input
+                  id="endDate"
+                  class="vestingDateInput"
+                  value.bind="endDate | date"
+                  placeholder="YYYY-MM-DD"
+                  ref="endDateRef"
+                  click.delegate="endDatePicker.show()"
+                  autocomplete="off" disabled />
+                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+              </div>
+            </div>
+            
           </div>
-          <div class="infoInput">
+          <div>
             <div class="labeledQuestion">
               <label for="endTime">End Time (GMT)</label>
               <div class="questionMark">

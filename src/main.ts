@@ -54,24 +54,22 @@ export function configure(aurelia: Aurelia): void {
 
       await tokenService.initialize();
 
-      const seedService = aurelia.container.get(SeedService);
-
-      seedService.initialize();
-
-      const lbpService = aurelia.container.get(LbpManagerService);
-
-      lbpService.initialize();
+      const geoBlockService = aurelia.container.get(GeoBlockService);
+      await geoBlockService.initialize();
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
 
-      const geoBlockService = aurelia.container.get(GeoBlockService);
-      geoBlockService.initialize();
+      const seedService = aurelia.container.get(SeedService);
+      seedService.initialize();
+
+      const lbpService = aurelia.container.get(LbpManagerService);
+      lbpService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
-      eventAggregator.publish("handleException", new EventConfigException("Sorry, couldn't connect to ethereum", ex));
-      alert(`Sorry, couldn't connect to ethereum: ${ex.message}`);
+      eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
+      alert(`Sorry, unable to initialize, possibly could not connect to ethereum: ${ex.message}`);
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });

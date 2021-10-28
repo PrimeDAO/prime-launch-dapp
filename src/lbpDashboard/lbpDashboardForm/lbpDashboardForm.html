@@ -1,0 +1,63 @@
+<template>
+  <div class="lbpDashboardForm">
+    <div class="heading heading3">Contribute</div>
+    <div if.to-view="!connected" class="connect">
+      <div class="description">Connect to your wallet</div>
+      <div class="subdescription">Connect your wallet to participate in the LBP by buying ${lbpManager.projectTokenInfo.symbol}</div>
+      <button class="button1" click.delegate="connect()">CONNECT</button>
+    </div>
+    <div else class="theform">
+      <div class="body">
+        <div class="section1">
+          <token-select
+            symbol-only
+            placeholder="Select..."
+            selected-token-info.bind="fundingTokenInfo"
+            token-addresses.to-view="tokenList"
+            item-changed.call="tokenChanged(value,index)">
+          </token-select>
+          <div class="fundingAmount">
+            <numeric-input
+              value.bind="amountToPay"
+              disabled.to-view="!lbpManager.isLive || !fundingTokenInfo.address"
+              value.bind="fundingTokenToPay"
+              decimals.bind="fundingTokenInfo.decimals"
+              placeholder="0.0"></numeric-input>
+            <div class="balance">Balance: <formatted-number
+                value.bind="fundingTokenBalance | ethwei:fundingTokenInfo.decimals"
+                default-text="N/A"
+                average></formatted-number>
+            </div>
+          </div>
+        </div>
+        <div if.bind="fundingTokenInfo" class="section2">
+          <div class="exchangeInfo">
+            <div class="arrow">&downarrow;</div>
+            <div class="text">
+              1 ${fundingTokenInfo.symbol} =
+              <formatted-number value.bind="projectTokensPerFundingToken | ethwei:lbpManager.projectTokenInfo.decimals"></formatted-number> =
+              <formatted-number value.bind="lbpManager.projectTokenInfo.price"></formatted-number> USD
+            </div>
+          </div>
+        </div>
+        <div class="section3">
+          <div class="projectTokenInfo">
+            <img src.bind="lbpManager.projectTokenInfo.logoURI" /> ${lbpManager.projectTokenInfo.symbol}
+          </div>
+          <div if.bind="fundingTokenInfo" class="purchaseInfo">
+            <div class="price">
+              <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6"></formatted-number>
+            </div>
+            <!-- <div class="priceImpact">Price impact: ${priceImpact}%</div> -->
+          </div>
+        </div>
+      </div>
+      <div class="submitButton">
+        <button class="button1" disabled.bind="!fundingTokenInfo.address || !amountToPay || amountToPay.lte(0)">Buy</button>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="powered">POWERED BY</div><img src="/Logo_Balancer.svg" />
+    </div>
+  </div>
+</template>

@@ -1,6 +1,8 @@
 @import "styles/styles.scss";
 
 .tokenSelect {
+  display: inline-block;
+
   .dropdown {
     width: 300px;
   }
@@ -23,12 +25,19 @@
 
     img {
       @include tokenIcon;
-      position: relative;
-      top: 2px;
     }
 
-    > div:not(:last-child) {
-      margin-right: 6px;
+    > img:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    &.symbolOnly {
+      height: 48px;
+      img {
+        width: 36px;
+        height: 36px;
+        border-radius: 18px;
+      }
     }
   }
 }

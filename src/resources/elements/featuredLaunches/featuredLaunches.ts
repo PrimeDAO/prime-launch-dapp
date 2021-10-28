@@ -35,7 +35,7 @@ export class FeaturedLaunches {
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
       .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
       .concat((this.lbpManagerService.lbpManagersArray as Array<ILaunch>)
-        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && lbpMgr.hasNotStarted; }))
+        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && !lbpMgr.isDead; }))
       .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
       .slice(0, 3)
     ;

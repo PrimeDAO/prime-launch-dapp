@@ -1,6 +1,5 @@
-import { toBigNumberJs } from "services/BigNumberService";
+import { ITokenInfo } from "./../services/TokenTypes";
 import { IpfsService } from "services/IpfsService";
-import { ITokenInfo } from "./../services/TokenService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
@@ -15,6 +14,7 @@ import TransactionsService, { TransactionReceipt } from "services/TransactionsSe
 import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
+import { toBigNumberJs } from "services/BigNumberService";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -48,7 +48,7 @@ export class Seed implements ILaunch {
   public isClosed: boolean;
   /**
    * The number of fundingTokens required to receive one projectToken,
-   * ie, the price of one project (seed) token in units of funding tokens.
+   * ie, the price of one project (seed) token in units of eth (no precision)
    */
   public fundingTokensPerProjectToken: number;
   /**
@@ -253,6 +253,11 @@ export class Seed implements ILaunch {
     this.hydrate();
   }
 
+  private disable():void {
+    this.corrupt = true;
+    this.subscriptions.dispose();
+  }
+
   private async loadContracts(): Promise<void> {
     try {
       this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
@@ -262,10 +267,23 @@ export class Seed implements ILaunch {
       }
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.initializing = false;
       this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     }
+  }
+
+  public static projectTokenPriceDecimals(
+    fundingTokenInfo: ITokenInfo,
+    projectTokenInfo: ITokenInfo): number {
+    return fundingTokenInfo.decimals - projectTokenInfo?.decimals + 18;
+  }
+
+  public projectTokenPriceInEth(
+    priceFromContract: BigNumber,
+    fundingTokenInfo: ITokenInfo,
+    projectTokenInfo: ITokenInfo): string {
+    return fromWei(priceFromContract, Seed.projectTokenPriceDecimals(fundingTokenInfo, projectTokenInfo));
   }
 
   private async hydrate(): Promise<void> {
@@ -288,7 +306,13 @@ export class Seed implements ILaunch {
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTime()).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.endTime()).toNumber());
-      this.fundingTokensPerProjectToken = this.numberService.fromString(fromWei(await this.contract.price(), this.fundingTokenInfo.decimals));
+
+      const price = this.projectTokenPriceInEth(
+        await this.contract.price(),
+        this.fundingTokenInfo,
+        this.projectTokenInfo);
+
+      this.fundingTokensPerProjectToken = this.numberService.fromString(price);
       /**
        * in units of fundingToken
        */
@@ -311,7 +335,7 @@ export class Seed implements ILaunch {
       await this.hydrateUser();
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;

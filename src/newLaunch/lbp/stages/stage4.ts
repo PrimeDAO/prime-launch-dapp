@@ -9,14 +9,13 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
-import { BigNumber } from "bignumber.js";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { BigNumber } from "ethers";
+import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ILbpConfig } from "newLaunch/lbp/config";
 
 import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
-import { toBigNumberJs } from "services/BigNumberService";
 import { ILaunchPreviewConfig } from "newLaunch/lbp/elements/launch-preview/launch-preview";
 
 @singleton(false)
@@ -51,7 +50,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
     private tokenListService: TokenListService,
@@ -59,7 +58,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private disclaimerService: DisclaimerService,
     private aureliaHelperService: AureliaHelperService,
   ) {
-    super(router, eventAggregator, tokenService);
+    super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
@@ -70,9 +69,9 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   attached(): void {
     if (!this.projectTokenObserved) {
-      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails.projectTokenInfo, "address",
+      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenInfo",
         () => {
-          this.launchConfig.launchDetails.amountProjectToken = null;
+          this.launchConfig.launchDetails.amountProjectToken = "";
         });
       this.projectTokenObserved = true;
     }
@@ -100,7 +99,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
-      if (process.env.NETWORK === "mainnet") {
+      if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
         this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
       } else {
@@ -116,7 +115,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   tokenChanged(_value: string, _index: number): void {
-    this.launchConfig.launchDetails.amountFundingToken = null;
+    this.launchConfig.launchDetails.amountFundingToken = "";
     this.updateValues();
   }
 
@@ -202,59 +201,51 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     } = this.launchConfig.launchDetails;
     const {maxSupply} = this.launchConfig.tokenDetails;
 
-    const lbpProjectTokenPriceService = new LbpProjectTokenPriceService(
-      parseFloat(maxSupply),
-      toBigNumberJs(amountFundingToken),
-      startWeight / 100,
-      endWeight / 100,
-      await fundingTokenInfo.price,
-    );
+    const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
 
     const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
-      toBigNumberJs(amountProjectToken),
-      toBigNumberJs(amountFundingToken),
+      BigNumber.from(maxSupply),
+      toWei(amountProjectToken),
+      toWei(amountFundingToken),
       startWeight / 100,
+      this.launchConfig.tokenDetails.projectTokenInfo.price,
     );
 
     const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
-      toBigNumberJs(amountProjectToken),
-      toBigNumberJs(amountFundingToken),
+      BigNumber.from(maxSupply),
+      toWei(amountProjectToken),
+      toWei(amountFundingToken),
       endWeight / 100,
+      this.launchConfig.tokenDetails.projectTokenInfo.price,
     );
 
     const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
-      toBigNumberJs(amountProjectToken ),
-      toBigNumberJs(amountFundingToken ),
+      toWei(amountProjectToken ),
+      toWei(amountFundingToken ),
       startWeight / 100,
       await fundingTokenInfo.price,
     );
 
     const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
-      toBigNumberJs(amountProjectToken ),
-      toBigNumberJs(amountFundingToken ),
+      toWei(amountProjectToken ),
+      toWei(amountFundingToken ),
       endWeight / 100,
       await fundingTokenInfo.price,
     );
 
+    console.log({marketCapLow});
+
     this.launchPreviewConfig = {
       marketCap: {
-        low: marketCapLow? fromWei(
-          marketCapLow.toString(),
-          this.launchConfig.launchDetails.fundingTokenInfo.decimals,
-        ): "-1",
-        high: marketCapHigh? fromWei(
-          marketCapHigh.toString(),
-          this.launchConfig.launchDetails.fundingTokenInfo.decimals,
-        ): "-1",
+        low: /* marketCapLow? marketCapLow.toString() :*/ "-1",
+        high: /* marketCapHigh? marketCapHigh.toString(): */"-1",
       },
       priceRange: {
-        low: priceRangeLow? priceRangeLow.decimalPlaces(2, BigNumber.ROUND_HALF_UP).toString(): "-1",
-        high: priceRangeHigh? priceRangeHigh.decimalPlaces(2, BigNumber.ROUND_HALF_UP).toString(): "-1",
+        low: priceRangeLow? priceRangeLow.toFixed(2): "-1",
+        high: priceRangeHigh? priceRangeHigh.toFixed(2): "-1",
       },
       duration: this.launchDuration,
     };
-    console.log("config: ", this.launchPreviewConfig);
-
   }
 
   async validateInputs(): Promise<string> {
@@ -271,7 +262,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       endTimes = this.endTime.split(":");
     }
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
-      message = "Please select a Project Token";
+      message = "Please select a Project Token in Stage 3 - Project Tokens";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
