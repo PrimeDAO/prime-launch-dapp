@@ -11,6 +11,8 @@ export class TokenSelect {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenAddress?: Address;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenInfo: ITokenInfo;
   @bindable itemChanged: ({ value: string, index: number }) => void;
+  @bindable.booleanAttr symbolOnly = false;
+  @bindable.string placeholder = "Select a token...";
   dropdown: HTMLElement;
   tokenInfos: Array<ITokenInfo>;
 
@@ -22,7 +24,10 @@ export class TokenSelect {
     this.selectedTokenInfo = this.tokenInfos[index];
     this.selectedTokenAddress = this.selectedTokenInfo?.address;
     if (this.itemChanged) {
-      this.itemChanged({value, index});
+      // give bindings a chance to propagate first
+      setTimeout(() => {
+        this.itemChanged({value, index});
+      }, 0);
     }
   }
 

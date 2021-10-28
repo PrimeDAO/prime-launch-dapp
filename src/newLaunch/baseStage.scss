@@ -205,6 +205,7 @@
         @include tokenIcon;
         border-radius: 12px;
         width: 24px;
+        height: 24px;
         position: relative;
         top: 1px;
       }
@@ -703,11 +704,11 @@
   }
 
   &.stage8 {
-    .wrappedLink{
+    .wrappedLink {
       white-space: normal;
       word-break: break-all;
     }
-    
+
     & .linksContainer {
       display: flex;
       flex-flow: column;

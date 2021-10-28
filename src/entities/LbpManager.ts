@@ -50,6 +50,7 @@ export class LbpManager implements ILaunch {
   public isPaused: boolean;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
+  // private userFundingTokenBalance: BigNumber;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -116,6 +117,11 @@ export class LbpManager implements ILaunch {
     }));
   }
 
+  public create(config: ILbpManagerConfiguration): LbpManager {
+    this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
+    return Object.assign(this, config);
+  }
+
   /**
    * note this is called when the contracts change
    * @param config
@@ -130,6 +136,11 @@ export class LbpManager implements ILaunch {
     this.hydrate();
   }
 
+  private disable():void {
+    this.corrupt = true;
+    this.subscriptions.dispose();
+  }
+
   private async loadContracts(): Promise<void> {
     try {
       this.contract = await this.contractsService.getContractAtAddress(ContractNames.LBPMANAGER, this.address);
@@ -139,7 +150,7 @@ export class LbpManager implements ILaunch {
       }
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.initializing = false;
       this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
     }
@@ -175,7 +186,7 @@ export class LbpManager implements ILaunch {
       await this.hydrateUser();
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.consoleLogService.logMessage(`LbpManager: Error initializing lpbpmanager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
@@ -191,18 +202,13 @@ export class LbpManager implements ILaunch {
     return this.isPaused;
   }
 
-  public create(config: ILbpManagerConfiguration): LbpManager {
-    this.initializedPromise = Utils.waitUntilTrue(() => !this.initializing, 9999999999);
-    return Object.assign(this, config);
-  }
-
-
   private async hydrateUser(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
 
     this.userHydrated = false;
 
     if (account) {
+      // this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
       this.userHydrated = true;
     }
   }

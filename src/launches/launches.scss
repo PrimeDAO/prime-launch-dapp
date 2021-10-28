@@ -27,18 +27,22 @@
         font-size: 16px;
 
         .row {
-          display: contents;
           cursor: default;
+          /**
+           * so the grid will be composed of the contents of the row element,
+           * not the row element itself.
+           */
+          display: contents;
 
           &:hover {
             text-decoration: none;
           }
 
-          .cell {
-            margin-bottom: 16px;
+          .cell.header {
+            padding: 10px 0;
           }
 
-          &.body .cell.hot {
+          &.body.hot {
             cursor: pointer;
           }
 
@@ -47,8 +51,11 @@
           }
 
           .cell {
-            padding: 10px 0;
-
+            &.body {
+              height: 74px;
+              display: flex;
+              align-items: center;
+            }
             /**
              * for when columns get scrunched together
              */
@@ -65,8 +72,11 @@
             }
 
             &.project {
-              overflow-x: hidden;
-              text-overflow: ellipsis;
+              .ellipsesContainer {
+                display: inline-block;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+              }
             }
 
             &.whitelist,
@@ -83,11 +93,16 @@
               img {
                 margin-right: 6px;
                 @include tokenIcon;
-                position: relative;
-                top: 4px;
               }
             }
 
+            &.starts {
+              .timeLeftContainer {
+                .body {
+                  font-family: Aeonik; // so will center properly and look consistent
+                }
+              }
+            }
             &.eslink {
               i {
                 cursor: pointer;
@@ -101,8 +116,6 @@
       .launchGrid {
         display: grid;
         grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr 0.5fr;
-        grid-template-rows: auto;
-        align-items: center;
 
         .row {
           &.header {
@@ -134,8 +147,15 @@
           }
 
           .cell {
-            padding: 2px 0;
             text-align: left !important;
+
+            &.header {
+              padding: 2px 0;
+            }
+
+            &.body {
+              height: 24px;
+            }
 
             &:not(:nth-of-type(n + 5)) {
               padding-right: 8px;
@@ -151,7 +171,7 @@
              * cells in first subrow of each row
              */
             &:nth-of-type(n):nth-of-type(-n + 4) {
-              padding-top: 12px;
+              padding-top: 20px;
               margin-bottom: 0;
             }
 
@@ -159,7 +179,7 @@
              * cells in second subrow of each row
              */
             &:nth-of-type(n + 5):nth-of-type(-n + 8) {
-              padding-bottom: 12px;
+              padding-bottom: 20px;
               color: $Neutral02;
 
               .etherscanlink .text,

@@ -36,25 +36,21 @@ export class FormattedNumber {
   }
 
   public valueChanged(): void {
-    if ((this.value === undefined) || (this.value === null)) {
+    if ((this.value === undefined) || (this.value === null) || ((typeof this.value === "string") && ((this.value as string)?.trim() === ""))) {
       this.text = this.defaultText;
       return;
     }
 
     this._value = this.value;
 
-    let text = null;
-
-    if ((this._value !== null) && (this._value !== undefined)) {
-      text = this.numberService.toString(Number(this._value),
-        {
-          // precision: this.precision,
-          average: this.average,
-          mantissa: this.mantissa,
-          thousandSeparated: this.thousandsSeparated,
-        },
-      );
-    }
+    const text = this.numberService.toString(Number(this._value),
+      {
+        // precision: this.precision,
+        average: this.average,
+        mantissa: this.mantissa,
+        thousandSeparated: this.thousandsSeparated,
+      },
+    );
 
     this.text = text ?? this.defaultText;
 

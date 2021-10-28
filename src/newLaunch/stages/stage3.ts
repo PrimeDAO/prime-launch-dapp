@@ -81,6 +81,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
   @computedFrom("launchConfig.tokenDetails.projectTokenInfo.address", "logoIsLoaded")
   get projectTokenInfoIsComplete(): boolean {
     return this.launchConfig.tokenDetails.projectTokenInfo.address &&
+      this.wizardState.stage3State.isValidTokenAddress &&
       !this.tokenIsMissingMetadata(this.launchConfig.tokenDetails.projectTokenInfo) &&
       this.logoIsLoaded;
   }
@@ -125,6 +126,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           message = `Please enter the cliff for ${tokenDistrb.stakeHolder}`;
         } else if (!tokenDistrb.vest) {
           message = `Please enter the vesting period for ${tokenDistrb.stakeHolder}`;
+        } else if (tokenDistrb.vest < tokenDistrb.cliff) {
+          message = `Please enter for ${tokenDistrb.stakeHolder} a cliff that is less than or equal to the vesting period`;
         } else {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
@@ -146,6 +149,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
       if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
         this.wizardState.stage3State.isValidTokenAddress = false;
+        this.launchConfig.tokenDetails.projectTokenInfo = { address: this.launchConfig.tokenDetails.projectTokenInfo.address } as unknown as ITokenInfo;
         this.setTokenStateMessage();
       } else {
         this.loadingToken = true;

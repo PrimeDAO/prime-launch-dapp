@@ -62,9 +62,9 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   attached(): void {
     if (!this.projectTokenObserved) {
-      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails.projectTokenInfo, "address",
+      this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenInfo",
         () => {
-          this.launchConfig.launchDetails.amountProjectToken = null;
+          this.launchConfig.launchDetails.amountProjectToken = "";
         });
       this.projectTokenObserved = true;
     }
@@ -88,7 +88,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
-      if (process.env.NETWORK === "mainnet") {
+      if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
         this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
       } else {
@@ -104,7 +104,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   tokenChanged(_value: string, _index: number): void {
-    this.launchConfig.launchDetails.amountFundingToken = null;
+    this.launchConfig.launchDetails.amountFundingToken = "";
   }
 
   handleStartWeightChange(event: Event): void {
@@ -181,7 +181,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       endTimes = this.endTime.split(":");
     }
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
-      message = "Please select a Project Token";
+      message = "Please select a Project Token in Stage 3 - Project Tokens";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
     } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
