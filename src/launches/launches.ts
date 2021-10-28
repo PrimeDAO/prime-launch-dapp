@@ -89,8 +89,8 @@ export class Launches {
     }
   }
 
-  gotoEtherscan(seed: Seed, event: Event): boolean {
-    Utils.goto(this.ethereumService.getEtherscanLink(seed.address));
+  gotoEtherscan(launch: ILaunch, event: Event): boolean {
+    Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
     event.stopPropagation();
     return false;
   }
