@@ -31,6 +31,6 @@ export class LbpConfig extends LaunchConfig implements ILaunchConfig {
     this.launchDetails.amountProjectToken = "";
     this.launchDetails.amountFundingToken = "";
     this.launchDetails.startWeight = 80;
-    this.launchDetails.endWeight = 80;
+    this.launchDetails.endWeight = 20;
   }
 }

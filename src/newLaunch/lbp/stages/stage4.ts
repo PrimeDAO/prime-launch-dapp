@@ -203,12 +203,14 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
     const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
 
+    console.log(maxSupply, amountProjectToken, amountFundingToken, startWeight, fundingTokenInfo.price);
+
     const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
       BigNumber.from(maxSupply),
       toWei(amountProjectToken),
       toWei(amountFundingToken),
       startWeight / 100,
-      this.launchConfig.tokenDetails.projectTokenInfo.price,
+      fundingTokenInfo.price,
     );
 
     const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
@@ -216,7 +218,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       toWei(amountProjectToken),
       toWei(amountFundingToken),
       endWeight / 100,
-      this.launchConfig.tokenDetails.projectTokenInfo.price,
+      fundingTokenInfo.price,
     );
 
     const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
@@ -233,12 +235,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       await fundingTokenInfo.price,
     );
 
-    console.log({marketCapLow});
-
     this.launchPreviewConfig = {
       marketCap: {
-        low: /* marketCapLow? marketCapLow.toString() :*/ "-1",
-        high: /* marketCapHigh? marketCapHigh.toString(): */"-1",
+        low: marketCapLow? marketCapLow.toString() : "-1",
+        high: marketCapHigh? marketCapHigh.toString(): "-1",
       },
       priceRange: {
         low: priceRangeLow? priceRangeLow.toFixed(2): "-1",
