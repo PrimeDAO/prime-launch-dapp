@@ -9,11 +9,14 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
-// import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { BigNumber } from "ethers";
+import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ILbpConfig } from "newLaunch/lbp/config";
+
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
+import { ILaunchPreviewConfig } from "newLaunch/lbp/elements/launch-preview/launch-preview";
 
 @singleton(false)
 @autoinject
@@ -39,6 +42,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   sliderStartWeights: HTMLInputElement;
   sliderEndWeights: HTMLInputElement;
   projectTokenObserved = false;
+
+  launchPreviewConfig: ILaunchPreviewConfig;
+
+  launchDuration = -1;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -75,6 +82,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
     this.startDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.startDate = date.toJSDate();
+      this.setLaunchDuration();
+      this.updateValues();
     });
 
     this.endDatePicker = new Litepicker({
@@ -84,6 +93,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
     this.endDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.endDate = date.toJSDate();
+      this.setLaunchDuration();
+      this.updateValues();
     });
 
     if (!this.tokenList) {
@@ -105,6 +116,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   tokenChanged(_value: string, _index: number): void {
     this.launchConfig.launchDetails.amountFundingToken = "";
+    this.updateValues();
   }
 
   handleStartWeightChange(event: Event): void {
@@ -117,21 +129,23 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       this.launchConfig.launchDetails.endWeight = value;
     }
     this.launchConfig.launchDetails.startWeight = value;
+    this.updateValues();
   }
 
   handleEndWeightChange(event: Event): void {
     // Controls that the end weight is always less then or equal
     // to the start weight
     const target = event.target as HTMLInputElement;
-    const value = parseInt(target.value);
 
-    if (value > this.launchConfig.launchDetails.startWeight) {
+    if (parseInt(target.value) > this.launchConfig.launchDetails.startWeight) {
       target.value = this.launchConfig.launchDetails.startWeight.toString();
     }
-    this.launchConfig.launchDetails.endWeight = value;
+    this.launchConfig.launchDetails.endWeight = parseInt(target.value);
+
+    this.updateValues();
   }
 
-  setlaunchConfigStartDate(): Date {
+  setLaunchConfigStartDate(): Date {
     // Set the ISO time
     // Get the start and end time
     const startTimes = this.startTime.split(":");
@@ -141,7 +155,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     return new Date(this.launchConfig.launchDetails.startDate);
   }
 
-  setlaunchConfigEndDate(): Date {
+  setLaunchConfigEndDate(): Date {
     // Set the ISO time
     // Get the start and end time
     const endTimes = this.endTime.split(":");
@@ -152,8 +166,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   persistData(): void {
-    this.setlaunchConfigStartDate();
-    this.setlaunchConfigEndDate();
+    this.setLaunchConfigStartDate();
+    this.setLaunchConfigEndDate();
     // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
@@ -165,6 +179,69 @@ export class Stage4 extends BaseStage<ILbpConfig> {
 
   makeMeAdmin() : void {
     this.launchConfig.launchDetails.adminAddress = this.ethereumService.defaultAccountAddress;
+  }
+
+  setLaunchDuration(): void {
+    if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) return;
+    this.launchDuration = (this.setLaunchConfigEndDate().getTime() - this.setLaunchConfigStartDate().getTime()) / 1000 / 60 / 60 / 24 || 0;
+  }
+
+  async updateValues(): Promise<void> {
+    const fundingTokenInfo = (this.launchConfig.launchDetails.fundingTokenInfo.address)?
+      await this.tokenService.getTokenInfoFromAddress(
+        this.launchConfig.launchDetails.fundingTokenInfo.address,
+      ):
+      {price: 0};
+
+    const {
+      amountProjectToken,
+      amountFundingToken,
+      startWeight,
+      endWeight,
+    } = this.launchConfig.launchDetails;
+    const {maxSupply} = this.launchConfig.tokenDetails;
+    const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
+    const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
+      BigNumber.from(maxSupply),
+      toWei(amountProjectToken),
+      toWei(amountFundingToken),
+      startWeight / 100,
+      fundingTokenInfo.price,
+    );
+
+    const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
+      BigNumber.from(maxSupply),
+      toWei(amountProjectToken),
+      toWei(amountFundingToken),
+      endWeight / 100,
+      fundingTokenInfo.price,
+    );
+
+    const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
+      toWei(amountProjectToken ),
+      toWei(amountFundingToken ),
+      startWeight / 100,
+      await fundingTokenInfo.price,
+    );
+
+    const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
+      toWei(amountProjectToken ),
+      toWei(amountFundingToken ),
+      endWeight / 100,
+      await fundingTokenInfo.price,
+    );
+
+    this.launchPreviewConfig = {
+      marketCap: {
+        low: marketCapLow? marketCapLow.toString() : "-1",
+        high: marketCapHigh? marketCapHigh.toString(): "-1",
+      },
+      priceRange: {
+        low: priceRangeLow? priceRangeLow.toFixed(2): "-1",
+        high: priceRangeHigh? priceRangeHigh.toFixed(2): "-1",
+      },
+      duration: this.launchDuration,
+    };
   }
 
   async validateInputs(): Promise<string> {
@@ -216,9 +293,9 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       message = "Please enter a valid value for End Time";
     } else if (this.launchConfig.launchDetails.endWeight > this.launchConfig.launchDetails.startWeight) {
       message = `The ${this.launchConfig.launchDetails.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
-    } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
+    } else if (this.setLaunchConfigEndDate() <= this.setLaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (this.setlaunchConfigEndDate().getTime() > this.setlaunchConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
+    } else if (this.setLaunchConfigEndDate().getTime() > this.setLaunchConfigStartDate().getTime() + 30 * 24 * 60 * 60 * 1000) {
       message = "Launch duration can not exceed 30 days";
     } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
@@ -230,5 +307,4 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     this.stageState.verified = !message;
     return Promise.resolve(message);
   }
-
 }
