@@ -1,11 +1,11 @@
 <template>
   <div class="launch-preview-container">
     <div class="header">
-      <h3>Launch Preview</h3>
+      <div class="heading heading3">Launch Preview</div>
     </div>
     <div class="info">
       <div class="market-cap">
-        <h1>Implied Market Cap</h1>
+        <div class="header">Implied Market Cap</div>
         <div>
           <span if.to-view="config.marketCap.low !== '-1'">
             $ <formatted-number
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="price-range">
-        <h1>Price Range</h1>
+        <div class="header">Price Range</div>
         <div>
           <span if.to-view="config.priceRange.low !== '-1'">
             $ <formatted-number
@@ -45,62 +45,16 @@
         </div>
       </div>
       <div class="duration">
-        <h1>Duration</h1>
-        <p if.bind="config.duration >= 0">
+        <div class="header">Duration</div>
+        <div class="container" if.bind="config.duration >= 0">
           ${ config.duration.toFixed(1) } days
-        </p>
-        <p else> -- </p>
+        </div>
+        <div class="container" else> -- </div>
       </div>
       <div class="fee">
-        <h1>Swap Fee</h1>
-        <p>${(fee * 100).toFixed(1)}%</p>
+        <div class="header">Swap Fee</div>
+        <div class="container">${(fee * 100).toFixed(1)}%</div>
       </div>
     </div>
   </div>
-  <!-- <div class="launch-preview-container">
-    <div class="header">
-      <h3>Launch Preview</h3>
-    </div>
-    <div class="info">
-      <div class="market-cap">
-        <h1>Implied Market Cap</h1>
-        <p>
-          <formatted-number  if.to-view="marketCapLow"
-            average 
-            value.to-view="marketCapLow">
-          </formatted-number>
-          &nbsp;-&nbsp;
-          <formatted-number  if.to-view="marketCapHigh"
-            average 
-            value.to-view="marketCapHigh">
-          </formatted-number>
-        </p>
-      </div>
-      <div class="price-range">
-        <h1>Price Range</h1>
-        <p>
-          <formatted-number if.to-view="priceRangeLow"
-            average 
-            value.to-view="priceRangeLow">
-          </formatted-number>
-          &nbsp;-&nbsp;
-          <formatted-number if.to-view="priceRangeHigh"
-            average 
-            value.to-view="priceRangeHigh">
-          </formatted-number>
-        </p>
-      </div>
-      <div class="duration">
-        <h1>Duration</h1>
-        <p if.bind="duration >= 0">
-          ${ duration.toFixed(1) } days
-        </p>
-        <p else> -- </p>
-      </div>
-      <div class="fee">
-        <h1>Swap Fee</h1>
-        <p>${(fee * 100).toFixed(1)}%</p>
-      </div>
-    </div>
-  </div> -->
 </template>

@@ -200,11 +200,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       endWeight,
     } = this.launchConfig.launchDetails;
     const {maxSupply} = this.launchConfig.tokenDetails;
-
     const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
-
-    console.log(maxSupply, amountProjectToken, amountFundingToken, startWeight, fundingTokenInfo.price);
-
     const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
       BigNumber.from(maxSupply),
       toWei(amountProjectToken),
