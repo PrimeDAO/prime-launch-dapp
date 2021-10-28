@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 import { BigNumber } from "ethers";
 import { toBigNumberJs } from "services/BigNumberService";
+import { fromWei } from "./EthereumService";
 
 @autoinject
 export class LbpProjectTokenPriceService {
@@ -57,12 +58,12 @@ export class LbpProjectTokenPriceService {
   }
 
   public getMarketCap(
+    projectTokenMaxSupply: BigNumber,
     projectTokenInPool: BigNumber,
     fundingTokenInPool: BigNumber,
-    maxProjectTokenSupply: BigNumber,
     projectTokenWeight: number,
     pricePerFundingToken: number,
-  ): BigNumber {
+  ): number {
     if (projectTokenWeight >= 1) return undefined;
 
     const priceAtWeight =
@@ -73,8 +74,7 @@ export class LbpProjectTokenPriceService {
         pricePerFundingToken,
       );
 
-    const projectTokenMcap = priceAtWeight.mul(maxProjectTokenSupply);
-
+    const projectTokenMcap = parseFloat(fromWei(projectTokenMaxSupply, "ether")) * priceAtWeight;
     return projectTokenMcap;
   }
 
@@ -83,34 +83,33 @@ export class LbpProjectTokenPriceService {
     fundingTokenInPool: BigNumber, // amount of funding tokens in the pool
     projectTokenWeight: number,
     pricePerFundingToken: number, // the current USD price of a funding token
-  ): BigNumber {
+  ): number {
     if (projectTokenWeight >= 1) return undefined;
 
     // this is the number of project tokens that can be purchased  with the current funding tokens in the pool
     // before accounting to the weight
     const fundingTokenValue = toBigNumberJs(fundingTokenInPool.toString()).multipliedBy(pricePerFundingToken);
+    // extract the project token weight from the total pool value
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
     // actual project token value
     const projectTokenValue = toBigNumberJs(scalingFactor).multipliedBy(fundingTokenValue);
     const pricePerProjectToken = projectTokenValue.dividedBy(toBigNumberJs(projectTokenInPool));
 
-    return BigNumber.from(pricePerProjectToken); // usd
+    return pricePerProjectToken.toNumber(); // usd
   }
 
   public getInterpolatedPriceDataPoints(
     projectTokenInPool: BigNumber,
     fundingTokenInPool: BigNumber,
-    startTime: Date,
-    endTime: Date,
-    startWeight: number,
-    endWeight: number,
+    time: { start: Date, end: Date },
+    weight: { start: number, end: number },
     pricePerFundingToken: number,
   ): { prices, labels} {
     const prices = [];
     const labels = [];
 
-    const roundedStartDate = this.roundedTime(startTime);
-    const roundedEndDate = this.roundedTime(endTime);
+    const roundedStartDate = this.roundedTime(time.start);
+    const roundedEndDate = this.roundedTime(time.end);
     const currentTime = this.roundedTime(new Date()).toDate();
 
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
@@ -119,16 +118,15 @@ export class LbpProjectTokenPriceService {
     const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
 
     const timeInterval = this.getInterval(hoursLeft);
+    const _time = moment(roundedStartDate.toDate());
 
-    const time = moment(roundedStartDate.toDate());
-
-    for (let hoursPassed = 0; hoursPassed <= hoursLeft; hoursPassed+=timeInterval) {
+    for (let hoursPassed = 0; hoursPassed <= hoursLeft; hoursPassed += timeInterval) {
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
-        time.toDate(),
+        _time.toDate(),
         roundedStartDate.toDate(),
         roundedEndDate.toDate(),
-        startWeight,
-        endWeight,
+        weight.start,
+        weight.end,
       );
 
       const currentProjectTokenPrice = this.getPriceAtWeight(
@@ -138,21 +136,25 @@ export class LbpProjectTokenPriceService {
         pricePerFundingToken,
       );
 
-      labels.push(time.startOf("hour"));
+      labels.push(_time.startOf("hour"));
       prices.push(currentProjectTokenPrice);
 
-      time.add(timeInterval, "hours");
+      _time.add(timeInterval, "hours");
     }
 
     return { prices, labels };
   }
 
-  /* needs clarifications */
-  // public getFundsRaised(fundingTokenInPool: BigNumber): BigNumber {
-  //   return toWei(
+  // public getFundsRaised(
+  //   initialFundingTokenAmount: BigNumber,
+  //   currentFundingTokenAmount: BigNumber, // TODO: Where does this value come from? (Contracts?, TheGraph?)
+  //   pricePerFundingToken: number,
+  // ): BigNumber {
+  //   return BigNumber.from(
   //     toBigNumberJs(
-  //       toBigNumberJs(fundingTokenInPool)
-  //         .minus(toBigNumberJs(this.fundingTokenAmount)),
-  //     ).multipliedBy(this.pricePerFundingToken).toString());
+  //       toBigNumberJs(initialFundingTokenAmount)
+  //         .minus(toBigNumberJs(currentFundingTokenAmount)),
+  //     ).multipliedBy(pricePerFundingToken).toString(),
+  //   );
   // }
 }
