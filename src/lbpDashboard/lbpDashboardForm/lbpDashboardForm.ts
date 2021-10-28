@@ -77,6 +77,7 @@ export class lbpDashboardForm {
   }
 
   async tokenChanged(): Promise<void> {
+    this.amountToPay = null;
     if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
       const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
       this.fundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
