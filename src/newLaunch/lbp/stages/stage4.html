@@ -1,4 +1,5 @@
 <template>
+  <require from="newLaunch/lbp/elements/launch-preview/launch-preview"></require>
   <require from="newLaunch/tokenLabel.html"></require>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
@@ -99,6 +100,7 @@
                 <input
                   id="startTime"
                   value.bind="startTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
@@ -151,6 +153,7 @@
                 <input
                   id="endTime"
                   value.bind="endTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
               </div>
@@ -169,12 +172,11 @@
           </div>
         </div>
 
-        <!-- TODO: Launch Preview -->
         <div class="infoInput launchPreview">
-          <h3>Launch Preview</h3>
-          <div class="previewBox">
-            launch preview
-          </div>
+          <launch-preview 
+            class="previewBox"
+            config.bind="launchPreviewConfig">
+          </launch-preview>
         </div>
 
         <div class="infoInput">

@@ -1,10 +1,8 @@
-import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 import { BigNumber } from "ethers";
 import { toBigNumberJs } from "services/BigNumberService";
 import { fromWei } from "./EthereumService";
 
-@autoinject
 export class LbpProjectTokenPriceService {
 
   private roundedTime(time: Date): moment.Moment {
