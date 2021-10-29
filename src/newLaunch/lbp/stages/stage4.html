@@ -114,6 +114,8 @@
               set-weight.bind="setlaunchConfigStartWeight"
               value.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
+              min="2"
+              max="98"
               ref="sliderStartWeights">
             </range-input>
           </div>
@@ -167,6 +169,8 @@
               value.bind="launchConfig.launchDetails.endWeight"
               max-allowed.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"
+              min="2"
+              max="98"
               ref="sliderEndWeights">
             </range-input>
           </div>

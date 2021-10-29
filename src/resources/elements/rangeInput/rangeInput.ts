@@ -11,6 +11,8 @@ export class RangeInput {
   @bindable.string private maxAllowed? = 100;
   @bindable.string private name;
   @bindable.number public value = this.maxAllowed || 50;
+  @bindable.number public min = 0;
+  @bindable.number public max = 100;
   @bindable.ref private rangeInput: HTMLInputElement;
   @bindable.string private fundingToken = "";
   @bindable.string private projectToken = "";
