@@ -864,3 +864,20 @@
     }
   }
 }
+
+@media (min-width: 240px) and (max-width: 690px) {
+  .distribRow {
+    position: relative;
+  }
+
+  .deleteLink {
+    position: absolute;
+    left: 4px;
+    top: 170px;
+    margin-top: 10px;
+  }
+  
+  .addLink {
+    margin-top: 50px;
+  }
+}
