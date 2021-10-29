@@ -30,12 +30,12 @@
             </div>
           </div>
         </div>
-        <div if.bind="fundingTokenInfo" class="section2">
+        <div if.bind="fundingTokenInfo.address" class="section2">
           <div class="exchangeInfo">
             <div class="arrow">&downarrow;</div>
             <div class="text">
               1 ${fundingTokenInfo.symbol} =
-              <formatted-number value.bind="projectTokensPerFundingToken | ethwei:lbpManager.projectTokenInfo.decimals"></formatted-number> =
+              <formatted-number value.bind="lbpManager.projectTokensPerFundingToken"></formatted-number> =
               <formatted-number value.bind="lbpManager.projectTokenInfo.price"></formatted-number> USD
             </div>
           </div>
@@ -44,7 +44,7 @@
           <div class="projectTokenInfo">
             <img src.bind="lbpManager.projectTokenInfo.logoURI" /> ${lbpManager.projectTokenInfo.symbol}
           </div>
-          <div if.bind="fundingTokenInfo" class="purchaseInfo">
+          <div class="purchaseInfo">
             <div class="price">
               <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6"></formatted-number>
             </div>
