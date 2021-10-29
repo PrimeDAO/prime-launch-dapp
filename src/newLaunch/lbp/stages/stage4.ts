@@ -113,6 +113,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       }
     }
 
+    this.updateValues();
   }
 
   tokenChanged(_value: string, _index: number): void {
@@ -185,6 +186,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   setLaunchDuration(): void {
     if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) return;
     this.launchDuration = (this.setLaunchConfigEndDate().getTime() - this.setLaunchConfigStartDate().getTime()) / 1000 / 60 / 60 / 24 || 0;
+    this.updateValues();
   }
 
   async updateValues(): Promise<void> {
