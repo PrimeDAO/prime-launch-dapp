@@ -15,6 +15,10 @@ import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 import { LbpManagerService } from "services/LbpManagerService";
+import { Seed } from "entities/Seed";
+import { LbpManager } from "entities/LbpManager";
+import { Lbp } from "entities/Lbp";
+import { Vault } from "entities/Vault";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -41,6 +45,14 @@ export function configure(aurelia: Aurelia): void {
   aurelia.start().then(async () => {
     aurelia.container.get(ConsoleLogService);
     try {
+    /**
+     * otherwise singleton is the default
+     */
+      aurelia.container.registerTransient(Seed);
+      aurelia.container.registerTransient(LbpManager);
+      aurelia.container.registerTransient(Lbp);
+      aurelia.container.registerTransient(Vault);
+
       const ethereumService = aurelia.container.get(EthereumService);
       ethereumService.initialize(
         process.env.NETWORK as AllowedNetworks ??

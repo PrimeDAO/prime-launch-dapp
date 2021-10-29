@@ -53,11 +53,6 @@ export class LbpManagerService {
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
   ) {
-    /**
-     * otherwise singleton is the default
-     */
-    this.container.registerTransient(LbpManager);
-
     this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
       this.lbpManagers.delete(lbpAddress);
     });
