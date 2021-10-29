@@ -291,7 +291,7 @@ export class LbpManager implements ILaunch {
     return this.lbp = await this.createLbp(await this.contract.lbp());
   }
 
-  fund(): Promise<TransactionReceipt> {
+  public fund(): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
@@ -307,7 +307,7 @@ export class LbpManager implements ILaunch {
       });
   }
 
-  async withdraw(receiver: Address): Promise<TransactionReceipt> {
+  public async withdraw(receiver: Address): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.removeLiquidity(receiver))
       .then(async receipt => {
@@ -319,7 +319,7 @@ export class LbpManager implements ILaunch {
       });
   }
 
-  async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
+  public async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
     return this.transactionsService.send(
       () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
@@ -330,7 +330,7 @@ export class LbpManager implements ILaunch {
       });
   }
 
-  async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
+  public async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
     return {
       project: await this.contract.amounts(this.projectTokenIndex),
       funding: await this.contract.amounts(this.fundingTokenIndex),
