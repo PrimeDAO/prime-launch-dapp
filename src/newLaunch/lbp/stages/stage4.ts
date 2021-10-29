@@ -278,7 +278,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       message = "Please select a Project Token in Stage 3 - Project Tokens";
     } else if (!(parseFloat(this.launchConfig.launchDetails.amountProjectToken) >= 0)) {
       message = `Please enter the amount of ${this.launchConfig.tokenDetails.projectTokenInfo.name}, you like to provide for launch`;
-    } else if (this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
+    } else if (this.launchConfig.tokenDetails.maxSupply && this.numberService.fromString(this.launchConfig.launchDetails.amountProjectToken) > this.numberService.fromString(this.launchConfig.tokenDetails.maxSupply)) {
       message = `"Project token amount" should not exceed the maximum supply of ${fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)} tokens`;
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenInfo.address)) {
       message = "Please select a Funding Token lbp";
