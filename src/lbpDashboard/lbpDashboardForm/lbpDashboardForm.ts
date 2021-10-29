@@ -23,7 +23,7 @@ export class lbpDashboardForm {
   @computedFrom("amountToPay", "lbpManager.projectTokensPerFundingToken")
   get projectTokensToPurchase(): BigNumber {
     if (this.amountToPay) {
-      const projectTokens = this.numberService.fromString(fromWei(this.amountToPay, this.lbpManager.projectTokenInfo.decimals).toString())
+      const projectTokens = this.numberService.fromString(fromWei(this.amountToPay, this.lbpManager.fundingTokenInfo.decimals).toString())
       * this.lbpManager.projectTokensPerFundingToken;
 
       return toWei(projectTokens, this.lbpManager.projectTokenInfo.decimals);
