@@ -865,19 +865,25 @@
   }
 }
 
-@media (min-width: 240px) and (max-width: 690px) {
+@media screen and (max-width: 690px) {
   .distribRow {
     position: relative;
+    margin-top: 25px;
   }
 
   .deleteLink {
     position: absolute;
     left: 4px;
-    top: 170px;
-    margin-top: 10px;
+    top: 85px;
   }
-  
+
   .addLink {
     margin-top: 50px;
+  }
+}
+
+@media screen and (max-width: 671px) {  
+  .deleteLink {
+    top: 170px;
   }
 }
