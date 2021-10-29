@@ -9,8 +9,7 @@ import { Utils } from "services/utils";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
-import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ILbpConfig } from "newLaunch/lbp/config";
@@ -75,6 +74,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
         });
       this.projectTokenObserved = true;
     }
+
     this.startDatePicker = new Litepicker({
       element: this.startDateRef,
       minDate: Date.now(),
@@ -112,6 +112,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
           ];
       }
     }
+
   }
 
   tokenChanged(_value: string, _index: number): void {
@@ -187,6 +188,11 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   }
 
   async updateValues(): Promise<void> {
+    if (
+      !this.launchConfig.launchDetails.fundingTokenInfo.address ||
+      !this.launchConfig.tokenDetails.projectTokenInfo.address
+    ) return;
+
     const fundingTokenInfo = (this.launchConfig.launchDetails.fundingTokenInfo.address)?
       await this.tokenService.getTokenInfoFromAddress(
         this.launchConfig.launchDetails.fundingTokenInfo.address,
@@ -194,39 +200,50 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       {price: 0};
 
     const {
-      amountProjectToken,
-      amountFundingToken,
       startWeight,
       endWeight,
     } = this.launchConfig.launchDetails;
-    const {maxSupply} = this.launchConfig.tokenDetails;
+
+    const maxSupplyInEth = parseFloat(fromWei(
+      this.launchConfig.tokenDetails.maxSupply || "-1",
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals,
+    ));
+    const amountProjectTokenInEth = parseFloat(fromWei(
+      this.launchConfig.launchDetails.amountProjectToken || "-1",
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals,
+    ));
+    const amountFundingTokenInEth = parseFloat(fromWei(
+      this.launchConfig.launchDetails.amountFundingToken || "-1",
+      this.launchConfig.launchDetails.fundingTokenInfo.decimals,
+    ));
+
     const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
     const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
-      BigNumber.from(maxSupply),
-      toWei(amountProjectToken),
-      toWei(amountFundingToken),
+      maxSupplyInEth,
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
       startWeight / 100,
       fundingTokenInfo.price,
     );
 
     const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
-      BigNumber.from(maxSupply),
-      toWei(amountProjectToken),
-      toWei(amountFundingToken),
+      maxSupplyInEth,
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
       endWeight / 100,
       fundingTokenInfo.price,
     );
 
     const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
-      toWei(amountProjectToken ),
-      toWei(amountFundingToken ),
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
       startWeight / 100,
       await fundingTokenInfo.price,
     );
 
     const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
-      toWei(amountProjectToken ),
-      toWei(amountFundingToken ),
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
       endWeight / 100,
       await fundingTokenInfo.price,
     );

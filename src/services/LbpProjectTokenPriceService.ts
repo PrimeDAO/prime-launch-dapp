@@ -1,7 +1,4 @@
 import * as moment from "moment-timezone";
-import { BigNumber } from "ethers";
-import { toBigNumberJs } from "services/BigNumberService";
-import { fromWei } from "./EthereumService";
 
 export class LbpProjectTokenPriceService {
 
@@ -66,35 +63,35 @@ export class LbpProjectTokenPriceService {
    * Project Token Price in terms of Funding Tokens (Ratio)
    * ```
    *
-   * @param projectTokenInPool Amount of project tokens in pool (In Wei).
-   * @param fundingTokenInPool Amount of funding tokens in pool (In Wei).
+   * @param projectTokenInPool Amount of project tokens in pool (In Units).
+   * @param fundingTokenInPool Amount of funding tokens in pool (In Units).
    * @param projectTokenWeight Current weight of the project token (Number 0 > n > 1).
    */
   public getProjectPriceRatio(
-    projectTokenInPool: BigNumber, // amount of project tokens in the pool
-    fundingTokenInPool: BigNumber, // amount of funding tokens in the pool
+    projectTokenInPool: number, // units of project tokens in the pool
+    fundingTokenInPool: number, // units of funding tokens in the pool
     projectTokenWeight: number,
   ): number {
-    const a = (toBigNumberJs(projectTokenInPool).dividedBy(toBigNumberJs(fundingTokenInPool))).toNumber();
+    const a = (projectTokenInPool) / (fundingTokenInPool);
     const b = (1 - projectTokenWeight) / projectTokenWeight;
     if (b === Infinity) return a;
 
-    return parseFloat(((a * b) ).toFixed(2));
+    return parseFloat((a * b).toFixed(2));
   }
 
   /**
    * Returns the Market Cap at a specific weight in USD.
    *
    * @param projectTokenMaxSupply Max supply of project tokens (BigNumber).
-   * @param projectTokenInPool Amount of project tokens in pool (In Wei).
-   * @param fundingTokenInPool Amount of funding tokens in pool (In Wei).
+   * @param projectTokenInPool Amount of project tokens in pool (In Units).
+   * @param fundingTokenInPool Amount of funding tokens in pool (In Units).
    * @param projectTokenWeight Current weight of the project token (Number 0 > n > 1).
    * @param pricePerFundingToken Current USD price of a funding token (Number).
    */
   public getMarketCap(
-    projectTokenMaxSupply: BigNumber,
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenMaxSupply: number,
+    projectTokenInPool: number,
+    fundingTokenInPool: number,
     projectTokenWeight: number,
     pricePerFundingToken: number,
   ): number {
@@ -108,50 +105,51 @@ export class LbpProjectTokenPriceService {
         pricePerFundingToken,
       );
 
-    const projectTokenMarketCap = parseFloat(fromWei(projectTokenMaxSupply, "ether")) * priceAtWeight;
-    return projectTokenMarketCap;
+    const projectTokenMarketCap = projectTokenMaxSupply * priceAtWeight;
+    return projectTokenMarketCap>= 0 ? projectTokenMarketCap : -1;
   }
 
   /**
    * Returns the project token price at a specific weight in USD.
    *
-   * @param projectTokenInPool Amount of project tokens in pool (In Wei).
-   * @param fundingTokenInPool Amount of funding tokens in pool (In Wei).
+   * @param projectTokenInPool Amount of project tokens in pool (In Units).
+   * @param fundingTokenInPool Amount of funding tokens in pool (In Units).
    * @param projectTokenWeight Current weight of the project token (Number 0 > n > 1).
    * @param pricePerFundingToken Current USD price of a funding token (Number).
    */
   public getPriceAtWeight(
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenInPool: number,
+    fundingTokenInPool: number,
     projectTokenWeight: number,
     pricePerFundingToken: number,
   ): number {
     if (projectTokenWeight >= 1) return undefined;
+    if (projectTokenInPool <= 0 || fundingTokenInPool <= 0) return undefined;
 
     // this is the number of project tokens that can be purchased  with the current funding tokens in the pool
     // before accounting to the weight
-    const fundingTokenValue = toBigNumberJs(fundingTokenInPool.toString()).multipliedBy(pricePerFundingToken);
+    const fundingTokenValue = fundingTokenInPool * pricePerFundingToken;
     // extract the project token weight from the total pool value
     const scalingFactor = projectTokenWeight / (1 - projectTokenWeight);
     // actual project token value
-    const projectTokenValue = toBigNumberJs(scalingFactor).multipliedBy(fundingTokenValue);
-    const pricePerProjectToken = projectTokenValue.dividedBy(toBigNumberJs(projectTokenInPool));
+    const projectTokenValue = scalingFactor * fundingTokenValue;
+    const pricePerProjectToken = projectTokenValue / projectTokenInPool;
 
-    return pricePerProjectToken.toNumber(); // usd
+    return pricePerProjectToken; // USD
   }
 
   /**
    * Returns an Array of predicted project token prices (USD) Cap at the specified time range.
    *
-   * @param projectTokenInPool Amount of project tokens in pool (In Wei).
-   * @param fundingTokenInPool Amount of funding tokens in pool (In Wei).
+   * @param projectTokenInPool Amount of project tokens in pool (In Units).
+   * @param fundingTokenInPool Amount of funding tokens in pool (In Units).
    * @param time The start and end date of the LBP {start: Date, end: Date}.
    * @param weight The start and end weight of the project token {start: (Number 0 > n > 1), end: (Number 0 > n > 1)}.
    * @param pricePerFundingToken Current USD price of a funding token (Number).
    */
   public getInterpolatedPriceDataPoints(
-    projectTokenInPool: BigNumber,
-    fundingTokenInPool: BigNumber,
+    projectTokenInPool: number,
+    fundingTokenInPool: number,
     time: { start: Date, end: Date },
     weight: { start: number, end: number },
     pricePerFundingToken: number,

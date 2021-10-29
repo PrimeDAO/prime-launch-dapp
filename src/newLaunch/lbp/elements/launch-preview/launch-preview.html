@@ -14,7 +14,7 @@
               value.to-view="config.marketCap.low">
             </formatted-number>
           </span>
-          <span else>Infinite</span>
+          <span else>--</span>
           &nbsp;-&nbsp;
           <span if.to-view="config.marketCap.high !== '-1'">
             $ <formatted-number
@@ -23,7 +23,7 @@
               value.to-view="config.marketCap.high">
             </formatted-number>
           </span>
-          <span else>Infinite</span>
+          <span else>--</span>
         </div>
       </div>
       <div class="price-range">
@@ -34,14 +34,14 @@
               value.to-view="config.priceRange.low">
             </formatted-number>
           </span>
-          <span else>Infinite</span>
+          <span else>--</span>
           &nbsp;-&nbsp;
           <span  if.to-view="config.priceRange.high !== '-1'">
             $ <formatted-number
               value.to-view="config.priceRange.high">
             </formatted-number>
           </span>
-          <span else>Infinite</span>
+          <span else>--</span>
         </div>
       </div>
       <div class="duration">
