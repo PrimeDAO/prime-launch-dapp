@@ -39,7 +39,6 @@
               output-as-string="true"
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
-              keyup.delegate="updateValues()"
               decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
               disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
@@ -59,7 +58,6 @@
               output-as-string="true"
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
-              keyup.delegate="updateValues()"
               decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
               disabled.bind="!launchConfig.launchDetails.fundingTokenInfo.address"
               placeholder="">
