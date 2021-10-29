@@ -1,0 +1,60 @@
+<template>
+  <div class="launch-preview-container">
+    <div class="header">
+      <div class="heading heading3">Launch Preview</div>
+    </div>
+    <div class="info">
+      <div class="market-cap">
+        <div class="header">Implied Market Cap</div>
+        <div>
+          <span if.to-view="config.marketCap.low !== '-1'">
+            $ <formatted-number
+              mantissa="1"
+              average 
+              value.to-view="config.marketCap.low">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+          &nbsp;-&nbsp;
+          <span if.to-view="config.marketCap.high !== '-1'">
+            $ <formatted-number
+              mantissa="1"
+              average
+              value.to-view="config.marketCap.high">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+        </div>
+      </div>
+      <div class="price-range">
+        <div class="header">Price Range</div>
+        <div>
+          <span if.to-view="config.priceRange.low !== '-1'">
+            $ <formatted-number
+              value.to-view="config.priceRange.low">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+          &nbsp;-&nbsp;
+          <span  if.to-view="config.priceRange.high !== '-1'">
+            $ <formatted-number
+              value.to-view="config.priceRange.high">
+            </formatted-number>
+          </span>
+          <span else>Infinite</span>
+        </div>
+      </div>
+      <div class="duration">
+        <div class="header">Duration</div>
+        <div class="container" if.bind="config.duration >= 0">
+          ${ config.duration.toFixed(1) } days
+        </div>
+        <div class="container" else> -- </div>
+      </div>
+      <div class="fee">
+        <div class="header">Swap Fee</div>
+        <div class="container">${(fee * 100).toFixed(1)}%</div>
+      </div>
+    </div>
+  </div>
+</template>
