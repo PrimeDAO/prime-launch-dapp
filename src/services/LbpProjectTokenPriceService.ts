@@ -76,7 +76,7 @@ export class LbpProjectTokenPriceService {
     const b = (1 - projectTokenWeight) / projectTokenWeight;
     if (b === Infinity) return a;
 
-    return parseFloat((a * b).toFixed(2));
+    return a * b;
   }
 
   /**
