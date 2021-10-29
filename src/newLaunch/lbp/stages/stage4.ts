@@ -72,6 +72,15 @@ export class Stage4 extends BaseStage<ILbpConfig> {
         () => {
           this.launchConfig.launchDetails.amountProjectToken = "";
         });
+
+      this.keepUpdated(this.launchConfig.launchDetails, "amountProjectToken");
+      this.keepUpdated(this.launchConfig.launchDetails, "amountFundingToken");
+      this.keepUpdated(this.launchConfig.launchDetails, "startDate");
+      this.keepUpdated(this.launchConfig.launchDetails, "endDate");
+      this.keepUpdated(this.launchConfig.launchDetails, "startWeight");
+      this.keepUpdated(this.launchConfig.launchDetails, "endWeight");
+      this.keepUpdated(this.launchConfig.tokenDetails, "maxSupply");
+
       this.projectTokenObserved = true;
     }
 
@@ -113,11 +122,15 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       }
     }
 
+    this.updateValues();
+  }
+
+  private keepUpdated(object, property): void {
+    this.aureliaHelperService.createPropertyWatch(object, property, this.updateValues.bind(this));
   }
 
   tokenChanged(_value: string, _index: number): void {
     this.launchConfig.launchDetails.amountFundingToken = "";
-    this.updateValues();
   }
 
   handleStartWeightChange(event: Event): void {
@@ -130,7 +143,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       this.launchConfig.launchDetails.endWeight = value;
     }
     this.launchConfig.launchDetails.startWeight = value;
-    this.updateValues();
   }
 
   handleEndWeightChange(event: Event): void {
@@ -142,8 +154,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       target.value = this.launchConfig.launchDetails.startWeight.toString();
     }
     this.launchConfig.launchDetails.endWeight = parseInt(target.value);
-
-    this.updateValues();
   }
 
   setLaunchConfigStartDate(): Date {
@@ -185,6 +195,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   setLaunchDuration(): void {
     if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) return;
     this.launchDuration = (this.setLaunchConfigEndDate().getTime() - this.setLaunchConfigStartDate().getTime()) / 1000 / 60 / 60 / 24 || 0;
+    this.updateValues();
   }
 
   async updateValues(): Promise<void> {
@@ -192,12 +203,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       !this.launchConfig.launchDetails.fundingTokenInfo.address ||
       !this.launchConfig.tokenDetails.projectTokenInfo.address
     ) return;
-
-    const fundingTokenInfo = (this.launchConfig.launchDetails.fundingTokenInfo.address)?
-      await this.tokenService.getTokenInfoFromAddress(
-        this.launchConfig.launchDetails.fundingTokenInfo.address,
-      ):
-      {price: 0};
 
     const {
       startWeight,
@@ -223,7 +228,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       startWeight / 100,
-      fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
@@ -231,21 +236,21 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       endWeight / 100,
-      fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       startWeight / 100,
-      await fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       endWeight / 100,
-      await fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     this.launchPreviewConfig = {

@@ -84,6 +84,7 @@
             &.type,
             &.eslink {
               text-align: center;
+              justify-content: center;
             }
 
             &.projectToken,
@@ -161,9 +162,16 @@
               padding-right: 8px;
             }
 
+            &.starts {
+              text-align: left !important;
+              justify-content: left;
+            }
+
+            &.type,
             &.whitelist,
             &.eslink {
               text-align: center !important;
+              justify-content: center;
               padding-right: 0;
             }
 

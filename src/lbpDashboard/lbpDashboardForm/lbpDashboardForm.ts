@@ -1,3 +1,4 @@
+import { NumberService } from "./../../services/NumberService";
 import { ITokenInfo } from "./../../services/TokenTypes";
 import { computedFrom, customElement } from "aurelia-framework";
 import { LbpManager } from "./../../entities/LbpManager";
@@ -5,7 +6,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -19,14 +20,16 @@ export class lbpDashboardForm {
   amountToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
 
-  // @computedFrom("")
+  @computedFrom("amountToPay", "lbpManager.projectTokensPerFundingToken")
   get projectTokensToPurchase(): BigNumber {
-    return BigNumber.from(0);
-  }
+    if (this.amountToPay) {
+      const projectTokens = this.numberService.fromString(fromWei(this.amountToPay, this.lbpManager.projectTokenInfo.decimals).toString())
+      * this.lbpManager.projectTokensPerFundingToken;
 
-  // @computedFrom("")
-  get projectTokensPerFundingToken(): BigNumber {
-    return BigNumber.from(0);
+      return toWei(projectTokens, this.lbpManager.projectTokenInfo.decimals);
+    } else {
+      return BigNumber.from(0);
+    }
   }
 
   get priceImpact(): number {
@@ -38,6 +41,7 @@ export class lbpDashboardForm {
     private tokenService: TokenService,
     private ethereumService: EthereumService,
     private tokenListService: TokenListService,
+    private numberService: NumberService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();

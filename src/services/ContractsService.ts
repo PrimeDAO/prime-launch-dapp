@@ -7,6 +7,8 @@ import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvide
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
   LBPMANAGER = "LBPManager"
+  , LBP = "LiquidityBootstrappingPool"
+  , VAULT = "Vault"
   , SEEDFACTORY = "SeedFactory"
   , SEED = "Seed"
   // , WETH = "WETH"
