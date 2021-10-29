@@ -204,12 +204,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       !this.launchConfig.tokenDetails.projectTokenInfo.address
     ) return;
 
-    const fundingTokenInfo = (this.launchConfig.launchDetails.fundingTokenInfo.address)?
-      await this.tokenService.getTokenInfoFromAddress(
-        this.launchConfig.launchDetails.fundingTokenInfo.address,
-      ):
-      {price: 0};
-
     const {
       startWeight,
       endWeight,
@@ -234,7 +228,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       startWeight / 100,
-      fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
@@ -242,21 +236,21 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       endWeight / 100,
-      fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       startWeight / 100,
-      await fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       endWeight / 100,
-      await fundingTokenInfo.price,
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
     this.launchPreviewConfig = {
