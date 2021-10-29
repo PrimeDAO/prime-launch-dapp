@@ -209,6 +209,11 @@
         top: 1px;
       }
     }
+    .adminInputContainer {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
     .button2 {
         margin-left: 0;
     }
@@ -722,32 +727,8 @@
   }
 }
 
-@media screen and (max-width: 1451px) {
-  .stage4 {
-    .button2 {
-      margin-top: 15px;
-      width: fit-content;
-    }
-  }
-}
 
-@media screen and (max-width: 1300px) {
-  .stage4 {
-    .button2 {
-      margin-top: 0px;
-    }
-  }
-}
-
-@media screen and (max-width: 794px) {
-  .stage4 {
-    .button2 {
-      margin-top: 15px;
-    }
-  }
-}
-
-@media screen and (max-width: 782px) {
+@media screen and (max-width: 790px) {
   .infoContainer {
     min-width: unset;
     .infoInput {
@@ -856,6 +837,13 @@
           }
         }
       }
+      .adminInputContainer {
+        &>input#admin {
+          width:90%;
+          margin-bottom: 8px;
+        }
+      }
+
       .button2 {
         margin-top: 7px;
       }
