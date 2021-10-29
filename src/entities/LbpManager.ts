@@ -8,7 +8,7 @@ import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { Address, EthereumService, Hash } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
 import { IpfsService } from "services/IpfsService";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
@@ -117,6 +117,7 @@ export class LbpManager implements ILaunch {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private priceService: LbpProjectTokenPriceService,
+    private numberService: NumberService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: { now: Date }) => {
       this._now = state.now;
@@ -274,8 +275,8 @@ export class LbpManager implements ILaunch {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
-        this.projectTokenBalance,
-        this.fundingTokenBalance,
+        this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
         this.lbp.projectTokenWeight,
       );
       this.projectTokensPerFundingToken = 1.0 / this.fundingTokensPerProjectToken;
