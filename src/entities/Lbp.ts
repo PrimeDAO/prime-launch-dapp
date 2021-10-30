@@ -44,7 +44,6 @@ export class Lbp {
     if (address) {
       const vault = this.container.get(Vault);
       return vault.initialize(
-        address,
         this.poolId,
         this.projectTokenIndex,
         this.fundingTokenIndex);
@@ -55,6 +54,7 @@ export class Lbp {
 
   public async hydrate(): Promise<void> {
     this.poolId = await this.contract.getPoolId();
+    console.log(`hydrading pool id: ${this.poolId}`);
     this.vault = await this.createVault(await this.contract.getVault());
     const weights = await this.contract.getNormalizedWeights();
     this.projectTokenWeight = this.numberService.fromString(fromWei(weights[this.projectTokenIndex]));

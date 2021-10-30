@@ -6,11 +6,12 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService, fromWei } from "services/EthereumService";
+import { EthereumService } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
+import { SwapInfo } from "@balancer-labs/sor";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -18,9 +19,10 @@ export class lbpDashboardForm {
   fundingTokenInfo: ITokenInfo = {} as unknown as ITokenInfo;
   fundingTokenBalance: BigNumber;
   tokenList: Array<string>;
-  @observable fundingTokenToPay: BigNumber;
+  @observable fundingTokensToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
+  sorSwapInfo: SwapInfo;
 
   // @computedFrom("amountToPay", "lbpManager.projectTokensPerFundingToken")
   // get projectTokensToPurchase(): BigNumber {
@@ -83,7 +85,7 @@ export class lbpDashboardForm {
   }
 
   async tokenChanged(): Promise<void> {
-    this.fundingTokenToPay = null;
+    this.fundingTokensToPay = null;
     if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
       const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
       this.fundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
@@ -93,13 +95,23 @@ export class lbpDashboardForm {
   }
 
   async getProjectTokensToPurchase(): Promise<void> {
-    if (this.fundingTokenToPay?.gt(0)) {
+    if (this.fundingTokensToPay?.gt(0)) {
       try {
-        this.projectTokensToPurchase =
-        await this.lbpManager.lbp.vault.simulateSwap(
-          this.fundingTokenToPay,
-          this.fundingTokenInfo.address,
-          this.lbpManager.projectTokenInfo.address);
+        if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+          // this.sorSwapInfo =
+          //   await this.lbpManager.lbp.vault.getSwapFromSor(
+          //     this.fundingTokensToPay,
+          //     this.fundingTokenInfo,
+          //     this.lbpManager.projectTokenInfo) as SwapInfo;
+          // this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+        } else {
+          this.projectTokensToPurchase =
+            await this.lbpManager.lbp.vault.swap(
+              this.fundingTokensToPay,
+              this.fundingTokenInfo.address,
+              this.lbpManager.projectTokenInfo.address,
+              true) as BigNumber;
+        }
       } catch (ex) {
         this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
       }
@@ -108,7 +120,7 @@ export class lbpDashboardForm {
     }
   }
 
-  private fundingTokenToPayChanged(): void {
+  private fundingTokensToPayChanged(): void {
     this.getProjectTokensToPurchase();
   }
 
@@ -117,21 +129,21 @@ export class lbpDashboardForm {
     //   return;
     // }
 
-    // if (!this.fundingTokenToPay?.gt(0)) {
+    // if (!this.fundingTokensToPay?.gt(0)) {
     //   this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute`);
-    // } else if (this.lbpManager.userFundingTokenBalance.lt(this.fundingTokenToPay)) {
+    // } else if (this.lbpManager.userFundingTokenBalance.lt(this.fundingTokensToPay)) {
     //   this.eventAggregator.publish("handleValidationError", `Your ${this.lbpManager.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
-    // } else if (this.fundingTokenToPay.add(this.lbpManager.amountRaised).gt(this.lbpManager.cap)) {
+    // } else if (this.fundingTokensToPay.add(this.lbpManager.amountRaised).gt(this.lbpManager.cap)) {
     //   this.eventAggregator.publish("handleValidationError", `The amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);
     // } else if (this.lockRequired) {
     //   this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the Seed contract`);
     // } else if (await this.disclaimSeed()) {
-    //   this.lbpManager.swap(this.fundingTokenToPay)
+    //   this.lbpManager.swap(this.fundingTokensToPay)
     //     .then(async (receipt) => {
     //       if (receipt) {
     //         await this.hydrateUserData();
-    //         this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.lbpManager.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.lbpManager.fundingTokenInfo.symbol} to ${this.lbpManager.metadata.general.projectName}!`);
-    //         this.fundingTokenToPay = null;
+    //         this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.lbpManager.fundingTokenInfo.symbol} to ${this.lbpManager.metadata.general.projectName}!`);
+    //         this.fundingTokensToPay = null;
     //       }
     //     });
     // }
