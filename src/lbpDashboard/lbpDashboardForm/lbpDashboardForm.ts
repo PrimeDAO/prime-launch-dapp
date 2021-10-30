@@ -6,7 +6,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -105,12 +105,20 @@ export class lbpDashboardForm {
           //     this.lbpManager.projectTokenInfo) as SwapInfo;
           // this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
         } else {
-          this.projectTokensToPurchase =
-            await this.lbpManager.lbp.vault.swap(
-              this.fundingTokensToPay,
-              this.fundingTokenInfo.address,
-              this.lbpManager.projectTokenInfo.address,
-              true) as BigNumber;
+          if (this.fundingTokensToPay?.gt(0)) {
+            const projectTokens = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals).toString())
+              * this.lbpManager.projectTokensPerFundingToken;
+            this.projectTokensToPurchase = toWei(projectTokens, this.lbpManager.projectTokenInfo.decimals);
+          } else {
+            this.projectTokensToPurchase = BigNumber.from(0);
+          }
+          // this won't work without creating an allowance on the fundingToken
+          // this.projectTokensToPurchase =
+          //   await this.lbpManager.lbp.vault.swap(
+          //     this.fundingTokensToPay,
+          //     this.fundingTokenInfo.address,
+          //     this.lbpManager.projectTokenInfo.address,
+          //     true) as BigNumber;
         }
       } catch (ex) {
         this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
