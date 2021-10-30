@@ -19,6 +19,7 @@ import { Seed } from "entities/Seed";
 import { LbpManager } from "entities/LbpManager";
 import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
+import { LbpService } from "services/LbpService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -75,8 +76,11 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
       seedService.initialize();
 
-      const lbpService = aurelia.container.get(LbpManagerService);
+      const lbpService = aurelia.container.get(LbpService);
       lbpService.initialize();
+
+      const lbpManagerService = aurelia.container.get(LbpManagerService);
+      lbpManagerService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

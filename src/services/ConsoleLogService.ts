@@ -56,7 +56,7 @@ export class ConsoleLogService {
     let ex;
     if (!(config instanceof EventConfigException)) {
       ex = config as any;
-      message = `${ex?.message ? ex.message : ex}`;
+      message = `${ex.error?.message ?? ex?.reason ?? ex?.message ?? ex}`;
     } else {
       config = config as EventConfigException;
       ex = config.exception;

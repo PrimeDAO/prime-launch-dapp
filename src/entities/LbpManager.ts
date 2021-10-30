@@ -336,5 +336,16 @@ export class LbpManager implements ILaunch {
       funding: await this.contract.amounts(this.fundingTokenIndex),
     };
   }
+
+  public swap() {
+    // return this.transactionsService.send(
+    //   () => this.lbp.swap())
+    //   .then(async receipt => {
+    //     if (receipt) {
+    //       this.hydrate();
+    //       return receipt;
+    //     }
+    //   });
+  }
 }
 
