@@ -209,15 +209,15 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       endWeight,
     } = this.launchConfig.launchDetails;
 
-    const maxSupplyInEth = parseFloat(fromWei(
+    const maxSupplyInEth = this.numberService.fromString(fromWei(
       this.launchConfig.tokenDetails.maxSupply || "-1",
       this.launchConfig.tokenDetails.projectTokenInfo.decimals,
     ));
-    const amountProjectTokenInEth = parseFloat(fromWei(
+    const amountProjectTokenInEth = this.numberService.fromString(fromWei(
       this.launchConfig.launchDetails.amountProjectToken || "-1",
       this.launchConfig.tokenDetails.projectTokenInfo.decimals,
     ));
-    const amountFundingTokenInEth = parseFloat(fromWei(
+    const amountFundingTokenInEth = this.numberService.fromString(fromWei(
       this.launchConfig.launchDetails.amountFundingToken || "-1",
       this.launchConfig.launchDetails.fundingTokenInfo.decimals,
     ));
