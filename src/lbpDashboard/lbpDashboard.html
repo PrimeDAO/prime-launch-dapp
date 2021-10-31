@@ -1,10 +1,10 @@
 <template>
+  <require from="./projectTokenInfo/projectTokenInfo"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
         <div class="leftSection">
-          <project-token-info token-info.bind='lbpMgr'>
-          </project-token-info>
+          <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
         </div>
         <div class="rightSection">
           <div class="timeRemaining label">TIME REMAINING</div>

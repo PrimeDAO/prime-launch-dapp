@@ -1,0 +1,17 @@
+<template>
+  <div if.bind="lbpMgr" class="projectTokenInfo">
+    <img class="logo" src="${lbpMgr.projectTokenInfo.logoURI}" />
+    <div class="details">
+      <span class="name">${lbpMgr.projectTokenInfo.name} </span>
+      <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
+    </div>
+    <div class="priceValue decreased">
+      <formatted-number value.bind="lbpMgr.projectFundingToken.price"></formatted-number>
+    </div>
+    <div class="timeleft">
+      <time-left launch.to-view="lbpMgr"></time-left>
+    </div>
+    <div class="priceChange decreased">-0.12 (4.20%)</div>
+  </div>
+  <div else>No project token data available.</div>
+</template>

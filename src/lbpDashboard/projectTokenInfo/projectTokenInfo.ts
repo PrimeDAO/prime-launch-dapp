@@ -3,6 +3,6 @@ import { LbpManager } from "entities/LbpManager";
 import "./projectTokenInfo.scss";
 
 export class ProjectTokenInfo {
-  @bindable tokenInfo: LbpManager;
+  @bindable lbpMgr: LbpManager;
 }
 
