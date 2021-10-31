@@ -59,8 +59,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
         this.next();
       }
     } catch (ex) {
-      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex),
-      );
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     } finally {
       this.eventAggregator.publish("launch.creating", false);
     }

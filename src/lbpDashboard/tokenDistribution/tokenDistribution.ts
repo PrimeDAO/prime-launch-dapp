@@ -1,10 +1,10 @@
-import { ITokenDetails } from "../../../newLaunch/launchConfig";
+import { ITokenDetails } from "newLaunch/launchConfig";
 import { bindable } from "aurelia-framework";
 import "./tokenDistribution.scss";
 import * as moment from "moment";
 
 export class TokenDistribution {
-  @bindable data: Omit<ITokenDetails, "projectTokenInfo"> = null;
+  @bindable tokenDetails: Pick<ITokenDetails, "tokenDistrib" | "maxSupply"> = null;
   @bindable startDate: Date = null;
 
   private percentageHeld(total: string, part: string): number {

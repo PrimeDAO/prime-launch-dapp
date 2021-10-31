@@ -1,6 +1,7 @@
 <template>
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
+  <require from="./tokenDistribution/tokenDistribution"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
@@ -26,7 +27,7 @@
         <div class="about">
           <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
         </div>
-        <token-distribution start-date.bind='lbpManager.startDate' data.bind='lbpManager.tokenDetails'></token-distribution>
+        <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>
       </div>
     </div>
   </div>
