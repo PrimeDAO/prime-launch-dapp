@@ -64,7 +64,6 @@ export class Vault {
     this.contract = await this.contractsService.getContractAtAddress(ContractNames.VAULT, Vault.VaultAddress);
   }
 
-
   public async swap(
     amountToPay: BigNumber,
     fundingTokenAddress: Address,

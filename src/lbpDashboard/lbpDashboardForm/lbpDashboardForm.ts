@@ -146,7 +146,12 @@ export class lbpDashboardForm {
     // } else if (this.lockRequired) {
     //   this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the Seed contract`);
     // } else if (await this.disclaimSeed()) {
-    //   this.lbpManager.swap(this.fundingTokensToPay)
+
+    //   await this.lbpManager.lbp.vault.swap(
+    //     this.fundingTokensToPay,
+    //     this.fundingTokenInfo.address,
+    //     this.lbpManager.projectTokenInfo.address) as BigNumber;
+
     //     .then(async (receipt) => {
     //       if (receipt) {
     //         await this.hydrateUserData();
