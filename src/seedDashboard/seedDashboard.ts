@@ -146,7 +146,6 @@ export class SeedDashboard {
       }
       this.seed = seed;
       this.geoBlocked = this.geoBlocked && this.seed.metadata.launchDetails.geoBlock;
-
       await this.hydrateUserData();
 
       //this.disclaimSeed();

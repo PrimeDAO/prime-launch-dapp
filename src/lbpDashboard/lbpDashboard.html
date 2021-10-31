@@ -1,6 +1,7 @@
 <template>
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
+  <require from="./tokenDistribution/tokenDistribution"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
@@ -26,19 +27,7 @@
         <div class="about">
           <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
         </div>
-        <div class="tokenDistribution">
-          <div class="title heading heading3">Token Distribution</div>
-          <div class="piechart">piechart</div>
-          <div class="breakdown">
-            <div class="category">
-              <div class="name">square 20% - Team</div>
-              <div class="locked">lock 3 years locked</div>
-            </div>
-            <div class="category">
-              <div class="name">square 15% - Foundation</div>
-            </div>
-          </div>
-        </div>
+        <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>
       </div>
     </div>
   </div>

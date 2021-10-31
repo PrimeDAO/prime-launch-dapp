@@ -50,7 +50,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
       this.eventAggregator.publish("launch.creating", true);
       this.wizardState.launchHash = await this.lbpManagerService.deployLpbManager(this.launchConfig);
       if (this.wizardState.launchHash) {
-      // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
+        // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
         this.launchConfig.clearState();
         for (let i = 1; i <= this.maxStage; ++i) {
           this.stageStates[i].verified = false;
@@ -60,14 +60,15 @@ export class Stage7 extends BaseStage<ILbpConfig> {
       }
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-    }
-    finally {
+    } finally {
       this.eventAggregator.publish("launch.creating", false);
     }
   }
 
   @computedFrom("ethereumService.defaultAccountAddress")
-  get connected(): boolean { return !!this.ethereumService.defaultAccountAddress;}
+  get connected(): boolean {
+    return !!this.ethereumService.defaultAccountAddress;
+  }
 
   connect(): void {
     this.ethereumService.ensureConnected();
