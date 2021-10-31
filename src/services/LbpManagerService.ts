@@ -14,6 +14,7 @@ import { ContractNames, ContractsService, IStandardEvent } from "services/Contra
 import { EventConfigException } from "services/GeneralEvents";
 import { Utils } from "services/utils";
 import { api } from "services/GnosisService";
+import { TransactionReceipt } from "@ethersproject/providers";
 
 export interface ILBPManagerDeployedEventArgs {
   lbpManager: Address;
@@ -144,6 +145,8 @@ export class LbpManagerService {
 
   public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
 
+    const isKovan = this.ethereumService.targetedNetwork === Networks.Kovan;
+
     const lbpConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
@@ -156,15 +159,9 @@ export class LbpManagerService {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
-    const transaction = {
-      to: lbpManagerFactory.address,
-      value: 0,
-      operation: 0,
-    } as any;
-
     const lbpArguments = [
       config.launchDetails.adminAddress,
-      safeAddress,
+      isKovan ? "0x1234" : safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
@@ -175,6 +172,18 @@ export class LbpManagerService {
       [toWei(LbpManagerService.lbpSwapFee), toWei(LbpManagerService.lbpFee)],
       Utils.asciiToHex(metaDataHash),
     ];
+
+
+    if (this.ethereumService.targetedNetwork === Networks.Kovan) {
+      await this.deployLbpManagerDirectly(lbpArguments);
+      return metaDataHash;
+    }
+
+    const transaction = {
+      to: lbpManagerFactory.address,
+      value: 0,
+      operation: 0,
+    } as any;
 
     transaction.data = (await lbpManagerFactory.populateTransaction.deployLBPManager(...lbpArguments)).data;
 
@@ -245,4 +254,10 @@ export class LbpManagerService {
     return metaDataHash;
   }
 
+  private async deployLbpManagerDirectly(callParams: Array<any>): Promise<TransactionReceipt> {
+
+    const factory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
+
+    return factory.deployLbp(...callParams);
+  }
 }
