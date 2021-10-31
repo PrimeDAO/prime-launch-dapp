@@ -81,7 +81,6 @@ export class lbpDashboard {
         await lbpmgr.ensureInitialized();
       }
       this.lbpMgr = lbpmgr;
-
       await this.hydrateUserData();
 
       //this.disclaimSeed();

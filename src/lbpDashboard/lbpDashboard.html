@@ -1,21 +1,11 @@
 <template>
-  <require from="./lbpDashboardForm/lbpDashboardForm">
-  </require>
+  <require from="./projectTokenInfo/projectTokenInfo"></require>
+  <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
         <div class="leftSection">
-          <div class="tokenId">
-            <div class="icon"><img src.to-view="lbpMgr.projectTokenInfo.logoURI"></img></div>
-            <div class="name">${lbpMgr.projectTokenInfo.name}</div>
-            <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
-          </div>
-          <div class="ratingInfo"></div>
-          <div class="projectTokenPrice">caret $ 3.14</div>
-          <div class="statusInfo">
-            <time-left launch.to-view="lbpMgr"></time-left>
-          </div>
-          <div class="projectTokenPriceChange">-0.12 (4.20%)</div>
+          <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
         </div>
         <div class="rightSection">
           <div class="timeRemaining label">TIME REMAINING</div>
