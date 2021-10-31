@@ -30,6 +30,7 @@
       margin-bottom: 16px;
       display: flex;
       align-items: baseline;
+      flex: 1 170px;
 
       &:hover {
         text-decoration: none;
@@ -115,8 +116,7 @@
     }
 
     .links {
-      margin: 0 10%;
-      flex-direction: column;
+      margin: 0 10% 30px;
 
       a {
         justify-content: center;
@@ -138,7 +138,7 @@
   }
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 571px) {
   .launchAbout {
     .links {
       a {

@@ -75,7 +75,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
-      if (process.env.NETWORK === "mainnet") {
+      if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
         this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
       } else {

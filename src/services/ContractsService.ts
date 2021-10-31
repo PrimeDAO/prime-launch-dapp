@@ -1,3 +1,4 @@
+import { Vault } from "entities/Vault";
 import { BigNumber, Contract, ethers, Signer } from "ethers";
 import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -7,6 +8,8 @@ import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvide
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
   LBPMANAGER = "LBPManager"
+  , LBP = "LiquidityBootstrappingPool"
+  , VAULT = "Vault"
   , SEEDFACTORY = "SeedFactory"
   , SEED = "Seed"
   // , WETH = "WETH"
@@ -31,6 +34,7 @@ export class ContractsService {
   private static Contracts = new Map<ContractNames, Contract>([
     [ContractNames.LBPMANAGERFACTORY, null]
     , [ContractNames.LBPMANAGER, null]
+    // , [ContractNames.VAULT, null]
     , [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]

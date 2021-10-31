@@ -25,8 +25,8 @@ export interface ILBPManagerDeployedEventArgs {
 export class LbpManagerService {
 
   public lbpManagers: Map<Address, LbpManager>;
-  public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
-  public static lbpSwapFee = .1; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
+  public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.01 to represent 1%
+  public static lbpSwapFee = .01; // If the value is ever > 0, then should be a fraction like 0.01 to represent 1%
 
   @computedFrom("lbps.size")
   public get lbpManagersArray(): Array<LbpManager> {
@@ -53,11 +53,6 @@ export class LbpManagerService {
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
   ) {
-    /**
-     * otherwise singleton is the default
-     */
-    this.container.registerTransient(LbpManager);
-
     this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
       this.lbpManagers.delete(lbpAddress);
     });

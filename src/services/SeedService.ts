@@ -57,11 +57,6 @@ export class SeedService {
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
   ) {
-    /**
-     * otherwise singleton is the default
-     */
-    this.container.registerTransient(Seed);
-
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds.delete(seedAddress);
     });

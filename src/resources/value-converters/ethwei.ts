@@ -25,7 +25,7 @@ export class EthweiValueConverter {
    *   "ether",
    */
   public fromView(ethValue: string | number, unitName: string | BigNumberish = 18): BigNumber {
-    if ((ethValue === undefined) || (ethValue === null)) {
+    if ((ethValue === undefined) || (ethValue === null) || ((typeof ethValue === "string") && ((ethValue as string)?.trim() === ""))) {
       return null;
     }
 

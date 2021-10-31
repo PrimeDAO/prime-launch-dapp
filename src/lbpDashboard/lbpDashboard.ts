@@ -71,16 +71,16 @@ export class lbpDashboard {
         waiting = true;
         await this.lbpManagerService.ensureInitialized();
       }
-      const seed = this.lbpManagerService.lbpManagers.get(this.address);
-      if (seed.initializing) {
+      const lbpmgr = this.lbpManagerService.lbpManagers.get(this.address);
+      if (lbpmgr.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("launches.loading", true);
           waiting = true;
         }
-        await seed.ensureInitialized();
+        await lbpmgr.ensureInitialized();
       }
-      this.lbpMgr = seed;
+      this.lbpMgr = lbpmgr;
       await this.hydrateUserData();
 
       //this.disclaimSeed();
@@ -97,8 +97,8 @@ export class lbpDashboard {
   }
 
   async hydrateUserData(): Promise<void> {
-    // if (this.ethereumService.defaultAccountAddress) {
-    // }
+    if (this.ethereumService.defaultAccountAddress) {
+    }
   }
 
   connect(): void {

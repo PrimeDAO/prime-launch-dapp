@@ -1,3 +1,4 @@
+import { EventAggregator } from "aurelia-event-aggregator";
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
 import { autoinject, singleton } from "aurelia-framework";
@@ -23,6 +24,7 @@ export class Launches {
     private ethereumService: EthereumService,
     private seedService: SeedService,
     private lbpManagerService: LbpManagerService,
+    private eventAggregator: EventAggregator,
   ) {
     this.sort("starts"); // sort order will be ASC
   }
@@ -87,14 +89,17 @@ export class Launches {
     }
   }
 
-  gotoEtherscan(seed: Seed, event: Event): boolean {
-    Utils.goto(this.ethereumService.getEtherscanLink(seed.address));
+  gotoEtherscan(launch: ILaunch, event: Event): boolean {
+    Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
     event.stopPropagation();
     return false;
   }
 
-  onSeedClick(launch: ILaunch): void {
-    this.router.navigate(launch.canGoToDashboard ? `${launch.launchType}/${launch.address}` :
-      `/admin/${launch.launchType}s/dashboard/${launch.address}`);
+  onLaunchClick(launch: ILaunch): void {
+    if (launch.canGoToDashboard) {
+      this.router.navigate(`${launch.launchType}/${launch.address}`);
+    } else {
+      this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
+    }
   }
 }

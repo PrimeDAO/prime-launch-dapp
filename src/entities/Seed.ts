@@ -253,6 +253,11 @@ export class Seed implements ILaunch {
     this.hydrate();
   }
 
+  private disable():void {
+    this.corrupt = true;
+    this.subscriptions.dispose();
+  }
+
   private async loadContracts(): Promise<void> {
     try {
       this.contract = await this.contractsService.getContractAtAddress(ContractNames.SEED, this.address);
@@ -262,7 +267,7 @@ export class Seed implements ILaunch {
       }
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.initializing = false;
       this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     }
@@ -330,7 +335,7 @@ export class Seed implements ILaunch {
       await this.hydrateUser();
     }
     catch (error) {
-      this.corrupt = true;
+      this.disable();
       this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
