@@ -28,7 +28,7 @@ export class SeedAdminDashboard {
   get connected(): boolean {
     return !!this.ethereumService.defaultAccountAddress;
   }
-  
+
   @computedFrom("selectedSeed")
   get retrievableProjectTokenAmount(): BigNumber {
     if (!this.selectedSeed.address) {
