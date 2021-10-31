@@ -43,6 +43,19 @@
     //   margin-right: 7px;
     //   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     // }
+
+    &.increased {
+      &:before {
+        background: $AlertGreen;
+      }
+    }
+
+    &.decreased {
+      &:before {
+        background: $AlertRed;
+        // clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      }
+    }
   }
 
   .timeleft {
@@ -65,27 +78,11 @@
     font-size: 14px;
     line-height: 1.9;
     // justify-content: flex-end;
-    // .increased {
-    //   color: $AlertGreen;
-    // }
-    // .decreased {
-    //   color: $AlertRed;
-    // }
-  }
-
-  .priceValue,
-  .priceChange {
     &.increased {
-      &:before {
-        background: $AlertGreen;
-      }
+      color: $AlertGreen;
     }
-
     &.decreased {
-      &:before {
-        background: $AlertRed;
-        // clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-      }
+      color: $AlertRed;
     }
   }
 }
