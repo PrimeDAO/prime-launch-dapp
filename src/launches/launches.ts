@@ -1,3 +1,4 @@
+import { EventAggregator } from "aurelia-event-aggregator";
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
 import { autoinject, singleton } from "aurelia-framework";
@@ -7,11 +8,14 @@ import { Seed } from "entities/Seed";
 import { SortService } from "services/SortService";
 import { Utils } from "services/utils";
 import { SeedService } from "services/SeedService";
+import { ILaunch } from "services/launchTypes";
+import { LbpManagerService } from "services/LbpManagerService";
 
 @singleton(false)
 @autoinject
 export class Launches {
 
+  launches: Array<ILaunch>;
   seeingMore = false;
   loading: boolean;
 
@@ -19,8 +23,26 @@ export class Launches {
     private router: Router,
     private ethereumService: EthereumService,
     private seedService: SeedService,
+    private lbpManagerService: LbpManagerService,
+    private eventAggregator: EventAggregator,
   ) {
     this.sort("starts"); // sort order will be ASC
+  }
+
+  isAdmin(launch: ILaunch): boolean {
+    return launch.admin === this.ethereumService.defaultAccountAddress;
+  }
+
+  async attached(): Promise<void> {
+    this.loading = true;
+
+    await this.seedService.ensureAllSeedsInitialized();
+    await this.lbpManagerService.ensureAllLbpsInitialized();
+
+    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
+      .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+
+    this.loading = false;
   }
 
   seeMore(yesNo: boolean): void {
@@ -47,7 +69,7 @@ export class Launches {
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.fundingTokenInfo.symbol, b.fundingTokenInfo.symbol, this.sortDirection);
         break;
       case "type":
-        this.sortEvaluator = (_a: Seed, _b: Seed) => 0;
+        this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateString(a.launchType, b.launchType, this.sortDirection);
         break;
       case "target":
         this.sortEvaluator = (a: Seed, b: Seed) => SortService.evaluateBigNumber(a.target, b.target, this.sortDirection);
@@ -67,13 +89,17 @@ export class Launches {
     }
   }
 
-  gotoEtherscan(seed: Seed, event: Event): boolean {
-    Utils.goto(this.ethereumService.getEtherscanLink(seed.address));
+  gotoEtherscan(launch: ILaunch, event: Event): boolean {
+    Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
     event.stopPropagation();
     return false;
   }
 
-  onSeedClick(seed: Seed): void {
-    this.router.navigate(seed.canGoToDashboard ? `seed/${seed.address}` : "launches");
+  onLaunchClick(launch: ILaunch): void {
+    if (launch.canGoToDashboard) {
+      this.router.navigate(`${launch.launchType}/${launch.address}`);
+    } else {
+      this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
+    }
   }
 }

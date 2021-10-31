@@ -16,6 +16,7 @@
 
 @mixin tokenIcon {
   width: 19px;
+  height: 19px;
   border-radius: 9px;
 }
 
@@ -259,6 +260,18 @@ html {
 
   .tippy-content {
     text-align: center;
+  }
+
+  .allCaps {
+    text-transform: uppercase;
+  }
+
+  .noCaps {
+    text-transform: lowercase;
+  }
+
+  .initialCaps {
+    text-transform: capitalize;
   }
 }
 

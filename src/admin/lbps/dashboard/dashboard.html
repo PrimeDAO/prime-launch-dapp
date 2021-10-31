@@ -1,0 +1,73 @@
+<template>
+  <div class="page animated-page adminContainer au-animate ">
+    <div show.bind="!loading">
+      <div class="connectContainer" if.bind="!connected">
+        <div class="buttonContainer">
+          <div class="button1" click.delegate="connect()">Connect</div>
+        </div>
+        <div class="supportTextContainer">
+          <div class="connectButtonSupportText">
+            Connect your wallet to administer your LBPs
+          </div>
+        </div>
+      </div>
+      <div else class="formContainer">
+        <div class="heading heading1 lbpAdministrationHeader">
+          LBP Administration
+        </div>
+        <div if.bind="lbps.length">
+          <dropdown
+            class="lbpsDropdown"
+            if.bind="lbps.length !== 1"
+            item-changed.call="selectLbp(index)"
+            selected-item-index.to-view="selectedLbpIndex"
+            placeholder="Select an LPB...">
+            <div repeat.for="lbp of lbps">${lbp.metadata.general.projectName}</div>
+          </dropdown>
+          <div else class="heading heading3 projectTitle">
+            ${selectedLbp.metadata.general.projectName}
+          </div>
+          <div if.bind="selectedLbp.address">
+            <div class="featureContainer" if.bind="!selectedLbp.hasEnoughProjectTokens">
+              <div class="featureTitle">
+                Fund LBP
+              </div>
+              <div class="featureDescription">
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}.
+                Note this will require your approval of three transactions.
+              </div>
+              <div class="button1 small" click.delegate="fund()">
+                Fund
+              </div>
+            </div>
+            <div class="featureContainer">
+              <div class="featureTitle">
+                Remove Liquidity
+              </div>
+              <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
+              <div class="button1 small" click.delegate="selectedLbp.withdraw(receiverAddress)">
+                Remove Liquidity
+              </div>
+            </div>
+            <div class="featureContainer">
+              <div class="featureTitle">
+                Pause LBP
+              </div>
+              <div class="featureDescription">
+                Pausing will make swapping LBP inactive. As the administrator, you will be able to unpause the LBP.
+              </div>
+              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+                Pause Swapping
+              </div>
+              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+                UnPause Swapping
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="noLbpCreatedMessage" else>
+          <div>You have not created any lbps</div>
+        </div>
+      </div>
+    </div>
+</template>

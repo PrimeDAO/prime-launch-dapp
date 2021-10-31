@@ -1,12 +1,13 @@
-import { ITokenInfo } from "services/TokenTypes";
 import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
 import { RouteConfig } from "aurelia-router";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { Address, Hash } from "services/EthereumService";
+import { Address, EthereumService, Hash, Networks } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
+import { LaunchType } from "services/launchTypes";
+import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 
 export interface IStageState {
   verified: boolean;
@@ -14,11 +15,12 @@ export interface IStageState {
 }
 
 export interface IWizardState {
+  launchType: LaunchType;
+  launchTypeTitle: string;
   launchHash?: Hash;
   whiteList?: string;
-  fundingTokenInfo?: ITokenInfo;
-  requiredSeedDeposit?: number;
-  requiredLaunchFee?: number;
+  requiredProjectTokenDeposit?: BigNumber;
+  requiredFundingTokenDeposit?: BigNumber;
   launchAdminAddress?: Address;
   launchStartDate?: string;
   stage3State?: {
@@ -28,6 +30,8 @@ export interface IWizardState {
     tiLogoInputPresupplied: boolean;
     tiDecimalsInputPresupplied: boolean;
     projectTokenErrorMessage: string;
+    isValidTokenAddress: boolean;
+    lastCheckedAddress: Address;
   }
 }
 
@@ -38,15 +42,21 @@ export abstract class BaseStage<IConfig> {
   protected maxStage: number;
   protected stageStates: Array<IStageState>;
   protected wizardState: IWizardState;
+  protected multiSigWalletUri: string;
 
   @computedFrom("stageStates", "stageNumber")
   protected get stageState(): IStageState { return this.stageStates[this.stageNumber]; }
 
   constructor(
     protected router: Router,
+    protected ethereumService: EthereumService,
     protected eventAggregator: EventAggregator,
     protected tokenService: TokenService,
   ) {
+    this.multiSigWalletUri = (ethereumService.targetedNetwork === Networks.Mainnet) ?
+      "https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions"
+      :
+      "https://rinkeby.gnosis-safe.io/app/#/safes/0x2E46E481d57477A0663a7Ec61E7eDc65F4cb7F5C/transactions";
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {

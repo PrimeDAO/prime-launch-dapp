@@ -38,15 +38,15 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
     private tokenListService: TokenListService,
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
   ) {
-    super(router, eventAggregator, tokenService);
-    this.eventAggregator.subscribe("seed.clearState", () => {
+    super(router, ethereumService, eventAggregator, tokenService);
+    this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
       this.startTime = undefined;
@@ -75,7 +75,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
-      if (process.env.NETWORK === "mainnet") {
+      if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
         this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
       } else {
@@ -133,7 +133,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   persistData(): void {
     this.setlaunchConfigStartDate();
     this.setlaunchConfigEndDate();
-    // Save the seed admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
+    // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
@@ -151,20 +151,22 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     if (this.endTime) {
       endTimes = this.endTime.split(":");
     }
-    if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenAddress)) {
+    if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenInfo.address)) {
       message = "Please select a Funding Token seed";
-    } else if (!this.launchConfig.launchDetails.pricePerToken || this.launchConfig.launchDetails.pricePerToken === "0") {
+    } else if (!this.launchConfig.launchDetails.pricePerToken) {
       message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.launchConfig.launchDetails.fundingTarget || this.launchConfig.launchDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
     } else if (!this.launchConfig.launchDetails.fundingMax || this.launchConfig.launchDetails.fundingMax === "0") {
       message = "Please enter a number greater than zero for the Funding Maximum";
+    } else if (this.launchConfig.tokenDetails.projectTokenInfo.address === this.launchConfig.launchDetails.fundingTokenInfo.address) {
+      message = "Funding Token and Project Token cannot be the same. Please reenter one or the other.";
     } else if (BigNumber.from(this.launchConfig.launchDetails.fundingTarget).gt(this.launchConfig.launchDetails.fundingMax)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
-      this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.wizardState.fundingTokenInfo.decimals)) >
-      this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenConfig.decimals)) *
-        this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.wizardState.fundingTokenInfo.decimals))) {
+      this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
+      (this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
+        this.launchConfig.launchDetails.pricePerToken)) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!(this.launchConfig.launchDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";

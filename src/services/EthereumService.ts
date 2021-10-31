@@ -218,6 +218,10 @@ export class EthereumService {
    */
   private defaultAccount: Signer | Address;
 
+  public getDefaultSigner(): Signer {
+    return this.walletProvider.getSigner(this.defaultAccountAddress);
+  }
+
   /**
    * provided by ethers given provider from Web3Modal
    */
@@ -485,7 +489,7 @@ export class EthereumService {
  *  "ether",
  * @returns
  */
-export const toWei = (ethValue: BigNumber | string | number, unitName: string | BigNumberish = 18): BigNumber => {
+export const toWei = (ethValue: BigNumberish, unitName: string | BigNumberish = 18): BigNumber => {
   return parseUnits(ethValue.toString(), unitName);
 };
 
@@ -501,7 +505,7 @@ export const toWei = (ethValue: BigNumber | string | number, unitName: string | 
  *  "ether",
  * @returns
  */
-export const fromWei = (weiValue: BigNumber | string, unitName: string | BigNumberish = 18): string => {
+export const fromWei = (weiValue: BigNumberish, unitName: string | BigNumberish = 18): string => {
   return formatUnits(weiValue.toString(), unitName);
 };
 

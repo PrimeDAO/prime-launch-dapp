@@ -1,4 +1,5 @@
 <template>
+  <require from="newLaunch/lbp/elements/launch-preview/launch-preview"></require>
   <require from="newLaunch/tokenLabel.html"></require>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
@@ -18,14 +19,15 @@
             </div>
             <div class="tokenSelector">
               <token-select
-                selected-token-address.bind="launchConfig.launchDetails.fundingTokenAddress"
-                selected-token-info.bind="wizardState.fundingTokenInfo"
+                id="fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
                 token-addresses.to-view="tokenList"
                 item-changed.call="tokenChanged(value,index)">
               </token-select>
-              <div if.to-view="launchConfig.launchDetails.fundingTokenAddress">
-                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenAddress"
-                  text.to-view="launchConfig.launchDetails.fundingTokenAddress | smallHexString"></etherscanlink>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
+                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -37,18 +39,18 @@
               output-as-string="true"
               id="amountProjectToken"
               value.bind="launchConfig.launchDetails.amountProjectToken"
-              decimals.bind="launchConfig.tokenDetails.projectTokenConfig.decimals"
-              disabled.bind="!launchConfig.tokenDetails.projectTokenConfig.name"
+              decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+              disabled.bind="!launchConfig.tokenDetails.projectTokenInfo.address"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.tokenDetails.projectTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token</div>
+            <div if.bind="!launchConfig.tokenDetails.projectTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Project Token in Stage 3 - Project Tokens</div>
             <img
               ref="logoIcon"
-              if.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI"
-              src.bind="launchConfig.tokenDetails.projectTokenConfig.logoURI" />
+              if.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
+              src.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI" />
             <div class="text">
-              ${launchConfig.tokenDetails.projectTokenConfig.name}
-              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenConfig"></tokenlabel>
+              ${launchConfig.tokenDetails.projectTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo.address"></tokenlabel>
             </div>
           </div>
           <div class="tokenAmountContainer">
@@ -56,22 +58,21 @@
               output-as-string="true"
               id="amountFundingToken"
               value.bind="launchConfig.launchDetails.amountFundingToken"
-              decimals.bind="wizardState.fundingTokenInfo.decimals"
-              disabled.bind="!wizardState.fundingTokenInfo.name"
+              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              disabled.bind="!launchConfig.launchDetails.fundingTokenInfo.address"
               placeholder="">
             </numeric-input>
-            <div if.bind="!launchConfig.launchDetails.fundingTokenAddress" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
+            <div if.bind="!launchConfig.launchDetails.fundingTokenInfo.address" class="warning"><i class="fas fa-exclamation-triangle"></i> Please select a Funding Token</div>
             <img
               ref="logoIcon"
-              if.bind="wizardState.fundingTokenInfo.logoURI"
-              src.bind="wizardState.fundingTokenInfo.logoURI" />
+              if.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI"
+              src.bind="launchConfig.launchDetails.fundingTokenInfo.logoURI" />
             <div class="text">
-              ${wizardState.fundingTokenInfo.name}
-              <tokenlabel token-info.bind="wizardState.fundingTokenInfo"></tokenlabel>
+              ${launchConfig.launchDetails.fundingTokenInfo.address}
+              <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo.address"></tokenlabel>
             </div>
           </div>
         </div>
-        <hr>
         <div class="infoInput maxTarget">
           <div>
             <label for="startDate">Start Date</label>
@@ -88,81 +89,98 @@
             </div>
           </div>
           <div>
-            <label for="startTime">Start Time (GMT)</label>
+            <div class="labeledQuestion">
+              <label for="startTime">Start Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The start time for the launch, in GMT"></question-mark>
+              </div>
+            </div>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
                   id="startTime"
                   value.bind="startTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
-              </div>
-              <div class="questionMark">
-                <question-mark text="The start time for the launch, in GMT"></question-mark>
               </div>
             </div>
           </div>
           <div>
             <label for="startWeight">Start Weights</label>
             <range-input name="start-weight"
-              funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               set-weight.bind="setlaunchConfigStartWeight"
               value.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleStartWeightChange($event)"
+              min="2"
+              max="98"
               ref="sliderStartWeights">
             </range-input>
           </div>
         </div>
         <div class="infoInput maxTarget">
           <div>
-            <label for="endDate">End Date</label>
-            <div class="vestingDates">
-              <input
-                id="endDate"
-                class="vestingDateInput"
-                value.bind="endDate | date"
-                placeholder="YYYY-MM-DD"
-                ref="endDateRef"
-                click.delegate="endDatePicker.show()"
-                autocomplete="off" disabled />
-              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+            <div class="labeledQuestion">
+              <label for="endDate">End Date</label>
+              <div class="questionMark">
+                <question-mark text="Please note that a Liquidity Bootstrapping Pool cannot last longer than 30 days"></question-mark>
+              </div>
             </div>
+            <div class="vestingDatesContainer">
+              <div class="vestingDates">
+                <input
+                  id="endDate"
+                  class="vestingDateInput"
+                  value.bind="endDate | date"
+                  placeholder="YYYY-MM-DD"
+                  ref="endDateRef"
+                  click.delegate="endDatePicker.show()"
+                  autocomplete="off" disabled />
+                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+              </div>
+            </div>
+            
           </div>
           <div>
-            <label for="endTime">End Time (GMT)</label>
+            <div class="labeledQuestion">
+              <label for="endTime">End Time (GMT)</label>
+              <div class="questionMark">
+                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+              </div>
+            </div>
             <div class="vestingDatesContainer">
               <div class="vestingDates">
                 <input
                   id="endTime"
                   value.bind="endTime"
+                  change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
-              </div>
-              <div class="questionMark">
-                <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
               </div>
             </div>
           </div>
           <div>
             <label for="endWeight">End Weights</label>
             <range-input name="end-weight"
-              funding-token.bind="wizardState.fundingTokenInfo.symbol || ''"
-              project-token.bind="launchConfig.tokenDetails.projectTokenConfig.symbol || ''"
+              funding-token.bind="launchConfig.launchDetails.fundingTokenInfo.symbol || ''"
+              project-token.bind="launchConfig.tokenDetails.projectTokenInfo.symbol || ''"
               value.bind="launchConfig.launchDetails.endWeight"
               max-allowed.bind="launchConfig.launchDetails.startWeight"
               input.delegate="handleEndWeightChange($event)"
+              min="2"
+              max="98"
               ref="sliderEndWeights">
             </range-input>
           </div>
         </div>
 
-        <!-- TODO: Launch Preview -->
         <div class="infoInput launchPreview">
-          <h3>Launch Preview</h3>
-          <div class="previewBox">
-            launch preview
-          </div>
+          <launch-preview 
+            class="previewBox"
+            config.bind="launchPreviewConfig">
+          </launch-preview>
         </div>
 
         <div class="infoInput">
@@ -186,6 +204,7 @@
               <question-mark text="The Launch administrator has the ability to pause and close the launch, alter the whitelist and withdraw funding tokens"></question-mark>
             </div>
           </div>
+          <div class="adminInputContainer">
           <input
             id="admin"
             value.bind="launchConfig.launchDetails.adminAddress"
@@ -194,6 +213,7 @@
             <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
             <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
           </template>
+          </div>
         </div>
 
         <div class="buttonContainer">
