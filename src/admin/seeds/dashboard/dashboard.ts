@@ -9,7 +9,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
-import { AddressValidationMessages, DashboardActions } from "admin/enums/dashboard";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -23,7 +22,6 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
-  actions = DashboardActions
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -90,7 +88,7 @@ export class SeedAdminDashboard {
   }
 
 
-  private hasValidatedAddress(address:Address, message:AddressValidationMessages): boolean {
+  private hasValidatedAddress(address:Address, message: string): boolean {
     if (!Utils.isAddress(address)){
       this.eventAggregator.publish("handleValidationError", message);
       return false;
@@ -98,30 +96,21 @@ export class SeedAdminDashboard {
     return true;
   }
 
-  addressActionsHandler(action:DashboardActions, address:Address):void {
-    if (!action) {
-      return;
+  addToWhiteList(): void {
+    if (this.hasValidatedAddress(this.addressToAdd, "Please supply a valid address to add to whitelist")) {
+      this.selectedSeed.addToWhitelist(this.addressToAdd);
     }
+  }
 
-    switch (action) {
-      case DashboardActions.AddToWhiteList:
-        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidAddToWhiteList)) {
-          this.selectedSeed.addToWhitelist(address);
-        }
-        break;
-      case DashboardActions.RemoveFromWhiteList:
-        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidRemoveFromWhiteList)) {
-          this.selectedSeed.removeFromWhitelist(address);
-        }
-        break;
-      case DashboardActions.RetrieveProjectToken:
-        if (this.hasValidatedAddress(address, AddressValidationMessages.InvalidRetrieveProjectToken)) {
-          this.selectedSeed.retrieveProjectTokens(address);
-        }
-        break;
-      default:
-        this.hasValidatedAddress(address, AddressValidationMessages.InvalidAddress);
-        break;
+  removeFromWhiteList(): void {
+    if (this.hasValidatedAddress(this.addressToRemove, "Please supply a valid address to remove from whitelist")) {
+      this.selectedSeed.removeFromWhitelist(this.addressToRemove);
+    }
+  }
+
+  retrieveProjectTokens(): void {
+    if (this.hasValidatedAddress(this.receiverAddress, "Please supply a valid address to receive project tokens")) {
+      this.selectedSeed.retrieveProjectTokens(this.receiverAddress);
     }
   }
 
