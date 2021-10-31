@@ -1,3 +1,4 @@
+import { Utils } from "services/utils";
 import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
 import { Address, EthereumService } from "services/EthereumService";
@@ -26,6 +27,17 @@ export class SeedAdminDashboard {
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
     return !!this.ethereumService.defaultAccountAddress;
+  }
+  
+  @computedFrom("selectedSeed")
+  get retrievableProjectTokenAmount(): BigNumber {
+    if (!this.selectedSeed.address) {
+      return BigNumber.from(0);
+    }
+    const tokenToBeDistributed = this.selectedSeed.seedAmountRequired.sub(this.selectedSeed.seedRemainder).sub(this.selectedSeed.feeRemainder);
+    return this.selectedSeed.minimumReached ?
+      this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
+      this.selectedSeed.projectTokenBalance;
   }
 
   constructor(
@@ -87,15 +99,30 @@ export class SeedAdminDashboard {
     this.selectedSeedIndex = index;
   }
 
-  @computedFrom("selectedSeed")
-  get retrievableProjectTokenAmount(): BigNumber {
-    if (!this.selectedSeed.address){
-      return BigNumber.from(0);
+  private hasValidatedAddress(address:Address, message: string): boolean {
+    if (!Utils.isAddress(address)){
+      this.eventAggregator.publish("handleValidationError", message);
+      return false;
     }
-    const tokenToBeDistributed = this.selectedSeed.seedAmountRequired.sub(this.selectedSeed.seedRemainder).sub(this.selectedSeed.feeRemainder);
-    return this.selectedSeed.minimumReached ?
-      this.selectedSeed.projectTokenBalance.sub(tokenToBeDistributed) :
-      this.selectedSeed.projectTokenBalance;
+    return true;
+  }
+
+  addToWhiteList(): void {
+    if (this.hasValidatedAddress(this.addressToAdd, "Please supply a valid address to add to whitelist")) {
+      this.selectedSeed.addToWhitelist(this.addressToAdd);
+    }
+  }
+
+  removeFromWhiteList(): void {
+    if (this.hasValidatedAddress(this.addressToRemove, "Please supply a valid address to remove from whitelist")) {
+      this.selectedSeed.removeFromWhitelist(this.addressToRemove);
+    }
+  }
+
+  retrieveProjectTokens(): void {
+    if (this.hasValidatedAddress(this.receiverAddress, "Please supply a valid address to receive project tokens")) {
+      this.selectedSeed.retrieveProjectTokens(this.receiverAddress);
+    }
   }
 
   async addWhitelist(): Promise<TransactionReceipt> {
