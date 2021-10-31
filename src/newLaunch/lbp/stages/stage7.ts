@@ -13,6 +13,7 @@ import { BigNumber } from "ethers";
 
 @autoinject
 export class Stage7 extends BaseStage<ILbpConfig> {
+
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
@@ -23,10 +24,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
     super(router, ethereumService, eventAggregator, tokenService);
   }
 
-  public async canActivate(
-    _params: unknown,
-    routeConfig: RouteConfig,
-  ): Promise<boolean | Redirect> {
+  public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
     /**
      * heuristic for whether we have data.  Possibility is that the user
      * has used the 'back' button or otherwize figured out how to return
@@ -50,8 +48,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
   async submit(): Promise<void> {
     try {
       this.eventAggregator.publish("launch.creating", true);
-      this.wizardState.launchHash =
-        await this.lbpManagerService.deployLpbManager(this.launchConfig);
+      this.wizardState.launchHash = await this.lbpManagerService.deployLpbManager(this.launchConfig);
       if (this.wizardState.launchHash) {
         // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
         this.launchConfig.clearState();
@@ -62,9 +59,7 @@ export class Stage7 extends BaseStage<ILbpConfig> {
         this.next();
       }
     } catch (ex) {
-      this.eventAggregator.publish(
-        "handleException",
-        new EventConfigException("Sorry, an error occurred", ex),
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex),
       );
     } finally {
       this.eventAggregator.publish("launch.creating", false);
