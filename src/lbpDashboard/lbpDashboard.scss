@@ -2,7 +2,7 @@
 .page.lbpDashboardContainer {
   .lbpDashboard {
     display: grid;
-    grid-template-columns: 45% 10% 10% 35%;
+    grid-template-columns: 45% 20% 0 35%;
     grid-template-areas:
       "tokenInfo tokenInfo timeLeft timeLeft"
       "graph graph . form"
