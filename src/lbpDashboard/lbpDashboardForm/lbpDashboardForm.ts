@@ -96,12 +96,12 @@ export class lbpDashboardForm {
       try {
         if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
           if (this.ethereumService.targetedNetwork !== Networks.Rinkeby) {
-            // this.sorSwapInfo =
-            // await this.balancerService.getSwapFromSor(
-            //   this.fundingTokensToPay,
-            //   this.fundingTokenInfo,
-            //   this.lbpManager.projectTokenInfo) as SwapInfo;
-            // this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+            this.sorSwapInfo =
+            await this.balancerService.getSwapFromSor(
+              this.fundingTokensToPay,
+              this.fundingTokenInfo,
+              this.lbpManager.projectTokenInfo) as SwapInfo;
+            this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
           }
         } else {
           if (this.fundingTokensToPay?.gt(0)) {
