@@ -4,8 +4,8 @@ import { Address } from "./../services/EthereumService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { autoinject } from "aurelia-framework";
 import { BigNumber } from "ethers";
-import { TransactionReceipt } from "@ethersproject/providers";
 import { BalancerService } from "services/BalancerService";
+import { TransactionResponse } from "services/TransactionsService";
 
 @autoinject
 export class Vault {
@@ -29,6 +29,7 @@ export class Vault {
     fundingTokenIndex: number): Promise<Vault> {
 
     this.poolId = poolId;
+    this.address = BalancerService.VaultAddress;
     this.projectTokenIndex = projectTokenIndex;
     this.fundingTokenIndex = fundingTokenIndex;
 
@@ -47,7 +48,7 @@ export class Vault {
   }
 
   public async loadContracts(): Promise<void> {
-    this.contract = await this.contractsService.getContractAtAddress(ContractNames.VAULT, BalancerService.VaultAddress);
+    this.contract = await this.contractsService.getContractAtAddress(ContractNames.VAULT, this.address);
   }
 
   public async swap(
@@ -55,7 +56,7 @@ export class Vault {
     fundingTokenAddress: Address,
     projectTokenAddress: Address,
     fakeIt = false,
-  ): Promise<BigNumber | TransactionReceipt> {
+  ): Promise<BigNumber | TransactionResponse> {
 
     const params = [
       {

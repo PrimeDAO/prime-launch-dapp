@@ -13,6 +13,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { SwapInfo } from "@balancer-labs/sor";
 import { BalancerService } from "services/BalancerService";
+import TransactionsService, { TransactionResponse } from "services/TransactionsService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -48,6 +49,7 @@ export class lbpDashboardForm {
     private tokenListService: TokenListService,
     private numberService: NumberService,
     private balancerService: BalancerService,
+    private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -146,10 +148,17 @@ export class lbpDashboardForm {
     //   this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the Seed contract`);
     // } else if (await this.disclaimSeed()) {
 
-    //   await this.lbpManager.lbp.vault.swap(
-    //     this.fundingTokensToPay,
-    //     this.fundingTokenInfo.address,
-    //     this.lbpManager.projectTokenInfo.address) as BigNumber;
+    const fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
+
+    const receipt = await this.transactionsService.send(() => fundingTokenContract.approve(this.lbpManager.lbp.vault.address, this.fundingTokensToPay));
+
+    if (receipt) {
+      this.transactionsService.send(() =>
+        this.lbpManager.lbp.vault.swap(
+          this.fundingTokensToPay,
+          this.fundingTokenInfo.address,
+          this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+    }
 
     //     .then(async (receipt) => {
     //       if (receipt) {
