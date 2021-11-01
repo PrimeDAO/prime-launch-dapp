@@ -368,6 +368,12 @@
         input.textInput {
           height: 36px;
         }
+        .deleteContainer {
+            padding-top: 30px;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
         .deleteLink {
           cursor: pointer;
           justify-self: flex-end;
@@ -865,25 +871,19 @@
   }
 }
 
-@media screen and (max-width: 690px) {
-  .distribRow {
-    position: relative;
-    margin-top: 25px;
+@media screen and (max-width: 705px) {
+  .page.stageContainer.stage3 .tokenDistribution .distribRow {
+    column-gap: 84px;
+    max-width: 394px;
   }
-
-  .deleteLink {
-    position: absolute;
-    left: 4px;
-    top: 85px;
-  }
-
-  .addLink {
-    margin-top: 50px;
+  .page.stageContainer.stage3 .tokenDistribution .distribRow .deleteContainer {
+    width: 100%;
+    margin-left: 0px;
   }
 }
 
-@media screen and (max-width: 671px) {  
-  .deleteLink {
-    top: 170px;
+@media screen and (max-width: 523px) {
+  .page.stageContainer.stage3 .tokenDistribution .distribRow {
+    column-gap: 10px;
   }
 }
