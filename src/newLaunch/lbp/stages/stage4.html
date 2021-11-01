@@ -128,20 +128,17 @@
                 <question-mark text="Please note that a Liquidity Bootstrapping Pool cannot last longer than 30 days"></question-mark>
               </div>
             </div>
-            <div class="vestingDatesContainer">
-              <div class="vestingDates">
-                <input
-                  id="endDate"
-                  class="vestingDateInput"
-                  value.bind="endDate | date"
-                  placeholder="YYYY-MM-DD"
-                  ref="endDateRef"
-                  click.delegate="endDatePicker.show()"
-                  autocomplete="off" disabled />
-                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
-              </div>
+            <div class="vestingDates">
+              <input
+                id="endDate"
+                class="vestingDateInput"
+                value.bind="endDate | date"
+                placeholder="YYYY-MM-DD"
+                ref="endDateRef"
+                click.delegate="endDatePicker.show()"
+                autocomplete="off" disabled />
+              <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
             </div>
-            
           </div>
           <div>
             <div class="labeledQuestion">
