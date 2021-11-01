@@ -6,12 +6,13 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService, fromWei, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, Networks, toWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { SwapInfo } from "@balancer-labs/sor";
+import { BalancerService } from "services/BalancerService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -46,13 +47,15 @@ export class lbpDashboardForm {
     private ethereumService: EthereumService,
     private tokenListService: TokenListService,
     private numberService: NumberService,
+    private balancerService: BalancerService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
   }
 
-  attached(): void {
+  async attached(): Promise<void> {
+    await this.balancerService.ensureInitialized();
     if (!this.tokenList) {
       if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
@@ -92,12 +95,14 @@ export class lbpDashboardForm {
     if (this.fundingTokensToPay?.gt(0)) {
       try {
         if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-          // this.sorSwapInfo =
-          //   await this.lbpManager.lbp.vault.getSwapFromSor(
-          //     this.fundingTokensToPay,
-          //     this.fundingTokenInfo,
-          //     this.lbpManager.projectTokenInfo) as SwapInfo;
-          // this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+          if (this.ethereumService.targetedNetwork !== Networks.Rinkeby) {
+            // this.sorSwapInfo =
+            // await this.balancerService.getSwapFromSor(
+            //   this.fundingTokensToPay,
+            //   this.fundingTokenInfo,
+            //   this.lbpManager.projectTokenInfo) as SwapInfo;
+            // this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+          }
         } else {
           if (this.fundingTokensToPay?.gt(0)) {
             const projectTokens = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals).toString())

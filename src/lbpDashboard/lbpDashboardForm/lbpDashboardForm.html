@@ -19,7 +19,7 @@
           <div class="fundingAmount">
             <numeric-input
               disabled.to-view="!lbpManager.isLive || !fundingTokenInfo.address"
-              value.bind="fundingTokensToPay & debounce:2000"
+              value.bind="fundingTokensToPay & debounce:500"
               decimals.bind="fundingTokenInfo.decimals"
               placeholder="0.0"></numeric-input>
             <div class="balance">Balance: <formatted-number

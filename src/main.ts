@@ -19,6 +19,7 @@ import { Seed } from "entities/Seed";
 import { LbpManager } from "entities/LbpManager";
 import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
+import { BalancerService } from "services/BalancerService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -63,8 +64,10 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.get(ContractsService);
 
       const tokenService = aurelia.container.get(TokenService);
-
       await tokenService.initialize();
+
+      const balancerService = aurelia.container.get(BalancerService);
+      balancerService.initialize();
 
       const geoBlockService = aurelia.container.get(GeoBlockService);
       await geoBlockService.initialize();

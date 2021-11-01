@@ -3,6 +3,8 @@ import { autoinject, LogManager } from "aurelia-framework";
 import { EventConfig, EventConfigException, EventConfigTransaction, EventMessageType } from "./GeneralEvents";
 import { DisposableCollection } from "./DisposableCollection";
 
+export type ConsoleLogMessageTypes = "info"|"warn"|"warning"|"error"|"debug";
+
 @autoinject
 export class ConsoleLogService {
 
@@ -96,7 +98,7 @@ export class ConsoleLogService {
     }
   }
 
-  public logMessage(msg: string, level = "info"): void {
+  public logMessage(msg: string, level: ConsoleLogMessageTypes = "info"): void {
     switch (level) {
       case "info":
       default:
