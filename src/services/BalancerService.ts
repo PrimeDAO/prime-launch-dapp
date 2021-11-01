@@ -50,7 +50,7 @@ export class BalancerService {
   }
 
   ensureInitialized(): Promise<void> {
-    return Utils.waitUntilTrue(() => !this.loading);
+    return Promise.resolve(); // return Utils.waitUntilTrue(() => !this.loading, Number.MAX_SAFE_INTEGER);
   }
 
   // public async getSwapFromSor(

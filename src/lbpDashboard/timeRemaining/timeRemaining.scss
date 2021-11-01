@@ -1,0 +1,16 @@
+@import "styles/colors.scss";
+.timeRemainingContainer {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: right;
+  column-gap: 42px;
+  .label {
+    font-family: Aeonik;
+    font-size: 14px;
+    color: $Neutral03;
+  }
+  .value {
+    font-family: Inter;
+    font-size: 18px;
+  }
+}

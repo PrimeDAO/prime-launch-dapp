@@ -54,11 +54,13 @@ export class LbpManager implements ILaunch {
   public isPaused: boolean;
   public fundingTokensPerProjectToken: number;
   public projectTokensPerFundingToken: number;
+  public startingFundingTokenAmount: BigNumber;
+  public startingProjectTokenAmount: BigNumber;
+  public projectTokenBalance: BigNumber;
+  public fundingTokenBalance: BigNumber;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
-  private projectTokenBalance: BigNumber;
-  private fundingTokenBalance: BigNumber;
   // private userFundingTokenBalance: BigNumber;
 
   @computedFrom("_now")
@@ -272,6 +274,8 @@ export class LbpManager implements ILaunch {
 
   private async hydrateTokensState(): Promise<void> {
     if (this.lbp) {
+      this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
+      this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
@@ -328,13 +332,6 @@ export class LbpManager implements ILaunch {
           return receipt;
         }
       });
-  }
-
-  public async getTokenFundingAmounts(): Promise<{funding: BigNumber, project: BigNumber}> {
-    return {
-      project: await this.contract.amounts(this.projectTokenIndex),
-      funding: await this.contract.amounts(this.fundingTokenIndex),
-    };
   }
 
   public swap() {

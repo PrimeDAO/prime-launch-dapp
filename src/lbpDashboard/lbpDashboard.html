@@ -2,33 +2,25 @@
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <require from="./tokenDistribution/tokenDistribution"></require>
+  <require from="./timeRemaining/timeRemaining"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
-      <div class="section section1">
-        <div class="leftSection">
-          <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
-        </div>
-        <div class="rightSection">
-          <div class="timeRemaining label">TIME REMAINING</div>
-          <div class="timeRemaining value">hourglass 16:32 hr</div>
-          <div class="launchSupply label">LAUNCH SUPPLY</div>
-          <div class="launchSupply value">145.000</div>
-          <div class="averagePrice label">AVERAGE PRICE</div>
-          <div class="averagePrice value">$ 1.62</div>
-        </div>
+      <div class="tokenInfo">
+        <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
       </div>
-      <div class="section section2">
-        <div class="graph">the graph</div>
-        <div class="form">
-          <lbpdashboardform lbp-manager.bind="lbpMgr"></lbpdashboardform>
-        </div>
+      <div class="timeLeft">
+        <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="section section3">
-        <div class="about">
-          <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
-        </div>
+      <div class="graph">the graph</div>
+      <div class="form">
+        <lbpdashboardform lbp-manager.bind="lbpMgr"></lbpdashboardform>
+      </div>
+      <div class="about">
+        <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
+        <launch-about launch.to-view="lbpMgr" layout-type="twocolumn" launch-type="lbp"></launch-about>
+      </div>
+      <div class="distribution">
         <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>
       </div>
     </div>
-  </div>
 </template>
