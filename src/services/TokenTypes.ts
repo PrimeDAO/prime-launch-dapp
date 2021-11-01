@@ -23,6 +23,7 @@ export interface ITokenInfo {
   id: string; // id on coingecko
   name: string; // token name,
   price?: number;
+  priceChangePercentage_24h?: number,
   symbol: string; // token symbol,
   // readonly tags?: string[];
   // readonly extensions?: {

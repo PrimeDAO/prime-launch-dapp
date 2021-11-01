@@ -118,6 +118,8 @@ export class TokenService {
         tokenInfo.decimals = TokenService.DefaultDecimals;
       }
 
+      tokenInfo.priceChangePercentage_24h = 0;
+
       /**
        * try to get the token USD price, take a last shot at getting a logoURI.
        */
@@ -127,6 +129,7 @@ export class TokenService {
         await axios.get(uri)
           .then((response) => {
             tokenInfo.price = response.data.market_data.current_price.usd ?? 0;
+            tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
             if (!tokenInfo.logoURI) {
               tokenInfo.logoURI = response.data.image.thumb;
             }

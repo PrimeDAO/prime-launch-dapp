@@ -5,9 +5,10 @@
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
     "logo details priceValue"
-    "timeLeft timeLeft priceChange";
+    ". timeLeft priceChange";
   justify-content: space-between;
   column-gap: 12px;
+  row-gap: 3px;
 
   .logo {
     grid-area: logo;
@@ -44,17 +45,12 @@
     //   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     // }
 
-    &.increased {
-      &:before {
-        background: $AlertGreen;
-      }
+    &.increased .caret {
+      color: $AlertGreen;
     }
 
-    &.decreased {
-      &:before {
-        background: $AlertRed;
-        // clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-      }
+    &.decreased .caret {
+      color: $AlertRed;
     }
   }
 
@@ -77,12 +73,24 @@
     grid-area: priceChange;
     font-size: 14px;
     line-height: 1.9;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 4px;
     // justify-content: flex-end;
     &.increased {
       color: $AlertGreen;
     }
     &.decreased {
       color: $AlertRed;
+    }
+
+    .sign {
+    }
+
+    .amountChanged {
+    }
+
+    .percentCHanged {
     }
   }
 }
