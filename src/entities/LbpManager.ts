@@ -188,15 +188,15 @@ export class LbpManager implements ILaunch {
       await this.hydrateMetadata();
 
       this.lbpInitialized = await this.contract.initialized();
+      this.poolFunded = await this.contract.poolFunded();
 
       this.projectTokenIndex = await this.contract.projectTokenIndex();
       this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
 
-      if (this.lbpInitialized) {
+      if (this.poolFunded) {
         await this.hydrateLbp();
       }
 
-      this.poolFunded = await this.contract.poolFunded();
       this.admin = await this.contract.admin();
       // const tokenStartWeightsArray = await this.contract.startWeights();
       // const tokenEndWeightsArray = await this.contract.endWeights();

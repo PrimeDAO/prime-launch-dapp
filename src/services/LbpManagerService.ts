@@ -58,8 +58,10 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
-      13372668 : 9423409;
+    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ? 13372668 :
+      (this.ethereumService.targetedNetwork === Networks.Rinkeby) ? 9423409
+        : 28079815; // kovan
+
   }
 
 
@@ -161,7 +163,7 @@ export class LbpManagerService {
 
     const lbpArguments = [
       config.launchDetails.adminAddress,
-      isKovan ? "0x1234" : safeAddress,
+      isKovan ? this.ethereumService.defaultAccountAddress : safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
@@ -258,6 +260,6 @@ export class LbpManagerService {
 
     const factory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
 
-    return factory.deployLbp(...callParams);
+    return factory.deployLBPManager(...callParams);
   }
 }

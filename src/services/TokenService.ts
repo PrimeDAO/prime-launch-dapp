@@ -19,6 +19,7 @@ export class TokenService {
   tokenInfos = new Map<Address, ITokenInfo>();
   queue: Subject<() => Promise<void>>;
   tokenLists: TokenListMap;
+  devFundingTokens: Array<Address>;
 
   static DefaultLogoURI = "/genericToken.svg";
   static DefaultNameSymbol = "N/A";
@@ -30,6 +31,22 @@ export class TokenService {
     private contractsService: ContractsService,
     private tokenListService: TokenListService,
     private tokenMetadataService: TokenMetadataService) {
+
+    this.devFundingTokens = (ethereumService.targetedNetwork === Networks.Rinkeby) ?
+      [
+        "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
+        "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+        "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
+        "0x7ba433d48c43e3ceeb2300bfbf21db58eecdcd1a", // USDC having 6 decimals
+      ] : (ethereumService.targetedNetwork === Networks.Kovan) ?
+        [
+          "0xBE778562b804DF11d0f1C02ADD3cE963E465dd70", // PRIME
+          "0xdFCeA9088c8A88A76FF74892C1457C17dfeef9C1", // WETH
+          "0x04DF6e4121c27713ED22341E7c7Df330F56f289B", // DAI
+          "0xc2569dd7d0fd715B054fBf16E75B001E5c0C1115", // USDC having 6 decimals
+        ] : [];
+
+
     this.erc20Abi = ContractsService.getContractAbi(ContractNames.IERC20);
     this.queue = new Subject<() => Promise<void>>();
     // this will initiate the execution of the promises
@@ -204,6 +221,7 @@ export class TokenService {
     // PRIMEDao Token HACK!!!
     if (name.toLowerCase() === "primedao token") { name = "primedao"; }
     if (name.toLowerCase() === "dai stablecoin") { name = "dai"; }
+    if (name.toLowerCase() === "DSToken") { name = "dai"; } // kovan
     return `${name.toLowerCase()}_${symbol.toLowerCase()}`;
   }
 
