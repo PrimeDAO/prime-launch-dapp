@@ -9,6 +9,7 @@ export class SparkChart {
   @bindable data: Array<any>;
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
+  @bindable.number width = 500;
 
   chart: IChartApi;
   series: ISeriesApi<"Area">;
@@ -39,11 +40,13 @@ export class SparkChart {
   dataChanged(): void {
     if (this.data && !this.chart) {
       const options: any = { // DeepPartial<ChartOptions> = {
-        width: 0,
+        width: this.width,
         height: this.height,
         timeScale: {
           // rightBarStaysOnScroll: true,
           visible: this.interactive,
+          timeVisible: true,
+          secondsVisible: true,
         },
         crosshair: {
           vertLine: { visible: this.interactive },
@@ -63,8 +66,8 @@ export class SparkChart {
         },
         layout: {
           backgroundColor: "transparent",
-          textColor: "black",
-          fontFamily: "Aeonik",
+          textColor: "white",
+          fontFamily: "Inter",
         },
         handleScroll: {
           mouseWheel: false,
@@ -85,13 +88,14 @@ export class SparkChart {
 
       // we want dimensions not-including padding
       const innerDimensions = this.innerDimensions(this.sparkChart);
-      options.width = innerDimensions.width;
+      options.width = this.width || innerDimensions.width;
       options.height = this.height || innerDimensions.height;
       options.timeScale.barSpacing = Math.max(options.width / this.data.length, 6);
 
       this.chart = createChart(this.sparkChart, options);
 
-      const color = "#8668FC";
+
+      const color = "#A258A7";
       this.series = this.chart.addAreaSeries({
         lineColor: color,
         topColor: `${color}ff`,
