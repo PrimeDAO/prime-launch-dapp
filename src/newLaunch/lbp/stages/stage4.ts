@@ -307,6 +307,8 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
       message = "Please enter a valid value for End Time";
+    } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
+      message = "Please enter a valid wallet address for the LBP Administrator";
     } else if (this.launchConfig.launchDetails.endWeight > this.launchConfig.launchDetails.startWeight) {
       message = `The ${this.launchConfig.launchDetails.fundingTokenInfo.symbol} end-weight should be higher then the start-weight`;
     } else if (this.setLaunchConfigEndDate() <= this.setLaunchConfigStartDate()) {

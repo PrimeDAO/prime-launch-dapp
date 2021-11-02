@@ -13,9 +13,12 @@
       <time-left launch.to-view="lbpMgr"></time-left>
     </div>
     <div class="priceChange ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') & signal:'secondPassed' }">
-      <div class="sign">${((fundingTokenTrend > 0) ? '+' : ((fundingTokenTrend < 0) ? '-' : '' )) & signal:'secondPassed'}</div>
-          <formatted-number value.bind="absolutePriceChange"></formatted-number>
-          <div class="percentChanged">(<formatted-number value.bind="absolutePriceChange * lbpMgr.projectTokenInfo.price"></formatted-number>%)
-          </div>
+      <div class="sign">${fundingTokenTrendSign & signal:'secondPassed'}</div>
+      <div class="amountChanged">
+        <formatted-number value.bind="absolutePriceChange"></formatted-number>
       </div>
+      <div class="percentChanged">(<formatted-number value.bind="absolutePriceChange * lbpMgr.projectTokenInfo.price"></formatted-number>%)
+      </div>
+    </div>
+  </div>
 </template>

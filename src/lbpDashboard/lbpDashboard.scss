@@ -1,19 +1,35 @@
 @import "styles/styles.scss";
 .page.lbpDashboardContainer {
   .lbpDashboard {
-    .section.section2 {
-      background-color: $BG01;
-      display: flex;
-      gap: 70px;
-      flex-wrap: wrap;
-      .spark-chart {
-        max-width: 692px;
-        width: 100%;
-        height: 300px;
-      }
-      .form {
-        width: 1fr;
-      }
+    display: grid;
+    grid-template-columns: 45% 20% 0 35%;
+    grid-template-areas:
+      "tokenInfo tokenInfo timeLeft timeLeft"
+      "graph graph . form"
+      "about about distribution distribution";
+
+    column-gap: 32px;
+    row-gap: 60px;
+
+    .tokenInfo {
+      grid-area: tokenInfo;
+    }
+    .timeLeft {
+      grid-area: timeLeft;
+    }
+    .graph {
+      grid-area: graph;
+      border: 2px solid $Neutral02;
+      height: 400px;
+    }
+    .form {
+      grid-area: form;
+    }
+    .about {
+      grid-area: about;
+    }
+    .distribution {
+      grid-area: distribution;
     }
   }
 }

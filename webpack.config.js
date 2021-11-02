@@ -65,6 +65,9 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       'aurelia-bootstrapper'
     ]
   },
+  node: {
+    fs: "empty"
+  },
   mode: production ? 'production' : 'development',
   output: {
     path: outDir,

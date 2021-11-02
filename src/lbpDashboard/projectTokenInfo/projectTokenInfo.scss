@@ -2,14 +2,14 @@
 
 .projectTokenInfo {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto auto;
   grid-template-areas:
     "logo details priceValue"
     ". timeLeft priceChange";
-  justify-content: space-between;
-  column-gap: 12px;
+  column-gap: 20px;
   row-gap: 3px;
-
+  justify-content: left;
+  align-items: center;
   .logo {
     grid-area: logo;
     @include tokenIcon;

@@ -379,6 +379,11 @@
         input.textInput {
           height: 36px;
         }
+        .deleteContainer {
+          padding-top: 30px;
+          display: flex;
+          align-items: center;
+        }
         .deleteLink {
           cursor: pointer;
           justify-self: flex-end;
@@ -871,5 +876,22 @@
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 705px) {
+  .page.stageContainer.stage3 .tokenDistribution .distribRow {
+    column-gap: 84px;
+    max-width: 394px;
+  }
+  .page.stageContainer.stage3 .tokenDistribution .distribRow .deleteContainer {
+    width: 100%;
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 523px) {
+  .page.stageContainer.stage3 .tokenDistribution .distribRow {
+    column-gap: 10px;
   }
 }
