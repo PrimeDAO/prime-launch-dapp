@@ -87,7 +87,10 @@ export class Utils {
       const timerId = setInterval(async () => {
         if (await test()) { return resolve(); }
       }, 100);
-      setTimeout(() => { clearTimeout(timerId); return reject(new Error("Test timed out..")); }, timeOut);
+      setTimeout(() => {
+        clearTimeout(timerId);
+        return reject(new Error("Test timed out.."));
+      }, timeOut);
     });
   }
 

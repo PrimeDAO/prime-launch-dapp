@@ -8,6 +8,7 @@ import { autoinject } from "aurelia-dependency-injection";
 import { Utils } from "services/utils";
 import { BigNumber, BigNumberish } from "ethers";
 import { ITokenInfo } from "services/TokenTypes";
+import { TransactionResponse } from "@ethersproject/providers";
 
 const SUBGRAPH_URLS = {
   [Networks.Mainnet]:
@@ -49,7 +50,7 @@ export class BalancerService {
   }
 
   ensureInitialized(): Promise<void> {
-    return Utils.waitUntilTrue(() => !this.loading, Number.MAX_SAFE_INTEGER);
+    return Utils.waitUntilTrue(() => !this.loading, 9999999999);
   }
 
 
@@ -129,7 +130,7 @@ export class BalancerService {
     // as obtained by getSwapFromSor
     swapInfo: SwapInfo,
     swapType = SwapTypes.SwapExactIn, // always
-  ): Promise<void> {
+  ): Promise<TransactionResponse> {
     if (!swapInfo.returnAmount.gt(0)) {
       console.log("Return Amount is 0. No swaps to execute.");
       return;
@@ -191,7 +192,7 @@ export class BalancerService {
           token.toLowerCase() === swapInfo.tokenOut.toLowerCase()
         ) {
           limits[i] = swapInfo.returnAmount
-            .mul(-0.99)
+            .mul(-1) // was -0.99 but that crashes
             .toString()
             .split(".")[0];
         } else {
@@ -206,7 +207,7 @@ export class BalancerService {
           token.toLowerCase() === swapInfo.tokenOut.toLowerCase()
         ) {
           limits[i] = swapInfo.swapAmount
-            .mul(-0.99)
+            .mul(-1) // was -0.99 but that crashes
             .toString()
             .split(".")[0];
         } else {
@@ -240,5 +241,7 @@ export class BalancerService {
       );
 
     console.log(`tx: ${tx.hash}`);
+
+    return tx;
   }
 }

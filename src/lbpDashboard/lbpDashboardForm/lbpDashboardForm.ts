@@ -106,6 +106,7 @@ export class lbpDashboardForm {
             this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
           }
         } else {
+          this.sorSwapInfo= null;
           if (this.fundingTokensToPay?.gt(0)) {
             const projectTokens = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals).toString())
               * this.lbpManager.projectTokensPerFundingToken;
@@ -148,16 +149,22 @@ export class lbpDashboardForm {
     //   this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the Seed contract`);
     // } else if (await this.disclaimSeed()) {
 
-    const fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
+    if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+      if (this.sorSwapInfo) {
+        this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
+      }
+    } else {
+      const fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
 
-    const receipt = await this.transactionsService.send(() => fundingTokenContract.approve(this.lbpManager.lbp.vault.address, this.fundingTokensToPay));
+      const receipt = await this.transactionsService.send(() => fundingTokenContract.approve(this.lbpManager.lbp.vault.address, this.fundingTokensToPay));
 
-    if (receipt) {
-      this.transactionsService.send(() =>
-        this.lbpManager.lbp.vault.swap(
-          this.fundingTokensToPay,
-          this.fundingTokenInfo.address,
-          this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+      if (receipt) {
+        this.transactionsService.send(() =>
+          this.lbpManager.lbp.vault.swap(
+            this.fundingTokensToPay,
+            this.fundingTokenInfo.address,
+            this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+      }
     }
 
     //     .then(async (receipt) => {
