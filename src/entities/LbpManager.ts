@@ -8,7 +8,7 @@ import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DateService } from "services/DateService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Networks, Hash } from "services/EthereumService";
 import { IpfsService } from "services/IpfsService";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { NumberService } from "services/NumberService";
@@ -16,12 +16,25 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
+import { jsonToGraphQLQuery } from "json-to-graphql-query";
+import axios from "axios";
 
 export interface ILbpManagerConfiguration {
   address: Address;
   admin: Address;
   metadata: Address;
 }
+
+interface ISwapRecord {
+  timestamp: number,
+  poolLiquidity: string,
+  tokenIn: string,
+  tokenAmountIn: string,
+  tokenOut: string,
+  tokenAmountOut: string,
+}
+
+interface IHistoricalMarketCapRecord { time: string, value?: number }
 
 @autoinject
 export class LbpManager implements ILaunch {
@@ -60,6 +73,8 @@ export class LbpManager implements ILaunch {
   private projectTokenBalance: BigNumber;
   private fundingTokenBalance: BigNumber;
   // private userFundingTokenBalance: BigNumber;
+
+  private historicalMarketCap = new Array<IHistoricalMarketCapRecord>();
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -222,6 +237,8 @@ export class LbpManager implements ILaunch {
       await this.hydatePaused();
 
       await this.hydrateUser();
+
+      await this.hydrateHistoricalMarketCap();
     }
     catch (error) {
       this.disable();
@@ -347,5 +364,323 @@ export class LbpManager implements ILaunch {
     //     }
     //   });
   }
+
+  /* --------------------------------------------- */
+  /* Modified by Gilad */
+  /* --------------------------------------------- */
+
+  // private getBalancerSubgraphUrlOld() {
+  //   return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${this.ethereumService.targetedNetwork === Networks.Rinkeby ? "-kovan-v2" : "-v2"}`;
+  // }
+
+  // private async getFundingTokenPriceNearSwapTimeOld(fundingTokenId: string, swapTime: Date): Promise<number> {
+  //   const startTime = swapTime.setDate(swapTime.getDate() - 1);
+  //   const uri = `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${swapTime}`;
+  //   const prices = await( await axios.get(uri)).data;
+  //   console.log(prices, prices[prices.length - 1]);
+  //   return 1;
+  // }
+
+  // public async getMarketCapHistoryOld(address: Hash): Promise<Array<IHistoricalMarketCapRecord>> {
+
+  //   const swaps = await this.fetchSwaps(address);
+
+  //   return swaps.map(swap => {
+
+  //     // TODO: Get FundingTokenPrice near time of swap
+  //     const priceUsdNearSwapTime = this.getFundingTokenPriceNearSwapTime("dai", swap.timestamp);
+
+  //     const projectTokenAmountAtSwap = parseFloat(swap.tokenAmountIn);
+  //     const fundingTokenAmountAtSwap = parseFloat(swap.tokenAmountOut);
+
+  //     const fundingTokenPriceAtSwap = (
+  //       fundingTokenAmountAtSwap /
+  //       projectTokenAmountAtSwap
+  //     ) * priceUsdNearSwapTime;
+
+  //     return {
+  //       time: swap.timestamp.toString(),
+  //       value: fundingTokenPriceAtSwap,
+  //     };
+  //   });
+  // }
+
+  // private async fetchSwapsOld(address: Hash): Promise<Array<ISwapRecord>> {
+  //   const uri = this.getBalancerSubgraphUrl();
+  //   const query = {
+  //     swaps: {
+  //       id: true,
+  //       timestamp: true,
+  //       tokenAmountIn: true,
+  //       tokenAmountOut: true,
+  //       __args: {
+  //         subgraphError: "deny",
+  //         where: {
+  //           poolId: address.toLowerCase(),
+  //         },
+  //       },
+  //     },
+  //   };
+
+  //   try {
+  //     const response = await axios.post(
+  //       uri,
+  //       JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+  //       {
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //       },
+  //     );
+
+
+  //     if ( response.data.errors?.length) {
+  //       throw new Error(response.data.errors[0]);
+  //     }
+
+  //     return response.data?.data?.swaps;
+  //   }
+  //   catch (error) {
+  //     console.log({error});
+
+  //     // this.consoleLogService.handleFailure(
+  //     //   new EventConfigFailure(`Pool: Error fetching market cap history: ${error?.response?.data?.error?.message ?? error?.message}`));
+  //     // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
+  //     // TODO:  restore the exception?
+  //     return [];
+  //   }
+  // }
+
+  // private async hydrateHistoricalMarketCapOld(): Promise<void> {
+  //   console.log("historical before");
+  //   this.historicalMarketCap = await this.getMarketCapHistory("0xd4b6a6c783af635f2386ede0d4bc7f20d54e55640002000000000000000002d6");
+  //   console.log("historical", this.historicalMarketCap);
+  // }
+
+  /* ----------------------------------------------- */
+  /* Original from Pool */
+  /* ----------------------------------------------- */
+
+  private getBalancerSubgraphUrl() {
+    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${this.ethereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
+  }
+
+  /* Is it needed? */
+  private async fetchBalancerSubgraphData(): Promise<void> {
+    // const uri = this.getBalancerSubgraphUrl();
+    // const query = {
+    //   pool: {
+    //     swapFee: true,
+    //     totalSwapFee: true,
+    //     totalSwapVolume: true,
+    //     liquidity: true,
+    //     // holdersCount: true, // always returns 0
+    //     __args: {
+    //       id: this.lbp.address.toLowerCase(),
+    //     },
+    //   },
+    // };
+
+    // return axios.post(uri,
+    //   JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+    //   {
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then(async (response) => {
+    //     const pool = response.data?.data?.pool;
+    //     if (pool) {
+    //       this.accruedFees = pool.totalSwapFee;
+    //       this.accruedVolume = pool.totalSwapVolume;
+    //       const swapfee = this.numberService.fromString(pool.swapFee);
+    //       this.swapfee = toWei(swapfee);
+    //       this.swapfeePercentage = swapfee * 100;
+    //       this.marketCap = this.numberService.fromString(pool.liquidity);
+    //       // this.membersCount = this.numberService.fromString(pool.holdersCount);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     this.consoleLogService.handleFailure(
+    //       new EventConfigFailure(`Pool: Error fetching balancer subgraph info: ${error?.response?.data?.error?.message ?? error?.message}`));
+    //     // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
+    //     // TODO:  restore the exception?
+    //     this.accruedFees = undefined;
+    //   });
+  }
+
+  /* is it needed */
+  public async hydrateMembers(): Promise<void> {
+    // const members = (await this.tokenService.getHolders(this.poolToken.address))
+    //   .map((holder: ITokenHolder) => {
+    //     return holder.address;
+    //   });
+    // this.membersCount = members.length;
+  }
+
+  public async getMarketCapHistory(maxDays?: number): Promise<Array<IHistoricalMarketCapRecord>> {
+    if (!this.lbp || !this.lbp.poolId) {
+      console.log("No Pool ID");
+
+      return [];
+    }
+
+    let startingDate: Date;
+
+    if (maxDays) {
+      startingDate = this.dateService.today;
+      startingDate.setDate(startingDate.getDate() - maxDays);
+    } else {
+      startingDate = this.dateService.midnightOf(this.startTime);
+    }
+    const startingSeconds = startingDate.valueOf() / 1000;
+    const daySeconds = 24 * 60 * 60;
+    const tomorrow = this.dateService.tomorrow; // midnight of today
+    const tomorrowSeconds = tomorrow.valueOf() / 1000;
+    /**
+     * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
+     * in a single query you can potentially obtain data for only a small slice of calendar time.
+     *
+     * So we fetch going backwards from today, 1000 at a time, until we've got all the records.
+     */
+    let swaps = new Array<ISwapRecord>();
+    let fetched: Array<ISwapRecord>;
+    do {
+      /**
+       * fetchSwaps returns swaps in descending time order, so the last one will be
+       * the earliest one.
+       */
+      const endDateSeconds = swaps.length ? swaps[swaps.length-1].timestamp : tomorrowSeconds;
+      fetched = await this.fetchSwaps(endDateSeconds, startingSeconds);
+      swaps = swaps.concat(fetched);
+    } while (fetched.length === 1000);
+
+    const returnArray = new Array<IHistoricalMarketCapRecord>();
+
+    if (swaps.length) {
+      let previousDay;
+
+      swaps.reverse(); // to ascending
+      /**
+       * enumerate every day
+       */
+      for (let timestamp = startingSeconds; timestamp < tomorrowSeconds; timestamp += daySeconds) {
+
+        const dateString = new Date(timestamp * 1000).toISOString();
+        const todaysSwaps = new Array<ISwapRecord>();
+        const nextDay = timestamp + daySeconds;
+
+        if (swaps.length) {
+        // eslint-disable-next-line no-constant-condition
+          while (true) {
+            const swap = swaps[0];
+            if (swap.timestamp >= nextDay) {
+              break;
+            }
+            else if (swap.timestamp >= timestamp) {
+              todaysSwaps.push(swap);
+              swaps.shift();
+              if (!swaps.length) {
+                break;
+              }
+            } // swap.timestamp < timestamp
+          }
+        }
+
+        if (todaysSwaps?.length) {
+          // average
+          // const liquidityThisDay = todaysSwaps.reduce((accumulator, currentValue) =>
+          //   accumulator + this.numberService.fromString(currentValue.poolLiquidity), 0) / todaysSwaps.length;
+
+          // max
+          // const liquidityThisDay = todaysSwaps.reduce((accumulator, currentValue) =>
+          //   accumulator = Math.max(accumulator, this.numberService.fromString(currentValue.poolLiquidity)), 0);
+
+          // closing
+          const liquidityThisDay = this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) / this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) * 1; //USD Price
+
+          returnArray.push({
+            time: dateString,
+            value: liquidityThisDay,
+          });
+          previousDay = liquidityThisDay;
+        } else if (previousDay) {
+          /**
+           * keep the previous value
+           */
+          returnArray.push({
+            time: dateString,
+            value: previousDay,
+          });
+        } else {
+          returnArray.push({
+            time: dateString,
+          });
+        }
+      }
+    }
+
+    console.log("fetched", {fetched: JSON.stringify(fetched), swapsStr: JSON.stringify(swaps), returnArray});
+
+    return JSON.parse(JSON.stringify(returnArray));
+  }
+
+  private fetchSwaps(endDateSeconds: number, startDateSeconds: number): Promise<Array<ISwapRecord>> {
+    const uri = this.getBalancerSubgraphUrl();
+    const query = {
+      swaps: {
+        __args: {
+          first: 1000,
+          orderBy: "timestamp",
+          orderDirection: "desc",
+          where: {
+            poolId: this.lbp.poolId.toLowerCase(),
+            timestamp_gte: startDateSeconds,
+            timestamp_lte: endDateSeconds,
+          },
+        },
+        timestamp: true,
+        tokenAmountIn: true,
+        tokenAmountOut: true,
+      },
+    };
+
+    return axios.post(uri,
+      JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (response) => {
+        if (response.data.errors?.length) {
+          throw new Error(response.data.errors[0]);
+        }
+        return response.data?.data.swaps;
+      })
+      .catch((error) => {
+        // this.consoleLogService.handleFailure(
+        //   new EventConfigFailure(`Pool: Error fetching market cap history: ${error?.response?.data?.error?.message ?? error?.message}`));
+        console.log({
+          fetchSwapsError: error.message,
+          address: this.address,
+          id: this.lbp.poolId,
+        });
+
+        // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
+        // TODO:  restore the exception?
+        return [];
+      });
+  }
+
+  private async hydrateHistoricalMarketCap(): Promise<void> {
+    this.historicalMarketCap = await this.getMarketCapHistory(30);
+    console.log("hist", this.historicalMarketCap);
+
+  }
+
 }
 

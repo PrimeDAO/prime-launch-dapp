@@ -2,6 +2,7 @@
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <require from="./tokenDistribution/tokenDistribution"></require>
+  <require from="./sparkChart/spark-chart"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="section section1">
@@ -19,6 +20,9 @@
       </div>
       <div class="section section2">
         <div class="graph">the graph</div>
+          <div class="sparkChart">
+            <spark-chart data.bind="lbpMgr.historicalMarketCap" height="32"></spark-chart>
+          </div>
         <div class="form">
           <lbpdashboardform lbp-manager.bind="lbpMgr"></lbpdashboardform>
         </div>
