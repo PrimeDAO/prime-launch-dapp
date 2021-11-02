@@ -4,6 +4,7 @@ import { ContractNames, ContractsService } from "services/ContractsService";
 import { autoinject } from "aurelia-framework";
 import { NumberService } from "services/NumberService";
 import { Vault } from "entities/Vault";
+import { BigNumber } from "ethers";
 
 @autoinject
 export class Lbp {
@@ -66,5 +67,16 @@ export class Lbp {
     if (this.vault) {
       this.vault.loadContracts();
     }
+  }
+
+  public getSwapEnabled(): Promise<boolean> {
+    /**
+     * Should be able to remove this once LBPManager implements it
+     */
+    return this.contract.getSwapEnabled();
+  }
+
+  public balanceOfPoolTokens(address: Address): Promise<BigNumber> {
+    return this.contract.balanceOf(address);
   }
 }

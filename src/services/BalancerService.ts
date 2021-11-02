@@ -135,32 +135,34 @@ export class BalancerService {
       console.log("Return Amount is 0. No swaps to execute.");
       return;
     }
-    if (swapInfo.tokenIn !== AddressZero) {
-      // Vault needs approval for swapping non ETH
-      console.log("Checking vault allowance...");
+    // if (swapInfo.tokenIn !== AddressZero) {
+    // Vault needs approval for swapping non ETH
 
-      const tokenInContract = this.contractsService.getContractAtAddress(ContractNames.ERC20, swapInfo.tokenIn);
+    // commenting out cuz we're making the caller responsible
+    // console.log("Checking vault allowance...");
 
-      let allowance = await tokenInContract.allowance(
-        this.ethereumService.defaultAccountAddress,
-        BalancerService.VaultAddress,
-      );
+    // const tokenInContract = this.contractsService.getContractAtAddress(ContractNames.ERC20, swapInfo.tokenIn);
 
-      if (allowance.lt(swapInfo.swapAmount)) {
-        console.log(
-          `Not Enough Allowance: ${allowance.toString()}. Approving vault now...`,
-        );
-        const txApprove = await tokenInContract.approve(BalancerService.VaultAddress, MaxUint256);
-        await txApprove.wait();
-        console.log(`Allowance updated: ${txApprove.hash}`);
-        allowance = await tokenInContract.allowance(
-          this.ethereumService.defaultAccountAddress,
-          BalancerService.VaultAddress,
-        );
-      }
+    // let allowance = await tokenInContract.allowance(
+    //   this.ethereumService.defaultAccountAddress,
+    //   BalancerService.VaultAddress,
+    // );
 
-      console.log(`Allowance: ${allowance.toString()}`);
-    }
+    // if (allowance.lt(swapInfo.swapAmount)) {
+    //   console.log(
+    //     `Not Enough Allowance: ${allowance.toString()}. Approving vault now...`,
+    //   );
+    //   const txApprove = await tokenInContract.approve(BalancerService.VaultAddress, MaxUint256);
+    //   await txApprove.wait();
+    //   console.log(`Allowance updated: ${txApprove.hash}`);
+    //   allowance = await tokenInContract.allowance(
+    //     this.ethereumService.defaultAccountAddress,
+    //     BalancerService.VaultAddress,
+    //   );
+    // }
+
+    // console.log(`Allowance: ${allowance.toString()}`);
+    // }
 
     const vaultContract = this.contractsService.getContractAtAddress(ContractNames.VAULT, BalancerService.VaultAddress);
 

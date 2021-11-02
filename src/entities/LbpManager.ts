@@ -62,6 +62,7 @@ export class LbpManager implements ILaunch {
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
   // private userFundingTokenBalance: BigNumber;
+  public poolTokenBalance: BigNumber;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -238,8 +239,10 @@ export class LbpManager implements ILaunch {
   }
 
   public async hydatePaused(): Promise<boolean> {
-    this.isPaused = false; // TODO: await this.contract.paused();
-    return this.isPaused;
+    /**
+     * TODO: use the LBPManager `getSwapEnabled` if it every becomes available
+     */
+    return this.isPaused = !(await this.lbp.getSwapEnabled());
   }
 
   private async hydrateUser(): Promise<void> {
@@ -278,6 +281,7 @@ export class LbpManager implements ILaunch {
       this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
+      this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
       this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
         this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
         this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
@@ -293,6 +297,14 @@ export class LbpManager implements ILaunch {
 
   private async hydrateLbp(): Promise<Lbp> {
     return this.lbp = await this.createLbp(await this.contract.lbp());
+  }
+
+  // public fundingTokenAllowance(): Promise<BigNumber> {
+  //   return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+  // }
+
+  public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.fundingTokenContract.approve(this.lbp.vault.address, amount));
   }
 
   public fund(): Promise<TransactionReceipt> {
@@ -328,21 +340,10 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
         if (receipt) {
-          this.hydrate();
+          this.hydatePaused();
           return receipt;
         }
       });
-  }
-
-  public swap() {
-    // return this.transactionsService.send(
-    //   () => this.lbp.swap())
-    //   .then(async receipt => {
-    //     if (receipt) {
-    //       this.hydrate();
-    //       return receipt;
-    //     }
-    //   });
   }
 }
 

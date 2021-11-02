@@ -1,3 +1,5 @@
+import { TransactionReceipt } from "@ethersproject/providers";
+import { Router } from "aurelia-router";
 import { NumberService } from "./../../services/NumberService";
 import { ITokenInfo } from "./../../services/TokenTypes";
 import { computedFrom, customElement, observable } from "aurelia-framework";
@@ -19,12 +21,13 @@ import TransactionsService, { TransactionResponse } from "services/TransactionsS
 export class lbpDashboardForm {
   @bindable lbpManager: LbpManager;
   fundingTokenInfo: ITokenInfo = {} as unknown as ITokenInfo;
-  fundingTokenBalance: BigNumber;
+  userFundingTokenBalance: BigNumber;
   tokenList: Array<string>;
   @observable fundingTokensToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
   sorSwapInfo: SwapInfo;
+  userFundingTokenAllowance: BigNumber;
 
   // @computedFrom("amountToPay", "lbpManager.projectTokensPerFundingToken")
   // get projectTokensToPurchase(): BigNumber {
@@ -49,11 +52,29 @@ export class lbpDashboardForm {
     private tokenListService: TokenListService,
     private numberService: NumberService,
     private balancerService: BalancerService,
+    private router: Router,
     private transactionsService: TransactionsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
+  }
+
+  @computedFrom("userFundingTokenBalance", "fundingTokensToPay")
+  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokensToPay ?? "0"); }
+
+  @computedFrom("userFundingTokenAllowance", "fundingTokensToPay")
+  get lockRequired(): boolean {
+    return this.userFundingTokenAllowance?.lt(this.fundingTokensToPay ?? "0");
+  }
+
+  @computedFrom("lbpManager.userHydrated", "ethereumService.defaultAccountAddress")
+  get connected(): boolean {
+    return !!this.ethereumService.defaultAccountAddress && this.lbpManager?.userHydrated;
+  }
+
+  private fundingTokensToPayChanged(): void {
+    this.getProjectTokensToPurchase();
   }
 
   async attached(): Promise<void> {
@@ -68,29 +89,24 @@ export class lbpDashboardForm {
     }
   }
 
-  @computedFrom("lbpManager.userHydrated", "ethereumService.defaultAccountAddress")
-  get connected(): boolean {
-    return !!this.ethereumService.defaultAccountAddress && this.lbpManager?.userHydrated;
-  }
-
   connect(): void {
     this.ethereumService.ensureConnected();
   }
 
   async hydrateUserData(): Promise<void> {
-    this.tokenChanged();
-    if (this.ethereumService.defaultAccountAddress) {
+    if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
+      const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
+      this.userFundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
+      this.userFundingTokenAllowance = await tokenContract.allowance(this.ethereumService.defaultAccountAddress, this.lbpManager.lbp.vault.address);
+    } else {
+      this.userFundingTokenAllowance = null;
+      this.userFundingTokenBalance = null;
     }
   }
 
   async tokenChanged(): Promise<void> {
     this.fundingTokensToPay = null;
-    if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
-      const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
-      this.fundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-    } else {
-      this.fundingTokenBalance = null;
-    }
+    this.hydrateUserData();
   }
 
   async getProjectTokensToPurchase(): Promise<void> {
@@ -114,13 +130,6 @@ export class lbpDashboardForm {
           } else {
             this.projectTokensToPurchase = BigNumber.from(0);
           }
-          // this won't work without creating an allowance on the fundingToken
-          // this.projectTokensToPurchase =
-          //   await this.lbpManager.lbp.vault.swap(
-          //     this.fundingTokensToPay,
-          //     this.fundingTokenInfo.address,
-          //     this.lbpManager.projectTokenInfo.address,
-          //     true) as BigNumber;
         }
       } catch (ex) {
         this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -130,50 +139,66 @@ export class lbpDashboardForm {
     }
   }
 
-  private fundingTokensToPayChanged(): void {
-    this.getProjectTokensToPurchase();
+  async validatePaused(): Promise<boolean> {
+    const paused = await this.lbpManager.hydatePaused();
+    if (paused) {
+      this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
+      this.router.navigate("/home");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async unlockFundingTokens(): Promise<void> {
+    if (await this.validatePaused()) {
+      return;
+    }
+
+    // if (await this.disclaimSeed()) {
+    this.lbpManager.unlockFundingTokens(this.fundingTokensToPay)
+      .then((receipt) => {
+        if (receipt) {
+          this.hydrateUserData();
+        }
+      });
+    // }
   }
 
   async swap(): Promise<void> {
-    // if (await this.validatePaused()) {
-    //   return;
-    // }
+    if (await this.validatePaused()) {
+      return;
+    }
 
-    // if (!this.fundingTokensToPay?.gt(0)) {
-    //   this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute`);
-    // } else if (this.lbpManager.userFundingTokenBalance.lt(this.fundingTokensToPay)) {
-    //   this.eventAggregator.publish("handleValidationError", `Your ${this.lbpManager.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
-    // } else if (this.fundingTokensToPay.add(this.lbpManager.amountRaised).gt(this.lbpManager.cap)) {
-    //   this.eventAggregator.publish("handleValidationError", `The amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute will cause the funding maximum to be exceeded`);
-    // } else if (this.lockRequired) {
-    //   this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the Seed contract`);
-    // } else if (await this.disclaimSeed()) {
+    if (!this.fundingTokensToPay?.gt(0)) {
+      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute`);
+    } else if (this.userFundingTokenBalance.lt(this.fundingTokensToPay)) {
+      this.eventAggregator.publish("handleValidationError", `Your ${this.lbpManager.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+    } else if (this.lockRequired) {
+      this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the LbpManager contract`);
+    }
+    // else if (await this.disclaimSeed()) {
+
+    let promise: Promise<TransactionReceipt>;
 
     if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
       if (this.sorSwapInfo) {
-        this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
+        promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
       }
     } else {
-      const fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
-
-      const receipt = await this.transactionsService.send(() => fundingTokenContract.approve(this.lbpManager.lbp.vault.address, this.fundingTokensToPay));
-
-      if (receipt) {
-        this.transactionsService.send(() =>
-          this.lbpManager.lbp.vault.swap(
-            this.fundingTokensToPay,
-            this.fundingTokenInfo.address,
-            this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
-      }
+      promise = this.transactionsService.send(() =>
+        this.lbpManager.lbp.vault.swap(
+          this.fundingTokensToPay,
+          this.fundingTokenInfo.address,
+          this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
     }
 
-    //     .then(async (receipt) => {
-    //       if (receipt) {
-    //         await this.hydrateUserData();
-    //         this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.lbpManager.fundingTokenInfo.symbol} to ${this.lbpManager.metadata.general.projectName}!`);
-    //         this.fundingTokensToPay = null;
-    //       }
-    //     });
-    // }
+    promise.then(async (receipt) => {
+      if (receipt) {
+        await this.hydrateUserData();
+        // this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.lbpManager.fundingTokenInfo.symbol} to ${this.lbpManager.metadata.general.projectName}!`);
+        this.fundingTokensToPay = null;
+      }
+    });
   }
 }
