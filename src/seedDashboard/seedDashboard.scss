@@ -265,7 +265,10 @@
 
           .equals {
             grid-area: equals;
+            font-size: 24px;
             text-align: center;
+            position: relative;
+            bottom: 2px;
           }
 
           .output {
