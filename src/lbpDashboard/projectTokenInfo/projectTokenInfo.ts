@@ -17,6 +17,12 @@ export class ProjectTokenInfo {
     }
   }
 
+  // can't find a way to do this in a expression in the HTML that doesn't break the compiler
+  @computedFrom("fundingTokenTrend")
+  get fundingTokenTrendSign(): string {
+    return ((this.fundingTokenTrend > 0) ? "+" : (this.fundingTokenTrend < 0) ? "-" : "" );
+  }
+
   @computedFrom("lbpMgr.fundingTokenInfo.priceChangePercentage_24h")
   get absolutePriceChange(): number {
     return Math.abs(this.lbpMgr?.fundingTokenInfo?.priceChangePercentage_24h);
