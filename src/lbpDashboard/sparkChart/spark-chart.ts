@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-framework";
 import "./spark-chart.scss";
-import { createChart, CrosshairMode, IChartApi } from "lightweight-charts";
+import { createChart, CrosshairMode, IChartApi, ISeriesApi } from "lightweight-charts";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { NumberService } from "services/numberService";
 
@@ -11,6 +11,7 @@ export class SparkChart {
   @bindable.number height = 300;
 
   chart: IChartApi;
+  series: ISeriesApi<"Area">;
 
   container: HTMLElement;
   sparkChart: HTMLElement;
@@ -19,9 +20,24 @@ export class SparkChart {
   }
 
   attached(): void {
-    console.log(this.data);
+    window.onresize = () => {
+      /**
+       * don't resize when the element is hidden, or height will go permanently to 0
+       */
+      setTimeout(() => {
+        if (this.chart) {
+          this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+        }
+      }, 200);
+    };
+  }
 
-    if (!this.chart) {
+  detached(): void {
+    window.onresize = undefined;
+  }
+
+  dataChanged(): void {
+    if (this.data && !this.chart) {
       const options: any = { // DeepPartial<ChartOptions> = {
         width: 0,
         height: this.height,
@@ -76,7 +92,7 @@ export class SparkChart {
       this.chart = createChart(this.sparkChart, options);
 
       const color = "#8668FC";
-      const series = this.chart.addAreaSeries({
+      this.series = this.chart.addAreaSeries({
         lineColor: color,
         topColor: `${color}ff`,
         bottomColor: `${color}00`,
@@ -90,19 +106,10 @@ export class SparkChart {
           })}`,
         },
       });
+    }
 
-      series.setData(this.data);
-
-      window.onresize = () => {
-        /**
-         * don't resize when the element is hidden, or height will go permanently to 0
-         */
-        setTimeout(() => {
-          if (this.chart) {
-            this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-          }
-        }, 200);
-      };
+    if (this.data && this.chart) {
+      this.series.setData(this.data);
     }
   }
 
@@ -115,9 +122,5 @@ export class SparkChart {
     height -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
     width -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
     return { height, width };
-  }
-
-  detached(): void {
-    window.onresize = undefined;
   }
 }
