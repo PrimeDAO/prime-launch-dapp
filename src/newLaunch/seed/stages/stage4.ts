@@ -204,7 +204,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       !await this.disclaimerService.confirmMarkdown(this.launchConfig.launchDetails.legalDisclaimer)) {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
-      message = "Please enter a valid wallet address for Seed Administrator";
+      message = "Please enter a valid wallet address for the Seed Administrator";
     }
 
     this.stageState.verified = !message;
