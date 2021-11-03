@@ -187,7 +187,8 @@ export class BalancerService {
           token.toLowerCase() === swapInfo.tokenOut.toLowerCase()
         ) {
           limits[i] = swapInfo.returnAmount
-            .mul(-1) // was -0.99 but that crashes
+            .mul(-99)
+            .div(100)
             .toString()
             .split(".")[0];
         } else {
@@ -202,7 +203,8 @@ export class BalancerService {
           token.toLowerCase() === swapInfo.tokenOut.toLowerCase()
         ) {
           limits[i] = swapInfo.swapAmount
-            .mul(-1) // was -0.99 but that crashes
+            .mul(-99)
+            .div(100)
             .toString()
             .split(".")[0];
         } else {
