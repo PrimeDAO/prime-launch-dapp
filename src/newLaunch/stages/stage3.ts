@@ -109,6 +109,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
 
     else if (!message && (!this.launchConfig.tokenDetails.maxSupply || (this.launchConfig.tokenDetails.maxSupply === "0"))) {
       message = "Please enter a number greater than zero for Maximum Supply";
+    } else if (!message && this.launchConfig.tokenDetails.tokenDistrib?.length === 0) {
+      message = "Please add at least one stakeholder group distribution";
     // } else if (this.launchConfig.launchDetails.fundingMax && this.launchConfig.launchDetails.pricePerToken &&
     //   this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
     //   this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
@@ -132,8 +134,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           totalDistribAmount = totalDistribAmount.add(tokenDistrb.amount);
         }
       });
-      if (!message && totalDistribAmount.gt(this.launchConfig.tokenDetails.maxSupply)) {
-        message = "The sum of the Project Token Global Distributions should not be greater than the Maximum Supply of Project tokens";
+      if (!message && !totalDistribAmount.eq(this.launchConfig.tokenDetails.maxSupply)) {
+        message = "The sum of the Project Token Global Distributions must equal the Maximum Supply of Project tokens";
       }
     }
     this.stageState.verified = !message;
