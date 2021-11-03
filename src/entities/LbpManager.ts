@@ -455,7 +455,7 @@ export class LbpManager implements ILaunch {
       startingDate = this.dateService.midnightOf(this.startTime);
     }
     const startingSeconds = startingDate.valueOf() / 1000;
-    const daySeconds = 24 * 60 * 60;
+    const hourSeconds = 60 * 60;
     const tomorrow = this.dateService.tomorrow; // midnight of today
     const tomorrowSeconds = tomorrow.valueOf() / 1000;
     /**
@@ -485,11 +485,11 @@ export class LbpManager implements ILaunch {
       /**
        * enumerate every day
        */
-      for (let timestamp = startingSeconds; timestamp < tomorrowSeconds; timestamp += daySeconds) {
+      for (let timestamp = startingSeconds; timestamp < tomorrowSeconds; timestamp += hourSeconds) {
 
         const dateString = new Date(timestamp * 1000).toISOString();
         const todaysSwaps = new Array<ISwapRecord>();
-        const nextDay = timestamp + daySeconds;
+        const nextDay = timestamp + hourSeconds;
 
         if (swaps.length) {
         // eslint-disable-next-line no-constant-condition
