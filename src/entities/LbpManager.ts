@@ -259,7 +259,7 @@ export class LbpManager implements ILaunch {
     /**
      * TODO: use the LBPManager `getSwapEnabled` if it every becomes available
      */
-    return this.isPaused = !(await this.lbp.getSwapEnabled());
+    return this.isPaused = !((await this.lbp?.getSwapEnabled()) ?? true);
   }
 
   private async hydrateUser(): Promise<void> {
@@ -307,8 +307,6 @@ export class LbpManager implements ILaunch {
       this.projectTokensPerFundingToken = 1.0 / this.fundingTokensPerProjectToken;
       // USD price of a project token
       this.projectTokenInfo.price = this.fundingTokensPerProjectToken * this.fundingTokenInfo.price;
-    } else {
-      this.projectTokensPerFundingToken = undefined;
     }
   }
 
