@@ -39,6 +39,10 @@
       gap: 16px;
       flex-flow: row nowrap;
       align-items: center;
+
+      .value {
+        font-size: 18px;
+      }
     }
     .timeLine {
       width: 40px;
