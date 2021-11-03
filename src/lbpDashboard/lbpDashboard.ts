@@ -12,7 +12,6 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { CongratulationsService } from "services/CongratulationsService";
 
 @autoinject
 export class lbpDashboard {
@@ -29,7 +28,6 @@ export class lbpDashboard {
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
-    private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();

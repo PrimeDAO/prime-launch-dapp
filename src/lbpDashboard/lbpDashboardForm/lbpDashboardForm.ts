@@ -16,6 +16,7 @@ import { EventConfigException } from "services/GeneralEvents";
 import { SwapInfo } from "@balancer-labs/sor";
 import { BalancerService } from "services/BalancerService";
 import TransactionsService, { TransactionResponse } from "services/TransactionsService";
+import { CongratulationsService } from "services/CongratulationsService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -55,6 +56,7 @@ export class lbpDashboardForm {
     private balancerService: BalancerService,
     private router: Router,
     private transactionsService: TransactionsService,
+    private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -197,7 +199,7 @@ export class lbpDashboardForm {
       promise.then(async (receipt) => {
         if (receipt) {
           await this.hydrateUserData();
-          // this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.lbpManager.fundingTokenInfo.symbol} to ${this.lbpManager.metadata.general.projectName}!`);
+          this.congratulationsService.show(`You have purchased some ${this.lbpManager.projectTokenInfo.name} and in so doing have contributed for the benefit of ${this.lbpManager.metadata.general.projectName}!`);
           this.fundingTokensToPay = null;
         }
       });
