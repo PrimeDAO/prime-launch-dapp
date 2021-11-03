@@ -34,7 +34,6 @@
         <div class="infoInput">
           <label for="ppt">Project Token Exchange Ratio</label>
           <div class="pptContainer">
-            <div class="text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> =</div>
             <numeric-input
               output-as-string="true"
               id="ppt"
@@ -42,8 +41,7 @@
               not-wei
               placeholder="1.5">
             </numeric-input>
-
-            <div class="text">Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+              <div class="text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> = ${launchConfig.launchDetails.pricePerToken ? launchConfig.launchDetails.pricePerToken : '1.5'} Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel></div>
             </div>
           </div>
         </div>
