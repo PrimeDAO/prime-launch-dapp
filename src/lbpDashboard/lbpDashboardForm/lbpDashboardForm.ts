@@ -116,14 +116,12 @@ export class lbpDashboardForm {
     if (this.fundingTokensToPay?.gt(0)) {
       try {
         if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-          if (this.ethereumService.targetedNetwork !== Networks.Rinkeby) {
-            this.sorSwapInfo =
+          this.sorSwapInfo =
             await this.balancerService.getSwapFromSor(
               this.fundingTokensToPay,
               this.fundingTokenInfo,
               this.lbpManager.projectTokenInfo) as SwapInfo;
-            this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
-          }
+          this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
         } else {
           this.sorSwapInfo= null;
           if (this.fundingTokensToPay?.gt(0)) {
