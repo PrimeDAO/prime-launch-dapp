@@ -276,9 +276,9 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateTokensState(): Promise<void> {
+    this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
+    this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
-      this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
-      this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
