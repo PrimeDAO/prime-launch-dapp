@@ -438,9 +438,7 @@ export class LbpManager implements ILaunch {
   }
 
   public async getMarketCapHistory(maxDays?: number): Promise<Array<IHistoricalMarketCapRecord>> {
-    if (!this.lbp || !this.lbp.poolId) {
-      console.log("No Pool ID");
-
+    if (!this.lbp || !this.lbp.poolId || this.uninitialized) {
       return [];
     }
 
@@ -537,11 +535,12 @@ export class LbpManager implements ILaunch {
           });
         }
       }
+
+      console.log("returnArray:");
+      console.log(returnArray);
     }
 
-    console.log("fetched", {fetched: JSON.stringify(fetched), swapsStr: JSON.stringify(swaps), returnArray});
-
-    return JSON.parse(JSON.stringify(returnArray));
+    return returnArray;
   }
 
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number): Promise<Array<ISwapRecord>> {
@@ -595,7 +594,10 @@ export class LbpManager implements ILaunch {
 
   private async hydrateHistoricalMarketCap(): Promise<void> {
     this.historicalMarketCap = await this.getMarketCapHistory(30);
-    console.log("hist", this.historicalMarketCap);
+    if (this.historicalMarketCap.length) {
+      console.log("hist");
+      console.log(this.historicalMarketCap);
+    }
 
   }
 
