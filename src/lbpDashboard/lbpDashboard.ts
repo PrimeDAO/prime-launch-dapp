@@ -83,7 +83,7 @@ export class lbpDashboard {
       this.lbpMgr = lbpmgr;
       await this.hydrateUserData();
 
-      this.disclaimLbp();
+      // this.disclaimLbp();
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
