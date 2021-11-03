@@ -483,7 +483,7 @@ export class LbpManager implements ILaunch {
        */
       for (let timestamp = startingSeconds; timestamp < tomorrowSeconds; timestamp += hourSeconds) {
 
-        const dateString = new Date(timestamp * 1000).toISOString();
+        const dateString = this.dateService.toISOString(new Date(timestamp * 1000)); // uses local timezone
         const todaysSwaps = new Array<ISwapRecord>();
         const nextDay = timestamp + hourSeconds;
 
