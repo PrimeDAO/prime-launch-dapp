@@ -1,7 +1,7 @@
 import { ContractNames, ContractsService } from "services/ContractsService";
 /* eslint-disable no-console */
 import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
-import { MaxUint256, AddressZero } from "@ethersproject/constants";
+import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { EthereumService, fromWei, Networks } from "services/EthereumService";
 import { autoinject } from "aurelia-dependency-injection";
@@ -166,14 +166,7 @@ export class BalancerService {
 
     const vaultContract = this.contractsService.getContractAtAddress(ContractNames.VAULT, BalancerService.VaultAddress);
 
-    type FundManagement = {
-      sender: string;
-      recipient: string;
-      fromInternalBalance: boolean;
-      toInternalBalance: boolean;
-    };
-
-    const funds: FundManagement = {
+    const funds = {
       sender: this.ethereumService.defaultAccountAddress,
       recipient: this.ethereumService.defaultAccountAddress,
       fromInternalBalance: false,
