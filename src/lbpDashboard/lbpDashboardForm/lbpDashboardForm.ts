@@ -176,9 +176,11 @@ export class lbpDashboardForm {
     }
 
     if (!this.fundingTokensToPay?.gt(0)) {
-      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.lbpManager.fundingTokenInfo.symbol} you wish to contribute`);
+      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.fundingTokenInfo.symbol} you wish to contribute`);
+    } else if (!this.projectTokensToPurchase?.gt(0)) {
+      this.eventAggregator.publish("handleValidationError", `No ${this.lbpManager.projectTokenInfo.symbol} are expected to be returned in this swap`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokensToPay)) {
-      this.eventAggregator.publish("handleValidationError", `Your ${this.lbpManager.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+      this.eventAggregator.publish("handleValidationError", `Your ${this.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else if (this.lockRequired) {
       this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.lbpManager.fundingTokenInfo.symbol} to the LbpManager contract`);
     }
