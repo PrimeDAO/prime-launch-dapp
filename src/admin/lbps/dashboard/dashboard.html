@@ -34,21 +34,23 @@
               </div>
               <div class="featureDescription">
                 ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
-                Note this will require your approval of three transactions.
               </div>
               <div class="featureDescription">
                 ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
+              </div>
+              <div class="featureDescription">
+                Note this will require your approval of three transactions.
               </div>
               <div class="button1 small" click.delegate="fund()">
                 Approve tokens and Fund
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.endTime < selectedLbp._now && selectedLbp.poolTokenBalance != 0">
+            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance != 0">
               <div class="featureTitle">
                 Remove Liquidity
               </div>
               <div class="featureDescription">
-                This will remove 
+                This will remove liquidity from the LBP and transfer to the address entered below.
               </div>
               <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
               <div class="button1 small" click.delegate="selectedLbp.withdraw(receiverAddress)">
@@ -60,12 +62,12 @@
                 ${selectedLbp.isPaused ? "Pause LBP" : "Unpause LBP"}
               </div>
               <div class="featureDescription">
-                ${selectedLbp.isPaused ? "Pausing" : "Unpausing"} will make swapping LBP ${selectedLbp.isPaused ? "inactive" : "active"}. As the administrator, you will be able to unpause the LBP.
+                ${selectedLbp.isPaused ? "Pausing" : "Unpausing"} will make swapping ${selectedLbp.isPaused ? "inactive" : "active"}. As the administrator, you will be able to unpause the LBP.
               </div>
-              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
+              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapDisabled()">
                 Pause Swapping
               </div>
-              <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+              <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled()">
                 UnPause Swapping
               </div>
             </div>
