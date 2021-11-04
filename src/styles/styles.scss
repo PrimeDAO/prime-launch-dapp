@@ -127,6 +127,16 @@ html {
       &:hover {
         text-decoration: underline;
       }
+
+      &.disabled {
+        color: $Neutral02;
+        cursor: not-allowed;
+        pointer-events: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
     }
 
     .heading {

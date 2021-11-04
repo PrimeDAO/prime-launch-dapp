@@ -87,11 +87,18 @@
           border-left: none;
           border-top-right-radius: 10px;
           border-bottom-right-radius: 10px;
-          input {
-            border: none;
-            background-color: transparent;
-            padding: 0;
-            margin-bottom: 2px;
+
+          .fundingInput {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 8px;
+            align-items: center;
+            input {
+              border: none;
+              background-color: transparent;
+              padding: 0;
+              margin-bottom: 2px;
+            }
           }
 
           .balance {

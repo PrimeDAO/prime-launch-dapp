@@ -17,11 +17,16 @@
             item-changed.call="tokenChanged(value,index)">
           </token-select>
           <div class="fundingAmount">
-            <numeric-input
-              disabled.to-view="!lbpManager.isLive || !fundingTokenInfo.address"
-              value.bind="fundingTokensToPay & debounce:500"
-              decimals.bind="fundingTokenInfo.decimals"
-              placeholder="0.0"></numeric-input>
+            <div class="fundingInput">
+              <numeric-input
+                disabled.to-view="!lbpManager.isLive || !fundingTokenInfo.address"
+                value.bind="fundingTokensToPay & debounce:500"
+                decimals.bind="fundingTokenInfo.decimals"
+                placeholder="0.0"></numeric-input>
+              <div class="maxButton">
+                <a href="#" class="${(!fundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
+              </div>
+            </div>
             <div class="balance">Balance: <formatted-number
                 value.bind="userFundingTokenBalance | ethwei:fundingTokenInfo.decimals"
                 default-text="N/A"
