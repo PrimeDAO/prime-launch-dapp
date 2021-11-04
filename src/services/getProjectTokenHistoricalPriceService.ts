@@ -57,7 +57,6 @@ export class GetProjectTokenHistoricalPriceService {
 
     /* Rounded to the nearest hour */
     const endTimeSeconds = Math.ceil(new Date().getTime() / hourSeconds / 1000) * hourSeconds; // rounded hour
-    console.log({startingSeconds, endTimeSeconds});
 
     /**
      * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
@@ -72,7 +71,8 @@ export class GetProjectTokenHistoricalPriceService {
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      const endDateSeconds = swaps.length ? swaps[swaps.length-1].timestamp : endTimeSeconds;
+      const endDateSeconds = endTimeSeconds;
+      // const endDateSeconds = swaps.length ? swaps[swaps.length-1].timestamp : endTimeSeconds;
       fetched = await this.fetchSwaps(endDateSeconds, startingSeconds);
       swaps = swaps.concat(fetched);
     } while (fetched.length === 1000);
@@ -180,11 +180,9 @@ export class GetProjectTokenHistoricalPriceService {
           /**
            * keep the previous value
            */
-
-          // const step = liquidityLast + (liquidityCurrent - liquidityLast) / timeSpan;
-
           returnArray.push({
             time: timestamp,
+            value: previousDay,
           });
         } else {
           returnArray.push({
