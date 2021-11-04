@@ -166,7 +166,7 @@ export class LbpManagerService {
       isKovan ? this.ethereumService.defaultAccountAddress : safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
-      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
+      [config.tokenDetails.projectTokenInfo.address.toLowerCase(), config.launchDetails.fundingTokenInfo.address.toLowerCase()],
       [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
       [toWei(config.launchDetails.startWeight / 100), toWei((100 - config.launchDetails.startWeight) / 100)],
       [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],
