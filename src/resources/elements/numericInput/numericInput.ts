@@ -30,11 +30,11 @@ export class NumericInput {
    * Else value us set to  whatever string the user types.
    * If nothing is entered, then value is set to `defaultText`.
    */
-  @bindable({ defaultBindingMode: bindingMode.twoWay }) public value: string | BigNumber;
+  @bindable({ defaultBindingMode: bindingMode.twoWay }) public value: number | BigNumber | string;
   /**
    * if true then value is converted from wei to eth for editing
    */
-  @bindable.booleanAttr public isWei?: boolean = true;
+  @bindable.booleanAttr public notWei?: boolean = false;
   /**
    * if isWei, then the number of decimals involved in the conversion
    */
@@ -62,7 +62,7 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
-          let value: BigNumber | string = this.isWei ? toWei(newValue, this.decimals) : newValue;
+          let value: BigNumber | number | string = this.notWei ? Number(newValue) : toWei(newValue, this.decimals);
           if (this.outputAsString) {
             value = value.toString();
           }
@@ -78,16 +78,16 @@ export class NumericInput {
     this.valueChanged(this.value, null);
   }
 
-  private valueChanged(newValue: string | BigNumber, oldValue: string | BigNumber ) {
-    if (!newValue) {
-      this._innerValue = this.defaultText || "";
-    } else if (newValue !== oldValue) {
+  private valueChanged(newValue: string | BigNumber | number, oldValue: string | BigNumber | number ) {
+    if ((newValue === undefined) || (newValue === null)) {
+      this._innerValue = this.defaultText || undefined;
+    } else if (newValue.toString() !== oldValue?.toString()) {
       try {
         let newStringValue: string;
-        if (this.isWei) {
-          newStringValue = fromWei(newValue.toString(), this.decimals);
-        } else {
+        if (this.notWei) {
           newStringValue = newValue.toString();
+        } else {
+          newStringValue = fromWei(newValue.toString(), this.decimals);
         }
         /**
          * don't let the new string reformat the user's input
@@ -96,7 +96,7 @@ export class NumericInput {
           this._innerValue = newStringValue;
         }
       } catch {
-        this.innerValue = "NaN";
+        this._innerValue = undefined;
       }
     }
   }
@@ -145,7 +145,7 @@ export class NumericInput {
   private keydown(e) {
     if (!this.isNavigationOrSelectionKey(e)) {
       // If it's not a number, prevent the keypress...
-      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+      if (isNaN(Number(e.key))) {
         e.preventDefault();
       }
     }

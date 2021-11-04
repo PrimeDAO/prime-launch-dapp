@@ -1,10 +1,13 @@
 @import "styles/colors.scss";
+
+$Radius: 40px;
+
 .circledNumber {
   border-radius: 50%;
   text-align: center;
   background-color: $Neutral02;
-  min-width: 41.6px;
-  height: 40px;
+  width: $Radius;
+  height: $Radius;
   &.active {
     background-color: $Secondary02;
   }
@@ -13,9 +16,6 @@
     font-family: Inter;
     font-weight: 600;
     font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+    line-height: $Radius;
   }
 }

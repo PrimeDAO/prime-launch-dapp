@@ -12,7 +12,6 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { CongratulationsService } from "services/CongratulationsService";
 
 @autoinject
 export class lbpDashboard {
@@ -29,7 +28,6 @@ export class lbpDashboard {
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
-    private congratulationsService: CongratulationsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -41,14 +39,14 @@ export class lbpDashboard {
     return !!this.ethereumService.defaultAccountAddress && this.lbpMgr?.userHydrated;
   }
 
-  // @computedFrom("lbpMgr", "ethereumService.defaultAccountAddress")
-  // private get lbpDisclaimerStatusKey() {
-  //   return `lbp-disclaimer-${this.lbpMgr?.address}-${this.ethereumService.defaultAccountAddress}`;
-  // }
+  @computedFrom("lbpMgr", "ethereumService.defaultAccountAddress")
+  private get lbpDisclaimerStatusKey() {
+    return `lbp-disclaimer-${this.lbpMgr?.address}-${this.ethereumService.defaultAccountAddress}`;
+  }
 
-  // private get lbpDisclaimed(): boolean {
-  //   return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
-  // }
+  private get lbpDisclaimed(): boolean {
+    return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
+  }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
     await this.lbpManagerService.ensureInitialized();
@@ -71,20 +69,19 @@ export class lbpDashboard {
         waiting = true;
         await this.lbpManagerService.ensureInitialized();
       }
-      const seed = this.lbpManagerService.lbpManagers.get(this.address);
-      if (seed.initializing) {
+      const lbpmgr = this.lbpManagerService.lbpManagers.get(this.address);
+      if (lbpmgr.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
           this.eventAggregator.publish("launches.loading", true);
           waiting = true;
         }
-        await seed.ensureInitialized();
+        await lbpmgr.ensureInitialized();
       }
-      this.lbpMgr = seed;
-
+      this.lbpMgr = lbpmgr;
       await this.hydrateUserData();
 
-      //this.disclaimSeed();
+      // this.disclaimLbp();
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -98,42 +95,42 @@ export class lbpDashboard {
   }
 
   async hydrateUserData(): Promise<void> {
-    // if (this.ethereumService.defaultAccountAddress) {
-    // }
+    if (this.ethereumService.defaultAccountAddress) {
+    }
   }
 
   connect(): void {
     this.ethereumService.ensureConnected();
   }
 
-  // async disclaimSeed(): Promise<boolean> {
+  async disclaimLbp(): Promise<boolean> {
 
-  //   let disclaimed = false;
+    let disclaimed = false;
 
-  //   if (!this.lbpMgr.metadata.lbpDetails.legalDisclaimer || this.lbpDisclaimed) {
-  //     disclaimed = true;
-  //   } else {
-  //     // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
-  //     const response = await this.disclaimerService.showDisclaimer(
-  //       this.lbpMgr.metadata.lbpDetails.legalDisclaimer,
-  //       `${this.lbpMgr.metadata.general.projectName} Disclaimer`,
-  //     );
+    if (!this.lbpMgr.metadata.launchDetails.legalDisclaimer || this.lbpDisclaimed) {
+      disclaimed = true;
+    } else {
+      // const response = await this.dialogService.disclaimer("https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/README.md");
+      const response = await this.disclaimerService.showDisclaimer(
+        this.lbpMgr.metadata.launchDetails.legalDisclaimer,
+        `${this.lbpMgr.metadata.general.projectName} Disclaimer`,
+      );
 
-  //     if (typeof response.output === "string") {
-  //     // then an error occurred
-  //       this.eventAggregator.publish("handleFailure", response.output);
-  //       disclaimed = false;
-  //     } else if (response.wasCancelled) {
-  //       disclaimed = false;
-  //     } else {
-  //       if (response.output) {
-  //         this.storageService.lsSet(this.lbpDisclaimerStatusKey, "true");
-  //       }
-  //       disclaimed = response.output as boolean;
-  //     }
-  //   }
-  //   return disclaimed;
-  // }
+      if (typeof response.output === "string") {
+      // then an error occurred
+        this.eventAggregator.publish("handleFailure", response.output);
+        disclaimed = false;
+      } else if (response.wasCancelled) {
+        disclaimed = false;
+      } else {
+        if (response.output) {
+          this.storageService.lsSet(this.lbpDisclaimerStatusKey, "true");
+        }
+        disclaimed = response.output as boolean;
+      }
+    }
+    return disclaimed;
+  }
 
   async validatePaused(): Promise<boolean> {
     const paused = await this.lbpMgr.hydatePaused();

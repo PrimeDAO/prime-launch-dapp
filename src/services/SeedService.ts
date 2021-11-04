@@ -1,3 +1,4 @@
+import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks, toWei } from "services/EthereumService";
@@ -13,8 +14,9 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
-import BigNumber, { toBigNumberJs } from "services/BigNumberService";
+import BigNumberJs, { toBigNumberJs } from "services/BigNumberService";
 import { Utils } from "services/utils";
+import { BigNumber } from "ethers";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
@@ -55,11 +57,6 @@ export class SeedService {
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
   ) {
-    /**
-     * otherwise singleton is the default
-     */
-    this.container.registerTransient(Seed);
-
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds.delete(seedAddress);
     });
@@ -154,6 +151,13 @@ export class SeedService {
     }
   }
 
+  private projectTokenPriceInWei(
+    pricePerTokenAsEth: number,
+    fundingToken: ITokenInfo,
+    projectToken: ITokenInfo): BigNumber {
+    return toWei(pricePerTokenAsEth, Seed.projectTokenPriceDecimals(fundingToken, projectToken));
+  }
+
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
 
     const seedConfigString = JSON.stringify(config);
@@ -174,23 +178,10 @@ export class SeedService {
       operation: 0,
     } as any;
 
-    const fundingTokenInfo = (await this.tokenService.getTokenInfoFromAddresses([config.launchDetails.fundingTokenInfo.address]))[0];
-    let pricePerToken: string;
-
-    try {
-      BigNumber.config({ DECIMAL_PLACES: fundingTokenInfo.decimals });
-      const numerator = toBigNumberJs(config.launchDetails.pricePerToken);
-
-      BigNumber.config({ DECIMAL_PLACES: config.tokenDetails.projectTokenInfo.decimals });
-      const denominator = toBigNumberJs(toWei(1, config.tokenDetails.projectTokenInfo.decimals));
-
-      const rawPrice = numerator.dividedBy(denominator).toString();
-      pricePerToken = toWei(rawPrice, 18).toString();
-    } catch (ex) {
-      throw new Error(ex);
-    } finally {
-      BigNumber.config({ DECIMAL_PLACES: 18 }); // just to reset cuz this is globally scoped
-    }
+    const pricePerToken = this.projectTokenPriceInWei(
+      config.launchDetails.pricePerToken,
+      config.launchDetails.fundingTokenInfo,
+      config.tokenDetails.projectTokenInfo);
 
     const seedArguments = [
       safeAddress,

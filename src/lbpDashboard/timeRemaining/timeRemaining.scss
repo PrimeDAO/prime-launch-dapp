@@ -1,0 +1,25 @@
+@import "styles/colors.scss";
+.timeRemainingContainer {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-evenly;
+  column-gap: 42px;
+
+  &.complete {
+    grid-template-columns: auto auto;
+
+    .timeRemaining {
+      display: none;
+    }
+  }
+
+  .label {
+    font-family: Aeonik;
+    font-size: 14px;
+    color: $Neutral03;
+  }
+  .value {
+    font-family: Inter;
+    font-size: 18px;
+  }
+}

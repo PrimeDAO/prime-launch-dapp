@@ -38,14 +38,14 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   constructor(
     eventAggregator: EventAggregator,
     private numberService: NumberService,
-    private ethereumService: EthereumService,
+    ethereumService: EthereumService,
     router: Router,
     tokenService: TokenService,
     private tokenListService: TokenListService,
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
   ) {
-    super(router, eventAggregator, tokenService);
+    super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
       this.startDate = undefined;
       this.endDate = undefined;
@@ -75,17 +75,11 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
     if (!this.tokenList) {
       // eslint-disable-next-line require-atomic-updates
-      if (process.env.NETWORK === "mainnet") {
+      if (this.ethereumService.targetedNetwork === "mainnet") {
         const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
         this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
       } else {
-        this.tokenList =
-          [
-            "0x80E1B5fF7dAdf3FeE78F60D69eF1058FD979ca64",
-            "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-            "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
-            "0x7ba433d48c43e3ceeb2300bfbf21db58eecdcd1a", // USDC having 6 decimals
-          ];
+        this.tokenList = this.tokenService.devFundingTokens;
       }
     }
   }
@@ -153,7 +147,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
     if (!Utils.isAddress(this.launchConfig.launchDetails.fundingTokenInfo.address)) {
       message = "Please select a Funding Token seed";
-    } else if (!this.launchConfig.launchDetails.pricePerToken || this.launchConfig.launchDetails.pricePerToken === "0") {
+    } else if (!this.launchConfig.launchDetails.pricePerToken) {
       message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.launchConfig.launchDetails.fundingTarget || this.launchConfig.launchDetails.fundingTarget === "0") {
       message = "Please enter a number greater than zero for the Funding Target";
@@ -165,8 +159,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
       this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
-      this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
-        this.numberService.fromString(fromWei(this.launchConfig.launchDetails.pricePerToken, this.launchConfig.launchDetails.fundingTokenInfo.decimals))) {
+      (this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
+        this.launchConfig.launchDetails.pricePerToken)) {
       message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!(this.launchConfig.launchDetails.vestingPeriod >= 0)) {
       message = "Please enter a number greater than zero for  \"Project tokens vested for\" ";
@@ -210,7 +204,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       !await this.disclaimerService.confirmMarkdown(this.launchConfig.launchDetails.legalDisclaimer)) {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
-      message = "Please enter a valid wallet address for Seed Administrator";
+      message = "Please enter a valid wallet address for the Seed Administrator";
     }
 
     this.stageState.verified = !message;

@@ -1,51 +1,26 @@
 <template>
+  <require from="./projectTokenInfo/projectTokenInfo"></require>
+  <require from="./lbpDashboardForm/lbpDashboardForm"></require>
+  <require from="./tokenDistribution/tokenDistribution"></require>
+  <require from="./timeRemaining/timeRemaining"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
-      <div class="section section1">
-        <div class="leftSection">
-          <div class="tokenId">
-            <div class="icon"><img src.to-view="lbpMgr.projectTokenInfo.logoURI"></img></div>
-            <div class="name">${lbpMgr.projectTokenInfo.name}</div>
-            <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
-          </div>
-          <div class="ratingInfo"></div>
-          <div class="projectTokenPrice">caret $ 3.14</div>
-          <div class="statusInfo">
-            <time-left launch.to-view="lbpMgr"></time-left>
-          </div>
-          <div class="projectTokenPriceChange">-0.12 (4.20%)</div>
-        </div>
-        <div class="rightSection">
-          <div class="timeRemaining label">TIME REMAINING</div>
-          <div class="timeRemaining value">hourglass 16:32 hr</div>
-          <div class="launchSupply label">LAUNCH SUPPLY</div>
-          <div class="launchSupply value">145.000</div>
-          <div class="averagePrice label">AVERAGE PRICE</div>
-          <div class="averagePrice value">$ 1.62</div>
-        </div>
+      <div class="tokenInfo">
+        <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
       </div>
-      <div class="section section2">
-        <div class="graph">the graph</div>
-        <div class="form">the form</div>
+      <div class="timeLeft">
+        <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="section section3">
-        <div class="about">
-          <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
-        </div>
-        <div class="tokenDistribution">
-          <div class="title heading heading3">Token Distribution</div>
-          <div class="piechart">piechart</div>
-          <div class="breakdown">
-            <div class="category">
-              <div class="name">square 20% - Team</div>
-              <div class="locked">lock 3 years locked</div>
-            </div>
-            <div class="category">
-              <div class="name">square 15% - Foundation</div>
-            </div>
-          </div>
-        </div>
+      <div class="graph">the graph</div>
+      <div class="form">
+        <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
+      </div>
+      <div class="about">
+        <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
+        <launch-about launch.to-view="lbpMgr" layout-type="twocolumn" launch-type="lbp"></launch-about>
+      </div>
+      <div class="distribution">
+        <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>
       </div>
     </div>
-  </div>
 </template>

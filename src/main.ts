@@ -15,6 +15,11 @@ import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
 import { LbpManagerService } from "services/LbpManagerService";
+import { Seed } from "entities/Seed";
+import { LbpManager } from "entities/LbpManager";
+import { Lbp } from "entities/Lbp";
+import { Vault } from "entities/Vault";
+import { BalancerService } from "services/BalancerService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -41,6 +46,14 @@ export function configure(aurelia: Aurelia): void {
   aurelia.start().then(async () => {
     aurelia.container.get(ConsoleLogService);
     try {
+    /**
+     * otherwise singleton is the default
+     */
+      aurelia.container.registerTransient(Seed);
+      aurelia.container.registerTransient(LbpManager);
+      aurelia.container.registerTransient(Lbp);
+      aurelia.container.registerTransient(Vault);
+
       const ethereumService = aurelia.container.get(EthereumService);
       ethereumService.initialize(
         process.env.NETWORK as AllowedNetworks ??
@@ -51,27 +64,27 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.get(ContractsService);
 
       const tokenService = aurelia.container.get(TokenService);
-
       await tokenService.initialize();
 
-      const seedService = aurelia.container.get(SeedService);
+      const balancerService = aurelia.container.get(BalancerService);
+      balancerService.initialize();
 
-      seedService.initialize();
-
-      const lbpService = aurelia.container.get(LbpManagerService);
-
-      lbpService.initialize();
+      const geoBlockService = aurelia.container.get(GeoBlockService);
+      await geoBlockService.initialize();
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));
 
-      const geoBlockService = aurelia.container.get(GeoBlockService);
-      geoBlockService.initialize();
+      const seedService = aurelia.container.get(SeedService);
+      seedService.initialize();
+
+      const lbpManagerService = aurelia.container.get(LbpManagerService);
+      lbpManagerService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
-      eventAggregator.publish("handleException", new EventConfigException("Sorry, couldn't connect to ethereum", ex));
-      alert(`Sorry, couldn't connect to ethereum: ${ex.message}`);
+      eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
+      alert(`Sorry, unable to initialize, possibly could not connect to ethereum: ${ex.message}`);
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });

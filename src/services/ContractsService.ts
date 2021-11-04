@@ -1,5 +1,5 @@
 import { BigNumber, Contract, ethers, Signer } from "ethers";
-import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo } from "services/EthereumService";
+import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, Networks } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
@@ -7,6 +7,8 @@ import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvide
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
   LBPMANAGER = "LBPManager"
+  , LBP = "LiquidityBootstrappingPool"
+  , VAULT = "Vault"
   , SEEDFACTORY = "SeedFactory"
   , SEED = "Seed"
   // , WETH = "WETH"
@@ -31,10 +33,11 @@ export class ContractsService {
   private static Contracts = new Map<ContractNames, Contract>([
     [ContractNames.LBPMANAGERFACTORY, null]
     , [ContractNames.LBPMANAGER, null]
+    // , [ContractNames.VAULT, null]
     , [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]
-    ,
+    , // not on kovan we delete some of these below
   ]);
 
   private initializingContracts: Promise<void>;
@@ -45,6 +48,14 @@ export class ContractsService {
   constructor(
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService) {
+
+    /**
+     * gnosis safe isn't on kovan, but we need kovan for testing balancer
+     */
+    if (this.ethereumService.targetedNetwork === Networks.Kovan) {
+      ContractsService.Contracts.delete(ContractNames.SEED);
+      ContractsService.Contracts.delete(ContractNames.SIGNER);
+    }
 
     this.eventAggregator.subscribe("Network.Changed.Account", (account: Address): void => {
       if (account !== this.accountAddress) {

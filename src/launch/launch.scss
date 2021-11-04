@@ -27,12 +27,16 @@
     flex: 1;
     gap: 24px;
     justify-content: center;
+    
     .title {
       font-size: 36px;
       line-height: 65px;
     }
     > div {
-      width: 40%;
+      width: 45%;
+    }
+    > div:last-child {
+      width: 48%;
     }
 
     .launch-box-container {
@@ -64,12 +68,13 @@
         flex-flow: row wrap;
         align-items: center;
         justify-content: space-between;
-
         .buttonContainer {
           text-align: center;
           font-size: 8px;
           border-radius: 32px;
+          
           a {
+            
             font-weight: 600;
             text-decoration: none;
             color: $White;
@@ -83,10 +88,12 @@
         }
 
         .moreInfoContainer {
+          
           a {
             @include standardTextGradient;
             &:hover {
               border-bottom: 1px solid $Secondary02;
+              text-decoration: none;
             }
           }
         }
@@ -147,6 +154,9 @@
       flex-flow: column;
       align-items: center;
       > div {
+        width: 100%;
+      }
+      > div:last-child {
         width: 100%;
       }
       .launch-box-container {

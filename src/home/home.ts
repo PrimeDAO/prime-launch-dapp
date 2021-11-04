@@ -42,7 +42,7 @@ export class Home {
         }
         this.eventAggregator.publish("showMessage", "Your email address has been submitted!");
       } catch (ex) {
-        this.eventAggregator.publish("handleException", `Sorry, we are enable to submit the email: ${ex?.message ?? ex}`);
+        this.eventAggregator.publish("handleException", `Sorry, we are enable to submit the email: ${ex.error?.message ?? ex?.reason ?? ex?.message ?? ex}`);
       }
     }
   }

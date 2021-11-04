@@ -14,6 +14,7 @@ import { ContractNames, ContractsService, IStandardEvent } from "services/Contra
 import { EventConfigException } from "services/GeneralEvents";
 import { Utils } from "services/utils";
 import { api } from "services/GnosisService";
+import { TransactionReceipt } from "@ethersproject/providers";
 
 export interface ILBPManagerDeployedEventArgs {
   lbpManager: Address;
@@ -25,8 +26,8 @@ export interface ILBPManagerDeployedEventArgs {
 export class LbpManagerService {
 
   public lbpManagers: Map<Address, LbpManager>;
-  public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
-  public static lbpSwapFee = .1; // If the value is ever > 0, then should be a fraction like 0.1 to represent 1%
+  public static lbpFee = 0.0; // If the value is ever > 0, then should be a fraction like 0.01 to represent 1%
+  public static lbpSwapFee = .01; // If the value is ever > 0, then should be a fraction like 0.01 to represent 1%
 
   @computedFrom("lbps.size")
   public get lbpManagersArray(): Array<LbpManager> {
@@ -53,17 +54,14 @@ export class LbpManagerService {
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
   ) {
-    /**
-     * otherwise singleton is the default
-     */
-    this.container.registerTransient(LbpManager);
-
     this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
-      13372668 : 9423409;
+    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ? 13372668 :
+      (this.ethereumService.targetedNetwork === Networks.Rinkeby) ? 9423409
+        : 28079815; // kovan
+
   }
 
 
@@ -149,6 +147,8 @@ export class LbpManagerService {
 
   public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
 
+    const isKovan = this.ethereumService.targetedNetwork === Networks.Kovan;
+
     const lbpConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
@@ -161,15 +161,9 @@ export class LbpManagerService {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
 
-    const transaction = {
-      to: lbpManagerFactory.address,
-      value: 0,
-      operation: 0,
-    } as any;
-
     const lbpArguments = [
       config.launchDetails.adminAddress,
-      safeAddress,
+      isKovan ? this.ethereumService.defaultAccountAddress : safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
@@ -180,6 +174,18 @@ export class LbpManagerService {
       [toWei(LbpManagerService.lbpSwapFee), toWei(LbpManagerService.lbpFee)],
       Utils.asciiToHex(metaDataHash),
     ];
+
+
+    if (this.ethereumService.targetedNetwork === Networks.Kovan) {
+      await this.deployLbpManagerDirectly(lbpArguments);
+      return metaDataHash;
+    }
+
+    const transaction = {
+      to: lbpManagerFactory.address,
+      value: 0,
+      operation: 0,
+    } as any;
 
     transaction.data = (await lbpManagerFactory.populateTransaction.deployLBPManager(...lbpArguments)).data;
 
@@ -250,4 +256,10 @@ export class LbpManagerService {
     return metaDataHash;
   }
 
+  private async deployLbpManagerDirectly(callParams: Array<any>): Promise<TransactionReceipt> {
+
+    const factory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
+
+    return factory.deployLBPManager(...callParams);
+  }
 }

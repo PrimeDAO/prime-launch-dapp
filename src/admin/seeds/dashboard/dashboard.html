@@ -59,7 +59,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.addToWhitelist(addressToAdd)">
+                <div class="button1 small" click.delegate="addToWhiteList()">
                   Add to whitelist
                 </div>
               </div>
@@ -73,7 +73,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.removeFromWhitelist(addressToRemove)">
+                <div class="button1 small" click.delegate="removeFromWhiteList()">
                   Remove from whitelist
                 </div>
               </div>
@@ -87,7 +87,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="selectedSeed.retrieveProjectTokens(receiverAddress)">
+                <div class="button1 small" click.delegate="retrieveProjectTokens()">
                   Retrieve Project Tokens
                 </div>
               </div>

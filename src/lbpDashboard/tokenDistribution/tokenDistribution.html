@@ -1,0 +1,20 @@
+<template>
+  <div if.bind='tokenDetails' class="tokenDistribution">
+    <div class="heading">
+      <div class="heading heading3">Token Distribution</div>
+    </div>
+    <div class="container">
+      <div class="list">
+        <div class="item" repeat.for="stakeholder of tokenDetails.tokenDistrib">
+          <div class="primaryData">
+            <span class="amount">${percentageHeld(tokenDetails.maxSupply, stakeholder.amount)}%</span>
+            &ndash; ${stakeholder.stakeHolder}
+          </div>
+          <div class="secondaryData">
+            <i class="fa fa-lock"></i>${displayLockingPeriod(startDate,stakeholder.vest, stakeholder.cliff)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
