@@ -12,7 +12,6 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { CongratulationsService } from "services/CongratulationsService";
 import { GetProjectTokenHistoricalPriceService } from "services/getProjectTokenHistoricalPriceService";
 import { DateService } from "services/DateService";
 
