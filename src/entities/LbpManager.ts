@@ -48,11 +48,9 @@ export class LbpManager implements ILaunch {
   public projectTokenAddress: Address;
   public projectTokenInfo: ITokenInfo;
   public projectTokenContract: any;
-  public projectTokenRequired: BigNumber
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
-  public fundingTokenRequired: BigNumber;
   public isPaused: boolean;
   public fundingTokensPerProjectToken: number;
   public projectTokensPerFundingToken: number;
@@ -216,9 +214,6 @@ export class LbpManager implements ILaunch {
         throw new Error("project token info is not found or does not match the LbpManager contract");
       }
 
-      this.projectTokenRequired = await this.contract.projectTokensRequired();
-      this.fundingTokenRequired = await this.contract.amounts(this.fundingTokenIndex);
-
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
@@ -281,7 +276,7 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateTokensState(): Promise<void> {
-    this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
+    this.startingProjectTokenAmount = await this.contract.projectTokensRequired();
     this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
