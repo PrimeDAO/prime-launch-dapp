@@ -187,6 +187,12 @@
       column-gap: 80px;
       font-family: Inter;
 
+      .pic {
+        img {
+          border-radius: 10px;
+        }
+      }
+
       .rightColumn {
         > .heading1 {
           -webkit-text-fill-color: $Secondary02;

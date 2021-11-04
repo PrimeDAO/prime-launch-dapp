@@ -16,7 +16,7 @@
         <spark-chart data.bind="lbpMgr.historicalMarketCap" width="692" height="300" interactive></spark-chart>
       </div>
       <div class="form">
-        <lbpdashboardform lbp-manager.bind="lbpMgr"></lbpdashboardform>
+        <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
       </div>
       <div class="about">
         <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>

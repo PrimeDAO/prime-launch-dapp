@@ -34,8 +34,9 @@
             <div class="arrow">&downarrow;</div>
             <div class="text">
               1 ${fundingTokenInfo.symbol} =
-              <formatted-number value.bind="lbpManager.projectTokensPerFundingToken"></formatted-number> =
-              <formatted-number value.bind="lbpManager.projectTokenInfo.price"></formatted-number> USD
+              <formatted-number value.bind="lbpManager.projectTokensPerFundingToken"></formatted-number>
+              ${lbpManager.projectTokenInfo.symbol} =
+              <formatted-number value.bind="lbpManager.fundingTokenInfo.price * lbpManager.projectTokensPerFundingToken"></formatted-number> USD
             </div>
           </div>
         </div>

@@ -83,6 +83,11 @@
           background-color: $Neutral02;
         }
       }
+      .stagesNumber {
+        .value {
+          font-size: 18px;
+        }
+      }
     }
     .currentStageSidebar.show {
       display: block;
