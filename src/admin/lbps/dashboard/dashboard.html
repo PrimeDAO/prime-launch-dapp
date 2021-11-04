@@ -33,17 +33,17 @@
                 Approve tokens and Fund LBP
               </div>
               <div class="featureDescription">
-                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.projectTokenRequired.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
                 Note this will require your approval of three transactions.
               </div>
               <div class="featureDescription">
-                ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.fundingTokenRequired.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
               </div>
               <div class="button1 small" click.delegate="fund()">
                 Approve tokens and Fund
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.endTime < selectedLbp._now">
+            <div class="featureContainer" if.bind="selectedLbp.endTime < selectedLbp._now && selectedLbp.poolTokenBalance != 0">
               <div class="featureTitle">
                 Remove Liquidity
               </div>
@@ -55,7 +55,7 @@
                 Remove Liquidity
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.poolFunded">
+            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance != 0">
               <div class="featureTitle">
                 ${selectedLbp.isPaused ? "Pause LBP" : "Unpause LBP"}
               </div>
