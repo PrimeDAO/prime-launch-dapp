@@ -112,6 +112,10 @@ export class lbpDashboardForm {
     this.hydrateUserData();
   }
 
+  handleMaxBuy() : void {
+    this.fundingTokensToPay = this.userFundingTokenBalance ?? BigNumber.from(0);
+  }
+
   async getProjectTokensToPurchase(): Promise<void> {
     if (this.fundingTokensToPay?.gt(0)) {
       try {
