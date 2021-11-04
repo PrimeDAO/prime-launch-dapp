@@ -12,7 +12,7 @@ export class SparkChart {
   @bindable.number width = 500;
 
   chart: IChartApi;
-  series: ISeriesApi<"Area">;
+  series: ISeriesApi<"Line">;
 
   container: HTMLElement;
   sparkChart: HTMLElement;
@@ -21,20 +21,20 @@ export class SparkChart {
   }
 
   attached(): void {
-    window.onresize = () => {
-      /**
-       * don't resize when the element is hidden, or height will go permanently to 0
-       */
-      setTimeout(() => {
-        if (this.chart) {
-          this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-        }
-      }, 200);
-    };
+    // window.onresize = () => {
+    //   /**
+    //    * don't resize when the element is hidden, or height will go permanently to 0
+    //    */
+    //   setTimeout(() => {
+    //     if (this.chart) {
+    //       this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    //     }
+    //   }, 200);
+    // };
   }
 
   detached(): void {
-    window.onresize = undefined;
+    // window.onresize = undefined;
   }
 
   dataChanged(): void {
@@ -96,10 +96,8 @@ export class SparkChart {
 
 
       const color = "#A258A7";
-      this.series = this.chart.addAreaSeries({
-        lineColor: color,
-        topColor: `${color}ff`,
-        bottomColor: `${color}00`,
+      this.series = this.chart.addLineSeries({
+        color: color,
         priceLineVisible: false,
         crosshairMarkerVisible: this.interactive,
         priceFormat: {

@@ -2,7 +2,7 @@ import { BrowserStorageService } from "../services/BrowserStorageService";
 import { Router } from "aurelia-router";
 import { DisclaimerService } from "../services/DisclaimerService";
 import { EthereumService } from "../services/EthereumService";
-import { autoinject, computedFrom } from "aurelia-framework";
+import { autoinject, computedFrom, bindable } from "aurelia-framework";
 import { LbpManagerService } from "services/LbpManagerService";
 import { Address } from "services/EthereumService";
 import "./lbpDashboard.scss";
@@ -12,6 +12,9 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { CongratulationsService } from "services/CongratulationsService";
+import { GetProjectTokenHistoricalPriceService } from "services/getProjectTokenHistoricalPriceService";
+import { DateService } from "services/DateService";
 
 @autoinject
 export class lbpDashboard {
@@ -19,6 +22,9 @@ export class lbpDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   lbpMgr: LbpManager;
   loading = true;
+  getProjectTokenHistoricalPriceService: GetProjectTokenHistoricalPriceService;
+  dateService: DateService;
+  @bindable projectTokenHistoricalPrices: any[];
 
   constructor(
     private eventAggregator: EventAggregator,
@@ -57,6 +63,7 @@ export class lbpDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
+
   }
 
   async attached(): Promise<void> {
@@ -79,7 +86,16 @@ export class lbpDashboard {
         await lbpmgr.ensureInitialized();
       }
       this.lbpMgr = lbpmgr;
-      console.log("lbpMgr", lbpmgr);
+
+      this.getProjectTokenHistoricalPriceService = new GetProjectTokenHistoricalPriceService(
+        this.ethereumService,
+        this.lbpMgr.lbp,
+        this.numberService,
+        this.address,
+        this.lbpMgr.fundingTokenInfo,
+      );
+
+      this.projectTokenHistoricalPrices = await this.getProjectTokenHistoricalPriceService.getPricesHistory(new Date(this.lbpMgr.startTime));
 
       await this.hydrateUserData();
 
