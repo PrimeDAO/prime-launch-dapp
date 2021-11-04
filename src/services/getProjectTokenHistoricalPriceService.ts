@@ -56,7 +56,7 @@ export class GetProjectTokenHistoricalPriceService {
     const hourSeconds = 60/*min*/ * 60/*sec*/;
 
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(new Date().getTime() / hourSeconds / 1000) * hourSeconds; // rounded hour
+    const endTimeSeconds = Math.ceil(new Date().getTime() / hourSeconds / 1000) * hourSeconds; // rounded hour
     console.log({startingSeconds, endTimeSeconds});
 
     /**
