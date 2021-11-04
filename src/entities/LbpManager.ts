@@ -45,9 +45,11 @@ export class LbpManager implements ILaunch {
   public projectTokenAddress: Address;
   public projectTokenInfo: ITokenInfo;
   public projectTokenContract: any;
+  public projectTokenRequired: BigNumber
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
+  public fundingTokenRequired: BigNumber;
   public isPaused: boolean;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
@@ -167,6 +169,9 @@ export class LbpManager implements ILaunch {
       }
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
+      this.projectTokenRequired = await this.contract.projectTokensRequired();
+      this.fundingTokenRequired = (await this.getTokenFundingAmounts()).funding;
+
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
@@ -191,7 +196,7 @@ export class LbpManager implements ILaunch {
   }
 
   public async hydatePaused(): Promise<boolean> {
-    this.isPaused = false; // TODO: await this.contract.paused();
+    this.isPaused = false; // TODO: !(await this.contract.getSwapEnabled()); once new ABI's are supplied
     return this.isPaused;
   }
 
@@ -242,6 +247,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
         if (receipt) {
+          this.hydrate();
           this.hydrateTokensState();
           this.hydrateUser();
           return receipt;
@@ -266,7 +272,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
         if (receipt) {
-          this.hydrate();
+          this.hydatePaused();
           return receipt;
         }
       });

@@ -28,37 +28,43 @@
             ${selectedLbp.metadata.general.projectName}
           </div>
           <div if.bind="selectedLbp.address">
-            <div class="featureContainer" if.bind="!selectedLbp.hasEnoughProjectTokens">
+            <div class="featureContainer" if.bind="selectedLbp.uninitialized">
               <div class="featureTitle">
-                Fund LBP
+                Approve tokens and Fund LBP
               </div>
               <div class="featureDescription">
-                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.feeRemainder.add(selectedLbp.lbpRemainder) | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.projectTokenRequired.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
+              </div>
+              <div class="featureDescription">
+                ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.fundingTokenRequired.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
               </div>
               <div class="button1 small" click.delegate="fund()">
-                Fund
+                Approve tokens and Fund
               </div>
             </div>
-            <div class="featureContainer">
+            <div class="featureContainer" if.bind="selectedLbp.endTime < selectedLbp._now">
               <div class="featureTitle">
                 Remove Liquidity
+              </div>
+              <div class="featureDescription">
+                This will remove 
               </div>
               <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
               <div class="button1 small" click.delegate="selectedLbp.withdraw(receiverAddress)">
                 Remove Liquidity
               </div>
             </div>
-            <div class="featureContainer">
+            <div class="featureContainer" if.bind="selectedLbp.poolFunded">
               <div class="featureTitle">
-                Pause LBP
+                ${selectedLbp.isPaused ? "Pause LBP" : "Unpause LBP"}
               </div>
               <div class="featureDescription">
-                Pausing will make swapping LBP inactive. As the administrator, you will be able to unpause the LBP.
+                ${selectedLbp.isPaused ? "Pausing" : "Unpausing"} will make swapping LBP ${selectedLbp.isPaused ? "inactive" : "active"}. As the administrator, you will be able to unpause the LBP.
               </div>
-              <div if.bind="!selectedLbp.isPaused && !selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
                 Pause Swapping
               </div>
-              <div else if.bind="!selectedLbp.isClosed" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
+              <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
                 UnPause Swapping
               </div>
             </div>
