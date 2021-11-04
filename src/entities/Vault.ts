@@ -87,7 +87,6 @@ export class Vault {
       result = await this.contract.swap(...params);
     }
 
-    console.dir(result);
     return result;
   }
 

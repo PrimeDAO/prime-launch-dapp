@@ -100,7 +100,7 @@ export class lbpDashboardForm {
     if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
       const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
       this.userFundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-      this.userFundingTokenAllowance = await tokenContract.allowance(this.ethereumService.defaultAccountAddress, this.lbpManager.lbp.vault.address);
+      this.userFundingTokenAllowance = await this.lbpManager.getFundingTokenAllowance(this.fundingTokenInfo.address);
     } else {
       this.userFundingTokenAllowance = null;
       this.userFundingTokenBalance = null;
@@ -161,7 +161,7 @@ export class lbpDashboardForm {
     }
 
     if (await this.disclaimLbp()) {
-      this.lbpManager.unlockFundingTokens(this.fundingTokensToPay)
+      this.lbpManager.allowFundingTokens(this.fundingTokenInfo.address, this.fundingTokensToPay)
         .then((receipt) => {
           if (receipt) {
             this.hydrateUserData();
