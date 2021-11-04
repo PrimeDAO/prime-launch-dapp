@@ -8,7 +8,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService, fromWei, Networks, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -197,7 +197,7 @@ export class lbpDashboardForm {
       promise.then(async (receipt) => {
         if (receipt) {
           await this.hydrateUserData();
-          this.congratulationsService.show(`You have purchased some ${this.lbpManager.projectTokenInfo.name} and in so doing have contributed for the benefit of ${this.lbpManager.metadata.general.projectName}!`);
+          this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
           this.fundingTokensToPay = null;
         }
       });
