@@ -343,4 +343,5 @@ export class LbpManager implements ILaunch {
         }
       });
   }
+}
 
