@@ -44,7 +44,6 @@ export class Vault {
     const poolTokensInfo = await this.contract.getPoolTokens(this.poolId);
     this.projectTokenBalance = poolTokensInfo.balances[this.projectTokenIndex];
     this.fundingTokenBalance = poolTokensInfo.balances[this.fundingTokenIndex];
-
   }
 
   public async loadContracts(): Promise<void> {
