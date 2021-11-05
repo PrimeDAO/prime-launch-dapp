@@ -5,6 +5,12 @@ import "./projectTokenInfo.scss";
 export class ProjectTokenInfo {
   @bindable lbpMgr: LbpManager;
 
+  lbpMgrChanged(): void {
+    if (!this.lbpMgr?.priceHistory) {
+      this.lbpMgr.ensurePriceHistory();
+    }
+  }
+
   @computedFrom("lbpMgr.fundingTokenInfo.priceChangePercentage_24h")
   get fundingTokenTrend(): number {
     if (this.lbpMgr?.fundingTokenInfo?.priceChangePercentage_24h > 0) {

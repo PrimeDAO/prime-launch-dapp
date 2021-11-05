@@ -16,6 +16,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
+import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 
 export interface ILbpManagerConfiguration {
   address: Address;
@@ -58,11 +59,12 @@ export class LbpManager implements ILaunch {
   public startingProjectTokenAmount: BigNumber;
   public projectTokenBalance: BigNumber;
   public fundingTokenBalance: BigNumber;
+  public poolTokenBalance: BigNumber;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
   // private userFundingTokenBalance: BigNumber;
-  public poolTokenBalance: BigNumber;
+  public priceHistory: Array<IHistoricalPriceRecord>;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -110,6 +112,7 @@ export class LbpManager implements ILaunch {
   private _now = new Date();
 
   constructor(
+    private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
     private eventAggregator: EventAggregator,
@@ -345,6 +348,33 @@ export class LbpManager implements ILaunch {
           return receipt;
         }
       });
+  }
+
+  private priceHistoryPromise: Promise<Array<IHistoricalPriceRecord>>;
+
+  /**
+   * call this to make sure that this.priceHistory is hydrated.
+   * @returns Promise of same as this.priceHistory
+   */
+  public ensurePriceHistory(): Promise<Array<IHistoricalPriceRecord>> {
+    if (!this.priceHistoryPromise) {
+      return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
+        resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
+        reject: (reason?: any) => void,
+      ): void => {
+        this.projectTokenHistoricalPriceService.getPricesHistory(this)
+          .then((history) => {
+            this.priceHistory = history;
+            resolve(history);
+          })
+          .catch((ex) => {
+            this.consoleLogService.logMessage(ex, "error");
+            reject(ex);
+          });
+      });
+    } else {
+      return this.priceHistoryPromise;
+    }
   }
 }
 
