@@ -27,7 +27,8 @@ export class Dropdown {
 
       if (
         this.dropdown &&
-        clickedElement.closest(".dropdown") === null && // Clicked element is not part of the dropdown element
+        (clickedElement.closest("dropdown") === null || // Clicked element is not part of the dropdown element
+        (clickedElement.closest(".dropdown") && clickedElement.closest(".dropdown").attributes["au-target-id"] !== this.dropdown.attributes["au-target-id"])) && // Clicked a different dropdown element
         this.dropdown.classList.contains("show")
       ) {
         this.dropdown.classList.remove("show");
