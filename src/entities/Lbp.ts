@@ -69,13 +69,6 @@ export class Lbp {
     }
   }
 
-  public getSwapEnabled(): Promise<boolean> {
-    /**
-     * Should be able to remove this once LBPManager implements it
-     */
-    return this.contract.getSwapEnabled();
-  }
-
   public balanceOfPoolTokens(address: Address): Promise<BigNumber> {
     return this.contract.balanceOf(address);
   }

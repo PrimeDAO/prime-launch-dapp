@@ -242,7 +242,7 @@ export class LbpManager implements ILaunch {
     /**
      * TODO: use the LBPManager `getSwapEnabled` if it every becomes available
      */
-    return this.isPaused = !((await this.lbp?.getSwapEnabled()) ?? true);
+    return this.isPaused = !((await this.getSwapEnabled()) ?? true);
   }
 
   private async hydrateUser(): Promise<void> {
@@ -333,6 +333,10 @@ export class LbpManager implements ILaunch {
           return receipt;
         }
       });
+  }
+
+  public getSwapEnabled(): Promise<boolean> {
+    return this.contract.getSwapEnabled();
   }
 
   public async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
