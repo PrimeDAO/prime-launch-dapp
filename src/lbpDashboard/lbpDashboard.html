@@ -12,8 +12,8 @@
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="spark-chart">
-        <spark-chart data.bind="projectTokenHistoricalPrices" width="692" height="300" interactive></spark-chart>
+      <div class="graph">
+        <spark-chart data.bind="projectTokenHistoricalPrices" height="300" interactive></spark-chart>
       </div>
       <div class="form">
         <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>

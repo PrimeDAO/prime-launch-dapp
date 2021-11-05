@@ -21,20 +21,21 @@ export class SparkChart {
   }
 
   attached(): void {
-    // window.onresize = () => {
-    //   /**
-    //    * don't resize when the element is hidden, or height will go permanently to 0
-    //    */
-    //   setTimeout(() => {
-    //     if (this.chart) {
-    //       this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-    //     }
-    //   }, 200);
-    // };
+    this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    window.onresize = () => {
+      /**
+       * don't resize when the element is hidden, or height will go permanently to 0
+       */
+      setTimeout(() => {
+        if (this.chart) {
+          this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+        }
+      }, 200);
+    };
   }
 
   detached(): void {
-    // window.onresize = undefined;
+    window.onresize = undefined;
   }
 
   dataChanged(): void {
