@@ -1,12 +1,6 @@
 @import "styles/styles.scss";
 
 .lbpDashboardForm {
-  // border-radius: 8px;
-  // padding: 28px;
-
-  // &:not(:last-child) {
-  //   margin-bottom: 18px;
-  // }
   width: 360px;
 
   @mixin subtext {
@@ -30,11 +24,9 @@
   }
 
   .theform {
-    margin-bottom: 20px;
-
     .body {
       width: fit-content;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
 
       input {
         font-family: Inter;
@@ -51,7 +43,7 @@
         display: flex;
         align-items: center;
         input {
-          width: 188px;
+          width: 150px;
         }
       }
 
@@ -87,11 +79,17 @@
           border-left: none;
           border-top-right-radius: 10px;
           border-bottom-right-radius: 10px;
-          input {
-            border: none;
-            background-color: transparent;
-            padding: 0;
-            margin-bottom: 2px;
+
+          .fundingInput {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 8px;
+            input {
+              border: none;
+              background-color: transparent;
+              padding: 0;
+              margin-bottom: 2px;
+            }
           }
 
           .balance {
@@ -171,26 +169,28 @@
     }
 
     .buttons {
+      margin-bottom: 20px;
       button {
         width: 100%;
       }
     }
-  }
 
-  .footer {
-    @include subtext;
-    font-weight: 700;
-    font-size: 10px;
-    display: flex;
-    align-content: center;
-    justify-content: right;
+    .footer {
+      @include subtext;
+      font-weight: 700;
+      font-size: 10px;
+      display: flex;
+      align-content: center;
+      justify-content: right;
+      color: $Border01;
 
-    .powered {
-      margin-right: 6px;
-    }
+      .powered {
+        margin-right: 6px;
+      }
 
-    img {
-      height: 13px;
+      img {
+        height: 13px;
+      }
     }
   }
 }

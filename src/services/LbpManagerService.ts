@@ -58,8 +58,8 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ? 13372668 :
-      (this.ethereumService.targetedNetwork === Networks.Rinkeby) ? 9423409
+    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ? 13551882 :
+      (this.ethereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
         : 28079815; // kovan
 
   }
@@ -166,7 +166,7 @@ export class LbpManagerService {
       isKovan ? this.ethereumService.defaultAccountAddress : safeAddress,
       config.tokenDetails.projectTokenInfo.name,
       config.tokenDetails.projectTokenInfo.symbol,
-      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
+      [config.tokenDetails.projectTokenInfo.address.toLowerCase(), config.launchDetails.fundingTokenInfo.address.toLowerCase()],
       [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
       [toWei(config.launchDetails.startWeight / 100), toWei((100 - config.launchDetails.startWeight) / 100)],
       [Date.parse(config.launchDetails.startDate) / 1000, Date.parse(config.launchDetails.endDate) / 1000],

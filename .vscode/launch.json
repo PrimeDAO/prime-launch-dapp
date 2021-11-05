@@ -12,13 +12,16 @@
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
-      "skipFiles": ["${workspaceFolder}/src/node_modules/tslib/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/src/node_modules/tslib/*.js"
+      ],
       "sourceMapPathOverrides": {
         "webpack:///./src/*": "${webRoot}/*"
       },
       "internalConsoleOptions": "openOnSessionStart"
     },
     {
+      "logToFile": "c:/tmp/vscode.log",
       "type": "pwa-msedge",
       "request": "launch",
       "name": "Launch Edge against localhost",
@@ -26,7 +29,9 @@
       "webRoot": "${workspaceRoot}/src",
       // "trace": true,
       "smartStep": true,
-      "skipFiles": ["${workspaceFolder}/src/node_modules/tslib/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/src/node_modules/tslib/*.js"
+      ],
       "sourceMapPathOverrides": {
         "webpack:///./src/*": "${webRoot}/*"
       },

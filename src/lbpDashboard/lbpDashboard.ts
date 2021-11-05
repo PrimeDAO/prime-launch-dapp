@@ -12,6 +12,8 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
+import { ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
+import { DateService } from "services/DateService";
 
 @autoinject
 export class lbpDashboard {
@@ -19,8 +21,11 @@ export class lbpDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   lbpMgr: LbpManager;
   loading = true;
+  projectTokenHistoricalPrices: any[];
 
   constructor(
+    private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
+    private dateService: DateService,
     private eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
     private numberService: NumberService,
@@ -79,6 +84,8 @@ export class lbpDashboard {
         await lbpmgr.ensureInitialized();
       }
       this.lbpMgr = lbpmgr;
+
+      await this.hydrateChartData();
       await this.hydrateUserData();
 
       // this.disclaimLbp();
@@ -92,6 +99,10 @@ export class lbpDashboard {
       }
       this.loading = false;
     }
+  }
+
+  private async hydrateChartData(): Promise<void> {
+    this.projectTokenHistoricalPrices = await this.projectTokenHistoricalPriceService.getPricesHistory(this.lbpMgr);
   }
 
   async hydrateUserData(): Promise<void> {

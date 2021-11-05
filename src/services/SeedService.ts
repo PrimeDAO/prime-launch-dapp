@@ -14,7 +14,6 @@ import { Seed } from "entities/Seed";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
-import BigNumberJs, { toBigNumberJs } from "services/BigNumberService";
 import { Utils } from "services/utils";
 import { BigNumber } from "ethers";
 
@@ -62,7 +61,7 @@ export class SeedService {
     });
 
     this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
-      12787753 : 9468353;
+      12960154 : 9468353;
   }
 
   public async initialize(): Promise<void> {

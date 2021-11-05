@@ -242,7 +242,7 @@ export class LbpManager implements ILaunch {
     /**
      * TODO: use the LBPManager `getSwapEnabled` if it every becomes available
      */
-    return this.isPaused = !((await this.lbp?.getSwapEnabled()) ?? true);
+    return this.isPaused = !((await this.getSwapEnabled()) ?? true);
   }
 
   private async hydrateUser(): Promise<void> {
@@ -297,12 +297,14 @@ export class LbpManager implements ILaunch {
     return this.lbp = await this.createLbp(await this.contract.lbp());
   }
 
-  // public fundingTokenAllowance(): Promise<BigNumber> {
-  //   return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
-  // }
+  public getFundingTokenAllowance(token: Address): Promise<BigNumber> {
+    const tokenContract = this.tokenService.getTokenContract(token);
+    return tokenContract.allowance(this.ethereumService.defaultAccountAddress, this.lbp.vault.address);
+  }
 
-  public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.fundingTokenContract.approve(this.lbp.vault.address, amount));
+  public allowFundingTokens(token: Address, amount: BigNumber): Promise<TransactionReceipt> {
+    const tokenContract = this.tokenService.getTokenContract(token);
+    return this.transactionsService.send(() => tokenContract.approve(this.lbp.vault.address, amount));
   }
 
   public fund(): Promise<TransactionReceipt> {
@@ -332,6 +334,10 @@ export class LbpManager implements ILaunch {
           return receipt;
         }
       });
+  }
+
+  public getSwapEnabled(): Promise<boolean> {
+    return this.contract.getSwapEnabled();
   }
 
   public async setSwapDisabled(): Promise<TransactionReceipt> {

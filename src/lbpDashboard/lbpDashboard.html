@@ -2,6 +2,7 @@
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <require from="./tokenDistribution/tokenDistribution"></require>
+  <require from="./sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard">
@@ -11,7 +12,9 @@
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="graph">the graph</div>
+      <div class="graph">
+        <spark-chart data.bind="projectTokenHistoricalPrices" height="400" interactive></spark-chart>
+      </div>
       <div class="form">
         <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
       </div>
