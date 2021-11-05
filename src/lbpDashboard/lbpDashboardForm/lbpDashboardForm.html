@@ -24,7 +24,7 @@
                 decimals.bind="fundingTokenInfo.decimals"
                 placeholder="0.0"></numeric-input>
               <div class="maxButton">
-                <a href="#" class="${(!fundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
+                <a href="#" class="${(!fundingTokenInfo.address || !userFundingTokenBalance || userFundingTokenBalance.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
               </div>
             </div>
             <div class="balance">Balance: <formatted-number
