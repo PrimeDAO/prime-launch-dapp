@@ -13,10 +13,7 @@ import { autoinject } from "aurelia-framework";
 
 interface ISwapRecord {
   timestamp: number,
-  poolLiquidity: string,
-  tokenInSym: string,
   tokenAmountIn: string,
-  tokenOut: string,
   tokenAmountOut: string,
 }
 
@@ -166,7 +163,6 @@ export class ProjectTokenHistoricalPriceService {
           },
         },
         timestamp: true,
-        tokenInSym: true,
         tokenAmountIn: true,
         tokenAmountOut: true,
       },
