@@ -22,7 +22,7 @@ import { CongratulationsService } from "services/CongratulationsService";
 export class lbpDashboardForm {
   @bindable lbpManager: LbpManager;
   @bindable disclaimLbp;
-  fundingTokenInfo: ITokenInfo = {} as unknown as ITokenInfo;
+  selectedFundingTokenInfo: ITokenInfo = {} as unknown as ITokenInfo;
   userFundingTokenBalance: BigNumber;
   tokenList: Array<string>;
   @observable fundingTokensToPay: BigNumber;
@@ -52,7 +52,7 @@ export class lbpDashboardForm {
   }
 
   @computedFrom("userFundingTokenBalance", "fundingTokensToPay")
-  get userCanPay(): boolean { return this.userFundingTokenBalance?.gt(this.fundingTokensToPay ?? "0"); }
+  get userCanPay(): boolean { return this.userFundingTokenBalance?.gte(this.fundingTokensToPay ?? "0"); }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokensToPay")
   get lockRequired(): boolean {
@@ -96,10 +96,10 @@ export class lbpDashboardForm {
   }
 
   async hydrateUserData(): Promise<void> {
-    if (this.ethereumService.defaultAccountAddress && this.fundingTokenInfo.address) {
-      const tokenContract = this.tokenService.getTokenContract(this.fundingTokenInfo.address);
+    if (this.ethereumService.defaultAccountAddress && this.selectedFundingTokenInfo.address) {
+      const tokenContract = this.tokenService.getTokenContract(this.selectedFundingTokenInfo.address);
       this.userFundingTokenBalance = await tokenContract.balanceOf(this.ethereumService.defaultAccountAddress);
-      this.userFundingTokenAllowance = await this.lbpManager.getFundingTokenAllowance(this.fundingTokenInfo.address);
+      this.userFundingTokenAllowance = await this.lbpManager.getFundingTokenAllowance(this.selectedFundingTokenInfo.address);
     } else {
       this.userFundingTokenAllowance = null;
       this.userFundingTokenBalance = null;
@@ -118,11 +118,11 @@ export class lbpDashboardForm {
   async getProjectTokensToPurchase(): Promise<void> {
     if (this.fundingTokensToPay?.gt(0)) {
       try {
-        if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+        if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
           this.sorSwapInfo = await this.balancerService.getSwapFromSor(
             this.fundingTokensToPay,
-            this.fundingTokenInfo,
+            this.selectedFundingTokenInfo,
             this.lbpManager.projectTokenInfo) as SwapInfo;
 
           this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
@@ -162,7 +162,7 @@ export class lbpDashboardForm {
     }
 
     if (await this.disclaimLbp()) {
-      this.lbpManager.allowFundingTokens(this.fundingTokenInfo.address, this.fundingTokensToPay)
+      this.lbpManager.allowFundingTokens(this.selectedFundingTokenInfo.address, this.fundingTokensToPay)
         .then((receipt) => {
           if (receipt) {
             this.hydrateUserData();
@@ -177,19 +177,19 @@ export class lbpDashboardForm {
     }
 
     if (!this.fundingTokensToPay?.gt(0)) {
-      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.fundingTokenInfo.symbol} you wish to contribute`);
+      this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.selectedFundingTokenInfo.symbol} you wish to contribute`);
     } else if (!this.projectTokensToPurchase?.gt(0)) {
       this.eventAggregator.publish("handleValidationError", `No ${this.lbpManager.projectTokenInfo.symbol} are expected to be returned in this swap`);
     } else if (this.userFundingTokenBalance.lt(this.fundingTokensToPay)) {
-      this.eventAggregator.publish("handleValidationError", `Your ${this.fundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
+      this.eventAggregator.publish("handleValidationError", `Your ${this.selectedFundingTokenInfo.symbol} balance is insufficient to cover what you want to pay`);
     } else if (this.lockRequired) {
-      this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.fundingTokenInfo.symbol} to the LbpManager contract`);
+      this.eventAggregator.publish("handleValidationError", `Please click UNLOCK to approve the transfer of your ${this.selectedFundingTokenInfo.symbol} to the LbpManager contract`);
     }
     else if (await this.disclaimLbp()) {
 
       let promise: Promise<TransactionReceipt>;
 
-      if (this.fundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+      if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
         if (this.sorSwapInfo) {
           promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
         }
@@ -197,7 +197,7 @@ export class lbpDashboardForm {
         promise = this.transactionsService.send(() =>
           this.lbpManager.lbp.vault.swap(
             this.fundingTokensToPay,
-            this.fundingTokenInfo.address,
+            this.selectedFundingTokenInfo.address,
             this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
       }
 

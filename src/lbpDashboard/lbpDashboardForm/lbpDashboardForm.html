@@ -12,36 +12,36 @@
           <token-select
             symbol-only
             placeholder="Select token..."
-            selected-token-info.bind="fundingTokenInfo"
+            selected-token-info.bind="selectedFundingTokenInfo"
             token-addresses.to-view="tokenList"
             item-changed.call="tokenChanged(value,index)">
           </token-select>
           <div class="fundingAmount">
             <div class="fundingInput">
               <numeric-input
-                disabled.to-view="!lbpManager.isLive || !fundingTokenInfo.address"
+                disabled.to-view="!lbpManager.isLive || !selectedFundingTokenInfo.address"
                 value.bind="fundingTokensToPay & debounce:500"
-                decimals.bind="fundingTokenInfo.decimals"
+                decimals.bind="selectedFundingTokenInfo.decimals"
                 placeholder="0.0"></numeric-input>
               <div class="maxButton">
-                <a href="#" class="${(!fundingTokenInfo.address || !userFundingTokenBalance || userFundingTokenBalance.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
+                <a href="#" class="${(!selectedFundingTokenInfo.address || !userFundingTokenBalance || userFundingTokenBalance.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
               </div>
             </div>
             <div class="balance">Balance: <formatted-number
-                value.bind="userFundingTokenBalance | ethwei:fundingTokenInfo.decimals"
+                value.bind="userFundingTokenBalance | ethwei:selectedFundingTokenInfo.decimals"
                 default-text="N/A"
                 average></formatted-number>
             </div>
           </div>
         </div>
-        <div if.bind="fundingTokenInfo.address" class="section2">
+        <div if.bind="selectedFundingTokenInfo.address" class="section2">
           <div class="exchangeInfo">
             <div class="arrow">&downarrow;</div>
             <div class="text">
-              1 ${fundingTokenInfo.symbol} =
+              1 ${selectedFundingTokenInfo.symbol} =
               <formatted-number value.bind="projectTokensPerFundingToken"></formatted-number>
               ${lbpManager.projectTokenInfo.symbol} =
-              <formatted-number value.bind="fundingTokenInfo.price"></formatted-number> USD
+              <formatted-number value.bind="selectedFundingTokenInfo.price"></formatted-number> USD
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
       </div>
       <div class="buttons">
         <button class="lockButton button1" class="unlockButton" if.to-view="userCanPay && lockRequired" click.delegate="unlockFundingTokens()">UNLOCK</button>
-        <button class="submitButton button1" else disabled.bind="!userCanPay || !fundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
+        <button class="submitButton button1" else disabled.bind="!userCanPay || !selectedFundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
       </div>
       <div class="footer">
         <div class="powered">POWERED BY</div><img src="/Logo_Balancer.svg" />
