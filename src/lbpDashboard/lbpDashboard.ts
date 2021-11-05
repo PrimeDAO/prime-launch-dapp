@@ -85,8 +85,7 @@ export class lbpDashboard {
       }
       this.lbpMgr = lbpmgr;
 
-      this.projectTokenHistoricalPrices = await this.projectTokenHistoricalPriceService.getPricesHistory(this.lbpMgr);
-
+      await this.hydrateChartData();
       await this.hydrateUserData();
 
       // this.disclaimLbp();
@@ -100,6 +99,10 @@ export class lbpDashboard {
       }
       this.loading = false;
     }
+  }
+
+  private async hydrateChartData(): Promise<void> {
+    this.projectTokenHistoricalPrices = await this.projectTokenHistoricalPriceService.getPricesHistory(this.lbpMgr);
   }
 
   async hydrateUserData(): Promise<void> {
