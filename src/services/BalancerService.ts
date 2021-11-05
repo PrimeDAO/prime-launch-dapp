@@ -45,7 +45,7 @@ export class BalancerService {
       return this.SOR.fetchPools([], true);
     } catch (ex) {
       this.SOR = undefined;
-      this.consoleLogService.logMessage(`Failed to initialize SOR: ${ex.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, "error");
+      this.consoleLogService.logMessage(`Failed to initialize SOR: ${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, "error");
     } finally {
       this.loading = false;
     }
