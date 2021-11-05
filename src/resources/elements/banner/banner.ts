@@ -145,7 +145,7 @@ export class Banner {
       message = config.message;
     }
 
-    this.queueEventConfig({ message: `${message ? `${message}: ` : ""}${ex.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, type: EventMessageType.Exception });
+    this.queueEventConfig({ message: `${message ? `${message}: ` : ""}${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, type: EventMessageType.Exception });
   }
 
   private handleFailure(config: EventConfig | string): void {

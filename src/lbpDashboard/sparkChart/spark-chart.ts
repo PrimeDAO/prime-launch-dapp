@@ -2,7 +2,7 @@ import { autoinject } from "aurelia-framework";
 import "./spark-chart.scss";
 import { createChart, CrosshairMode, IChartApi, ISeriesApi } from "lightweight-charts";
 import { bindable } from "aurelia-typed-observable-plugin";
-import { NumberService } from "services/numberService";
+import { NumberService } from "services/NumberService";
 
 @autoinject
 export class SparkChart {
@@ -21,7 +21,9 @@ export class SparkChart {
   }
 
   attached(): void {
-    this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    if (this.chart) {
+      this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    }
     window.onresize = () => {
       /**
        * don't resize when the element is hidden, or height will go permanently to 0

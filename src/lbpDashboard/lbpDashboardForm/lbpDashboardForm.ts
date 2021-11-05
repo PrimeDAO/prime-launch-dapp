@@ -146,7 +146,7 @@ export class lbpDashboardForm {
   }
 
   async validatePaused(): Promise<boolean> {
-    const paused = await this.lbpManager.hydatePaused();
+    const paused = await this.lbpManager.hydratePaused();
     if (paused) {
       this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
       this.router.navigate("/home");

@@ -17,7 +17,7 @@ interface ISwapRecord {
   tokenAmountOut: string,
 }
 
-interface IHistoricalPriceRecord { time: number, value?: number }
+export interface IHistoricalPriceRecord { time: number, value?: number }
 
 @autoinject
 export class ProjectTokenHistoricalPriceService {

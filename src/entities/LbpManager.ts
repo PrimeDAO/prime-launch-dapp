@@ -217,12 +217,12 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      this.hydrateTokensState();
+      await this.hydrateTokensState();
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(0)).toNumber());
       this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
-      await this.hydatePaused();
+      await this.hydratePaused();
 
       await this.hydrateUser();
     }
@@ -238,11 +238,8 @@ export class LbpManager implements ILaunch {
     return this.initializedPromise;
   }
 
-  public async hydatePaused(): Promise<boolean> {
-    /**
-     * TODO: use the LBPManager `getSwapEnabled` if it every becomes available
-     */
-    return this.isPaused = !((await this.getSwapEnabled()) ?? true);
+  public async hydratePaused(): Promise<boolean> {
+    return this.isPaused = await this.getSwapEnabled();
   }
 
   private async hydrateUser(): Promise<void> {
@@ -337,7 +334,7 @@ export class LbpManager implements ILaunch {
   }
 
   public getSwapEnabled(): Promise<boolean> {
-    return this.contract.getSwapEnabled();
+    return this.poolFunded ? this.contract.getSwapEnabled() : Promise.resolve(false);
   }
 
   public async setSwapDisabled(): Promise<TransactionReceipt> {
@@ -346,7 +343,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(true))
       .then(async receipt => {
         if (receipt) {
-          this.hydatePaused().then(() => console.log(this.isPaused));
+          this.hydratePaused().then(() => console.log(this.isPaused));
           return receipt;
         }
       });
@@ -358,7 +355,8 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(false))
       .then(async receipt => {
         if (receipt) {
-          this.hydatePaused().then(() => console.log(this.isPaused));
+          this.hydratePaused().then(() => console.log(this.isPaused));
+          this.hydrate();
           return receipt;
         }
       });

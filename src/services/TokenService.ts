@@ -151,8 +151,8 @@ export class TokenService {
               tokenInfo.logoURI = response.data.image.thumb;
             }
           })
-          .catch((error) => {
-            this.consoleLogService.logMessage(`PriceService: Error fetching token price ${error?.message}`, "error");
+          .catch((ex) => {
+            this.consoleLogService.logMessage(`PriceService: Error fetching token price ${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, "error");
           });
       }
 
