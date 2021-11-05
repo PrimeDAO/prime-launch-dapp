@@ -21,7 +21,9 @@ export class SparkChart {
   }
 
   attached(): void {
-    this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    if (this.chart) {
+      this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    }
     window.onresize = () => {
       /**
        * don't resize when the element is hidden, or height will go permanently to 0
