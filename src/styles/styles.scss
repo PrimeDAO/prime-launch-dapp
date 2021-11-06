@@ -224,6 +224,7 @@ html {
     .button2 {
       @include standardTextGradient;
       border: solid 1px $Secondary02;
+      padding: 13px 28px;
 
       &:hover {
         -webkit-text-fill-color: $Secondary04;
