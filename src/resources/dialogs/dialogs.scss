@@ -85,6 +85,12 @@ body > ux-dialog-container {
       .checkbox {
         margin-right: 10px;
       }
+      .action-buttons {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+      }
       .bodyContainer {
         white-space: pre-wrap;
         word-break: break-word;
@@ -128,6 +134,9 @@ body > ux-dialog-overlay {
         display: flex;
         flex-direction: column;
         text-align: center;
+        .action-buttons {
+          justify-content: center;
+        }
       }
     }
   }
