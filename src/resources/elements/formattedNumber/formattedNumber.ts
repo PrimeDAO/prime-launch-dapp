@@ -38,21 +38,21 @@ export class FormattedNumber {
   public valueChanged(): void {
     if ((this.value === undefined) || (this.value === null) || ((typeof this.value === "string") && ((this.value as string)?.trim() === ""))) {
       this.text = this.defaultText;
-      return;
-    }
+    } else {
 
-    this._value = this.value;
+      this._value = this.value;
 
-    const text = this.numberService.toString(Number(this._value),
-      {
+      const text = this.numberService.toString(Number(this._value),
+        {
         // precision: this.precision,
-        average: this.average,
-        mantissa: this.mantissa,
-        thousandSeparated: this.thousandsSeparated,
-      },
-    );
+          average: this.average,
+          mantissa: this.mantissa,
+          thousandSeparated: this.thousandsSeparated,
+        },
+      );
 
-    this.text = text ?? this.defaultText;
+      this.text = text ?? this.defaultText;
+    }
 
     this.setTooltip();
   }
@@ -71,7 +71,7 @@ export class FormattedNumber {
   }
 
   private setTooltip() {
-    if (this.textElement && this.value) {
+    if (this.textElement) {
       if (!this.tippyInstance) {
       // tippy(this.textElement, "dispose");
         this.tippyInstance = tippy(this.textElement, {
@@ -79,7 +79,10 @@ export class FormattedNumber {
           zIndex: 10005,
         });
       }
-      this.tippyInstance.setContent(this.value.toString());
+
+      if (this.tooltip) {
+        this.tippyInstance.setContent(this.tooltip);
+      }
     }
   }
 }
