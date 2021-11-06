@@ -39,7 +39,7 @@ export class TimeRemaining {
   @computedFrom("lbpMgr.priceHistory")
   get averagePrice(): number {
     return this.lbpMgr?.priceHistory?.length ?
-      (this.lbpMgr.priceHistory.reduce((a, b) => a + b.value, 0) / this.lbpMgr.priceHistory.length) : 0;
+      (this.lbpMgr.priceHistory.reduce((a, b) => a + b.price, 0) / this.lbpMgr.priceHistory.length) : 0;
   }
 
   private setTooltip() {

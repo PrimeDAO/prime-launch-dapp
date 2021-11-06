@@ -114,7 +114,10 @@ export class SparkChart {
     }
 
     if (this.data && this.chart) {
-      this.series.setData(this.data);
+      this.series.setData(this.data.map(item => ({
+        time: item.time,
+        value: item.price,
+      })));
     }
   }
 
