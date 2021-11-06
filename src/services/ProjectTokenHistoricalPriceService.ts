@@ -17,7 +17,7 @@ interface ISwapRecord {
   tokenAmountOut: string,
 }
 
-export interface IHistoricalPriceRecord { time: number, value?: number }
+export interface IHistoricalPriceRecord { time: number, price?: number }
 
 @autoinject
 export class ProjectTokenHistoricalPriceService {
@@ -46,10 +46,11 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     const startingSeconds = lbpMgr.startTime.getTime() / 1000;
-    const hourSeconds = 60/*min*/ * 60/*sec*/;
+    const intervalMinutes = 60/*min*/;
+    const intervalSeconds = intervalMinutes * 60/*sec*/;
 
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.ceil(new Date().getTime() / hourSeconds / 1000) * hourSeconds; // rounded hour
+    const endTimeSeconds = Math.ceil(new Date().getTime() / intervalSeconds / 1000) * intervalSeconds; // rounded hour
 
     /**
      * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
@@ -73,38 +74,39 @@ export class ProjectTokenHistoricalPriceService {
     const returnArray = new Array<IHistoricalPriceRecord>();
 
     if (swaps.length) {
-      let previousDay;
+      let previousTimePoint;
+
+      swaps.reverse(); // to ascending
 
       const prices = await axios.get(
         this.getCoingeckoUrl(
           lbpMgr.fundingTokenInfo.id,
-          swaps[0].timestamp,
+          swaps[0].timestamp - Math.round(60 / intervalMinutes * 1000/*hour back*/),
           endTimeSeconds,
         ),
       );
-      const fundingTokenPricesUSD = await prices.data.prices.map(price => {
-        return {
-          // price: [time, value]
-          time: Math.floor(price[0] / (hourSeconds * 1000)) * (hourSeconds),
-          value: price[1],
-        };
-      });
 
-      swaps.reverse(); // to ascending
+      const fundingTokenPricesUSD = prices?.data?.prices?.map(price => {
+        return {
+          timestamp: Math.floor(price[0] / (intervalSeconds * 1000)) * (intervalSeconds),
+          priceInUSD: price[1],
+        };
+      }) || [{ timestamp: 0, priceInUSD: 0 }];
+
       /**
        * enumerate every day
        */
 
-      for (let timestamp = Math.floor(swaps[0].timestamp / hourSeconds ) * hourSeconds; timestamp <= endTimeSeconds; timestamp += hourSeconds) {
+      for (let timestamp = Math.floor(swaps[0].timestamp / intervalSeconds ) * intervalSeconds; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
-        const nextDay = timestamp + hourSeconds;
+        const nextInterval = timestamp + intervalSeconds;
 
         if (swaps.length) {
         // eslint-disable-next-line no-constant-condition
           while (true) {
             const swap = swaps[0];
-            if (swap.timestamp >= nextDay) {
+            if (swap.timestamp >= nextInterval) {
               break;
             }
             else if (swap.timestamp >= timestamp) {
@@ -117,25 +119,31 @@ export class ProjectTokenHistoricalPriceService {
           }
         }
 
-        if (todaysSwaps?.length) {
-          const liquidityThisDay = (
-            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
-            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
-            fundingTokenPricesUSD[fundingTokenPricesUSD.length - 1].value //USD Price
-          );
+        const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp);
 
+        if (todaysSwaps?.length) {
           returnArray.push({
             time: timestamp,
-            value: liquidityThisDay,
+            price: (
+              this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
+              this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
+              priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+            ),
           });
-          previousDay = liquidityThisDay;
-        } else if (previousDay) {
+          previousTimePoint = (
+            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
+            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)
+          );
+        } else if (previousTimePoint) {
           /**
-           * keep the previous value
+           * previous value effected by USD course change
            */
           returnArray.push({
             time: timestamp,
-            value: previousDay,
+            price: (
+              previousTimePoint *
+              priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+            ),
           });
         } else {
           returnArray.push({
@@ -144,7 +152,6 @@ export class ProjectTokenHistoricalPriceService {
         }
       }
     }
-
     return returnArray;
   }
 
@@ -183,15 +190,7 @@ export class ProjectTokenHistoricalPriceService {
         return response.data?.data.swaps;
       })
       .catch((error) => {
-        // this.consoleLogService.handleFailure(
-        //   new EventConfigFailure(`Pool: Error fetching market cap history: ${error?.response?.data?.error?.message ?? error?.message}`));
-        console.log({
-          fetchSwapsError: error.message,
-          id: lbp.poolId,
-        });
-
-        // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
-        // TODO:  restore the exception?
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
         return [];
       });
   }
