@@ -13,6 +13,7 @@
             symbol-only
             placeholder="Select token..."
             selected-token-info.bind="selectedFundingTokenInfo"
+            selected-token-address.bind="lbpManager.fundingTokenAddress"
             token-addresses.to-view="tokenList"
             item-changed.call="tokenChanged(value,index)">
           </token-select>
