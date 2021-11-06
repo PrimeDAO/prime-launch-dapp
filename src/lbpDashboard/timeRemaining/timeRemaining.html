@@ -4,10 +4,11 @@
     <div class="timeRemaining label">TIME REMAINING</div>
     <div class="launchSupply label">LAUNCH SUPPLY</div>
     <div class="averagePrice label">AVERAGE PRICE</div>
-    <div class="timeRemaining value">${lbpMgr.endsInMilliseconds | timespan:"minutes":largest}</div>
+    <div class="timeRemaining value" ref="timeRemaining">${lbpMgr.endsInMilliseconds | timespan:"largest"}</div>
     <div class="launchSupply value">
       <formatted-number value.bind="lbpMgr.startingProjectTokenAmount | ethwei:lbpMgr.projectTokenInfo.decimals"></formatted-number>
     </div>
-    <div class="averagePrice value">$ ???</div>
+    <div class="averagePrice value">$ <formatted-number value.bind="averagePrice"></formatted-number>
+    </div>
   </div>
 </template>

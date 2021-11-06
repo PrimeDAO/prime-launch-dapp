@@ -31,13 +31,13 @@ export class ProjectTokenInfo {
 
   @computedFrom("lbpMgr.priceHistory")
   get currentPrice(): number {
-    const len = this.lbpMgr.priceHistory.length;
+    const len = this.lbpMgr?.priceHistory?.length;
     return len ? this.lbpMgr.priceHistory[len-1].value : 0;
   }
 
   @computedFrom("lbpMgr.priceHistory")
   get currentPriceChange(): number {
-    const len = this.lbpMgr.priceHistory.length;
+    const len = this.lbpMgr?.priceHistory?.length;
     if (len > 1) {
       const prevPrice = this.lbpMgr.priceHistory[len-2].value;
       return this.currentPrice - prevPrice;
