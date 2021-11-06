@@ -11,11 +11,11 @@ export class ProjectTokenInfo {
     }
   }
 
-  @computedFrom("lbpMgr.fundingTokenInfo.priceChangePercentage_24h")
+  @computedFrom("currentPriceChange")
   get fundingTokenTrend(): number {
-    if (this.lbpMgr?.fundingTokenInfo?.priceChangePercentage_24h > 0) {
+    if (this.currentPriceChange > 0) {
       return 1;
-    } else if (this.lbpMgr?.fundingTokenInfo?.priceChangePercentage_24h < 0) {
+    } else if (this.currentPriceChange < 0) {
       return -1;
     }
     else {
@@ -29,8 +29,30 @@ export class ProjectTokenInfo {
     return ((this.fundingTokenTrend > 0) ? "+" : (this.fundingTokenTrend < 0) ? "-" : "" );
   }
 
-  @computedFrom("lbpMgr.fundingTokenInfo.priceChangePercentage_24h")
+  @computedFrom("lbpMgr.priceHistory")
+  get currentPrice(): number {
+    const len = this.lbpMgr.priceHistory.length;
+    return len ? this.lbpMgr.priceHistory[len-1].value : 0;
+  }
+
+  @computedFrom("lbpMgr.priceHistory")
+  get currentPriceChange(): number {
+    const len = this.lbpMgr.priceHistory.length;
+    if (len > 1) {
+      const prevPrice = this.lbpMgr.priceHistory[len-2].value;
+      return this.currentPrice - prevPrice;
+    } else {
+      return 0;
+    }
+  }
+
+  @computedFrom("currentPriceChange")
   get absolutePriceChange(): number {
-    return Math.abs(this.lbpMgr?.fundingTokenInfo?.priceChangePercentage_24h);
+    return Math.abs(this.currentPriceChange);
+  }
+
+  @computedFrom("currentPriceChange", "currentPrice")
+  get percentPriceChange(): number {
+    return this.currentPrice ? this.currentPriceChange / this.currentPrice : 0;
   }
 }

@@ -7,20 +7,17 @@
     </div>
     <div class="priceValue ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') & signal:'secondPassed' }">
       <i if.bind="fundingTokenTrend != 0" class="caret fas ${((fundingTokenTrend > 0) ? 'fa-caret-up' : 'fa-caret-down') & signal:'secondPassed' }"></i>
-      $ ???
-      <!-- <formatted-number value.bind="lbpMgr.projectTokenInfo.price"></formatted-number> -->
+      $ <formatted-number value.bind="currentPrice"></formatted-number>
     </div>
     <div class="timeleft">
       <time-left launch.to-view="lbpMgr"></time-left>
     </div>
     <div class="priceChange ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') & signal:'secondPassed' }">
       <div class="sign">${fundingTokenTrendSign & signal:'secondPassed'}</div>
-      <div class="amountChanged"> ???
-        <!-- <formatted-number value.bind="absolutePriceChange"></formatted-number> -->
+      <div class="amountChanged">
+        <formatted-number value.bind="absolutePriceChange"></formatted-number>
       </div>
-      <div class="percentChanged">(???
-        <!-- <formatted-number value.bind="absolutePriceChange * lbpMgr.projectTokenInfo.price"></formatted-number> -->
-        %)
+      <div class="percentChanged">(<formatted-number value.bind="percentPriceChange"></formatted-number>%)
       </div>
     </div>
   </div>
