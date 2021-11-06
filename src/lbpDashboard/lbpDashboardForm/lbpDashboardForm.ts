@@ -70,9 +70,11 @@ export class lbpDashboardForm {
       return 0;
     }
 
-    return this.numberService.fromString(fromWei(this.fundingTokensToPay).toString())
+    const result = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.selectedFundingTokenInfo.decimals).toString())
       /
-      this.numberService.fromString(fromWei(this.projectTokensToPurchase).toString());
+      this.numberService.fromString(fromWei(this.projectTokensToPurchase, this.lbpManager.projectTokenInfo.decimals).toString());
+
+    return result;
   }
 
   private fundingTokensToPayChanged(): void {
@@ -131,7 +133,7 @@ export class lbpDashboardForm {
 
           this.sorSwapInfo= null;
 
-          const projectTokens = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.lbpManager.fundingTokenInfo.decimals).toString())
+          const projectTokens = this.numberService.fromString(fromWei(this.fundingTokensToPay, this.selectedFundingTokenInfo.decimals).toString())
             * this.lbpManager.projectTokensPerFundingToken;
 
           this.projectTokensToPurchase = toWei(projectTokens, this.lbpManager.projectTokenInfo.decimals);
