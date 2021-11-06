@@ -58,15 +58,12 @@
           .dropdown {
             width: 140px;
             .selectedLabel {
-              height: 63px;
               border-top-right-radius: 0;
               border-bottom-right-radius: 0;
               background-color: $BG02;
             }
-
             .menu {
               border-top-right-radius: 0;
-              padding-top: 53px;
               hr, .option {
                 background-color: $BG02;
               }

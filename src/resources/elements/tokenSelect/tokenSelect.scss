@@ -30,8 +30,10 @@
     > img:not(:last-child) {
       margin-right: 10px;
     }
+  }
 
-    &.symbolOnly {
+  &.symbolOnly{
+    .tokenItem {
       height: 48px;
       img {
         width: 36px;
@@ -39,5 +41,14 @@
         border-radius: 18px;
       }
     }
+    .dropdown {
+      .selectedLabel {
+        height: 63px;
+      }
+    }
+    .menu {
+      padding-top: 53px;
+    }
   }
 }
+
