@@ -49,7 +49,6 @@
 
       .section1 {
         .tokenSelect {
-          background-color: $BG02;
           .tokenItem {
             font-weight: 700;
             font-family: Inter;
@@ -58,16 +57,19 @@
           }
           .dropdown {
             width: 140px;
-
             .selectedLabel {
-              height: 63px;
               border-top-right-radius: 0;
               border-bottom-right-radius: 0;
-              background-color: transparent;
+              background-color: $BG02;
             }
-
             .menu {
               border-top-right-radius: 0;
+              hr, .option {
+                background-color: $BG02;
+              }
+              .option:hover {
+                background-color: $Border01;
+              }
             }
           }
         }
@@ -88,7 +90,7 @@
               border: none;
               background-color: transparent;
               padding: 0;
-              margin-bottom: 2px;
+              margin-bottom: 1px;
             }
           }
 
