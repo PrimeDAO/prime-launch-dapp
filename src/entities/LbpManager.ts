@@ -53,8 +53,8 @@ export class LbpManager implements ILaunch {
   public fundingTokenInfo: ITokenInfo;
   public fundingTokenContract: any;
   public isPaused: boolean;
-  public fundingTokensPerProjectToken: number;
-  public projectTokensPerFundingToken: number;
+  // public fundingTokensPerProjectToken: number;
+  // public projectTokensPerFundingToken: number;
   public startingFundingTokenAmount: BigNumber;
   public startingProjectTokenAmount: BigNumber;
   public projectTokenBalance: BigNumber;
@@ -282,14 +282,14 @@ export class LbpManager implements ILaunch {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
-      this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
-        this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
-        this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
-        this.lbp.projectTokenWeight,
-      );
-      this.projectTokensPerFundingToken = 1.0 / this.fundingTokensPerProjectToken;
+      // this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
+      //   this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
+      //   this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
+      //   this.lbp.projectTokenWeight,
+      // );
+      // this.projectTokensPerFundingToken = 1.0 / this.fundingTokensPerProjectToken;
       // USD price of a project token
-      this.projectTokenInfo.price = this.fundingTokensPerProjectToken * this.fundingTokenInfo.price;
+      // this.projectTokenInfo.price = this.fundingTokensPerProjectToken * this.fundingTokenInfo.price;
     }
   }
 
@@ -375,6 +375,24 @@ export class LbpManager implements ILaunch {
     } else {
       return this.priceHistoryPromise;
     }
+  }
+  /**
+   * returns projectTokensPerFundingToken
+   *
+   *  fundingTokensPerProjectToken = 1.0 / fundingTokensPerProjectToken
+   *
+   *  USD price of a project token
+   *  price = fundingTokensPerProjectToken * fundingTokenInfo.price
+   */
+  public getCurrentExchangeRate(): number {
+    const fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
+      this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
+      this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
+      this.lbp.projectTokenWeight,
+    );
+
+    const result = 1.0 / fundingTokensPerProjectToken;
+    return Number.isFinite(result) ? result : 0;
   }
 }
 
