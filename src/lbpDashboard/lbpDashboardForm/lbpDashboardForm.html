@@ -15,7 +15,8 @@
             selected-token-info.bind="selectedFundingTokenInfo"
             selected-token-address.bind="lbpManager.fundingTokenAddress"
             token-addresses.to-view="tokenList"
-            item-changed.call="tokenChanged(value,index)">
+            loaded.call="tokenChanged()"
+            item-changed.call="tokenChanged()">
           </token-select>
           <div class="fundingAmount">
             <div class="fundingInput">

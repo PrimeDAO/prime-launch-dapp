@@ -135,11 +135,8 @@ export class lbpDashboardForm {
     this.projectTokensPerFundingToken = returnValue;
   }
 
-  /**
-   * assumes good value for this.projectTokensPerFundingToken
-   */
   async getProjectTokensToPurchase(): Promise<void> {
-    if (this.fundingTokensToPay?.gt(0)) {
+    if (this.fundingTokensToPay?.gt(0) && this.projectTokensPerFundingToken) {
       try {
         if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 

@@ -10,7 +10,8 @@ export class TokenSelect {
   @bindable tokenAddresses: Array<Address>;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenAddress?: Address;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenInfo: ITokenInfo;
-  @bindable itemChanged: ({ value: string, index: number }) => void;
+  @bindable itemChanged?: ({ value: string, index: number }) => void;
+  @bindable loaded?: () => void;
   @bindable.booleanAttr symbolOnly = false;
   @bindable.string placeholder = "Select a token...";
   dropdown: HTMLElement;
@@ -40,6 +41,9 @@ export class TokenSelect {
   async attached(): Promise<void> {
     if (!this.tokenInfos) {
       await this.tokenAddressesChanged();
+      if (this.loaded) {
+        this.loaded();
+      }
     }
   }
 
