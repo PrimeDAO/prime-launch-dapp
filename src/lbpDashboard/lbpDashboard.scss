@@ -2,7 +2,7 @@
 .page.lbpDashboardContainer {
   .lbpDashboard {
     display: grid;
-    grid-template-columns: 45% 20% 0 35%;
+    grid-template-columns: 45fr 20fr 0 35fr;
     grid-template-areas:
       "tokenInfo tokenInfo timeLeft timeLeft"
       "graph graph . form"
@@ -16,6 +16,7 @@
     }
     .timeLeft {
       grid-area: timeLeft;
+      justify-self: left;
     }
     .graph {
       grid-area: graph;
@@ -33,9 +34,24 @@
   }
 }
 
-@media screen and (max-width: 1475px) {
+@media screen and (max-width: 1220px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
+      grid-template-columns: auto;
+      grid-template-areas:
+        "tokenInfo"
+        "timeLeft"
+        "graph"
+        "form"
+        "distribution"
+        "about";
+      justify-items: center;
+
+      column-gap: 0;
+
+      .timeLeft {
+        justify-self: unset;
+      }
     }
   }
 }
