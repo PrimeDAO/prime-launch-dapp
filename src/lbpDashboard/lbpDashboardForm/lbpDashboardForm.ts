@@ -76,6 +76,11 @@ export class lbpDashboardForm {
     return !!this.ethereumService.defaultAccountAddress && this.lbpManager?.userHydrated;
   }
 
+  @computedFrom("lbpManager.isDead")
+  get isDead(): boolean {
+    return this.lbpManager.isDead;
+  }
+
   private fundingTokensToPayChanged(): void {
     this.getProjectTokensToPurchase();
   }
