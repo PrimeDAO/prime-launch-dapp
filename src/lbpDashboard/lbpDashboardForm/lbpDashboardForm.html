@@ -13,10 +13,9 @@
             symbol-only
             placeholder="Select token..."
             selected-token-info.bind="selectedFundingTokenInfo"
-            selected-token-address.bind="lbpManager.fundingTokenAddress"
-            token-addresses.to-view="tokenList"
-            loaded.call="tokenChanged()"
-            item-changed.call="tokenChanged()">
+            default-token-address.bind="lbpManager.fundingTokenAddress"
+            token-addresses.bind="tokenList"
+            item-changed.call="handleTokenChanged()">
           </token-select>
           <div class="fundingAmount">
             <div class="fundingInput">
@@ -30,7 +29,7 @@
               </div>
             </div>
             <div class="balance">Balance: <formatted-number
-                value.bind="userFundingTokenBalance | ethwei:selectedFundingTokenInfo.decimals"
+                value.bind="userFundingTokenBalance | ethwei:selectedFundingTokenInfo.decimals & debounce:100"
                 default-text="N/A"
                 average></formatted-number>
             </div>
@@ -41,9 +40,9 @@
             <div class="arrow">&downarrow;</div>
             <div class="text">
               1 ${selectedFundingTokenInfo.symbol} =
-              <formatted-number value.bind="projectTokensPerFundingToken"></formatted-number>
+              <formatted-number value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
               ${lbpManager.projectTokenInfo.symbol} =
-              <formatted-number value.bind="selectedFundingTokenInfo.price"></formatted-number> USD
+              <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD
             </div>
           </div>
         </div>
@@ -53,7 +52,7 @@
           </div>
           <div class="purchaseInfo">
             <div class="price">
-              <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6"></formatted-number>
+              <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6" & debounce:100></formatted-number>
             </div>
             <!-- <div class="priceImpact">Price impact: ${priceImpact}%</div> -->
           </div>

@@ -7,13 +7,14 @@ import "./tokenSelect.scss";
 
 @autoinject
 export class TokenSelect {
-  @bindable tokenAddresses: Array<Address>;
+  @bindable({ defaultBindingMode: bindingMode.toView }) tokenAddresses: Array<Address>;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenAddress?: Address;
   @bindable({ defaultBindingMode: bindingMode.twoWay }) selectedTokenInfo: ITokenInfo;
-  @bindable itemChanged?: ({ value: string, index: number }) => void;
-  @bindable loaded?: () => void;
-  @bindable.booleanAttr symbolOnly = false;
-  @bindable.string placeholder = "Select a token...";
+  @bindable({ defaultBindingMode: bindingMode.toView }) defaultTokenAddress?: Address;
+  @bindable({ defaultBindingMode: bindingMode.toView }) itemChanged?: ({ newTokenInfo: ITokenInfo }) => void;
+  @bindable.booleanAttr({ defaultBindingMode: bindingMode.toView }) symbolOnly = false;
+  @bindable.string({ defaultBindingMode: bindingMode.toView }) placeholder = "Select a token...";
+
   dropdown: HTMLElement;
   tokenInfos: Array<ITokenInfo>;
 
@@ -21,13 +22,13 @@ export class TokenSelect {
     private tokenService: TokenService,
   ) {}
 
-  setSelectedToken(value: string, index: number): void {
+  private handleSelectionChanged(_value: string, index: number): void {
     this.selectedTokenInfo = this.tokenInfos[index];
     this.selectedTokenAddress = this.selectedTokenInfo?.address;
     if (this.itemChanged) {
       // give bindings a chance to propagate first
       setTimeout(() => {
-        this.itemChanged({value, index});
+        this.itemChanged({ newTokenInfo: this.selectedTokenInfo });
       }, 0);
     }
   }
@@ -41,17 +42,21 @@ export class TokenSelect {
   async attached(): Promise<void> {
     if (!this.tokenInfos) {
       await this.tokenAddressesChanged();
-      if (this.loaded) {
-        this.loaded();
-      }
     }
   }
 
   async tokenAddressesChanged(): Promise<void> {
     if (this.tokenAddresses) {
       this.tokenInfos = await this.getTokeninfos();
-      if (this.selectedTokenAddress) {
-        this.selectedTokenInfo = this.tokenInfos.filter((info) => info.address === this.selectedTokenAddress)?.[0];
+      if (this.defaultTokenAddress) {
+        this.selectedTokenAddress = this.defaultTokenAddress;
+        this.selectedTokenInfo = this.tokenInfos.filter((info) => info.address === this.defaultTokenAddress)?.[0];
+        if (this.itemChanged) {
+          // give bindings a chance to propagate first
+          setTimeout(() => {
+            this.itemChanged({ newTokenInfo: this.selectedTokenInfo });
+          }, 0);
+        }
       }
     }
   }

@@ -123,7 +123,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     this.aureliaHelperService.createPropertyWatch(object, property, this.updateValues.bind(this));
   }
 
-  tokenChanged(_value: string, _index: number): void {
+  tokenChanged(): void {
     this.launchConfig.launchDetails.amountFundingToken = "";
   }
 

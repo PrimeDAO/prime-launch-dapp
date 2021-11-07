@@ -94,7 +94,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     return this.lastWhitelistUrlValidated === this.launchConfig.launchDetails.whitelist;
   }
 
-  tokenChanged(_value: string, _index: number): void {
+  tokenChanged(): void {
     this.launchConfig.launchDetails.fundingTarget =
     this.launchConfig.launchDetails.fundingMax =
     this.launchConfig.launchDetails.pricePerToken = null;

@@ -96,7 +96,7 @@ export class lbpDashboardForm {
     }
   }
 
-  async tokenChanged(): Promise<void> {
+  private async handleTokenChanged(): Promise<void> {
     this.fundingTokensToPay = null;
     await this.getProjectTokensPerFundingToken();
     this.hydrateUserData();
@@ -114,7 +114,7 @@ export class lbpDashboardForm {
   async getProjectTokensPerFundingToken(): Promise<void> {
     let returnValue: number;
 
-    if (!this.selectedFundingTokenInfo) {
+    if (!this.selectedFundingTokenInfo.address) {
       returnValue = null; // will show "--" if displayed by formatted-number
     }
     else if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
@@ -126,6 +126,9 @@ export class lbpDashboardForm {
 
       returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
       returnValue = Number.isFinite(returnValue) ? returnValue : null;
+      if (returnValue === 0) {
+        returnValue = null; // will show "--" if displayed by formatted-number
+      }
 
     } else { // using the pool funding token
       // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
