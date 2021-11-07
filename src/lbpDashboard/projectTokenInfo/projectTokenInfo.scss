@@ -94,3 +94,17 @@
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .projectTokenInfo {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "logo"
+      "details"
+      "priceValue"
+      "priceChange"
+      "timeLeft";
+    row-gap: 3px;
+    justify-items: center;
+  }
+}

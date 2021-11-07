@@ -23,3 +23,52 @@
     font-size: 18px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .timeRemainingContainer {
+    grid-template-columns: auto;
+    justify-items: center;
+
+    grid-template-areas:
+      "timeRemainingHeader"
+      "timeRemaining"
+      "launchSupplyHeader"
+      "launchSupply"
+      "averagePriceHeader"
+      "averagePrice";
+
+    .timeRemaining.label {
+      grid-area: timeRemainingHeader;
+    }
+
+    .launchSupply.label {
+      grid-area: launchSupplyHeader;
+    }
+
+    .averagePrice.label {
+      grid-area: averagePriceHeader;
+    }
+
+    .timeRemaining.value {
+      grid-area: timeRemaining;
+      margin-bottom: 20px;
+    }
+
+    .launchSupply.value {
+      grid-area: launchSupply;
+      margin-bottom: 20px;
+    }
+
+    .averagePrice.value {
+      grid-area: averagePrice;
+      margin-bottom: 20px;
+    }
+
+    justify-content: space-evenly;
+    column-gap: 20px;
+
+    &.complete {
+      grid-template-columns: auto auto;
+    }
+  }
+}
