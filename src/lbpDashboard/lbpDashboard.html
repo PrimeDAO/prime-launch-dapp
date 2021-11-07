@@ -13,7 +13,7 @@
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
       <div class="graph">
-        <spark-chart data.bind="lbpMgr.priceHistory" height="400" width="100%" interactive></spark-chart>
+        <spark-chart data.bind="lbpMgr.priceHistory" height="400" interactive></spark-chart>
       </div>
       <div class="form">
         <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
