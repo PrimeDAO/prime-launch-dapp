@@ -308,6 +308,15 @@
         .emailColumn {
           .form {
             justify-content: center;
+            width: unset;
+
+            .emailInput {
+              max-width: 155px;
+            }
+          }
+          .disclaimer {
+            padding: 0 20px;
+            text-align: center;
           }
         }
       }
@@ -342,9 +351,6 @@
       &.fairLaunch {
         .pic {
           img {
-            margin-left: -20px;
-            margin-right: -20px;
-            width: calc(100% + 40px);
           }
         }
       }

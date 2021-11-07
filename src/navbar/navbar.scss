@@ -186,12 +186,13 @@
 
 @media screen and (max-width: 450px) {
   .navbar-container {
-    .products {
-      grid-area: products;
+    grid-template-columns: auto auto;
+    grid-template-areas: "logo connect";
+    justify-content: space-between;
 
-      .container {
-        column-gap: 0;
-      }
+    .products,
+    .productSubpages {
+      display: none;
     }
   }
 }

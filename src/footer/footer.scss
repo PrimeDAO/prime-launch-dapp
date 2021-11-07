@@ -92,9 +92,11 @@
 }
 
 @media screen and (max-width: 1072px) {
-  > hr {
-    margin-left: -$BodyPaddingLeftRightMobile;
-    margin-right: -$BodyPaddingLeftRightMobile;
+  .footerContainer {
+    > hr {
+      margin-left: -$BodyPaddingLeftRightMobile;
+      margin-right: -$BodyPaddingLeftRightMobile;
+    }
   }
 }
 
