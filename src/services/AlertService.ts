@@ -4,6 +4,7 @@ import { DialogCloseResult, DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
 import { Alert, ShowButtonsEnum } from "../resources/dialogs/alert/alert";
 import { EventAggregator } from "aurelia-event-aggregator";
+import { Utils } from "services/utils";
 
 @autoinject
 export class AlertService {
@@ -36,7 +37,7 @@ export class AlertService {
       message = config.message;
     }
 
-    this.showAlert(`${message ? `${message}: ` : ""}${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`);
+    this.showAlert(`${message ? `${message}: ` : ""}${Utils.extractExceptionMessage(ex)}`);
   }
 
   private handleFailure(config: EventConfig | string) {

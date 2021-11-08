@@ -106,7 +106,6 @@ export class lbpDashboardForm {
     this.fundingTokensToPay = this.userFundingTokenBalance ?? BigNumber.from(0);
   }
 
-
   /**
    * side effects: sets this.projectTokensPerFundingToken
    * @returns

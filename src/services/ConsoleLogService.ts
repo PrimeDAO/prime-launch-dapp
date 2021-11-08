@@ -2,6 +2,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, LogManager } from "aurelia-framework";
 import { EventConfig, EventConfigException, EventConfigTransaction, EventMessageType } from "./GeneralEvents";
 import { DisposableCollection } from "./DisposableCollection";
+import { Utils } from "services/utils";
 
 export type ConsoleLogMessageTypes = "info"|"warn"|"warning"|"error"|"debug";
 
@@ -58,7 +59,7 @@ export class ConsoleLogService {
     let ex;
     if (!(config instanceof EventConfigException)) {
       ex = config as any;
-      message = `${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`;
+      message = `${Utils.extractExceptionMessage(ex)}`;
     } else {
       config = config as EventConfigException;
       ex = config.exception;

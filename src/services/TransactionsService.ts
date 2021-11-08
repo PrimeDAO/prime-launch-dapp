@@ -1,3 +1,4 @@
+import { BalancerService } from "services/BalancerService";
 import { Utils } from "services/utils";
 import { TransactionResponse, TransactionReceipt } from "@ethersproject/providers";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -27,6 +28,10 @@ export default class TransactionsService {
       this.eventAggregator.publish("transaction.confirmed", { message: "Transaction was confirmed", receipt });
       return receipt;
     } catch (ex) {
+      const balancerError = BalancerService.tryParseErrorCode(ex?.error?.message);
+      if (balancerError) {
+        ex.error.message = balancerError;
+      }
       this.eventAggregator.publish("transaction.failed", ex);
       return null;
     }
