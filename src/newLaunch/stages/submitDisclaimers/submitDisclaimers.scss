@@ -1,0 +1,26 @@
+@import "styles/colors.scss";
+.disclaimerButtons {
+  label {
+    all: revert;
+    display: block;
+  }
+
+  a,
+  .clause {
+    line-height: 24px;
+    font-size: 16px;
+    font-family: Inter;
+  }
+
+  .clause {
+    color: $Neutral03;
+    &:not(:last-of-type) {
+      margin-bottom: 12px;
+    }
+
+    input[type="checkbox"] {
+      all: revert;
+      margin-right: 6px;
+    }
+  }
+}

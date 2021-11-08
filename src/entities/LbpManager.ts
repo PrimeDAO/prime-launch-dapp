@@ -276,7 +276,7 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateTokensState(): Promise<void> {
-    this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
+    this.startingProjectTokenAmount = await this.contract.projectTokensRequired();
     this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
@@ -312,12 +312,11 @@ export class LbpManager implements ILaunch {
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
         if (receipt) {
+          this.hydrate();
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
-          await this.hydrateLbp();
-          this.hydrateTokensState();
-          this.hydrateUser();
+          await this.hydrate();
           return receipt;
         }
       });
@@ -344,7 +343,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
         if (receipt) {
-          this.hydrate();
+          this.hydratePaused();
           return receipt;
         }
       });

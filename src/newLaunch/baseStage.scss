@@ -216,10 +216,10 @@
       flex-wrap: wrap;
     }
     .button2 {
-        margin-left: 0;
+      margin-left: 0;
     }
     input#admin {
-        margin-right: 15px;
+      margin-right: 15px;
     }
   }
 
@@ -706,6 +706,17 @@
     }
   }
 
+  &.stage7 {
+    .infoContainer {
+      .body {
+        line-height: 24px;
+        font-size: 16px;
+        color: $Neutral03;
+        margin-bottom: 24px;
+      }
+    }
+  }
+
   &.stage8 {
     .wrappedLink {
       white-space: normal;
@@ -732,7 +743,6 @@
     }
   }
 }
-
 
 @media screen and (max-width: 790px) {
   .infoContainer {
@@ -844,8 +854,8 @@
         }
       }
       .adminInputContainer {
-        &>input#admin {
-          width:90%;
+        & > input#admin {
+          width: 90%;
           margin-bottom: 8px;
         }
       }
