@@ -28,7 +28,7 @@
             ${selectedSeed.metadata.general.projectName}
           </div>
           <div if.bind="selectedSeed.address">
-            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens">
+            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Fund Seed
               </div>
