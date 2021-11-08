@@ -94,6 +94,11 @@ export class SeedAdminDashboard {
     }
   }
 
+  @computedFrom("selectedSeed.isDead")
+  get isDead(): boolean {
+    return this.selectedSeed.isDead;
+  }
+
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
