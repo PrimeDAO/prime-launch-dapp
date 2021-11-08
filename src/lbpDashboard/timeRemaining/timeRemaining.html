@@ -1,17 +1,6 @@
 <template>
   <require from="./timeRemaining.scss"></require>
-  <div
-    class="
-      timeRemainingContainer
-      ${(lbpMgr.endsInMilliseconds
-      <=
-      0)
-      ?
-      'complete'
-      :
-      ''}
-    "
-  >
+  <div class="timeRemainingContainer ${(lbpMgr.endsInMilliseconds <= 0) ? 'complete' : ''}">
     <div class="timeRemaining label">TIME REMAINING</div>
     <div class="launchSupply label">LAUNCH SUPPLY</div>
     <div class="averagePrice label">AVERAGE PRICE</div>
