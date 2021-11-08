@@ -3,7 +3,7 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
-import { Router } from "aurelia-router";
+import { Router, Redirect, RouteConfig } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
@@ -25,19 +25,19 @@ export class Stage7 extends BaseStage<ISeedConfig> {
     super(router, ethereumService, eventAggregator, tokenService);
   }
 
-  // public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
-  //   /**
-  //    * heuristic for whether we have data.  Possibility is that the user
-  //    * has used the 'back' button or otherwize figured out how to return
-  //    * to this page, for example, just after having submitting a Seed,
-  //    * where the launchConfig will have been deleted.
-  //    */
-  //   if (!routeConfig.settings.launchConfig.general.projectName?.length) {
-  //     return new Redirect("");
-  //   } else {
-  //     return true;
-  //   }
-  // }
+  public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
+    /**
+     * heuristic for whether we have data.  Possibility is that the user
+     * has used the 'back' button or otherwize figured out how to return
+     * to this page, for example, just after having submitting a Seed,
+     * where the launchConfig will have been deleted.
+     */
+    if (!routeConfig.settings.launchConfig.general.projectName?.length) {
+      return new Redirect("");
+    } else {
+      return true;
+    }
+  }
 
   attached(): void {
     // this.launchConfig.launchDetails.fundingMax = toWei("100").toString();

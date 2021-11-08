@@ -215,7 +215,7 @@ export class App {
         title: "Administer an LBP Launch",
       },
       {
-        moduleId: PLATFORM.moduleName("./documentation/officialDocs/termsOfService.html"),
+        moduleId: PLATFORM.moduleName("./documentation/officialDocs/termsOfService"),
         nav: false,
         name: "termsOfService",
         route: ["terms-of-service"],
