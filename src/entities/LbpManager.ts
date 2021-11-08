@@ -337,26 +337,12 @@ export class LbpManager implements ILaunch {
     return this.poolFunded ? this.contract.getSwapEnabled() : Promise.resolve(false);
   }
 
-  public async setSwapDisabled(): Promise<TransactionReceipt> {
-    console.log("enabled invoked");
+  public async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
     return this.transactionsService.send(
-      () => this.contract.setSwapEnabled(true))
+      () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
         if (receipt) {
-          this.hydratePaused().then(() => console.log(this.isPaused));
-          return receipt;
-        }
-      });
-  }
-
-  public async setSwapEnabled(): Promise<TransactionReceipt> {
-    console.log("Disabled invoked");
-    return this.transactionsService.send(
-      () => this.contract.setSwapEnabled(false))
-      .then(async receipt => {
-        if (receipt) {
-          this.hydratePaused().then(() => console.log(this.isPaused));
-          this.hydrate();
+          this.hydratePaused();
           return receipt;
         }
       });

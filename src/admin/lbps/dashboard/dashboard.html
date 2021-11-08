@@ -30,13 +30,13 @@
           <div if.bind="selectedLbp.address">
             <div class="featureContainer" if.bind="selectedLbp.uninitialized">
               <div class="featureTitle">
-                Approve tokens and Fund LBP
+                Required to fund the LBP:
               </div>
               <div class="featureDescription">
-                ${selectedLbp.projectTokenInfo.name} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals}
+                ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} (${selectedLbp.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img> required to fund the LBP
               </div>
               <div class="featureDescription">
-                ${selectedLbp.fundingTokenInfo.name} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals}
+                ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals} (${selectedLbp.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img> required to fund the LBP: 
               </div>
               <div class="featureDescription">
                 Note this will require your approval of three transactions.
@@ -64,10 +64,10 @@
               <div class="featureDescription">
                 ${selectedLbp.isPaused ? "Pausing" : "Unpausing"} will make swapping ${selectedLbp.isPaused ? "inactive" : "active"}. As the administrator, you will be able to unpause the LBP.
               </div>
-              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapDisabled()">
+              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
                 Pause Swapping
               </div>
-              <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled()">
+              <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">
                 UnPause Swapping
               </div>
             </div>
