@@ -316,9 +316,7 @@ export class LbpManager implements ILaunch {
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
-          await this.hydrateLbp();
-          this.hydrateTokensState();
-          this.hydrateUser();
+          await this.hydrate();
           return receipt;
         }
       });
