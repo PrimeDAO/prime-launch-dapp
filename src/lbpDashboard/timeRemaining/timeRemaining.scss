@@ -21,6 +21,13 @@
   .value {
     font-family: Inter;
     font-size: 18px;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+
+    img {
+      margin-right: 10px;
+    }
   }
 }
 
@@ -36,6 +43,11 @@
       "launchSupply"
       "averagePriceHeader"
       "averagePrice";
+
+    & .value {
+      width: 100%;
+      justify-content: flex-start;
+    }
 
     .timeRemaining.label {
       grid-area: timeRemainingHeader;
