@@ -224,7 +224,7 @@ export class LbpManager implements ILaunch {
       /**
        * 100 - projectTokenStartWeight = fundingTokenStartWeight
        */
-      this.projectTokenStartWeight = await this.contract.startWeights(this.projectTokenIndex);
+      this.projectTokenStartWeight = this.numberService.fromString(fromWei((await this.contract.startWeights(this.projectTokenIndex))));
 
       await this.hydrateTokensState();
 
