@@ -1,6 +1,9 @@
 @import "styles/styles.scss";
 .tokenPairContainer {
   height: 23px;
+  display: flex;
+  justify-content: space-between;
+  width: 23%;
   > img {
     @include tokenIcon;
     border-radius: 13px;
