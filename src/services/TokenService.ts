@@ -11,6 +11,7 @@ import { concatMap } from "rxjs/operators";
 import { IErc20Token, ITokenHolder, ITokenInfo } from "services/TokenTypes";
 import { TokenListMap, TokenListService } from "services/TokenListService";
 import TokenMetadataService from "services/TokenMetadataService";
+import { Utils } from "services/utils";
 
 @autoinject
 export class TokenService {
@@ -152,7 +153,7 @@ export class TokenService {
             }
           })
           .catch((ex) => {
-            this.consoleLogService.logMessage(`PriceService: Error fetching token price ${ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex}`, "error");
+            this.consoleLogService.logMessage(`PriceService: Error fetching token price ${Utils.extractExceptionMessage(ex)}`, "error");
           });
       }
 
