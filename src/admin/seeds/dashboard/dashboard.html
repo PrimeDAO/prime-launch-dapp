@@ -30,7 +30,7 @@
           <div if.bind="selectedSeed.address">
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
-                Fund Seed (${isDead})
+                Fund Seed
               </div>
               <div class="featureDescription">
                 ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
