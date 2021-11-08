@@ -214,6 +214,13 @@ export class App {
         route: ["admin/lbps/dashboard/:address?"],
         title: "Administer an LBP Launch",
       },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/officialDocs/termsOfService.html"),
+        nav: false,
+        name: "termsOfService",
+        route: ["terms-of-service"],
+        title: "Terms of Service",
+      },
 
     ]);
 
