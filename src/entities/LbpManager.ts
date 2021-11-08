@@ -336,7 +336,7 @@ export class LbpManager implements ILaunch {
   }
 
   public getSwapEnabled(): Promise<boolean> {
-    return this.poolFunded ? this.contract.getSwapEnabled() : Promise.resolve(false);
+    return this.uninitialized ? Promise.resolve(true) : this.contract.getSwapEnabled();
   }
 
   public async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
