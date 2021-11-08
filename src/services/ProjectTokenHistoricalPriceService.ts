@@ -75,8 +75,8 @@ export class ProjectTokenHistoricalPriceService {
 
     const returnArray = new Array<IHistoricalPriceRecord>();
 
-    const startFundingTokenAmount = parseFloat(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
-    const startProjectTokenAmount = parseFloat(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
+    const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
+    const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
     swaps.push({
       timestamp: startTime,
