@@ -11,8 +11,8 @@
           </div>
         </div>
       </div>
-      <a href.to-view="seed/${selectedSeed.address}">Go to Seed Dashboard</a>
       <div else class="formContainer">
+      <a if.bind="selectedSeed.address" href="seed/${selectedSeed.address}">Go to Seed Dashboard</a>
         <div class="heading heading1 seedAdministrationHeader">
           Seed Administration
         </div>

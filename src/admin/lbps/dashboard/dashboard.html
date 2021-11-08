@@ -11,8 +11,8 @@
           </div>
         </div>
       </div>
-      <a href.to-view="lbp/${selectedLbp.address}">Go to LBP Dashboard</a>
       <div else class="formContainer">
+      <a if.bind="selectedLbp.address" href="lbp/${selectedLbp.address}">Go to LBP Dashboard</a>
         <div class="heading heading1 lbpAdministrationHeader">
           LBP Administration
         </div>
