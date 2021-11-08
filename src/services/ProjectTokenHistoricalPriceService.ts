@@ -1,3 +1,4 @@
+import { fromWei } from "./EthereumService";
 import { EthereumService, Networks } from "services/EthereumService";
 
 import { DateService } from "services/DateService";
@@ -46,8 +47,10 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     const startingSeconds = lbpMgr.startTime.getTime() / 1000;
-    const intervalMinutes = 60/*min*/;
-    const intervalSeconds = intervalMinutes * 60/*sec*/;
+    const timeWentLiveSeconds = (await lbpMgr.lbp.contract.getGradualWeightUpdateParams())[0].toNumber();
+    const intervalMinutes = 1/*min*/;
+    const timeWentLive = (Math.floor(timeWentLiveSeconds / 60 / intervalMinutes) * 60 * intervalMinutes)/* Rounded */;
+    const intervalSeconds = intervalMinutes * 60/* sec */;
 
     /* Rounded to the nearest hour */
     const endTimeSeconds = Math.ceil(new Date().getTime() / intervalSeconds / 1000) * intervalSeconds; // rounded hour
@@ -73,6 +76,15 @@ export class ProjectTokenHistoricalPriceService {
 
     const returnArray = new Array<IHistoricalPriceRecord>();
 
+    const startFundingTokenAmount = parseFloat(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
+    const startProjectTokenAmount = parseFloat(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
+
+    swaps.push({
+      timestamp: timeWentLive,
+      tokenAmountIn: (startFundingTokenAmount / (100 - lbpMgr.metadata.launchDetails.startWeight)).toString(),
+      tokenAmountOut: (startProjectTokenAmount / (lbpMgr.metadata.launchDetails.startWeight)).toString(),
+    } as ISwapRecord);
+
     if (swaps.length) {
       let previousTimePoint;
 
@@ -96,8 +108,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-
-      for (let timestamp = Math.floor(swaps[0].timestamp / intervalSeconds ) * intervalSeconds; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = timeWentLive; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;
