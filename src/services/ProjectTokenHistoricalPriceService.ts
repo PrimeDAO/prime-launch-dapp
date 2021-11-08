@@ -47,9 +47,8 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     const startingSeconds = lbpMgr.startTime.getTime() / 1000;
-    const timeWentLiveSeconds = (await lbpMgr.lbp.contract.getGradualWeightUpdateParams())[0].toNumber();
     const intervalMinutes = 1/*min*/;
-    const timeWentLive = (Math.floor(timeWentLiveSeconds / 60 / intervalMinutes) * 60 * intervalMinutes)/* Rounded */;
+    const startTime = (Math.floor(startingSeconds / 60 / intervalMinutes) * 60 * intervalMinutes)/* Rounded */;
     const intervalSeconds = intervalMinutes * 60/* sec */;
 
     /* Rounded to the nearest hour */
@@ -80,9 +79,9 @@ export class ProjectTokenHistoricalPriceService {
     const startProjectTokenAmount = parseFloat(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
     swaps.push({
-      timestamp: timeWentLive,
-      tokenAmountIn: (startFundingTokenAmount / (100 - lbpMgr.metadata.launchDetails.startWeight)).toString(),
-      tokenAmountOut: (startProjectTokenAmount / (lbpMgr.metadata.launchDetails.startWeight)).toString(),
+      timestamp: startTime,
+      tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
+      tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
     } as ISwapRecord);
 
     if (swaps.length) {
@@ -108,7 +107,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-      for (let timestamp = timeWentLive; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = startTime; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;
