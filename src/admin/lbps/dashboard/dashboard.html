@@ -28,7 +28,7 @@
             ${selectedLbp.metadata.general.projectName}
           </div>
           <div if.bind="selectedLbp.address">
-            <div class="featureContainer" if.bind="!selectedLbp.uninitialized">
+            <div class="featureContainer" if.bind="selectedLbp.uninitialized">
               <div class="featureTitle">
                 Fund and Initialize the LBP
               </div>
@@ -53,7 +53,7 @@
                 Remove Liquidity
               </div>
               <div class="featureDescription">
-                This will remove liquidity from the LBP and transfer to the address entered below.
+                This will remove liquidity from the LBP and transfer to the address given below.
               </div>
               <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
               <div class="button1 small" click.delegate="selectedLbp.withdraw(receiverAddress)">
