@@ -45,7 +45,7 @@
                 Approve tokens and Fund
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance != 0">
+            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance.gt(0)">
               <div class="featureTitle">
                 Remove Liquidity
               </div>
@@ -57,7 +57,7 @@
                 Remove Liquidity
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance != 0">
+            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance.gt(0)">
               <div class="featureTitle">
                 ${selectedLbp.isPaused ? "Pause LBP" : "Unpause LBP"}
               </div>
