@@ -35,7 +35,7 @@
               <div class="fundingAmounts">
                 Required to fund:
                 <div class="amount">
-                  ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
+                  ${selectedLbp.startingProjectTokenAmountWithFees.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
                 </div>
                 <div class="amount">
                   ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img>

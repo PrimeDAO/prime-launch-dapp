@@ -57,6 +57,7 @@ export class LbpManager implements ILaunch {
   // public projectTokensPerFundingToken: number;
   public startingFundingTokenAmount: BigNumber;
   public startingProjectTokenAmount: BigNumber;
+  public startingProjectTokenAmountWithFees: BigNumber;
   public projectTokenBalance: BigNumber;
   public fundingTokenBalance: BigNumber;
   public poolTokenBalance: BigNumber;
@@ -282,7 +283,8 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateTokensState(): Promise<void> {
-    this.startingProjectTokenAmount = await this.contract.projectTokensRequired();
+    this.startingProjectTokenAmountWithFees = await this.contract.projectTokensRequired();
+    this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
     this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
