@@ -28,21 +28,24 @@
             ${selectedLbp.metadata.general.projectName}
           </div>
           <div if.bind="selectedLbp.address">
-            <div class="featureContainer" if.bind="selectedLbp.uninitialized">
+            <div class="featureContainer" if.bind="!selectedLbp.uninitialized">
               <div class="featureTitle">
-                Required to fund the LBP
+                Fund and Initialize the LBP
+              </div>
+              <div class="fundingAmounts">
+                Required to fund:
+                <div class="amount">
+                  ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
+                </div>
+                <div class="amount">
+                  ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img>
+                </div>
               </div>
               <div class="featureDescription">
-                ${selectedLbp.startingProjectTokenAmount.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
-              </div>
-              <div class="featureDescription">
-                ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img>
-              </div>
-              <div class="featureDescription">
-                Note this will require your approval of three transactions.
+                Note this will require your approval of three transactions, to approve the token transfers, then to initialize the Lbp.
               </div>
               <div class="button1 small" click.delegate="fund()">
-                Approve tokens and Fund
+                Fund and Initialize
               </div>
             </div>
             <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance.gt(0)">
@@ -79,4 +82,3 @@
       </div>
     </div>
 </template>
-

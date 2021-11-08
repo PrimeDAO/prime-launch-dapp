@@ -55,6 +55,21 @@
       margin-bottom: 16px;
     }
 
+    .fundingAmounts {
+      display: flex;
+      flex-direction: column;
+      row-gap: 6px;
+      margin-bottom: 16px;
+      color: #98979b;
+      font-size: 16px;
+
+      .amount {
+        display: flex;
+        align-items: center;
+        justify-items: start;
+        padding-left: 7px;
+      }
+    }
     .inputWrapper {
       display: flex;
       align-items: center;
