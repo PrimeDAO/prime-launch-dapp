@@ -4,7 +4,7 @@
     display: grid;
     grid-template-columns: 45fr 20fr 0 35fr;
     grid-template-areas:
-      "tokenInfo tokenInfo timeLeft timeLeft"
+      "tokenInfo timeLeft timeLeft timeLeft"
       "graph graph . form"
       "about about distribution distribution";
 
@@ -16,7 +16,7 @@
     }
     .timeLeft {
       grid-area: timeLeft;
-      justify-self: left;
+      justify-self: right;
     }
     .graph {
       grid-area: graph;
@@ -51,7 +51,7 @@
       row-gap: 32px;
 
       .timeLeft {
-        justify-self: unset;
+        justify-self: center;
       }
     }
   }
