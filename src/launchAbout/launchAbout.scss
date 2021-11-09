@@ -29,7 +29,7 @@
       color: $Neutral02;
       margin-bottom: 16px;
       display: flex;
-      align-items: baseline;
+      align-items: center;
       flex: 1 170px;
 
       &:hover {
@@ -37,13 +37,11 @@
       }
 
       .icon {
-        font-size: 14px;
+        font-size: 12px;
         border-radius: 50%;
         color: $BG01;
         background-color: $Neutral02;
-        padding: 13px;
-        width: 16px;
-        height: 16px;
+        padding: 6px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
