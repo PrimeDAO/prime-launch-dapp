@@ -1,9 +1,8 @@
 import { ContractNames, ContractsService } from "services/ContractsService";
-/* eslint-disable no-console */
 import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
 import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { EthereumService, fromWei, Networks } from "services/EthereumService";
+import { EthereumService, Networks } from "services/EthereumService";
 import { autoinject } from "aurelia-dependency-injection";
 import { Utils } from "services/utils";
 import { BigNumber, BigNumberish } from "ethers";
@@ -71,15 +70,15 @@ export class BalancerService {
 
     // This calculates the cost to make a swap which is used as an input to sor to allow it to make gas efficient recommendations.
     // Note - tokenOut for SwapExactIn, tokenIn for SwapExactOut
-    const outputToken =
-        swapType === SwapTypes.SwapExactOut ? tokenIn : tokenOut;
-    const cost = await sor.getCostOfSwapInToken(
-      outputToken.address,
-      outputToken.decimals,
-      gasPrice,
-      BigNumber.from("35000"),
-    );
-    console.log(`getCostOfSwapInToken: ${cost.toString()}`);
+    // const outputToken =
+    //     swapType === SwapTypes.SwapExactOut ? tokenIn : tokenOut;
+    // const cost = await sor.getCostOfSwapInToken(
+    //   outputToken.address,
+    //   outputToken.decimals,
+    //   gasPrice,
+    //   BigNumber.from("35000"),
+    // );
+    // console.log(`getCostOfSwapInToken: ${cost.toString()}`);
 
     const swapInfo: SwapInfo = await sor.getSwaps(
       tokenIn.address,
@@ -89,39 +88,39 @@ export class BalancerService {
       { gasPrice, maxPools },
     );
 
-    const amtInScaled =
-        swapType === SwapTypes.SwapExactIn
-          ? fromWei(swapAmount, tokenIn.decimals)
-          : fromWei(swapInfo.returnAmount, tokenIn.decimals);
-    const amtOutScaled =
-        swapType === SwapTypes.SwapExactIn
-          ? fromWei(swapInfo.returnAmount, tokenOut.decimals)
-          : fromWei(swapAmount, tokenOut.decimals);
+    // const amtInScaled =
+    //     swapType === SwapTypes.SwapExactIn
+    //       ? fromWei(swapAmount, tokenIn.decimals)
+    //       : fromWei(swapInfo.returnAmount, tokenIn.decimals);
+    // const amtOutScaled =
+    //     swapType === SwapTypes.SwapExactIn
+    //       ? fromWei(swapInfo.returnAmount, tokenOut.decimals)
+    //       : fromWei(swapAmount, tokenOut.decimals);
 
-    const returnDecimals =
-        swapType === SwapTypes.SwapExactIn
-          ? tokenOut.decimals
-          : tokenIn.decimals;
+    // const returnDecimals =
+    //     swapType === SwapTypes.SwapExactIn
+    //       ? tokenOut.decimals
+    //       : tokenIn.decimals;
 
-    const returnWithFees = fromWei(
-      swapInfo.returnAmountConsideringFees,
-      returnDecimals,
-    );
+    // const returnWithFees = fromWei(
+    //   swapInfo.returnAmountConsideringFees,
+    //   returnDecimals,
+    // );
 
-    const costToSwapScaled = fromWei(cost, returnDecimals);
+    // const costToSwapScaled = fromWei(cost, returnDecimals);
 
-    const swapTypeStr =
-        swapType === SwapTypes.SwapExactIn ? "SwapExactIn" : "SwapExactOut";
-    console.log(swapTypeStr);
-    console.log(`Token In: ${tokenIn.symbol}, Amt: ${amtInScaled.toString()}`);
-    console.log(
-      `Token Out: ${tokenOut.symbol}, Amt: ${amtOutScaled.toString()}`,
-    );
-    console.log(`Cost to swap: ${costToSwapScaled.toString()}`);
-    console.log(`Return Considering Fees: ${returnWithFees.toString()}`);
-    console.log("Swaps:");
-    console.log(swapInfo.swaps);
-    console.log(swapInfo.tokenAddresses);
+    // const swapTypeStr =
+    //     swapType === SwapTypes.SwapExactIn ? "SwapExactIn" : "SwapExactOut";
+    // console.log(swapTypeStr);
+    // console.log(`Token In: ${tokenIn.symbol}, Amt: ${amtInScaled.toString()}`);
+    // console.log(
+    //   `Token Out: ${tokenOut.symbol}, Amt: ${amtOutScaled.toString()}`,
+    // );
+    // console.log(`Cost to swap: ${costToSwapScaled.toString()}`);
+    // console.log(`Return Considering Fees: ${returnWithFees.toString()}`);
+    // console.log("Swaps:");
+    // console.log(swapInfo.swaps);
+    // console.log(swapInfo.tokenAddresses);
 
     // will want the whole swapInfo for executing
     return swapInfo;
@@ -133,7 +132,7 @@ export class BalancerService {
     swapType = SwapTypes.SwapExactIn, // always
   ): Promise<TransactionResponse> {
     if (!swapInfo.returnAmount.gt(0)) {
-      console.log("Return Amount is 0. No swaps to execute.");
+      // console.log("Return Amount is 0. No swaps to execute.");
       return;
     }
     // if (swapInfo.tokenIn !== AddressZero) {
@@ -209,11 +208,11 @@ export class BalancerService {
         }
       });
     }
-    console.log(funds);
-    console.log(swapInfo.tokenAddresses);
-    console.log(limits);
+    // console.log(funds);
+    // console.log(swapInfo.tokenAddresses);
+    // console.log(limits);
 
-    console.log("Swapping...");
+    // console.log("Swapping...");
 
     const overRides = {};
     // overRides['gasLimit'] = '200000';
@@ -234,7 +233,7 @@ export class BalancerService {
         overRides,
       );
 
-    console.log(`tx: ${tx.hash}`);
+    // console.log(`tx: ${tx.hash}`);
 
     return tx;
   }
