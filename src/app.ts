@@ -170,7 +170,7 @@ export class App {
         nav: false,
         name: "lbpDashboard",
         route: ["lbp/:address"],
-        title: "LBP Dashboard",
+        title: "Liquid Launch Dashboard",
       },
       {
         moduleId: PLATFORM.moduleName("./newLaunch/seed/launch"),
@@ -184,7 +184,7 @@ export class App {
         nav: false,
         name: "newLBP",
         route: ["newLBP"],
-        title: "Register New LBP",
+        title: "Register New Liquid Launch",
       },
       {
         moduleId: PLATFORM.moduleName("./selectPackage/selectPackage"),

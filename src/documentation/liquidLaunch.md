@@ -11,7 +11,7 @@ The result is a fair and accessible token launch shown to effectively discover t
 - **Decentralized** — Prime Launch uses decentralized infrastructure and is run by a DAO
 - **Capital-efficient** — LBPs help distribute more tokens at efficient price points with less initial capital
 - **Fair** — LBPs' constant downward price pressure disincentivizes front-running and large buys from whales, giving better opportunities to your intended contributors
-- **Multi-use** — configure your launch to segue directly into another use-case (e.g to serve as a 50/50 AMM after the initial sale)
+- **Multi-use** — configure your liquid launch to segue directly into another use-case (e.g to serve as a 50/50 AMM after the initial sale)
 - **Multi-asset** — smart order routing means that users can trade any token in exchange for the project token at the price of higher slippage (using Balancer on the back end)
 
 For a complete breakdown of how Liquid Launches work on the back end, please read Balancer's <a href="https://medium.com/balancer-protocol/a-primer-on-fair-token-launches-and-liquidity-bootstrapping-pools-11bab5ff33a2" target="_blank" rel="noopener noreferrer">primer</a> or visit the <a href="https://docs.balancer.fi/" target="_blank" rel="noopener noreferrer">Balancer V2 Documentation</a>.

@@ -1,11 +1,10 @@
 <template>
   <div class="launch-preview-container">
     <div class="labeledQuestion">
-      <div class="heading heading3">Launch Preview</div>
+      <div class="heading heading3">Liquid Launch Preview</div>
       <div class="questionMark">
         <question-mark
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-        ></question-mark>
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit"></question-mark>
       </div>
     </div>
     <div class="info">
@@ -15,7 +14,7 @@
           <span if.to-view="config.marketCap.low !== '-1'">
             $ <formatted-number
               mantissa="1"
-              average 
+              average
               value.to-view="config.marketCap.low">
             </formatted-number>
           </span>
@@ -41,7 +40,7 @@
           </span>
           <span else>--</span>
           &nbsp;-&nbsp;
-          <span  if.to-view="config.priceRange.high !== '-1'">
+          <span if.to-view="config.priceRange.high !== '-1'">
             $ <formatted-number
               value.to-view="config.priceRange.high">
             </formatted-number>
