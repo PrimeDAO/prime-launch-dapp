@@ -36,53 +36,66 @@
   //   margin-bottom: 40px;
   // }
 
-  .featureContainer {
-    padding: 5px;
-    margin: 15px 0px;
-
-    .featureTitle {
-      font-size: 18px;
-      margin-bottom: 11px;
-      color: #a258a7;
-      font-weight: 300;
-    }
-
-    .featureDescription {
+  .formContainer {
+    .header {
       display: flex;
-      align-self: center;
-      color: #98979b;
-      font-size: 16px;
-      margin-bottom: 16px;
-    }
+      column-gap: 16px;
+      align-items: center;
 
-    .fundingAmounts {
-      display: flex;
-      flex-direction: column;
-      row-gap: 6px;
-      margin-bottom: 16px;
-      color: #98979b;
-      font-size: 16px;
-
-      .amount {
-        display: flex;
-        align-items: center;
-        justify-items: start;
-        padding-left: 7px;
+      a {
+        position: relative;
+        bottom: 6px;
       }
     }
-    .inputWrapper {
-      display: flex;
-      align-items: center;
+
+    .featureContainer {
+      padding: 5px;
+      margin: 15px 0px;
+
+      .featureTitle {
+        font-size: 18px;
+        margin-bottom: 11px;
+        color: #a258a7;
+        font-weight: 300;
+      }
+
+      .featureDescription {
+        display: flex;
+        align-self: center;
+        color: #98979b;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+
+      .fundingAmounts {
+        display: flex;
+        flex-direction: column;
+        row-gap: 6px;
+        margin-bottom: 16px;
+        color: #98979b;
+        font-size: 16px;
+
+        .amount {
+          display: flex;
+          align-items: center;
+          justify-items: start;
+          padding-left: 7px;
+        }
+      }
+      .inputWrapper {
+        display: flex;
+        align-items: center;
+      }
     }
-  }
 
-  .tokenImage {
-    @include tokenIcon;
-    margin-left: 6px;
-    margin-right: 6px;
-  }
+    .tokenImage {
+      @include tokenIcon;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
 
-  .noSeedCreatedMessage {
-    padding-top: 15px;
+    .noSeedCreatedMessage {
+      padding-top: 15px;
+    }
   }
 }

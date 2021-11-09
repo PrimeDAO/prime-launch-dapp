@@ -12,8 +12,11 @@
         </div>
       </div>
       <div else class="formContainer">
-        <div class="heading heading1 lbpAdministrationHeader">
-          LBP Administration
+        <div class="header">
+          <div class="heading heading1 lbpAdministrationHeader">
+            LBP Administration
+          </div>
+          <a if.bind="selectedLbp.address" href="lbp/${selectedLbp.address}">Go to ${selectedLbp.metadata.general.projectName} Dashboard</a>
         </div>
         <div if.bind="lbps.length">
           <dropdown
