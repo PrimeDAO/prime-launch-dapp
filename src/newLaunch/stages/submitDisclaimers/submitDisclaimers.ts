@@ -38,7 +38,7 @@ export class SubmitDisclaimers {
   }
 
   updateConfirmed(): void {
-    this.allConfirmed = true; // this.checkedTerms && this.checkedReviewed && this.checkedPrivacy;
+    this.allConfirmed = this.checkedTerms && this.checkedReviewed && this.checkedPrivacy;
   }
 
   goBack(): void {
