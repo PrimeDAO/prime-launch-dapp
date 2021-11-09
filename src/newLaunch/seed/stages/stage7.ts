@@ -3,7 +3,7 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
-import { Router, RouteConfig, Redirect } from "aurelia-router";
+import { Router, Redirect, RouteConfig } from "aurelia-router";
 import { SeedService } from "services/SeedService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
@@ -12,6 +12,8 @@ import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage7 extends BaseStage<ISeedConfig> {
+
+  disclaimersConfirmed = false;
 
   constructor(
     router: Router,

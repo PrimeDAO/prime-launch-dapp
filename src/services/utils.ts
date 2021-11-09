@@ -125,4 +125,9 @@ export class Utils {
     }
     return str;
   }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static extractExceptionMessage(ex: any): string {
+    return ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex;
+  }
 }

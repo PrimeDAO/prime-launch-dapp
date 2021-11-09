@@ -13,7 +13,6 @@ export class Lbp {
   public address: Address;
   public vault: Vault;
   public projectTokenWeight: number;
-  public fundingTokenWeight: number;
   public poolId;
 
   private projectTokenIndex: any;
@@ -56,9 +55,13 @@ export class Lbp {
   public async hydrate(): Promise<void> {
     this.poolId = await this.contract.getPoolId();
     this.vault = await this.createVault(await this.contract.getVault());
+    /**
+     * current weights
+     * fundingTokenWeight = 100 - projectTokenWeight
+     */
     const weights = await this.contract.getNormalizedWeights();
     this.projectTokenWeight = this.numberService.fromString(fromWei(weights[this.projectTokenIndex]));
-    this.fundingTokenWeight = this.numberService.fromString(fromWei(weights[this.fundingTokenIndex]));
+    // this.fundingTokenWeight = this.numberService.fromString(fromWei(weights[this.fundingTokenIndex]));
   }
 
   public async loadContracts(): Promise<void> {

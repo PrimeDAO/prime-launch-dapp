@@ -64,7 +64,8 @@
             }
             .menu {
               border-top-right-radius: 0;
-              hr, .option {
+              hr,
+              .option {
                 background-color: $BG02;
               }
               .option:hover {
@@ -91,6 +92,10 @@
               background-color: transparent;
               padding: 0;
               margin-bottom: 1px;
+            }
+
+            .maxButton {
+              outline: none;
             }
           }
 
@@ -160,6 +165,11 @@
           border-bottom-right-radius: 10px;
           display: flex;
           align-items: center;
+          width: 122px;
+
+          .price {
+            overflow-x: clip;
+          }
         }
 
         .priceImpact {
@@ -192,6 +202,23 @@
 
       img {
         height: 13px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .lbpDashboardForm {
+    width: 303px;
+    .theform {
+      .body {
+        .section1,
+        .section2,
+        .section3 {
+          input {
+            width: 80px;
+          }
+        }
       }
     }
   }

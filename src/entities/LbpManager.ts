@@ -57,6 +57,7 @@ export class LbpManager implements ILaunch {
   // public projectTokensPerFundingToken: number;
   public startingFundingTokenAmount: BigNumber;
   public startingProjectTokenAmount: BigNumber;
+  public startingProjectTokenAmountWithFees: BigNumber;
   public projectTokenBalance: BigNumber;
   public fundingTokenBalance: BigNumber;
   public poolTokenBalance: BigNumber;
@@ -65,6 +66,7 @@ export class LbpManager implements ILaunch {
   private fundingTokenIndex: number;
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
+  public projectTokenStartWeight: number;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -220,6 +222,11 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
+      /**
+       * 100 - projectTokenStartWeight = fundingTokenStartWeight
+       */
+      this.projectTokenStartWeight = this.numberService.fromString(fromWei(await this.contract.startWeights(this.projectTokenIndex)));
+
       await this.hydrateTokensState();
 
       this.startTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(0)).toNumber());
@@ -276,20 +283,13 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateTokensState(): Promise<void> {
+    this.startingProjectTokenAmountWithFees = await this.contract.projectTokensRequired();
     this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
     this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
-      // this.fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
-      //   this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
-      //   this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
-      //   this.lbp.projectTokenWeight,
-      // );
-      // this.projectTokensPerFundingToken = 1.0 / this.fundingTokensPerProjectToken;
-      // USD price of a project token
-      // this.projectTokenInfo.price = this.fundingTokensPerProjectToken * this.fundingTokenInfo.price;
     }
   }
 
@@ -312,12 +312,11 @@ export class LbpManager implements ILaunch {
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
         if (receipt) {
+          this.hydrate();
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
-          await this.hydrateLbp();
-          this.hydrateTokensState();
-          this.hydrateUser();
+          await this.hydrate();
           return receipt;
         }
       });
@@ -336,7 +335,7 @@ export class LbpManager implements ILaunch {
   }
 
   public getSwapEnabled(): Promise<boolean> {
-    return this.poolFunded ? this.contract.getSwapEnabled() : Promise.resolve(false);
+    return this.uninitialized ? Promise.resolve(true) : this.contract.getSwapEnabled();
   }
 
   public async setSwapEnabled(state: boolean): Promise<TransactionReceipt> {
@@ -344,7 +343,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.setSwapEnabled(state))
       .then(async receipt => {
         if (receipt) {
-          this.hydrate();
+          this.hydratePaused();
           return receipt;
         }
       });
@@ -356,8 +355,8 @@ export class LbpManager implements ILaunch {
    * call this to make sure that this.priceHistory is hydrated.
    * @returns Promise of same as this.priceHistory
    */
-  public ensurePriceHistory(): Promise<Array<IHistoricalPriceRecord>> {
-    if (!this.priceHistoryPromise) {
+  public ensurePriceHistory(reset = false): Promise<Array<IHistoricalPriceRecord>> {
+    if (!this.priceHistoryPromise || reset) {
       return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
         resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
         reject: (reason?: any) => void,

@@ -430,8 +430,7 @@ export class Seed implements ILaunch {
     return this.transactionsService.send(() => this.contract.buy(amount))
       .then(async (receipt) => {
         if (receipt) {
-          this.hydrateTokensState();
-          this.hydrateUser();
+          await this.hydrate();
           return receipt;
         }
       });

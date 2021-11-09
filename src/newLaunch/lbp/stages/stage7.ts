@@ -2,7 +2,7 @@ import { ILbpConfig } from "newLaunch/lbp/config";
 import { EthereumService } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
-import { Router, RouteConfig, Redirect } from "aurelia-router";
+import { Router, Redirect, RouteConfig } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { NumberService } from "services/NumberService";
@@ -13,6 +13,8 @@ import { BigNumber } from "ethers";
 
 @autoinject
 export class Stage7 extends BaseStage<ILbpConfig> {
+
+  disclaimersConfirmed = false;
 
   constructor(
     router: Router,
