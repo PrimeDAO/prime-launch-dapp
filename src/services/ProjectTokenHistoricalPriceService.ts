@@ -47,7 +47,7 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     const startingSeconds = lbpMgr.startTime.getTime() / 1000;
-    const intervalMinutes = 1/*min*/;
+    const intervalMinutes = 60/*min*/;
     const startTime = (Math.floor(startingSeconds / 60 / intervalMinutes) * 60 * intervalMinutes)/* Rounded */;
     const intervalSeconds = intervalMinutes * 60/* sec */;
 
