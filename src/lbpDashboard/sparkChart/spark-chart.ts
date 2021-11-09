@@ -21,23 +21,25 @@ export class SparkChart {
   }
 
   attached(): void {
-    if (this.chart) {
-      this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-    }
+    if (this.chart) this.resizeChart();
+
     window.onresize = () => {
       /**
        * don't resize when the element is hidden, or height will go permanently to 0
        */
       setTimeout(() => {
-        if (this.chart) {
-          this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-        }
+        if (this.chart) this.resizeChart();
       }, 200);
     };
   }
 
   detached(): void {
     window.onresize = undefined;
+  }
+
+  private resizeChart() {
+    this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+    this.chart.timeScale().fitContent();
   }
 
   dataChanged(): void {
@@ -47,17 +49,17 @@ export class SparkChart {
         height: this.height,
         timeScale: {
           // rightBarStaysOnScroll: true,
-          visible: this.interactive,
+          visible: true,
           timeVisible: true,
           secondsVisible: true,
         },
         crosshair: {
-          vertLine: { visible: this.interactive },
-          horzLine: { visible: this.interactive },
+          vertLine: { visible: true },
+          horzLine: { visible: true },
           mode: CrosshairMode.Magnet,
         },
         priceScale: {
-          position: this.interactive ? "right" : "none",
+          position: "right",
         },
         grid: {
           horzLines: {
@@ -118,6 +120,7 @@ export class SparkChart {
         time: item.time,
         value: item.price,
       })));
+      this.resizeChart();
     }
   }
 

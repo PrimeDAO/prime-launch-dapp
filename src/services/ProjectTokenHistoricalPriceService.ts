@@ -47,12 +47,12 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     const startingSeconds = lbpMgr.startTime.getTime() / 1000;
-    const intervalMinutes = 1/*min*/;
-    const startTime = (Math.floor(startingSeconds / 60 / intervalMinutes) * 60 * intervalMinutes)/* Rounded */;
+    const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
-
+    const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.ceil(new Date().getTime() / intervalSeconds / 1000) * intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(new Date().getTime() / 1000 / intervalSeconds) * intervalSeconds; // rounded hour
+
 
     /**
      * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
@@ -67,9 +67,7 @@ export class ProjectTokenHistoricalPriceService {
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      const endDateSeconds = endTimeSeconds;
-      // const endDateSeconds = swaps.length ? swaps[swaps.length-1].timestamp : endTimeSeconds;
-      fetched = await this.fetchSwaps(endDateSeconds, startingSeconds, lbpMgr.lbp);
+      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, lbpMgr.lbp);
       swaps = swaps.concat(fetched);
     } while (fetched.length === 1000);
 
@@ -129,11 +127,13 @@ export class ProjectTokenHistoricalPriceService {
           }
         }
 
-        const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp);
+        const timezoneOffset = new Date().getTimezoneOffset() * 60;
+        const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp );
+
 
         if (todaysSwaps?.length) {
           returnArray.push({
-            time: timestamp,
+            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
@@ -149,7 +149,7 @@ export class ProjectTokenHistoricalPriceService {
            * previous value effected by USD course change
            */
           returnArray.push({
-            time: timestamp,
+            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               previousTimePoint *
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
@@ -157,7 +157,7 @@ export class ProjectTokenHistoricalPriceService {
           });
         } else {
           returnArray.push({
-            time: timestamp,
+            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
           });
         }
       }
