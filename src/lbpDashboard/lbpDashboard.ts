@@ -113,6 +113,7 @@ export class lbpDashboard {
   }
 
   async hydrateUserData(): Promise<void> {
+    // eslint-disable-next-line no-empty
     if (this.ethereumService.defaultAccountAddress) {
     }
   }
