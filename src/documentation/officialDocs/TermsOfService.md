@@ -176,7 +176,7 @@ Please note that we only provide our platform for domestic and private use. You 
 **PROVISIONS ARE SEVERABLE, IF FOUND INVALID**
 
 20.1. If any provision or part-provision of these Terms is or becomes invalid, illegal or unenforceable, it shall be deemed modified to the minimum extent necessary to make it valid, legal and enforceable. If such modification is not possible, the relevant provision or part-provision shall be deemed deleted. Any modification to or deletion of a provision or part-provision under this clause shall not affect the validity and enforceability of the rest of these Terms.
- 
+
 **APPENDIX**
 
 **RISKS**
