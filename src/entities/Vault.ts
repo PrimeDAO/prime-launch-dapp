@@ -73,7 +73,7 @@ export class Vault {
         toInternalBalance: false,
       },
       "0", // amountOut must be greter than this
-      BalancerService.Deadline,
+      BalancerService.Deadline(),
     ];
 
     let result;

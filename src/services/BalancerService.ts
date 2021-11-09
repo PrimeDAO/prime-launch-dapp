@@ -27,8 +27,7 @@ export class BalancerService {
   // This is the same across networks
   static VaultAddress = "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
 
-  static Deadline = Math.floor(Date.now() / 1000) + 3600; // an hour
-
+  static Deadline = (): number => Math.floor(Date.now() / 1000) + 3600; // an hour
 
   constructor(
     private contractsService: ContractsService,
@@ -235,7 +234,7 @@ export class BalancerService {
         swapInfo.tokenAddresses,
         funds,
         limits,
-        BalancerService.Deadline,
+        BalancerService.Deadline(),
         overRides,
       );
 
