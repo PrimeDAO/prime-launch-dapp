@@ -12,9 +12,11 @@
         </div>
       </div>
       <div else class="formContainer">
-      <a if.bind="selectedSeed.address" href="seed/${selectedSeed.address}">Go to Seed Dashboard</a>
-        <div class="heading heading1 seedAdministrationHeader">
-          Seed Administration
+        <div class="header">
+          <div class="heading heading1 seedAdministrationHeader">
+            Seed Administration
+          </div>
+          <a if.bind="selectedSeed.address" href="seed/${selectedSeed.address}">Go to ${selectedSeed.metadata.general.projectName} Dashboard</a>
         </div>
         <div if.bind="seeds.length">
           <dropdown
