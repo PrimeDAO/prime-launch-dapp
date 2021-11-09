@@ -1,4 +1,20 @@
+import { TokenListService } from "services/TokenListService";
+import { ITokenInfo } from "services/TokenTypes";
+import { TokenService } from "services/TokenService";
+import { EthereumService } from "services/EthereumService";
+import { autoinject } from "aurelia-dependency-injection";
+
+@autoinject
 export class LaunchService {
+
+  constructor(
+    private ethereumService: EthereumService,
+    private tokenService: TokenService,
+    private tokenListService: TokenListService,
+  ) {
+
+  }
+
   linkIcons = new Map<string, string>([
     ["twitter", "fab fa-twitter"],
     ["telegram", "fab fa-telegram-plane"],
@@ -21,5 +37,15 @@ export class LaunchService {
 
   iconClassForLinkType(type: string): string {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
+  }
+
+  public async getFundingTokenInfos(): Promise<Array<ITokenInfo>> {
+    let tokenInfos: Array<ITokenInfo>;
+    if (this.ethereumService.targetedNetwork === "mainnet") {
+      tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
+    } else {
+      tokenInfos = await this.tokenService.getTokenInfoFromAddresses(this.tokenService.devFundingTokens);
+    }
+    return tokenInfos;
   }
 }

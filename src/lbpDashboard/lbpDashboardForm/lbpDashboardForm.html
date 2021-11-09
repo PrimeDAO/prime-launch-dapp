@@ -14,7 +14,7 @@
             placeholder="Select token..."
             selected-token-info.bind="selectedFundingTokenInfo"
             default-token-address.bind="lbpManager.fundingTokenAddress"
-            token-addresses.bind="tokenList"
+            token-list.bind="tokenList"
             item-changed.call="handleTokenChanged()">
           </token-select>
           <div class="fundingAmount">

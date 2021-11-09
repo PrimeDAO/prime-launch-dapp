@@ -1,3 +1,4 @@
+import { LaunchService } from "services/LaunchService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { WhiteListService } from "services/WhiteListService";
 import { autoinject, singleton } from "aurelia-framework";
@@ -36,7 +37,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   whitelist: Set<Address>;
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
-  tokenList: Array<string>;
+  tokenList: Array<ITokenInfo>;
 
   sliderStartWeights: HTMLInputElement;
   sliderEndWeights: HTMLInputElement;
@@ -56,6 +57,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
     private aureliaHelperService: AureliaHelperService,
+    private launchService: LaunchService,
   ) {
     super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
@@ -66,7 +68,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     });
   }
 
-  attached(): void {
+  async attached(): Promise<void> {
     if (!this.projectTokenObserved) {
       this.aureliaHelperService.createPropertyWatch(this.launchConfig.tokenDetails, "projectTokenInfo",
         () => {
@@ -107,13 +109,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     });
 
     if (!this.tokenList) {
-      // eslint-disable-next-line require-atomic-updates
-      if (this.ethereumService.targetedNetwork === "mainnet") {
-        const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
-        this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
-      } else {
-        this.tokenList = this.tokenService.devFundingTokens;
-      }
+      this.tokenList = await this.launchService.getFundingTokenInfos();
     }
 
     this.updateValues();

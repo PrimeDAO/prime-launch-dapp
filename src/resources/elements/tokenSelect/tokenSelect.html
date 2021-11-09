@@ -3,8 +3,8 @@
     <dropdown
       item-changed.call="handleSelectionChanged(value, index)"
       selected-item-index.to-view="selectedTokenIndex"
-      placeholder.bind="!tokenInfos?'<span class=\'placeholder\'><i class=\'spinner fas fa-circle-notch fa-spin\'></i><span>Loading...</span></span>':placeholder">
-      <div repeat.for="tokenInfo of tokenInfos">
+      placeholder.bind="!tokenList?'<span class=\'placeholder\'><i class=\'spinner fas fa-circle-notch fa-spin\'></i><span>Loading...</span></span>':placeholder">
+      <div repeat.for="tokenInfo of tokenList">
         <div class="tokenItem">
           <img src.to-view="tokenInfo.logoURI"></img>
           <div if.bind="!symbolOnly">${tokenInfo.name}</div>

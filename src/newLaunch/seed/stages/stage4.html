@@ -21,7 +21,7 @@
                 id="fundingTokenAddress"
                 selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
                 selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
-                token-addresses.to-view="tokenList"
+                token-list.to-view="tokenList"
                 item-changed.call="tokenChanged()">
               </token-select>
               <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">

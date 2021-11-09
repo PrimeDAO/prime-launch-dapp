@@ -17,6 +17,7 @@ import { SwapInfo } from "@balancer-labs/sor";
 import { BalancerService } from "services/BalancerService";
 import TransactionsService, { TransactionResponse } from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";
+import { LaunchService } from "services/LaunchService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -25,7 +26,7 @@ export class lbpDashboardForm {
   selectedFundingTokenInfo: ITokenInfo = {} as unknown as ITokenInfo;
   userFundingTokenBalance: BigNumber;
   projectTokensPerFundingToken: number;
-  tokenList: Array<string>;
+  tokenList: Array<ITokenInfo>;
   @observable fundingTokensToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
@@ -46,6 +47,7 @@ export class lbpDashboardForm {
     private router: Router,
     private transactionsService: TransactionsService,
     private congratulationsService: CongratulationsService,
+    private launchService: LaunchService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -72,12 +74,7 @@ export class lbpDashboardForm {
   async attached(): Promise<void> {
     await this.balancerService.ensureInitialized();
     if (!this.tokenList) {
-      if (this.ethereumService.targetedNetwork === "mainnet") {
-        const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
-        this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
-      } else {
-        this.tokenList = this.tokenService.devFundingTokens;
-      }
+      this.tokenList = await this.launchService.getFundingTokenInfos();
     }
   }
 

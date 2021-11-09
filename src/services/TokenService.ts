@@ -1,14 +1,13 @@
 import { FormatTypes, getAddress, Interface } from "ethers/lib/utils";
 import { autoinject } from "aurelia-framework";
-import { BigNumber, Contract, ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { Address, EthereumService, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { toBigNumberJs } from "services/BigNumberService";
 import { from, Subject } from "rxjs";
 import { concatMap } from "rxjs/operators";
-import { IErc20Token, ITokenHolder, ITokenInfo } from "services/TokenTypes";
+import { IErc20Token, ITokenInfo } from "services/TokenTypes";
 import { TokenListMap, TokenListService } from "services/TokenListService";
 import TokenMetadataService from "services/TokenMetadataService";
 import { Utils } from "services/utils";
@@ -136,7 +135,7 @@ export class TokenService {
         tokenInfo.decimals = TokenService.DefaultDecimals;
       }
 
-      tokenInfo.priceChangePercentage_24h = 0;
+      // tokenInfo.priceChangePercentage_24h = 0;
 
       /**
        * try to get the token USD price, take a last shot at getting a logoURI.
@@ -147,7 +146,7 @@ export class TokenService {
         await axios.get(uri)
           .then((response) => {
             tokenInfo.price = response.data.market_data.current_price.usd ?? 0;
-            tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
+            // tokenInfo.priceChangePercentage_24h = response.data.market_data.price_change_percentage_24h ?? 0;
             if (!tokenInfo.logoURI) {
               tokenInfo.logoURI = response.data.image.thumb;
             }
@@ -243,24 +242,23 @@ export class TokenService {
       this.contractsService.createProvider()) as unknown as Contract & IErc20Token;
   }
 
-  public getHolders(tokenAddress: Address): Promise<Array<ITokenHolder>> {
-    const uri = `${this.getEthplorerUrl(`getTopTokenHolders/${tokenAddress}`)}&limit=1000`;
-    return axios.get(uri)
-      .then(async (response) => {
-        const holders = response?.data?.holders ?? [];
-        return holders.filter((holder: {address: string; balance: string, share: number }) => {
-          holders.balance = BigNumber.from(toBigNumberJs(holder.balance).toString());
-          return true;
-        });
-      })
-      .catch((error) => {
-        this.consoleLogService.logMessage(`TokenService: Error fetching token holders: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
-        // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
-        // TODO:  restore the exception?
-        return [];
-      });
-  }
-
+  // public getHolders(tokenAddress: Address): Promise<Array<ITokenHolder>> {
+  //   const uri = `${this.getEthplorerUrl(`getTopTokenHolders/${tokenAddress}`)}&limit=1000`;
+  //   return axios.get(uri)
+  //     .then(async (response) => {
+  //       const holders = response?.data?.holders ?? [];
+  //       return holders.filter((holder: {address: string; balance: string, share: number }) => {
+  //         holders.balance = BigNumber.from(toBigNumberJs(holder.balance).toString());
+  //         return true;
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       this.consoleLogService.logMessage(`TokenService: Error fetching token holders: ${error?.response?.data?.error?.message ?? error?.message}`, "error");
+  //       // throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
+  //       // TODO:  restore the exception?
+  //       return [];
+  //     });
+  // }
 
   public async isERC20Token(tokenAddress: Address): Promise<boolean> {
     let isOk = true;

@@ -1,3 +1,4 @@
+import { LaunchService } from "services/LaunchService";
 import { WhiteListService } from "services/WhiteListService";
 import { autoinject, singleton, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -33,7 +34,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   whitelist: Set<Address>;
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
-  tokenList: Array<string>;
+  tokenList: Array<ITokenInfo>;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -44,6 +45,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     private tokenListService: TokenListService,
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
+    private launchService: LaunchService,
   ) {
     super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
@@ -54,7 +56,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
   }
 
-  attached(): void {
+  async attached(): Promise<void> {
     this.startDatePicker = new Litepicker({
       element: this.startDateRef,
       minDate: Date.now(),
@@ -74,13 +76,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
 
     if (!this.tokenList) {
-      // eslint-disable-next-line require-atomic-updates
-      if (this.ethereumService.targetedNetwork === "mainnet") {
-        const tokenInfos = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
-        this.tokenList = tokenInfos.map((tokenInfo: ITokenInfo) => tokenInfo.address);
-      } else {
-        this.tokenList = this.tokenService.devFundingTokens;
-      }
+      this.tokenList = await this.launchService.getFundingTokenInfos();
     }
   }
 
