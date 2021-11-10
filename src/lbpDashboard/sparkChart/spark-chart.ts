@@ -21,7 +21,9 @@ export class SparkChart {
   }
 
   attached(): void {
-    if (this.chart) this.resizeChart();
+    if (this.chart) {
+      this.dataChanged();
+    }
 
     window.onresize = () => {
       /**
