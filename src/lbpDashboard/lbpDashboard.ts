@@ -82,12 +82,12 @@ export class lbpDashboard {
           waiting = true;
         }
         await lbpmgr.ensureInitialized();
-        if (!lbpmgr.priceHistory) {
-          this.lbpMgr.ensurePriceHistory();
-        }
       }
       this.lbpMgr = lbpmgr;
 
+      if (!lbpmgr.priceHistory) {
+        this.lbpMgr.ensurePriceHistory();
+      }
       await this.hydrateUserData();
 
       this.priceFetchIntervalId = setInterval(() => {
