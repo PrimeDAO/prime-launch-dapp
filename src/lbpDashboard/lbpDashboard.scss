@@ -53,6 +53,10 @@
       .timeLeft {
         justify-self: center;
       }
+
+      .graph {
+        width: calc(100vw - 320px);
+      }
     }
   }
 }
@@ -60,6 +64,9 @@
 @media screen and (max-width: 550px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
+      .graph {
+        width: calc(100vw - 60px);
+      }
     }
   }
 }
@@ -67,6 +74,9 @@
 @media screen and (max-width: 420px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
+      .graph {
+        width: calc(100vw - 20px);
+      }
     }
   }
 }
