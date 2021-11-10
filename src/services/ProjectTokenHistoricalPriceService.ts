@@ -51,7 +51,7 @@ export class ProjectTokenHistoricalPriceService {
     const intervalSeconds = intervalMinutes * 60/* sec */;
     const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(new Date().getTime() / 1000 / intervalSeconds) * intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(new Date().getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
@@ -105,7 +105,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-      for (let timestamp = startTime; timestamp <= endTimeSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = startTime; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;
