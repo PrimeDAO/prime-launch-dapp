@@ -5,15 +5,15 @@
       <span class="name">${lbpMgr.projectTokenInfo.name} </span>
       <div class="symbol">(${lbpMgr.projectTokenInfo.symbol})</div>
     </div>
-    <div class="priceValue ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') & signal:'secondPassed' }">
-      <i if.bind="fundingTokenTrend != 0" class="caret fas ${((fundingTokenTrend > 0) ? 'fa-caret-up' : 'fa-caret-down') & signal:'secondPassed' }"></i>
+    <div class="priceValue ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') }">
+      <i if.bind="fundingTokenTrend != 0" class="caret fas ${((fundingTokenTrend > 0) ? 'fa-caret-up' : 'fa-caret-down') }"></i>
       $ <formatted-number value.bind="currentPrice"></formatted-number>
     </div>
     <div class="timeleft">
       <time-left launch.to-view="lbpMgr"></time-left>
     </div>
-    <div class="priceChange ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') & signal:'secondPassed' }">
-      <div class="sign">${fundingTokenTrendSign & signal:'secondPassed'}</div>
+    <div class="priceChange ${(fundingTokenTrend > 0) ? 'increased' : ((fundingTokenTrend < 0) ? 'decreased' : '') }">
+      <div class="sign">${fundingTokenTrendSign}</div>
       <div class="amountChanged">
         <formatted-number value.bind="absolutePriceChange"></formatted-number>
       </div>
