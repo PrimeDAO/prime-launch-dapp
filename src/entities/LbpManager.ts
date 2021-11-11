@@ -62,11 +62,13 @@ export class LbpManager implements ILaunch {
   public fundingTokenBalance: BigNumber;
   public poolTokenBalance: BigNumber;
 
-  private projectTokenIndex: any;
-  private fundingTokenIndex: number;
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
+
+  private projectTokenIndex: any;
+  private fundingTokenIndex: number;
+  private processingPriceHistory = false
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -357,6 +359,13 @@ export class LbpManager implements ILaunch {
    */
   public ensurePriceHistory(reset = false): Promise<Array<IHistoricalPriceRecord>> {
     if (!this.priceHistoryPromise || reset) {
+
+      if (this.priceHistoryPromise && this.processingPriceHistory) {
+        return this.priceHistoryPromise;
+      }
+
+      this.processingPriceHistory = true;
+
       return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
         resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
         reject: (reason?: any) => void,
@@ -369,6 +378,9 @@ export class LbpManager implements ILaunch {
           .catch((ex) => {
             this.consoleLogService.logMessage(ex, "error");
             reject(ex);
+          })
+          .then(() => {
+            this.processingPriceHistory = false;
           });
       });
     } else {
