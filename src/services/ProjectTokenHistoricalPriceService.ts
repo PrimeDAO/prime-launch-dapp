@@ -200,7 +200,7 @@ export class ProjectTokenHistoricalPriceService {
         return response.data?.data.swaps;
       })
       .catch((error) => {
-        throw new Error(`${error.response?.data?.error.message ?? "Error fetching token info"}`);
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching price history"}`);
         return [];
       });
   }

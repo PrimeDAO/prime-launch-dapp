@@ -1,3 +1,4 @@
+import { AureliaHelperService } from "./../../services/AureliaHelperService";
 import { autoinject } from "aurelia-framework";
 import "./spark-chart.scss";
 import { createChart, CrosshairMode, IChartApi, ISeriesApi } from "lightweight-charts";
@@ -17,31 +18,26 @@ export class SparkChart {
   container: HTMLElement;
   sparkChart: HTMLElement;
 
-  constructor(private numberService: NumberService) {
+  constructor(
+    private numberService: NumberService,
+    private aureliaHelperService: AureliaHelperService,
+  ) {
   }
 
   attached(): void {
+
+    this.aureliaHelperService.createPropertyWatch(this.container, "offsetWidth", () => this.resizeChart());
+
     if (this.chart) {
       this.dataChanged();
     }
-
-    window.onresize = () => {
-      /**
-       * don't resize when the element is hidden, or height will go permanently to 0
-       */
-      setTimeout(() => {
-        if (this.chart) this.resizeChart();
-      }, 200);
-    };
-  }
-
-  detached(): void {
-    window.onresize = undefined;
   }
 
   private resizeChart() {
-    this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
-    this.chart.timeScale().fitContent();
+    if (this.chart && this.data && this.container) {
+      this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
+      this.chart.timeScale().fitContent();
+    }
   }
 
   dataChanged(): void {
