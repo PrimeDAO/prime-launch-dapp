@@ -59,6 +59,10 @@ export class SparkChart {
         priceScale: {
           position: "right",
         },
+        localization: {
+          priceFormatter: price =>
+            "$ " + price.toFixed(2),
+        },
         grid: {
           horzLines: {
             visible: false,
