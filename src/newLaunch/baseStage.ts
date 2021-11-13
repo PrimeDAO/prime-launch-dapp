@@ -1,3 +1,4 @@
+import { ContractNames, ContractsService } from "./../services/ContractsService";
 import { EventConfigFailure } from "../services/GeneralEvents";
 import { autoinject, computedFrom } from "aurelia-framework";
 import "./baseStage.scss";
@@ -53,10 +54,11 @@ export abstract class BaseStage<IConfig> {
     protected eventAggregator: EventAggregator,
     protected tokenService: TokenService,
   ) {
-    this.multiSigWalletUri = (ethereumService.targetedNetwork === Networks.Mainnet) ?
-      "https://gnosis-safe.io/app/#/safes/0xc54Ad3e73BDE767738335809A5f20F9BB80Be8D3/transactions"
-      :
-      "https://rinkeby.gnosis-safe.io/app/#/safes/0x2E46E481d57477A0663a7Ec61E7eDc65F4cb7F5C/transactions";
+
+    const safeAddress = ContractsService.getContractAddress(ContractNames.SAFE);
+
+    this.multiSigWalletUri =
+      `https://${(ethereumService.targetedNetwork === Networks.Mainnet) ? "" : "rinkeby." }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
