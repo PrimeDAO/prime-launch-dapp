@@ -20,6 +20,7 @@ import { LbpManager } from "entities/LbpManager";
 import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
 import { BalancerService } from "services/BalancerService";
+import { LaunchService } from "services/LaunchService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -65,6 +66,9 @@ export function configure(aurelia: Aurelia): void {
 
       const tokenService = aurelia.container.get(TokenService);
       await tokenService.initialize();
+
+      const launchService = aurelia.container.get(LaunchService);
+      launchService.initialize();
 
       const balancerService = aurelia.container.get(BalancerService);
       balancerService.initialize();

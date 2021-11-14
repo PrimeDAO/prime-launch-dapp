@@ -44,6 +44,10 @@ export default class TokenMetadataService {
     tokenLists: TokenListMap,
   ): Promise<TokenInfoMap> {
     addresses = addresses.map(address => getAddress(address));
+    /**
+     * Refactor this:  It is really inefficient to flatten the list every friggin'
+     * time a token or tokens are requested.  Only flatten once.
+     */
     const tokenList = this.flattenTokenLists(tokenLists);
     let metaDict = this.getMetaFromList(addresses, tokenList);
 

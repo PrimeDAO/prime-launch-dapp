@@ -193,17 +193,16 @@ export class TokenService {
   }
 
   public async getTokenInfoFromAddresses(tokenAddresses: Array<Address>): Promise<Array<ITokenInfo>> {
-    const tokenInfos = new Array<ITokenInfo>();
+    const promises = new Array<Promise<ITokenInfo>>();
 
     for (const address of tokenAddresses) {
       try {
-        const tokenInfo = await this.getTokenInfoFromAddress(address);
-        tokenInfos.push(tokenInfo);
+        promises.push(this.getTokenInfoFromAddress(address));
         // eslint-disable-next-line no-empty
       } catch { }
     }
 
-    return tokenInfos;
+    return Promise.all(promises);
   }
 
   /**
