@@ -1,7 +1,4 @@
-**Prime Launch Terms & Conditions**
-__________________________________________________________________________
-
-Prime Launch Terms & Conditions
+**Terms & Conditions**
 
 Please read these Terms carefully before participating on our launch platform. These Terms tell you who we are, what we offer, what to do if there is a problem, and other important information. If you think that there is a mistake in these Terms, please contact us to discuss at forum.prime.xyz
 
