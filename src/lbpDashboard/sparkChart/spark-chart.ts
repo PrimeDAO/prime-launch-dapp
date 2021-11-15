@@ -11,6 +11,7 @@ export class SparkChart {
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
   @bindable.number width = 500;
+  @bindable loading = true;
 
   chart: IChartApi;
   series: ISeriesApi<"Line">;
@@ -42,6 +43,7 @@ export class SparkChart {
 
   dataChanged(): void {
     if (this.data && !this.chart) {
+      this.loading = false;
       const options: any = { // DeepPartial<ChartOptions> = {
         width: this.width,
         height: this.height,

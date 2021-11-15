@@ -1,4 +1,14 @@
+@import "styles/styles.scss";
 .sparkChartContainer {
   // position: relative;
   height: 100%;
+}
+
+.loading {
+  text-align: center;
+  font-size: 32px;
+  padding-top: 24px;
+  i {
+    color: $Secondary03-dev;
+  }
 }
