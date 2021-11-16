@@ -579,3 +579,11 @@
     }
   }
 }
+
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) {
+    .page.seedDashboardContainer .seedDashboard .seedSummary .value.tokenprice .symbol { 
+        color:#B056A1; 
+        -webkit-text-fill-color:#B056A1; 
+    }
+}}
