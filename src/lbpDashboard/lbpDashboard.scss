@@ -44,9 +44,9 @@
 
     &.notLive {
       grid-template-areas:
-        "tokenInfo timeLeft timeLeft timeLeft"
-        "graph graph graph graph"
-        "about about distribution distribution";
+        "tokenInfo timeLeft timeLeft"
+        "graph graph graph"
+        "about about distribution";
     }
   }
 }
