@@ -39,7 +39,7 @@ export class DisclaimerService {
     } else {
       const response = await this.showDisclaimer(
         "https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/documentation/officialDocs/TermsOfService.md",
-        "PrimeLAUNCH Disclaimer",
+        "Prime Launch Disclaimer",
       );
 
       if (typeof response.output === "string") {

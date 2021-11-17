@@ -18,7 +18,7 @@ describe("Stage App Component", () => {
       // const view = component.element;
       const homeElement = document.querySelector(".home");
       expect(homeElement).toBeDefined();
-      // expect(view.textContent.trim()).toBe("PrimeLaunch!");
+      // expect(view.textContent.trim()).toBe("Prime Launch!");
       done();
     }).catch(e => {
       fail(e);
