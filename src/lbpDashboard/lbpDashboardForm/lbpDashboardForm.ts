@@ -160,11 +160,13 @@ export class lbpDashboardForm {
     }
   }
 
-  async validatePaused(): Promise<boolean> {
+  async validateEndedOrPaused(): Promise<boolean> {
     const paused = await this.lbpManager.hydratePaused();
     if (paused) {
-      this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
-      this.router.navigate("/home");
+      this.eventAggregator.publish("handleValidationError", "Sorry, swapping in this liquid launch has been paused by the launch administrator.");
+      return true;
+    } else if (this.lbpManager.isDead) {
+      this.eventAggregator.publish("handleValidationError", "Sorry, this liquid launch has ended.");
       return true;
     } else {
       return false;
@@ -172,7 +174,7 @@ export class lbpDashboardForm {
   }
 
   async unlockFundingTokens(): Promise<void> {
-    if (await this.validatePaused()) {
+    if (await this.validateEndedOrPaused()) {
       return;
     }
 
@@ -187,7 +189,7 @@ export class lbpDashboardForm {
   }
 
   async swap(): Promise<void> {
-    if (await this.validatePaused()) {
+    if (await this.validateEndedOrPaused()) {
       return;
     }
 

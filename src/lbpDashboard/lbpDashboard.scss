@@ -31,6 +31,13 @@
     .distribution {
       grid-area: distribution;
     }
+
+    &.notLive {
+      grid-template-areas:
+        "tokenInfo timeLeft timeLeft timeLeft"
+        "graph graph graph graph"
+        "about about distribution distribution";
+    }
   }
 }
 
@@ -56,6 +63,15 @@
 
       .graph {
         width: calc(100vw - 320px);
+      }
+
+      &.notLive {
+        grid-template-areas:
+          "tokenInfo"
+          "timeLeft"
+          "graph"
+          "distribution"
+          "about";
       }
     }
   }

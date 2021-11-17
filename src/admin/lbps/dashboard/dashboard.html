@@ -68,7 +68,7 @@
                 ${selectedLbp.isPaused ? "Unpause LBP" : "Pause LBP"}
               </div>
               <div class="featureDescription">
-                ${selectedLbp.isPaused ? "Unpausing" : "Pausing"} will make swapping ${selectedLbp.isPaused ? "active" : "inactive"}. As the administrator, you will be able to unpause the LBP.
+                ${selectedLbp.isPaused ? "Unpausing" : "Pausing"} will ${selectedLbp.isPaused ? "enable" : "disable"} the ability to swap. After pausing the LBP, as the administrator you can unpause it.
               </div>
               <div if.bind="!selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
                 Pause Swapping
