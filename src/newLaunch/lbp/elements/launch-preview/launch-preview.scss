@@ -1,19 +1,21 @@
 @import "styles/colors.scss";
 
 .launch-preview-container {
-  display: grid;
   color: $Neutral03;
-  grid-template-rows: auto fill-content;
 
   .info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 25px;
-    align-items: start;
-    justify-items: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
     padding: 20px 0;
-    width: 100%;
 
+    .first-row, .second-row {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      min-width: 200px;
+    }
     .header, .container {
       color: $Neutral03;
       font-size: 16px;
@@ -27,5 +29,9 @@
     .container {
       font-weight: 400;
     }
+  }
+
+  .graph {
+    height: 120px;
   }
 }
