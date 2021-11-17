@@ -20,7 +20,7 @@
           <div class="fundingAmount">
             <div class="fundingInput">
               <numeric-input
-                disabled.to-view="!lbpManager.isLive || !selectedFundingTokenInfo.address"
+                disabled.bind="lbpManager.isPaused || lbpManager.isDead || !selectedFundingTokenInfo.address"
                 value.bind="fundingTokensToPay & debounce:500"
                 decimals.bind="selectedFundingTokenInfo.decimals"
                 placeholder="0.0"></numeric-input>
@@ -41,8 +41,8 @@
             <div class="text">
               1 ${selectedFundingTokenInfo.symbol} =
               <formatted-number value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
-              ${lbpManager.projectTokenInfo.symbol} =
-              <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD
+              ${lbpManager.projectTokenInfo.symbol}
+              <!-- = <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD -->
             </div>
           </div>
         </div>
@@ -59,8 +59,8 @@
         </div>
       </div>
       <div class="buttons">
-        <button class="lockButton button1" class="unlockButton" if.to-view="userCanPay && lockRequired" click.delegate="unlockFundingTokens()">UNLOCK</button>
-        <button class="submitButton button1" else disabled.bind="!userCanPay || !selectedFundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
+        <button class="lockButton button1" class="unlockButton" disabled.bind="lbpManager.isPaused || lbpManager.isDead" if.to-view="userCanPay && lockRequired" click.delegate="unlockFundingTokens()">UNLOCK</button>
+        <button class="submitButton button1" else disabled.bind="lbpManager.isPaused  || lbpManager.isDead || !userCanPay || !selectedFundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
       </div>
       <div class="footer">
         <div class="powered">POWERED BY</div><img src="/Logo_Balancer.svg" />

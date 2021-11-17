@@ -65,12 +65,12 @@
             </div>
             <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance.gt(0)">
               <div class="featureTitle">
-                ${selectedLbp.isPaused ? "Pause LBP" : "Unpause LBP"}
+                ${selectedLbp.isPaused ? "Unpause LBP" : "Pause LBP"}
               </div>
               <div class="featureDescription">
-                ${selectedLbp.isPaused ? "Pausing" : "Unpausing"} will make swapping ${selectedLbp.isPaused ? "inactive" : "active"}. As the administrator, you will be able to unpause the LBP.
+                ${selectedLbp.isPaused ? "Unpausing" : "Pausing"} will ${selectedLbp.isPaused ? "enable" : "disable"} the ability to swap. After pausing the LBP, as the administrator you can unpause it.
               </div>
-              <div if.bind="selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
+              <div if.bind="!selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
                 Pause Swapping
               </div>
               <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">

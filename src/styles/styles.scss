@@ -148,8 +148,9 @@ html {
 
       &.heading0 {
         font-size: 64px;
-        line-height: 65px;
+        line-height: 73px;
         margin-bottom: 24px;
+        font-weight: 700;
         @include standardTextGradient;
       }
       &.heading1 {

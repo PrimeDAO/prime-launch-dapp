@@ -150,15 +150,4 @@ export class lbpDashboard {
     }
     return disclaimed;
   }
-
-  async validatePaused(): Promise<boolean> {
-    const paused = await this.lbpMgr.hydratePaused();
-    if (paused) {
-      this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
-      this.router.navigate("/home");
-      return true;
-    } else {
-      return false;
-    }
-  }
 }

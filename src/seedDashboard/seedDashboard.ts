@@ -211,8 +211,7 @@ export class SeedDashboard {
   async validateClosedOrPaused(): Promise<boolean> {
     const closedOrPaused = await this.seed.hydateClosedOrPaused();
     if (closedOrPaused) {
-      this.eventAggregator.publish("handleValidationError", "Sorry, this seed has been closed or paused");
-      this.router.navigate("/home");
+      this.eventAggregator.publish("handleValidationError", "Sorry, this seed is closed or has been paused by the launch administrator.");
       return true;
     } else {
       return false;
