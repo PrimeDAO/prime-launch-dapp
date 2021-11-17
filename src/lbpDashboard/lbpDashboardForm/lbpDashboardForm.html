@@ -41,8 +41,8 @@
             <div class="text">
               1 ${selectedFundingTokenInfo.symbol} =
               <formatted-number value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
-              ${lbpManager.projectTokenInfo.symbol} =
-              <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD
+              ${lbpManager.projectTokenInfo.symbol}
+              <!-- = <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD -->
             </div>
           </div>
         </div>
