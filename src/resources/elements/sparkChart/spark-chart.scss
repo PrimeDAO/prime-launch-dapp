@@ -1,0 +1,14 @@
+@import "styles/styles.scss";
+.sparkChartContainer {
+  // position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .chart {
+    .isLoading {
+      font-size: 32px;
+      color: $Secondary03-dev;
+    }
+  }
+}
