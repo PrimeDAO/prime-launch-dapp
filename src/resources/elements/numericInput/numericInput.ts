@@ -7,6 +7,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import { BigNumber } from "ethers";
 import { fromWei, toWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
+import AutoNumeric from "autonumeric";
 
 @autoinject
 export class NumericInput {
@@ -107,6 +108,10 @@ export class NumericInput {
   public attached(): void {
     this.element.addEventListener("keydown", (e) => { this.keydown(e); });
     // this.hydrateFromDefaultValue();
+    new AutoNumeric(this.element, "", {
+      digitGroupSeparator: ",",
+      allowDecimalPadding: false,
+    });
   }
 
   public detached(): void {
