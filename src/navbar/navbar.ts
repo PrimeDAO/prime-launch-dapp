@@ -9,20 +9,14 @@ export class Navbar {
   @bindable.booleanAttr vertical: boolean;
   @bindable onNavigate?: () => void;
 
-  submenuVisible = false;
-
   constructor(private router: Router) {}
 
-  toggleSubmenu(): void {
-    this.submenuVisible = !this.submenuVisible;
-  }
 
   goto(url: string): void {
     Utils.goto(url);
   }
 
   navigate(href: string): void {
-    this.toggleSubmenu();
     if (this.onNavigate) {
       this.onNavigate();
     }

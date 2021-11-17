@@ -98,10 +98,7 @@
     height: 0;
     grid-area: subPages;
     background-color: $BG02;
-
-    &.showing {
-      height: 40px;
-    }
+    height: 40px;
 
     .container {
       list-style-type: none;
