@@ -153,9 +153,8 @@ export class LbpProjectTokenPriceService {
     time: { start: Date, end: Date },
     weight: { start: number, end: number },
     pricePerFundingToken: number,
-  ): { prices, labels} {
-    const prices = [];
-    const labels = [];
+  ): Array<{price: number, time: number}> {
+    const trajectoryData = [];
 
     const roundedStartDate = this.roundedTime(time.start);
     const roundedEndDate = this.roundedTime(time.end);
@@ -185,13 +184,15 @@ export class LbpProjectTokenPriceService {
         pricePerFundingToken,
       );
 
-      labels.push(_time.startOf("hour"));
-      prices.push(currentProjectTokenPrice);
+      trajectoryData.push({
+        price: currentProjectTokenPrice,
+        time: Math.floor(_time.startOf("hour").toDate().getTime() / 1000),
+      });
 
       _time.add(timeInterval, "hours");
     }
 
-    return { prices, labels };
+    return trajectoryData;
   }
 
   // public getFundsRaised(
