@@ -243,6 +243,20 @@ export class Stage4 extends BaseStage<ILbpConfig> {
       this.launchConfig.launchDetails.fundingTokenInfo.price,
     );
 
+    const trajectoryForecast = lbpProjectTokenPriceService.getInterpolatedPriceDataPoints(
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      {
+        start: this.startDate,
+        end: this.endDate,
+      },
+      {
+        start: startWeight / 100,
+        end: endWeight / 100,
+      },
+      this.launchConfig.launchDetails.fundingTokenInfo.price,
+    );
+
     this.launchPreviewConfig = {
       marketCap: {
         low: marketCapLow? marketCapLow.toString() : "-1",
@@ -253,6 +267,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
         high: priceRangeHigh? priceRangeHigh.toFixed(2): "-1",
       },
       duration: this.launchDuration,
+      trajectoryForecast,
     };
   }
 

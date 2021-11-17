@@ -1,6 +1,7 @@
 import { LbpManagerService } from "services/LbpManagerService";
 import { autoinject } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
+import { AureliaHelperService } from "services/AureliaHelperService";
 import "./launch-preview.scss";
 
 interface IHighLow {
@@ -12,6 +13,7 @@ export interface ILaunchPreviewConfig {
   marketCap: IHighLow,
   priceRange: IHighLow,
   duration: number,
+  trajectoryForecast: Array<{price: number, time: number}>,
   fee?: number,
 }
 
@@ -21,9 +23,12 @@ export class LaunchPreview {
   @bindable config: ILaunchPreviewConfig;
 
   constructor(
-    config: ILaunchPreviewConfig,
+    private aureliaHelperService: AureliaHelperService,
   ) {
-    this.config = config;
     this.fee = LbpManagerService.lbpSwapFee;
   }
+
+  // attached() {
+  //   this.config.trajectoryForecast = [];
+  // }
 }
