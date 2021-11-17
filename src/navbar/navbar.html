@@ -28,8 +28,8 @@
     <div class="productSubpages ${submenuVisible ? 'showing' : ''}">
       <div class="container">
         <div click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</div>
-        <div click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Launch</div>
         <div click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
+        <div click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Register</div>
         <div click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</div>
       </div>
     </div>
