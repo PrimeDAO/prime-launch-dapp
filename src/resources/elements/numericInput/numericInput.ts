@@ -46,6 +46,8 @@ export class NumericInput {
 
   private _innerValue: string;
 
+  private ignoreValueChanged = false;
+
   @computedFrom("_innerValue")
   private get innerValue() {
     return this._innerValue;
@@ -56,7 +58,8 @@ export class NumericInput {
     /**
      * update value from input control
      */
-    if ((newValue === null) || (typeof newValue === "undefined") || (newValue.trim() === "")) {
+    if ((newValue === null) || (typeof newValue === "undefined") ||
+        ((typeof newValue === "string") && newValue.trim() === "")) {
       this.value = undefined;
     } else {
       // assuming here that the input element will always give us a string
@@ -66,9 +69,11 @@ export class NumericInput {
           if (this.outputAsString) {
             value = value.toString();
           }
+          this.ignoreValueChanged = true;
           this.value = value;
         }
       } catch {
+        this.ignoreValueChanged = true;
         this.value = undefined;
       }
     }
@@ -79,6 +84,12 @@ export class NumericInput {
   }
 
   private valueChanged(newValue: string | BigNumber | number, oldValue: string | BigNumber | number ) {
+
+    if (this.ignoreValueChanged) {
+      this.ignoreValueChanged = false;
+      return;
+    }
+
     if ((newValue === undefined) || (newValue === null)) {
       this._innerValue = this.defaultText || undefined;
     } else if (newValue.toString() !== oldValue?.toString()) {
