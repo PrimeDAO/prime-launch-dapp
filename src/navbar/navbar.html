@@ -6,7 +6,7 @@
 
     <div class="products ${vertical ? 'vertical' : ''}">
       <div class="container">
-        <div click.delegate="toggleSubmenu()" class="item active">
+        <div class="item active">
           <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
           <div class="text">Launch</div>
         </div>
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="productSubpages ${submenuVisible ? 'showing' : ''}">
+    <div class="productSubpages">
       <div class="container">
         <div click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</div>
         <div click.delegate="navigate('/launch')" class="item ${(router.currentInstruction.config.name === 'launch') ? 'active' : ''}">Launch</div>
