@@ -18,8 +18,6 @@ export class SparkChart {
   container: HTMLElement;
   sparkChart: HTMLElement;
 
-  loading: boolean;
-
   constructor(
     private numberService: NumberService,
     private aureliaHelperService: AureliaHelperService,
@@ -27,7 +25,6 @@ export class SparkChart {
   }
 
   attached(): void {
-    this.loading = true;
     this.aureliaHelperService.createPropertyWatch(this.container, "offsetWidth", () => this.resizeChart());
 
     if (!this.chart) {
@@ -105,7 +102,7 @@ export class SparkChart {
     this.chart = createChart(this.sparkChart, options);
 
 
-    const color = "#A258A7";
+    const color = "#FF497A";
     this.series = this.chart.addLineSeries({
       color: color,
       priceLineVisible: false,
@@ -127,12 +124,10 @@ export class SparkChart {
         value: item.price,
       })));
       this.resizeChart();
-      this.loading = false;
     }
   }
 
   private innerDimensions(node: HTMLElement): { width: number, height: number } {
-    console.log("node", node);
     const computedStyle = window.getComputedStyle(node);
 
     let width = node.clientWidth; // width with padding
