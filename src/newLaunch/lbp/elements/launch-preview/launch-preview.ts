@@ -1,7 +1,10 @@
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
+import { fromWei } from "services/EthereumService";
+import { NumberService } from "services/NumberService";
+import { DateService } from "services/DateService";
 import { LbpManagerService } from "services/LbpManagerService";
 import { autoinject } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
-import { AureliaHelperService } from "services/AureliaHelperService";
 import "./launch-preview.scss";
 
 interface IHighLow {
@@ -19,16 +22,129 @@ export interface ILaunchPreviewConfig {
 
 @autoinject
 export class LaunchPreview {
-  private fee: number;
-  @bindable config: ILaunchPreviewConfig;
+  @bindable maxSupply: number;
+  @bindable projectTokenAddress: string;
+  @bindable projectTokenDecimals: string;
+  @bindable projectTokenAmount: number;
+  @bindable fundingTokenAddress: string;
+  @bindable fundingTokenDecimals: string;
+  @bindable fundingTokenAmount: number;
+  @bindable startDate: Date;
+  @bindable endDate: Date;
+  @bindable startWeight: number;
+  @bindable endWeight: number;
+  @bindable fundingTokenPrice: number;
+  @bindable launchDuration: number;
+
+  config: ILaunchPreviewConfig;
+  fee: number;
 
   constructor(
-    private aureliaHelperService: AureliaHelperService,
+    private numberService: NumberService,
+    private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
+    private lbpManagerService: LbpManagerService,
+    private dateService: DateService,
   ) {
+  }
+
+  attached(): void {
+    if (this.config) {
+      this.updateValues();
+    }
+
     this.fee = LbpManagerService.lbpSwapFee;
   }
 
-  // attached() {
-  //   this.config.trajectoryForecast = [];
-  // }
+  maxSupplyChanged(): void { this.updateValues(); }
+  projectTokenAddressChanged(): void { this.updateValues(); }
+  projectTokenDecimalsChanged(): void { this.updateValues(); }
+  projectTokenAmountChanged(): void { this.updateValues(); }
+  fundingTokenAddressChanged(): void { this.updateValues(); }
+  fundingTokenDecimalsChanged(): void { this.updateValues(); }
+  fundingTokenAmountChanged(): void { this.updateValues(); }
+  startDateChanged(): void { this.updateValues(); }
+  endDateChanged(): void { this.updateValues(); }
+  startWeightChanged(): void { this.updateValues(); }
+  endWeightChanged(): void { this.updateValues(); }
+  fundingTokenPriceChanged(): void { this.updateValues(); }
+  launchDurationChanged(): void { this.updateValues(); }
+
+  async updateValues(): Promise<void> {
+    if (
+      !this.fundingTokenAddress ||
+      !this.projectTokenAddress
+    ) return;
+
+    const maxSupplyInEth = this.numberService.fromString(fromWei(
+      this.maxSupply || "-1",
+      this.projectTokenDecimals,
+    ));
+
+    const amountProjectTokenInEth = this.numberService.fromString(fromWei(
+      this.projectTokenAmount || "-1",
+      this.projectTokenDecimals,
+    ));
+
+    const amountFundingTokenInEth = this.numberService.fromString(fromWei(
+      this.fundingTokenAmount || "-1",
+      this.fundingTokenDecimals,
+    ));
+
+    const marketCapLow = this.lbpProjectTokenPriceService.getMarketCap(
+      maxSupplyInEth,
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      this.startWeight / 100,
+      this.fundingTokenPrice,
+    );
+
+    const marketCapHigh = this.lbpProjectTokenPriceService.getMarketCap(
+      maxSupplyInEth,
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      this.endWeight / 100,
+      this.fundingTokenPrice,
+    );
+
+    const priceRangeLow = this.lbpProjectTokenPriceService.getPriceAtWeight(
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      this.startWeight / 100,
+      this.fundingTokenPrice,
+    );
+
+    const priceRangeHigh = this.lbpProjectTokenPriceService.getPriceAtWeight(
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      this.endWeight / 100,
+      this.fundingTokenPrice,
+    );
+
+    const trajectoryForecast = this.lbpProjectTokenPriceService.getInterpolatedPriceDataPoints(
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      {
+        start: this.dateService.translateLocalToUtc(this.startDate),
+        end: this.dateService.translateLocalToUtc(this.endDate),
+      },
+      {
+        start: this.startWeight / 100,
+        end: this.endWeight / 100,
+      },
+      this.fundingTokenPrice,
+    );
+
+    this.config = {
+      marketCap: {
+        low: marketCapLow? marketCapLow.toString() : "-1",
+        high: marketCapHigh? marketCapHigh.toString(): "-1",
+      },
+      priceRange: {
+        low: priceRangeLow? priceRangeLow.toFixed(2): "-1",
+        high: priceRangeHigh? priceRangeHigh.toFixed(2): "-1",
+      },
+      duration: this.launchDuration,
+      trajectoryForecast,
+    };
+  }
 }

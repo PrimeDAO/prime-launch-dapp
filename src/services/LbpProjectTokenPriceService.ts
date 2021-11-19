@@ -1,8 +1,17 @@
+import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 
-export class LbpProjectTokenPriceService {
+enum ERoundDirection {
+  "UP",
+  "DOWN"
+}
 
-  private roundedTime(time: Date): moment.Moment {
+@autoinject
+export class LbpProjectTokenPriceService {
+  private roundedTime(time: Date, roundDirection: ERoundDirection = ERoundDirection.DOWN): moment.Moment {
+    if (roundDirection === ERoundDirection.UP) {
+      return moment(time).add(60, "minute").startOf("hour");
+    }
     return moment(time).startOf("hour");
   }
 
@@ -37,18 +46,6 @@ export class LbpProjectTokenPriceService {
       return 0;
     } else {
       return hoursPassed;
-    }
-  }
-
-  private getInterval(hoursLeft: number): number {
-    if (hoursLeft >= 24 * 20 /* days */) {
-      return 24;
-    } else if (hoursLeft >= 24 * 10 /* days */) {
-      return 12;
-    } else if (hoursLeft >= 24 * 4 /* days */) {
-      return 4;
-    } else {
-      return 1;
     }
   }
 
@@ -157,18 +154,14 @@ export class LbpProjectTokenPriceService {
     const trajectoryData = [];
 
     const roundedStartDate = this.roundedTime(time.start);
-    const roundedEndDate = this.roundedTime(time.end);
-    const currentTime = this.roundedTime(new Date()).toDate();
+    const roundedEndDate = this.roundedTime(time.end, ERoundDirection.UP);
 
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
 
-    const hoursPassedSinceStart = this.getHoursPassed(currentTime, roundedStartDate.toDate());
-    const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
-
-    const timeInterval = this.getInterval(hoursLeft);
+    const timeInterval = 1;
     const _time = moment(roundedStartDate.toDate());
 
-    for (let hoursPassed = 0; hoursPassed <= hoursLeft; hoursPassed += timeInterval) {
+    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours; hoursPassed += timeInterval) {
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         _time.toDate(),
         roundedStartDate.toDate(),

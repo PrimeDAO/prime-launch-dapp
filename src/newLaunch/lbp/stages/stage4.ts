@@ -58,6 +58,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     private disclaimerService: DisclaimerService,
     private aureliaHelperService: AureliaHelperService,
     private launchService: LaunchService,
+    private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
   ) {
     super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
@@ -75,14 +76,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
           this.launchConfig.launchDetails.amountProjectToken = "";
         });
 
-      this.keepUpdated(this.launchConfig.launchDetails, "amountProjectToken");
-      this.keepUpdated(this.launchConfig.launchDetails, "amountFundingToken");
-      this.keepUpdated(this.launchConfig.launchDetails, "startDate");
-      this.keepUpdated(this.launchConfig.launchDetails, "endDate");
-      this.keepUpdated(this.launchConfig.launchDetails, "startWeight");
-      this.keepUpdated(this.launchConfig.launchDetails, "endWeight");
-      this.keepUpdated(this.launchConfig.tokenDetails, "maxSupply");
-
       this.projectTokenObserved = true;
     }
 
@@ -94,7 +87,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     this.startDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.startDate = date.toJSDate();
       this.setLaunchDuration();
-      this.updateValues();
     });
 
     this.endDatePicker = new Litepicker({
@@ -105,18 +97,11 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     this.endDatePicker.on("selected", (date: { toJSDate(): Date }) => {
       this.endDate = date.toJSDate();
       this.setLaunchDuration();
-      this.updateValues();
     });
 
     if (!this.tokenList) {
       this.tokenList = await this.launchService.getFundingTokenInfos();
     }
-
-    this.updateValues();
-  }
-
-  private keepUpdated(object, property): void {
-    this.aureliaHelperService.createPropertyWatch(object, property, this.updateValues.bind(this));
   }
 
   tokenChanged(): void {
@@ -185,90 +170,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   setLaunchDuration(): void {
     if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) return;
     this.launchDuration = (this.setLaunchConfigEndDate().getTime() - this.setLaunchConfigStartDate().getTime()) / 1000 / 60 / 60 / 24 || 0;
-    this.updateValues();
-  }
-
-  async updateValues(): Promise<void> {
-    if (
-      !this.launchConfig.launchDetails.fundingTokenInfo.address ||
-      !this.launchConfig.tokenDetails.projectTokenInfo.address
-    ) return;
-
-    const {
-      startWeight,
-      endWeight,
-    } = this.launchConfig.launchDetails;
-
-    const maxSupplyInEth = this.numberService.fromString(fromWei(
-      this.launchConfig.tokenDetails.maxSupply || "-1",
-      this.launchConfig.tokenDetails.projectTokenInfo.decimals,
-    ));
-    const amountProjectTokenInEth = this.numberService.fromString(fromWei(
-      this.launchConfig.launchDetails.amountProjectToken || "-1",
-      this.launchConfig.tokenDetails.projectTokenInfo.decimals,
-    ));
-    const amountFundingTokenInEth = this.numberService.fromString(fromWei(
-      this.launchConfig.launchDetails.amountFundingToken || "-1",
-      this.launchConfig.launchDetails.fundingTokenInfo.decimals,
-    ));
-
-    const lbpProjectTokenPriceService = new LbpProjectTokenPriceService();
-    const marketCapLow = lbpProjectTokenPriceService.getMarketCap(
-      maxSupplyInEth,
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
-      startWeight / 100,
-      this.launchConfig.launchDetails.fundingTokenInfo.price,
-    );
-
-    const marketCapHigh = lbpProjectTokenPriceService.getMarketCap(
-      maxSupplyInEth,
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
-      endWeight / 100,
-      this.launchConfig.launchDetails.fundingTokenInfo.price,
-    );
-
-    const priceRangeLow = lbpProjectTokenPriceService.getPriceAtWeight(
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
-      startWeight / 100,
-      this.launchConfig.launchDetails.fundingTokenInfo.price,
-    );
-
-    const priceRangeHigh = lbpProjectTokenPriceService.getPriceAtWeight(
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
-      endWeight / 100,
-      this.launchConfig.launchDetails.fundingTokenInfo.price,
-    );
-
-    const trajectoryForecast = lbpProjectTokenPriceService.getInterpolatedPriceDataPoints(
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
-      {
-        start: this.startDate,
-        end: this.endDate,
-      },
-      {
-        start: startWeight / 100,
-        end: endWeight / 100,
-      },
-      this.launchConfig.launchDetails.fundingTokenInfo.price,
-    );
-
-    this.launchPreviewConfig = {
-      marketCap: {
-        low: marketCapLow? marketCapLow.toString() : "-1",
-        high: marketCapHigh? marketCapHigh.toString(): "-1",
-      },
-      priceRange: {
-        low: priceRangeLow? priceRangeLow.toFixed(2): "-1",
-        high: priceRangeHigh? priceRangeHigh.toFixed(2): "-1",
-      },
-      duration: this.launchDuration,
-      trajectoryForecast,
-    };
   }
 
   async validateInputs(): Promise<string> {

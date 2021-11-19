@@ -46,12 +46,12 @@ export class ProjectTokenHistoricalPriceService {
       return [];
     }
 
-    const startingSeconds = lbpMgr.startTime.getTime() / 1000;
+    const startingSeconds = this.dateService.translateLocalToUtc(lbpMgr.startTime).getTime() / 1000;
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
     const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(new Date().getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(this.dateService.translateLocalToUtc(new Date()).getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
@@ -127,13 +127,11 @@ export class ProjectTokenHistoricalPriceService {
           }
         }
 
-        const timezoneOffset = new Date().getTimezoneOffset() * 60;
         const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp );
-
 
         if (todaysSwaps?.length) {
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
@@ -149,7 +147,7 @@ export class ProjectTokenHistoricalPriceService {
            * previous value effected by USD course change
            */
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               previousTimePoint *
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
@@ -157,7 +155,7 @@ export class ProjectTokenHistoricalPriceService {
           });
         } else {
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
           });
         }
       }
