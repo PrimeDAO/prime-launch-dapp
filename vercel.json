@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "prime-launch-dapp",
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/"
+    }
+  ]
+}
