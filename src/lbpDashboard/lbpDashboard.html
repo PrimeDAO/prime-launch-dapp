@@ -5,6 +5,7 @@
   <require from="./sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
   <require from="./lbpDetails/lbpDetails"></require>
+  <require from="./statistics/statistics"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard ${lbpMgr.isLive ? '' : 'notLive'}">
       <div class="tokenInfo">
@@ -27,6 +28,9 @@
       <div class="about">
         <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
         <launch-about launch.to-view="lbpMgr" layout-type="twocolumn" launch-type="lbp"></launch-about>
+      </div>
+      <div class="statistics">
+        <statistics lbp-manager.bind="lbpMgr"></statistics>
       </div>
       <div class="distribution">
         <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>

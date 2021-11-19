@@ -7,7 +7,8 @@
       "tokenInfo timeLeft timeLeft"
       "graphForm graphForm graphForm"
       "details details ."
-      "about about distribution";
+      "about about distribution"
+      "statistics statistics statistics";
 
     // column-gap: 32px;
     row-gap: 60px;
@@ -48,13 +49,17 @@
     .distribution {
       grid-area: distribution;
     }
+    .statistics {
+      grid-area: statistics;
+    }
 
     &.notLive {
       grid-template-areas:
         "tokenInfo timeLeft timeLeft"
         "graph graph graph"
         "details details ."
-        "about about distribution";
+        "about about distribution"
+        "statistics statistics statistics";
     }
   }
 }
@@ -99,7 +104,8 @@
         "graphForm"
         "details"
         "distribution"
-        "about";
+        "about"
+        "statistics";
       justify-items: center;
 
       column-gap: 0;
@@ -138,7 +144,8 @@
           "graph"
           "details"
           "distribution"
-          "about";
+          "about"
+          "statistics";
       }
     }
   }
