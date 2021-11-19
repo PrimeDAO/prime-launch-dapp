@@ -35,6 +35,35 @@
           border-radius: 12px;
         }
       }
+
+      // &.token2 {
+      //   display: none;
+      // }
+    }
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .statisticsContainer {
+    .heading.title {
+      margin-bottom: 20px;
+    }
+
+    .table {
+      grid-template-columns: auto auto auto;
+      grid-template-rows: auto auto;
+      grid-auto-flow: row;
+      column-gap: 16px;
+
+      .value {
+        text-align: center;
+      }
+      // .header {
+      //   margin-right: 16px;
+      // }
+      // &.token2 {
+      //   display: block;
+      // }
     }
   }
 }
