@@ -16,4 +16,4 @@ The result is a fair and accessible token launch shown to effectively discover t
 
 For a complete breakdown of how Liquid Launches work on the back end, please read Balancer's <a href="https://medium.com/balancer-protocol/a-primer-on-fair-token-launches-and-liquidity-bootstrapping-pools-11bab5ff33a2" target="_blank" rel="noopener noreferrer">primer</a> or visit the <a href="https://docs.balancer.fi/" target="_blank" rel="noopener noreferrer">Balancer V2 Documentation</a>.
 
-To host a Liquid Launch, see <a href="/documentation/host-a-launch">Apply to host a Launch</a> or head straight to the <a href="/launch">application page</a>. To contribute to a launch, see <a href="/documentation/contribute-to-a-launch">Contribute to a Launch</a> or view all upcoming launches <a href="/launches">here</a>.
+To host a Liquid Launch, see <a href="/documentation/host-a-launch">Apply to host a Launch</a> or head straight to the <a href="/register">application page</a>. To contribute to a launch, see <a href="/documentation/contribute-to-a-launch">Contribute to a Launch</a> or view all upcoming launches <a href="/launches">here</a>.

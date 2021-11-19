@@ -140,9 +140,9 @@ export class App {
       {
         moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: false,
-        name: "launch",
-        route: ["launch"],
-        title: "Host a Launch",
+        name: "register",
+        route: ["register"],
+        title: "Register",
       },
       {
         moduleId: PLATFORM.moduleName("./launches/launches"),
