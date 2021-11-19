@@ -6,6 +6,7 @@
     grid-template-areas:
       "tokenInfo timeLeft timeLeft"
       "graphForm graphForm graphForm"
+      "details details ."
       "about about distribution";
 
     // column-gap: 32px;
@@ -37,8 +38,11 @@
         padding: 0 24px;
       }
     }
+
+    .details {
+      grid-area: details;
+    }
     .about {
-      padding: 0 48px;
       grid-area: about;
     }
     .distribution {
@@ -49,6 +53,7 @@
       grid-template-areas:
         "tokenInfo timeLeft timeLeft"
         "graph graph graph"
+        "details details ."
         "about about distribution";
     }
   }
@@ -92,6 +97,7 @@
         "tokenInfo"
         "timeLeft"
         "graphForm"
+        "details"
         "distribution"
         "about";
       justify-items: center;
@@ -130,6 +136,7 @@
           "tokenInfo"
           "timeLeft"
           "graph"
+          "details"
           "distribution"
           "about";
       }
@@ -148,15 +155,3 @@
     }
   }
 }
-
-// @media screen and (max-width: 420px) {
-//   .page.lbpDashboardContainer {
-//     .graphFormContainer {
-//       .lbpDashboard {
-//         .graph {
-//           width: calc(100vw - 20px);
-//         }
-//       }
-//     }
-//   }
-// }

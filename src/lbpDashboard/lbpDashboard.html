@@ -4,6 +4,7 @@
   <require from="./tokenDistribution/tokenDistribution"></require>
   <require from="./sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
+  <require from="./lbpDetails/lbpDetails"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard ${lbpMgr.isLive ? '' : 'notLive'}">
       <div class="tokenInfo">
@@ -19,6 +20,9 @@
         <div class="form" if.bind="lbpMgr.isLive">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
         </div>
+      </div>
+      <div class="details">
+        <lbp-details lbp-manager.bind="lbpMgr"></lbp-details>
       </div>
       <div class="about">
         <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
