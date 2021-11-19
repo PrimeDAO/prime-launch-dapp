@@ -5,7 +5,7 @@
     grid-template-columns: 45fr 20fr 35fr;
     grid-template-areas:
       "tokenInfo timeLeft timeLeft"
-      "graph graph form"
+      "graphForm graphForm graphForm"
       "about about distribution";
 
     // column-gap: 32px;
@@ -18,21 +18,24 @@
       grid-area: timeLeft;
       justify-self: right;
     }
-    .graph {
-      grid-area: graph;
-      height: 400px;
+    .graphFormContainer {
+      grid-area: graphForm;
       background-color: $BG02;
-      padding: 24px;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-    }
-    .form {
-      grid-area: form;
-      background-color: $BG02;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      align-self: center;
-      padding: 55px 24px;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: 730px 420px;
+      grid-template-areas: "graph form";
+      align-items: center;
+
+      .graph {
+        grid-area: graph;
+        height: 400px;
+        padding: 24px;
+      }
+      .form {
+        grid-area: form;
+        padding: 0 24px;
+      }
     }
     .about {
       padding: 0 48px;
@@ -51,6 +54,36 @@
   }
 }
 
+@media screen and (max-width: 1480px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      .graphFormContainer {
+        grid-template-columns: 630px 420px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1380px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      .graphFormContainer {
+        grid-template-columns: 560px 420px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      .graphFormContainer {
+        grid-template-columns: 480px 420px;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 1220px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
@@ -58,8 +91,7 @@
       grid-template-areas:
         "tokenInfo"
         "timeLeft"
-        "form"
-        "graph"
+        "graphForm"
         "distribution"
         "about";
       justify-items: center;
@@ -71,13 +103,26 @@
         justify-self: center;
       }
 
-      .graph {
-        width: calc(100vw - 320px);
-        border-radius: 10px;
-      }
+      .graphFormContainer {
+        background-color: unset;
+        border-radius: none;
+        grid-template-columns: auto;
+        grid-template-areas: "form" "graph";
+        justify-items: center;
+        row-gap: 32px;
 
-      .form {
-        border-radius: 10px;
+        .graph {
+          width: calc(100vw - 320px);
+          background-color: $BG02;
+          border-radius: 10px;
+        }
+
+        .form {
+          background-color: $BG02;
+          border-radius: 10px;
+          width: fit-content;
+          padding: 24px;
+        }
       }
 
       &.notLive {
@@ -95,19 +140,23 @@
 @media screen and (max-width: 550px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
-      .graph {
-        width: calc(100vw - 60px);
+      .graphFormContainer {
+        .graph {
+          width: calc(100vw - 105px);
+        }
       }
     }
   }
 }
 
-@media screen and (max-width: 420px) {
-  .page.lbpDashboardContainer {
-    .lbpDashboard {
-      .graph {
-        width: calc(100vw - 20px);
-      }
-    }
-  }
-}
+// @media screen and (max-width: 420px) {
+//   .page.lbpDashboardContainer {
+//     .graphFormContainer {
+//       .lbpDashboard {
+//         .graph {
+//           width: calc(100vw - 20px);
+//         }
+//       }
+//     }
+//   }
+// }

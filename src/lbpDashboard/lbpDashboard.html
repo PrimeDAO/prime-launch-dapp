@@ -12,11 +12,13 @@
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="graph">
-        <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
-      </div>
-      <div class="form" if.bind="lbpMgr.isLive">
-        <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
+      <div class="graphFormContainer">
+        <div class="graph">
+          <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
+        </div>
+        <div class="form" if.bind="lbpMgr.isLive">
+          <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
+        </div>
       </div>
       <div class="about">
         <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
