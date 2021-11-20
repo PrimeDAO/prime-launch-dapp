@@ -8,7 +8,8 @@
       "graphForm graphForm graphForm"
       "details details ."
       "about about distribution"
-      "statistics statistics statistics";
+      "statistics statistics statistics"
+      "settings settings .";
 
     // column-gap: 32px;
     row-gap: 60px;
@@ -52,14 +53,18 @@
     .statistics {
       grid-area: statistics;
     }
+    .settings {
+      grid-area: settings;
+    }
 
     &.notLive {
       grid-template-areas:
         "tokenInfo timeLeft timeLeft"
-        "graph graph graph"
+        "graphForm graphForm graphForm"
         "details details ."
         "about about distribution"
-        "statistics statistics statistics";
+        "statistics statistics statistics"
+        "settings settings .";
     }
   }
 }
@@ -105,7 +110,8 @@
         "details"
         "distribution"
         "about"
-        "statistics";
+        "statistics"
+        "settings";
       justify-items: center;
 
       column-gap: 0;
@@ -141,11 +147,12 @@
         grid-template-areas:
           "tokenInfo"
           "timeLeft"
-          "graph"
+          "graphForm"
           "details"
           "distribution"
           "about"
-          "statistics";
+          "statistics"
+          "settings";
       }
     }
   }

@@ -65,6 +65,7 @@ export class LbpManager implements ILaunch {
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
+  public projectTokenEndWeight: number;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
@@ -228,6 +229,7 @@ export class LbpManager implements ILaunch {
        * 100 - projectTokenStartWeight = fundingTokenStartWeight
        */
       this.projectTokenStartWeight = this.numberService.fromString(fromWei(await this.contract.startWeights(this.projectTokenIndex)));
+      this.projectTokenEndWeight = this.numberService.fromString(fromWei(await this.contract.endWeights(this.projectTokenIndex)));
 
       await this.hydrateTokensState();
 

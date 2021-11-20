@@ -1,5 +1,6 @@
 @import "styles/styles.scss";
-.statisticsContainer {
+.statisticsContainer,
+.settingsContainer {
   .heading.title {
     margin-bottom: 20px;
   }
@@ -40,7 +41,8 @@
 }
 
 @media screen and (max-width: 1220px) {
-  .statisticsContainer {
+  .statisticsContainer,
+  .settingsContainer {
     .heading.title {
       margin-bottom: 20px;
     }
