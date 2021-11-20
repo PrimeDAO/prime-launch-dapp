@@ -66,10 +66,11 @@ export class LbpManager implements ILaunch {
   public priceHistory: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
   public projectTokenEndWeight: number;
+  public swapFeePercentage: number;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
-  private processingPriceHistory = false
+  private processingPriceHistory = false;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -230,6 +231,7 @@ export class LbpManager implements ILaunch {
        */
       this.projectTokenStartWeight = this.numberService.fromString(fromWei(await this.contract.startWeights(this.projectTokenIndex)));
       this.projectTokenEndWeight = this.numberService.fromString(fromWei(await this.contract.endWeights(this.projectTokenIndex)));
+      this.swapFeePercentage = this.numberService.fromString(fromWei(await this.contract.swapFeePercentage()));
 
       await this.hydrateTokensState();
 

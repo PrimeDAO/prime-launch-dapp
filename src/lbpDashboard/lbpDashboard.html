@@ -7,6 +7,7 @@
   <require from="./lbpDetails/lbpDetails"></require>
   <require from="./statistics/statistics"></require>
   <require from="./settings/settings"></require>
+  <require from="./swapFees/swapFees"></require>
 
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard ${lbpMgr.isLive ? '' : 'notLive'}">
@@ -39,6 +40,9 @@
       </div>
       <div class="settings">
         <settings lbp-manager.bind="lbpMgr"></settings>
+      </div>
+      <div class="swapFees">
+        <swap-fees lbp-manager.bind="lbpMgr"></swap-fees>
       </div>
     </div>
 </template>

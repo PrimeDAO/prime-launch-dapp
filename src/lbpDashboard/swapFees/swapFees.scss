@@ -1,0 +1,8 @@
+@import "../statistics/statistics.scss";
+.swapFeesContainer {
+  .table {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+  }
+}

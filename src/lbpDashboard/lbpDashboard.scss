@@ -9,7 +9,7 @@
       "details details ."
       "about about distribution"
       "statistics statistics statistics"
-      "settings settings .";
+      "settings settings swapFees";
 
     // column-gap: 32px;
     row-gap: 60px;
@@ -56,6 +56,9 @@
     .settings {
       grid-area: settings;
     }
+    .swapFees {
+      grid-area: swapFees;
+    }
 
     &.notLive {
       grid-template-areas:
@@ -64,7 +67,7 @@
         "details details ."
         "about about distribution"
         "statistics statistics statistics"
-        "settings settings .";
+        "settings settings swapFees";
     }
   }
 }
@@ -111,7 +114,8 @@
         "distribution"
         "about"
         "statistics"
-        "settings";
+        "settings"
+        "swapFees";
       justify-items: center;
 
       column-gap: 0;
@@ -152,7 +156,8 @@
           "distribution"
           "about"
           "statistics"
-          "settings";
+          "settings"
+          "swapFees";
       }
     }
   }
