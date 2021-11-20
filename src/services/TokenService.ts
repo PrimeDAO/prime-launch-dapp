@@ -220,7 +220,8 @@ export class TokenService {
     // PRIMEDao Token HACK!!!
     if (name.toLowerCase() === "primedao token") { name = "primedao"; }
     if (name.toLowerCase() === "dai stablecoin") { name = "dai"; }
-    if (name.toLowerCase() === "DSToken") { name = "dai"; } // kovan
+    if (name.toLowerCase() === "dstoken") { name = "dai"; } // kovan
+    if (name.toLowerCase() === "wrapped ether") { name = "weth"; }
     return `${name.toLowerCase()}_${symbol.toLowerCase()}`;
   }
 
