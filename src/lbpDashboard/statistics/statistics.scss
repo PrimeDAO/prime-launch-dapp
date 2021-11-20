@@ -12,6 +12,8 @@
     grid-template-rows: auto auto auto;
     grid-auto-flow: column;
     row-gap: 12px;
+    column-gap: 60px;
+    width: fit-content;
 
     .header {
       font-family: Inter;
