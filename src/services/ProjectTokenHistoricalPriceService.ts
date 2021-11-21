@@ -207,4 +207,47 @@ export class ProjectTokenHistoricalPriceService {
         return [];
       });
   }
+
+  /**
+   * Returns the pools total swap fees in ETH.
+   *
+   * @param poolId PoolId from LbpManager.lbp.poolId (string).
+   */
+  public lbpTotalSwapFees(poolId: string): Promise<number> {
+    if (!poolId) {
+      return null;
+    }
+
+    const uri = this.getBalancerSubgraphUrl();
+    const query = {
+      pools: {
+        __args: {
+          where: {
+            id: poolId.toLowerCase(),
+          },
+        },
+        totalSwapFee: true,
+      },
+    };
+
+    return axios.post(uri,
+      JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (response) => {
+        if (response.data.errors?.length) {
+          throw new Error(response.data.errors[0]);
+        }
+
+        return this.numberService.fromString(response.data?.data.pool[0]?.totalSwapFee);
+      })
+      .catch((error) => {
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching total swap fee"}`);
+        return null;
+      });
+  }
 }
