@@ -5,6 +5,7 @@
   <require from="./sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
+    <div show.to-view="loading" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="tokenInfo">
         <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>

@@ -34,6 +34,15 @@
   }
 }
 
+.loading {
+  text-align: center;
+  font-size: 32px;
+  padding-top: 24px;
+  i {
+    color: $Secondary03-dev;
+  }
+} 
+
 @media screen and (max-width: 1220px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
