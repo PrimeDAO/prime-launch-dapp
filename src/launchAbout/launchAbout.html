@@ -21,6 +21,14 @@
           <div class="name">${link.media}</div>
         </a>
       </template>
+      <a href.to-view="ethereumService.getEtherscanLink(launch.projectTokenInfo.address)" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${launchService.iconClassForLinkType('misc')}"></div>
+        <div class="name">Project Token on Etherscan</div>
+      </a>
+      <a href.to-view="ethereumService.getEtherscanLink(ethereumService.defaultAccountAddress)" target="_blank" rel="noopener noreferrer">
+        <div class="icon ${launchService.iconClassForLinkType('misc')}"></div>
+        <div class="name">Project Owner on Etherscan</div>
+      </a>
     </div>
     <div class="adminPage" if.bind="showAdminDashboardLink">
       <div class="description">Administration Dashboard</div>
