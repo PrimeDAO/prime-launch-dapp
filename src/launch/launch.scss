@@ -46,6 +46,7 @@
       height: 100%;
       display: grid;
       grid-template-rows: 2fr 1fr;
+      max-width: 600px;
       > div {
         padding-left: 40px;
         padding-right: 32px;
