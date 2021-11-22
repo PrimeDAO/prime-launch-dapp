@@ -247,7 +247,7 @@ export class ProjectTokenHistoricalPriceService {
           throw new Error(response.data.errors[0]);
         }
 
-        return this.numberService.fromString(response.data?.data.pool[0]?.totalSwapFee);
+        return this.numberService.fromString(response.data?.data.pools?.[0]?.totalSwapFee);
       })
       .catch((error) => {
         throw new Error(`${error.response?.data?.error.message ?? "Error fetching total swap fee"}`);
