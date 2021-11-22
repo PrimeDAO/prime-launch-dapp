@@ -22,7 +22,6 @@ export interface IHistoricalPriceRecord { time: number, price?: number }
 
 @autoinject
 export class ProjectTokenHistoricalPriceService {
-  private historicalPrices = new Array<IHistoricalPriceRecord>();
 
   constructor(
     private dateService: DateService,
@@ -41,6 +40,10 @@ export class ProjectTokenHistoricalPriceService {
     return `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`;
   }
 
+  /**
+   * get project token price history, in USD
+   * @param lbpMgr LbpManager
+   */
   public async getPricesHistory(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
     if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
       return [];
@@ -209,15 +212,16 @@ export class ProjectTokenHistoricalPriceService {
   }
 
   /**
-   * Returns the pools total swap fees in ETH.
+   * Returns the pool's total swap fees in ETH.
    *
-   * @param poolId PoolId from LbpManager.lbp.poolId (string).
+   * @param lbpMgr LbpManager
    */
-  public lbpTotalSwapFees(poolId: string): Promise<number> {
-    if (!poolId) {
+  public getTotalSwapFees(lbpMgr: LbpManager): Promise<number> {
+    if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
       return null;
     }
 
+    const poolId = lbpMgr.lbp.poolId;
     const uri = this.getBalancerSubgraphUrl();
     const query = {
       pools: {
