@@ -68,35 +68,9 @@
         "about about distribution"
         "statistics statistics statistics"
         "settings settings swapFees";
-    }
-  }
-}
 
-@media screen and (max-width: 1480px) {
-  .page.lbpDashboardContainer {
-    .lbpDashboard {
       .graphFormContainer {
-        grid-template-columns: 630px 420px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1380px) {
-  .page.lbpDashboardContainer {
-    .lbpDashboard {
-      .graphFormContainer {
-        grid-template-columns: 560px 420px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1300px) {
-  .page.lbpDashboardContainer {
-    .lbpDashboard {
-      .graphFormContainer {
-        grid-template-columns: 480px 420px;
+        grid-template-columns: auto;
       }
     }
   }
@@ -158,6 +132,42 @@
           "statistics"
           "settings"
           "swapFees";
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1480px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      &:not(&.notLive) {
+        .graphFormContainer {
+          grid-template-columns: 630px 420px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1380px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      &:not(&.notLive) {
+        .graphFormContainer {
+          grid-template-columns: 560px 420px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      &:not(&.notLive) {
+        .graphFormContainer {
+          grid-template-columns: 480px 420px;
+        }
       }
     }
   }
