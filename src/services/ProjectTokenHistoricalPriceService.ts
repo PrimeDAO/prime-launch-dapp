@@ -62,13 +62,15 @@ export class ProjectTokenHistoricalPriceService {
      */
     let swaps = new Array<ISwapRecord>();
     let fetched: Array<ISwapRecord>;
+    let index = 0;
     do {
       /**
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, lbpMgr.lbp);
+      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, index, lbpMgr.lbp);
       swaps = swaps.concat(fetched);
+      index++;
     } while (fetched.length === 1000);
 
     const returnArray = new Array<IHistoricalPriceRecord>();
@@ -165,12 +167,13 @@ export class ProjectTokenHistoricalPriceService {
     return returnArray;
   }
 
-  private fetchSwaps(endDateSeconds: number, startDateSeconds: number, lbp: Lbp): Promise<Array<ISwapRecord>> {
+  private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();
     const query = {
       swaps: {
         __args: {
           first: 1000,
+          skip: 1000 * index,
           orderBy: "timestamp",
           orderDirection: "desc",
           where: {
@@ -202,6 +205,49 @@ export class ProjectTokenHistoricalPriceService {
       .catch((error) => {
         throw new Error(`${error.response?.data?.error.message ?? "Error fetching price history"}`);
         return [];
+      });
+  }
+
+  /**
+   * Returns the pools total swap fees in ETH.
+   *
+   * @param poolId PoolId from LbpManager.lbp.poolId (string).
+   */
+  public lbpTotalSwapFees(poolId: string): Promise<number> {
+    if (!poolId) {
+      return null;
+    }
+
+    const uri = this.getBalancerSubgraphUrl();
+    const query = {
+      pools: {
+        __args: {
+          where: {
+            id: poolId.toLowerCase(),
+          },
+        },
+        totalSwapFee: true,
+      },
+    };
+
+    return axios.post(uri,
+      JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (response) => {
+        if (response.data.errors?.length) {
+          throw new Error(response.data.errors[0]);
+        }
+
+        return this.numberService.fromString(response.data?.data.pool[0]?.totalSwapFee);
+      })
+      .catch((error) => {
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching total swap fee"}`);
+        return null;
       });
   }
 }
