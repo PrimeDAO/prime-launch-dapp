@@ -1,5 +1,5 @@
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
 import { Container } from "aurelia-dependency-injection";
-import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
 import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -65,6 +65,7 @@ export class LbpManager implements ILaunch {
 
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
+  public trajectoryForecast: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
@@ -368,6 +369,31 @@ export class LbpManager implements ILaunch {
       }
 
       this.processingPriceHistory = true;
+
+      const amountProjectTokenInEth = this.numberService.fromString(fromWei(
+        this.projectTokenBalance || "-1",
+        this.projectTokenInfo.decimals,
+      ));
+
+      const amountFundingTokenInEth = this.numberService.fromString(fromWei(
+        this.fundingTokenBalance || "-1",
+        this.fundingTokenInfo.decimals,
+      ));
+
+
+      this.trajectoryForecast = this.priceService.getInterpolatedPriceDataPoints(
+        amountProjectTokenInEth,
+        amountFundingTokenInEth,
+        {
+          start: new Date(),
+          end: this.endTime,
+        },
+        {
+          start: this.lbp.projectTokenWeight,
+          end: this.projectTokenEndWeight,
+        },
+        this.fundingTokenInfo.price,
+      );
 
       return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
         resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
