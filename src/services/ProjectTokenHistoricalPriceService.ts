@@ -41,6 +41,14 @@ export class ProjectTokenHistoricalPriceService {
     return `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`;
   }
 
+  /**
+   * The returned data points will be relative to the UTC timezone.
+   * startTime and endTime, which, according to the LBPManager entity, are in the
+   * user's timezone would be converted to UTC.
+   *
+   * @param lbpMgr LBP Manager object
+   * @returns Array(IHistoricalPriceRecord): {time: number, price?: number}
+   */
   public async getPricesHistory(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
     if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
       return [];

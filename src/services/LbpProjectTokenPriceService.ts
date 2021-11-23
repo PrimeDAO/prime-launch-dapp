@@ -1,15 +1,10 @@
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 
-enum ERoundDirection {
-  "UP",
-  "DOWN"
-}
-
 @autoinject
 export class LbpProjectTokenPriceService {
-  private roundedTime(time: Date, roundDirection: ERoundDirection = ERoundDirection.DOWN): moment.Moment {
-    if (roundDirection === ERoundDirection.UP) {
+  private roundedTime(time: Date, roundDown = true): moment.Moment {
+    if (!roundDown) {
       return moment(time).add(60, "minute").startOf("hour");
     }
     return moment(time).startOf("hour");
@@ -154,7 +149,7 @@ export class LbpProjectTokenPriceService {
     const trajectoryData = [];
 
     const roundedStartDate = this.roundedTime(time.start);
-    const roundedEndDate = this.roundedTime(time.end, ERoundDirection.UP);
+    const roundedEndDate = this.roundedTime(time.end, false);
 
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
 
