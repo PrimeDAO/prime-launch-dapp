@@ -138,6 +138,7 @@ export class LbpProjectTokenPriceService {
    * @param time The start and end date of the LBP {start: Date, end: Date}.
    * @param weight The start and end weight of the project token {start: (Number 0 > n > 1), end: (Number 0 > n > 1)}.
    * @param pricePerFundingToken Current USD price of a funding token (Number).
+   * @returns Array<{price: number, time: number}>
    */
   public getInterpolatedPriceDataPoints(
     projectTokenInPool: number,
