@@ -1,19 +1,27 @@
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { autoinject } from "aurelia-framework";
 import "./spark-chart.scss";
-import { createChart, CrosshairMode, IChartApi, ISeriesApi } from "lightweight-charts";
+import { createChart, CrosshairMode, IChartApi, ISeriesApi, LineWidth, LineStyle} from "lightweight-charts";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { NumberService } from "services/NumberService";
 
+interface ISeries {
+  name: string,
+  data: Array<any>,
+  color: string,
+  lineStyle?: LineStyle,
+  lineWidth?: LineWidth,
+}
+
 @autoinject
 export class SparkChart {
-  @bindable data: Array<any>;
+  @bindable data: Array<ISeries>;
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
   @bindable.number width = 500;
 
   chart: IChartApi;
-  series: ISeriesApi<"Line">;
+  series: Array<ISeriesApi<"Line">> = [];
 
   container: HTMLElement;
   sparkChart: HTMLElement;
@@ -97,33 +105,43 @@ export class SparkChart {
     const innerDimensions = this.innerDimensions(this.sparkChart);
     options.width = this.width || innerDimensions.width;
     options.height = this.height || innerDimensions.height;
-    options.timeScale.barSpacing = Math.max(options.width / this.data?.length || 1, 6);
+    options.timeScale.barSpacing = Math.max(options.width / this.data[0].data?.length || 1, 6);
 
     this.chart = createChart(this.sparkChart, options);
 
-
-    const color = "#FF497A";
-    this.series = this.chart.addLineSeries({
-      color: color,
-      priceLineVisible: false,
-      crosshairMarkerVisible: this.interactive,
-      priceFormat: {
-        type: "custom",
-        formatter: value => `${this.numberService.toString(value, {
-          mantissa: 2,
-          thousandSeparated: true,
-        })}`,
-      },
+    this.data.forEach((series) => {
+      const newSeries = this.chart.addLineSeries({
+        color: series.color,
+        priceLineVisible: false,
+        crosshairMarkerVisible: this.interactive,
+        priceFormat: {
+          type: "custom",
+          formatter: value => `${this.numberService.toString(value, {
+            mantissa: 2,
+            thousandSeparated: true,
+          })}`,
+        },
+      });
+      newSeries.applyOptions({
+        lineStyle: series.lineStyle || 0,
+        lineWidth: series.lineWidth || 2,
+      });
+      this.series.push(newSeries);
     });
   }
 
   dataChanged(): void {
+
     if (this.data && this.chart) {
-      this.series.setData(this.data.map(item => ({
-        time: item.time,
-        value: item.price,
-      })));
-      this.resizeChart();
+      this.data.forEach((series, index) => {
+        if (series.data) {
+          this.series[index].setData(series.data.map(item => ({
+            time: item.time,
+            value: item.price,
+          })));
+          this.resizeChart();
+        }
+      });
     }
   }
 
