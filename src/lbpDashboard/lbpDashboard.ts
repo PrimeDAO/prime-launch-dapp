@@ -53,6 +53,23 @@ export class lbpDashboard {
     return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
   }
 
+  @computedFrom("lbpMgr.priceHistory", "lbpMgr.trajectoryForecast")
+  private get graphData(): Array<any> {
+    return [
+      {
+        name: "Historical Data",
+        data: this.lbpMgr?.priceHistory,
+        color: "#FF497A",
+      },
+      {
+        name: "Trajectory-Forecast Data",
+        data: this.lbpMgr?.trajectoryForecast,
+        color: "#403453",
+        lineStyle: 1,
+      },
+    ];
+  }
+
   public async canActivate(params: { address: Address }): Promise<boolean> {
     await this.lbpManagerService.ensureInitialized();
     const lbpMgr = this.lbpManagerService.lbpManagers?.get(params.address);
