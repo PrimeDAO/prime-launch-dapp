@@ -1,6 +1,11 @@
 @import "styles/styles.scss";
 // This styles are common to all the stages components
 // Theme for the stages
+
+.dividerFundings {
+  background-color: #3e3351;
+}
+
 .infoContainer {
   font-family: Inter;
   background-color: $BG02;
