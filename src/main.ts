@@ -60,7 +60,7 @@ export function configure(aurelia: Aurelia): void {
         process.env.NETWORK as AllowedNetworks ??
           (process.env.NODE_ENV === "development" ? Networks.Rinkeby : Networks.Mainnet));
 
-      ContractsDeploymentProvider.initialize(ethereumService.targetedNetwork);
+      ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
       aurelia.container.get(ContractsService);
 
@@ -68,7 +68,7 @@ export function configure(aurelia: Aurelia): void {
       await tokenService.initialize();
 
       const launchService = aurelia.container.get(LaunchService);
-      launchService.initialize();
+      await launchService.initialize();
 
       const balancerService = aurelia.container.get(BalancerService);
       balancerService.initialize();

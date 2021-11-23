@@ -3,6 +3,7 @@ import { ITokenInfo } from "services/TokenTypes";
 import { TokenService } from "services/TokenService";
 import { Address, EthereumService } from "services/EthereumService";
 import { autoinject } from "aurelia-dependency-injection";
+import { TimingService } from "services/timingService";
 
 @autoinject
 export class LaunchService {
@@ -19,7 +20,7 @@ export class LaunchService {
     /**
      * we know we need these in several places.  Load them in advance.
      */
-    return this.getFundingTokenInfos();
+    return this.fetchFundingTokenInfos();
   }
 
   linkIcons = new Map<string, string>([
@@ -46,18 +47,42 @@ export class LaunchService {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
   }
 
-  public async getFundingTokenInfos(): Promise<Array<ITokenInfo>> {
-    let tokenAddresses: Array<Address>;
-    if (this.ethereumService.targetedNetwork === "mainnet") {
-      /**
-       * Though we have tokenInfos already fetched from this tokenList, they don't have prices yet,
-       * so we have to call `tokenService.getTokenInfoFromAddresses` to get the prices.
-       */
-      tokenAddresses = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments)
-        .map((tokenInfo) => tokenInfo.address);
-    } else {
-      tokenAddresses = this.tokenService.devFundingTokens;
+  private tokenInfos: Array<ITokenInfo>;
+
+  /**
+   * inefficient, but only used for testnets
+   * @param tokenAddresses
+   * @returns
+   */
+  private async getTokenInfoFromAddresses(tokenAddresses: Array<Address>): Promise<Array<ITokenInfo>> {
+    const promises = new Array<Promise<ITokenInfo>>();
+
+    for (const address of tokenAddresses) {
+      try {
+        promises.push(this.tokenService.getTokenInfoFromAddress(address));
+        // eslint-disable-next-line no-empty
+      } catch { }
     }
-    return this.tokenService.getTokenInfoFromAddresses(tokenAddresses);
+
+    return Promise.all(promises);
+  }
+
+  public async fetchFundingTokenInfos(): Promise<Array<ITokenInfo>> {
+
+    if (!this.tokenInfos) {
+
+      let tokenInfos: Array<ITokenInfo>;
+
+      TimingService.start("fetchFundingTokenInfos");
+      if (EthereumService.targetedNetwork === "mainnet") {
+        tokenInfos = await this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
+      } else {
+        tokenInfos = await this.getTokenInfoFromAddresses(this.tokenService.devFundingTokens);
+      }
+
+      this.tokenInfos = tokenInfos;
+      TimingService.end("fetchFundingTokenInfos");
+    }
+    return this.tokenInfos;
   }
 }

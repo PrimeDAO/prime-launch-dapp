@@ -33,7 +33,7 @@ export class ProjectTokenHistoricalPriceService {
   }
 
   private getBalancerSubgraphUrl(): string {
-    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${this.ethereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
+    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${EthereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
   }
 
   private getCoingeckoUrl(fundingTokenId: string, startTime: number, endTime: number): string {

@@ -17,6 +17,7 @@ import TransactionsService, { TransactionReceipt } from "services/TransactionsSe
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
+import { TimingService } from "services/timingService";
 
 export interface ILbpManagerConfiguration {
   address: Address;
@@ -198,6 +199,7 @@ export class LbpManager implements ILaunch {
 
   private async hydrate(): Promise<void> {
     try {
+      TimingService.start(`hydrate-${this.address}`);
       await this.hydrateMetadata();
 
       this.lbpInitialized = await this.contract.initialized();
@@ -240,6 +242,7 @@ export class LbpManager implements ILaunch {
       this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
       await this.hydratePaused();
+      TimingService.end(`hydrate-${this.address}`);
     }
     catch (error) {
       this.disable();
@@ -258,10 +261,11 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateMetadata(): Promise<void> {
+    TimingService.start(`hydrateMetadata-${this.address}`);
+
     const rawMetadata = await this.contract.metadata();
     if (rawMetadata && Number(rawMetadata)) {
       this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-      this.consoleLogService.logMessage(`loaded LpbManager metadata: ${this.metadataHash}`, "info");
     } else {
       this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
       throw new Error(`LbpManager lacks metadata, is unusable: ${this.address}`);
@@ -273,6 +277,8 @@ export class LbpManager implements ILaunch {
         this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
         throw new Error(`LbpManager metadata is not found in IPFS, LbpManager is unusable: ${this.address}`);
       }
+      TimingService.end(`hydrateMetadata-${this.address}`);
+      this.consoleLogService.logMessage(`loaded LpbManager metadata: ${this.metadataHash}`, "info");
     }
   }
 

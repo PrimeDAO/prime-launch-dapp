@@ -105,8 +105,8 @@ export class EthereumService {
     },
   };
 
-  public targetedNetwork: AllowedNetworks;
-  public targetedChainId: number;
+  public static targetedNetwork: AllowedNetworks;
+  public static targetedChainId: number;
 
   /**
    * provided by ethers
@@ -127,18 +127,17 @@ export class EthereumService {
       throw new Error("Ethereum.initialize: `network` must be specified");
     }
 
-    this.targetedNetwork = network;
-    this.targetedChainId = this.chainIdByName.get(network);
-
+    EthereumService.targetedNetwork = network;
+    EthereumService.targetedChainId = this.chainIdByName.get(network);
     EthereumService.providerOptions.torus.options.network = network;
 
-    const readonlyEndPoint = EthereumService.ProviderEndpoints[this.targetedNetwork];
+    const readonlyEndPoint = EthereumService.ProviderEndpoints[EthereumService.targetedNetwork];
     if (!readonlyEndPoint) {
       throw new Error(`Please connect to either ${Networks.Mainnet} or ${Networks.Rinkeby}`);
     }
 
     // comment out to run DISCONNECTED
-    this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[this.targetedNetwork]);
+    this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
     this.readOnlyProvider.pollingInterval = 15000;
 
     if (!this.blockSubscribed) {
@@ -267,7 +266,7 @@ export class EthereumService {
      */
     if (provider && provider._metamask.isUnlocked && (await provider._metamask.isUnlocked())) {
       const chainId = this.chainNameById.get(Number(await provider.request({ method: "eth_chainId" })));
-      if (chainId === this.targetedNetwork) {
+      if (chainId === EthereumService.targetedNetwork) {
         const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts?.length) {
           const account = getAddress(accounts[0]);
@@ -313,8 +312,8 @@ export class EthereumService {
         const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider as any);
         (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
         const network = await this.getNetwork(walletProvider);
-        if (network.name !== this.targetedNetwork) {
-          this.eventAggregator.publish("Network.wrongNetwork", { provider: web3ModalProvider, connectedTo: network.name, need: this.targetedNetwork });
+        if (network.name !== EthereumService.targetedNetwork) {
+          this.eventAggregator.publish("Network.wrongNetwork", { provider: web3ModalProvider, connectedTo: network.name, need: EthereumService.targetedNetwork });
           return;
         }
         /**
@@ -384,8 +383,8 @@ export class EthereumService {
   private handleChainChanged = async (chainId: number) => {
     const network = ethers.providers.getNetwork(Number(chainId));
 
-    if (network.name !== this.targetedNetwork) {
-      this.eventAggregator.publish("Network.wrongNetwork", { provider: this.web3ModalProvider, connectedTo: network.name, need: this.targetedNetwork });
+    if (network.name !== EthereumService.targetedNetwork) {
+      this.eventAggregator.publish("Network.wrongNetwork", { provider: this.web3ModalProvider, connectedTo: network.name, need: EthereumService.targetedNetwork });
       return;
     }
     else {
@@ -418,7 +417,7 @@ export class EthereumService {
    * @returns
    */
   public async switchToTargetedNetwork(provider: ExternalProvider): Promise<boolean> {
-    const hexChainId = `0x${this.targetedChainId.toString(16)}`;
+    const hexChainId = `0x${EthereumService.targetedChainId.toString(16)}`;
     try {
       if (provider.request) {
         /**
@@ -466,7 +465,7 @@ export class EthereumService {
 
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
-    let targetedNetwork = this.targetedNetwork as string;
+    let targetedNetwork = EthereumService.targetedNetwork as string;
     if (targetedNetwork === Networks.Mainnet) {
       targetedNetwork = "";
     } else {

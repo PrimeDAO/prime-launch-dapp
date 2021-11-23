@@ -37,8 +37,8 @@ export class BalancerService {
 
   public initialize(): Promise<void> {
     try {
-      const balancerSubgraphUrl = SUBGRAPH_URLS[this.ethereumService.targetedNetwork];
-      this.SOR = new SOR(this.ethereumService.readOnlyProvider as any, this.ethereumService.targetedChainId, balancerSubgraphUrl);
+      const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
+      this.SOR = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
       // Update pools list with most recent onchain balances
       return this.SOR.fetchPools([], true);
     } catch (ex) {

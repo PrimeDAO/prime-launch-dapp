@@ -109,7 +109,7 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     });
 
     if (!this.tokenList) {
-      this.tokenList = await this.launchService.getFundingTokenInfos();
+      this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
 
     this.updateValues();

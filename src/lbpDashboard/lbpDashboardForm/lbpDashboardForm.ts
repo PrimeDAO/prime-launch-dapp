@@ -74,7 +74,7 @@ export class lbpDashboardForm {
   async attached(): Promise<void> {
     await this.balancerService.ensureInitialized();
     if (!this.tokenList) {
-      this.tokenList = await this.launchService.getFundingTokenInfos();
+      this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
   }
 
