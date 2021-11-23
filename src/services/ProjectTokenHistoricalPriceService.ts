@@ -58,8 +58,14 @@ export class ProjectTokenHistoricalPriceService {
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
     const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const endTime = lbpMgr.endTime;
+    const currentTime = (new Date);
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(this.dateService.translateLocalToUtc(new Date()).getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(
+      this.dateService.translateLocalToUtc(
+        endTime.getTime() <= currentTime.getTime() ? endTime : currentTime,
+      ).getTime() / 1000 / intervalSeconds,
+    ) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
