@@ -71,7 +71,7 @@ export function configure(aurelia: Aurelia): void {
       await launchService.initialize();
 
       const balancerService = aurelia.container.get(BalancerService);
-      balancerService.initialize();
+      await balancerService.initialize();
 
       const geoBlockService = aurelia.container.get(GeoBlockService);
       await geoBlockService.initialize();
