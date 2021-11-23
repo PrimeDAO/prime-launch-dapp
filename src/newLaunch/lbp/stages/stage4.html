@@ -182,7 +182,20 @@
         <div class="infoInput launchPreview">
           <launch-preview
             class="previewBox"
-            config.bind="launchPreviewConfig">
+            max-supply.bind = "launchConfig.tokenDetails.maxSupply"
+            funding-token-address.bind = "launchConfig.launchDetails.fundingTokenInfo.address"
+            project-token-address.bind = "launchConfig.tokenDetails.projectTokenInfo.address"
+            project-token-decimals.bind = "launchConfig.tokenDetails.projectTokenInfo.decimals"
+            funding-token-decimals.bind = "launchConfig.launchDetails.fundingTokenInfo.decimals"
+            project-token-amount.bind = "launchConfig.launchDetails.amountProjectToken"
+            funding-token-amount.bind = "launchConfig.launchDetails.amountFundingToken"
+            start-weight.bind = "launchConfig.launchDetails.startWeight"
+            end-weight.bind = "launchConfig.launchDetails.endWeight"
+            start-date.bind = "startDate"
+            end-date.bind = "endDate"
+            launch-duration.bind = "launchDuration"
+            funding-token-price.bind = "launchConfig.launchDetails.fundingTokenInfo.price"
+          >
           </launch-preview>
         </div>
 
