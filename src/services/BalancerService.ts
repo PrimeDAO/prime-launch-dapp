@@ -35,15 +35,20 @@ export class BalancerService {
   ) {
   }
 
-  public initialize(): Promise<void> {
+  public async initialize(): Promise<void> {
     try {
       const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
       this.SOR = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
       // Update pools list with most recent onchain balances
-      return this.SOR.fetchPools([], true);
+      const success = await this.SOR.fetchPools([], true);
+      if (!success) {
+        throw new Error("Failed to fetch pools");
+      }
     } catch (ex) {
       this.SOR = undefined;
-      this.consoleLogService.logMessage(`Failed to initialize SOR: ${Utils.extractExceptionMessage(ex)}`, "error");
+      const msg = `Failed to initialize SOR: ${Utils.extractExceptionMessage(ex)}`;
+      this.consoleLogService.logMessage(msg, "error");
+      throw new Error(msg);
     } finally {
       this.loading = false;
     }
