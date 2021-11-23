@@ -43,7 +43,7 @@ export class LbpManager implements ILaunch {
   public metadata: ILbpConfig;
   public metadataHash: Hash;
   public corrupt = false;
-  public userHydrated = false;
+  public userHydrated = true;
 
   public lbp: Lbp;
   public projectTokenAddress: Address;
@@ -65,10 +65,13 @@ export class LbpManager implements ILaunch {
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
+  public projectTokenEndWeight: number;
+  public swapFeePercentage: number;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
-  private processingPriceHistory = false
+  private processingPriceHistory = false;
+  private swapFeesCollected: number;
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -133,9 +136,9 @@ export class LbpManager implements ILaunch {
       this._now = state.now;
     }));
 
-    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      await this.loadContracts().then(() => { this.hydrateUser(); });
-    }));
+    // this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
+    //   await this.loadContracts().then(() => { this.hydrateUser(); });
+    // }));
   }
 
   public create(config: ILbpManagerConfiguration): LbpManager {
@@ -228,6 +231,8 @@ export class LbpManager implements ILaunch {
        * 100 - projectTokenStartWeight = fundingTokenStartWeight
        */
       this.projectTokenStartWeight = this.numberService.fromString(fromWei(await this.contract.startWeights(this.projectTokenIndex)));
+      this.projectTokenEndWeight = this.numberService.fromString(fromWei(await this.contract.endWeights(this.projectTokenIndex)));
+      this.swapFeePercentage = this.numberService.fromString(fromWei(await this.contract.swapFeePercentage()));
 
       await this.hydrateTokensState();
 
@@ -235,8 +240,6 @@ export class LbpManager implements ILaunch {
       this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
       await this.hydratePaused();
-
-      await this.hydrateUser();
     }
     catch (error) {
       this.disable();
@@ -252,17 +255,6 @@ export class LbpManager implements ILaunch {
 
   public async hydratePaused(): Promise<boolean> {
     return this.isPaused = !(await this.getSwapEnabled());
-  }
-
-  private async hydrateUser(): Promise<void> {
-    const account = this.ethereumService.defaultAccountAddress;
-
-    this.userHydrated = false;
-
-    if (account) {
-      // this.userFundingTokenBalance = await this.fundingTokenContract.balanceOf(account);
-      this.userHydrated = true;
-    }
   }
 
   private async hydrateMetadata(): Promise<void> {
@@ -284,7 +276,7 @@ export class LbpManager implements ILaunch {
     }
   }
 
-  private async hydrateTokensState(): Promise<void> {
+  public async hydrateTokensState(): Promise<void> {
     this.startingProjectTokenAmountWithFees = await this.contract.projectTokensRequired();
     this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
     this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
@@ -292,7 +284,13 @@ export class LbpManager implements ILaunch {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
+      this.hydrateFeesCollected(); // save load time by not awaiting this
     }
+  }
+
+
+  public async hydrateFeesCollected(): Promise<void> {
+    this.swapFeesCollected = await this.projectTokenHistoricalPriceService.getTotalSwapFees(this);
   }
 
   private async hydrateLbp(): Promise<Lbp> {
@@ -330,7 +328,6 @@ export class LbpManager implements ILaunch {
       .then(async receipt => {
         if (receipt) {
           this.hydrateTokensState();
-          this.hydrateUser();
           return receipt;
         }
       });

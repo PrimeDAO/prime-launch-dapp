@@ -222,6 +222,8 @@ export class lbpDashboardForm {
         if (receipt) {
           await this.hydrateUserData();
           this.lbpManager.ensurePriceHistory(true);
+          this.lbpManager.hydrateTokensState();
+          this.lbpManager.hydrateFeesCollected();
 
           this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
           this.fundingTokensToPay = null;

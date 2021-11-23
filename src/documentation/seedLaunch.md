@@ -15,4 +15,4 @@ Project teams may also specify (whitelist) which addresses will be allowed to co
 - **Whitelist** — projects can optionally allow only whitelisted contributors
 - **Vesting** — settable cliffs and vesting schedules for contributors
 
-To host a Seed Round on Prime Launch, see <a href="/documentation/host-a-launch">Apply to host a Launch</a> or head straight to the <a href="/launch">application page</a>. To contribute to a launch, see <a href="/documentation/contribute-to-a-launch">Contribute to a Launch</a> or view all upcoming launches <a href="/launches">here</a>.
+To host a Seed Round on Prime Launch, see <a href="/documentation/host-a-launch">Apply to host a Launch</a> or head straight to the <a href="/register">application page</a>. To contribute to a launch, see <a href="/documentation/contribute-to-a-launch">Contribute to a Launch</a> or view all upcoming launches <a href="/launches">here</a>.
