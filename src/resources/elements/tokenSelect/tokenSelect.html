@@ -7,7 +7,7 @@
       <div repeat.for="tokenInfo of tokenList">
         <div class="tokenItem">
           <img src.to-view="tokenInfo.logoURI"></img>
-          <div if.bind="!symbolOnly">${tokenInfo.name}</div>
+          <div if.bind="!symbolOnly">${tokenInfo.name.split('(')[0]}&nbsp;${tokenInfo.name.split('(').slice(1).join('(')}</div>
           <div if.bind="!symbolOnly">(${tokenInfo.symbol})</div>
           <div if.bind="symbolOnly">${tokenInfo.symbol}</div>
         </div>
