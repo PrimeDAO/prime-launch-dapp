@@ -18,7 +18,7 @@ import TransactionsService, { TransactionReceipt } from "services/TransactionsSe
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
-import { TimingService } from "services/timingService";
+import { TimingService } from "services/TimingService";
 
 export interface ILbpManagerConfiguration {
   address: Address;
@@ -491,7 +491,9 @@ export class LbpManager implements ILaunch {
       ));
 
 
-      const currentTime = new Date();
+      const timeInterval = 60 * 60 * 1000; // 1 hour
+      const currentTime = new Date(Math.floor(new Date().getTime() / timeInterval) * timeInterval + timeInterval)/* Rounded */;
+
       this.trajectoryForecast = this.priceService.getInterpolatedPriceDataPoints(
         amountProjectTokenInEth,
         amountFundingTokenInEth,
