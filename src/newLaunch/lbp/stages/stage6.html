@@ -139,7 +139,7 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.amountProjectToken | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
+              <formatted-number value.bind="launchConfig.launchDetails.amountProjectToken | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
             </div>
             <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
           </div>
