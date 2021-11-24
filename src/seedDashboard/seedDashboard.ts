@@ -231,6 +231,7 @@ export class SeedDashboard {
         .then((receipt) => {
           if (receipt) {
             this.hydrateUserData();
+            // this.congratulationsService.show(`You have unlocked ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol}.  The last step is to click the Contribute button!`);
           }
         });
     }
