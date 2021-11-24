@@ -18,7 +18,7 @@ import TransactionsService, { TransactionReceipt } from "services/TransactionsSe
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
-import { TimingService } from "services/timingService";
+import { TimingService } from "services/TimingService";
 
 export interface ILbpManagerConfiguration {
   address: Address;
