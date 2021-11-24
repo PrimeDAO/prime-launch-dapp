@@ -1,4 +1,4 @@
-import { IBatcher, MultiCallService } from "./../services/MulticallService";
+import { IBatcher, IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
 import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
 import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
@@ -208,11 +208,12 @@ export class LbpManager implements ILaunch {
 
       let rawMetadata: any;
       let lbpAddress: Address;
+      let isSwapEnabled = true;
 
       this.projectTokenIndex = await this.contract.projectTokenIndex();
       this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
 
-      batcher = this.multiCallService.createBatcher([
+      const batchedCalls: Array<IBatcherCallsModel> = [
         {
           contractAddress: this.contract.address,
           functionName: "initialized",
@@ -319,7 +320,20 @@ export class LbpManager implements ILaunch {
           returnType: "address",
           resultHandler: (result) => { lbpAddress = result; },
         },
-      ]);
+      ];
+
+      if (!this.uninitialized) {
+        batchedCalls.push(
+          {
+            contractAddress: this.contract.address,
+            functionName: "getSwapEnabled",
+            returnType: "bool",
+            resultHandler: (result) => { isSwapEnabled = result; },
+          },
+        );
+      }
+
+      batcher = this.multiCallService.createBatcher(batchedCalls);
 
       await batcher.start();
       batcher.stop();
@@ -348,9 +362,10 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
+      this.isPaused = !this.uninitialized && !isSwapEnabled;
+
       await this.hydrateTokensState();
 
-      await this.hydratePaused();
       TimingService.end(`hydrate-${this.address}`);
     }
     catch (error) {
