@@ -1,3 +1,4 @@
+import { IBatcher, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
 import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
 import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
@@ -69,7 +70,7 @@ export class LbpManager implements ILaunch {
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
 
-  private projectTokenIndex: any;
+  private projectTokenIndex: number;
   private fundingTokenIndex: number;
   private processingPriceHistory = false;
   private swapFeesCollected: number;
@@ -132,6 +133,7 @@ export class LbpManager implements ILaunch {
     private ipfsService: IpfsService,
     private priceService: LbpProjectTokenPriceService,
     private numberService: NumberService,
+    private multiCallService: MultiCallService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: { now: Date }) => {
       this._now = state.now;
@@ -172,6 +174,7 @@ export class LbpManager implements ILaunch {
       const lbp = this.container.get(Lbp);
       return lbp.initialize(
         address,
+        this.address,
         this.projectTokenIndex,
         this.fundingTokenIndex);
     } else {
@@ -198,26 +201,142 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrate(): Promise<void> {
+    let batcher: IBatcher;
+
     try {
       TimingService.start(`hydrate-${this.address}`);
-      await this.hydrateMetadata();
 
-      this.lbpInitialized = await this.contract.initialized();
-      this.poolFunded = await this.contract.poolFunded();
+      let rawMetadata: any;
+      let lbpAddress: Address;
 
       this.projectTokenIndex = await this.contract.projectTokenIndex();
       this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
 
-      if (this.poolFunded) {
-        await this.hydrateLbp();
+      batcher = this.multiCallService.createBatcher([
+        {
+          contractAddress: this.contract.address,
+          functionName: "initialized",
+          returnType: "bool",
+          resultHandler: (result) => { this.lbpInitialized = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "poolFunded",
+          returnType: "bool",
+          resultHandler: (result) => { this.poolFunded = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "admin",
+          returnType: "address",
+          resultHandler: (result) => { this.admin = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "metadata",
+          returnType: "bytes",
+          resultHandler: (result) => { rawMetadata = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "projectTokenIndex",
+          returnType: "uint",
+          resultHandler: (result) => { this.projectTokenIndex = result.toNumber(); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "tokenList",
+          paramTypes: ["uint256"],
+          paramValues: [this.projectTokenIndex],
+          returnType: "address",
+          resultHandler: (result) => { this.projectTokenAddress = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "tokenList",
+          paramTypes: ["uint256"],
+          paramValues: [this.fundingTokenIndex],
+          returnType: "address",
+          resultHandler: (result) => { this.fundingTokenAddress = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "startWeights",
+          paramTypes: ["uint256"],
+          paramValues: [this.projectTokenIndex],
+          returnType: "uint256",
+          resultHandler: (result) => { this.projectTokenStartWeight = this.numberService.fromString(fromWei(result)); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "endWeights",
+          paramTypes: ["uint256"],
+          paramValues: [this.projectTokenIndex],
+          returnType: "uint256",
+          resultHandler: (result) => { this.projectTokenEndWeight = this.numberService.fromString(fromWei(result)); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "swapFeePercentage",
+          returnType: "uint256",
+          resultHandler: (result) => { this.swapFeePercentage = this.numberService.fromString(fromWei(result)); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "startTimeEndTime",
+          paramTypes: ["uint256"],
+          paramValues: [0],
+          returnType: "uint256",
+          resultHandler: (result) => { this.startTime = this.dateService.unixEpochToDate(result.toNumber()); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "startTimeEndTime",
+          paramTypes: ["uint256"],
+          paramValues: [1],
+          returnType: "uint256",
+          resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "amounts",
+          paramTypes: ["uint256"],
+          paramValues: [this.projectTokenIndex],
+          returnType: "uint256",
+          resultHandler: (result) => { this.startingProjectTokenAmount = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "amounts",
+          paramTypes: ["uint256"],
+          paramValues: [this.fundingTokenIndex],
+          returnType: "uint256",
+          resultHandler: (result) => { this.startingFundingTokenAmount = result; },
+        },
+        {
+          contractAddress: this.contract.address,
+          functionName: "lbp",
+          returnType: "address",
+          resultHandler: (result) => { lbpAddress = result; },
+        },
+      ]);
+
+      await batcher.start();
+      batcher.stop();
+      batcher = null;
+
+      if (rawMetadata && Number(rawMetadata)) {
+        this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      } else {
+        this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
+        throw new Error(`LbpManager lacks metadata, is unusable: ${this.address}`);
       }
 
-      this.admin = await this.contract.admin();
-      // const tokenStartWeightsArray = await this.contract.startWeights();
-      // const tokenEndWeightsArray = await this.contract.endWeights();
+      await this.hydrateMetadata();
 
-      this.projectTokenAddress = (await this.contract.tokenList(this.projectTokenIndex));
-      this.fundingTokenAddress = (await this.contract.tokenList(this.fundingTokenIndex));
+      if (Number(lbpAddress)) {
+        this.lbp = await this.createLbp(lbpAddress);
+      }
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
@@ -229,17 +348,7 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
-      /**
-       * 100 - projectTokenStartWeight = fundingTokenStartWeight
-       */
-      this.projectTokenStartWeight = this.numberService.fromString(fromWei(await this.contract.startWeights(this.projectTokenIndex)));
-      this.projectTokenEndWeight = this.numberService.fromString(fromWei(await this.contract.endWeights(this.projectTokenIndex)));
-      this.swapFeePercentage = this.numberService.fromString(fromWei(await this.contract.swapFeePercentage()));
-
       await this.hydrateTokensState();
-
-      this.startTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(0)).toNumber());
-      this.endTime = this.dateService.unixEpochToDate((await this.contract.startTimeEndTime(1)).toNumber());
 
       await this.hydratePaused();
       TimingService.end(`hydrate-${this.address}`);
@@ -248,6 +357,9 @@ export class LbpManager implements ILaunch {
       this.disable();
       this.consoleLogService.logMessage(`LbpManager: Error initializing lpbManager: ${error?.message ?? error}`, "error");
     } finally {
+      if (batcher) {
+        batcher.stop();
+      }
       this.initializing = false;
     }
   }
@@ -261,15 +373,8 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateMetadata(): Promise<void> {
-    TimingService.start(`hydrateMetadata-${this.address}`);
 
-    const rawMetadata = await this.contract.metadata();
-    if (rawMetadata && Number(rawMetadata)) {
-      this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-    } else {
-      this.eventAggregator.publish("LbpManager.InitializationFailed", this.address);
-      throw new Error(`LbpManager lacks metadata, is unusable: ${this.address}`);
-    }
+    TimingService.start(`hydrateMetadata-${this.address}`);
 
     if (this.metadataHash) {
       this.metadata = await this.ipfsService.getObjectFromHash(this.metadataHash);
@@ -283,24 +388,16 @@ export class LbpManager implements ILaunch {
   }
 
   public async hydrateTokensState(): Promise<void> {
-    this.startingProjectTokenAmountWithFees = await this.contract.projectTokensRequired();
-    this.startingProjectTokenAmount = await this.contract.amounts(this.projectTokenIndex);
-    this.startingFundingTokenAmount = await this.contract.amounts(this.fundingTokenIndex);
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
-      this.poolTokenBalance = await this.lbp.balanceOfPoolTokens(this.address);
+      this.poolTokenBalance = this.lbp.poolTokenBalance;
       this.hydrateFeesCollected(); // save load time by not awaiting this
     }
   }
 
-
-  public async hydrateFeesCollected(): Promise<void> {
+  private async hydrateFeesCollected(): Promise<void> {
     this.swapFeesCollected = await this.projectTokenHistoricalPriceService.getTotalSwapFees(this);
-  }
-
-  private async hydrateLbp(): Promise<Lbp> {
-    return this.lbp = await this.createLbp(await this.contract.lbp());
   }
 
   public getFundingTokenAllowance(token: Address): Promise<BigNumber> {
@@ -333,7 +430,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.removeLiquidity(receiver))
       .then(async receipt => {
         if (receipt) {
-          this.hydrateTokensState();
+          this.hydrate();
           return receipt;
         }
       });

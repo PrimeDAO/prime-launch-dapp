@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@balancer-labs/sor": "^2.0.0-beta.4",
+    "@makerdao/multicall": "^0.12.0",
     "@metamask/detect-provider": "^1.2.0",
     "@stackoverflow/stacks": "^0.70.0",
     "@toruslabs/torus-embed": "1.8.6",

@@ -71,10 +71,9 @@ export class EthereumService {
     // private storageService: BrowserStorageService,
   ) { }
 
-  private static ProviderEndpoints = {
+  public static ProviderEndpoints = {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
-    // "kovan": `https://${process.env.RIVET_ID}.kovan.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
   }
   private static providerOptions = {
