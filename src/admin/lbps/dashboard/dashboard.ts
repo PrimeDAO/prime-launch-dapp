@@ -86,13 +86,13 @@ export class LbpAdminDashboard {
   }
 
   async fund(): Promise<void> {
-    await this.transactionsService.send(
-      () => this.selectedLbp.projectTokenContract.approve(this.selectedLbp.address, this.selectedLbp.startingProjectTokenAmountWithFees));
-
-    await this.transactionsService.send(
-      () => this.selectedLbp.fundingTokenContract.approve(this.selectedLbp.address, this.selectedLbp.startingFundingTokenAmount));
-
-    this.selectedLbp.fund();
+    if (await this.transactionsService.send(
+      () => this.selectedLbp.projectTokenContract.approve(this.selectedLbp.address, this.selectedLbp.startingProjectTokenAmountWithFees))) {
+      if (await this.transactionsService.send(
+        () => this.selectedLbp.fundingTokenContract.approve(this.selectedLbp.address, this.selectedLbp.startingFundingTokenAmount))) {
+        this.selectedLbp.fund();
+      }
+    }
   }
 
   connect(): void {
