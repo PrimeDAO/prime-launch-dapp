@@ -336,8 +336,6 @@ export class LbpManager implements ILaunch {
       batcher = this.multiCallService.createBatcher(batchedCalls);
 
       await batcher.start();
-      batcher.stop();
-      batcher = null;
 
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
@@ -372,9 +370,6 @@ export class LbpManager implements ILaunch {
       this.disable();
       this.consoleLogService.logMessage(`LbpManager: Error initializing lpbManager: ${error?.message ?? error}`, "error");
     } finally {
-      if (batcher) {
-        batcher.stop();
-      }
       this.initializing = false;
     }
   }
@@ -430,7 +425,6 @@ export class LbpManager implements ILaunch {
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
@@ -445,7 +439,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.removeLiquidity(receiver))
       .then(async receipt => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           return receipt;
         }
       });
