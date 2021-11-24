@@ -55,17 +55,40 @@ export class lbpDashboard {
 
   @computedFrom("lbpMgr.priceHistory", "lbpMgr.trajectoryForecast")
   private get graphData(): Array<any> {
+    const priceHistoryLength = this.lbpMgr?.priceHistory?.length;
+    const trajectoryForecastLength = this.lbpMgr?.trajectoryForecast?.length;
+    const lbpAveragePrice = priceHistoryLength
+      ? (this.lbpMgr.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
+      : 0;
+
+    const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength)? [
+      {
+        time: this.lbpMgr?.priceHistory[0]?.time,
+        price: lbpAveragePrice,
+      },
+      {
+        time: trajectoryForecastLength > 0
+          ? this.lbpMgr?.trajectoryForecast[trajectoryForecastLength - 1]?.time
+          : this.lbpMgr?.priceHistory[priceHistoryLength - 1]?.time,
+        price: lbpAveragePrice,
+      },
+    ] : [];
+
     return [
       {
-        name: "Historical Data",
         data: this.lbpMgr?.priceHistory,
         color: "#FF497A",
       },
       {
-        name: "Trajectory-Forecast Data",
         data: this.lbpMgr?.trajectoryForecast,
         color: "#403453",
         lineStyle: 1,
+      },
+      {
+        name: "Average Price",
+        data: averagePriceData,
+        color: "#403453",
+        lineStyle: 2,
       },
     ];
   }
