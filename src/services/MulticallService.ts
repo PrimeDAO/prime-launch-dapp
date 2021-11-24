@@ -17,13 +17,15 @@ export interface IBatcherCallsModel {
 
 export interface IBatcher {
   start: () => Promise<void>;
-  recreate: (newConfig: Array<IBatcherCallsModel>) => Promise<void>;
+  // haven't figured out how to use this
+  // recreate: (newConfig: Array<IBatcherCallsModel>) => Promise<void>;
+  // haven't figured out how to use this
   // addModel: (model: Array<IBatcherCallsModel>) => Promise<void>;
   stop: () => void;
 }
 
 export class MultiCallService {
-  public createBatcher(model: Array<IBatcherCallsModel>): IBatcher {
+  public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
     const config = {
       multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
       rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
@@ -33,20 +35,25 @@ export class MultiCallService {
     const watcher = createWatcher(this.convertModel(model), config);
 
     return {
-      start: (): Promise<void> => this.runBatch(watcher),
-      recreate: (model: Array<IBatcherCallsModel>): Promise<void> => watcher.recreate(this.convertModel(model), config),
+      start: (): Promise<void> => this.runBatch(watcher, autoStop),
+      // recreate: (model: Array<IBatcherCallsModel>): Promise<void> => watcher.recreate(this.convertModel(model), config),
       // addModel: (model: Array<IBatcherCallsModel>): Promise<void> => this.addModel(watcher, model),
       stop: () => watcher.stop(),
     };
   }
 
-  private runBatch(watcher): Promise<void> {
+  private runBatch(watcher, autoStop): Promise<void> {
     return watcher.start()
       .then(() => {
         console.log("got the batch!");
       })
       .catch((ex) => {
         console.log("batch failed", ex);
+      })
+      .then(() => {
+        if (autoStop) {
+          watcher.stop();
+        }
       });
   }
 

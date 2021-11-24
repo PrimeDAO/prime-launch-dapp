@@ -5,7 +5,7 @@ import { autoinject } from "aurelia-framework";
 import { NumberService } from "services/NumberService";
 import { Vault } from "entities/Vault";
 import { BigNumber } from "ethers";
-import { IBatcher, MultiCallService } from "services/MulticallService";
+import { MultiCallService } from "services/MulticallService";
 
 @autoinject
 export class Lbp {
@@ -60,51 +60,42 @@ export class Lbp {
   }
 
   public async hydrate(): Promise<void> {
-    let batcher: IBatcher;
-    try {
-      let vaultAddress: Address;
-      let weights: Array<BigNumber>;
+    let vaultAddress: Address;
+    let weights: Array<BigNumber>;
 
-      batcher = this.multiCallService.createBatcher([
-        {
-          contractAddress: this.contract.address,
-          functionName: "getPoolId",
-          returnType: "bytes32",
-          resultHandler: (result) => { this.poolId = result; },
-        },
-        {
-          contractAddress: this.contract.address,
-          functionName: "getVault",
-          returnType: "address",
-          resultHandler: (result) => { vaultAddress = result; },
-        },
-        {
-          contractAddress: this.contract.address,
-          functionName: "getNormalizedWeights",
-          returnType: "uint256[]",
-          resultHandler: (result) => { weights = result; },
-        },
-        {
-          contractAddress: this.contract.address,
-          functionName: "balanceOf",
-          paramTypes: ["address"],
-          paramValues: [this.lbpManagerAddress],
-          returnType: "uint256",
-          resultHandler: (result) => { this.poolTokenBalance = result; },
-        },
-      ]);
+    const batcher = this.multiCallService.createBatcher([
+      {
+        contractAddress: this.contract.address,
+        functionName: "getPoolId",
+        returnType: "bytes32",
+        resultHandler: (result) => { this.poolId = result; },
+      },
+      {
+        contractAddress: this.contract.address,
+        functionName: "getVault",
+        returnType: "address",
+        resultHandler: (result) => { vaultAddress = result; },
+      },
+      {
+        contractAddress: this.contract.address,
+        functionName: "getNormalizedWeights",
+        returnType: "uint256[]",
+        resultHandler: (result) => { weights = result; },
+      },
+      {
+        contractAddress: this.contract.address,
+        functionName: "balanceOf",
+        paramTypes: ["address"],
+        paramValues: [this.lbpManagerAddress],
+        returnType: "uint256",
+        resultHandler: (result) => { this.poolTokenBalance = result; },
+      },
+    ]);
 
-      await batcher.start();
-      batcher.stop();
-      batcher = null;
+    await batcher.start();
 
-      this.projectTokenWeight = this.numberService.fromString(fromWei(weights[this.projectTokenIndex]));
-      this.vault = await this.createVault(vaultAddress);
-    } finally {
-      if (batcher) {
-        batcher.stop();
-      }
-    }
+    this.projectTokenWeight = this.numberService.fromString(fromWei(weights[this.projectTokenIndex]));
+    this.vault = await this.createVault(vaultAddress);
   }
 
   public async loadContracts(): Promise<void> {

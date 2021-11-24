@@ -1,5 +1,5 @@
 import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
-import { IBatcher, IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
+import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
 import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -202,8 +202,6 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrate(): Promise<void> {
-    let batcher: IBatcher;
-
     try {
       TimingService.start(`hydrate-${this.address}`);
 
@@ -334,11 +332,9 @@ export class LbpManager implements ILaunch {
         );
       }
 
-      batcher = this.multiCallService.createBatcher(batchedCalls);
+      const batcher = this.multiCallService.createBatcher(batchedCalls);
 
       await batcher.start();
-      batcher.stop();
-      batcher = null;
 
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
@@ -373,9 +369,6 @@ export class LbpManager implements ILaunch {
       this.disable();
       this.consoleLogService.logMessage(`LbpManager: Error initializing lpbManager: ${error?.message ?? error}`, "error");
     } finally {
-      if (batcher) {
-        batcher.stop();
-      }
       this.initializing = false;
     }
   }
@@ -431,11 +424,10 @@ export class LbpManager implements ILaunch {
       () => this.contract.initializeLBP(this.admin))
       .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
-          await this.hydrate();
+          this.hydrate();
           return receipt;
         }
       });
