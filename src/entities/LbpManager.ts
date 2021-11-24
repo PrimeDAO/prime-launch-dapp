@@ -213,37 +213,37 @@ export class LbpManager implements ILaunch {
 
       const batchedCalls: Array<IBatcherCallsModel> = [
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "initialized",
           returnType: "bool",
           resultHandler: (result) => { this.lbpInitialized = result; },
         },
         {
-          contractAddress: this.contract.address,
-          functionName: "poolFunded",
-          returnType: "bool",
-          resultHandler: (result) => { this.poolFunded = result; },
-        },
-        {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "admin",
           returnType: "address",
           resultHandler: (result) => { this.admin = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "metadata",
           returnType: "bytes",
           resultHandler: (result) => { rawMetadata = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
+          functionName: "poolFunded",
+          returnType: "bool",
+          resultHandler: (result) => { this.poolFunded = result; },
+        },
+        {
+          contractAddress: this.address,
           functionName: "projectTokenIndex",
           returnType: "uint",
           resultHandler: (result) => { this.projectTokenIndex = result.toNumber(); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "tokenList",
           paramTypes: ["uint256"],
           paramValues: [this.projectTokenIndex],
@@ -251,7 +251,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.projectTokenAddress = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "tokenList",
           paramTypes: ["uint256"],
           paramValues: [this.fundingTokenIndex],
@@ -259,7 +259,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.fundingTokenAddress = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "startWeights",
           paramTypes: ["uint256"],
           paramValues: [this.projectTokenIndex],
@@ -267,7 +267,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.projectTokenStartWeight = this.numberService.fromString(fromWei(result)); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "endWeights",
           paramTypes: ["uint256"],
           paramValues: [this.projectTokenIndex],
@@ -275,13 +275,13 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.projectTokenEndWeight = this.numberService.fromString(fromWei(result)); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "swapFeePercentage",
           returnType: "uint256",
           resultHandler: (result) => { this.swapFeePercentage = this.numberService.fromString(fromWei(result)); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "startTimeEndTime",
           paramTypes: ["uint256"],
           paramValues: [0],
@@ -289,7 +289,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.startTime = this.dateService.unixEpochToDate(result.toNumber()); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "startTimeEndTime",
           paramTypes: ["uint256"],
           paramValues: [1],
@@ -297,7 +297,13 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
+          functionName: "projectTokensRequired",
+          returnType: "uint256",
+          resultHandler: (result) => { this.startingProjectTokenAmountWithFees = result; },
+        },
+        {
+          contractAddress: this.address,
           functionName: "amounts",
           paramTypes: ["uint256"],
           paramValues: [this.projectTokenIndex],
@@ -305,7 +311,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.startingProjectTokenAmount = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "amounts",
           paramTypes: ["uint256"],
           paramValues: [this.fundingTokenIndex],
@@ -313,7 +319,7 @@ export class LbpManager implements ILaunch {
           resultHandler: (result) => { this.startingFundingTokenAmount = result; },
         },
         {
-          contractAddress: this.contract.address,
+          contractAddress: this.address,
           functionName: "lbp",
           returnType: "address",
           resultHandler: (result) => { lbpAddress = result; },
@@ -323,7 +329,7 @@ export class LbpManager implements ILaunch {
       if (!this.uninitialized) {
         batchedCalls.push(
           {
-            contractAddress: this.contract.address,
+            contractAddress: this.address,
             functionName: "getSwapEnabled",
             returnType: "bool",
             resultHandler: (result) => { isSwapEnabled = result; },
@@ -427,8 +433,8 @@ export class LbpManager implements ILaunch {
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
           this.hydrate();
-          return receipt;
         }
+        return receipt;
       });
   }
 
