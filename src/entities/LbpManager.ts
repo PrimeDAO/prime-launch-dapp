@@ -1,4 +1,4 @@
-import { IBatcher, IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
+import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
 import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
 import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
@@ -201,8 +201,6 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrate(): Promise<void> {
-    let batcher: IBatcher;
-
     try {
       TimingService.start(`hydrate-${this.address}`);
 
@@ -333,7 +331,7 @@ export class LbpManager implements ILaunch {
         );
       }
 
-      batcher = this.multiCallService.createBatcher(batchedCalls);
+      const batcher = this.multiCallService.createBatcher(batchedCalls);
 
       await batcher.start();
 
