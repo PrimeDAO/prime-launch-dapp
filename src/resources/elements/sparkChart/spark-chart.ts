@@ -113,6 +113,7 @@ export class SparkChart {
       const newSeries = this.chart.addLineSeries({
         color: series.color,
         priceLineVisible: false,
+        title: series.name || "",
         crosshairMarkerVisible: this.interactive,
         priceFormat: {
           type: "custom",
