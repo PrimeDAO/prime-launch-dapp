@@ -136,6 +136,9 @@ export class SeedDashboard {
         await this.seedService.ensureInitialized();
       }
       const seed = this.seedService.seeds.get(this.address);
+      if (!seed) {
+        throw new Error("Failed to instantiate Seed");
+      }
       if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
