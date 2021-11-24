@@ -491,11 +491,12 @@ export class LbpManager implements ILaunch {
       ));
 
 
+      const currentTime = new Date();
       this.trajectoryForecast = this.priceService.getInterpolatedPriceDataPoints(
         amountProjectTokenInEth,
         amountFundingTokenInEth,
         {
-          start: new Date(),
+          start: currentTime.getTime() > this.startTime.getTime() ? currentTime : this.startTime,
           end: this.endTime,
         },
         {
