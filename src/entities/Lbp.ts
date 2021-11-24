@@ -95,8 +95,6 @@ export class Lbp {
       ]);
 
       await batcher.start();
-      batcher.stop();
-      batcher = null;
 
       this.projectTokenWeight = this.numberService.fromString(fromWei(weights[this.projectTokenIndex]));
       this.vault = await this.createVault(vaultAddress);
