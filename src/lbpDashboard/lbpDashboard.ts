@@ -82,13 +82,13 @@ export class lbpDashboard {
       {
         data: this.lbpMgr?.trajectoryForecast,
         color: "#403453",
-        lineStyle: 1,
+        lineStyle: 2,
       },
       {
         name: "Average Price",
         data: averagePriceData,
-        color: "#403453",
-        lineStyle: 2,
+        color: "#A258A7",
+        lineWidth: 1,
       },
     ];
   }
