@@ -428,7 +428,7 @@ export class LbpManager implements ILaunch {
           /**
            * now we can fetch an Lbp.  Need it to completely hydrate token state
            */
-          await this.hydrate();
+          this.hydrate();
           return receipt;
         }
       });
@@ -439,7 +439,7 @@ export class LbpManager implements ILaunch {
       () => this.contract.removeLiquidity(receiver))
       .then(async receipt => {
         if (receipt) {
-          await this.hydrate();
+          this.hydrate();
           return receipt;
         }
       });
