@@ -19,19 +19,6 @@
           <label for="projSite">Project Website</label>
           <input id="projSite" value.bind="launchConfig.general.projectWebsite" />
         </div>
-        <div class="infoInput category">
-          <div class="labelContainer">
-            <label>Project Category</label>
-          </div>
-
-          <!-- selected-item-index is used only for assigning the initial value -->
-          <dropdown
-            item-changed.call="setCategoryName(value, index)"
-            selected-item-index.to-view="getCategoryNameIndex()"
-            placeholder="Select a Category...">
-            <div repeat.for="name of categoryNames">${name}</div>
-          </dropdown>
-        </div>
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
           <input id="whitePaper" value.bind="launchConfig.general.whitepaper"
