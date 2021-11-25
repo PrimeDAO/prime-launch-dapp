@@ -17,7 +17,7 @@
         </div>
         <div class="infoInput">
           <label for="projSite">Project Website</label>
-          <input id="projSite" value.bind="launchConfig.general.projectWebsite" placeholder="https://..." />
+          <input id="projSite" value.bind="launchConfig.general.projectWebsite" placeholder="(https://...)" />
         </div>
         <div class="infoInput category">
           <div class="labelContainer">
@@ -35,12 +35,12 @@
         <div class="infoInput">
           <label for="whitePaper">Whitepaper</label>
           <input id="whitePaper" value.bind="launchConfig.general.whitepaper"
-            placeholder="URL of the project's whitepaper : https://..." />
+            placeholder="URL of the project's whitepaper : (https://...)" />
         </div>
         <div class="infoInput">
           <label for="gitLink">Github</label>
           <input id="gitLink" value.bind="launchConfig.general.github"
-            placeholder="URL of the project's Github repository : https://..." />
+            placeholder="URL of the project's Github repository : (https://...)" />
         </div>
         <template repeat.for="link of launchConfig.general.customLinks">
           <div class="otherLinks">
