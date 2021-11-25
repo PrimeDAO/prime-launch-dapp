@@ -5,7 +5,6 @@
   <require from="./sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
   <div class="page animated-page au-animate lbpDashboardContainer">
-    <div show.to-view="loading" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
     <div show.to-view="!loading" class="lbpDashboard">
       <div class="tokenInfo">
         <project-token-info lbp-mgr.bind="lbpMgr"></project-token-info>
@@ -14,7 +13,8 @@
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
       <div class="graph">
-        <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
+        <div show.to-view="!lbpMgr.priceHistory" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+        <spark-chart show.to-view="lbpMgr.priceHistory" data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
       </div>
       <div class="form">
         <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
