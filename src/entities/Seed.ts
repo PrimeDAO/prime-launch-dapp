@@ -430,11 +430,12 @@ export class Seed implements ILaunch {
 
       await this.hydrateMetadata();
 
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
       if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
         throw new Error("project token info is not found or does not match the seed contract");
       }
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
@@ -536,7 +537,7 @@ export class Seed implements ILaunch {
       await batcher.start();
 
       // can't figure out how to supply the returnType for a struct in the batch
-      const lock = await this.contract.funders(account);
+      const lock: IFunderPortfolio = await this.contract.funders(account);
 
       this.userCurrentFundingContributions = lock.fundingAmount;
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);

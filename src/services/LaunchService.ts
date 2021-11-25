@@ -59,7 +59,11 @@ export class LaunchService {
 
     for (const address of tokenAddresses) {
       try {
-        promises.push(this.tokenService.getTokenInfoFromAddress(address));
+        const getInfo = async (): Promise<ITokenInfo> => {
+          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(address);
+          return this.tokenService.getTokenGeckoInfo(tokenInfo);
+        };
+        promises.push(getInfo());
         // eslint-disable-next-line no-empty
       } catch { }
     }
