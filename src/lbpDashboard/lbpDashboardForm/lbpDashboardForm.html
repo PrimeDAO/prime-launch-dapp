@@ -40,7 +40,7 @@
             <div class="arrow">&downarrow;</div>
             <div class="text">
               1 ${selectedFundingTokenInfo.symbol} =
-              <formatted-number value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
+              <formatted-number thousands-separated value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
               ${lbpManager.projectTokenInfo.symbol}
               <!-- = <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD -->
             </div>
@@ -52,7 +52,7 @@
           </div>
           <div class="purchaseInfo">
             <div class="price">
-              <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6" & debounce:100></formatted-number>
+              <formatted-number thousands-separated value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6" & debounce:100></formatted-number>
             </div>
             <!-- <div class="priceImpact">Price impact: ${priceImpact}%</div> -->
           </div>
