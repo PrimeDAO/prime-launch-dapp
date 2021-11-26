@@ -5,6 +5,7 @@ import axios from "axios";
 import { TOKEN_LIST_MAP } from "configurations/tokenLists";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ITokenInfo } from "services/TokenTypes";
+import { TimingService } from "services/TimingService";
 
 interface ITokenListUris {
   All: string[];
@@ -57,7 +58,7 @@ export class TokenListService {
    * a structured object.
    */
   public get tokenLists(): ITokenListUris {
-    const { PrimeDao /*, Balancer, External */ } = TOKEN_LIST_MAP[this.ethereumService.targetedNetwork];
+    const { PrimeDao /*, Balancer, External */ } = TOKEN_LIST_MAP[EthereumService.targetedNetwork];
 
     const primeDaoLists = [PrimeDao.Payments];
     // const balancerLists = [Balancer.Default, Balancer.Vetted];
@@ -122,6 +123,9 @@ export class TokenListService {
    * appear in `urls` or `this.uris.All`.
    */
   public async fetchLists(urls?: Array<string>): Promise<TokenListMap> {
+
+    TimingService.start("fetch token Lists");
+
     const uris = urls ?? this.tokenLists.All;
     /**
      * each call to `fetch` fetches a list
@@ -141,9 +145,12 @@ export class TokenListService {
     for (const list of validLists) {
       const tokenInfos = list[1]?.tokens;
       if (tokenInfos) {
-        list[1].tokens = tokenInfos.filter((tokenInfo: ITokenInfo) => tokenInfo["chainId"] === this.ethereumService.targetedChainId);
+        list[1].tokens = tokenInfos.filter((tokenInfo: ITokenInfo) => tokenInfo["chainId"] === EthereumService.targetedChainId);
       }
     }
+
+    TimingService.end("fetch token Lists");
+
     return Object.fromEntries(validLists);
   }
 }

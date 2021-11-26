@@ -118,7 +118,7 @@ export class App {
 
   private configureRouter(config: RouterConfiguration, router: Router) {
 
-    config.title = "PrimeLaunch";
+    config.title = "Prime Launch";
     config.options.pushState = true;
     // const isIpfs = (window as any).IS_IPFS;
     // if (isIpfs) {
@@ -140,9 +140,9 @@ export class App {
       {
         moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: false,
-        name: "launch",
-        route: ["launch"],
-        title: "Host a Launch",
+        name: "register",
+        route: ["register"],
+        title: "Register",
       },
       {
         moduleId: PLATFORM.moduleName("./launches/launches"),

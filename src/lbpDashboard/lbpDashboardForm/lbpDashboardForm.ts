@@ -32,6 +32,7 @@ export class lbpDashboardForm {
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
   sorSwapInfo: SwapInfo;
   userFundingTokenAllowance: BigNumber;
+  balancerReady = false;
 
   get priceImpact(): number {
     return 0;
@@ -72,9 +73,12 @@ export class lbpDashboardForm {
   }
 
   async attached(): Promise<void> {
-    await this.balancerService.ensureInitialized();
     if (!this.tokenList) {
-      this.tokenList = await this.launchService.getFundingTokenInfos();
+      this.tokenList = await this.launchService.fetchFundingTokenInfos();
+    }
+    this.balancerReady = await this.balancerService.ensureInitialized();
+    if (!this.balancerReady) {
+      this.eventAggregator.publish("handleFailure", "Sorry, unable to initialize the swapping form.  Try reentering the page to try again.");
     }
   }
 
@@ -160,11 +164,13 @@ export class lbpDashboardForm {
     }
   }
 
-  async validatePaused(): Promise<boolean> {
+  async validateEndedOrPaused(): Promise<boolean> {
     const paused = await this.lbpManager.hydratePaused();
     if (paused) {
-      this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
-      this.router.navigate("/home");
+      this.eventAggregator.publish("handleValidationError", "Sorry, swapping in this liquid launch has been paused by the launch administrator.");
+      return true;
+    } else if (this.lbpManager.isDead) {
+      this.eventAggregator.publish("handleValidationError", "Sorry, this liquid launch has ended.");
       return true;
     } else {
       return false;
@@ -172,7 +178,7 @@ export class lbpDashboardForm {
   }
 
   async unlockFundingTokens(): Promise<void> {
-    if (await this.validatePaused()) {
+    if (await this.validateEndedOrPaused()) {
       return;
     }
 
@@ -187,7 +193,7 @@ export class lbpDashboardForm {
   }
 
   async swap(): Promise<void> {
-    if (await this.validatePaused()) {
+    if (await this.validateEndedOrPaused()) {
       return;
     }
 
@@ -220,6 +226,7 @@ export class lbpDashboardForm {
         if (receipt) {
           await this.hydrateUserData();
           this.lbpManager.ensurePriceHistory(true);
+          this.lbpManager.hydrateTokensState();
 
           this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
           this.fundingTokensToPay = null;

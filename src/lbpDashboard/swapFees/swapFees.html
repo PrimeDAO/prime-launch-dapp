@@ -1,0 +1,15 @@
+<template>
+  <div class="swapFeesContainer">
+    <div class="heading heading3 title">Swap Fees</div>
+    <div class="table">
+      <div class="header">Rate</div>
+      <div class="value">
+        <formatted-number value.bind="100 * lbpManager.swapFeePercentage" notWei></formatted-number>%
+      </div>
+      <div class="header">Total Collected</div>
+      <div class="value">
+        <formatted-number value.bind="lbpManager.swapFeesCollected" notWei></formatted-number>%
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,37 @@
+<template>
+  <div class="settingsContainer">
+    <div class="heading heading3 title">Token Weights</div>
+    <div class="table">
+      <div class="header">Token</div>
+      <div class="value project token">
+        <img class="logo" src="${lbpManager.projectTokenInfo.logoURI}" />
+        <div class="symbol">${lbpManager.projectTokenInfo.symbol}</div>
+      </div>
+      <div class="value funding token">
+        <img class="logo" src="${lbpManager.fundingTokenInfo.logoURI}" />
+        <div class="symbol">${lbpManager.fundingTokenInfo.symbol}</div>
+      </div>
+      <div class="header">Start Weight</div>
+      <div class="value project">
+        <formatted-number value.bind="100 * lbpManager.projectTokenStartWeight" notWei></formatted-number>%
+      </div>
+      <div class="value funding">
+        <formatted-number value.bind="100 - (100 * lbpManager.projectTokenStartWeight)" notWei></formatted-number>%
+      </div>
+      <div class="header">End Weight</div>
+      <div class="value project">
+        <formatted-number value.bind="100 * lbpManager.projectTokenEndWeight" notWei></formatted-number>%
+      </div>
+      <div class="value funding">
+        <formatted-number value.bind="100 - (100 * lbpManager.projectTokenEndWeight)" notWei></formatted-number>%
+      </div>
+      <div class="header">Current Weight</div>
+      <div class="value project">
+        <formatted-number value.bind="100 * lbpManager.lbp.projectTokenWeight" notWei></formatted-number>%
+      </div>
+      <div class="value funding">
+        <formatted-number value.bind="100 - (100 * lbpManager.lbp.projectTokenWeight)" notWei></formatted-number>%
+      </div>
+    </div>
+  </div>
+</template>

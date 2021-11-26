@@ -618,12 +618,6 @@
     }
 
     .launchPreview {
-      display: inline-grid;
-      width: -webkit-fill-available;
-      width: -moz-available;
-      grid-template-rows: 22px auto;
-      row-gap: 20px;
-      min-height: 203px;
       border-radius: 10px;
       padding: 20px;
       margin-top: 16px;

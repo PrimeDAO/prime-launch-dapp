@@ -1,0 +1,11 @@
+<template>
+  <div class="lbpDetails">
+    <div class="heading heading2 title">Launch Details</div>
+    <div class="dates">
+      <div class="label">Start Date</div>
+      <div class="value start">${lbpManager.startTime | date: {format:"MMM Do YYYY, HH[:]mm z"}}</div>
+      <div class="label">End Date</div>
+      <div class="value end">${lbpManager.endTime | date: {format:"MMM Do YYYY, HH[:]mm z"}}</div>
+    </div>
+  </div>
+</template>

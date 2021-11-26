@@ -35,22 +35,40 @@ export class BalancerService {
   ) {
   }
 
-  public initialize(): Promise<void> {
+  public async initialize(): Promise<void> {
     try {
-      const balancerSubgraphUrl = SUBGRAPH_URLS[this.ethereumService.targetedNetwork];
-      this.SOR = new SOR(this.ethereumService.readOnlyProvider as any, this.ethereumService.targetedChainId, balancerSubgraphUrl);
-      // Update pools list with most recent onchain balances
-      return this.SOR.fetchPools([], true);
+      let success = false;
+      const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
+      const sor = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
+      if (sor) { // yes, can be undefined
+        // Update pools list with most recent onchain balances
+        success = await sor.fetchPools([], true);
+      }
+      if (success) {
+        this.SOR = sor;
+      } else {
+        throw new Error("Failed to fetch pools");
+      }
     } catch (ex) {
       this.SOR = undefined;
-      this.consoleLogService.logMessage(`Failed to initialize SOR: ${Utils.extractExceptionMessage(ex)}`, "error");
+      const msg = `Failed to initialize SOR: ${Utils.extractExceptionMessage(ex)}`;
+      this.consoleLogService.logMessage(msg, "error");
+      throw new Error(msg);
     } finally {
       this.loading = false;
     }
   }
 
-  ensureInitialized(): Promise<void> {
-    return Utils.waitUntilTrue(() => !this.loading, 9999999999);
+  /** returns true if SOR was properly initialized */
+  ensureInitialized(): Promise<boolean> {
+    if (!this.loading && !this.SOR) {
+      // try again
+      this.initialize();
+    }
+    return Utils.waitUntilTrue(() => !this.loading, 9999999999)
+      .then(() => {
+        return !!this.SOR;
+      });
   }
 
 

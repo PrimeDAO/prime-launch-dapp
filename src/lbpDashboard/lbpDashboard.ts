@@ -75,6 +75,9 @@ export class lbpDashboard {
         await this.lbpManagerService.ensureInitialized();
       }
       const lbpmgr = this.lbpManagerService.lbpManagers.get(this.address);
+      if (!lbpmgr) {
+        throw new Error("Failed to instantiate LbpManager");
+      }
       if (lbpmgr.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
@@ -149,16 +152,5 @@ export class lbpDashboard {
       }
     }
     return disclaimed;
-  }
-
-  async validatePaused(): Promise<boolean> {
-    const paused = await this.lbpMgr.hydratePaused();
-    if (paused) {
-      this.eventAggregator.publish("handleValidationError", "Sorry, this LBP has been paused");
-      this.router.navigate("/home");
-      return true;
-    } else {
-      return false;
-    }
   }
 }

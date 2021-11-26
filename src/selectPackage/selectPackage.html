@@ -4,7 +4,7 @@
       <img src="/primeLaunchBG.svg" />
     </div>
     <div class="banner">
-      <div class="heading heading1">Select your package</div>
+      <div class="heading heading1">Select your ${nextRoute && nextRoute=='newSeed' ? 'Seed' : 'Liquid Launch'} package</div>
       <div class="subtext">
         <div>
           More packages will be available in the future.
@@ -15,8 +15,6 @@
       <div class="packageContainer">
         <div class="topSection">
           <div class="heading heading3">Basic</div>
-          <div class="subtext">Seed or Liquid Launch
-          </div>
           <div class="benefitsContainer">
             <div class="benefit">
               <i class="check fas fa-check-circle"></i>
@@ -44,7 +42,7 @@
           </div>
           <a class="button1" href.bind="nextRoute">START REGISTRATION</a>
           <div class="learnMore">
-            <a href="/documentation" target="_blank" rel="noopener noreferrer">LEARN MORE</a>
+            <a href="${nextRoute && nextRoute=='newSeed' ? 'https://launch.prime.xyz/documentation/seed-launch' : 'https://launch.prime.xyz/documentation/liquid-launch' }" target="_blank" rel="noopener noreferrer">LEARN MORE</a>
           </div>
         </div>
       </div>
