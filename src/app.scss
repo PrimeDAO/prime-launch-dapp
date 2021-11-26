@@ -2,7 +2,11 @@
 // this is just to preload to avoid css jitter when opening a dialog
 @import "resources/dialogs/dialogs.scss";
 
+/**
+ * undo stuff from base.css now that we don't need it
+ */
 body {
+  text-align: unset;
   .initialLoading {
     display: none;
   }
