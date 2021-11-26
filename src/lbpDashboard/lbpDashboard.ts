@@ -80,7 +80,9 @@ export class lbpDashboard {
         color: "#FF497A",
       },
       {
-        data: this.lbpMgr?.trajectoryForecast,
+        data: this.lbpMgr?.priceHistory
+          ? [this.lbpMgr.priceHistory[this.lbpMgr.priceHistory.length - 1], ...this.lbpMgr.trajectoryForecast.slice(1)]
+          : this.lbpMgr?.trajectoryForecast,
         color: "#403453",
         lineStyle: 2,
       },
