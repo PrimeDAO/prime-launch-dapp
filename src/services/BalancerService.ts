@@ -37,10 +37,13 @@ export class BalancerService {
 
   public async initialize(): Promise<void> {
     try {
+      let success = false;
       const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
       const sor = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
-      // Update pools list with most recent onchain balances
-      const success = await sor.fetchPools([], true);
+      if (sor) { // yes, can be undefined
+        // Update pools list with most recent onchain balances
+        success = await sor.fetchPools([], true);
+      }
       if (success) {
         this.SOR = sor;
       } else {
