@@ -16,7 +16,7 @@ div.initialLoading {
 
 div.initialLoading > .pleaseWait {
   color: #ffffff;
-  font-family: Aeonik;
+  font-family: Arial;
   font-size: 24px;
   margin-bottom: 28px;
 }
