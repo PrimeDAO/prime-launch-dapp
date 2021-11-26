@@ -49,42 +49,12 @@ export class LaunchService {
 
   private tokenInfos: Array<ITokenInfo>;
 
-  /**
-   * inefficient, but only used for testnets
-   * @param tokenAddresses
-   * @returns
-   */
-  private async getTokenInfoFromAddresses(tokenAddresses: Array<Address>): Promise<Array<ITokenInfo>> {
-    const promises = new Array<Promise<ITokenInfo>>();
-
-    for (const address of tokenAddresses) {
-      try {
-        const getInfo = async (): Promise<ITokenInfo> => {
-          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(address);
-          return this.tokenService.getTokenGeckoInfo(tokenInfo);
-        };
-        promises.push(getInfo());
-        // eslint-disable-next-line no-empty
-      } catch { }
-    }
-
-    return Promise.all(promises);
-  }
-
   public async fetchFundingTokenInfos(): Promise<Array<ITokenInfo>> {
 
     if (!this.tokenInfos) {
 
-      let tokenInfos: Array<ITokenInfo>;
-
       TimingService.start("fetchFundingTokenInfos");
-      if (EthereumService.targetedNetwork === "mainnet") {
-        tokenInfos = await this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
-      } else {
-        tokenInfos = await this.getTokenInfoFromAddresses(this.tokenService.devFundingTokens);
-      }
-
-      this.tokenInfos = tokenInfos;
+      this.tokenInfos = await this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
       TimingService.end("fetchFundingTokenInfos");
     }
     return this.tokenInfos;
