@@ -10,12 +10,23 @@ export class LbpProjectTokenPriceService {
     return moment(time).startOf("hour");
   }
 
-  private getProjectTokenWeightAtTime(
-    current: Date, start: Date, end: Date,
+  /**
+   * Return the LBP weight at a given time point
+   * @param time The time inquired for a specific weight (Date)
+   * @param start LBP's start-date (Date)
+   * @param end LBP's end-date (Date)
+   * @param startWeight LBP's start-weight (number)
+   * @param endWeight LBP's end-weight (number)
+   * @returns Weight 0.02 - 0.98 (number)
+   */
+  public getProjectTokenWeightAtTime(
+    time: Date,
+    start: Date,
+    end: Date,
     startWeight: number,
     endWeight: number,
   ): number {
-    const hoursPassedSinceStart = this.getHoursPassed(current, start);
+    const hoursPassedSinceStart = this.getHoursPassed(time, start);
     const lbpDurationInHours = moment(end).diff(start, "hours");
 
     const totalWeightDifference =

@@ -23,6 +23,7 @@ export interface IHistoricalPriceRecord { time: number, price?: number }
 @autoinject
 export class ProjectTokenHistoricalPriceService {
 
+  public lastSwapTime: Date;
   constructor(
     private dateService: DateService,
     private tokenService: TokenService,
@@ -98,6 +99,8 @@ export class ProjectTokenHistoricalPriceService {
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
     } as ISwapRecord);
 
+    this.lastSwapTime = new Date(startTime * 1000);
+
     if (swaps.length) {
       let previousTimePoint;
 
@@ -154,6 +157,7 @@ export class ProjectTokenHistoricalPriceService {
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
             ),
           });
+          this.lastSwapTime = new Date(timestamp * 1000);
           previousTimePoint = (
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)

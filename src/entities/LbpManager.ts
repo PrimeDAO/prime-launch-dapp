@@ -120,6 +120,7 @@ export class LbpManager implements ILaunch {
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
+  public lastHistoricalSwap: Date;
 
   constructor(
     private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
@@ -467,6 +468,42 @@ export class LbpManager implements ILaunch {
 
   private priceHistoryPromise: Promise<Array<IHistoricalPriceRecord>>;
 
+  public getTrajectoryForecastData(): Array<IHistoricalPriceRecord> {
+    const amountProjectTokenInEth = this.numberService.fromString(fromWei(
+      this.projectTokenBalance || "-1",
+      this.projectTokenInfo.decimals,
+    ));
+
+    const amountFundingTokenInEth = this.numberService.fromString(fromWei(
+      this.fundingTokenBalance || "-1",
+      this.fundingTokenInfo.decimals,
+    ));
+
+    const weightAtLastSwap = this.priceService.getProjectTokenWeightAtTime(
+      this.lastHistoricalSwap,
+      this.startTime,
+      this.endTime,
+      this.projectTokenStartWeight,
+      this.projectTokenEndWeight,
+    );
+
+    const timeInterval = 60 * 60 * 1000; // 1 hour
+    const currentTime = new Date(Math.floor(new Date().getTime() / timeInterval) * timeInterval + timeInterval)/* Rounded */;
+    return this.priceService.getInterpolatedPriceDataPoints(
+      amountProjectTokenInEth,
+      amountFundingTokenInEth,
+      {
+        start: currentTime.getTime() > this.startTime.getTime() ? currentTime : this.startTime,
+        end: this.endTime,
+      },
+      {
+        start: weightAtLastSwap,
+        end: this.projectTokenEndWeight,
+      },
+      this.fundingTokenInfo.price,
+    );
+  }
+
   /**
    * call this to make sure that this.priceHistory is hydrated.
    * @returns Promise of same as this.priceHistory
@@ -480,33 +517,7 @@ export class LbpManager implements ILaunch {
 
       this.processingPriceHistory = true;
 
-      const amountProjectTokenInEth = this.numberService.fromString(fromWei(
-        this.projectTokenBalance || "-1",
-        this.projectTokenInfo.decimals,
-      ));
-
-      const amountFundingTokenInEth = this.numberService.fromString(fromWei(
-        this.fundingTokenBalance || "-1",
-        this.fundingTokenInfo.decimals,
-      ));
-
-
-      const timeInterval = 60 * 60 * 1000; // 1 hour
-      const currentTime = new Date(Math.floor(new Date().getTime() / timeInterval) * timeInterval + timeInterval)/* Rounded */;
-
-      this.trajectoryForecast = this.priceService.getInterpolatedPriceDataPoints(
-        amountProjectTokenInEth,
-        amountFundingTokenInEth,
-        {
-          start: currentTime.getTime() > this.startTime.getTime() ? currentTime : this.startTime,
-          end: this.endTime,
-        },
-        {
-          start: this.lbp.projectTokenWeight,
-          end: this.projectTokenEndWeight,
-        },
-        this.fundingTokenInfo.price,
-      );
+      this.trajectoryForecast = this.getTrajectoryForecastData();
 
       return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
         resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
@@ -515,6 +526,7 @@ export class LbpManager implements ILaunch {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
             this.priceHistory = history;
+            this.lastHistoricalSwap = this.projectTokenHistoricalPriceService.lastSwapTime;
             resolve(history);
           })
           .catch((ex) => {
