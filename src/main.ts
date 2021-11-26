@@ -1,4 +1,4 @@
-import { TimingService } from "services/timingService";
+import { TimingService } from "services/TimingService";
 import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
