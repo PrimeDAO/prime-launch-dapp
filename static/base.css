@@ -4,4 +4,24 @@
 */
 
 body {
+  background-color: #1b1722;
+  margin: 0;
+}
+
+div.initialLoading {
+  width: 100%;
+  text-align: center;
+  padding-top: 120px;
+}
+
+div.initialLoading > .pleaseWait {
+  color: #ffffff;
+  font-family: Aeonik;
+  font-size: 24px;
+  margin-bottom: 28px;
+}
+
+div.initialLoading > i {
+  font-size: 28px;
+  color: #1ee0fc;
 }

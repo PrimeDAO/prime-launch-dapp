@@ -1,6 +1,13 @@
 @import "styles/colors.scss";
 // this is just to preload to avoid css jitter when opening a dialog
 @import "resources/dialogs/dialogs.scss";
+
+body {
+  .initialLoading {
+    display: none;
+  }
+}
+
 .appWrapper {
   display: grid;
   grid-template-columns: auto;
