@@ -29,7 +29,8 @@ export class MultiCallService {
     const config = {
       multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
       rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
-      interval: 50000, // basically disable polling, just take the first batch
+      interval: 5000000, // basically disable polling, just take the first batch
+      errorRetryWait: 5000000, // basically disable polling
     };
 
     const watcher = createWatcher(this.convertModel(model), config);

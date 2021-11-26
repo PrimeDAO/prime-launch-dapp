@@ -1,3 +1,4 @@
+import { TimingService } from "services/timingService";
 import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
@@ -64,17 +65,25 @@ export function configure(aurelia: Aurelia): void {
 
       aurelia.container.get(ContractsService);
 
+      TimingService.start("TokenService Initialization");
       const tokenService = aurelia.container.get(TokenService);
       await tokenService.initialize();
+      TimingService.end("TokenService Initialization");
 
+      TimingService.start("LaunchService Initialization");
       const launchService = aurelia.container.get(LaunchService);
       await launchService.initialize();
+      TimingService.end("LaunchService Initialization");
 
+      // TimingService.start("BalancerService Initialization");
       const balancerService = aurelia.container.get(BalancerService);
-      await balancerService.initialize();
+      balancerService.initialize();
+      // TimingService.end("BalancerService Initialization");
 
+      TimingService.start("GeoBlockService Initialization");
       const geoBlockService = aurelia.container.get(GeoBlockService);
       await geoBlockService.initialize();
+      TimingService.end("GeoBlockService Initialization");
 
       const ipfsService = aurelia.container.get(IpfsService);
       ipfsService.initialize(aurelia.container.get(PinataIpfsClient));

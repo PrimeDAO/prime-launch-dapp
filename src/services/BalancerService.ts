@@ -38,10 +38,12 @@ export class BalancerService {
   public async initialize(): Promise<void> {
     try {
       const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
-      this.SOR = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
+      const sor = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
       // Update pools list with most recent onchain balances
-      const success = await this.SOR.fetchPools([], true);
-      if (!success) {
+      const success = await sor.fetchPools([], true);
+      if (success) {
+        this.SOR = sor;
+      } else {
         throw new Error("Failed to fetch pools");
       }
     } catch (ex) {
@@ -54,8 +56,16 @@ export class BalancerService {
     }
   }
 
-  ensureInitialized(): Promise<void> {
-    return Utils.waitUntilTrue(() => !this.loading, 9999999999);
+  /** returns true if SOR was properly initialized */
+  ensureInitialized(): Promise<boolean> {
+    if (!this.loading && !this.SOR) {
+      // try again
+      this.initialize();
+    }
+    return Utils.waitUntilTrue(() => !this.loading, 9999999999)
+      .then(() => {
+        return !!this.SOR;
+      });
   }
 
 
