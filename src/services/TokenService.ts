@@ -11,7 +11,7 @@ import { IErc20Token, ITokenInfo } from "services/TokenTypes";
 import { TokenListMap, TokenListService } from "services/TokenListService";
 import TokenMetadataService from "services/TokenMetadataService";
 import { AxiosService } from "services/axiosService";
-import { TimingService } from "services/timingService";
+import { TimingService } from "services/TimingService";
 
 @autoinject
 export class TokenService {

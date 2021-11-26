@@ -5,7 +5,7 @@ import axios from "axios";
 import { TOKEN_LIST_MAP } from "configurations/tokenLists";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ITokenInfo } from "services/TokenTypes";
-import { TimingService } from "services/timingService";
+import { TimingService } from "services/TimingService";
 
 interface ITokenListUris {
   All: string[];
