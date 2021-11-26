@@ -37,6 +37,7 @@
           <div>
             <span if.to-view="config.priceRange.low !== '-1'">
               $ <formatted-number
+                thousands-separated
                 value.to-view="config.priceRange.low">
               </formatted-number>
             </span>
@@ -44,6 +45,7 @@
             &nbsp;-&nbsp;
             <span if.to-view="config.priceRange.high !== '-1'">
               $ <formatted-number
+                thousands-separated
                 value.to-view="config.priceRange.high">
               </formatted-number>
             </span>
