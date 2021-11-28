@@ -51,7 +51,7 @@ export class LaunchPreview {
   private get graphData(): Array<any> {
     return [
       {
-        name: "Forecast",
+        name: "",
         color: "#FF497A",
         data: this.config?.trajectoryForecast || [],
       },
