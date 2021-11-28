@@ -34,6 +34,13 @@ html {
     padding-left: $BodyPaddingLeftRight;
     padding-right: $BodyPaddingLeftRight;
 
+    &:not(.loading) {
+      text-align: left;
+      > .initialLoading {
+        display: none;
+      }
+    }
+
     input {
       font-family: Aeonik;
       font-style: normal;
