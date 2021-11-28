@@ -23,7 +23,7 @@ export interface IHistoricalPriceRecord { time: number, price?: number }
 @autoinject
 export class ProjectTokenHistoricalPriceService {
 
-  public lastSwapTime: Date;
+  public lastSwap: ISwapRecord;
   constructor(
     private dateService: DateService,
     private tokenService: TokenService,
@@ -58,9 +58,9 @@ export class ProjectTokenHistoricalPriceService {
     const startingSeconds = this.dateService.translateLocalToUtc(lbpMgr.startTime).getTime() / 1000;
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
-    const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const roundedStartTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
     const endTime = lbpMgr.endTime;
-    const currentTime = (new Date);
+    const currentTime = new Date();
     /* Rounded to the nearest hour */
     const endTimeSeconds = Math.floor(
       this.dateService.translateLocalToUtc(
@@ -93,13 +93,13 @@ export class ProjectTokenHistoricalPriceService {
     const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
     const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
-    swaps.push({
-      timestamp: startTime,
+    this.lastSwap = {
+      timestamp: roundedStartTime,
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
-    } as ISwapRecord);
+    };
+    swaps.push({...this.lastSwap});
 
-    this.lastSwapTime = new Date(startTime * 1000);
 
     if (swaps.length) {
       let previousTimePoint;
@@ -124,7 +124,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-      for (let timestamp = startTime; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = roundedStartTime; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;
@@ -150,14 +150,19 @@ export class ProjectTokenHistoricalPriceService {
 
         if (todaysSwaps?.length) {
           returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp,
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
             ),
           });
-          this.lastSwapTime = new Date(timestamp * 1000);
+
+          this.lastSwap = {
+            timestamp: timestamp + intervalSeconds,
+            tokenAmountOut: todaysSwaps[todaysSwaps.length-1].tokenAmountOut,
+            tokenAmountIn: todaysSwaps[todaysSwaps.length-1].tokenAmountIn,
+          };
           previousTimePoint = (
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)
@@ -166,16 +171,18 @@ export class ProjectTokenHistoricalPriceService {
           /**
            * previous value effected by USD course change
            */
-          returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
-            price: (
-              previousTimePoint *
-              priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
-            ),
-          });
+          if (this.lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
+            returnArray.push({
+              time: timestamp,
+              price: (
+                previousTimePoint *
+                priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+              ),
+            });
+          }
         } else {
           returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp,
           });
         }
       }
