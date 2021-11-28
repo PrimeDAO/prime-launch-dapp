@@ -40,14 +40,15 @@ export class TokenSelect {
 
   defaultTokenAddressChanged(): void {
     if (this.tokenList) {
-      if (this.defaultTokenAddress) {
+      if (this.defaultTokenAddress && (this.defaultTokenAddress.toLowerCase() !== this.selectedTokenInfo?.address?.toLowerCase())) {
         this.selectedTokenInfo = this.tokenList.filter((info) => info.address.toLowerCase() === this.defaultTokenAddress.toLowerCase())?.[0];
-        if (this.itemChanged) {
-          // give bindings a chance to propagate first
-          setTimeout(() => {
+
+        // give itemChanged binding a chance to fully hydrate
+        setTimeout(() => {
+          if (this.itemChanged) {
             this.itemChanged({ newTokenInfo: this.selectedTokenInfo });
-          }, 0);
-        }
+          }
+        }, 0);
       }
     }
   }
