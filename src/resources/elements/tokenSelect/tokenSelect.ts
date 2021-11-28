@@ -38,17 +38,10 @@ export class TokenSelect {
     return (index > -1) ? index : undefined;
   }
 
-  async attached(): Promise<void> {
-    if (!this.tokenList) {
-      await this.tokenListChanged();
-    }
-  }
-
-  async tokenListChanged(): Promise<void> {
+  defaultTokenAddressChanged(): void {
     if (this.tokenList) {
       if (this.defaultTokenAddress) {
-        this.selectedTokenAddress = this.defaultTokenAddress;
-        this.selectedTokenInfo = this.tokenList.filter((info) => info.address === this.defaultTokenAddress)?.[0];
+        this.selectedTokenInfo = this.tokenList.filter((info) => info.address.toLowerCase() === this.defaultTokenAddress.toLowerCase())?.[0];
         if (this.itemChanged) {
           // give bindings a chance to propagate first
           setTimeout(() => {
@@ -59,6 +52,9 @@ export class TokenSelect {
     }
   }
 
+  tokenListChanged(): void {
+    this.defaultTokenAddressChanged();
+  }
 
   // getLabel(index: number): string {
   //   return this.tokenList[index].name;
