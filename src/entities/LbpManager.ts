@@ -1,7 +1,7 @@
 import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
 import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
-import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+import { BigNumber } from "ethers";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
