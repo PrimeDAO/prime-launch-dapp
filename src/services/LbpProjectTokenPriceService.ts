@@ -186,7 +186,7 @@ export class LbpProjectTokenPriceService {
 
       trajectoryData.push({
         price: currentProjectTokenPrice,
-        time: Math.floor(_time.startOf("hour").toDate().getTime() / 1000),
+        time: Math.floor(_time.startOf("hour").unix()),
       });
 
       _time.add(timeInterval, "hours");
