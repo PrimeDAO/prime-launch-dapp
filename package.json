@@ -137,9 +137,7 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,ts}",
-      "!**/*.spec.{js,ts}",
-      "!**/node_modules/**",
-      "!**/test/**"
+      "!**/test/unit/*.spec.{js,ts}"
     ],
     "coverageDirectory": "<rootDir>/test/coverage-jest",
     "coverageReporters": [

@@ -255,7 +255,7 @@ export class EthereumService {
 
     this.ensureWeb3Modal();
 
-    const provider = (await detectEthereumProvider()) as any;
+    const provider = detectEthereumProvider ? (await detectEthereumProvider()) as any : undefined;
 
     /**
      * at this writing, `_metamask.isUnlocked` is "experimental", according to MetaMask.
