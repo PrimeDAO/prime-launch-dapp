@@ -1,3 +1,4 @@
+import axios from "axios";
 import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
 import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
@@ -467,12 +468,13 @@ export class LbpManager implements ILaunch {
   }
 
   private priceHistoryPromise: Promise<Array<IHistoricalPriceRecord>>;
+  private usdPriceAtLastSwap: number;
 
   public getTrajectoryForecastData(): Array<IHistoricalPriceRecord> {
-    const amountProjectTokenInEth = this.numberService.fromString(fromWei(
-      this.projectTokenBalance || "-1",
-      this.projectTokenInfo.decimals,
-    ));
+    axios.get("https://api.coingecko.com/api/v3/coins/usd-coin/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600")
+      .then(result => {
+        this.usdPriceAtLastSwap = result.data.prices[result.data.prices.length - 1][1];
+      });
 
     const amountFundingTokenInEth = this.numberService.fromString(fromWei(
       this.fundingTokenBalance || "-1",
@@ -500,7 +502,7 @@ export class LbpManager implements ILaunch {
         start: weightAtLastSwap,
         end: this.projectTokenEndWeight,
       },
-      this.fundingTokenInfo.price,
+      this.usdPriceAtLastSwap,
     );
   }
 
