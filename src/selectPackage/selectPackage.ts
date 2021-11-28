@@ -10,7 +10,7 @@ export class SelectPackage {
     this.launchFee = SeedService.seedFee * 100;
   }
 
-  activate(params: any, routeConfig: RouteConfig): void {
+  activate(_params: unknown, routeConfig: RouteConfig): void {
     this.nextRoute = routeConfig.route.toString().split("/")[0];
   }
 }

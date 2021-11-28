@@ -1,4 +1,4 @@
-import { EthereumService, Networks } from "./../../services/EthereumService";
+import { EthereumService } from "./../../services/EthereumService";
 import { ILaunchConfig } from "../launchConfig";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
