@@ -100,7 +100,7 @@
           <div class="heading heading4">Maximum Project Tokens</div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+              <formatted-number thousands-separated value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
             </div>
             <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
           </div>
@@ -115,7 +115,7 @@
               <div class="header">Cliff (in days)</div>
               <div class="cell">${distrib.stakeHolder}</div>
               <div class="cell">
-                <formatted-number value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+                <formatted-number thousands-separated value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
               </div>
               <div class="cell">${distrib.vest}</div>
               <div class="cell">${distrib.cliff}</div>
@@ -131,7 +131,7 @@
           <div class="heading heading4">
             Funding Token
           </div>
-          <stageSixTokenInfo token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
+          <stageSixTokenInfo thousands-separated token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
         </div>
         <div class="stageLaunchDetails">
           <div class="heading heading4">
@@ -139,13 +139,13 @@
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.amountProjectToken | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+              <formatted-number thousands-separated value.bind="launchConfig.launchDetails.amountProjectToken | ethwei:launchConfig.tokenDetails.projectTokenConfig.decimals" />
             </div>
             <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
           </div>
           <div class="tokenAmountContainer">
             <div class="tokenAmount">
-              <formatted-number value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+              <formatted-number thousands-separated value.bind="launchConfig.launchDetails.amountFundingToken | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
             <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
           </div>

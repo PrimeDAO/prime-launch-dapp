@@ -15,7 +15,7 @@
     "build-rinkeby": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=rinkeby webpack --env.production  --extractCss",
     "build-dev": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=rinkeby webpack --env.development --extractCss",
     "build-dev-mainnet": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=mainnet webpack --env.development --extractCss",
-    "serve": "serve -s dist --listen=3330 --cors",
+    "serve": "serve -s dist --listen=3430 --cors",
     "serve-dev": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=rinkeby webpack-dev-server --env.development",
     "serve-dev-kovan": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=kovan webpack-dev-server --env.development",
     "serve-dev-mainnet": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=mainnet webpack-dev-server --env.development",

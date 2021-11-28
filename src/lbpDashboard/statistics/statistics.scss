@@ -49,6 +49,7 @@
   .settingsContainer {
     .heading.title {
       margin-bottom: 20px;
+      display: inline-flex; // to center horizontally
     }
 
     .table {
@@ -58,7 +59,15 @@
       column-gap: 16px;
 
       .value {
-        text-align: center;
+        text-align: right;
+      }
+
+      .header {
+        text-align: right;
+        padding-right: 6px;
+        // &::after {
+        //   content: ":";
+        // }
       }
     }
   }
