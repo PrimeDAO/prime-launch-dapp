@@ -198,7 +198,7 @@ export class LbpManager implements ILaunch {
     catch (error) {
       this.disable();
       this.initializing = false;
-      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpManager: ${error?.message ?? error}`, "error");
     }
   }
 
@@ -374,7 +374,7 @@ export class LbpManager implements ILaunch {
     }
     catch (error) {
       this.disable();
-      this.consoleLogService.logMessage(`LbpManager: Error initializing lpbManager: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpManager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
     }
