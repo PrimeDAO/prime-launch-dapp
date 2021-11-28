@@ -3,11 +3,11 @@ import * as moment from "moment-timezone";
 
 @autoinject
 export class LbpProjectTokenPriceService {
-  private roundedTime(time: Date, roundDown = true): moment.Moment {
+  private roundedTime(time: Date, roundDown = true): Date {
     if (!roundDown) {
-      return moment(time).add(60, "minute").startOf("hour");
+      return moment(time).add(60, "minute").startOf("hour").toDate();
     }
-    return moment(time).startOf("hour");
+    return moment(time).startOf("hour").toDate();
   }
 
   /**
@@ -27,7 +27,7 @@ export class LbpProjectTokenPriceService {
     endWeight: number,
   ): number {
     const hoursPassedSinceStart = this.getHoursPassed(time, start);
-    const lbpDurationInHours = moment(end).diff(start, "hours");
+    const lbpDurationInHours = Math.floor((end.getTime() - start.getTime()) / 60 / 60 / 1000);
 
     const totalWeightDifference =
       startWeight - endWeight;
@@ -41,12 +41,7 @@ export class LbpProjectTokenPriceService {
     const roundedCurrentTime = this.roundedTime(currentTime);
     const roundedStartTime = this.roundedTime(startTime);
 
-    const hoursPassed = moment
-      .duration(
-        roundedCurrentTime.diff(
-          roundedStartTime, "hours",
-        ), "hours")
-      .asHours();
+    const hoursPassed = Math.floor((roundedCurrentTime.getTime() - roundedStartTime.getTime()) / 1000 / 60 / 60);
 
     if (hoursPassed < 0) {
       return 0;
@@ -166,13 +161,13 @@ export class LbpProjectTokenPriceService {
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
 
     const timeInterval = 1;
-    const _time = moment(roundedStartDate.toDate());
+    let _time = roundedStartDate;
 
-    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours; hoursPassed += timeInterval) {
+    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours + 1; hoursPassed += timeInterval) {
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
-        _time.toDate(),
-        roundedStartDate.toDate(),
-        roundedEndDate.toDate(),
+        _time,
+        roundedStartDate,
+        roundedEndDate,
         weight.start,
         weight.end,
       );
@@ -186,12 +181,11 @@ export class LbpProjectTokenPriceService {
 
       trajectoryData.push({
         price: currentProjectTokenPrice,
-        time: Math.floor(_time.startOf("hour").unix()),
+        time: Math.floor((_time.getTime() - 60 * 60 * 1000) / 1000),
       });
 
-      _time.add(timeInterval, "hours");
+      _time = new Date(_time.getTime() + 60 * 60 * 1000);
     }
-
     return trajectoryData;
   }
 

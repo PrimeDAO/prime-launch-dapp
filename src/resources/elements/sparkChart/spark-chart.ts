@@ -135,13 +135,14 @@ export class SparkChart {
 
     if (this.data && this.chart) {
       this.data.forEach((series, index) => {
-        if (series.data) {
+        if (series.data?.length) {
           this.series[index].setData(series.data.map(item => ({
             time: item.time,
             value: item.price,
           })));
           this.resizeChart();
         }
+        this.chart.timeScale().fitContent();
       });
     }
   }
