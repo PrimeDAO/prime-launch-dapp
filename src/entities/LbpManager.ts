@@ -476,34 +476,20 @@ export class LbpManager implements ILaunch {
         this.usdPriceAtLastSwap = result.data.prices[result.data.prices.length - 1][1];
       });
 
-    const amountFundingTokenInEth = this.numberService.fromString(fromWei(
-      this.fundingTokenBalance || "-1",
-      this.fundingTokenInfo.decimals,
-    ));
-
-    const weightAtLastSwap = this.priceService.getProjectTokenWeightAtTime(
-      this.lastHistoricalSwap,
-      this.startTime,
-      this.endTime,
-      this.projectTokenStartWeight,
-      this.projectTokenEndWeight,
-    );
-
-    const timeInterval = 60 * 60 * 1000; // 1 hour
-    const currentTime = new Date(Math.floor(new Date().getTime() / timeInterval) * timeInterval + timeInterval)/* Rounded */;
-    return this.priceService.getInterpolatedPriceDataPoints(
-      amountProjectTokenInEth,
-      amountFundingTokenInEth,
+    const prices = this.priceService.getInterpolatedPriceDataPoints(
+      this.numberService.fromString(this.projectTokenHistoricalPriceService.lastSwap?.tokenAmountOut),
+      this.numberService.fromString(this.projectTokenHistoricalPriceService.lastSwap?.tokenAmountIn),
       {
-        start: currentTime.getTime() > this.startTime.getTime() ? currentTime : this.startTime,
+        start: new Date(this.projectTokenHistoricalPriceService.lastSwap?.timestamp * 1000),
         end: this.endTime,
       },
       {
-        start: weightAtLastSwap,
-        end: this.projectTokenEndWeight,
+        start: 0.5, // since we don't have the weight of the last swap, we'll assume it starts 50%
+        end: this.projectTokenEndWeight / 2,
       },
       this.usdPriceAtLastSwap,
     );
+    return prices;
   }
 
   /**
@@ -519,8 +505,6 @@ export class LbpManager implements ILaunch {
 
       this.processingPriceHistory = true;
 
-      this.trajectoryForecast = this.getTrajectoryForecastData();
-
       return this.priceHistoryPromise = new Promise<Array<IHistoricalPriceRecord>>((
         resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
         reject: (reason?: any) => void,
@@ -528,14 +512,14 @@ export class LbpManager implements ILaunch {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
             this.priceHistory = history;
-            this.lastHistoricalSwap = this.projectTokenHistoricalPriceService.lastSwapTime;
+            this.lastHistoricalSwap = new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000);
             resolve(history);
           })
           .catch((ex) => {
             this.consoleLogService.logMessage(ex, "error");
             reject(ex);
           })
-          .then(() => {
+          .finally(() => {
             this.processingPriceHistory = false;
           });
       });
