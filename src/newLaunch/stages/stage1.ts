@@ -1,20 +1,12 @@
 import { ILaunchConfig } from "../launchConfig";
 import { BaseStage } from "../baseStage";
 import { Utils } from "../../services/utils";
-import { CategoryNames, SocialLinkNames, SocialLinkSpec } from "newLaunch/launchConfig";
+import { SocialLinkNames, SocialLinkSpec } from "newLaunch/launchConfig";
 
 export class Stage1 extends BaseStage<ILaunchConfig> {
 
   public socialLinkNames = SocialLinkNames;
-  public categoryNames = CategoryNames;
 
-  public setCategoryName(name: string, _index: number): void {
-    this.launchConfig.general.category = name;
-  }
-
-  public getCategoryNameIndex(): number {
-    return this.launchConfig.general.category ? CategoryNames.indexOf(this.launchConfig.general.category) : undefined;
-  }
 
   public setMediaFromIndex(name: string, _index: number, link: SocialLinkSpec): void {
     link.media = name;
@@ -43,9 +35,7 @@ export class Stage1 extends BaseStage<ILaunchConfig> {
     else if (!Utils.isValidUrl(this.launchConfig.general.projectWebsite)) {
       message = "Please enter a valid URL for Project Website";
     }
-    else if (!this.launchConfig.general.category) {
-      message = "Please select a Category";
-    } else if (!Utils.isValidUrl(this.launchConfig.general.whitepaper)) {
+    else if (!Utils.isValidUrl(this.launchConfig.general.whitepaper)) {
       message = "Please enter a valid URL for Whitepaper";
     } else if (!Utils.isValidUrl(this.launchConfig.general.github)) {
       message = "Please enter a valid URL for Github Link";
