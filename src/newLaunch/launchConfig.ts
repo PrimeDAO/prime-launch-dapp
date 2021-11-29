@@ -27,7 +27,6 @@ export class SocialLinkSpec {
 export interface IGeneral {
   projectName: string,
   projectWebsite: string,
-  category: string,
   whitepaper: string,
   github: string,
   customLinks: Array<SocialLinkSpec>
@@ -104,7 +103,6 @@ export class LaunchConfig implements ILaunchConfig {
     this.version = "1.0.0";
     this.general = {
       projectName: "",
-      category: "",
       customLinks: [],
       projectWebsite: "",
       whitepaper: "",
