@@ -1,6 +1,6 @@
 <template>
   <div class="lbpDashboardForm">
-    <div class="heading heading3">Contribute</div>
+    <div class="heading heading3 title">Contribute</div>
     <div if.to-view="!connected" class="connect">
       <div class="description">Connect to your wallet</div>
       <div class="subdescription">Connect your wallet to participate in the LBP by buying ${lbpManager.projectTokenInfo.symbol}</div>
@@ -20,8 +20,8 @@
           <div class="fundingAmount">
             <div class="fundingInput">
               <numeric-input
-                disabled.to-view="!lbpManager.isLive || !selectedFundingTokenInfo.address"
-                value.bind="fundingTokensToPay & debounce:500"
+                disabled.bind="lbpManager.isPaused || lbpManager.isDead || !selectedFundingTokenInfo.address"
+                value.bind="fundingTokensToPay"
                 decimals.bind="selectedFundingTokenInfo.decimals"
                 placeholder="0.0"></numeric-input>
               <div class="maxButton">
@@ -40,9 +40,9 @@
             <div class="arrow">&downarrow;</div>
             <div class="text">
               1 ${selectedFundingTokenInfo.symbol} =
-              <formatted-number value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
-              ${lbpManager.projectTokenInfo.symbol} =
-              <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD
+              <formatted-number thousands-separated value.bind="projectTokensPerFundingToken & debounce:100"></formatted-number>
+              ${lbpManager.projectTokenInfo.symbol}
+              <!-- = <formatted-number value.bind="selectedFundingTokenInfo.price & debounce:100"></formatted-number> USD -->
             </div>
           </div>
         </div>
@@ -52,15 +52,15 @@
           </div>
           <div class="purchaseInfo">
             <div class="price">
-              <formatted-number value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6" & debounce:100></formatted-number>
+              <formatted-number thousands-separated value.bind="projectTokensToPurchase | ethwei:lbpManager.projectTokenInfo.decimals" mantissa="6" & debounce:100></formatted-number>
             </div>
             <!-- <div class="priceImpact">Price impact: ${priceImpact}%</div> -->
           </div>
         </div>
       </div>
       <div class="buttons">
-        <button class="lockButton button1" class="unlockButton" if.to-view="userCanPay && lockRequired" click.delegate="unlockFundingTokens()">UNLOCK</button>
-        <button class="submitButton button1" else disabled.bind="!userCanPay || !selectedFundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
+        <button class="lockButton button1" class="unlockButton" disabled.bind="!balancerReady || lbpManager.isPaused || lbpManager.isDead" if.to-view="userCanPay && lockRequired" click.delegate="unlockFundingTokens()">UNLOCK</button>
+        <button class="submitButton button1" else disabled.bind="!balancerReady || lbpManager.isPaused  || lbpManager.isDead || !userCanPay || !selectedFundingTokenInfo.address || !fundingTokensToPay || fundingTokensToPay.lte(0)" click.delegate="swap()">Buy</button>
       </div>
       <div class="footer">
         <div class="powered">POWERED BY</div><img src="/Logo_Balancer.svg" />

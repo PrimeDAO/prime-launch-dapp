@@ -40,7 +40,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   "rinkeby": {
     PrimeDao: {
       Payments:
-        "",
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
     },
     // Balancer: {
     //   Default:

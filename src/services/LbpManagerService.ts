@@ -58,8 +58,8 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ? 13551882 :
-      (this.ethereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
+    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13551882 :
+      (EthereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
         : 28079815; // kovan
 
   }
@@ -119,7 +119,7 @@ export class LbpManagerService {
                       this.lbpManagers.delete(lbpMgr.address);
                     }
                   });
-                  this.consoleLogService.logMessage(`loaded LBP: ${lbpMgr.address}`, "info");
+                  this.consoleLogService.logMessage(`instantiated LBP: ${lbpMgr.address}`, "info");
                   lbpMgr.initialize(); // set this off asyncronously.
                 }
                 this.lbpManagers = lbpMgrsMap;
@@ -147,7 +147,7 @@ export class LbpManagerService {
 
   public async deployLpbManager(config: ILbpConfig): Promise<Hash> {
 
-    const isKovan = this.ethereumService.targetedNetwork === Networks.Kovan;
+    const isKovan = EthereumService.targetedNetwork === Networks.Kovan;
 
     const lbpConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
@@ -159,7 +159,7 @@ export class LbpManagerService {
     const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const lbpManagerFactory = await this.contractsService.getContractFor(ContractNames.LBPMANAGERFACTORY);
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+    const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
     const lbpArguments = [
       config.launchDetails.adminAddress,
@@ -176,7 +176,7 @@ export class LbpManagerService {
     ];
 
 
-    if (this.ethereumService.targetedNetwork === Networks.Kovan) {
+    if (EthereumService.targetedNetwork === Networks.Kovan) {
       await this.deployLbpManagerDirectly(lbpArguments);
       return metaDataHash;
     }

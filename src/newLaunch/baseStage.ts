@@ -8,7 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Address, EthereumService, Hash, Networks } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 import { LaunchType } from "services/launchTypes";
-import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+import { BigNumber } from "ethers";
 
 export interface IStageState {
   verified: boolean;
@@ -58,7 +58,7 @@ export abstract class BaseStage<IConfig> {
     const safeAddress = ContractsService.getContractAddress(ContractNames.SAFE);
 
     this.multiSigWalletUri =
-      `https://${(ethereumService.targetedNetwork === Networks.Mainnet) ? "" : "rinkeby." }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
+      `https://${(EthereumService.targetedNetwork === Networks.Mainnet) ? "" : "rinkeby." }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {

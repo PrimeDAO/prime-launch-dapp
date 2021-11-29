@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>PrimeLAUNCH</title>
+  <title>Prime Launch</title>
   <meta http-equiv="Content-Language" content="en">
   <meta name="viewport" content="width=device-width, initial-scale=1"
     content="A decentralized autonomous organization and ecosystem for the adoption of decentralized, open finance.">
@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="./base.css">
   <script src="https://kit.fontawesome.com/bf98881e0a.js" crossorigin="anonymous"></script>
   <style>
+    /* these are here so webpack will pick up the fonts */
     @font-face {
       font-family: "Inter";
       src: url("./Inter-Light.ttf");
@@ -64,38 +65,13 @@
       background-size: cover;
     }
   </style>
-
-  <script>
-    (function () {
-      const { pathname, hostname, protocol } = window.location
-
-      // redirect to https on non-localhost
-      if (protocol === 'http:' && hostname !== 'localhost' && hostname.indexOf('ipfs.localhost') === -1) {
-        window.location.protocol = 'https'
-        return
-      }
-
-      //      const ipfsMatch = /.*\/Qm\w{44}/.exec(pathname)
-      //      changeBaseHref(ipfsMatch)
-      //
-      //      window.IS_IPFS = !!ipfsMatch || hostname.endsWith('.eth.link')
-      //
-      //      function changeBaseHref(match) {
-      //        if (match && match.length > 0) {
-      //          let baseHref = match[0]
-      //          if (!baseHref.endsWith('/')) baseHref += '/'
-      //
-      //          const base = document.querySelector('base')
-      //          base.href = baseHref
-      //        }
-      //      }
-      //
-    })();
-  </script>
-  <!-- imported CSS are concatenated and added automatically -->
 </head>
 
-<body aurelia-app="main">
+<body aurelia-app="main" class="loading">
+  <div class="initialLoading">
+    <div class="pleaseWait">Thanks for your patience while we fetch Prime Launch!</div>
+    <i class="fas fa-circle-notch fa-spin"></i>
+  </div>
 </body>
 
 </html>

@@ -124,9 +124,9 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           message = "Please enter a name for Stakeholder";
         } else if (!tokenDistrb.amount) {
           message = `Please enter an amount for ${tokenDistrb.stakeHolder}`;
-        } else if (!tokenDistrb.cliff) {
+        } else if (tokenDistrb.cliff===null || tokenDistrb.cliff===undefined) {
           message = `Please enter the cliff for ${tokenDistrb.stakeHolder}`;
-        } else if (!tokenDistrb.vest) {
+        } else if (!tokenDistrb.vest===null || tokenDistrb.vest===undefined) {
           message = `Please enter the vesting period for ${tokenDistrb.stakeHolder}`;
         } else if (tokenDistrb.vest < tokenDistrb.cliff) {
           message = `Please enter for ${tokenDistrb.stakeHolder} a cliff that is less than or equal to the vesting period`;
@@ -157,7 +157,17 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
         this.loadingToken = true;
 
         try {
-          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.launchConfig.tokenDetails.projectTokenInfo.address);
+          const tokenAddress = this.launchConfig.tokenDetails.projectTokenInfo.address;
+
+          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(tokenAddress);
+
+          if (!await this.tokenService.isERC20Token(tokenAddress)) {
+            throw new Error(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
+          }
+
+          if (!tokenInfo.logoURI) {
+            await this.tokenService.getTokenGeckoInfo(tokenInfo);
+          }
 
           this.launchConfig.tokenDetails.projectTokenInfo = Object.assign({
             address: tokenInfo.address,

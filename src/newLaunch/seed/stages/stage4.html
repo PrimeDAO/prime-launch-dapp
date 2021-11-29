@@ -184,7 +184,7 @@
         <input id="whitelist"
           value.bind="launchConfig.launchDetails.whitelist"
           input.trigger="getWhiteListFeedback()"
-          placeholder="(Optional) URL to a whitelist" />
+          placeholder="(Optional) URL to a whitelist (https://...)" />
         <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
         <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
         <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
@@ -200,7 +200,7 @@
         <input
           id="disclaimer"
           value.bind="launchConfig.launchDetails.legalDisclaimer"
-          placeholder="(Optional) URL to a disclaimer" />
+          placeholder="(Optional) URL to a disclaimer (https://...)" />
       </div>
       <div class="infoInput">
         <div class="labeledQuestion">

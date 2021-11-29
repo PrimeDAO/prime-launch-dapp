@@ -1,41 +1,45 @@
-﻿const numeral = require("numeral");
+﻿import { BigNumber } from "ethers";
+
+const numeral = require("numeral");
 
 // export enum RoundingType {
 //   Bankers = 1,
 //   HalfUp = 2
 // }
 
+export interface IToStringOptions {
+  /**
+   * number of significant digits
+   */
+  // precision?: string | number,
+  /**
+   * truncate with 'k', 'M','B', etc.
+   * average takes precedence over thousandSeparated if both are present
+   */
+  average?: boolean,
+  /**
+   * places after the decimal, padded with zeroes if needed.
+   * default is 2
+   * If you supply 0, then will output a whole number rounded up by any fractional part.
+   * If you supply -1, then will show all decimal values, or no decimal place if there isn't one
+   */
+  mantissa?: string | number,
+  /**
+   * insert commas
+   */
+  thousandSeparated?: boolean,
+}
+
 export class NumberService {
   /**
    * @param value
    * @param format
    */
-  public toString(value: number | string,
-    options?: {
-      /**
-       * number of significant digits
-       */
-      // precision?: string | number,
-      /**
-       * truncate with 'k', 'M','B', etc.
-       * average takes precedence over thousandSeparated if both are present
-       */
-      average?: boolean,
-      /**
-       * places after the decimal, padded with zeroes if needed.
-       * default is 2
-       * If you supply 0, then will output a whole number rounded up by any fractional part.
-       */
-      mantissa?: string | number,
-      /**
-       * insert commas
-       */
-      thousandSeparated?: boolean,
-    },
+  public toString(value: number | string, options?: IToStringOptions,
   ): string | null | undefined {
 
     // this helps to display the erroneus value in the GUI
-    if ((typeof value === "string") || (value === null) || (typeof value === "undefined")) {
+    if ((typeof value === "string") || (value === null) || (value === undefined)) {
       return value as any;
     }
 
@@ -48,10 +52,13 @@ export class NumberService {
 
     let formatString: string;
 
-    if (mantissa) {
+    if (mantissa > 0) {
       formatString = "0.".padEnd(mantissa + 2, "0");
-    } else {
+    } else if (!mantissa) {
       formatString = "0";
+    }
+    else if (mantissa === -1) {
+      formatString = ".[0]";
     }
 
     if (thousandSeparated) {
@@ -64,6 +71,7 @@ export class NumberService {
      */
     return numeral(value).format(formatString, Math.trunc) as string;
   }
+
   /**
    * returns number with `digits` number of digits.
    * @param value the value
@@ -99,9 +107,16 @@ export class NumberService {
   //   return result;
   // }
 
-  public fromString(value: string | number, decimalPlaces = 1000): number {
+  public fromString(value: string | number | BigNumber, decimalPlaces = 1000): number {
 
     if (typeof(value) === "number") return value;
+
+    /**
+     * ok, isn't a string, but still helpful
+     */
+    if (BigNumber.isBigNumber(value)) {
+      return value.toNumber();
+    }
 
     // this helps to display the erroneus value in the GUI
     if (!this.stringIsNumber(value, decimalPlaces)) {
