@@ -34,9 +34,11 @@
     }
     > div {
       width: 45%;
+      max-width: 600px;
     }
     > div:last-child {
-      width: 48%;
+      width: 45%;
+      max-width: 600px;
     }
 
     .launch-box-container {
@@ -68,12 +70,15 @@
         flex-flow: row wrap;
         align-items: center;
         justify-content: space-between;
+        column-gap: 10px;
         .buttonContainer {
           text-align: center;
           font-size: 8px;
           border-radius: 32px;
 
           a {
+            margin-left: 0;
+            width: 100px;
             font-weight: 600;
             text-decoration: none;
             color: $White;
