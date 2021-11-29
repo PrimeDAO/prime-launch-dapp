@@ -33,7 +33,7 @@ export class Home {
       try {
         const response = await axios.post("https://api.primedao.io/subscribeEmailAddress",
           {
-            prod: (process.env.NODE_ENV === "production") && (this.ethereumService.targetedNetwork === "mainnet"),
+            prod: (process.env.NODE_ENV === "production") && (EthereumService.targetedNetwork === "mainnet"),
             email: this.subscriberEmail,
           });
 

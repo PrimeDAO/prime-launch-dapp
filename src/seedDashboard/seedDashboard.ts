@@ -136,6 +136,9 @@ export class SeedDashboard {
         await this.seedService.ensureInitialized();
       }
       const seed = this.seedService.seeds.get(this.address);
+      if (!seed) {
+        throw new Error("Failed to instantiate Seed");
+      }
       if (seed.initializing) {
         if (!waiting) {
           await Utils.sleep(200);
@@ -228,6 +231,7 @@ export class SeedDashboard {
         .then((receipt) => {
           if (receipt) {
             this.hydrateUserData();
+            // this.congratulationsService.show(`You have unlocked ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol}.  The last step is to click the Contribute button!`);
           }
         });
     }

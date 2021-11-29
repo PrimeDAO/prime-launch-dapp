@@ -1,0 +1,44 @@
+<template>
+  <div class="statisticsContainer">
+    <div class="heading heading3 title">Statistics</div>
+    <div class="table">
+      <div class="header">Token</div>
+      <div class="value project token">
+        <img class="logo" src="${lbpManager.projectTokenInfo.logoURI}" />
+        <div class="symbol">${lbpManager.projectTokenInfo.symbol}</div>
+      </div>
+      <div class="value funding token">
+        <img class="logo" src="${lbpManager.fundingTokenInfo.logoURI}" />
+        <div class="symbol">${lbpManager.fundingTokenInfo.symbol}</div>
+      </div>
+      <div class="header">Start Balances</div>
+      <div class="value project">
+        <formatted-number value.bind="lbpManager.startingProjectTokenAmount | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+      <div class="value funding">
+        <formatted-number value.bind="lbpManager.startingFundingTokenAmount | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+      <div class="header">Current Balances</div>
+      <div class="value project">
+        <formatted-number value.bind="lbpManager.projectTokenBalance | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+      <div class="value funding">
+        <formatted-number value.bind="lbpManager.fundingTokenBalance | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+      <!-- <div class="value project token token2">
+        <img class="logo" src="${lbpManager.projectTokenInfo.logoURI}" />
+        <div class="symbol">${lbpManager.projectTokenInfo.symbol}</div>
+      </div> -->
+      <div class="header">Total Sold</div>
+      <div class="value project">
+        <formatted-number value.bind="lbpManager.startingProjectTokenAmount.sub(lbpManager.projectTokenBalance) | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+      <div class="value funding">&nbsp;</div>
+      <div class="header">Total Raised</div>
+      <div class="value project">&nbsp;</div>
+      <div class="value funding">
+        <formatted-number value.bind="lbpManager.fundingTokenBalance.sub(lbpManager.startingFundingTokenAmount) | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+      </div>
+    </div>
+  </div>
+</template>

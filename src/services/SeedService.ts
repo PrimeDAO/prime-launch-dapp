@@ -60,7 +60,7 @@ export class SeedService {
       this.seeds.delete(seedAddress);
     });
 
-    this.startingBlockNumber = (this.ethereumService.targetedNetwork === Networks.Mainnet) ?
+    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ?
       12960154 : 9468353;
   }
 
@@ -115,7 +115,7 @@ export class SeedService {
                       this.seeds.delete(seed.address);
                     }
                   });
-                  this.consoleLogService.logMessage(`loaded seed: ${seed.address}`, "info");
+                  this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
                   seed.initialize(); // set this off asyncronously.
                 }
                 this.seeds = seedsMap;
@@ -169,7 +169,7 @@ export class SeedService {
     const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const gnosis = api(safeAddress, this.ethereumService.targetedNetwork);
+    const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
     const transaction = {
       to: seedFactory.address,

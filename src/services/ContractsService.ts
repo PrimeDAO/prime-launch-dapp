@@ -52,7 +52,7 @@ export class ContractsService {
     /**
      * gnosis safe isn't on kovan, but we need kovan for testing balancer
      */
-    if (this.ethereumService.targetedNetwork === Networks.Kovan) {
+    if (EthereumService.targetedNetwork === Networks.Kovan) {
       ContractsService.Contracts.delete(ContractNames.SEED);
       ContractsService.Contracts.delete(ContractNames.SIGNER);
     }

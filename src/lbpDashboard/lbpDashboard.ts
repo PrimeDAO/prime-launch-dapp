@@ -75,6 +75,9 @@ export class lbpDashboard {
         await this.lbpManagerService.ensureInitialized();
       }
       const lbpmgr = this.lbpManagerService.lbpManagers.get(this.address);
+      if (!lbpmgr) {
+        throw new Error("Failed to instantiate LbpManager");
+      }
       if (lbpmgr.initializing) {
         if (!waiting) {
           await Utils.sleep(200);

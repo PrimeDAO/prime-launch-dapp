@@ -22,7 +22,6 @@ export interface IHistoricalPriceRecord { time: number, price?: number }
 
 @autoinject
 export class ProjectTokenHistoricalPriceService {
-  private historicalPrices = new Array<IHistoricalPriceRecord>();
 
   constructor(
     private dateService: DateService,
@@ -34,24 +33,33 @@ export class ProjectTokenHistoricalPriceService {
   }
 
   private getBalancerSubgraphUrl(): string {
-    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${this.ethereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
+    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${EthereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
   }
 
   private getCoingeckoUrl(fundingTokenId: string, startTime: number, endTime: number): string {
     return `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`;
   }
 
+  /**
+   * Get Project Token Price History, in USD
+   *
+   * The timepoints in the returned array will be relative to the UTC timezone.
+   * startTime and endTime, which, according to the LBPManager entity, are in the user's timezone would be converted to UTC.
+   *
+   * @param lbpMgr LBP Manager object
+   * @returns Array(IHistoricalPriceRecord): {time: number, price?: number}
+   */
   public async getPricesHistory(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
     if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
       return [];
     }
 
-    const startingSeconds = lbpMgr.startTime.getTime() / 1000;
+    const startingSeconds = this.dateService.translateLocalToUtc(lbpMgr.startTime).getTime() / 1000;
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
     const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(new Date().getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(this.dateService.translateLocalToUtc(new Date()).getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
@@ -62,13 +70,15 @@ export class ProjectTokenHistoricalPriceService {
      */
     let swaps = new Array<ISwapRecord>();
     let fetched: Array<ISwapRecord>;
+    let index = 0;
     do {
       /**
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, lbpMgr.lbp);
+      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, index, lbpMgr.lbp);
       swaps = swaps.concat(fetched);
+      index++;
     } while (fetched.length === 1000);
 
     const returnArray = new Array<IHistoricalPriceRecord>();
@@ -127,13 +137,11 @@ export class ProjectTokenHistoricalPriceService {
           }
         }
 
-        const timezoneOffset = new Date().getTimezoneOffset() * 60;
         const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp );
-
 
         if (todaysSwaps?.length) {
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
@@ -149,7 +157,7 @@ export class ProjectTokenHistoricalPriceService {
            * previous value effected by USD course change
            */
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
             price: (
               previousTimePoint *
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
@@ -157,7 +165,7 @@ export class ProjectTokenHistoricalPriceService {
           });
         } else {
           returnArray.push({
-            time: timestamp - timezoneOffset + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
           });
         }
       }
@@ -165,12 +173,13 @@ export class ProjectTokenHistoricalPriceService {
     return returnArray;
   }
 
-  private fetchSwaps(endDateSeconds: number, startDateSeconds: number, lbp: Lbp): Promise<Array<ISwapRecord>> {
+  private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();
     const query = {
       swaps: {
         __args: {
           first: 1000,
+          skip: 1000 * index,
           orderBy: "timestamp",
           orderDirection: "desc",
           where: {
@@ -202,6 +211,50 @@ export class ProjectTokenHistoricalPriceService {
       .catch((error) => {
         throw new Error(`${error.response?.data?.error.message ?? "Error fetching price history"}`);
         return [];
+      });
+  }
+
+  /**
+   * Returns the pool's total swap fees in ETH.
+   *
+   * @param lbpMgr LbpManager
+   */
+  public getTotalSwapFees(lbpMgr: LbpManager): Promise<number> {
+    if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
+      return null;
+    }
+
+    const poolId = lbpMgr.lbp.poolId;
+    const uri = this.getBalancerSubgraphUrl();
+    const query = {
+      pools: {
+        __args: {
+          where: {
+            id: poolId.toLowerCase(),
+          },
+        },
+        totalSwapFee: true,
+      },
+    };
+
+    return axios.post(uri,
+      JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (response) => {
+        if (response.data.errors?.length) {
+          throw new Error(response.data.errors[0]);
+        }
+
+        return this.numberService.fromString(response.data?.data.pools?.[0]?.totalSwapFee);
+      })
+      .catch((error) => {
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching total swap fee"}`);
+        return null;
       });
   }
 }

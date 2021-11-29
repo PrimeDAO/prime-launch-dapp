@@ -76,7 +76,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
 
     if (!this.tokenList) {
-      this.tokenList = await this.launchService.getFundingTokenInfos();
+      this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
   }
 

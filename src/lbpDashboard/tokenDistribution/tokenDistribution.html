@@ -7,7 +7,9 @@
       <div class="list">
         <div class="item" repeat.for="stakeholder of tokenDetails.tokenDistrib">
           <div class="primaryData">
-            <span class="amount">${percentageHeld(tokenDetails.maxSupply, stakeholder.amount)}%</span>
+            <span class="amount">
+              <formatted-number value="${percentageHeld(tokenDetails.maxSupply, stakeholder.amount)}" notWei></formatted-number>%
+            </span>
             &ndash; ${stakeholder.stakeHolder}
           </div>
           <div class="secondaryData">

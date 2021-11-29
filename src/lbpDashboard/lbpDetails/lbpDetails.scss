@@ -1,0 +1,44 @@
+@import "styles/colors.scss";
+.lbpDetails {
+  .heading.title {
+    font-size: 26px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    display: inline-flex; // to center horizontally
+  }
+  .dates {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    column-gap: 44px;
+    .label {
+      font-family: Inter;
+      font-size: 14px;
+      line-height: 19.6px;
+      font-weight: 700;
+      color: $Secondary05;
+    }
+    .value {
+      font-family: Aeonik;
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 700;
+      color: $White;
+    }
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .lbpDetails {
+    .dates {
+      grid-template-columns: auto;
+      grid-auto-flow: row;
+      column-gap: 0;
+
+      .value:not(:last-child) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

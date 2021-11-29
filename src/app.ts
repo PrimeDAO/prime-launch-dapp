@@ -100,6 +100,11 @@ export class App {
 
     window.addEventListener("resize", () => { this.showingMobileMenu = false; });
 
+    /**
+     * undo stuff from base.css now that we don't need it
+     */
+    document.querySelector("body").classList.remove("loading");
+
     this.ethereumService.connectToConnectedProvider();
   }
 
@@ -140,9 +145,9 @@ export class App {
       {
         moduleId: PLATFORM.moduleName("./launch/launch"),
         nav: false,
-        name: "launch",
-        route: ["launch"],
-        title: "Host a Launch",
+        name: "register",
+        route: ["register"],
+        title: "Register",
       },
       {
         moduleId: PLATFORM.moduleName("./launches/launches"),

@@ -7,6 +7,9 @@
 
   &.twocolumn {
     grid-area: seedAboutTwoColumn;
+    text-align: left;
+    justify-self: left;
+    padding-right: 20px;
   }
 
   align-self: self-end;
@@ -24,6 +27,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 42px;
+    column-gap: 12px;
 
     a {
       color: $Neutral02;
@@ -52,6 +56,7 @@
         white-space: normal;
         text-transform: capitalize;
         margin-right: 18px;
+        text-align: left;
         &:hover {
           text-decoration: underline;
         }
@@ -114,10 +119,9 @@
     }
 
     .links {
-      margin: 0 10% 30px;
+      margin-left: 80px;
 
       a {
-        justify-content: center;
         .name {
           margin-right: 0;
         }

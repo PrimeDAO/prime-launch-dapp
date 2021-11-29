@@ -5,8 +5,11 @@
     grid-template-columns: 45fr 20fr 35fr;
     grid-template-areas:
       "tokenInfo timeLeft timeLeft"
-      "graph graph form"
-      "about about distribution";
+      "graphForm graphForm graphForm"
+      "details details ."
+      "about about distribution"
+      "statistics statistics statistics"
+      "settings settings swapFees";
 
     // column-gap: 32px;
     row-gap: 60px;
@@ -18,35 +21,57 @@
       grid-area: timeLeft;
       justify-self: right;
     }
-    .graph {
-      grid-area: graph;
-      height: 400px;
+    .graphFormContainer {
+      grid-area: graphForm;
       background-color: $BG02;
-      padding: 24px;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: calc(100% - 420px) 420px;
+      grid-template-areas: "graph form";
+      align-items: center;
+
+      .graph {
+        grid-area: graph;
+        height: 400px;
+        padding: 24px;
+      }
+      .form {
+        grid-area: form;
+        padding: 0 24px;
+      }
     }
-    .form {
-      grid-area: form;
-      background-color: $BG02;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      align-self: center;
-      padding: 55px 24px;
+
+    .details {
+      grid-area: details;
     }
     .about {
-      padding: 0 48px;
       grid-area: about;
     }
     .distribution {
       grid-area: distribution;
     }
+    .statistics {
+      grid-area: statistics;
+    }
+    .settings {
+      grid-area: settings;
+    }
+    .swapFees {
+      grid-area: swapFees;
+    }
 
     &.notLive {
       grid-template-areas:
         "tokenInfo timeLeft timeLeft"
-        "graph graph graph"
-        "about about distribution";
+        "graphForm graphForm graphForm"
+        "details details ."
+        "about about distribution"
+        "statistics statistics statistics"
+        "settings settings swapFees";
+
+      .graphFormContainer {
+        grid-template-columns: 100%;
+      }
     }
   }
 }
@@ -58,55 +83,77 @@
       grid-template-areas:
         "tokenInfo"
         "timeLeft"
-        "form"
-        "graph"
+        "graphForm"
+        "details"
         "distribution"
-        "about";
+        "about"
+        "statistics"
+        "settings"
+        "swapFees";
       justify-items: center;
 
       column-gap: 0;
-      row-gap: 32px;
 
       .timeLeft {
         justify-self: center;
       }
 
-      .graph {
-        width: calc(100vw - 320px);
-        border-radius: 10px;
-      }
+      .graphFormContainer {
+        background-color: unset;
+        border-radius: none;
+        grid-template-columns: auto;
+        grid-template-areas: "form" "graph";
+        justify-items: center;
+        row-gap: 32px;
 
-      .form {
-        border-radius: 10px;
+        .graph {
+          width: calc(100vw - 385px);
+          background-color: $BG02;
+          border-radius: 10px;
+        }
+
+        .form {
+          background-color: $BG02;
+          border-radius: 10px;
+          width: fit-content;
+          padding: 24px;
+        }
       }
 
       &.notLive {
         grid-template-areas:
           "tokenInfo"
           "timeLeft"
-          "graph"
+          "graphForm"
+          "details"
           "distribution"
-          "about";
+          "about"
+          "statistics"
+          "settings"
+          "swapFees";
       }
     }
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 1072px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
-      .graph {
-        width: calc(100vw - 60px);
+      .graphFormContainer {
+        .graph {
+          width: calc(100vw - 160px);
+        }
       }
     }
   }
 }
-
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 450px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
-      .graph {
-        width: calc(100vw - 20px);
+      .graphFormContainer {
+        .graph {
+          width: 88%;
+        }
       }
     }
   }

@@ -2,8 +2,13 @@
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <require from="./tokenDistribution/tokenDistribution"></require>
-  <require from="./sparkChart/spark-chart"></require>
+  <require from="resources/elements/sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
+  <require from="./lbpDetails/lbpDetails"></require>
+  <require from="./statistics/statistics"></require>
+  <require from="./settings/settings"></require>
+  <require from="./swapFees/swapFees"></require>
+
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard ${lbpMgr.isLive ? '' : 'notLive'}">
       <div class="tokenInfo">
@@ -12,11 +17,16 @@
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
-      <div class="graph">
-        <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
+      <div class="graphFormContainer">
+        <div class="graph">
+          <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
+        </div>
+        <div class="form" if.bind="lbpMgr.isLive">
+          <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
+        </div>
       </div>
-      <div class="form" if.bind="lbpMgr.isLive">
-        <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
+      <div class="details">
+        <lbp-details lbp-manager.bind="lbpMgr"></lbp-details>
       </div>
       <div class="about">
         <launch-about launch.to-view="lbpMgr" layout-type="onecolumn" launch-type="lbp"></launch-about>
@@ -24,6 +34,15 @@
       </div>
       <div class="distribution">
         <token-distribution start-date.bind='lbpMgr.startDate' token-details.bind='lbpMgr.metadata.tokenDetails'></token-distribution>
+      </div>
+      <div class="statistics">
+        <statistics lbp-manager.bind="lbpMgr"></statistics>
+      </div>
+      <div class="settings">
+        <settings lbp-manager.bind="lbpMgr"></settings>
+      </div>
+      <div class="swapFees">
+        <swap-fees lbp-manager.bind="lbpMgr"></swap-fees>
       </div>
     </div>
 </template>

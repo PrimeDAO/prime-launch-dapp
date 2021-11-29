@@ -1,8 +1,12 @@
+import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 
+@autoinject
 export class LbpProjectTokenPriceService {
-
-  private roundedTime(time: Date): moment.Moment {
+  private roundedTime(time: Date, roundDown = true): moment.Moment {
+    if (!roundDown) {
+      return moment(time).add(60, "minute").startOf("hour");
+    }
     return moment(time).startOf("hour");
   }
 
@@ -37,18 +41,6 @@ export class LbpProjectTokenPriceService {
       return 0;
     } else {
       return hoursPassed;
-    }
-  }
-
-  private getInterval(hoursLeft: number): number {
-    if (hoursLeft >= 24 * 20 /* days */) {
-      return 24;
-    } else if (hoursLeft >= 24 * 10 /* days */) {
-      return 12;
-    } else if (hoursLeft >= 24 * 4 /* days */) {
-      return 4;
-    } else {
-      return 1;
     }
   }
 
@@ -153,23 +145,18 @@ export class LbpProjectTokenPriceService {
     time: { start: Date, end: Date },
     weight: { start: number, end: number },
     pricePerFundingToken: number,
-  ): { prices, labels} {
-    const prices = [];
-    const labels = [];
+  ): Array<{price: number, time: number}> {
+    const trajectoryData = [];
 
     const roundedStartDate = this.roundedTime(time.start);
-    const roundedEndDate = this.roundedTime(time.end);
-    const currentTime = this.roundedTime(new Date()).toDate();
+    const roundedEndDate = this.roundedTime(time.end, false);
 
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
 
-    const hoursPassedSinceStart = this.getHoursPassed(currentTime, roundedStartDate.toDate());
-    const hoursLeft = (lbpDurationInHours - hoursPassedSinceStart);
-
-    const timeInterval = this.getInterval(hoursLeft);
+    const timeInterval = 1;
     const _time = moment(roundedStartDate.toDate());
 
-    for (let hoursPassed = 0; hoursPassed <= hoursLeft; hoursPassed += timeInterval) {
+    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours; hoursPassed += timeInterval) {
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         _time.toDate(),
         roundedStartDate.toDate(),
@@ -185,13 +172,15 @@ export class LbpProjectTokenPriceService {
         pricePerFundingToken,
       );
 
-      labels.push(_time.startOf("hour"));
-      prices.push(currentProjectTokenPrice);
+      trajectoryData.push({
+        price: currentProjectTokenPrice,
+        time: Math.floor(_time.startOf("hour").toDate().getTime() / 1000),
+      });
 
       _time.add(timeInterval, "hours");
     }
 
-    return { prices, labels };
+    return trajectoryData;
   }
 
   // public getFundsRaised(

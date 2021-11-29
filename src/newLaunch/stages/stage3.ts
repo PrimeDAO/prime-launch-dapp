@@ -157,7 +157,17 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
         this.loadingToken = true;
 
         try {
-          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.launchConfig.tokenDetails.projectTokenInfo.address);
+          const tokenAddress = this.launchConfig.tokenDetails.projectTokenInfo.address;
+
+          const tokenInfo = await this.tokenService.getTokenInfoFromAddress(tokenAddress);
+
+          if (!await this.tokenService.isERC20Token(tokenAddress)) {
+            throw new Error(`Token address does not reference an IERC20 contract: ${tokenAddress}`);
+          }
+
+          if (!tokenInfo.logoURI) {
+            await this.tokenService.getTokenGeckoInfo(tokenInfo);
+          }
 
           this.launchConfig.tokenDetails.projectTokenInfo = Object.assign({
             address: tokenInfo.address,
