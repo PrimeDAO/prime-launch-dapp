@@ -14,7 +14,7 @@
   .launchSummary {
     display: grid;
     grid-template-columns: 58px 4fr 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: 10px;
     grid-template-areas:
       "icon . timeLeft"
       "icon title title"
