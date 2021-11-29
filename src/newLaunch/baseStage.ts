@@ -8,7 +8,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Address, EthereumService, Hash, Networks } from "services/EthereumService";
 import { TokenService } from "services/TokenService";
 import { LaunchType } from "services/launchTypes";
-import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+import { BigNumber } from "ethers";
 
 export interface IStageState {
   verified: boolean;

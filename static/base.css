@@ -4,4 +4,28 @@
 */
 
 body {
+  background-color: #1b1722;
+  margin: 0;
+  text-align: center;
+}
+
+div.initialLoading {
+  padding-top: 120px;
+  display: inline-block;
+}
+
+div.initialLoading > .pleaseWait {
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 24px;
+  margin-bottom: 28px;
+
+  background-image: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+div.initialLoading > i {
+  font-size: 28px;
+  color: #30ef71;
 }

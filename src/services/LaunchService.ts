@@ -1,7 +1,7 @@
 import { TokenListService } from "services/TokenListService";
 import { ITokenInfo } from "services/TokenTypes";
 import { TokenService } from "services/TokenService";
-import { Address, EthereumService } from "services/EthereumService";
+import { EthereumService } from "services/EthereumService";
 import { autoinject } from "aurelia-dependency-injection";
 import { TimingService } from "services/TimingService";
 

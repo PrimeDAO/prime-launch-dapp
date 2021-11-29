@@ -84,3 +84,19 @@ $colours: (
     }
   }
 }
+
+@media screen and (max-width: 1220px) {
+  .tokenDistribution {
+    .container {
+      .list {
+        justify-self: center;
+        .item {
+          .primaryData,
+          .secondaryData {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+}

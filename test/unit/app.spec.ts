@@ -5,6 +5,8 @@ import { PLATFORM } from "aurelia-pal";
 describe("Stage App Component", () => {
   let component;
 
+  jest.setTimeout(10000);
+
   beforeEach(() => {
     component = StageComponent
       .withResources(PLATFORM.moduleName("app"))
@@ -15,8 +17,8 @@ describe("Stage App Component", () => {
 
   it("should show home page", done => {
     component.create(bootstrap).then(async () => {
-      // const view = component.element;
-      const homeElement = document.querySelector(".home");
+      const view = component.element;
+      const homeElement = view.querySelector(".home");
       expect(homeElement).toBeDefined();
       // expect(view.textContent.trim()).toBe("Prime Launch!");
       done();
