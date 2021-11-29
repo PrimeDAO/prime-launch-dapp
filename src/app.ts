@@ -100,6 +100,11 @@ export class App {
 
     window.addEventListener("resize", () => { this.showingMobileMenu = false; });
 
+    /**
+     * undo stuff from base.css now that we don't need it
+     */
+    document.querySelector("body").classList.remove("loading");
+
     this.ethereumService.connectToConnectedProvider();
   }
 

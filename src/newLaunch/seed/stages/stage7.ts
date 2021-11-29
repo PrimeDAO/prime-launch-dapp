@@ -1,4 +1,4 @@
-import { toBigNumberJs } from "./../../../services/BigNumberService";
+import { toBigNumberJs } from "services/BigNumberService";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";

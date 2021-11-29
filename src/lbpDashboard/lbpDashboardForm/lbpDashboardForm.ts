@@ -32,6 +32,7 @@ export class lbpDashboardForm {
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
   sorSwapInfo: SwapInfo;
   userFundingTokenAllowance: BigNumber;
+  balancerReady = false;
 
   get priceImpact(): number {
     return 0;
@@ -72,9 +73,12 @@ export class lbpDashboardForm {
   }
 
   async attached(): Promise<void> {
-    await this.balancerService.ensureInitialized();
     if (!this.tokenList) {
-      this.tokenList = await this.launchService.getFundingTokenInfos();
+      this.tokenList = await this.launchService.fetchFundingTokenInfos();
+    }
+    this.balancerReady = await this.balancerService.ensureInitialized();
+    if (!this.balancerReady) {
+      this.eventAggregator.publish("handleFailure", "Sorry, unable to initialize the swapping form.  Try reentering the page to try again.");
     }
   }
 
@@ -223,7 +227,6 @@ export class lbpDashboardForm {
           await this.hydrateUserData();
           this.lbpManager.ensurePriceHistory(true);
           this.lbpManager.hydrateTokensState();
-          this.lbpManager.hydrateFeesCollected();
 
           this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
           this.fundingTokensToPay = null;

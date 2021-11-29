@@ -34,6 +34,13 @@ html {
     padding-left: $BodyPaddingLeftRight;
     padding-right: $BodyPaddingLeftRight;
 
+    &:not(.loading) {
+      text-align: left;
+      > .initialLoading {
+        display: none;
+      }
+    }
+
     input {
       font-family: Aeonik;
       font-style: normal;
@@ -148,7 +155,7 @@ html {
 
       &.heading0 {
         font-size: 64px;
-        line-height: 73px;
+        line-height: 74px;
         margin-bottom: 24px;
         font-weight: 700;
         @include standardTextGradient;

@@ -211,6 +211,12 @@
 @media screen and (max-width: 1220px) {
   .lbpDashboardForm {
     width: 314px;
+
+    .heading.title {
+      display: inline-flex; // to center horizontally
+      margin-bottom: 16px;
+    }
+
     .theform {
       .body {
         .section1,

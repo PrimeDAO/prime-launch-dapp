@@ -9,13 +9,13 @@ export class PinataIpfsClient implements IIpfsClient {
 
   private httpRequestConfig;
 
-  constructor(ethereumService: EthereumService) {
+  constructor() {
     this.httpRequestConfig = {
       headers: {
         pinata_api_key:
-        (ethereumService.targetedNetwork === "mainnet") ? process.env.PINATA_API_KEY : process.env.PINATA_API_KEY_TEST,
+        (EthereumService.targetedNetwork === "mainnet") ? process.env.PINATA_API_KEY : process.env.PINATA_API_KEY_TEST,
         pinata_secret_api_key:
-        (ethereumService.targetedNetwork === "mainnet") ? process.env.PINATA_SECRET_API_KEY : process.env.PINATA_SECRET_API_KEY_TEST,
+        (EthereumService.targetedNetwork === "mainnet") ? process.env.PINATA_SECRET_API_KEY : process.env.PINATA_SECRET_API_KEY_TEST,
       },
     };
   }

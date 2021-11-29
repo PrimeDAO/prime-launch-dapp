@@ -1,8 +1,9 @@
 import { TokenListService } from "services/TokenListService";
 import { ITokenInfo } from "services/TokenTypes";
 import { TokenService } from "services/TokenService";
-import { Address, EthereumService } from "services/EthereumService";
+import { EthereumService } from "services/EthereumService";
 import { autoinject } from "aurelia-dependency-injection";
+import { TimingService } from "services/TimingService";
 
 @autoinject
 export class LaunchService {
@@ -19,7 +20,7 @@ export class LaunchService {
     /**
      * we know we need these in several places.  Load them in advance.
      */
-    return this.getFundingTokenInfos();
+    return this.fetchFundingTokenInfos();
   }
 
   linkIcons = new Map<string, string>([
@@ -46,18 +47,16 @@ export class LaunchService {
     return this.linkIcons.get(type.toLowerCase()) ?? this.linkIcons.get("misc");
   }
 
-  public async getFundingTokenInfos(): Promise<Array<ITokenInfo>> {
-    let tokenAddresses: Array<Address>;
-    if (this.ethereumService.targetedNetwork === "mainnet") {
-      /**
-       * Though we have tokenInfos already fetched from this tokenList, they don't have prices yet,
-       * so we have to call `tokenService.getTokenInfoFromAddresses` to get the prices.
-       */
-      tokenAddresses = this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments)
-        .map((tokenInfo) => tokenInfo.address);
-    } else {
-      tokenAddresses = this.tokenService.devFundingTokens;
+  private tokenInfos: Array<ITokenInfo>;
+
+  public async fetchFundingTokenInfos(): Promise<Array<ITokenInfo>> {
+
+    if (!this.tokenInfos) {
+
+      TimingService.start("fetchFundingTokenInfos");
+      this.tokenInfos = await this.tokenService.getTokenInfosFromTokenList(this.tokenListService.tokenLists.PrimeDao.Payments);
+      TimingService.end("fetchFundingTokenInfos");
     }
-    return this.tokenService.getTokenInfoFromAddresses(tokenAddresses);
+    return this.tokenInfos;
   }
 }

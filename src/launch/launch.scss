@@ -15,7 +15,7 @@
       font-family: Inter;
       font-size: 18px;
       color: $Neutral03;
-      font-weight: 800;
+      font-weight: 700;
       line-height: 27px;
       text-align: center;
       max-width: 615px;
@@ -27,7 +27,7 @@
     flex: 1;
     gap: 24px;
     justify-content: center;
-    
+
     .title {
       font-size: 36px;
       line-height: 65px;
@@ -75,7 +75,7 @@
           text-align: center;
           font-size: 8px;
           border-radius: 32px;
-          
+
           a {
             margin-left: 0;
             width: 100px;
@@ -92,7 +92,6 @@
         }
 
         .moreInfoContainer {
-          
           a {
             @include standardTextGradient;
             &:hover {
