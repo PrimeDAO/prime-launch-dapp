@@ -11,7 +11,7 @@
     padding-bottom: 78px;
     background: $BG01;
 
-> .subtext {
+    > .subtext {
       font-family: Inter;
       font-size: 18px;
       color: $Neutral03;
@@ -32,12 +32,12 @@
       font-size: 36px;
       line-height: 65px;
     }
-> div {
+    > div {
       width: 45%;
       max-width: 600px;
     }
-> div:last-child {
-      width: 45%; 
+    > div:last-child {
+      width: 45%;
       max-width: 600px;
     }
 
@@ -48,7 +48,7 @@
       height: 100%;
       display: grid;
       grid-template-rows: 2fr 1fr;
-> div {
+      > div {
         padding-left: 40px;
         padding-right: 32px;
         font-size: 20px;
@@ -114,7 +114,7 @@
         height: 32px;
         margin-top: 20px;
 
-> div {
+        > div {
           font-size: 14px;
           line-height: 33px;
           font-weight: 400;
@@ -145,21 +145,21 @@
 @media screen and (max-width: 900px) {
   .page.launch {
     .banner {
-> .heading.heading1 {
+      > .heading.heading1 {
         white-space: normal;
         text-align: center;
       }
-> .subtext {
+      > .subtext {
         white-space: normal;
       }
     }
     .launchBoxes {
       flex-flow: column;
       align-items: center;
-> div {
+      > div {
         width: 100%;
       }
-> div:last-child {
+      > div:last-child {
         width: 100%;
       }
       .launch-box-container {
