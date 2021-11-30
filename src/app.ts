@@ -226,6 +226,13 @@ export class App {
         route: ["terms-of-service"],
         title: "Terms of Service",
       },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/officialDocs/cookiePolicy"),
+        nav: false,
+        name: "cookiePolicy",
+        route: ["cookie-policy"],
+        title: "Cookie Policy",
+      },
 
     ]);
 
