@@ -151,7 +151,6 @@ export class SparkChart {
   dataChanged(): void {
 
     if (this.data && this.chart) {
-      console.log("dataChanged- SparkChart", {data: this.data[0].data?.map(i => {return {price: i.price, time: new Date(i.time * 1000)};})});
       this.data.forEach((series, index) => {
         if (series.data?.length) {
           this.series[index].setData(series.data.map(item => ({
