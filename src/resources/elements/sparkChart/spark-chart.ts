@@ -16,6 +16,8 @@ interface ISeries {
 @autoinject
 export class SparkChart {
   @bindable data: Array<ISeries>;
+  @bindable.booleanAttr gridHorizontal = false;
+  @bindable.booleanAttr gridVertical = false;
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
   @bindable.number width = 500;
@@ -57,11 +59,25 @@ export class SparkChart {
         // rightBarStaysOnScroll: true,
         visible: true,
         timeVisible: true,
-        secondsVisible: true,
+        secondsVisible: false,
+        borderVisible: false,
+        tickMarkFormatter: (time, tickMarkType, locale) => {
+          return new Date(time * 1000).toLocaleDateString(locale, {day: "2-digit", month: "short", year: "2-digit"});
+        },
       },
       crosshair: {
-        vertLine: { visible: true },
-        horzLine: { visible: true },
+        vertLine: {
+          visible: true,
+          width: 1,
+          color: "rgba(224, 227, 235, 0.3)",
+          style: 0,
+        },
+        horzLine: {
+          visible: true,
+          width: 1,
+          color: "rgba(224, 227, 235, 0.3)",
+          style: 0,
+        },
         mode: CrosshairMode.Magnet,
       },
       priceScale: {
@@ -73,10 +89,12 @@ export class SparkChart {
       },
       grid: {
         horzLines: {
-          visible: false,
+          visible: this.gridHorizontal,
+          color: "#403453",
         },
         vertLines: {
-          visible: false,
+          visible: this.gridVertical,
+          color: "#403453",
         },
       },
       layout: {
@@ -105,7 +123,6 @@ export class SparkChart {
     const innerDimensions = this.innerDimensions(this.sparkChart);
     options.width = this.width || innerDimensions.width;
     options.height = this.height || innerDimensions.height;
-    options.timeScale.barSpacing = Math.max(options.width / this.data[0].data?.length || 1, 6);
 
     this.chart = createChart(this.sparkChart, options);
 
@@ -134,6 +151,7 @@ export class SparkChart {
   dataChanged(): void {
 
     if (this.data && this.chart) {
+      console.log("dataChanged- SparkChart", {data: this.data[0].data?.map(i => {return {price: i.price, time: new Date(i.time * 1000)};})});
       this.data.forEach((series, index) => {
         if (series.data?.length) {
           this.series[index].setData(series.data.map(item => ({

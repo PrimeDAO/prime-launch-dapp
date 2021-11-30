@@ -120,6 +120,7 @@ export class LbpManager implements ILaunch {
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
+  private balancesAtLastSwap = {projectToken: 0, fundingToken: 0};
   private _now = new Date();
   public lastHistoricalSwap: Date;
 
@@ -471,25 +472,35 @@ export class LbpManager implements ILaunch {
   private usdPriceAtLastSwap: number;
 
   public getTrajectoryForecastData(): Array<IHistoricalPriceRecord> {
-    axios.get("https://api.coingecko.com/api/v3/coins/usd-coin/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600")
+    axios.get(`https://api.coingecko.com/api/v3/coins/${this.fundingTokenInfo.id}/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600`)
       .then(result => {
         this.usdPriceAtLastSwap = result.data.prices[result.data.prices.length - 1][1];
       });
 
-    const prices = this.priceService.getInterpolatedPriceDataPoints(
-      this.numberService.fromString(this.projectTokenHistoricalPriceService.lastSwap?.tokenAmountOut),
-      this.numberService.fromString(this.projectTokenHistoricalPriceService.lastSwap?.tokenAmountIn),
+    const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
+      this.lastHistoricalSwap, // last swap time
+      this.startTime, // lbp begin time
+      this.endTime, // lbp end time
+      this.projectTokenStartWeight,
+      this.projectTokenEndWeight,
+    );
+
+    const projectTokenBalance = this.numberService.fromString(fromWei(this.lbp.vault.projectTokenBalance));
+    const fundingTokenBalance = this.numberService.fromString(fromWei(this.lbp.vault.fundingTokenBalance));
+    const forecastData = this.priceService.getInterpolatedPriceDataPoints(
+      projectTokenBalance,
+      fundingTokenBalance,
       {
-        start: new Date(this.projectTokenHistoricalPriceService.lastSwap?.timestamp * 1000),
+        start: this.lastHistoricalSwap,
         end: this.endTime,
       },
       {
-        start: 0.5, // since we don't have the weight of the last swap, we'll assume it starts 50%
-        end: this.projectTokenEndWeight / 2,
+        start: weightAtTime,
+        end: this.projectTokenEndWeight,
       },
-      this.usdPriceAtLastSwap,
+      this.usdPriceAtLastSwap, // funding token USD price at last swap
     );
-    return prices;
+    return forecastData;
   }
 
   /**
@@ -512,7 +523,7 @@ export class LbpManager implements ILaunch {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
             this.priceHistory = history;
-            this.lastHistoricalSwap = new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000);
+            this.lastHistoricalSwap = this.dateService.translateUtcToLocal(new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000));
             resolve(history);
           })
           .catch((ex) => {

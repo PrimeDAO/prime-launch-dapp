@@ -20,7 +20,7 @@
       <div class="graphFormContainer">
         ${JSON.stringify(lbpMgr.trajectoryForecast)}
         <div class="graph">
-          <spark-chart data.bind="graphData" height="400"></spark-chart>
+          <spark-chart data.bind="graphData" grid-horizontal="true" height="400"></spark-chart>
         </div>
         <div class="form" if.bind="lbpMgr.isLive">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>

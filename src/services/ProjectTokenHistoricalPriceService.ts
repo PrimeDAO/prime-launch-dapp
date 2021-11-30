@@ -55,18 +55,14 @@ export class ProjectTokenHistoricalPriceService {
       return [];
     }
 
-    const startingSeconds = this.dateService.translateLocalToUtc(lbpMgr.startTime).getTime() / 1000;
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
-    const roundedStartTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
-    const endTime = lbpMgr.endTime;
-    const currentTime = new Date();
+    const startTime = lbpMgr.startTime.getTime() / 1000;
+    const endTime = lbpMgr.endTime.getTime() / 1000;
+    const currentTime = this.dateService.utcNow.getTime() / 1000;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(
-      this.dateService.translateLocalToUtc(
-        endTime.getTime() <= currentTime.getTime() ? endTime : currentTime,
-      ).getTime() / 1000 / intervalSeconds,
-    ) * intervalSeconds + intervalSeconds; // rounded hour
+    const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
@@ -83,7 +79,7 @@ export class ProjectTokenHistoricalPriceService {
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, index, lbpMgr.lbp);
+      fetched = await this.fetchSwaps(endTimeSeconds, startTime, index, lbpMgr.lbp);
       swaps = swaps.concat(fetched);
       index++;
     } while (fetched.length === 1000);
@@ -94,7 +90,7 @@ export class ProjectTokenHistoricalPriceService {
     const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
     this.lastSwap = {
-      timestamp: roundedStartTime,
+      timestamp: startTimeSeconds,
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
     };
@@ -124,7 +120,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-      for (let timestamp = roundedStartTime; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = startTimeSeconds; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;

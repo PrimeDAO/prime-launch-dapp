@@ -53,7 +53,7 @@ export class lbpDashboard {
     return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
   }
 
-  @computedFrom("lbpMgr.priceHistory")
+  @computedFrom("lbpMgr.priceHistory", "lbpMgr.getTrajectoryForecastData")
   private get graphData(): Array<any> {
     const priceHistoryLength = this.lbpMgr?.priceHistory?.length;
     const lbpAveragePrice = priceHistoryLength
@@ -76,17 +76,17 @@ export class lbpDashboard {
 
     return [
       {
-        data: this.lbpMgr?.priceHistory,
+        data: this.lbpMgr?.priceHistory?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
         color: "#FF497A",
       },
       {
-        data: trajectoryForecast,
+        data: trajectoryForecast?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
         color: "#403453",
         lineStyle: 2,
       },
       {
         name: "Average Price",
-        data: averagePriceData,
+        data: averagePriceData?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
         color: "#A258A7",
         lineWidth: 1,
       },
