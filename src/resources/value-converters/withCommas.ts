@@ -16,18 +16,20 @@ export class WithCommasValueConverter {
 
   public toView(value: string | number | BigNumber): string {
 
-    if ((value === null) || (value === undefined)) {
+    if ((value === null) || (value === undefined)) { //  || (value === ".") || (Number(value) === 0)
       return value as any;
     }
 
     if (typeof value === "string"){
       value = value?.replace(",", ""); // cause it happens for some reason and the commas can be wrongly placed
     }
+
+    const parts = value.toString().split(".");
     /**
      * convert to a number
      */
-    value = this.numberService.fromString(value);
-
-    return this.numberService.toString(value, { thousandSeparated: true, mantissa: -1 });
+    value = this.numberService.fromString(parts[0]);
+    const partWithCommas = this.numberService.toString(value, { thousandSeparated: true, mantissa: -1 });
+    return (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`;
   }
 }

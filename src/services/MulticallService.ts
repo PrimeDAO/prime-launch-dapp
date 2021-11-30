@@ -45,9 +45,8 @@ export class MultiCallService {
 
   private runBatch(watcher, autoStop): Promise<void> {
     return watcher.start()
-      .catch((ex) => {
-        console.log("batch failed", ex);
-      })
+      // .catch((ex) => {
+      // })
       .then(() => {
         if (autoStop) {
           watcher.stop();

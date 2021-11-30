@@ -8,7 +8,7 @@ export default (cb) => {
   let options = packageJson.jest;
 
   if (CLIOptions.hasFlag('watch')) {
-    Object.assign(options, { watchAll: true});
+    Object.assign(options, { watchAll: true });
   }
 
   runCLI(options, [path.resolve(__dirname, '../../')]).then(({ results }) => {

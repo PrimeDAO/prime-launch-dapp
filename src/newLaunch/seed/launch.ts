@@ -1,4 +1,3 @@
-import { Seed } from "entities/Seed";
 import { PLATFORM } from "aurelia-pal";
 import { singleton, computedFrom, useView } from "aurelia-framework";
 import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";

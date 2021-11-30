@@ -1,8 +1,7 @@
-import axios from "axios";
-import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
 import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
-import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
+import { BigNumber } from "ethers";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ILbpConfig } from "newLaunch/lbp/config";
@@ -20,6 +19,7 @@ import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { TimingService } from "services/TimingService";
+import axios from "axios";
 
 export interface ILbpManagerConfiguration {
   address: Address;

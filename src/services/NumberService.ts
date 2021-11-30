@@ -1,4 +1,4 @@
-﻿import { BigNumber } from "@ethersproject/providers/node_modules/@ethersproject/bignumber";
+﻿import { BigNumber } from "ethers";
 
 const numeral = require("numeral");
 

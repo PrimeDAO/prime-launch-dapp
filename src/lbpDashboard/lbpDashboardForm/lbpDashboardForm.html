@@ -21,7 +21,7 @@
             <div class="fundingInput">
               <numeric-input
                 disabled.bind="lbpManager.isPaused || lbpManager.isDead || !selectedFundingTokenInfo.address"
-                value.bind="fundingTokensToPay & debounce:500"
+                value.bind="fundingTokensToPay"
                 decimals.bind="selectedFundingTokenInfo.decimals"
                 placeholder="0.0"></numeric-input>
               <div class="maxButton">
