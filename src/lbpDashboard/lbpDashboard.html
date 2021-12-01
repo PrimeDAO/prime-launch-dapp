@@ -19,7 +19,8 @@
       </div>
       <div class="graphFormContainer">
         <div class="graph">
-          <spark-chart data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
+          <div show.to-view="!lbpMgr.priceHistory" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+          <spark-chart show.to-view="lbpMgr.priceHistory" data.bind="lbpMgr.priceHistory" height="400"></spark-chart>
         </div>
         <div class="form" if.bind="lbpMgr.isLive">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
