@@ -226,6 +226,13 @@ export class App {
         route: ["terms-of-service"],
         title: "Terms of Service",
       },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/officialDocs/privacyPolicy"),
+        nav: false,
+        name: "privacyPolicy",
+        route: ["privacy-policy"],
+        title: "Privacy Policy",
+      },
 
     ]);
 
