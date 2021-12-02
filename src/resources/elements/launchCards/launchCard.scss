@@ -32,7 +32,7 @@
     box-sizing: border-box;
     height: 100%;
 
-> .icon {
+    > .icon {
       display: grid;
       align-items: center;
       grid-area: icon;
@@ -43,12 +43,12 @@
       }
     }
 
-> .launch-type {
+    > .launch-type {
       color: $Secondary05;
       grid-area: type;
     }
 
-> .title {
+    > .title {
       grid-area: title;
       font-weight: 600;
       font-size: 22px;
@@ -57,7 +57,7 @@
       max-width: 295px;
     }
 
-> .description {
+    > .description {
       grid-area: description;
       font-family: Inter;
       font-size: 12px;
@@ -66,12 +66,12 @@
       white-space: normal;
     }
 
-> .countdown {
+    > .countdown {
       grid-area: timeLeft;
       text-align: right;
     }
 
-> .tokensTarget {
+    > .tokensTarget {
       grid-area: tokensTarget;
       display: grid;
       grid-template-columns: auto;
@@ -81,16 +81,16 @@
         "tokens";
       row-gap: 4px;
 
-> .title {
+      > .title {
         font-weight: 600;
         font-size: 13px;
       }
 
-> .tokensTitle {
+      > .tokensTitle {
         grid-area: tokensTitle;
       }
 
-> .tokens {
+      > .tokens {
         grid-area: tokens;
 
         .tokenPairContainer > img {
@@ -132,24 +132,24 @@
         ". . ."
         "tokensTarget tokensTarget tokensTarget";
 
-> .title {
+      > .title {
         max-width: unset;
       }
 
-> .icon {
+      > .icon {
         img {
           height: 36px;
           width: 36px;
         }
       }
 
-> .tokensTitle,
-> .title,
-> .description {
+      > .tokensTitle,
+      > .title,
+      > .description {
         text-align: left;
       }
 
-> .timeLeft {
+      > .timeLeft {
         text-align: right;
       }
     }
