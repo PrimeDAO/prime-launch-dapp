@@ -53,44 +53,65 @@ export class lbpDashboard {
     return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
   }
 
-  @computedFrom("lbpMgr.priceHistory", "lbpMgr.getTrajectoryForecastData")
+  @computedFrom("lbpMgr.priceHistory", "lbpMgr.trajectoryForecastData")
   private get graphData(): Array<any> {
     const priceHistoryLength = this.lbpMgr?.priceHistory?.length;
     const lbpAveragePrice = priceHistoryLength
       ? (this.lbpMgr?.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
       : 0;
 
-    const trajectoryForecast = this.lbpMgr?.getTrajectoryForecastData();
+    const trajectoryForecastLength = this.lbpMgr?.trajectoryForecastData?.length;
     const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength)? [
       {
         time: this.lbpMgr?.priceHistory[0]?.time,
         price: lbpAveragePrice,
       },
       {
-        time: trajectoryForecast.length > 0
-          ? trajectoryForecast[trajectoryForecast.length - 1]?.time
+        time: trajectoryForecastLength > 0
+          ? this.lbpMgr?.trajectoryForecastData[trajectoryForecastLength - 1]?.time
           : this.lbpMgr?.priceHistory[priceHistoryLength - 1]?.time,
         price: lbpAveragePrice,
       },
     ] : [];
 
-    return [
+    const getUTCDate = (time: number) => {
+      return this.dateService.translateLocalToUtc(new Date(time * 1000)).getTime() / 1000;
+    };
+
+    const series = [
       {
-        data: this.lbpMgr?.priceHistory?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
+        data: this.lbpMgr?.priceHistory?.map(i => {
+          return {
+            price: i.price,
+            time: getUTCDate(i.time),
+          };
+        }),
         color: "#FF497A",
       },
       {
-        data: trajectoryForecast?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
+        data: this.lbpMgr?.trajectoryForecastData?.map(i => {
+          return {
+            price: i.price,
+            time: getUTCDate(i.time),
+          };
+        }),
         color: "#403453",
         lineStyle: 2,
       },
       {
         name: "Average Price",
-        data: averagePriceData?.map(i => {return {price: i.price, time: this.dateService.translateLocalToUtc(new Date(i.time * 1000)).getTime() / 1000};}),
+        data: averagePriceData?.map(i => {
+          return {
+            price: i.price,
+            time: getUTCDate(i.time),
+          };
+        }),
         color: "#A258A7",
         lineWidth: 1,
       },
     ];
+
+    return series;
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -131,10 +152,14 @@ export class lbpDashboard {
       if (!lbpmgr.priceHistory) {
         this.lbpMgr.ensurePriceHistory();
       }
+      if (!lbpmgr.trajectoryForecastData) {
+        this.lbpMgr.ensureTrajectoryForecastData();
+      }
       await this.hydrateUserData();
 
       this.priceFetchIntervalId = setInterval(() => {
         this.lbpMgr.ensurePriceHistory(true);
+        this.lbpMgr.ensureTrajectoryForecastData(true);
       }, 60000);
 
     } catch (ex) {
