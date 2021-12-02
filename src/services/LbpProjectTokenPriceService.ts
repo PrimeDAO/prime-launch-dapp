@@ -4,6 +4,7 @@ import * as moment from "moment-timezone";
 @autoinject
 export class LbpProjectTokenPriceService {
   private roundedTime(time: Date, roundDown = true): Date {
+    if (!time) return;
     if (!roundDown) {
       return moment(time).add(60, "minute").startOf("hour").toDate();
     }
@@ -40,8 +41,7 @@ export class LbpProjectTokenPriceService {
   private getHoursPassed(currentTime: Date, startTime: Date): number {
     const roundedCurrentTime = this.roundedTime(currentTime);
     const roundedStartTime = this.roundedTime(startTime);
-
-    const hoursPassed = Math.floor((roundedCurrentTime.getTime() - roundedStartTime.getTime()) / 1000 / 60 / 60);
+    const hoursPassed = Math.floor((roundedCurrentTime?.getTime() - roundedStartTime?.getTime()) / 1000 / 60 / 60);
 
     if (hoursPassed < 0) {
       return 0;
@@ -157,13 +157,13 @@ export class LbpProjectTokenPriceService {
 
     const roundedStartDate = this.roundedTime(time.start);
     const roundedEndDate = this.roundedTime(time.end, false);
-
     const lbpDurationInHours = moment(roundedEndDate).diff(roundedStartDate, "hours");
 
     const timeInterval = 1;
     let _time = roundedStartDate;
 
     for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours + 1; hoursPassed += timeInterval) {
+
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         _time,
         roundedStartDate,
