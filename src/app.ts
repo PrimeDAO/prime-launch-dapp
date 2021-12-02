@@ -233,6 +233,13 @@ export class App {
         route: ["privacy-policy"],
         title: "Privacy Policy",
       },
+      {
+        moduleId: PLATFORM.moduleName("./documentation/officialDocs/cookiePolicy"),
+        nav: false,
+        name: "cookiePolicy",
+        route: ["cookie-policy"],
+        title: "Cookie Policy",
+      },
 
     ]);
 

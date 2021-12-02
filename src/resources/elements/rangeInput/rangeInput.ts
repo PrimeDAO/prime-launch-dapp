@@ -8,18 +8,19 @@ interface IValues {
 }
 @autoinject
 export class RangeInput {
-  @bindable.string private maxAllowed? = 100;
   @bindable.string private name;
+  @bindable.string private fundingToken = "";
+  @bindable.string private projectToken = "";
+  @bindable.string private maxAllowed? = 100;
   @bindable.number public value = this.maxAllowed || 50;
   @bindable.number public min = 0;
   @bindable.number public max = 100;
   @bindable.ref private rangeInput: HTMLInputElement;
-  @bindable.string private fundingToken = "";
-  @bindable.string private projectToken = "";
 
   @computedFrom("value", "maxAllowed")
   get values(): IValues {
     const validValue = (this.maxAllowed) > this.value ? this.value : this.maxAllowed;
+    this.value = validValue;
 
     const style = `linear-gradient(
       90deg, 
