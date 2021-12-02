@@ -76,7 +76,7 @@
         <div class="infoInput maxTarget fundingTarget">
 
           <div class="fundingDescrp">
-            <hr class="dividerFundings" >
+            <hr class="dividerFundings">
           </div>
         </div>
         <div class="infoInput maxTarget">
@@ -106,6 +106,7 @@
                 <input
                   id="startTime"
                   value.bind="startTime"
+                  keydown.delegate="hoursMinutesFilter($event)"
                   change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -158,6 +159,7 @@
                 <input
                   id="endTime"
                   value.bind="endTime"
+                  key-down.delegate="hoursMinutesFilter($event)"
                   change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -182,20 +184,19 @@
         <div class="infoInput launchPreview">
           <launch-preview
             class="previewBox"
-            max-supply.bind = "launchConfig.tokenDetails.maxSupply"
-            funding-token-address.bind = "launchConfig.launchDetails.fundingTokenInfo.address"
-            project-token-address.bind = "launchConfig.tokenDetails.projectTokenInfo.address"
-            project-token-decimals.bind = "launchConfig.tokenDetails.projectTokenInfo.decimals"
-            funding-token-decimals.bind = "launchConfig.launchDetails.fundingTokenInfo.decimals"
-            project-token-amount.bind = "launchConfig.launchDetails.amountProjectToken"
-            funding-token-amount.bind = "launchConfig.launchDetails.amountFundingToken"
-            start-weight.bind = "launchConfig.launchDetails.startWeight"
-            end-weight.bind = "launchConfig.launchDetails.endWeight"
-            start-date.bind = "startDate"
-            end-date.bind = "endDate"
-            launch-duration.bind = "launchDuration"
-            funding-token-price.bind = "launchConfig.launchDetails.fundingTokenInfo.price"
-          >
+            max-supply.bind="launchConfig.tokenDetails.maxSupply"
+            funding-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+            project-token-address.bind="launchConfig.tokenDetails.projectTokenInfo.address"
+            project-token-decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+            funding-token-decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+            project-token-amount.bind="launchConfig.launchDetails.amountProjectToken"
+            funding-token-amount.bind="launchConfig.launchDetails.amountFundingToken"
+            start-weight.bind="launchConfig.launchDetails.startWeight"
+            end-weight.bind="launchConfig.launchDetails.endWeight"
+            start-date.bind="startDate"
+            end-date.bind="endDate"
+            launch-duration.bind="launchDuration"
+            funding-token-price.bind="launchConfig.launchDetails.fundingTokenInfo.price">
           </launch-preview>
         </div>
 

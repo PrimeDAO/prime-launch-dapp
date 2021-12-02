@@ -167,27 +167,27 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
-      message = "Please enter a value for the Start Time";
+      message = "Please enter a value for the Start Time (hh:mm in GMT)";
     } else if (!re.test(startTimes[0]) || !re.test(startTimes[1]) || startTimes.length > 2) {
-      message = "Please enter a valid value for Start Time";
+      message = "Please enter a valid value for Start Time (hh:mm in GMT)";
     } else if (!(Number.parseInt(startTimes[0]) >= 0)
       || !(Number.parseInt(startTimes[0]) < 24)) {
-      message = "Please enter a valid value for Start Time";
+      message = "Please enter a valid value for Start Time (hh:mm in GMT)";
     } else if (!(Number.parseInt(startTimes[1]) >= 0)
       || !(Number.parseInt(startTimes[1]) < 60)) {
-      message = "Please enter a valid value for Start Time";
+      message = "Please enter a valid value for Start Time (hh:mm in GMT)";
     } else if (!this.endDate) {
       message = "Please select an End Date";
     } else if (!this.endTime) {
-      message = "Please enter a value for the End Time";
+      message = "Please enter a value for the End Time (hh:mm in GMT)";
     } else if (!re.test(endTimes[0]) || !re.test(endTimes[1]) || endTimes.length > 2) {
-      message = "Please enter a valid value for End Time";
+      message = "Please enter a valid value for End Time (hh:mm in GMT)";
     } else if (!(Number.parseInt(endTimes[0]) >= 0)
       || !(Number.parseInt(endTimes[0]) < 24)) {
-      message = "Please enter a valid value for End Time";
+      message = "Please enter a valid value for End Time (hh:mm in GMT)";
     } else if (!(Number.parseInt(endTimes[1]) >= 0)
       || !(Number.parseInt(endTimes[1]) < 60)) {
-      message = "Please enter a valid value for End Time";
+      message = "Please enter a valid value for End Time (hh:mm in GMT)";
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
     } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.whitelist, true)) {

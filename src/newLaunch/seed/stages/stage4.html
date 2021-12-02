@@ -134,6 +134,7 @@
               <input
                 id="startTime"
                 value.bind="startTime"
+                key-down.delegate="hoursMinutesFilter($event)"
                 autocomplete="off" />
               <div class="inputIcon"><i class="far fa-clock"></i></div>
             </div>
@@ -164,6 +165,7 @@
             <div class="vestingDates">
               <input
                 id="endTime" value.bind="endTime"
+                key-down.delegate="hoursMinutesFilter($event)"
                 autocomplete="off" />
               <div class="inputIcon"><i class="far fa-clock"></i></div>
             </div>
