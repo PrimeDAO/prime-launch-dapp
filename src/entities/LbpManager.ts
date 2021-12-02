@@ -19,7 +19,6 @@ import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { TimingService } from "services/TimingService";
-import axios from "axios";
 
 export interface ILbpManagerConfiguration {
   address: Address;
@@ -67,7 +66,7 @@ export class LbpManager implements ILaunch {
 
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
-  public trajectoryForecast: Array<IHistoricalPriceRecord>;
+  public trajectoryForecastData: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
@@ -75,6 +74,7 @@ export class LbpManager implements ILaunch {
   private projectTokenIndex: number;
   private fundingTokenIndex: number;
   private processingPriceHistory = false;
+  private processingTrajectoryData = false;
   private swapFeesCollected: number;
 
   @computedFrom("_now")
@@ -120,7 +120,6 @@ export class LbpManager implements ILaunch {
 
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
-  private balancesAtLastSwap = {projectToken: 0, fundingToken: 0};
   private _now = new Date();
   public lastHistoricalSwap: Date;
 
@@ -469,39 +468,6 @@ export class LbpManager implements ILaunch {
   }
 
   private priceHistoryPromise: Promise<Array<IHistoricalPriceRecord>>;
-  private usdPriceAtLastSwap: number;
-
-  public getTrajectoryForecastData(): Array<IHistoricalPriceRecord> {
-    axios.get(`https://api.coingecko.com/api/v3/coins/${this.fundingTokenInfo.id}/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600`)
-      .then(result => {
-        this.usdPriceAtLastSwap = result.data.prices[result.data.prices.length - 1][1];
-      });
-
-    const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
-      this.lastHistoricalSwap, // last swap time
-      this.startTime, // lbp begin time
-      this.endTime, // lbp end time
-      this.projectTokenStartWeight,
-      this.projectTokenEndWeight,
-    );
-
-    const projectTokenBalance = this.numberService.fromString(fromWei(this.lbp.vault.projectTokenBalance));
-    const fundingTokenBalance = this.numberService.fromString(fromWei(this.lbp.vault.fundingTokenBalance));
-    const forecastData = this.priceService.getInterpolatedPriceDataPoints(
-      projectTokenBalance,
-      fundingTokenBalance,
-      {
-        start: this.lastHistoricalSwap,
-        end: this.endTime,
-      },
-      {
-        start: weightAtTime,
-        end: this.projectTokenEndWeight,
-      },
-      this.usdPriceAtLastSwap, // funding token USD price at last swap
-    );
-    return forecastData;
-  }
 
   /**
    * call this to make sure that this.priceHistory is hydrated.
@@ -523,7 +489,7 @@ export class LbpManager implements ILaunch {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
             this.priceHistory = history;
-            this.lastHistoricalSwap = this.dateService.translateUtcToLocal(new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000));
+            this.lastHistoricalSwap = (new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000));
             resolve(history);
           })
           .catch((ex) => {
@@ -538,6 +504,47 @@ export class LbpManager implements ILaunch {
       return this.priceHistoryPromise;
     }
   }
+
+  private trajectoryForecastDataPromise: Promise<Array<IHistoricalPriceRecord>>;
+
+  /**
+   * call this to make sure that this.trajectoryForecastData is hydrated.
+   * @returns Promise of same as this.trajectoryForecastData
+   */
+  public ensureTrajectoryForecastData(reset = false): Promise<Array<IHistoricalPriceRecord>> {
+    if (!this.trajectoryForecastDataPromise || reset) {
+
+      if (this.trajectoryForecastDataPromise && this.processingTrajectoryData) {
+        return this.trajectoryForecastDataPromise;
+      }
+
+      this.processingTrajectoryData = true;
+
+      return this.trajectoryForecastDataPromise = new Promise<Array<IHistoricalPriceRecord>>((
+        resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
+        reject: (reason?: any) => void,
+      ): void => {
+        this.ensurePriceHistory()
+          .then(() => { // need to make sure that the last swap time is provided
+            this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this)
+              .then(async (trajectoryForecast) => {
+                this.trajectoryForecastData = await trajectoryForecast;
+                resolve(trajectoryForecast);
+              })
+              .catch((ex) => {
+                this.consoleLogService.logMessage(ex, "error");
+                reject(ex);
+              })
+              .finally(() => {
+                this.processingTrajectoryData = false;
+              });
+          });
+      });
+    } else {
+      return this.trajectoryForecastDataPromise;
+    }
+  }
+
   /**
    * returns projectTokensPerFundingToken
    *

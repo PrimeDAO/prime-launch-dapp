@@ -30,6 +30,7 @@ export class ProjectTokenHistoricalPriceService {
     private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
     private ethereumService: EthereumService,
     private numberService: NumberService,
+    private priceService: LbpProjectTokenPriceService,
   ) {
   }
 
@@ -185,6 +186,45 @@ export class ProjectTokenHistoricalPriceService {
     }
     return returnArray;
   }
+
+  private usdPriceAtLastSwap: number;
+
+  private hydrateCoingeckoUSDPrice = async (coinId): Promise<void> => {
+    const prices = (await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600`)).data.prices;
+    this.usdPriceAtLastSwap = prices[prices.length - 1][1];
+  };
+
+  public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
+    await this.hydrateCoingeckoUSDPrice(lbpMgr.fundingTokenInfo.id);
+
+    const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
+      lbpMgr.lastHistoricalSwap, // last swap time
+      lbpMgr.startTime, // lbp begin time
+      lbpMgr.endTime, // lbp end time
+      lbpMgr.projectTokenStartWeight,
+      lbpMgr.projectTokenEndWeight,
+    );
+
+    const projectTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const fundingTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
+    const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
+      projectTokenBalance,
+      fundingTokenBalance,
+      {
+        start: lbpMgr.lastHistoricalSwap,
+        end: lbpMgr.endTime,
+      },
+      {
+        start: weightAtTime,
+        end: lbpMgr.projectTokenEndWeight,
+      },
+      this.usdPriceAtLastSwap, // funding token USD price at last swap
+    );
+
+    return forecastData;
+  }
+
+
 
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();
