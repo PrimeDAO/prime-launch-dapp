@@ -130,4 +130,23 @@ export class Utils {
   public static extractExceptionMessage(ex: any): string {
     return ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex;
   }
+
+  public static allowableNumericInput(e: KeyboardEvent): boolean {
+    return (!isNaN(Number(e.key)) ||
+      ([
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+        "Backspace", "Delete", "Tab", "Escape", "Enter", "NumLock", "CapsLock", "Shift", "Control",
+        "ArrowHome", "ArrowEnd", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
+        "Cut", "Copy", "Clear", "Paste", "CrSel", "EraseEof", "Insert", "Redo", "Undo",
+      ].indexOf(e.key) !== -1) ||
+      ((["a", "x", "c", "v"].indexOf(e.key) !== -1) && (e.ctrlKey === true || e.metaKey === true))
+    );
+  }
+
+  public static replaceAll(str: string, what: string, that: string): string {
+    /**
+     * when we can use es2021, we can use the native replaceAll function
+     */
+    return str.split(what).join(that);
+  }
 }

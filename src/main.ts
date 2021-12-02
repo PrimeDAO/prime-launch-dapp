@@ -35,7 +35,10 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  if (process.env.NODE_ENV === "development") {
+  const network = process.env.NETWORK as AllowedNetworks;
+  const inDev = process.env.NODE_ENV === "development";
+
+  if (inDev) {
     aurelia.use.developmentLogging(); // everything
   } else {
     aurelia.use.developmentLogging("warn"); // only errors and warnings
@@ -57,9 +60,7 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
-      ethereumService.initialize(
-        process.env.NETWORK as AllowedNetworks ??
-          (process.env.NODE_ENV === "development" ? Networks.Rinkeby : Networks.Mainnet));
+      ethereumService.initialize(network ?? (inDev ? Networks.Rinkeby : Networks.Mainnet));
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 

@@ -1,5 +1,6 @@
 ﻿import {autoinject} from "aurelia-framework";
 import { BigNumber } from "ethers";
+import { Utils } from "services/utils";
 import { NumberService } from "../../services/NumberService";
 
 /**
@@ -11,17 +12,17 @@ export class WithCommasValueConverter {
   constructor(private numberService: NumberService) { }
 
   public fromView(value: string): string {
-    return value?.replace(",", "");
+    return Utils.replaceAll(value, ",", "");
   }
 
   public toView(value: string | number | BigNumber): string {
 
-    if ((value === null) || (value === undefined)) { //  || (value === ".") || (Number(value) === 0)
+    if ((value === null) || (value === undefined)) {
       return value as any;
     }
 
     if (typeof value === "string"){
-      value = value?.replace(",", ""); // cause it happens for some reason and the commas can be wrongly placed
+      value = Utils.replaceAll(value, ",", "");
     }
 
     const parts = value.toString().split(".");
@@ -30,6 +31,7 @@ export class WithCommasValueConverter {
      */
     value = this.numberService.fromString(parts[0]);
     const partWithCommas = this.numberService.toString(value, { thousandSeparated: true, mantissa: -1 });
+    console.log("part: ", (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`);
     return (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`;
   }
 }
