@@ -139,9 +139,9 @@ export class LbpManager implements ILaunch {
       this._now = state.now;
     }));
 
-    // this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-    //   await this.loadContracts().then(() => { this.hydrateUser(); });
-    // }));
+    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
+      await this.loadContracts();
+    }));
   }
 
   public create(config: ILbpManagerConfiguration): LbpManager {
