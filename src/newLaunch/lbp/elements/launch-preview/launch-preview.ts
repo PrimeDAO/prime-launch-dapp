@@ -47,7 +47,7 @@ export class LaunchPreview {
   ) {
   }
 
-  @computedFrom("config")
+  @computedFrom("config.trajectoryForecast")
   private get graphData(): Array<any> {
     return [
       {

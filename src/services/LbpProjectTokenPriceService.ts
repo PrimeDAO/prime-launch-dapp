@@ -1,8 +1,14 @@
+import { DateService } from "services/DateService";
 import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 
 @autoinject
 export class LbpProjectTokenPriceService {
+
+  constructor(
+    private dateService: DateService,
+  ){}
+
   private roundedTime(time: Date, roundDown = true): Date {
     if (!time) return;
     if (!roundDown) {
@@ -162,7 +168,7 @@ export class LbpProjectTokenPriceService {
     const timeInterval = 1;
     let _time = roundedStartDate;
 
-    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours + 1; hoursPassed += timeInterval) {
+    for (let hoursPassed = 0; hoursPassed <= lbpDurationInHours; hoursPassed += timeInterval) {
 
       const projectTokenWeight = this.getProjectTokenWeightAtTime(
         _time,
@@ -181,10 +187,12 @@ export class LbpProjectTokenPriceService {
 
       trajectoryData.push({
         price: currentProjectTokenPrice,
-        time: Math.floor((_time.getTime() - 60 * 60 * 1000) / 1000),
+        time: Math.floor((_time.getTime()) / 1000),
       });
 
-      _time = new Date(_time.getTime() + 60 * 60 * 1000);
+      _time = this.dateService.ticksToDate(
+        _time.getTime() + 60 * 60 * 1000, // increase _time by one hour
+      );
     }
     return trajectoryData;
   }

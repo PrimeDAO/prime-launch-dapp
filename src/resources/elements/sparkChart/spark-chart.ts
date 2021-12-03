@@ -4,6 +4,7 @@ import "./spark-chart.scss";
 import { createChart, CrosshairMode, IChartApi, ISeriesApi, LineWidth, LineStyle} from "lightweight-charts";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { NumberService } from "services/NumberService";
+import { DateService } from "services/DateService";
 
 interface ISeries {
   name: string,
@@ -21,6 +22,7 @@ export class SparkChart {
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
   @bindable.number width = 500;
+  @bindable.boolean utc = false;
 
   chart: IChartApi;
   series: Array<ISeriesApi<"Line">> = [];
@@ -31,6 +33,7 @@ export class SparkChart {
   constructor(
     private numberService: NumberService,
     private aureliaHelperService: AureliaHelperService,
+    private dateService: DateService,
   ) {
   }
 
@@ -61,21 +64,24 @@ export class SparkChart {
         timeVisible: true,
         secondsVisible: false,
         borderVisible: false,
-        tickMarkFormatter: (time, tickMarkType, locale) => {
-          return new Date(time * 1000).toLocaleDateString(locale, {day: "2-digit", month: "short", year: "2-digit"});
+        tickMarkFormatter: (time) => {
+          return this.dateService.ticksToString(
+            time * 1000, // to milliseconds
+            {format: "DD MMM", utc: this.utc || false},
+          );
         },
       },
       crosshair: {
         vertLine: {
           visible: true,
           width: 1,
-          color: "rgba(224, 227, 235, 0.3)",
+          color: "#98979b", // $Neutral02
           style: 0,
         },
         horzLine: {
           visible: true,
           width: 1,
-          color: "rgba(224, 227, 235, 0.3)",
+          color: "#98979b", // $Neutral02
           style: 0,
         },
         mode: CrosshairMode.Magnet,
@@ -90,11 +96,11 @@ export class SparkChart {
       grid: {
         horzLines: {
           visible: this.gridHorizontal,
-          color: "#403453",
+          color: "#403453", // $Border01
         },
         vertLines: {
           visible: this.gridVertical,
-          color: "#403453",
+          color: "#403453", // $Border01
         },
       },
       layout: {
