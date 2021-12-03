@@ -18,8 +18,8 @@
     grid-template-areas:
       ". . timeLeft"
       ". . ."
-      "icon type ."
-      "icon title title"
+      "icon typeAndTitle typeAndTitle"
+      "icon typeAndTitle typeAndTitle"
       ". . ."
       "description description description"
       ". . ."
@@ -43,18 +43,19 @@
       }
     }
 
-    > .launch-type {
-      color: $Secondary05;
-      grid-area: type;
-    }
-
-    > .title {
-      grid-area: title;
-      font-weight: 600;
-      font-size: 22px;
-      white-space: normal;
-      overflow-x: clip;
-      max-width: 295px;
+    > .typeAndTitle {
+      grid-area: typeAndTitle;
+      > .launch-type {
+        font-weight: 600;
+        color: $Secondary05;
+      }
+      > .title {
+        font-weight: 600;
+        font-size: 22px;
+        white-space: normal;
+        overflow-x: clip;
+        max-width: 295px;
+      }
     }
 
     > .description {
