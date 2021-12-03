@@ -118,6 +118,24 @@ export class DateService {
   }
 
   /**
+   * input and output are in milliseconds
+   * @param ts 
+   * @returns 
+   */
+    public translateUtcTimestampToLocal(ts: number): number {
+    return ts - (this.localTimezoneOffset * 60 * 1000);
+  }
+
+  /**
+   * 
+   * @param ts input and output are in milliseconds
+   * @returns 
+   */
+  public translateLocalTimestampToUtc(ts: number): number {
+    return ts + (this.localTimezoneOffset * 60 * 1000);
+  }
+
+  /**
    * convert one date string to a different date string for the same date and time.
    * @param dateString
    * @param paramsFrom
