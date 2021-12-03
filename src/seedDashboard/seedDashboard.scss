@@ -438,6 +438,22 @@
   .page.seedDashboardContainer {
     .seedDashboard {
       grid-template-areas:
+        "seedBanner seedProgress"
+        "forms forms"
+        "seedSummary seedSummary";
+
+      .forms {
+        max-width: 560px;
+        justify-self: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .page.seedDashboardContainer {
+    .seedDashboard {
+      grid-template-areas:
         "seedBanner"
         "seedSummary"
         "seedProgress"
@@ -472,11 +488,6 @@
         .timeLeft {
           text-align: center;
         }
-      }
-
-      .forms {
-        max-width: 560px;
-        justify-self: center;
       }
 
       .seedProgress,
@@ -580,10 +591,11 @@
   }
 }
 
-@media not all and (min-resolution:.001dpcm)
-{ @supports (-webkit-appearance:none) {
-    .page.seedDashboardContainer .seedDashboard .seedSummary .value.tokenprice .symbol { 
-        color:#B056A1; 
-        -webkit-text-fill-color:#B056A1; 
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .page.seedDashboardContainer .seedDashboard .seedSummary .value.tokenprice .symbol {
+      color: #b056a1;
+      -webkit-text-fill-color: #b056a1;
     }
-}}
+  }
+}
