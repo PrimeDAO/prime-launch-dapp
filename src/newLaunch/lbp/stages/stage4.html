@@ -32,13 +32,13 @@
             </div>
           </div>
         </div>
-        <div class="infoInput">       
-            <div class="labeledQuestion">
-              <label for="amountProjectToken">Number of tokens that you will provide to the LBP</label>
-              <div class="questionMark">
-                <question-mark text="The total number of Project Tokens and Funding (Collateral) Tokens that will be supplied to set up the liquidity bootstrapping pool."></question-mark>
-              </div>
+        <div class="infoInput">
+          <div class="labeledQuestion">
+            <label for="amountProjectToken">Number of tokens that you will provide to the LBP</label>
+            <div class="questionMark">
+              <question-mark text="The total number of Project Tokens and Funding (Collateral) Tokens that will be supplied to set up the liquidity bootstrapping pool."></question-mark>
             </div>
+          </div>
           <div class="tokenAmountContainer">
             <numeric-input
               output-as-string="true"
@@ -164,7 +164,7 @@
                 <input
                   id="endTime"
                   value.bind="endTime"
-                  key-down.delegate="hoursMinutesFilter($event)"
+                  keydown.delegate="hoursMinutesFilter($event)"
                   change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
