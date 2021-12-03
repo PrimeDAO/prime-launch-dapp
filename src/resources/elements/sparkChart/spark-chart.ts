@@ -16,7 +16,7 @@ interface ISeries {
 
 @autoinject
 export class SparkChart {
-  @bindable data: Array<ISeries>;
+  @bindable chartConfig: Array<ISeries>;
   @bindable.booleanAttr gridHorizontal = false;
   @bindable.booleanAttr gridVertical = false;
   @bindable.booleanAttr interactive;
@@ -44,11 +44,11 @@ export class SparkChart {
       this.createChart();
     }
 
-    this.dataChanged();
+    this.chartConfigChanged();
   }
 
   private resizeChart() {
-    if (this.chart && this.data && this.container) {
+    if (this.chart && this.chartConfig && this.container) {
       this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
       this.chart.timeScale().fitContent();
     }
@@ -131,33 +131,37 @@ export class SparkChart {
     options.height = this.height || innerDimensions.height;
 
     this.chart = createChart(this.sparkChart, options);
-
-    this.data.forEach((series) => {
-      const newSeries = this.chart.addLineSeries({
-        color: series.color,
-        priceLineVisible: false,
-        title: series.name || "",
-        crosshairMarkerVisible: this.interactive,
-        priceFormat: {
-          type: "custom",
-          formatter: value => `${this.numberService.toString(value, {
-            mantissa: 2,
-            thousandSeparated: true,
-          })}`,
-        },
-      });
-      newSeries.applyOptions({
-        lineStyle: series.lineStyle || 0,
-        lineWidth: series.lineWidth || 2,
-      });
-      this.series.push(newSeries);
-    });
   }
 
-  dataChanged(): void {
+  private chartConfigChanged(): void {
+    if (this.chartConfig && this.chart) {
+      if (!this.series?.length) {
+        const seriesCollection = new Array<ISeriesApi<"Line">>();
+        this.chartConfig.forEach((series) => {
+          const newSeries = this.chart.addLineSeries({
+            color: series.color,
+            priceLineVisible: false,
+            title: series.name || "",
+            crosshairMarkerVisible: this.interactive,
+            priceFormat: {
+              type: "custom",
+              formatter: value => `${this.numberService.toString(value, {
+                mantissa: 2,
+                thousandSeparated: true,
+              })}`,
+            },
+          });
+          newSeries.applyOptions({
+            lineStyle: series.lineStyle || 0,
+            lineWidth: series.lineWidth || 2,
+          });
+          seriesCollection.push(newSeries);
+        });
 
-    if (this.data && this.chart) {
-      this.data.forEach((series, index) => {
+        this.series = seriesCollection;
+      }
+
+      this.chartConfig.forEach((series, index) => {
         if (series.data?.length) {
           this.series[index].setData(series.data.map(item => ({
             time: item.time,

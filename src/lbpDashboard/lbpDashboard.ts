@@ -22,7 +22,6 @@ export class lbpDashboard {
   lbpMgr: LbpManager;
   loading = true;
   projectTokenHistoricalPrices: Array<IHistoricalPriceRecord>;
-  priceFetchIntervalId: any;
 
   constructor(
     private dateService: DateService,
@@ -51,70 +50,6 @@ export class lbpDashboard {
 
   private get lbpDisclaimed(): boolean {
     return this.ethereumService.defaultAccountAddress && (this.storageService.lsGet(this.lbpDisclaimerStatusKey, "false") === "true");
-  }
-
-  @computedFrom("lbpMgr.priceHistory", "lbpMgr.trajectoryForecastData")
-  private get graphData(): Array<any> {
-    const priceHistoryLength = this.lbpMgr?.priceHistory?.length;
-    const trajectoryForecastLength = this.lbpMgr?.trajectoryForecastData?.length;
-
-    const lbpAveragePrice = priceHistoryLength
-      ? (this.lbpMgr?.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
-      : 0;
-    const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength)? [
-      {
-        time: this.lbpMgr?.priceHistory[0]?.time,
-        price: lbpAveragePrice,
-      },
-      {
-        time: trajectoryForecastLength > 0
-          ? this.lbpMgr?.trajectoryForecastData[trajectoryForecastLength - 1]?.time
-          : this.lbpMgr?.priceHistory[priceHistoryLength - 1]?.time,
-        price: lbpAveragePrice,
-      },
-    ] : [];
-
-    const getUTCDate = (time: number) => {
-      // The chart takes time in UTC Unix timestamp and display it as Local.
-      // We would like to translate the UTC time provided from the history to the offset
-      // of the local timezone, so the time on the chart would be correctly shown.
-      return this.dateService.translateLocalToUtc(new Date(time * 1000)).getTime() / 1000;
-    };
-
-    const series = [
-      {
-        data: this.lbpMgr?.priceHistory?.map(i => {
-          return {
-            price: i.price,
-            time: getUTCDate(i.time),
-          };
-        }),
-        color: "#FF497A",
-      },
-      {
-        data: this.lbpMgr?.trajectoryForecastData?.map(i => {
-          return {
-            price: i.price,
-            time: getUTCDate(i.time),
-          };
-        }),
-        color: "#403453",
-        lineStyle: 2,
-      },
-      {
-        name: "Average Price",
-        data: averagePriceData?.map(i => {
-          return {
-            price: i.price,
-            time: getUTCDate(i.time),
-          };
-        }),
-        color: "#A258A7",
-        lineWidth: 1,
-      },
-    ];
-
-    return series;
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
@@ -152,18 +87,7 @@ export class lbpDashboard {
       }
       this.lbpMgr = lbpmgr;
 
-      if (!lbpmgr.priceHistory) {
-        this.lbpMgr.ensurePriceHistory();
-      }
-      if (!lbpmgr.trajectoryForecastData) {
-        this.lbpMgr.ensureTrajectoryForecastData();
-      }
       await this.hydrateUserData();
-
-      this.priceFetchIntervalId = setInterval(() => {
-        this.lbpMgr.ensurePriceHistory(true);
-        this.lbpMgr.ensureTrajectoryForecastData(true);
-      }, 60000);
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -173,13 +97,6 @@ export class lbpDashboard {
         this.eventAggregator.publish("launches.loading", false);
       }
       this.loading = false;
-    }
-  }
-
-  detached(): void {
-    if (this.priceFetchIntervalId) {
-      clearInterval(this.priceFetchIntervalId);
-      this.priceFetchIntervalId = null;
     }
   }
 

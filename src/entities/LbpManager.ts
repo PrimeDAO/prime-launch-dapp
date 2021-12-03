@@ -66,7 +66,6 @@ export class LbpManager implements ILaunch {
 
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
-  public trajectoryForecastData: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
@@ -121,7 +120,6 @@ export class LbpManager implements ILaunch {
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
-  public lastHistoricalSwap: Date;
 
   constructor(
     private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
@@ -473,7 +471,7 @@ export class LbpManager implements ILaunch {
    * call this to make sure that this.priceHistory is hydrated.
    * @returns Promise of same as this.priceHistory
    */
-  public ensurePriceHistory(reset = false): Promise<Array<IHistoricalPriceRecord>> {
+  public ensurePriceData(reset = false): Promise<Array<IHistoricalPriceRecord>> {
     if (!this.priceHistoryPromise || reset) {
 
       if (this.priceHistoryPromise && this.processingPriceHistory) {
@@ -488,15 +486,15 @@ export class LbpManager implements ILaunch {
       ): void => {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
+            // this.ensureTrajectoryForecastData(history);
             this.priceHistory = history;
-            this.lastHistoricalSwap = (new Date(this.projectTokenHistoricalPriceService.lastSwap.timestamp * 1000));
             resolve(history);
           })
           .catch((ex) => {
             this.consoleLogService.logMessage(ex, "error");
             reject(ex);
           })
-          .finally(() => {
+          .then(() => {
             this.processingPriceHistory = false;
           });
       });
@@ -505,45 +503,26 @@ export class LbpManager implements ILaunch {
     }
   }
 
-  private trajectoryForecastDataPromise: Promise<Array<IHistoricalPriceRecord>>;
 
-  /**
-   * call this to make sure that this.trajectoryForecastData is hydrated.
-   * @returns Promise of same as this.trajectoryForecastData
-   */
-  public ensureTrajectoryForecastData(reset = false): Promise<Array<IHistoricalPriceRecord>> {
-    if (!this.trajectoryForecastDataPromise || reset) {
-
-      if (this.trajectoryForecastDataPromise && this.processingTrajectoryData) {
-        return this.trajectoryForecastDataPromise;
-      }
-
-      this.processingTrajectoryData = true;
-
-      return this.trajectoryForecastDataPromise = new Promise<Array<IHistoricalPriceRecord>>((
-        resolve: (value: Array<IHistoricalPriceRecord> | PromiseLike<Array<IHistoricalPriceRecord>>) => void,
-        reject: (reason?: any) => void,
-      ): void => {
-        this.ensurePriceHistory()
-          .then(() => { // need to make sure that the last swap time is provided
-            this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this)
-              .then(async (trajectoryForecast) => {
-                this.trajectoryForecastData = await trajectoryForecast;
-                resolve(trajectoryForecast);
-              })
-              .catch((ex) => {
-                this.consoleLogService.logMessage(ex, "error");
-                reject(ex);
-              })
-              .finally(() => {
-                this.processingTrajectoryData = false;
-              });
-          });
-      });
-    } else {
-      return this.trajectoryForecastDataPromise;
-    }
-  }
+  // /**
+  //  * call this to make sure that this.trajectoryForecastData is hydrated.
+  //  * @returns Promise of same as this.trajectoryForecastData
+  //  */
+  // private ensureTrajectoryForecastData(history: Array<IHistoricalPriceRecord>): Promise<Array<IHistoricalPriceRecord>> {
+  //     return this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this);
+  //       .then(async (trajectoryForecast) => {
+  //         this.trajectoryForecastData = await trajectoryForecast;
+  //         resolve(trajectoryForecast);
+  //       })
+  //       .catch((ex) => {
+  //         this.consoleLogService.logMessage(ex, "error");
+  //         reject(ex);
+  //       })
+  //       .finally(() => {
+  //         this.processingTrajectoryData = false;
+  //       });
+  //     });
+  // }
 
   /**
    * returns projectTokensPerFundingToken

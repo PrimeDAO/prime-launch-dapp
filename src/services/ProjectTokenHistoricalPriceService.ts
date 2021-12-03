@@ -190,15 +190,17 @@ export class ProjectTokenHistoricalPriceService {
   private usdPriceAtLastSwap: number;
 
   private hydrateCoingeckoUSDPrice = async (coinId): Promise<void> => {
-    const prices = (await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=usd&from=1637658000&to=1637661600`)).data.prices;
+    const prices = (await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=usd&from=${this.lastSwap.timestamp - 3600}&to=${this.lastSwap.timestamp}`)).data.prices;
     this.usdPriceAtLastSwap = prices[prices.length - 1][1];
   };
 
   public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
     await this.hydrateCoingeckoUSDPrice(lbpMgr.fundingTokenInfo.id);
 
+    const lastSwapDate = new Date(this.lastSwap.timestamp * 1000);
+
     const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
-      lbpMgr.lastHistoricalSwap, // last swap time
+      lastSwapDate, // last swap time
       lbpMgr.startTime, // lbp begin time
       lbpMgr.endTime, // lbp end time
       lbpMgr.projectTokenStartWeight,
@@ -211,7 +213,7 @@ export class ProjectTokenHistoricalPriceService {
       projectTokenBalance,
       fundingTokenBalance,
       {
-        start: lbpMgr.lastHistoricalSwap,
+        start: lastSwapDate,
         end: lbpMgr.endTime,
       },
       {

@@ -2,12 +2,12 @@
   <require from="./projectTokenInfo/projectTokenInfo"></require>
   <require from="./lbpDashboardForm/lbpDashboardForm"></require>
   <require from="./tokenDistribution/tokenDistribution"></require>
-  <require from="resources/elements/sparkChart/spark-chart"></require>
   <require from="./timeRemaining/timeRemaining"></require>
   <require from="./lbpDetails/lbpDetails"></require>
   <require from="./statistics/statistics"></require>
   <require from="./settings/settings"></require>
   <require from="./swapFees/swapFees"></require>
+  <require from="./lbpPriceChart/lbpPriceChart"></require>
 
   <div class="page animated-page au-animate lbpDashboardContainer">
     <div show.to-view="!loading" class="lbpDashboard ${lbpMgr.isLive ? '' : 'notLive'}">
@@ -18,11 +18,7 @@
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
       <div class="graphFormContainer">
-        ${JSON.stringify(lbpMgr.trajectoryForecast)}
-        <div class="graph">
-          <div show.to-view="!lbpMgr.priceHistory" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
-          <spark-chart show.bind="graphData" data.bind="graphData" grid-horizontal="true" height="400"></spark-chart>
-        </div>
+        <lbp-price-chart lbp-mgr.bind="lbpMgr"></lbp-price-chart>
         <div class="form" if.bind="lbpMgr.isLive">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
         </div>
