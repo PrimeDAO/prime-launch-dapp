@@ -7,7 +7,7 @@ export class Markdown{
 
   @bindable document: string;
   @bindable url: string;
-  markdown: string;
+  markdown: string = "";
 
   // constructor() {
   //   marked.setOptions({ breaks: true, gfm: true });
