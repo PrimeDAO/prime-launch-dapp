@@ -3,31 +3,49 @@
   we only compile via typescript import and resulting webpack bundling.
 */
 
-body {
+body.loading {
   background-color: #1b1722;
   margin: 0;
   text-align: center;
 }
 
-div.prepage {
+div.preload {
   padding-top: 120px;
   display: inline-block;
   max-width: 800px;
 }
 
-div.prepage > .body {
-  color: #ffffff;
+div.preload > .body {
   font-family: Arial;
-  font-size: 24px;
-  margin-bottom: 18px;
-
-  background-image: linear-gradient(220.2deg, #ff497a 0%, #a258a7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 28px;
+  color: #ff99cc;
 }
 
-div.prepage > img {
-  width: 186px;
-  height: 186px;
+div.preload > .body2 {
+  font-size: 16px;
+  color: #b783ac;
+}
+
+div.preload > img {
+  width: 300px;
+  margin-bottom: 16px;
+}
+
+div.preload.initialLoading > img {
+  width: 150px;
+  height: 150px;
   margin-bottom: 28px;
+}
+
+div.preload > button {
+  border-radius: 50px;
+  padding: 14px 28px;
+  outline: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #ff99cc;
+  border: 1px solid #ff99cc;
+  background-color: #1b1722;
 }

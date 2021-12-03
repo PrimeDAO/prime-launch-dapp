@@ -1,16 +1,23 @@
 <template>
   <require from="./footer/footer"></require>
   <require from="./navbar/navbar"></require>
-  <banner></banner>
-  <navbar></navbar>
-  <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
-    <div class="appWrapper">
-      <div class="mainContent">
-        <router-view></router-view>
+
+  <div if.bind="showCountdownPage">
+    <compose view-model="./comingSoon/comingSoon"></compose>
+  </div>
+
+  <div else>
+    <banner></banner>
+    <navbar></navbar>
+    <modalscreen on-off.to-view="onOff" message.to-view="modalMessage">
+      <div class="appWrapper">
+        <div class="mainContent">
+          <router-view></router-view>
+        </div>
+        <div class="appFooter">
+          <footer></footer>
+        </div>
       </div>
-      <div class="appFooter">
-        <footer></footer>
-      </div>
-    </div>
-  </modalscreen>
+    </modalscreen>
+  </div>
 </template>

@@ -1,0 +1,41 @@
+@import "styles/styles.scss";
+
+.comingSoonContainer {
+  text-align: center;
+  padding-top: 120px;
+  max-width: 900px;
+
+  .body {
+    color: $Secondary01;
+    font-family: Aeonik;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 25px;
+
+    &.body2 {
+      font-size: 16px;
+      font-family: Inter;
+      font-weight: 400;
+      a {
+        color: #b783ac;
+        &:hover {
+          border-bottom: 1px solid $Secondary01;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .countdown {
+    @include standardTextGradient;
+    font-size: 42px;
+    font-family: Inter;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  img {
+    width: 300px;
+    margin-bottom: 28px;
+  }
+}

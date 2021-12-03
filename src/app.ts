@@ -14,6 +14,8 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 import { AlertService } from "services/AlertService";
 import { ShowButtonsEnum } from "resources/dialogs/alert/alert";
 
+export const AppStartDate = new Date("2021-12-13T23:00:00.000Z");
+
 @autoinject
 export class App {
   constructor (
@@ -32,6 +34,7 @@ export class App {
   initializing = true;
   showingMobileMenu = false;
   intervalId: any;
+  showCountdownPage: boolean;
 
   errorHandler = (ex: unknown): boolean => {
     this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an unexpected error occurred", ex));
@@ -92,11 +95,25 @@ export class App {
       }
     });
 
-    this.intervalId = setInterval(async () => {
+    setInterval(async () => {
       this.signaler.signal("secondPassed");
       const blockDate = this.ethereumService.lastBlockDate;
       this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
     }, 1000);
+
+    const getShowCountdownPage = () =>
+      (process.env.NODE_ENV === "production") ? (Date.now() < AppStartDate.getTime()) : false;
+
+    this.showCountdownPage = getShowCountdownPage();
+
+    if (this.showCountdownPage) {
+      this.intervalId = setInterval(() => {
+        this.showCountdownPage = getShowCountdownPage();
+        if (!this.showCountdownPage) {
+          clearInterval(this.intervalId);
+        }
+      }, 1000);
+    }
 
     window.addEventListener("resize", () => { this.showingMobileMenu = false; });
 
@@ -240,7 +257,13 @@ export class App {
         route: ["cookie-policy"],
         title: "Cookie Policy",
       },
-
+      {
+        moduleId: PLATFORM.moduleName("./comingSoon/comingSoon"),
+        nav: false,
+        name: "comingSoon",
+        route: ["comingSoon"],
+        title: "Coming Soon!",
+      },
     ]);
 
     config.fallbackRoute("home");
