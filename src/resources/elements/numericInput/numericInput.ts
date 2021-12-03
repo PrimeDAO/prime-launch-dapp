@@ -1,3 +1,4 @@
+import { ConsoleLogService } from "services/ConsoleLogService";
 import {
   autoinject,
   bindingMode,
@@ -7,6 +8,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import { BigNumber } from "ethers";
 import { fromWei, toWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
+import { Utils } from "services/utils";
 
 @autoinject
 export class NumericInput {
@@ -65,6 +67,8 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
+          console.log("newValue: ", newValue);
+
           let value: BigNumber | number | string = this.notWei ? Number(newValue) : toWei(newValue, this.decimals);
           if (this.outputAsString) {
             value = value.toString();
@@ -72,11 +76,17 @@ export class NumericInput {
           this.ignoreValueChanged = true;
           this.value = value;
         }
-      } catch {
+      } catch (ex) {
+        this.consoleLogService.logMessage(`nummericInput exception: ${Utils.extractExceptionMessage(ex)}`);
         this.ignoreValueChanged = true;
         this.value = undefined;
       }
     }
+  }
+
+  constructor(
+    private numberService: NumberService,
+    private consoleLogService: ConsoleLogService) {
   }
 
   private decimalsChanged() {
@@ -112,9 +122,6 @@ export class NumericInput {
     }
   }
 
-  constructor(private numberService: NumberService) {
-  }
-
   public attached(): void {
     this.element.addEventListener("keydown", (e) => { this.keydown(e); });
     // this.hydrateFromDefaultValue();
@@ -131,20 +138,14 @@ export class NumericInput {
     // Allow: backspace, delete, tab, escape, enter and .
     const currentValue = this.element.value as string;
     let returnValue = false;
-    if (
-      ([46, 8, 9, 27, 13, 110].indexOf(e.keyCode) !== -1) ||
-      // Allow: Ctrl+A/X/C/V, Command+A/X/C/V
-      (([65, 67, 86, 88].indexOf(e.keyCode) !== -1) && (e.ctrlKey === true || e.metaKey === true)) ||
-      // Allow: home, end, left, right, down, up
-      (e.keyCode >= 35 && e.keyCode <= 40)
-    ) {
+    if (Utils.allowableNumericInput(e)) {
       // let it happen, don't do anything
       returnValue = true;
     } else {
       /**
        * decimals are allowed, is a decimal, and there is not already a decimal
        */
-      if ((this.decimal && (e.keyCode === 190) &&
+      if ((this.decimal && (e.key === ".") &&
         (!currentValue || !currentValue.length || (currentValue.indexOf(".") === -1)))) {
         returnValue =true;
       }

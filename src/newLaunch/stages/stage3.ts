@@ -57,7 +57,7 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     if (!Utils.isAddress(this.launchConfig.tokenDetails.projectTokenInfo.address)) {
       message = "Please enter a valid address for the Project Token Address";
     } else if (!this.wizardState.stage3State.isValidTokenAddress) {
-      message = "Please enter a project token address that references a valid IERC20 token contract having 18 decimals";
+      message = "Please enter a project token address that references a valid IERC20 token contract";
     } else if (!this.logoIsLoaded) {
       message = "No valid image found at the provided project token logo URL";
     }

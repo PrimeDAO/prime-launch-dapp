@@ -9,6 +9,7 @@ import { Address, EthereumService, Hash, Networks } from "services/EthereumServi
 import { TokenService } from "services/TokenService";
 import { LaunchType } from "services/launchTypes";
 import { BigNumber } from "ethers";
+import { Utils } from "services/utils";
 
 export interface IStageState {
   verified: boolean;
@@ -109,5 +110,13 @@ export abstract class BaseStage<IConfig> {
 
   protected validationError(message: string): void {
     this.eventAggregator.publish("handleValidationError", new EventConfigFailure(message));
+  }
+
+  protected hoursMinutesFilter(e: KeyboardEvent): boolean {
+    if (!((e.key === ":") || Utils.allowableNumericInput(e))) {
+      e.preventDefault();
+      return false;
+    }
+    return true;
   }
 }

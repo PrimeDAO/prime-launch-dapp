@@ -14,7 +14,7 @@
             <div class="labeledQuestion">
               <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
               <div class="questionMark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+                <question-mark text="Choose the Token in which funds will be raised in exchange for the Project Token."></question-mark>
               </div>
             </div>
             <div class="tokenSelector">
@@ -32,8 +32,13 @@
             </div>
           </div>
         </div>
-        <div class="infoInput">
-          <label for="amountProjectToken">Number of tokens that you will provide to the LBP</label>
+        <div class="infoInput">       
+            <div class="labeledQuestion">
+              <label for="amountProjectToken">Number of tokens that you will provide to the LBP</label>
+              <div class="questionMark">
+                <question-mark text="The total number of Project Tokens and Funding (Collateral) Tokens that will be supplied to set up the liquidity bootstrapping pool."></question-mark>
+              </div>
+            </div>
           <div class="tokenAmountContainer">
             <numeric-input
               output-as-string="true"
@@ -76,7 +81,7 @@
         <div class="infoInput maxTarget fundingTarget">
 
           <div class="fundingDescrp">
-            <hr class="dividerFundings" >
+            <hr class="dividerFundings">
           </div>
         </div>
         <div class="infoInput maxTarget">
@@ -106,6 +111,7 @@
                 <input
                   id="startTime"
                   value.bind="startTime"
+                  keydown.delegate="hoursMinutesFilter($event)"
                   change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -158,6 +164,7 @@
                 <input
                   id="endTime"
                   value.bind="endTime"
+                  key-down.delegate="hoursMinutesFilter($event)"
                   change.delegate="setLaunchDuration()"
                   autocomplete="off" />
                 <div class="inputIcon"><i class="far fa-clock"></i></div>
@@ -182,20 +189,19 @@
         <div class="infoInput launchPreview">
           <launch-preview
             class="previewBox"
-            max-supply.bind = "launchConfig.tokenDetails.maxSupply"
-            funding-token-address.bind = "launchConfig.launchDetails.fundingTokenInfo.address"
-            project-token-address.bind = "launchConfig.tokenDetails.projectTokenInfo.address"
-            project-token-decimals.bind = "launchConfig.tokenDetails.projectTokenInfo.decimals"
-            funding-token-decimals.bind = "launchConfig.launchDetails.fundingTokenInfo.decimals"
-            project-token-amount.bind = "launchConfig.launchDetails.amountProjectToken"
-            funding-token-amount.bind = "launchConfig.launchDetails.amountFundingToken"
-            start-weight.bind = "launchConfig.launchDetails.startWeight"
-            end-weight.bind = "launchConfig.launchDetails.endWeight"
-            start-date.bind = "startDate"
-            end-date.bind = "endDate"
-            launch-duration.bind = "launchDuration"
-            funding-token-price.bind = "launchConfig.launchDetails.fundingTokenInfo.price"
-          >
+            max-supply.bind="launchConfig.tokenDetails.maxSupply"
+            funding-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+            project-token-address.bind="launchConfig.tokenDetails.projectTokenInfo.address"
+            project-token-decimals.bind="launchConfig.tokenDetails.projectTokenInfo.decimals"
+            funding-token-decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+            project-token-amount.bind="launchConfig.launchDetails.amountProjectToken"
+            funding-token-amount.bind="launchConfig.launchDetails.amountFundingToken"
+            start-weight.bind="launchConfig.launchDetails.startWeight"
+            end-weight.bind="launchConfig.launchDetails.endWeight"
+            start-date.bind="startDate"
+            end-date.bind="endDate"
+            launch-duration.bind="launchDuration"
+            funding-token-price.bind="launchConfig.launchDetails.fundingTokenInfo.price">
           </launch-preview>
         </div>
 
