@@ -2,18 +2,29 @@
   <a
     class="launchSummaryContainer ${launch.canGoToDashboard ? 'hot' : '' }"
     ref="container"
-    href.to-view="launch.canGoToDashboard ? `lbp/${launch.address}` : `${router.currentInstruction.fragment}`">
+    href.to-view="launch.canGoToDashboard ? `lbp/${launch.address}` : `${router.currentInstruction.fragment}`"
+  >
     <div if.to-view="!loading" class="launchSummary">
-      <div class="icon"><img src.to-view="launch.projectTokenInfo.logoURI" /></div>
-      <div class="title ellipses">${launch.metadata.general.projectName}</div>
+      <div class="icon">
+        <img src.to-view="launch.projectTokenInfo.logoURI" />
+      </div>
+      <div class="typeAndTitle">
+        <div class="launch-type">LBP</div>
+        <div class="title ellipses">${launch.metadata.general.projectName}</div>
+      </div>
       <div class="countdown">
         <time-left launch.to-view="launch" largest contained></time-left>
       </div>
       <div class="description">${launch.metadata.projectDetails.summary}</div>
       <div class="tokensTarget">
-        <div class="tokensTitle title subtext">${launch.projectTokenInfo.symbol}/${launch.fundingTokenInfo.symbol}</div>
+        <div class="tokensTitle title subtext">
+          ${launch.projectTokenInfo.symbol}/${launch.fundingTokenInfo.symbol}
+        </div>
         <div class="tokens">
-          <token-pair token1.to-view="launch.projectTokenInfo.logoURI" token2.to-view="launch.fundingTokenInfo.logoURI"></token-pair>
+          <token-pair
+            token1.to-view="launch.projectTokenInfo.logoURI"
+            token2.to-view="launch.fundingTokenInfo.logoURI"
+          ></token-pair>
         </div>
       </div>
     </div>
