@@ -19,6 +19,8 @@ export class LbpProjectTokenPriceService {
 
   /**
    * Return the LBP weight at a given time point
+   * NOTE: Timezones are not handled within this service.
+   *
    * @param time The time inquired for a specific weight (Date)
    * @param start LBP's start-date (Date)
    * @param end LBP's end-date (Date)

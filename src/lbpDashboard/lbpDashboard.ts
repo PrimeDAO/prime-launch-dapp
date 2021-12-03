@@ -56,11 +56,11 @@ export class lbpDashboard {
   @computedFrom("lbpMgr.priceHistory", "lbpMgr.trajectoryForecastData")
   private get graphData(): Array<any> {
     const priceHistoryLength = this.lbpMgr?.priceHistory?.length;
+    const trajectoryForecastLength = this.lbpMgr?.trajectoryForecastData?.length;
+
     const lbpAveragePrice = priceHistoryLength
       ? (this.lbpMgr?.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
       : 0;
-
-    const trajectoryForecastLength = this.lbpMgr?.trajectoryForecastData?.length;
     const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength)? [
       {
         time: this.lbpMgr?.priceHistory[0]?.time,
@@ -75,6 +75,9 @@ export class lbpDashboard {
     ] : [];
 
     const getUTCDate = (time: number) => {
+      // The chart takes time in UTC Unix timestamp and display it as Local.
+      // We would like to translate the UTC time provided from the history to the offset
+      // of the local timezone, so the time on the chart would be correctly shown.
       return this.dateService.translateLocalToUtc(new Date(time * 1000)).getTime() / 1000;
     };
 
