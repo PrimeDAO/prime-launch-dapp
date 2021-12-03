@@ -131,10 +131,12 @@
   .networkFeedback {
     grid-area: networkFeedback;
     font-family: Inter;
-    color: $White;
     text-align: right;
     .testnet {
       color: $Shade01;
+    }
+    a {
+      color: $Secondary01;
     }
   }
 
