@@ -225,7 +225,7 @@ export class lbpDashboardForm {
       promise.then(async (receipt) => {
         if (receipt) {
           await this.hydrateUserData();
-          this.lbpManager.ensurePriceHistory(true);
+          this.lbpManager.ensurePriceData(true);
           this.lbpManager.hydrateTokensState();
 
           this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);

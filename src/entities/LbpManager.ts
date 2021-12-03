@@ -1,6 +1,6 @@
 import { IBatcherCallsModel, MultiCallService } from "./../services/MulticallService";
 import { Container } from "aurelia-dependency-injection";
-import { LbpProjectTokenPriceService } from "./../services/LbpProjectTokenPriceService";
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
 import { BigNumber } from "ethers";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -73,6 +73,7 @@ export class LbpManager implements ILaunch {
   private projectTokenIndex: number;
   private fundingTokenIndex: number;
   private processingPriceHistory = false;
+  private processingTrajectoryData = false;
   private swapFeesCollected: number;
 
   @computedFrom("_now")
@@ -196,7 +197,7 @@ export class LbpManager implements ILaunch {
     catch (error) {
       this.disable();
       this.initializing = false;
-      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpmanager: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpManager: ${error?.message ?? error}`, "error");
     }
   }
 
@@ -372,7 +373,7 @@ export class LbpManager implements ILaunch {
     }
     catch (error) {
       this.disable();
-      this.consoleLogService.logMessage(`LbpManager: Error initializing lpbManager: ${error?.message ?? error}`, "error");
+      this.consoleLogService.logMessage(`LbpManager: Error initializing lbpManager: ${error?.message ?? error}`, "error");
     } finally {
       this.initializing = false;
     }
@@ -470,7 +471,7 @@ export class LbpManager implements ILaunch {
    * call this to make sure that this.priceHistory is hydrated.
    * @returns Promise of same as this.priceHistory
    */
-  public ensurePriceHistory(reset = false): Promise<Array<IHistoricalPriceRecord>> {
+  public ensurePriceData(reset = false): Promise<Array<IHistoricalPriceRecord>> {
     if (!this.priceHistoryPromise || reset) {
 
       if (this.priceHistoryPromise && this.processingPriceHistory) {
@@ -485,6 +486,7 @@ export class LbpManager implements ILaunch {
       ): void => {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
+            // this.ensureTrajectoryForecastData(history);
             this.priceHistory = history;
             resolve(history);
           })
@@ -500,6 +502,28 @@ export class LbpManager implements ILaunch {
       return this.priceHistoryPromise;
     }
   }
+
+
+  // /**
+  //  * call this to make sure that this.trajectoryForecastData is hydrated.
+  //  * @returns Promise of same as this.trajectoryForecastData
+  //  */
+  // private ensureTrajectoryForecastData(history: Array<IHistoricalPriceRecord>): Promise<Array<IHistoricalPriceRecord>> {
+  //     return this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this);
+  //       .then(async (trajectoryForecast) => {
+  //         this.trajectoryForecastData = await trajectoryForecast;
+  //         resolve(trajectoryForecast);
+  //       })
+  //       .catch((ex) => {
+  //         this.consoleLogService.logMessage(ex, "error");
+  //         reject(ex);
+  //       })
+  //       .finally(() => {
+  //         this.processingTrajectoryData = false;
+  //       });
+  //     });
+  // }
+
   /**
    * returns projectTokensPerFundingToken
    *

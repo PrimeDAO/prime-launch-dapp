@@ -7,7 +7,7 @@ export class ProjectTokenInfo {
 
   lbpMgrChanged(): void {
     if (!this.lbpMgr?.priceHistory) {
-      this.lbpMgr.ensurePriceHistory();
+      this.lbpMgr.ensurePriceData();
     }
   }
 

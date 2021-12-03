@@ -1,19 +1,31 @@
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { autoinject } from "aurelia-framework";
 import "./spark-chart.scss";
-import { createChart, CrosshairMode, IChartApi, ISeriesApi } from "lightweight-charts";
+import { createChart, CrosshairMode, IChartApi, ISeriesApi, LineWidth, LineStyle} from "lightweight-charts";
 import { bindable } from "aurelia-typed-observable-plugin";
 import { NumberService } from "services/NumberService";
+import { DateService } from "services/DateService";
+
+interface ISeries {
+  name: string,
+  data: Array<any>,
+  color: string,
+  lineStyle?: LineStyle,
+  lineWidth?: LineWidth,
+}
 
 @autoinject
 export class SparkChart {
-  @bindable data: Array<any>;
+  @bindable chartConfig: Array<ISeries>;
+  @bindable.booleanAttr gridHorizontal = false;
+  @bindable.booleanAttr gridVertical = false;
   @bindable.booleanAttr interactive;
   @bindable.number height = 300;
   @bindable.number width = 500;
+  @bindable.boolean utc = false;
 
   chart: IChartApi;
-  series: ISeriesApi<"Line">;
+  series: Array<ISeriesApi<"Line">> = [];
 
   container: HTMLElement;
   sparkChart: HTMLElement;
@@ -21,6 +33,7 @@ export class SparkChart {
   constructor(
     private numberService: NumberService,
     private aureliaHelperService: AureliaHelperService,
+    private dateService: DateService,
   ) {
   }
 
@@ -31,11 +44,11 @@ export class SparkChart {
       this.createChart();
     }
 
-    this.dataChanged();
+    this.chartConfigChanged();
   }
 
   private resizeChart() {
-    if (this.chart && this.data && this.container) {
+    if (this.chart && this.chartConfig && this.container) {
       this.chart.resize(this.container.offsetWidth, this.container.offsetHeight);
       this.chart.timeScale().fitContent();
     }
@@ -49,11 +62,28 @@ export class SparkChart {
         // rightBarStaysOnScroll: true,
         visible: true,
         timeVisible: true,
-        secondsVisible: true,
+        secondsVisible: false,
+        borderVisible: false,
+        tickMarkFormatter: (time) => {
+          return this.dateService.ticksToString(
+            time * 1000, // to milliseconds
+            {format: "DD MMM", utc: this.utc || false},
+          );
+        },
       },
       crosshair: {
-        vertLine: { visible: true },
-        horzLine: { visible: true },
+        vertLine: {
+          visible: true,
+          width: 1,
+          color: "#98979b", // $Neutral02
+          style: 0,
+        },
+        horzLine: {
+          visible: true,
+          width: 1,
+          color: "#98979b", // $Neutral02
+          style: 0,
+        },
         mode: CrosshairMode.Magnet,
       },
       priceScale: {
@@ -65,10 +95,12 @@ export class SparkChart {
       },
       grid: {
         horzLines: {
-          visible: false,
+          visible: this.gridHorizontal,
+          color: "#403453", // $Border01
         },
         vertLines: {
-          visible: false,
+          visible: this.gridVertical,
+          color: "#403453", // $Border01
         },
       },
       layout: {
@@ -97,33 +129,48 @@ export class SparkChart {
     const innerDimensions = this.innerDimensions(this.sparkChart);
     options.width = this.width || innerDimensions.width;
     options.height = this.height || innerDimensions.height;
-    options.timeScale.barSpacing = Math.max(options.width / this.data?.length || 1, 6);
 
     this.chart = createChart(this.sparkChart, options);
-
-
-    const color = "#FF497A";
-    this.series = this.chart.addLineSeries({
-      color: color,
-      priceLineVisible: false,
-      crosshairMarkerVisible: this.interactive,
-      priceFormat: {
-        type: "custom",
-        formatter: value => `${this.numberService.toString(value, {
-          mantissa: 2,
-          thousandSeparated: true,
-        })}`,
-      },
-    });
   }
 
-  dataChanged(): void {
-    if (this.data && this.chart) {
-      this.series.setData(this.data.map(item => ({
-        time: item.time,
-        value: item.price,
-      })));
-      this.resizeChart();
+  private chartConfigChanged(): void {
+    if (this.chartConfig && this.chart) {
+      if (!this.series?.length) {
+        const seriesCollection = new Array<ISeriesApi<"Line">>();
+        this.chartConfig.forEach((series) => {
+          const newSeries = this.chart.addLineSeries({
+            color: series.color,
+            priceLineVisible: false,
+            title: series.name || "",
+            crosshairMarkerVisible: this.interactive,
+            priceFormat: {
+              type: "custom",
+              formatter: value => `${this.numberService.toString(value, {
+                mantissa: 2,
+                thousandSeparated: true,
+              })}`,
+            },
+          });
+          newSeries.applyOptions({
+            lineStyle: series.lineStyle || 0,
+            lineWidth: series.lineWidth || 2,
+          });
+          seriesCollection.push(newSeries);
+        });
+
+        this.series = seriesCollection;
+      }
+
+      this.chartConfig.forEach((series, index) => {
+        if (series.data?.length) {
+          this.series[index].setData(series.data.map(item => ({
+            time: item.time,
+            value: item.price,
+          })));
+          this.resizeChart();
+        }
+        this.chart.timeScale().fitContent();
+      });
     }
   }
 

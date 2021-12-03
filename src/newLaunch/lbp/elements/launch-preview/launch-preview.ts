@@ -3,7 +3,7 @@ import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
 import { DateService } from "services/DateService";
 import { LbpManagerService } from "services/LbpManagerService";
-import { autoinject } from "aurelia-framework";
+import { autoinject, computedFrom } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./launch-preview.scss";
 
@@ -45,6 +45,17 @@ export class LaunchPreview {
     private lbpManagerService: LbpManagerService,
     private dateService: DateService,
   ) {
+  }
+
+  @computedFrom("config.trajectoryForecast")
+  private get graphData(): Array<any> {
+    return [
+      {
+        name: "",
+        color: "#FF497A",
+        data: this.config?.trajectoryForecast || [],
+      },
+    ];
   }
 
   attached(): void {
@@ -120,7 +131,7 @@ export class LaunchPreview {
       this.fundingTokenPrice,
     );
 
-    const trajectoryForecast = this.lbpProjectTokenPriceService.getInterpolatedPriceDataPoints(
+    const trajectoryForecast = await this.lbpProjectTokenPriceService.getInterpolatedPriceDataPoints(
       amountProjectTokenInEth,
       amountFundingTokenInEth,
       {

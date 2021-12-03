@@ -32,7 +32,7 @@ export class TimeRemaining {
 
   lbpMgrChanged(): void {
     if (!this.lbpMgr?.priceHistory) {
-      this.lbpMgr.ensurePriceHistory();
+      this.lbpMgr.ensurePriceData();
     }
   }
 

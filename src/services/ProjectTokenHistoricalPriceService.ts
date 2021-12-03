@@ -23,12 +23,14 @@ export interface IHistoricalPriceRecord { time: number, price?: number }
 @autoinject
 export class ProjectTokenHistoricalPriceService {
 
+  public lastSwap: ISwapRecord;
   constructor(
     private dateService: DateService,
     private tokenService: TokenService,
     private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
     private ethereumService: EthereumService,
     private numberService: NumberService,
+    private priceService: LbpProjectTokenPriceService,
   ) {
   }
 
@@ -54,12 +56,14 @@ export class ProjectTokenHistoricalPriceService {
       return [];
     }
 
-    const startingSeconds = this.dateService.translateLocalToUtc(lbpMgr.startTime).getTime() / 1000;
     const intervalMinutes = 60/*min*/;
     const intervalSeconds = intervalMinutes * 60/* sec */;
-    const startTime = (Math.floor(startingSeconds / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const startTime = lbpMgr.startTime.getTime() / 1000;
+    const endTime = lbpMgr.endTime.getTime() / 1000;
+    const currentTime = this.dateService.utcNow.getTime() / 1000;
     /* Rounded to the nearest hour */
-    const endTimeSeconds = Math.floor(this.dateService.translateLocalToUtc(new Date()).getTime() / 1000 / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
 
     /**
@@ -76,7 +80,7 @@ export class ProjectTokenHistoricalPriceService {
        * fetchSwaps returns swaps in descending time order, so the last one will be
        * the earliest one.
        */
-      fetched = await this.fetchSwaps(endTimeSeconds, startingSeconds, index, lbpMgr.lbp);
+      fetched = await this.fetchSwaps(endTimeSeconds, startTime, index, lbpMgr.lbp);
       swaps = swaps.concat(fetched);
       index++;
     } while (fetched.length === 1000);
@@ -86,11 +90,13 @@ export class ProjectTokenHistoricalPriceService {
     const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
     const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
-    swaps.push({
-      timestamp: startTime,
+    this.lastSwap = {
+      timestamp: startTimeSeconds,
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
-    } as ISwapRecord);
+    };
+    swaps.push({...this.lastSwap});
+
 
     if (swaps.length) {
       let previousTimePoint;
@@ -115,7 +121,7 @@ export class ProjectTokenHistoricalPriceService {
       /**
        * enumerate every day
        */
-      for (let timestamp = startTime; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
+      for (let timestamp = startTimeSeconds; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
 
         const todaysSwaps = new Array<ISwapRecord>();
         const nextInterval = timestamp + intervalSeconds;
@@ -141,13 +147,19 @@ export class ProjectTokenHistoricalPriceService {
 
         if (todaysSwaps?.length) {
           returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp,
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
               priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
             ),
           });
+
+          this.lastSwap = {
+            timestamp: timestamp + intervalSeconds,
+            tokenAmountOut: todaysSwaps[todaysSwaps.length-1].tokenAmountOut,
+            tokenAmountIn: todaysSwaps[todaysSwaps.length-1].tokenAmountIn,
+          };
           previousTimePoint = (
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)
@@ -156,22 +168,65 @@ export class ProjectTokenHistoricalPriceService {
           /**
            * previous value effected by USD course change
            */
-          returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
-            price: (
-              previousTimePoint *
-              priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
-            ),
-          });
+          if (this.lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
+            returnArray.push({
+              time: timestamp,
+              price: (
+                previousTimePoint *
+                priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+              ),
+            });
+          }
         } else {
           returnArray.push({
-            time: timestamp + intervalSeconds/* Apply to the next interval in users timezone */,
+            time: timestamp,
           });
         }
       }
     }
     return returnArray;
   }
+
+  private usdPriceAtLastSwap: number;
+
+  private hydrateCoingeckoUSDPrice = async (coinId): Promise<void> => {
+    const prices = (await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=usd&from=${this.lastSwap.timestamp - 3600}&to=${this.lastSwap.timestamp}`)).data.prices;
+    this.usdPriceAtLastSwap = prices[prices.length - 1][1];
+  };
+
+  public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
+    await this.hydrateCoingeckoUSDPrice(lbpMgr.fundingTokenInfo.id);
+
+    const lastSwapDate = new Date(this.lastSwap.timestamp * 1000);
+
+    const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
+      lastSwapDate, // last swap time
+      lbpMgr.startTime, // lbp begin time
+      lbpMgr.endTime, // lbp end time
+      lbpMgr.projectTokenStartWeight,
+      lbpMgr.projectTokenEndWeight,
+    );
+
+    const projectTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const fundingTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
+    const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
+      projectTokenBalance,
+      fundingTokenBalance,
+      {
+        start: lastSwapDate,
+        end: lbpMgr.endTime,
+      },
+      {
+        start: weightAtTime,
+        end: lbpMgr.projectTokenEndWeight,
+      },
+      this.usdPriceAtLastSwap, // funding token USD price at last swap
+    );
+
+    return forecastData;
+  }
+
+
 
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();

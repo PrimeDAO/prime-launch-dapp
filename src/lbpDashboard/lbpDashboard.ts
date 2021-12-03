@@ -22,7 +22,6 @@ export class lbpDashboard {
   lbpMgr: LbpManager;
   loading = true;
   projectTokenHistoricalPrices: Array<IHistoricalPriceRecord>;
-  priceFetchIntervalId: any;
 
   constructor(
     private dateService: DateService,
@@ -88,14 +87,7 @@ export class lbpDashboard {
       }
       this.lbpMgr = lbpmgr;
 
-      if (!lbpmgr.priceHistory) {
-        this.lbpMgr.ensurePriceHistory();
-      }
       await this.hydrateUserData();
-
-      this.priceFetchIntervalId = setInterval(() => {
-        this.lbpMgr.ensurePriceHistory(true);
-      }, 60000);
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -105,13 +97,6 @@ export class lbpDashboard {
         this.eventAggregator.publish("launches.loading", false);
       }
       this.loading = false;
-    }
-  }
-
-  detached(): void {
-    if (this.priceFetchIntervalId) {
-      clearInterval(this.priceFetchIntervalId);
-      this.priceFetchIntervalId = null;
     }
   }
 

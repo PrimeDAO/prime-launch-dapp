@@ -1,0 +1,7 @@
+<template>
+  <require from="resources/elements/sparkChart/spark-chart"></require>
+  <div class="graph">
+    <div show.to-view="!lbpMgr.priceHistory" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+    <spark-chart if.bind="graphConfig" chart-config.bind="graphConfig" grid-horizontal="true" height="400"></spark-chart>
+  </div>
+</template>

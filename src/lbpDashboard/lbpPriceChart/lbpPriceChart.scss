@@ -1,0 +1,12 @@
+@import "styles/styles.scss";
+
+.graph {
+  .loading {
+    text-align: center;
+    font-size: 32px;
+    padding-top: 24px;
+    i {
+      color: $Secondary03-dev;
+    }
+  } 
+}
