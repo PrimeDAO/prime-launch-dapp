@@ -102,7 +102,7 @@ export class App {
     }, 1000);
 
     const getShowCountdownPage = () =>
-      (process.env.NODE_ENV === "production") ? (Date.now() < AppStartDate.getTime()) : false;
+      ((process.env.NODE_ENV === "production") && (process.env.NETWORK === "mainnet")) ? (Date.now() < AppStartDate.getTime()) : false;
 
     this.showCountdownPage = getShowCountdownPage();
 
