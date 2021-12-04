@@ -16,6 +16,7 @@ interface ISwapRecord {
   timestamp: number,
   tokenAmountIn: string,
   tokenAmountOut: string,
+  priceUSD: number,
 }
 
 export interface IHistoricalPriceRecord { time: number, price?: number }
@@ -31,8 +32,7 @@ export class ProjectTokenHistoricalPriceService {
     private ethereumService: EthereumService,
     private numberService: NumberService,
     private priceService: LbpProjectTokenPriceService,
-  ) {
-  }
+  ) {}
 
   private getBalancerSubgraphUrl(): string {
     return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${EthereumService.targetedNetwork === Networks.Rinkeby ? "-rinkeby-v2" : "-v2"}`;
@@ -40,6 +40,17 @@ export class ProjectTokenHistoricalPriceService {
 
   private getCoingeckoUrl(fundingTokenId: string, startTime: number, endTime: number): string {
     return `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`;
+  }
+
+  private nearestUSDPriceAtTimestamp(prices: Array<number>, timestamp: number): number {
+    const fundingTokenPricesUSD = prices.map(price => {
+      return {
+        timestamp: price[0],
+        priceInUSD: price[1],
+      };
+    }) || [{ timestamp: 0, priceInUSD: 0 }];
+    const res = fundingTokenPricesUSD.filter(price => price.timestamp / 1000 <= timestamp );
+    return res[res.length - 1].priceInUSD;
   }
 
   /**
@@ -65,7 +76,6 @@ export class ProjectTokenHistoricalPriceService {
     const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
     const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
-
     /**
      * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
      * in a single query you can potentially obtain data for only a small slice of calendar time.
@@ -90,34 +100,35 @@ export class ProjectTokenHistoricalPriceService {
     const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
     const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
+    const prices = (await axios.get(
+      this.getCoingeckoUrl(
+        lbpMgr.fundingTokenInfo.id,
+        (startTimeSeconds - intervalMinutes * 60 /*hour back*/),
+        endTimeSeconds,
+      ),
+    ))?.data?.prices || [];
+
     this.lastSwap = {
       timestamp: startTimeSeconds,
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
+      priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
     };
     swaps.push({...this.lastSwap});
-
 
     if (swaps.length) {
       let previousTimePoint;
 
       swaps.reverse(); // to ascending
 
-      const prices = await axios.get(
-        this.getCoingeckoUrl(
-          lbpMgr.fundingTokenInfo.id,
-          swaps[0].timestamp - Math.round(60 / intervalMinutes * 1000/*hour back*/),
-          endTimeSeconds,
-        ),
-      );
+      swaps[0].priceUSD = this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds);
 
-      const fundingTokenPricesUSD = prices?.data?.prices?.map(price => {
-        return {
-          timestamp: Math.floor(price[0] / (intervalSeconds * 1000)) * (intervalSeconds),
-          priceInUSD: price[1],
-        };
-      }) || [{ timestamp: 0, priceInUSD: 0 }];
-
+      this.lastSwap = {
+        timestamp: swaps[swaps.length - 1].timestamp,
+        tokenAmountOut: swaps[swaps.length - 1].tokenAmountOut,
+        tokenAmountIn: swaps[swaps.length - 1].tokenAmountIn,
+        priceUSD: this.nearestUSDPriceAtTimestamp(prices, swaps[swaps.length - 1].timestamp),
+      };
       /**
        * enumerate every day
        */
@@ -143,7 +154,7 @@ export class ProjectTokenHistoricalPriceService {
           }
         }
 
-        const priceAtTimePoint = fundingTokenPricesUSD.filter(price => price.timestamp <= timestamp );
+        const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, timestamp );
 
         if (todaysSwaps?.length) {
           returnArray.push({
@@ -151,15 +162,10 @@ export class ProjectTokenHistoricalPriceService {
             price: (
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
               this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
-              priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+              priceAtTimePoint
             ),
           });
 
-          this.lastSwap = {
-            timestamp: timestamp + intervalSeconds,
-            tokenAmountOut: todaysSwaps[todaysSwaps.length-1].tokenAmountOut,
-            tokenAmountIn: todaysSwaps[todaysSwaps.length-1].tokenAmountIn,
-          };
           previousTimePoint = (
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
             this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)
@@ -173,7 +179,7 @@ export class ProjectTokenHistoricalPriceService {
               time: timestamp,
               price: (
                 previousTimePoint *
-                priceAtTimePoint[priceAtTimePoint.length-1].priceInUSD
+                priceAtTimePoint
               ),
             });
           }
@@ -189,15 +195,8 @@ export class ProjectTokenHistoricalPriceService {
 
   private usdPriceAtLastSwap: number;
 
-  private hydrateCoingeckoUSDPrice = async (coinId): Promise<void> => {
-    const prices = (await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart/range?vs_currency=usd&from=${this.lastSwap.timestamp - 3600}&to=${this.lastSwap.timestamp}`)).data.prices;
-    this.usdPriceAtLastSwap = prices[prices.length - 1][1];
-  };
-
   public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
-    await this.hydrateCoingeckoUSDPrice(lbpMgr.fundingTokenInfo.id);
-
-    const lastSwapDate = new Date(this.lastSwap.timestamp * 1000);
+    const lastSwapDate = this.dateService.ticksToDate(this.lastSwap.timestamp * 1000);
 
     const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
       lastSwapDate, // last swap time
@@ -220,13 +219,11 @@ export class ProjectTokenHistoricalPriceService {
         start: weightAtTime,
         end: lbpMgr.projectTokenEndWeight,
       },
-      this.usdPriceAtLastSwap, // funding token USD price at last swap
+      this.lastSwap.priceUSD, // funding token USD price at last swap
     );
 
     return forecastData;
   }
-
-
 
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();

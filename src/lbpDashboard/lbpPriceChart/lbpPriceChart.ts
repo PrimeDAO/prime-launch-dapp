@@ -80,7 +80,7 @@ export class LbpPriceChart {
           data: this.lbpMgr.priceHistory?.map(i => {
             return {
               price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
+              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
             };
           }),
           color: "#FF497A",
@@ -89,7 +89,7 @@ export class LbpPriceChart {
           data: trajectoryForecastData?.map(i => {
             return {
               price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
+              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
             };
           }),
           color: "#403453",
@@ -100,7 +100,7 @@ export class LbpPriceChart {
           data: averagePriceData?.map(i => {
             return {
               price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
+              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
             };
           }),
           color: "#A258A7",
