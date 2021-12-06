@@ -15,42 +15,28 @@ export class EthweiValueConverter {
    * incorrect value is not persisted.
    *
    * @param ethValue
-   * @param unitName Default is 18.  Can be decimal count or:
-   *   "wei",
-   *   "kwei",
-   *   "mwei",
-   *   "gwei",
-   *   "szabo",
-   *   "finney",
-   *   "ether",
+   * @param decimals Default is 18.
    */
-  public fromView(ethValue: string | number, unitName: string | BigNumberish = 18): BigNumber {
+  public fromView(ethValue: string | number, decimals: string | number = 18): BigNumber {
     if ((ethValue === undefined) || (ethValue === null) || ((typeof ethValue === "string") && ((ethValue as string)?.trim() === ""))) {
       return null;
     }
 
-    return toWei(ethValue.toString(), unitName);
+    return toWei(ethValue.toString(), decimals);
   }
 
   /**
    *  Wei BigNumber|string from model ==> ETH string in HTML input
    * @param weiValue
-   * @param unitName Default is 18.  Can be decimal count or:
-   *   "wei",
-   *   "kwei",
-   *   "mwei",
-   *   "gwei",
-   *   "szabo",
-   *   "finney",
-   *   "ether",
+   * @param decimals Default is 18.
    */
-  public toView(weiValue: BigNumber | string, unitName: string | BigNumberish = 18): string {
+  public toView(weiValue: BigNumber | string, decimals: string | number = 18): string {
     try {
       if ((weiValue === undefined) || (weiValue === null)) {
         return "";
       }
 
-      return fromWei(weiValue, unitName);
+      return fromWei(weiValue, decimals);
     } catch (ex) {
       return weiValue.toString();
     }
