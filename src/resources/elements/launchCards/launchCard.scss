@@ -44,6 +44,7 @@
     }
 
     > .typeAndTitle {
+      text-align: left;
       grid-area: typeAndTitle;
       > .launch-type {
         font-weight: 600;
@@ -73,6 +74,7 @@
     }
 
     > .tokensTarget {
+      text-align: left;
       grid-area: tokensTarget;
       display: grid;
       grid-template-columns: auto;
@@ -125,10 +127,14 @@
 
     .launchSummary {
       grid-template-columns: 48px 4fr 1fr;
+      //   grid-template-columns: 58px 4fr 1fr;
       grid-template-areas:
-        "icon . timeLeft"
-        "icon title title"
-        ". description description"
+        ". . timeLeft"
+        ". . ."
+        "icon typeAndTitle typeAndTitle"
+        "icon typeAndTitle typeAndTitle"
+        ". . ."
+        "description description description"
         ". . ."
         ". . ."
         "tokensTarget tokensTarget tokensTarget";
