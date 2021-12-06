@@ -12,7 +12,7 @@ import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import axios from "axios";
 import { autoinject } from "aurelia-framework";
 
-interface ISwapRecord {
+export interface ISwapRecord {
   timestamp: number,
   tokenAmountIn: string,
   tokenAmountOut: string,
@@ -108,86 +108,92 @@ export class ProjectTokenHistoricalPriceService {
       ),
     ))?.data?.prices || [];
 
-    this.lastSwap = {
-      timestamp: startTimeSeconds,
-      tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
-      tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
-      priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
-    };
-    swaps.push({...this.lastSwap});
+    let previousTimePoint;
 
-    if (swaps.length) {
-      let previousTimePoint;
+    swaps.reverse(); // to ascending
 
-      swaps.reverse(); // to ascending
-
-      swaps[0].priceUSD = this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds);
-
-      this.lastSwap = {
-        timestamp: swaps[swaps.length - 1].timestamp,
+    this.lastSwap = (!swaps.length)
+      ? {
+        // set the last swap to the start time with pool balance
+        timestamp: Math.floor(startTimeSeconds / 3600) * 3600,
+        tokenAmountOut: startProjectTokenAmount.toString(),
+        tokenAmountIn: startFundingTokenAmount.toString(),
+        priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
+      }
+      : {
+        // set the last swap to the last swap time with swap amounts
+        timestamp: Math.floor(swaps[swaps.length - 1].timestamp / 3600) * 3600,
         tokenAmountOut: swaps[swaps.length - 1].tokenAmountOut,
         tokenAmountIn: swaps[swaps.length - 1].tokenAmountIn,
         priceUSD: this.nearestUSDPriceAtTimestamp(prices, swaps[swaps.length - 1].timestamp),
       };
-      /**
-       * enumerate every day
-       */
-      for (let timestamp = startTimeSeconds; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
 
-        const todaysSwaps = new Array<ISwapRecord>();
-        const nextInterval = timestamp + intervalSeconds;
+    // first swap amounts should be weighted after the lbp start weight
+    swaps.unshift({
+      timestamp: Math.floor(startTimeSeconds / 3600) * 3600,
+      tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
+      tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
+      priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
+    });
 
-        if (swaps.length) {
-        // eslint-disable-next-line no-constant-condition
-          while (true) {
-            const swap = swaps[0];
-            if (swap.timestamp >= nextInterval) {
+    /**
+     * enumerate every day
+     */
+    for (let timestamp = startTimeSeconds; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
+
+      const todaysSwaps = new Array<ISwapRecord>();
+      const nextInterval = timestamp + intervalSeconds;
+
+      if (swaps.length) {
+      // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const swap = swaps[0];
+          if (swap.timestamp >= nextInterval) {
+            break;
+          }
+          else if (swap.timestamp >= timestamp) {
+            todaysSwaps.push(swap);
+            swaps.shift();
+            if (!swaps.length) {
               break;
             }
-            else if (swap.timestamp >= timestamp) {
-              todaysSwaps.push(swap);
-              swaps.shift();
-              if (!swaps.length) {
-                break;
-              }
-            } // swap.timestamp < timestamp
-          }
+          } // swap.timestamp < timestamp
         }
+      }
 
-        const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, timestamp );
+      const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, timestamp );
 
-        if (todaysSwaps?.length) {
+      if (todaysSwaps?.length) {
+        returnArray.push({
+          time: timestamp,
+          price: (
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn)) /
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)) *
+            priceAtTimePoint
+          ),
+        });
+
+        previousTimePoint = (
+          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn)) /
+          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut))
+        );
+      } else if (previousTimePoint) {
+        /**
+         * previous value effected by USD course change
+         */
+        if (this.lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
           returnArray.push({
             time: timestamp,
             price: (
-              this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
-              this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut) *
+              previousTimePoint *
               priceAtTimePoint
             ),
           });
-
-          previousTimePoint = (
-            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) /
-            this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)
-          );
-        } else if (previousTimePoint) {
-          /**
-           * previous value effected by USD course change
-           */
-          if (this.lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
-            returnArray.push({
-              time: timestamp,
-              price: (
-                previousTimePoint *
-                priceAtTimePoint
-              ),
-            });
-          }
-        } else {
-          returnArray.push({
-            time: timestamp,
-          });
         }
+      } else {
+        returnArray.push({
+          time: timestamp,
+        });
       }
     }
     return returnArray;
@@ -196,7 +202,7 @@ export class ProjectTokenHistoricalPriceService {
   private usdPriceAtLastSwap: number;
 
   public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
-    const lastSwapDate = this.dateService.ticksToDate(this.lastSwap.timestamp * 1000);
+    const lastSwapDate = this.dateService.ticksToDate(lbpMgr.lastSwap.timestamp * 1000);
 
     const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
       lastSwapDate, // last swap time
@@ -206,11 +212,11 @@ export class ProjectTokenHistoricalPriceService {
       lbpMgr.projectTokenEndWeight,
     );
 
-    const projectTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
-    const fundingTokenBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
+    const projectTokenBalance = this.numberService.fromString(lbpMgr.lastSwap.tokenAmountOut);
+    const fundingTokenBalance = this.numberService.fromString(lbpMgr.lastSwap.tokenAmountIn);
     const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
-      projectTokenBalance,
-      fundingTokenBalance,
+      projectTokenBalance * (weightAtTime),
+      fundingTokenBalance * (1 - weightAtTime),
       {
         start: lastSwapDate,
         end: lbpMgr.endTime,
@@ -219,7 +225,7 @@ export class ProjectTokenHistoricalPriceService {
         start: weightAtTime,
         end: lbpMgr.projectTokenEndWeight,
       },
-      this.lastSwap.priceUSD, // funding token USD price at last swap
+      lbpMgr.lastSwap.priceUSD, // funding token USD price at last swap
     );
 
     return forecastData;

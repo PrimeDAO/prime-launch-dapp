@@ -17,7 +17,7 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import TransactionsService, { TransactionReceipt } from "services/TransactionsService";
 import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
-import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
+import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService, ISwapRecord } from "services/ProjectTokenHistoricalPriceService";
 import { TimingService } from "services/TimingService";
 
 export interface ILbpManagerConfiguration {
@@ -66,6 +66,7 @@ export class LbpManager implements ILaunch {
 
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
+  public lastSwap: ISwapRecord;
   public projectTokenStartWeight: number;
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
@@ -488,6 +489,7 @@ export class LbpManager implements ILaunch {
           .then((history) => {
             // this.ensureTrajectoryForecastData(history);
             this.priceHistory = history;
+            this.lastSwap = this.projectTokenHistoricalPriceService.lastSwap;
             resolve(history);
           })
           .catch((ex) => {
