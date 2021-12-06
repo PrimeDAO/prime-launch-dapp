@@ -31,7 +31,7 @@ export class WithCommasValueConverter {
      */
     value = this.numberService.fromString(parts[0]);
     const partWithCommas = this.numberService.toString(value, { thousandSeparated: true, mantissa: -1 });
-    console.log("part: ", (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`);
+    // console.log("part: ", (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`);
     return (parts.length === 1) ? partWithCommas : `${partWithCommas}.${parts[1]}`;
   }
 }
