@@ -24,7 +24,7 @@
             if.bind="lbps.length !== 1"
             item-changed.call="selectLbp(index)"
             selected-item-index.to-view="selectedLbpIndex"
-            placeholder="Select an LPB...">
+            placeholder="Select an LBP...">
             <div repeat.for="lbp of lbps">${lbp.metadata.general.projectName}</div>
           </dropdown>
           <div else class="heading heading3 projectTitle">

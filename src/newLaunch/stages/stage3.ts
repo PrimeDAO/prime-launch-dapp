@@ -124,9 +124,9 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
           message = "Please enter a name for Stakeholder";
         } else if (!tokenDistrb.amount) {
           message = `Please enter an amount for ${tokenDistrb.stakeHolder}`;
-        } else if (!Number.isInteger(tokenDistrb.cliff) || tokenDistrb.cliff<0) {
+        } else if (!this.numberService.stringIsNumber(tokenDistrb.cliff) || tokenDistrb.cliff<0) {
           message = `Please enter a cliff greater than or equal to zero for ${tokenDistrb.stakeHolder}`;
-        } else if (!Number.isInteger(tokenDistrb.vest) || tokenDistrb.vest<0) {
+        } else if (!this.numberService.stringIsNumber(tokenDistrb.vest) || tokenDistrb.vest<0) {
           message = `Please enter a vesting period greater than or equal to zero for ${tokenDistrb.stakeHolder}`;
         } else if (tokenDistrb.vest < tokenDistrb.cliff) {
           message = `Please enter for ${tokenDistrb.stakeHolder} a cliff that is less than or equal to the vesting period`;

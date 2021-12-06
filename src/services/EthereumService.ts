@@ -477,7 +477,7 @@ export class EthereumService {
 
 /**
  * @param ethValue
- * @param unitName Default is 18.  Can be decimal count or:
+ * @param decimals Default is 18.  Can be decimal count or:
  *  "wei",
  *  "kwei",
  *  "mwei",
@@ -487,13 +487,21 @@ export class EthereumService {
  *  "ether",
  * @returns
  */
-export const toWei = (ethValue: BigNumberish, unitName: string | BigNumberish = 18): BigNumber => {
-  return parseUnits(ethValue.toString(), unitName);
+export const toWei = (ethValue: BigNumberish, decimals: string | number = 18): BigNumber => {
+  const t = typeof ethValue;
+  if (t === "string" || t === "number") {
+    // avoid underflows
+    const number = Number(ethValue);
+    if (!Number.isInteger(number) && !isNaN(number)) {
+      ethValue = number.toFixed(Number(decimals));
+    }
+  }
+  return parseUnits(ethValue.toString(), decimals);
 };
 
 /**
  * @param weiValue
- * @param unitName Default is 18.  Can be decimal count or:
+ * @param decimals Default is 18.  Can be decimal count or:
  *  "wei",
  *  "kwei",
  *  "mwei",
@@ -503,8 +511,8 @@ export const toWei = (ethValue: BigNumberish, unitName: string | BigNumberish = 
  *  "ether",
  * @returns
  */
-export const fromWei = (weiValue: BigNumberish, unitName: string | BigNumberish = 18): string => {
-  return formatUnits(weiValue.toString(), unitName);
+export const fromWei = (weiValue: BigNumberish, decimals: string | number = 18): string => {
+  return formatUnits(weiValue.toString(), decimals);
 };
 
 export const NULL_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";

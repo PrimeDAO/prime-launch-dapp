@@ -67,7 +67,7 @@ export class NumericInput {
       // assuming here that the input element will always give us a string
       try {
         if (newValue !== ".") {
-          console.log("newValue: ", newValue);
+          // console.log("newValue: ", newValue);
 
           let value: BigNumber | number | string = this.notWei ? Number(newValue) : toWei(newValue, this.decimals);
           if (this.outputAsString) {

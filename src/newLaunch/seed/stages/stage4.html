@@ -91,22 +91,24 @@
         <div>
           <label for="vestingPeriod">Project tokens vested for</label>
           <div class="vestingPeriod">
-            <input
+            <numeric-input
               placeholder="100.2"
               id="vestingPeriod"
+              not-wei
               value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
-            </input>
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
         <div>
           <label for="vestingCliff">with a cliff of</label>
           <div class="vestingPeriod">
-            <input
+            <numeric-input
               placeholder="20.8"
               id="vestingCliff"
+              not-wei
               value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
-            </input>
+            </numeric-input>
             <div>days</div>
           </div>
         </div>
