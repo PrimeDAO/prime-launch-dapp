@@ -53,6 +53,16 @@ export class ProjectTokenHistoricalPriceService {
     return res[res.length - 1].priceInUSD;
   }
 
+  private async getFundingTokenUSDPricesByID(tokenId: string, endTimeSeconds: number, startTimeSeconds: number, intervalMinutes: number): Promise<Array<number>> {
+    return await(await axios.get(
+      this.getCoingeckoUrl(
+        tokenId,
+        (startTimeSeconds - intervalMinutes * 60 /*hour back*/),
+        endTimeSeconds,
+      ),
+    ))?.data?.prices || [];
+  }
+
   /**
    * Get Project Token Price History, in USD
    *
@@ -100,33 +110,19 @@ export class ProjectTokenHistoricalPriceService {
     const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
     const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
 
-    const prices = (await axios.get(
-      this.getCoingeckoUrl(
-        lbpMgr.fundingTokenInfo.id,
-        (startTimeSeconds - intervalMinutes * 60 /*hour back*/),
-        endTimeSeconds,
-      ),
-    ))?.data?.prices || [];
+    const prices = await this.getFundingTokenUSDPricesByID(
+      lbpMgr.fundingTokenInfo.id,
+      endTimeSeconds,
+      startTimeSeconds,
+      intervalMinutes,
+    );
 
     let previousTimePoint;
+    let previousPriceAtTimePoint;
 
     swaps.reverse(); // to ascending
 
-    this.lastSwap = (!swaps.length)
-      ? {
-        // set the last swap to the start time with pool balance
-        timestamp: Math.floor(startTimeSeconds / 3600) * 3600,
-        tokenAmountOut: startProjectTokenAmount.toString(),
-        tokenAmountIn: startFundingTokenAmount.toString(),
-        priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
-      }
-      : {
-        // set the last swap to the last swap time with swap amounts
-        timestamp: Math.floor(swaps[swaps.length - 1].timestamp / 3600) * 3600,
-        tokenAmountOut: swaps[swaps.length - 1].tokenAmountOut,
-        tokenAmountIn: swaps[swaps.length - 1].tokenAmountIn,
-        priceUSD: this.nearestUSDPriceAtTimestamp(prices, swaps[swaps.length - 1].timestamp),
-      };
+    this.lastSwap = await this.fetchLastSwap(endTimeSeconds, startTimeSeconds, lbpMgr);
 
     // first swap amounts should be weighted after the lbp start weight
     swaps.unshift({
@@ -161,9 +157,9 @@ export class ProjectTokenHistoricalPriceService {
         }
       }
 
-      const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, timestamp );
 
       if (todaysSwaps?.length) {
+        const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, todaysSwaps[todaysSwaps.length-1].timestamp );
         returnArray.push({
           time: timestamp,
           price: (
@@ -177,6 +173,7 @@ export class ProjectTokenHistoricalPriceService {
           (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn)) /
           (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut))
         );
+        previousPriceAtTimePoint = priceAtTimePoint;
       } else if (previousTimePoint) {
         /**
          * previous value effected by USD course change
@@ -186,7 +183,7 @@ export class ProjectTokenHistoricalPriceService {
             time: timestamp,
             price: (
               previousTimePoint *
-              priceAtTimePoint
+              previousPriceAtTimePoint
             ),
           });
         }
@@ -202,37 +199,98 @@ export class ProjectTokenHistoricalPriceService {
   private usdPriceAtLastSwap: number;
 
   public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
-    const lastSwapDate = this.dateService.ticksToDate(lbpMgr.lastSwap.timestamp * 1000);
+    const lastSwap = await this.fetchLastSwap(lbpMgr.endTime.getTime() / 1000, lbpMgr.startTime.getTime() / 1000, lbpMgr);
 
-    const weightAtTime = this.priceService.getProjectTokenWeightAtTime(
-      lastSwapDate, // last swap time
-      lbpMgr.startTime, // lbp begin time
-      lbpMgr.endTime, // lbp end time
-      lbpMgr.projectTokenStartWeight,
-      lbpMgr.projectTokenEndWeight,
+    const prices = await this.getFundingTokenUSDPricesByID(
+      lbpMgr.fundingTokenInfo.id,
+      lastSwap.timestamp,
+      lastSwap.timestamp - 3600,
+      60,
     );
 
-    const projectTokenBalance = this.numberService.fromString(lbpMgr.lastSwap.tokenAmountOut);
-    const fundingTokenBalance = this.numberService.fromString(lbpMgr.lastSwap.tokenAmountIn);
+    lastSwap.priceUSD = this.nearestUSDPriceAtTimestamp(prices, lastSwap.timestamp);
+
+    const lastSwapDate = this.dateService.ticksToDate(Math.floor(lastSwap.timestamp / 3600) * 3600 * 1000);
+    const poolBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const projectTokenAmount = this.numberService.fromString(lastSwap.tokenAmountOut);
+    const fundingTokenAmount = this.numberService.fromString(lastSwap.tokenAmountIn);
     const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
-      projectTokenBalance * (weightAtTime),
-      fundingTokenBalance * (1 - weightAtTime),
+      projectTokenAmount,
+      fundingTokenAmount,
       {
         start: lastSwapDate,
         end: lbpMgr.endTime,
       },
       {
-        start: weightAtTime,
+        // Special case: No swaps- calculation is based on the pool balance and start weight
+        // For all other cases, the calculation is based on the last swap amounts price impact
+        start: (projectTokenAmount !== poolBalance) ? 0.5 : lbpMgr.projectTokenStartWeight,
         end: lbpMgr.projectTokenEndWeight,
       },
-      lbpMgr.lastSwap.priceUSD, // funding token USD price at last swap
+      lastSwap.priceUSD, // funding token USD price at last swap
     );
 
     return forecastData;
   }
 
+  private fetchLastSwap(endDateSeconds: number, startDateSeconds: number, lbpMgr: LbpManager): Promise<ISwapRecord> {
+    const uri = this.getBalancerSubgraphUrl();
+    const query = {
+      swaps: {
+        __args: {
+          first: 1,
+          orderBy: "timestamp",
+          orderDirection: "desc",
+          where: {
+            poolId: lbpMgr.lbp.poolId.toLowerCase(),
+            timestamp_gte: startDateSeconds,
+            timestamp_lte: endDateSeconds,
+          },
+        },
+        timestamp: true,
+        tokenAmountIn: true,
+        tokenAmountOut: true,
+      },
+    };
+
+    return axios.post(uri,
+      JSON.stringify({ query: jsonToGraphQLQuery({ query }) }),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (response) => {
+        if (response.data.errors?.length) {
+          throw new Error(response.data.errors[0]);
+        }
+
+        if (!response.data.data?.swaps?.length) {
+          const startFundingTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingFundingTokenAmount, lbpMgr.fundingTokenInfo.decimals));
+          const startProjectTokenAmount = this.numberService.fromString(fromWei(lbpMgr.startingProjectTokenAmount, lbpMgr.projectTokenInfo.decimals));
+          return {
+            // set the last swap to the start time with pool balance
+            timestamp: Math.floor(startDateSeconds / 3600) * 3600,
+            tokenAmountOut: startProjectTokenAmount.toString(),
+            tokenAmountIn: startFundingTokenAmount.toString(),
+          };
+        }
+        if (response.data.data?.swaps?.length) {
+          response.data.data.swaps[0].timestamp = Math.floor(response.data.data.swaps[0].timestamp / 3600) * 3600;
+        }
+        return response.data?.data.swaps[0];
+      })
+      .catch((error) => {
+        throw new Error(`${error.response?.data?.error.message ?? "Error fetching price history"}`);
+        return null;
+      });
+  }
+
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();
+    console.log(`Fetching swaps for ${lbp.poolId} from ${startDateSeconds} to ${endDateSeconds}`);
+
     const query = {
       swaps: {
         __args: {
