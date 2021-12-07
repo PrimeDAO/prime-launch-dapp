@@ -81,6 +81,8 @@
     align-items: self-end;
     row-gap: 8px;
     column-gap: 12px;
+    width: 100%;
+    max-width: 500px;
 
     .description {
       grid-area: title;

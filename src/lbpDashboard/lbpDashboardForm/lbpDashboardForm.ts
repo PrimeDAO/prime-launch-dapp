@@ -18,6 +18,7 @@ import { BalancerService } from "services/BalancerService";
 import TransactionsService, { TransactionResponse } from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";
 import { LaunchService } from "services/LaunchService";
+import { toBigNumberJs } from "services/BigNumberService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -69,6 +70,7 @@ export class lbpDashboardForm {
   }
 
   private async fundingTokensToPayChanged(): Promise<void> {
+    await this.getProjectTokensPerFundingToken();
     this.getProjectTokensToPurchase();
   }
 
@@ -112,30 +114,32 @@ export class lbpDashboardForm {
    * @returns
    */
   async getProjectTokensPerFundingToken(): Promise<void> {
-    let returnValue: number;
 
-    if (!this.selectedFundingTokenInfo.address) {
-      returnValue = null; // will show "--" if displayed by formatted-number
+    if (!this.selectedFundingTokenInfo.address || !this.fundingTokensToPay?.gt(0)) {
+      this.projectTokensPerFundingToken = null; // will show "--" if displayed by formatted-number
     }
-    else if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+    else {
+      let returnValue: number;
+
+      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
       const sorSwapInfo = await this.balancerService.getSwapFromSor(
-        toWei(BigNumber.from(1), this.selectedFundingTokenInfo.decimals),
+        this.fundingTokensToPay,
         this.selectedFundingTokenInfo,
         this.lbpManager.projectTokenInfo) as SwapInfo;
 
       returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
       returnValue = Number.isFinite(returnValue) ? returnValue : null;
       if (returnValue === 0) {
-        returnValue = null; // will show "--" if displayed by formatted-number
+        returnValue = null;
       }
 
-    } else { // using the pool funding token
-      // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
-      returnValue = this.lbpManager.getCurrentExchangeRate();
+      // } else { // using the pool funding token
+      // // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
+      //   returnValue = this.lbpManager.getCurrentExchangeRate();
+      // }
+      this.projectTokensPerFundingToken = returnValue / this.numberService.fromString(fromWei(this.fundingTokensToPay.toString(), this.selectedFundingTokenInfo.decimals));
     }
-
-    this.projectTokensPerFundingToken = returnValue;
   }
 
   async getProjectTokensToPurchase(): Promise<void> {
@@ -210,28 +214,29 @@ export class lbpDashboardForm {
 
       let promise: Promise<TransactionReceipt>;
 
-      if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-        if (this.sorSwapInfo) {
-          promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
-        }
-      } else {
-        promise = this.transactionsService.send(() =>
-          this.lbpManager.lbp.vault.swap(
-            this.fundingTokensToPay,
-            this.selectedFundingTokenInfo.address,
-            this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+      if (this.sorSwapInfo) {
+        promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
+        // }
+        // } else {
+        //   promise = this.transactionsService.send(() =>
+        //     this.lbpManager.lbp.vault.swap(
+        //       this.fundingTokensToPay,
+        //       this.selectedFundingTokenInfo.address,
+        //       this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+        // }
+
+        promise.then(async (receipt) => {
+          if (receipt) {
+            await this.lbpManager.hydrate();
+            this.lbpManager.ensurePriceData(true);
+            this.hydrateUserData();
+
+            this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
+            this.fundingTokensToPay = null;
+          }
+        });
       }
-
-      promise.then(async (receipt) => {
-        if (receipt) {
-          await this.hydrateUserData();
-          this.lbpManager.ensurePriceData(true);
-          this.lbpManager.hydrateTokensState();
-
-          this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
-          this.fundingTokensToPay = null;
-        }
-      });
     }
   }
 }
