@@ -592,7 +592,7 @@ export class Seed implements ILaunch {
     return this.transactionsService.send(() => this.contract.buy(amount))
       .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           this.hydrateUser();
           return receipt;
         }
@@ -601,9 +601,9 @@ export class Seed implements ILaunch {
 
   public claim(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
-      .then((receipt) => {
+      .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           this.hydrateUser();
           return receipt;
         }
