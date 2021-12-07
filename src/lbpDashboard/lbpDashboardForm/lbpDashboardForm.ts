@@ -70,6 +70,7 @@ export class lbpDashboardForm {
   }
 
   private async fundingTokensToPayChanged(): Promise<void> {
+    await this.getProjectTokensPerFundingToken();
     this.getProjectTokensToPurchase();
   }
 
@@ -113,30 +114,32 @@ export class lbpDashboardForm {
    * @returns
    */
   async getProjectTokensPerFundingToken(): Promise<void> {
-    let returnValue: number;
 
-    if (!this.selectedFundingTokenInfo.address) {
-      returnValue = null; // will show "--" if displayed by formatted-number
+    if (!this.selectedFundingTokenInfo.address || !this.fundingTokensToPay?.gt(0)) {
+      this.projectTokensPerFundingToken = null; // will show "--" if displayed by formatted-number
     }
-    else if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+    else {
+      let returnValue: number;
 
-      const sorSwapInfo = await this.balancerService.getSwapFromSor(
-        this.fundingTokensToPay,
-        this.selectedFundingTokenInfo,
-        this.lbpManager.projectTokenInfo) as SwapInfo;
+      if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
-      returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
-      returnValue = Number.isFinite(returnValue) ? returnValue : null;
-      if (returnValue === 0) {
-        returnValue = null; // will show "--" if displayed by formatted-number
-      }
+        const sorSwapInfo = await this.balancerService.getSwapFromSor(
+          this.fundingTokensToPay,
+          this.selectedFundingTokenInfo,
+          this.lbpManager.projectTokenInfo) as SwapInfo;
 
-    } else { // using the pool funding token
+        returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
+        returnValue = Number.isFinite(returnValue) ? returnValue : null;
+        if (returnValue === 0) {
+          returnValue = null; // will show "--" if displayed by formatted-number
+        }
+
+      } else { // using the pool funding token
       // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
-      returnValue = this.lbpManager.getCurrentExchangeRate();
+        returnValue = this.lbpManager.getCurrentExchangeRate();
+      }
+      this.projectTokensPerFundingToken = returnValue / this.numberService.fromString(fromWei(this.fundingTokensToPay.toString()));
     }
-
-    this.projectTokensPerFundingToken = this.numberService.fromString(toBigNumberJs(returnValue).div(this.fundingTokensToPay.toString()).toString());
   }
 
   async getProjectTokensToPurchase(): Promise<void> {
