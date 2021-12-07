@@ -383,7 +383,7 @@ export class LbpManager implements ILaunch {
     return this.initializedPromise;
   }
 
-  private async hydratePaused(): Promise<boolean> {
+  public async hydratePaused(): Promise<boolean> {
     return this.isPaused = !(await this.getSwapEnabled());
   }
 

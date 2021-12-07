@@ -18,6 +18,7 @@ import { BalancerService } from "services/BalancerService";
 import TransactionsService, { TransactionResponse } from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";
 import { LaunchService } from "services/LaunchService";
+import { toBigNumberJs } from "services/BigNumberService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -120,7 +121,7 @@ export class lbpDashboardForm {
     else if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
       const sorSwapInfo = await this.balancerService.getSwapFromSor(
-        toWei(BigNumber.from(1), this.selectedFundingTokenInfo.decimals),
+        this.fundingTokensToPay,
         this.selectedFundingTokenInfo,
         this.lbpManager.projectTokenInfo) as SwapInfo;
 
@@ -135,7 +136,7 @@ export class lbpDashboardForm {
       returnValue = this.lbpManager.getCurrentExchangeRate();
     }
 
-    this.projectTokensPerFundingToken = returnValue;
+    this.projectTokensPerFundingToken = this.numberService.fromString(toBigNumberJs(returnValue).div(this.fundingTokensToPay.toString()).toString());
   }
 
   async getProjectTokensToPurchase(): Promise<void> {
