@@ -121,24 +121,24 @@ export class lbpDashboardForm {
     else {
       let returnValue: number;
 
-      if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
-        const sorSwapInfo = await this.balancerService.getSwapFromSor(
-          this.fundingTokensToPay,
-          this.selectedFundingTokenInfo,
-          this.lbpManager.projectTokenInfo) as SwapInfo;
+      const sorSwapInfo = await this.balancerService.getSwapFromSor(
+        this.fundingTokensToPay,
+        this.selectedFundingTokenInfo,
+        this.lbpManager.projectTokenInfo) as SwapInfo;
 
-        returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
-        returnValue = Number.isFinite(returnValue) ? returnValue : null;
-        if (returnValue === 0) {
-          returnValue = null; // will show "--" if displayed by formatted-number
-        }
-
-      } else { // using the pool funding token
-      // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
-        returnValue = this.lbpManager.getCurrentExchangeRate();
+      returnValue = this.numberService.fromString(fromWei(sorSwapInfo.returnAmount, this.lbpManager.projectTokenInfo.decimals).toString());
+      returnValue = Number.isFinite(returnValue) ? returnValue : null;
+      if (returnValue === 0) {
+        returnValue = null;
       }
-      this.projectTokensPerFundingToken = returnValue / this.numberService.fromString(fromWei(this.fundingTokensToPay.toString()));
+
+      // } else { // using the pool funding token
+      // // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
+      //   returnValue = this.lbpManager.getCurrentExchangeRate();
+      // }
+      this.projectTokensPerFundingToken = returnValue / this.numberService.fromString(fromWei(this.fundingTokensToPay.toString(), this.selectedFundingTokenInfo.decimals));
     }
   }
 
@@ -214,28 +214,29 @@ export class lbpDashboardForm {
 
       let promise: Promise<TransactionReceipt>;
 
-      if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-        if (this.sorSwapInfo) {
-          promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
-        }
-      } else {
-        promise = this.transactionsService.send(() =>
-          this.lbpManager.lbp.vault.swap(
-            this.fundingTokensToPay,
-            this.selectedFundingTokenInfo.address,
-            this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+      if (this.sorSwapInfo) {
+        promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
+        // }
+        // } else {
+        //   promise = this.transactionsService.send(() =>
+        //     this.lbpManager.lbp.vault.swap(
+        //       this.fundingTokensToPay,
+        //       this.selectedFundingTokenInfo.address,
+        //       this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
+        // }
+
+        promise.then(async (receipt) => {
+          if (receipt) {
+            await this.lbpManager.hydrate();
+            this.lbpManager.ensurePriceData(true);
+            this.hydrateUserData();
+
+            this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
+            this.fundingTokensToPay = null;
+          }
+        });
       }
-
-      promise.then(async (receipt) => {
-        if (receipt) {
-          await this.lbpManager.hydrate();
-          this.lbpManager.ensurePriceData(true);
-          this.hydrateUserData();
-
-          this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
-          this.fundingTokensToPay = null;
-        }
-      });
     }
   }
 }
