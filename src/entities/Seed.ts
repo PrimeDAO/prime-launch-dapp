@@ -581,7 +581,7 @@ export class Seed implements ILaunch {
       () => this.projectTokenContract.transfer(this.address, this.seedAmountRequired?.add(this.feeRemainder)))
       .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           this.hydrateUser();
           return receipt;
         }
@@ -687,9 +687,9 @@ export class Seed implements ILaunch {
 
   public retrieveFundingTokens(): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.retrieveFundingTokens())
-      .then((receipt) => {
+      .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           this.hydrateUser();
           return receipt;
         }
@@ -699,9 +699,9 @@ export class Seed implements ILaunch {
   public retrieveProjectTokens(receiver: Address): Promise<TransactionReceipt> {
     if (receiver){
       return this.transactionsService.send(() => this.contract.retrieveSeedTokens(receiver))
-        .then((receipt) => {
+        .then(async (receipt) => {
           if (receipt) {
-            this.hydrate();
+            await this.hydrate();
             this.hydrateUser();
             return receipt;
           }
@@ -711,9 +711,9 @@ export class Seed implements ILaunch {
 
   public withdrawFundingTokens(): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.withdraw())
-      .then((receipt) => {
+      .then(async (receipt) => {
         if (receipt) {
-          this.hydrate();
+          await this.hydrate();
           this.hydrateUser();
           return receipt;
         }
