@@ -28,7 +28,7 @@
     row-gap: 12px;
     background-color: $BG02;
     border-radius: 6px;
-    padding: 13px;
+    padding: 15px;
     box-sizing: border-box;
     height: 100%;
 
@@ -60,6 +60,8 @@
     }
 
     > .description {
+      text-align: justify;
+      padding-right: 20px;
       grid-area: description;
       font-family: Inter;
       font-size: 12px;
