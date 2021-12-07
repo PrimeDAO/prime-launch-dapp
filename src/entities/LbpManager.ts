@@ -201,7 +201,7 @@ export class LbpManager implements ILaunch {
     }
   }
 
-  private async hydrate(): Promise<void> {
+  public async hydrate(): Promise<void> {
     try {
       TimingService.start(`hydrate-${this.address}`);
 
@@ -383,7 +383,7 @@ export class LbpManager implements ILaunch {
     return this.initializedPromise;
   }
 
-  public async hydratePaused(): Promise<boolean> {
+  private async hydratePaused(): Promise<boolean> {
     return this.isPaused = !(await this.getSwapEnabled());
   }
 
@@ -402,7 +402,7 @@ export class LbpManager implements ILaunch {
     }
   }
 
-  public async hydrateTokensState(): Promise<void> {
+  private async hydrateTokensState(): Promise<void> {
     if (this.lbp) {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
