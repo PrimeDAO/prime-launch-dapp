@@ -1,5 +1,5 @@
 import { IDisposable } from "services/IDisposable";
-// import { AureliaHelperService } from "services/AureliaHelperService";
+import { AureliaHelperService } from "services/AureliaHelperService";
 import { ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { DateService } from "services/DateService";
 import { bindable, autoinject } from "aurelia-framework";
@@ -16,7 +16,7 @@ export class LbpPriceChart {
   constructor(
     private dateService: DateService,
     private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
-    // private aureliaHelperService: AureliaHelperService,
+    private aureliaHelperService: AureliaHelperService,
   ){
   }
 
@@ -35,12 +35,20 @@ export class LbpPriceChart {
 
   lbpMgrChanged(): void {
     this.hydrateChart();
+    if (this.dataPropertyWatcher){
+      this.dataPropertyWatcher.dispose();
+      this.dataPropertyWatcher = null;
+    }
+
+    if ( this.lbpMgr ) {
+      this.dataPropertyWatcher = this.aureliaHelperService.createPropertyWatch(this.lbpMgr, "priceHistory", this.hydrateChart);
+    }
   }
 
   private graphConfig: Array<any>;
 
   private async hydrateChart(reset = false): Promise<void> {
-    if (this.lbpMgr) {
+    if (this?.lbpMgr) {
 
       if (!this.lbpMgr.priceHistory) {
         await this.lbpMgr.ensurePriceData(reset);
