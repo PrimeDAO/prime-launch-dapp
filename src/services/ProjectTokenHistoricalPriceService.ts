@@ -12,7 +12,7 @@ import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import axios from "axios";
 import { autoinject } from "aurelia-framework";
 
-export interface ISwapRecord {
+interface ISwapRecord {
   timestamp: number,
   tokenAmountIn: string,
   tokenAmountOut: string,
