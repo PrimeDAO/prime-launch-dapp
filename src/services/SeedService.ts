@@ -61,7 +61,7 @@ export class SeedService {
     });
 
     this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ?
-      12960154 : 9468353;
+      13764353 : 9468353;
   }
 
   public async initialize(): Promise<void> {

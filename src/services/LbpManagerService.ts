@@ -58,7 +58,7 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13551882 :
+    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13764353 :
       (EthereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
         : 28079815; // kovan
 
