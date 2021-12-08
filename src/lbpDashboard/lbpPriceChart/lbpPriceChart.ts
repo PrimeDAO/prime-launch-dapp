@@ -41,14 +41,14 @@ export class LbpPriceChart {
     }
 
     if ( this.lbpMgr ) {
-      this.dataPropertyWatcher = this.aureliaHelperService.createPropertyWatch(this.lbpMgr, "priceHistory", this.hydrateChart);
+      this.dataPropertyWatcher = this.aureliaHelperService.createPropertyWatch(this.lbpMgr, "priceHistory", () => this.hydrateChart);
     }
   }
 
   private graphConfig: Array<any>;
 
   private async hydrateChart(reset = false): Promise<void> {
-    if (this?.lbpMgr) {
+    if (this.lbpMgr) {
 
       if (!this.lbpMgr.priceHistory) {
         await this.lbpMgr.ensurePriceData(reset);
