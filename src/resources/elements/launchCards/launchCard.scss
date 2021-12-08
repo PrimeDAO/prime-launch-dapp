@@ -28,7 +28,7 @@
     row-gap: 12px;
     background-color: $BG02;
     border-radius: 6px;
-    padding: 13px;
+    padding: 15px;
     box-sizing: border-box;
     height: 100%;
 
@@ -44,6 +44,7 @@
     }
 
     > .typeAndTitle {
+      text-align: left;
       grid-area: typeAndTitle;
       > .launch-type {
         font-weight: 600;
@@ -59,6 +60,8 @@
     }
 
     > .description {
+      text-align: justify;
+      padding-right: 20px;
       grid-area: description;
       font-family: Inter;
       font-size: 12px;
@@ -73,6 +76,7 @@
     }
 
     > .tokensTarget {
+      text-align: left;
       grid-area: tokensTarget;
       display: grid;
       grid-template-columns: auto;
@@ -125,10 +129,14 @@
 
     .launchSummary {
       grid-template-columns: 48px 4fr 1fr;
+      //   grid-template-columns: 58px 4fr 1fr;
       grid-template-areas:
-        "icon . timeLeft"
-        "icon title title"
-        ". description description"
+        ". . timeLeft"
+        ". . ."
+        "icon typeAndTitle typeAndTitle"
+        "icon typeAndTitle typeAndTitle"
+        ". . ."
+        "description description description"
         ". . ."
         ". . ."
         "tokensTarget tokensTarget tokensTarget";
