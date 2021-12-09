@@ -149,4 +149,18 @@ export class Utils {
      */
     return str.split(what).join(that);
   }
+
+
+  /**
+   * remove precision from the decimals part.  Need this because toFixed adds phantom numbers with decimals > 16
+   * @param num
+   * @returns
+   */
+  public static truncateDecimals(num: number, decimals: number): number {
+    if ((num === undefined) || (num === null) || Number.isInteger(num) || isNaN(num)) {
+      return num;
+    }
+    const parts = num.toString().split(".");
+    return Number(`${parts[0]}.${parts[1].slice(0, decimals)}`);
+  }
 }

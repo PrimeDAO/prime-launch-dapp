@@ -8,17 +8,16 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./lbpDashboardForm.scss";
 import { TokenListService } from "services/TokenListService";
 import { TokenService } from "services/TokenService";
-import { EthereumService, fromWei, toWei } from "services/EthereumService";
+import { EthereumService, fromWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EventConfigException } from "services/GeneralEvents";
 import { SwapInfo } from "@balancer-labs/sor";
 import { BalancerService } from "services/BalancerService";
-import TransactionsService, { TransactionResponse } from "services/TransactionsService";
+import TransactionsService from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";
 import { LaunchService } from "services/LaunchService";
-import { toBigNumberJs } from "services/BigNumberService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {

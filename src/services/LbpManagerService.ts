@@ -2,7 +2,6 @@ import { ILbpConfig } from "newLaunch/lbp/config";
 import { LbpManager } from "entities/LbpManager";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Address, Hash, toWei } from "services/EthereumService";
-import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
 import { EthereumService, Networks } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
@@ -53,7 +52,6 @@ export class LbpManagerService {
     private ethereumService: EthereumService,
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
-    private tokenService: TokenService,
   ) {
     this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
       this.lbpManagers.delete(lbpAddress);

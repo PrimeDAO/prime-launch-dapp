@@ -370,9 +370,9 @@ export class LbpManager implements ILaunch {
 
       await this.hydrateTokensState();
 
-      // console.log(this.metadata.general.projectName, ": ", this.address);
-      // console.log(this.metadata.general.projectName, ": ", this.endTime.toString(), ", ", this.startTime.toString());
-      // console.log(this.metadata.general.projectName, ": ", this.metadataHash);
+      console.log(this.metadata.general.projectName, ": ", this.address);
+      console.log(this.metadata.general.projectName, ": ", this.endTime.toString(), ", ", this.startTime.toString());
+      console.log(this.metadata.general.projectName, ": ", this.metadataHash);
 
       TimingService.end(`hydrate-${this.address}`);
     }

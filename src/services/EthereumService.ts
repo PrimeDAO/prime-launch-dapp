@@ -11,6 +11,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
+import { Utils } from "services/utils";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -491,10 +492,7 @@ export const toWei = (ethValue: BigNumberish, decimals: string | number = 18): B
   const t = typeof ethValue;
   if (t === "string" || t === "number") {
     // avoid underflows
-    const number = Number(ethValue);
-    if (!Number.isInteger(number) && !isNaN(number)) {
-      ethValue = number.toFixed(Number(decimals));
-    }
+    ethValue = Utils.truncateDecimals(Number(ethValue), Number(decimals));
   }
   return parseUnits(ethValue.toString(), decimals);
 };
