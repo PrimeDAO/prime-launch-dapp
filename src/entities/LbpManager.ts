@@ -491,7 +491,6 @@ export class LbpManager implements ILaunch {
       ): void => {
         this.projectTokenHistoricalPriceService.getPricesHistory(this)
           .then((history) => {
-            // this.ensureTrajectoryForecastData(history);
             this.priceHistory = history;
             resolve(history);
           })
@@ -507,27 +506,6 @@ export class LbpManager implements ILaunch {
       return this.priceHistoryPromise;
     }
   }
-
-
-  // /**
-  //  * call this to make sure that this.trajectoryForecastData is hydrated.
-  //  * @returns Promise of same as this.trajectoryForecastData
-  //  */
-  // private ensureTrajectoryForecastData(history: Array<IHistoricalPriceRecord>): Promise<Array<IHistoricalPriceRecord>> {
-  //     return this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this);
-  //       .then(async (trajectoryForecast) => {
-  //         this.trajectoryForecastData = await trajectoryForecast;
-  //         resolve(trajectoryForecast);
-  //       })
-  //       .catch((ex) => {
-  //         this.consoleLogService.logMessage(ex, "error");
-  //         reject(ex);
-  //       })
-  //       .finally(() => {
-  //         this.processingTrajectoryData = false;
-  //       });
-  //     });
-  // }
 
   /**
    * returns projectTokensPerFundingToken

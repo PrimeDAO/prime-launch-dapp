@@ -1,5 +1,5 @@
 import { IDisposable } from "services/IDisposable";
-// import { AureliaHelperService } from "services/AureliaHelperService";
+import { AureliaHelperService } from "services/AureliaHelperService";
 import { ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { DateService } from "services/DateService";
 import { bindable, autoinject } from "aurelia-framework";
@@ -16,7 +16,7 @@ export class LbpPriceChart {
   constructor(
     private dateService: DateService,
     private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
-    // private aureliaHelperService: AureliaHelperService,
+    private aureliaHelperService: AureliaHelperService,
   ){
   }
 
@@ -35,14 +35,14 @@ export class LbpPriceChart {
 
   lbpMgrChanged(): void {
     this.hydrateChart();
-    // if (this.dataPropertyWatcher){
-    //   this.dataPropertyWatcher.dispose();
-    //   this.dataPropertyWatcher = null;
-    // }
+    if (this.dataPropertyWatcher){
+      this.dataPropertyWatcher.dispose();
+      this.dataPropertyWatcher = null;
+    }
 
-    // if ( this.lbpMgr ) {
-    //   this.dataPropertyWatcher = this.aureliaHelperService.createPropertyWatch(this.lbpMgr, "priceHistory", this.hydrateChart);
-    // }
+    if ( this.lbpMgr ) {
+      this.dataPropertyWatcher = this.aureliaHelperService.createPropertyWatch(this.lbpMgr, "priceHistory", () => this.hydrateChart);
+    }
   }
 
   private graphConfig: Array<any>;
@@ -62,7 +62,7 @@ export class LbpPriceChart {
       const lbpAveragePrice = priceHistoryLength
         ? (this.lbpMgr.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
         : 0;
-      const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength)? [
+      const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
         {
           time: this.lbpMgr.priceHistory[0]?.time,
           price: lbpAveragePrice,
@@ -75,23 +75,29 @@ export class LbpPriceChart {
         },
       ] : [];
 
+      const forecast = trajectoryForecastData?.map(i => {
+        return {
+          price: Math.floor(i.price * 100) / 100,
+          time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
+        };
+      });
+
+      const history = this.lbpMgr.priceHistory?.map(i => {
+        return {
+          price: Math.floor(i.price * 100) / 100,
+          time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
+        };
+      });
+
+      const futureForecast = forecast?.filter((item) => item.time > (history[history.length - 1]?.time));
+
       this.graphConfig = [
         {
-          data: this.lbpMgr.priceHistory?.map(i => {
-            return {
-              price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
-            };
-          }),
+          data: history,
           color: "#FF497A",
         },
         {
-          data: trajectoryForecastData?.map(i => {
-            return {
-              price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
-            };
-          }),
+          data: futureForecast,
           color: "#403453",
           lineStyle: 2,
         },
@@ -100,14 +106,13 @@ export class LbpPriceChart {
           data: averagePriceData?.map(i => {
             return {
               price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time),
+              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
             };
           }),
           color: "#A258A7",
           lineWidth: 1,
         },
       ];
-
     }
   }
 }

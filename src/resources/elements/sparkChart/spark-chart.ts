@@ -41,7 +41,7 @@ export class SparkChart {
     this.aureliaHelperService.createPropertyWatch(this.container, "offsetWidth", () => this.resizeChart());
 
     if (!this.chart) {
-      this.createChart();
+      this.buildChart();
     }
 
     this.chartConfigChanged();
@@ -54,7 +54,7 @@ export class SparkChart {
     }
   }
 
-  createChart(): void {
+  buildChart(): void {
     const options: any = { // DeepPartial<ChartOptions> = {
       width: this.width,
       height: this.height,
@@ -169,8 +169,12 @@ export class SparkChart {
           })));
           this.resizeChart();
         }
-        this.chart.timeScale().fitContent();
       });
+      // Wait until chart is rendered in the DOM and then resize it
+      setTimeout(() => {
+        this.chart.timeScale().fitContent();
+        this.resizeChart();
+      }, 250);
     }
   }
 
