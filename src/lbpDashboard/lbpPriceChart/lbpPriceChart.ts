@@ -75,23 +75,29 @@ export class LbpPriceChart {
         },
       ] : [];
 
+      const forecast = trajectoryForecastData?.map(i => {
+        return {
+          price: Math.floor(i.price * 100) / 100,
+          time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
+        };
+      });
+
+      const history = this.lbpMgr.priceHistory?.map(i => {
+        return {
+          price: Math.floor(i.price * 100) / 100,
+          time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
+        };
+      });
+
+      const futureForecast = forecast?.filter((item) => item.time > (history[history.length - 1]?.time));
+
       this.graphConfig = [
         {
-          data: this.lbpMgr.priceHistory?.map(i => {
-            return {
-              price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
-            };
-          }),
+          data: history,
           color: "#FF497A",
         },
         {
-          data: trajectoryForecastData?.map(i => {
-            return {
-              price: i.price,
-              time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
-            };
-          }),
+          data: futureForecast,
           color: "#403453",
           lineStyle: 2,
         },

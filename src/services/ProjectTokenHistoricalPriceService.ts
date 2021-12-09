@@ -122,7 +122,7 @@ export class ProjectTokenHistoricalPriceService {
 
     swaps.reverse(); // to ascending
 
-    this.lastSwap = await this.fetchLastSwap(endTimeSeconds, startTimeSeconds, lbpMgr);
+    const lastSwap = await this.fetchLastSwap(endTimeSeconds, startTimeSeconds, lbpMgr);
 
     // first swap amounts should be weighted after the lbp start weight
     swaps.unshift({
@@ -178,7 +178,7 @@ export class ProjectTokenHistoricalPriceService {
         /**
          * previous value effected by USD course change
          */
-        if (this.lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
+        if (lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
           returnArray.push({
             time: timestamp,
             price: (
@@ -193,7 +193,38 @@ export class ProjectTokenHistoricalPriceService {
         });
       }
     }
-    return returnArray;
+
+    /**
+     * Calculate the last price by the same way we did for the first price:
+     * Using the latest balance of the pool, and the calculated weight at
+     * time of last swap
+     */
+    const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, lastSwap.timestamp );
+    const lastSwapWeight = this.priceService.getProjectTokenWeightAtTime(
+      new Date(lastSwap.timestamp * 1000),
+      lbpMgr.startTime,
+      lbpMgr.endTime,
+      lbpMgr.projectTokenStartWeight,
+      lbpMgr.projectTokenEndWeight,
+    );
+
+    const poolPTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const poolFTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
+
+    returnArray[returnArray.length - 1].price = (
+      (poolFTBalance / (1 - lastSwapWeight)) /
+      (poolPTBalance / (lastSwapWeight)) *
+      priceAtTimePoint
+    );
+
+    /**
+     * If the last swap is before the current time, we need to add a
+     * calculated forecast to the end of the array up to the current time.
+     */
+    const forecastData = await this.getTrajectoryForecastData(lbpMgr);
+    const pastForecast = forecastData?.filter((item) => item.time < (new Date().getTime() / 1000));
+    returnArray.pop(); // avoid duplicate last item
+    return [...returnArray, ...pastForecast];
   }
 
   private usdPriceAtLastSwap: number;
@@ -201,22 +232,38 @@ export class ProjectTokenHistoricalPriceService {
   public async getTrajectoryForecastData(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
     const lastSwap = await this.fetchLastSwap(lbpMgr.endTime.getTime() / 1000, lbpMgr.startTime.getTime() / 1000, lbpMgr);
 
+    const intervalMinutes = 60/*min*/;
+    const intervalSeconds = intervalMinutes * 60/* sec */;
+    const startTime = lbpMgr.startTime.getTime() / 1000;
+    const endTime = lbpMgr.endTime.getTime() / 1000;
+    const currentTime = this.dateService.utcNow.getTime() / 1000;
+    const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+
     const prices = await this.getFundingTokenUSDPricesByID(
       lbpMgr.fundingTokenInfo.id,
-      lastSwap.timestamp,
-      lastSwap.timestamp - 3600,
-      60,
+      endTimeSeconds,
+      startTimeSeconds,
+      intervalMinutes,
     );
 
     lastSwap.priceUSD = this.nearestUSDPriceAtTimestamp(prices, lastSwap.timestamp);
+    const lastSwapWeight = this.priceService.getProjectTokenWeightAtTime(
+      new Date(lastSwap.timestamp * 1000),
+      lbpMgr.startTime,
+      lbpMgr.endTime,
+      lbpMgr.projectTokenStartWeight,
+      lbpMgr.projectTokenEndWeight,
+    );
 
     const lastSwapDate = this.dateService.ticksToDate(Math.floor(lastSwap.timestamp / 3600) * 3600 * 1000);
-    const poolBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const poolPTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
+    const poolFTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
     const projectTokenAmount = this.numberService.fromString(lastSwap.tokenAmountOut);
-    const fundingTokenAmount = this.numberService.fromString(lastSwap.tokenAmountIn);
+    // const fundingTokenAmount = this.numberService.fromString(lastSwap.tokenAmountIn);
     const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
-      projectTokenAmount,
-      fundingTokenAmount,
+      poolPTBalance,
+      poolFTBalance,
       {
         start: lastSwapDate,
         end: lbpMgr.endTime,
@@ -224,7 +271,7 @@ export class ProjectTokenHistoricalPriceService {
       {
         // Special case: No swaps- calculation is based on the pool balance and start weight
         // For all other cases, the calculation is based on the last swap amounts price impact
-        start: (projectTokenAmount !== poolBalance) ? 0.5 : lbpMgr.projectTokenStartWeight,
+        start: (projectTokenAmount !== poolPTBalance) ? lastSwapWeight : lbpMgr.projectTokenStartWeight,
         end: lbpMgr.projectTokenEndWeight,
       },
       lastSwap.priceUSD, // funding token USD price at last swap
