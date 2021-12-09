@@ -13,10 +13,10 @@
       </div>
       <div class="header">Start Balances</div>
       <div class="value project">
-        <formatted-number value.bind="lbpManager.startingProjectTokenAmount | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
+        <formatted-number value.bind="lbpManager.lbp.vault.tokenTotals.projectStart | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
       </div>
       <div class="value funding">
-        <formatted-number value.bind="lbpManager.startingFundingTokenAmount | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+        <formatted-number value.bind="lbpManager.lbp.vault.tokenTotals.fundingStart | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
       </div>
       <div class="header">Current Balances</div>
       <div class="value project">
@@ -31,13 +31,13 @@
       </div> -->
       <div class="header">Total Sold</div>
       <div class="value project">
-        <formatted-number value.bind="lbpManager.startingProjectTokenAmount.sub(lbpManager.projectTokenBalance) | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
+        <formatted-number value.bind="lbpManager.lbp.vault.tokenTotals.projectSold | ethwei:lbpManager.projectTokenInfo.decimals" thousands-separated></formatted-number>
       </div>
       <div class="value funding">&nbsp;</div>
       <div class="header">Total Raised</div>
       <div class="value project">&nbsp;</div>
       <div class="value funding">
-        <formatted-number value.bind="lbpManager.fundingTokenBalance.sub(lbpManager.startingFundingTokenAmount) | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+        <formatted-number value.bind="lbpManager.lbp.vault.tokenTotals.fundingRaised | ethwei:lbpManager.fundingTokenInfo.decimals" thousands-separated></formatted-number>
       </div>
     </div>
   </div>

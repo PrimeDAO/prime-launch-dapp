@@ -1,19 +1,38 @@
+import { Address } from "services/EthereumService";
 /* eslint-disable no-console */
 import { EthereumService } from "services/EthereumService";
-import { Address } from "./../services/EthereumService";
-import { ContractNames, ContractsService } from "services/ContractsService";
+import { ContractNames, ContractsService, IStandardEvent } from "services/ContractsService";
 import { autoinject } from "aurelia-framework";
 import { BigNumber } from "ethers";
 import { BalancerService } from "services/BalancerService";
 import { TransactionResponse } from "services/TransactionsService";
+import { StartingBlockNumber } from "services/LbpManagerService";
+
+export interface ITokenTotals {
+  fundingStart: BigNumber;
+  projectStart: BigNumber;
+  fundingRaised: BigNumber;
+  projectSold: BigNumber;
+}
+
+interface IPoolBalanceChangedEventArgs {
+  poolId: string;
+  liquidityProvider: Address;
+  tokens: Array<Address>;
+  deltas: Array<BigNumber>;
+  protocolFeeAmounts: Array<BigNumber>;
+}
 
 @autoinject
 export class Vault {
   public contract: any;
   public address: Address;
-  public poolId: Address;
+  public poolId: string;
+  public lbpAdminAddress: Address;
   public projectTokenBalance: BigNumber;
   public fundingTokenBalance: BigNumber;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  public tokenTotals = {} as ITokenTotals;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
 
@@ -24,10 +43,12 @@ export class Vault {
   }
 
   public async initialize(
-    poolId: Address,
+    lbpAdminAddress: Address,
+    poolId: string,
     projectTokenIndex: number,
     fundingTokenIndex: number): Promise<Vault> {
 
+    this.lbpAdminAddress = lbpAdminAddress;
     this.poolId = poolId;
     this.address = BalancerService.VaultAddress;
     this.projectTokenIndex = projectTokenIndex;
@@ -44,6 +65,7 @@ export class Vault {
     const poolTokensInfo = await this.contract.getPoolTokens(this.poolId);
     this.projectTokenBalance = poolTokensInfo.balances[this.projectTokenIndex];
     this.fundingTokenBalance = poolTokensInfo.balances[this.fundingTokenIndex];
+    this.tokenTotals = await this.getTokenTotals();
   }
 
   public async loadContracts(): Promise<void> {
@@ -89,4 +111,25 @@ export class Vault {
     return result;
   }
 
+  private async getTokenTotals(): Promise<ITokenTotals> {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const totals = {} as ITokenTotals;
+    const filter = this.contract.filters.PoolBalanceChanged(this.poolId);
+
+    this.contract.queryFilter(filter, StartingBlockNumber)
+      .then(async (events: Array<IStandardEvent<IPoolBalanceChangedEventArgs>>) => {
+        if (events[0]) {
+          totals.fundingStart = events[0].args.deltas[this.fundingTokenIndex];
+          totals.projectStart = events[0].args.deltas[this.projectTokenIndex];
+        }
+        if (events[1]) {
+          totals.fundingRaised = events[1].args.deltas[this.fundingTokenIndex].abs().sub(totals.fundingStart);
+          totals.projectSold = events[1].args.deltas[this.projectTokenIndex].abs().sub(totals.projectStart);
+        } else {
+          totals.fundingRaised = this.fundingTokenBalance.sub(totals.fundingStart);
+          totals.projectSold = totals.projectStart.sub(this.projectTokenBalance);
+        }
+      });
+    return totals;
+  }
 }

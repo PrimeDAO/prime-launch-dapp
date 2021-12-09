@@ -1,5 +1,5 @@
+import { Address, fromWei } from "services/EthereumService";
 import { Container } from "aurelia-dependency-injection";
-import { Address, fromWei } from "./../services/EthereumService";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { autoinject } from "aurelia-framework";
 import { NumberService } from "services/NumberService";
@@ -14,12 +14,13 @@ export class Lbp {
   public address: Address;
   public vault: Vault;
   public projectTokenWeight: number;
-  public poolId;
+  public poolId: string;
   public lbpManagerAddress: Address;
   public poolTokenBalance: any;
 
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
+  private lbpAdminAddress: Address;
 
   constructor(
     private contractsService: ContractsService,
@@ -32,11 +33,13 @@ export class Lbp {
   public async initialize(
     address: Address,
     lbpManagerAddress: Address,
+    lbpAdminAddress: Address,
     projectTokenIndex: number,
     fundingTokenIndex: number): Promise<Lbp> {
 
     this.address = address;
     this.lbpManagerAddress = lbpManagerAddress;
+    this.lbpAdminAddress = lbpAdminAddress;
     this.projectTokenIndex = projectTokenIndex;
     this.fundingTokenIndex = fundingTokenIndex;
 
@@ -51,6 +54,7 @@ export class Lbp {
     if (address) {
       const vault = this.container.get(Vault);
       return vault.initialize(
+        this.lbpAdminAddress,
         this.poolId,
         this.projectTokenIndex,
         this.fundingTokenIndex);

@@ -22,6 +22,11 @@ export interface ILBPManagerDeployedEventArgs {
   metadata: string;
 }
 
+/**
+   * when the factory was created, pulled by hand from etherscan.io
+   */
+export let StartingBlockNumber: number;
+
 @autoinject
 export class LbpManagerService {
 
@@ -38,10 +43,6 @@ export class LbpManagerService {
 
   private lbpManagerFactory: any;
   private initializedPromise: Promise<void>;
-  /**
-   * when the factory was created, pulled by hand from etherscan.io
-   */
-  private startingBlockNumber: number;
 
   constructor(
     private contractsService: ContractsService,
@@ -58,7 +59,7 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13764353 :
+    StartingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13764353 :
       (EthereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
         : 28079815; // kovan
 
@@ -106,7 +107,7 @@ export class LbpManagerService {
           try {
             const lbpMgrsMap = new Map<Address, LbpManager>();
             const filter = this.lbpManagerFactory.filters.LBPManagerDeployed();
-            this.lbpManagerFactory.queryFilter(filter, this.startingBlockNumber)
+            this.lbpManagerFactory.queryFilter(filter, StartingBlockNumber)
               .then(async (txEvents: Array<IStandardEvent<ILBPManagerDeployedEventArgs>>) => {
                 for (const event of txEvents) {
                   const lbpMgr = this.createLbpManagerFromConfig(event);
