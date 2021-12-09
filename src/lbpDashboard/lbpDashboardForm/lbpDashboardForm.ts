@@ -145,21 +145,21 @@ export class lbpDashboardForm {
   async getProjectTokensToPurchase(): Promise<void> {
     if (this.fundingTokensToPay?.gt(0) && this.projectTokensPerFundingToken) {
       try {
-        if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
+        //        if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
 
-          this.sorSwapInfo = await this.balancerService.getSwapFromSor(
-            this.fundingTokensToPay,
-            this.selectedFundingTokenInfo,
-            this.lbpManager.projectTokenInfo) as SwapInfo;
+        this.sorSwapInfo = await this.balancerService.getSwapFromSor(
+          this.fundingTokensToPay,
+          this.selectedFundingTokenInfo,
+          this.lbpManager.projectTokenInfo) as SwapInfo;
 
-          this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+        this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
 
-        } else { // using the pool funding token
+        // } else { // using the pool funding token
 
-          this.sorSwapInfo= null;
+        //   this.sorSwapInfo= null;
 
-          this.projectTokensToPurchase = toWei(this.numberService.fromString(fromWei(this.fundingTokensToPay, this.selectedFundingTokenInfo.decimals).toString()) * this.projectTokensPerFundingToken, this.lbpManager.projectTokenInfo.decimals);
-        }
+        //   this.projectTokensToPurchase = toWei(this.numberService.fromString(fromWei(this.fundingTokensToPay, this.selectedFundingTokenInfo.decimals).toString()) * this.projectTokensPerFundingToken, this.lbpManager.projectTokenInfo.decimals);
+        // }
       } catch (ex) {
         this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
       }
