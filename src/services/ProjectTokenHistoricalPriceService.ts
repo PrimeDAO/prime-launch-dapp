@@ -336,7 +336,6 @@ export class ProjectTokenHistoricalPriceService {
 
   private fetchSwaps(endDateSeconds: number, startDateSeconds: number, index, lbp: Lbp): Promise<Array<ISwapRecord>> {
     const uri = this.getBalancerSubgraphUrl();
-    console.log(`Fetching swaps for ${lbp.poolId} from ${startDateSeconds} to ${endDateSeconds}`);
 
     const query = {
       swaps: {
