@@ -47,11 +47,6 @@ export class NumberService {
       return null;
     }
 
-    // if (value < Number.MAX_SAFE_INTEGER) {
-    //   // else we'll get underflow and NaN values
-    //   return "0";
-    // }
-
     const thousandSeparated = !options.average && options.thousandSeparated;
     const mantissa = (options.mantissa !== undefined) ? this.fromString(options.mantissa) : 2;
 
@@ -72,9 +67,17 @@ export class NumberService {
       formatString = formatString + "a";
     }
     /**
-     * supply trunc as rounding function because we don't want to round up
+     * numeral.js is no longer maintained.  It has a bug where for small numbers it always
+     * returns NaN.
      */
-    return numeral(value).format(formatString, Math.trunc) as string;
+    if (!!value && (Math.abs(value) <= 0.0000001)) {
+      return numeral(0).format(formatString, Math.trunc) as string;
+    } else {
+      /**
+       * supply trunc as rounding function because we don't want to round up
+       */
+      return numeral(value).format(formatString, Math.trunc) as string;
+    }
   }
 
   /**
@@ -216,4 +219,21 @@ export class NumberService {
       `^[+|-]?(((\\d{1,3}\\,)((\\d{3}\\,)?)(\\d{3}?(\\.\\d{0,${decimalPlaces}})?))|(\\d{1,})|(\\d{0,}(\\.\\d{0,${decimalPlaces}})))$` :
       "^[+|-]?(((\\d{1,3}\\,)((\\d{3}\\,)?)(\\d{3}))|(\\d{1,}))$";
   }
+
+  // private toNonExponentialString(value): string {
+  //   const valueString = value.toString();
+  //   const parts = new RegExp(/^(-)?([0-9]+)\.?([0-9]+)?e([-+])?([0-9]+)$/).exec(valueString);
+  //   if (parts) {
+  //     const sign = parts[1];
+  //     const iPart = parts[2];
+  //     const fPart = parts[3];
+  //     const eSign = parts[4];
+  //     const e = parts[5];
+  //     const zeros = "0".repeat(parseInt(e) - (eSign === "-" ? iPart : fPart || "").length);
+  //     return (sign || "") + (eSign === "-" ? "0." + zeros : "") + iPart + (fPart || "") + (eSign !== "-" ? zeros : "");
+  //   } else {
+  //     return valueString;
+  //   }
+  // }
+
 }
