@@ -95,7 +95,6 @@
   .productSubpages {
     transition: height 0.25s ease-in;
     overflow-y: hidden;
-    height: 0;
     grid-area: subPages;
     background-color: $BG02;
     height: 40px;
@@ -106,7 +105,7 @@
       margin: 0;
       padding-left: $BodyPaddingLeftRight;
       display: grid;
-      grid-template-columns: auto auto auto auto;
+      grid-template-columns: auto auto auto auto auto;
       justify-content: start;
 
       column-gap: 20px;
