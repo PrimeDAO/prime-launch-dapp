@@ -73,7 +73,7 @@ export class ProjectTokenHistoricalPriceService {
    * @returns Array(IHistoricalPriceRecord): {time: number, price?: number}
    */
   public async getPricesHistory(lbpMgr: LbpManager): Promise<Array<IHistoricalPriceRecord>> {
-    if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
+    if (!lbpMgr.lbp || !lbpMgr.lbp.poolId || lbpMgr.startTime.getTime() >= new Date().getTime()) {
       return [];
     }
 
@@ -113,24 +113,24 @@ export class ProjectTokenHistoricalPriceService {
     const prices = await this.getFundingTokenUSDPricesByID(
       lbpMgr.fundingTokenInfo.id,
       endTimeSeconds,
-      startTimeSeconds,
+      startTimeSeconds < new Date().getTime() / 1000 ? startTimeSeconds : Math.floor(new Date().getTime() / 1000) - 3600,
       intervalMinutes,
     );
 
     let previousTimePoint;
     let previousPriceAtTimePoint;
 
-    swaps.reverse(); // to ascending
-
-    const lastSwap = await this.fetchLastSwap(endTimeSeconds, startTimeSeconds, lbpMgr);
-
     // first swap amounts should be weighted after the lbp start weight
-    swaps.unshift({
+    swaps.push({
       timestamp: Math.floor(startTimeSeconds / 3600) * 3600,
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
     });
+
+    swaps.reverse(); // to ascending
+
+    const lastSwap = await this.fetchLastSwap(endTimeSeconds, startTimeSeconds, lbpMgr);
 
     /**
      * enumerate every day
@@ -243,7 +243,7 @@ export class ProjectTokenHistoricalPriceService {
     const prices = await this.getFundingTokenUSDPricesByID(
       lbpMgr.fundingTokenInfo.id,
       endTimeSeconds,
-      startTimeSeconds,
+      startTimeSeconds < new Date().getTime() / 1000 ? startTimeSeconds : Math.floor(new Date().getTime() / 1000) - 3600,
       intervalMinutes,
     );
 
