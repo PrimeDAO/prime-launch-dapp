@@ -59,7 +59,7 @@ export class ConnectButton {
     }));
 
     this.accountAddress = this.ethereumService.defaultAccountAddress || null;
-    this.primeAddress = ContractsService.getContractAddress(ContractNames.PRIMETOKEN);
+    this.primeAddress = ContractsService.getContractAddress(ContractNames.PRIME);
     // this.bPrimeAddress = this.contractsService.getContractAddress(ContractNames.ConfigurableRightsPool);
     // this.wethAddress = this.contractsService.getContractAddress(ContractNames.WETH);
     // this.daiAddress = ContractsService.getContractAddress(ContractNames.DAI);

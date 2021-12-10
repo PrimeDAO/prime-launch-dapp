@@ -12,7 +12,7 @@ export enum ContractNames {
   , SEEDFACTORY = "SeedFactory"
   , SEED = "Seed"
   // , WETH = "WETH"
-  , PRIMETOKEN = "PrimeToken"
+  , PRIME = "Prime"
   , DAI = "DAI"
   , IERC20 = "IERC20"
   , ERC20 = "ERC20"
