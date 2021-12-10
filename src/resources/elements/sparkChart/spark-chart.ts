@@ -23,6 +23,8 @@ export class SparkChart {
   @bindable.number height = 300;
   @bindable.number width = 500;
   @bindable.boolean utc = false;
+  @bindable.booleanAttr timescaleBorder = false;
+  @bindable.booleanAttr priceScaleBorder = false;
 
   chart: IChartApi;
   series: Array<ISeriesApi<"Line">> = [];
@@ -59,11 +61,12 @@ export class SparkChart {
       width: this.width,
       height: this.height,
       timeScale: {
-        // rightBarStaysOnScroll: true,
+        rightBarStaysOnScroll: true,
         visible: true,
         timeVisible: true,
         secondsVisible: false,
-        borderVisible: false,
+        borderVisible: this.timescaleBorder,
+        borderColor: "#fff",
         tickMarkFormatter: (time) => {
           return this.dateService.ticksToString(
             time * 1000, // to milliseconds
@@ -88,10 +91,18 @@ export class SparkChart {
       },
       priceScale: {
         position: "right",
+        borderVisible: this.priceScaleBorder,
+        borderColor: "#fff",
       },
       localization: {
         priceFormatter: price =>
           "$ " + price.toFixed(2),
+        timeFormatter: time => {
+          return this.dateService.ticksToString(
+            time * 1000, // to milliseconds
+            {format: "MMM D | H:mm", utc: this.utc || false},
+          );
+        },
       },
       grid: {
         horzLines: {
@@ -161,8 +172,10 @@ export class SparkChart {
         this.series = seriesCollection;
       }
 
+      let dataPoints = 0;
       this.chartConfig.forEach((series, index) => {
         if (series.data?.length) {
+          if (series.data.length > dataPoints) dataPoints = series.data.length;
           this.series[index].setData(series.data.map(item => ({
             time: item.time,
             value: item.price,
@@ -170,6 +183,27 @@ export class SparkChart {
           this.resizeChart();
         }
       });
+
+      let formatUnits = "";
+      if (dataPoints <= 24 + 2) {
+        formatUnits = "H:mm";
+      } else if (dataPoints <= 24 * 5 + 2) {
+        formatUnits = "MMM D H:mm";
+      } else {
+        formatUnits = "MMM D";
+      }
+
+      this.chart.applyOptions({
+        timeScale: {
+          tickMarkFormatter: (time) => {
+            return this.dateService.ticksToString(
+              time * 1000, // to milliseconds
+              {format: formatUnits, utc: this.utc || false},
+            );
+          },
+        },
+      });
+
       // Wait until chart is rendered in the DOM and then resize it
       setTimeout(() => {
         this.chart.timeScale().fitContent();
