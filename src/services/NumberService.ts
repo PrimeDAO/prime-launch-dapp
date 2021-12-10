@@ -47,10 +47,10 @@ export class NumberService {
       return null;
     }
 
-    if (value < Number.MAX_SAFE_INTEGER) {
-      // else we'll get underflow and NaN values
-      return "0";
-    }
+    // if (value < Number.MAX_SAFE_INTEGER) {
+    //   // else we'll get underflow and NaN values
+    //   return "0";
+    // }
 
     const thousandSeparated = !options.average && options.thousandSeparated;
     const mantissa = (options.mantissa !== undefined) ? this.fromString(options.mantissa) : 2;
