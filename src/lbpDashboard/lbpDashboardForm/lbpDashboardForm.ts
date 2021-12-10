@@ -12,7 +12,6 @@ import { EthereumService, fromWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { EventConfigException } from "services/GeneralEvents";
 import { SwapInfo } from "@balancer-labs/sor";
 import { BalancerService } from "services/BalancerService";
 import TransactionsService from "services/TransactionsService";
@@ -69,8 +68,12 @@ export class lbpDashboardForm {
   }
 
   private async fundingTokensToPayChanged(): Promise<void> {
-    await this.getProjectTokensPerFundingToken();
-    this.getProjectTokensToPurchase();
+    this.sorSwapInfo = await this.getProjectTokensPerFundingToken();
+    if (this.fundingTokensToPay?.gt(0) && this.projectTokensPerFundingToken) {
+      this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
+    } else {
+      this.projectTokensToPurchase = BigNumber.from(0);
+    }
   }
 
   async attached(): Promise<void> {
@@ -100,7 +103,6 @@ export class lbpDashboardForm {
 
   private async handleTokenChanged(): Promise<void> {
     this.fundingTokensToPay = null;
-    await this.getProjectTokensPerFundingToken();
     this.hydrateUserData();
   }
 
@@ -112,17 +114,18 @@ export class lbpDashboardForm {
    * side effects: sets this.projectTokensPerFundingToken
    * @returns
    */
-  async getProjectTokensPerFundingToken(): Promise<void> {
+  async getProjectTokensPerFundingToken(): Promise<SwapInfo> {
+
+    let sorSwapInfo;
 
     if (!this.selectedFundingTokenInfo.address || !this.fundingTokensToPay?.gt(0)) {
       this.projectTokensPerFundingToken = null; // will show "--" if displayed by formatted-number
+      sorSwapInfo = null;
     }
     else {
       let returnValue: number;
 
-      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-
-      const sorSwapInfo = await this.balancerService.getSwapFromSor(
+      sorSwapInfo = await this.balancerService.getSwapFromSor(
         this.fundingTokensToPay,
         this.selectedFundingTokenInfo,
         this.lbpManager.projectTokenInfo) as SwapInfo;
@@ -133,38 +136,9 @@ export class lbpDashboardForm {
         returnValue = null;
       }
 
-      // } else { // using the pool funding token
-      // // using this instead of SOR because it may give a more up-to-date number since doesn't rely on the subgraph
-      //   returnValue = this.lbpManager.getCurrentExchangeRate();
-      // }
       this.projectTokensPerFundingToken = returnValue / this.numberService.fromString(fromWei(this.fundingTokensToPay.toString(), this.selectedFundingTokenInfo.decimals));
     }
-  }
-
-  async getProjectTokensToPurchase(): Promise<void> {
-    if (this.fundingTokensToPay?.gt(0) && this.projectTokensPerFundingToken) {
-      try {
-        //        if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
-
-        this.sorSwapInfo = await this.balancerService.getSwapFromSor(
-          this.fundingTokensToPay,
-          this.selectedFundingTokenInfo,
-          this.lbpManager.projectTokenInfo) as SwapInfo;
-
-        this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
-
-        // } else { // using the pool funding token
-
-        //   this.sorSwapInfo= null;
-
-        //   this.projectTokensToPurchase = toWei(this.numberService.fromString(fromWei(this.fundingTokensToPay, this.selectedFundingTokenInfo.decimals).toString()) * this.projectTokensPerFundingToken, this.lbpManager.projectTokenInfo.decimals);
-        // }
-      } catch (ex) {
-        this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-      }
-    } else {
-      this.projectTokensToPurchase = BigNumber.from(0);
-    }
+    return sorSwapInfo;
   }
 
   async validateEndedOrPaused(): Promise<boolean> {
@@ -213,18 +187,8 @@ export class lbpDashboardForm {
 
       let promise: Promise<TransactionReceipt>;
 
-      // if (this.selectedFundingTokenInfo.address !== this.lbpManager.fundingTokenAddress) {
       if (this.sorSwapInfo) {
         promise = this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
-        // }
-        // } else {
-        //   promise = this.transactionsService.send(() =>
-        //     this.lbpManager.lbp.vault.swap(
-        //       this.fundingTokensToPay,
-        //       this.selectedFundingTokenInfo.address,
-        //       this.lbpManager.projectTokenInfo.address) as Promise<TransactionResponse>);
-        // }
-
         promise.then(async (receipt) => {
           if (receipt) {
             await this.lbpManager.hydrate();
