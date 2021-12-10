@@ -53,6 +53,6 @@ export class ProjectTokenInfo {
 
   @computedFrom("currentPriceChange", "currentPrice")
   get percentPriceChange(): number {
-    return this.currentPrice ? this.currentPriceChange / ((this.currentPrice - this.currentPriceChange) * 100) : 0;
+    return this.currentPrice ? (this.currentPriceChange / (this.currentPrice - this.currentPriceChange)) * 100 : 0;
   }
 }
