@@ -222,7 +222,7 @@ export class ProjectTokenHistoricalPriceService {
      * calculated forecast to the end of the array up to the current time.
      */
     const forecastData = await this.getTrajectoryForecastData(lbpMgr);
-    const pastForecast = forecastData?.filter((item) => item.time < (currentTime));
+    const pastForecast = forecastData?.filter((item) => item.time < currentTime);
     returnArray.pop(); // avoid duplicate last item
     return [...returnArray, ...pastForecast];
   }
@@ -243,7 +243,7 @@ export class ProjectTokenHistoricalPriceService {
     const prices = await this.getFundingTokenUSDPricesByID(
       lbpMgr.fundingTokenInfo.id,
       endTimeSeconds,
-      startTimeSeconds < currentTime ? startTimeSeconds : Math.floor(currentTime) - 3600,
+      (startTimeSeconds < currentTime) ? startTimeSeconds : (Math.floor(currentTime) - 3600),
       intervalMinutes,
     );
 
