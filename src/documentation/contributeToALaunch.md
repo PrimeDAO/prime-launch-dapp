@@ -22,4 +22,17 @@ For example, take a Seed Launch with a 3 day cliff and a 10 day vest. A contribu
 
 ## Contributing to a Liquid Launch
 
-*Liquid Launches are currently in development and are expected to go live in September 2021. If you're interested in hosting a Liquid Launch on Prime Launch, it's already possible to pre-register and request more information via <a href ="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">this form</a>.*
+To contribute to a Liquid Launch, you must have any token with liquidity on the Balancer Protocol, for example, ETH, DAI, USDC, or D2D.
+
+In the "Contribute" box on the right of the screen, connect with your wallet and accept the Prime Launch Policy. Afterward, select the token and amount you would want to exchange for the project token and click the approve button in the Contribute box to start the transaction to approve these tokens to be spent inside Prime Launch. Once confirmed, you can now click on Contribute, which will begin the transaction to swap your tokens for the project's tokens.
+
+## How a Liquid Launch LBP functions
+
+Liquidity Bootstrapping Pools (LBPs) are adjustable Balancer pools used to bootstrap initial liquidity for a token and the initial price discovery of new assets. LBPs are liquidity pools that change weights over time. As the weights change, they create selling pressure on the project token, leading to the price of a project token dropping if there is no buying pressure.
+
+
+The pool weights initially favor D2D (96%) and will gradually move to an equilibrium where D2D is 50% of the pool. The linear step-down creates constant downward pressure on the price, balancing the upward buy pressure, ideally keeping the price oscillating around perceived market value. This relatively stable price discourages arbitrage bot manipulation as they can't count on the steadily decreasing price.
+
+In practice, this means that contributors should avoid participating too early in Liquid Launches because the valuation will be high, and no price discovery has taken place. The closer to the end of the Liquid Launch, the project token has experienced more price discovery, creating a more stable environment for new contributors. 
+
+To understand more about LBs, please check [this detailed Medium](https://medium.com/balancer-protocol/building-liquidity-into-token-distribution-a49d4286e0d4) article or visit the Launch support channel in [Prime’s Discord](https://discord.com/invite/primedao).
