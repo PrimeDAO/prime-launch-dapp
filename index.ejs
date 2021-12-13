@@ -11,62 +11,65 @@
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="./base.css">
   <script src="https://kit.fontawesome.com/bf98881e0a.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.usefathom.com/script.js" data-site="DPJWXNFE" data-spa="history" defer></script>
 
-  <style>
-    /* these are here so webpack will pick up the fonts */
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-Light.ttf");
-      font-weight: 300;
-    }
+  <% if ((process.env.NODE_ENV==="production" ) && (process.env.NETWORK==="mainnet" )) { %>
+    <script src="https://cdn.usefathom.com/script.js" data-site="DPJWXNFE" data-spa="history" defer></script>
+    <% } %>
 
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-Regular.ttf");
-      font-weight: 400;
-    }
+      <style>
+        /* these are here so webpack will pick up the fonts */
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-Light.ttf");
+          font-weight: 300;
+        }
 
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-Medium.ttf");
-      font-weight: 500;
-    }
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-Regular.ttf");
+          font-weight: 400;
+        }
 
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-SemiBold.ttf");
-      font-weight: 600;
-    }
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-Medium.ttf");
+          font-weight: 500;
+        }
 
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-Bold.ttf");
-      font-weight: 700;
-    }
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-SemiBold.ttf");
+          font-weight: 600;
+        }
 
-    @font-face {
-      font-family: "Inter";
-      src: url("./Inter-ExtraBold.ttf");
-      font-weight: 800;
-    }
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-Bold.ttf");
+          font-weight: 700;
+        }
 
-    @font-face {
-      font-family: "Aeonik";
-      src: url("./Aeonik-Regular.otf");
-    }
+        @font-face {
+          font-family: "Inter";
+          src: url("./Inter-ExtraBold.ttf");
+          font-weight: 800;
+        }
 
-    @font-face {
-      font-family: "Aeonik";
-      src: url("./Aeonik-Bold.otf");
-      font-weight: 600;
-    }
+        @font-face {
+          font-family: "Aeonik";
+          src: url("./Aeonik-Regular.otf");
+        }
 
-    .page.home>.banner {
-      background: url("/210125_CURVE_PD_APP_BANNER_V01-1.jpg") no-repeat center center;
-      background-size: cover;
-    }
-  </style>
+        @font-face {
+          font-family: "Aeonik";
+          src: url("./Aeonik-Bold.otf");
+          font-weight: 600;
+        }
+
+        .page.home>.banner {
+          background: url("/210125_CURVE_PD_APP_BANNER_V01-1.jpg") no-repeat center center;
+          background-size: cover;
+        }
+      </style>
 </head>
 
 <body aurelia-app="main" class="loading">
