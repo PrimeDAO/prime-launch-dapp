@@ -14,7 +14,7 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 import { AlertService } from "services/AlertService";
 import { ShowButtonsEnum } from "resources/dialogs/alert/alert";
 
-export const AppStartDate = new Date("2021-12-13T23:00:00.000Z");
+export const AppStartDate = new Date("2021-12-13T14:00:00.000Z");
 
 @autoinject
 export class App {
