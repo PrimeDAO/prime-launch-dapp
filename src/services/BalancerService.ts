@@ -74,19 +74,6 @@ export class BalancerService {
   }
 
   public async updateSorState(): Promise<boolean> {
-    // if (this.SOR && !this.updatingSorState) {
-    //   this.updatingSorState = true;
-    //   this.SOR = null;
-    //   TimingService.start("updateSorState");
-    //   try {
-    //     await this.initialize();
-    //   } catch (ex) {
-    //     const msg = `Failed to update SOR state: ${Utils.extractExceptionMessage(ex)}`;
-    //     this.consoleLogService.logMessage(msg, "error");
-    //   } finally {
-    //     TimingService.end("updateSorState");
-    //     this.updatingSorState = false;
-    //   }
     if (this.SOR && !this.updatingSorState) {
       this.updatingSorState = true;
       TimingService.start("updateSorState");
