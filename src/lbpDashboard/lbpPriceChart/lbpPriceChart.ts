@@ -89,7 +89,8 @@ export class LbpPriceChart {
         };
       });
 
-      const futureForecast = forecast?.filter((item) => item.time > (history[history.length - 1]?.time));
+      const forecastStartTime = history[history.length - 1]?.time|| new Date().getTime() / 1000;
+      const futureForecast = forecast?.filter((item) => item.time > forecastStartTime);
 
       this.graphConfig = [
         {
