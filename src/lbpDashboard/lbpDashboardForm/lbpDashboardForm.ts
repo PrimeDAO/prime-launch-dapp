@@ -28,6 +28,7 @@ export class lbpDashboardForm {
   tokenList: Array<ITokenInfo>;
   @observable fundingTokensToPay: BigNumber;
   subscriptions: DisposableCollection = new DisposableCollection();
+  subscriptions1: DisposableCollection = new DisposableCollection();
   projectTokensToPurchase: BigNumber = BigNumber.from(0);
   sorSwapInfo: SwapInfo;
   userFundingTokenAllowance: BigNumber;
@@ -51,6 +52,9 @@ export class lbpDashboardForm {
     private congratulationsService: CongratulationsService,
     private launchService: LaunchService,
   ) {
+    /**
+     * should be disposed on destruction
+     */
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
     }));
@@ -107,12 +111,16 @@ export class lbpDashboardForm {
     if (!this.balancerReady) {
       this.eventAggregator.publish("handleFailure", "Sorry, unable to initialize the swapping form.  Try reentering the page to try again.");
     } else {
-      this.subscriptions.push(this.eventAggregator.subscribe("Network.NewBlock", async () => {
+      this.subscriptions1.push(this.eventAggregator.subscribe("Network.NewBlock", async () => {
         if (!this.swapping) {
           this.updateSorState();
         }
       }));
     }
+  }
+
+  detached(): void {
+    this.subscriptions1.dispose();
   }
 
   connect(): void {
