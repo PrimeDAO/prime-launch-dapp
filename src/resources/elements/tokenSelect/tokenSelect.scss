@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: left;
     .spinner {
-      color: $Secondary03-dev;
+      color: $Primary01;
     }
   }
 
@@ -32,7 +32,7 @@
     }
   }
 
-  &.symbolOnly{
+  &.symbolOnly {
     .tokenItem {
       height: 48px;
       img {
@@ -51,4 +51,3 @@
     }
   }
 }
-
