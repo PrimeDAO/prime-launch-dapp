@@ -90,7 +90,7 @@ export class lbpDashboardForm {
           await this.refreshFromSorInfo();
           this.sorSwapInfoChanged = !oldSorSwapInfo.returnAmount.eq(this.sorSwapInfo.returnAmount);
           if (this.sorSwapInfoChanged) {
-            this.eventAggregator.publish("handleWarning", `Heads up that we just updated the exchange rate for ${this.lbpManager.projectTokenInfo.symbol} that you may receive`);
+            this.eventAggregator.publish("handleInfo", `Heads up that we just updated the exchange rate for ${this.lbpManager.projectTokenInfo.symbol} that you may receive`);
           }
         } else {
           this.sorSwapInfoChanged = false;
