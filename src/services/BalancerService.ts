@@ -1,5 +1,6 @@
+import { TimingService } from "services/TimingService";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
+import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor2";
 import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { EthereumService, Networks } from "services/EthereumService";
@@ -21,8 +22,9 @@ const SUBGRAPH_URLS = {
 @autoinject
 export class BalancerService {
 
-  public SOR: any;
+  public updatingSorState: boolean;
   private loading = true;
+  private SOR: any;
   // This is the same across networks
   static VaultAddress = "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
 
@@ -42,7 +44,7 @@ export class BalancerService {
       const sor = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
       if (sor) { // yes, can be undefined
         // Update pools list with most recent onchain balances
-        success = await sor.fetchPools([], true);
+        success = await sor.fetchPools();
       }
       if (success) {
         this.SOR = sor;
@@ -71,6 +73,23 @@ export class BalancerService {
       });
   }
 
+  public async updateSorState(): Promise<boolean> {
+    if (this.SOR && !this.updatingSorState) {
+      this.updatingSorState = true;
+      TimingService.start("updateSorState");
+      try {
+        return this.SOR.fetchPools();
+      } catch (ex) {
+        const msg = `Failed to update SOR state: ${Utils.extractExceptionMessage(ex)}`;
+        this.consoleLogService.logMessage(msg, "error");
+      } finally {
+        TimingService.end("updateSorState");
+        this.updatingSorState = false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   public async getSwapFromSor(
     swapAmount: BigNumberish,
@@ -103,7 +122,7 @@ export class BalancerService {
       tokenOut.address,
       swapType,
       swapAmount,
-      { gasPrice, maxPools },
+      { gasPrice, maxPools, forceRefresh: true },
     );
 
     // const amtInScaled =
