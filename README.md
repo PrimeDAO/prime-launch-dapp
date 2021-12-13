@@ -13,7 +13,6 @@ Install dependencies with the following command:
 ```
 npm ci
 ```
-
 ### Update Contract ABIs
 Prime Launch relies on solidity contract addresses and ABIs that it obtains from the [PrimeDao contracts-v2 repository](https://github.com/PrimeDAO/contracts-v2). You must clone the contracts-v2 repository in a folder sibling to this one.
 
@@ -21,7 +20,6 @@ Then run the following script to pull the required contract ABIs from contracts-
 ```
 npm run fetchContracts
 ```
-
 You only need run this script once, or else again when any of the contracts change.
 
 ### <a name="build"></a> Build
@@ -42,25 +40,22 @@ IPFS_GATEWAY=https://[insert gateway]/${protocol}/${hash}
 ```
 >When building for production, the build will look for variables in ".env.production".
 
-Following are the two most commonly used commands.
+Following are the two most commonly used commands:
 
 #### Build and serve unoptimized code against rinkeby
 Best for development and debugging, the output goes to webpack-dev-server for use with your favorate debugger, like VSCode:
 ```
 npm run serve-dev
 ```
-
 #### Build with optimized code against mainnet
 The production build, output goes to the `dist` folder:
 ```
 npm run build
 ```
-
 After successfully building, run the following to serve up the output so you can see it in the browser:
 ```
 npm run start
 ```
-
 ### Lint
 To confirm that lint succeeds before git commits run
 ```
@@ -70,7 +65,6 @@ To have lint automatically fix all  fixable errors run
 ```
 npm run lint.fix
 ```
-
 ### Automated Tests
 Run
 ```
@@ -80,14 +74,11 @@ To run in watch mode
 ```
 npm run test --watch
 ```
-
 ### Webpack Analyzer
-
 To run the Webpack Bundle Analyzer for production build.
 ```
 npm run analyze
 ```
-
 ### Dependencies
 Various code dependencies include:
 * Token information - etherscan.io, at api.etherscan.io/api
