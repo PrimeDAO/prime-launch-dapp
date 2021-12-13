@@ -124,7 +124,7 @@ export class Vault {
         }
         if (events[1]) {
           totals.fundingRaised = events[1].args.deltas[this.fundingTokenIndex].abs().sub(totals.fundingStart);
-          totals.projectSold = events[1].args.deltas[this.projectTokenIndex].abs().sub(totals.projectStart);
+          totals.projectSold = events[1].args.deltas[this.projectTokenIndex].add(totals.projectStart);
         } else {
           totals.fundingRaised = this.fundingTokenBalance.sub(totals.fundingStart);
           totals.projectSold = totals.projectStart.sub(this.projectTokenBalance);
