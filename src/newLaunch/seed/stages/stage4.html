@@ -64,7 +64,7 @@
         </div>
         <div>
           <div class="labeledQuestion">
-            <label for="fundingMax">Funding Tokens ${launchConfig.launchDetails.fundingTokenInfo ? `(${launchConfig.launchDetails.fundingTokenInfo.symbol})` : ''} Maximum</label>
+            <label for="fundingMax">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Maximum</label>
             <div class="questionMark">
               <question-mark text="Measured in funding tokens"></question-mark>
             </div>
