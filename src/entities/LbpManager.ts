@@ -417,7 +417,8 @@ export class LbpManager implements ILaunch {
   }
 
   private async hydrateFeesCollected(): Promise<void> {
-    this.swapFeesCollected = await this.projectTokenHistoricalPriceService.getTotalSwapFees(this);
+    this.swapFeesCollected = (await this.projectTokenHistoricalPriceService.getTotalSwapFees(this))
+      * this.fundingTokenInfo.price;
   }
 
   public getFundingTokenAllowance(token: Address): Promise<BigNumber> {
