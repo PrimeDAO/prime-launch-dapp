@@ -195,29 +195,6 @@ export class ProjectTokenHistoricalPriceService {
     }
 
     /**
-     * Calculate the last price by the same way we did for the first price:
-     * Using the latest balance of the pool, and the calculated weight at
-     * time of last swap
-     */
-    const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, lastSwap.timestamp );
-    const lastSwapWeight = this.priceService.getProjectTokenWeightAtTime(
-      new Date(lastSwap.timestamp * 1000),
-      lbpMgr.startTime,
-      lbpMgr.endTime,
-      lbpMgr.projectTokenStartWeight,
-      lbpMgr.projectTokenEndWeight,
-    );
-
-    const poolPTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
-    const poolFTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
-
-    returnArray[returnArray.length - 1].price = (
-      (poolFTBalance / (1 - lastSwapWeight)) /
-      (poolPTBalance / (lastSwapWeight)) *
-      priceAtTimePoint
-    );
-
-    /**
      * If the last swap is before the current time, we need to add a
      * calculated forecast to the end of the array up to the current time.
      */
