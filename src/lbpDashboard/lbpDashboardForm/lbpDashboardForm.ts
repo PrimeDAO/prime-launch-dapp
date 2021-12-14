@@ -105,7 +105,7 @@ export class lbpDashboardForm {
           const changeRate = toBigNumberJs(change).div(oldSorSwapInfo.returnAmount.toString());
           this.sorSwapInfoChanged = !change.isZero() && changeRate.gt(0.01);
           if (this.sorSwapInfoChanged) {
-            this.eventAggregator.publish("handleInfo", `Heads up that the exchange rate we're showing you for ${this.lbpManager.projectTokenInfo.symbol} has just changed by more than 2%`);
+            this.eventAggregator.publish("handleInfo", `Heads up that the exchange rate we're showing you for ${this.lbpManager.projectTokenInfo.symbol} has just changed by more than 1%`);
           }
         } else {
           this.sorSwapInfoChanged = false;
