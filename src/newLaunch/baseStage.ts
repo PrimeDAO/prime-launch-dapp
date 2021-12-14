@@ -74,7 +74,7 @@ export abstract class BaseStage<IConfig> {
   }
 
   protected cancel(): void {
-    this.router.parent.navigate("launch");
+    this.router.parent.navigate("register");
   }
 
   protected next(): void {

@@ -4,7 +4,7 @@ import "./selectPackage.scss";
 
 export class SelectPackage {
   private launchFee: number;
-  private nextRoute = "launch";
+  private nextRoute;
 
   constructor() {
     this.launchFee = SeedService.seedFee * 100;
