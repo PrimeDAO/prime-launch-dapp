@@ -200,8 +200,8 @@ export class ProjectTokenHistoricalPriceService {
      * time of last swap
      */
     const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, lastSwap.timestamp );
-    const lastSwapWeight = this.priceService.getProjectTokenWeightAtTime(
-      new Date(lastSwap.timestamp * 1000),
+    const currentSwapWeight = this.priceService.getProjectTokenWeightAtTime(
+      new Date(),
       lbpMgr.startTime,
       lbpMgr.endTime,
       lbpMgr.projectTokenStartWeight,
@@ -211,12 +211,6 @@ export class ProjectTokenHistoricalPriceService {
     const poolPTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
     const poolFTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
 
-    returnArray[returnArray.length - 1].price = (
-      (poolFTBalance / (1 - lastSwapWeight)) /
-      (poolPTBalance / (lastSwapWeight)) *
-      priceAtTimePoint
-    );
-
     /**
      * If the last swap is before the current time, we need to add a
      * calculated forecast to the end of the array up to the current time.
@@ -224,7 +218,13 @@ export class ProjectTokenHistoricalPriceService {
     const forecastData = await this.getTrajectoryForecastData(lbpMgr);
     const pastForecast = forecastData?.filter((item) => item.time < currentTime);
     returnArray.pop(); // avoid duplicate last item
-    return [...returnArray, ...pastForecast];
+    const arr = [...returnArray, ...pastForecast];
+
+    arr[arr.length - 1].price = (
+      (poolFTBalance / (1 - currentSwapWeight)) /
+      (poolPTBalance / (currentSwapWeight)) *
+      priceAtTimePoint);
+    return arr;
   }
 
   private usdPriceAtLastSwap: number;
