@@ -101,9 +101,9 @@ export class lbpDashboardForm {
           const oldSorSwapInfo = this.sorSwapInfo;
           await this.refreshFromSorInfo();
           const change = oldSorSwapInfo.returnAmount.sub(this.sorSwapInfo.returnAmount);
-          // assume price tolerance of 2%
+          // assume price tolerance of 1%
           const changeRate = toBigNumberJs(change).div(oldSorSwapInfo.returnAmount.toString());
-          this.sorSwapInfoChanged = !change.isZero() && changeRate.gt(0.02);
+          this.sorSwapInfoChanged = !change.isZero() && changeRate.gt(0.01);
           if (this.sorSwapInfoChanged) {
             this.eventAggregator.publish("handleInfo", `Heads up that the exchange rate we're showing you for ${this.lbpManager.projectTokenInfo.symbol} has just changed by more than 2%`);
           }
