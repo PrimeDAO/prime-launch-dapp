@@ -1,3 +1,4 @@
+import { TokenService } from "./../../services/TokenService";
 import { DisposableCollection } from "./../../services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { bindable, computedFrom, autoinject } from "aurelia-framework";
@@ -18,6 +19,7 @@ export class ProjectTokenInfo {
     private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
     private numberService: NumberService,
     private eventAggregator: EventAggregator,
+    private tokenService: TokenService,
   ) {}
 
   attached(): void {
@@ -72,11 +74,13 @@ export class ProjectTokenInfo {
         this.lbpMgr.projectTokenEndWeight,
       );
 
+      await this.tokenService.getTokenPrices([this.lbpMgr.fundingTokenInfo]);
+
       this.currentPrice = this.lbpProjectTokenPriceService.getPriceAtWeight(
         this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
         this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
         currentProjectTokenWeight,
-        1.0,
+        this.lbpMgr.fundingTokenInfo.price,
       );
     } else {
       this.currentPrice = 0.0;
