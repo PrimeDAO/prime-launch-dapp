@@ -4,6 +4,10 @@ import { ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistori
 import { DateService } from "services/DateService";
 import { bindable, autoinject } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
+import { TokenService } from "services/TokenService";
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
+import { NumberService } from "services/NumberService";
+import { fromWei } from "services/EthereumService";
 import "./lbpPriceChart.scss";
 
 @autoinject
@@ -16,6 +20,9 @@ export class LbpPriceChart {
   constructor(
     private dateService: DateService,
     private projectTokenHistoricalPriceService: ProjectTokenHistoricalPriceService,
+    private numberService: NumberService,
+    private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
+    private tokenService: TokenService,
     private aureliaHelperService: AureliaHelperService,
   ){
   }
@@ -89,8 +96,29 @@ export class LbpPriceChart {
         };
       });
 
+
+      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getCurrentProjectTokenWeight(
+        this.lbpMgr.startTime,
+        this.lbpMgr.endTime,
+        this.lbpMgr.projectTokenStartWeight,
+        this.lbpMgr.projectTokenEndWeight,
+      );
+
+      await this.tokenService.getTokenPrices([this.lbpMgr.fundingTokenInfo]);
+
+      const vault = this.lbpMgr.lbp.vault;
+      const currentPrice = Math.floor(this.lbpProjectTokenPriceService.getPriceAtWeight(
+        this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
+        currentProjectTokenWeight,
+        this.lbpMgr.fundingTokenInfo.price,
+      ) * 100 ) / 100;
+
       const forecastStartTime = history[history.length - 1]?.time || 0;
       const futureForecast = forecast?.filter((item) => item.time >= forecastStartTime);
+
+      history[history.length - 1].price = currentPrice;
+      futureForecast[0].price = currentPrice;
 
       this.graphConfig = [
         {
