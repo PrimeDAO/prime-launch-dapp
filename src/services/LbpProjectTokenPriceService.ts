@@ -46,6 +46,23 @@ export class LbpProjectTokenPriceService {
     return startWeight - weightChange;
   }
 
+  public getCurrentProjectTokenWeight(
+    start: Date,
+    end: Date,
+    startWeight: number,
+    endWeight: number,
+  ): number {
+    const time = new Date();
+    const secondsPassedSinceStart = (time.getTime() - start.getTime()) / 1000;
+    const lbpDuration = (end.getTime() - start.getTime()) / 1000;
+
+    const totalWeightDifference = startWeight - endWeight;
+    const weightChangePerSecond = totalWeightDifference / lbpDuration;
+    const weightChange = secondsPassedSinceStart * weightChangePerSecond;
+
+    return startWeight - weightChange;
+  }
+
   private getHoursPassed(currentTime: Date, startTime: Date): number {
     const roundedCurrentTime = this.roundedTime(currentTime);
     const roundedStartTime = this.roundedTime(startTime);

@@ -66,8 +66,7 @@ export class ProjectTokenInfo {
         await this.lbpMgr.lbp.vault.hydrate();
       }
 
-      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getProjectTokenWeightAtTime(
-        new Date(),
+      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getCurrentProjectTokenWeight(
         this.lbpMgr.startTime,
         this.lbpMgr.endTime,
         this.lbpMgr.projectTokenStartWeight,
