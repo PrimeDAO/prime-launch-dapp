@@ -1,3 +1,5 @@
+import { DisposableCollection } from "./../../services/DisposableCollection";
+import { EventAggregator } from "aurelia-event-aggregator";
 import { bindable, computedFrom, autoinject } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
 import { fromWei } from "services/EthereumService";
@@ -9,13 +11,28 @@ import "./projectTokenInfo.scss";
 export class ProjectTokenInfo {
   @bindable lbpMgr: LbpManager;
 
+  private subscriptions = new DisposableCollection();
+  private currentPrice: number;
+
   constructor(
     private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
     private numberService: NumberService,
+    private eventAggregator: EventAggregator,
   ) {}
+
+  attached(): void {
+    this.subscriptions.push(this.eventAggregator.subscribe("minutePassed", async () => {
+      this.hydrateCurrentPrice(true);
+    }));
+  }
+
+  detached(): void {
+    this.subscriptions.dispose();
+  }
 
   lbpMgrChanged(): void {
     if (!this.lbpMgr?.priceHistory) {
+      this.hydrateCurrentPrice();
       this.lbpMgr.ensurePriceData();
     }
   }
@@ -38,11 +55,14 @@ export class ProjectTokenInfo {
     return ((this.fundingTokenTrend > 0) ? "+" : (this.fundingTokenTrend < 0) ? "-" : "" );
   }
 
-  @computedFrom("lbpMgr")
-  get currentPrice(): number {
+  async hydrateCurrentPrice(reset = false): Promise<void> {
 
     if (this.lbpMgr) {
       const vault = this.lbpMgr.lbp.vault;
+
+      if (reset) {
+        await this.lbpMgr.lbp.vault.hydrate();
+      }
 
       const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getProjectTokenWeightAtTime(
         new Date(),
@@ -52,14 +72,14 @@ export class ProjectTokenInfo {
         this.lbpMgr.projectTokenEndWeight,
       );
 
-      return this.lbpProjectTokenPriceService.getPriceAtWeight(
+      this.currentPrice = this.lbpProjectTokenPriceService.getPriceAtWeight(
         this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
         this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
         currentProjectTokenWeight,
         1.0,
       );
     } else {
-      return 0.0;
+      this.currentPrice = 0.0;
     }
   }
 
