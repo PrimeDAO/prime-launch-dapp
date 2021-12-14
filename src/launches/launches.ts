@@ -1,5 +1,5 @@
 import { EventAggregator } from "aurelia-event-aggregator";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, Address } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
 import { autoinject, singleton } from "aurelia-framework";
 import { Router } from "aurelia-router";
@@ -10,6 +10,7 @@ import { Utils } from "services/utils";
 import { SeedService } from "services/SeedService";
 import { ILaunch } from "services/launchTypes";
 import { LbpManagerService } from "services/LbpManagerService";
+import { LaunchType } from "services/launchTypes";
 
 @singleton(false)
 @autoinject
@@ -90,9 +91,20 @@ export class Launches {
   }
 
   gotoEtherscan(launch: ILaunch, event: Event): boolean {
-    Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
+    if (launch.launchType === LaunchType.LBP ){
+      Utils.goto(this.ethereumService.getEtherscanLink(this.getLbpAddress(launch.address)));
+    } else {
+      Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
+    }
     event.stopPropagation();
     return false;
+  }
+
+  getLbpAddress(lbpManager: Address): Address{
+    return (
+      this.lbpManagerService.lbpManagersArray.filter(
+        manager => manager.address === lbpManager,
+      ))[0].lbp.address;
   }
 
   onLaunchClick(launch: ILaunch): void {
