@@ -50,7 +50,7 @@ export class LbpPriceChart {
   private async hydrateChart(reset = false): Promise<void> {
     if (this.lbpMgr) {
 
-      if (!this.lbpMgr.priceHistory) {
+      if (reset || !this.lbpMgr.priceHistory) {
         await this.lbpMgr.ensurePriceData(reset);
       }
 

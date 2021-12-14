@@ -1,9 +1,18 @@
-import { bindable, computedFrom } from "aurelia-framework";
+import { bindable, computedFrom, autoinject } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
+import { fromWei } from "services/EthereumService";
+import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
+import { NumberService } from "services/NumberService";
 import "./projectTokenInfo.scss";
 
+@autoinject
 export class ProjectTokenInfo {
   @bindable lbpMgr: LbpManager;
+
+  constructor(
+    private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
+    private numberService: NumberService,
+  ) {}
 
   lbpMgrChanged(): void {
     if (!this.lbpMgr?.priceHistory) {
@@ -29,10 +38,29 @@ export class ProjectTokenInfo {
     return ((this.fundingTokenTrend > 0) ? "+" : (this.fundingTokenTrend < 0) ? "-" : "" );
   }
 
-  @computedFrom("lbpMgr.priceHistory")
+  @computedFrom("lbpMgr")
   get currentPrice(): number {
-    const len = this.lbpMgr?.priceHistory?.length;
-    return len ? this.lbpMgr.priceHistory[len-1].price : 0;
+
+    if (this.lbpMgr) {
+      const vault = this.lbpMgr.lbp.vault;
+
+      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getProjectTokenWeightAtTime(
+        new Date(),
+        this.lbpMgr.startTime,
+        this.lbpMgr.endTime,
+        this.lbpMgr.projectTokenStartWeight,
+        this.lbpMgr.projectTokenEndWeight,
+      );
+
+      return this.lbpProjectTokenPriceService.getPriceAtWeight(
+        this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
+        currentProjectTokenWeight,
+        1.0,
+      );
+    } else {
+      return 0.0;
+    }
   }
 
   @computedFrom("currentPrice", "lbpMgr.priceHistory")
