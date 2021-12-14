@@ -61,7 +61,6 @@ export class App {
       this.handleOnOff(onOff);
     });
 
-
     this.eventAggregator.subscribe("transaction.sent", async () => {
       this.modalMessage = "Awaiting confirmation...";
       this.handleOnOff(true);
@@ -73,6 +72,11 @@ export class App {
 
     this.eventAggregator.subscribe("transaction.failed", async () => {
       this.handleOnOff(false);
+    });
+
+    this.eventAggregator.subscribe("launch.updating", async (onOff: boolean) => {
+      this.modalMessage = "Refreshing the launch...";
+      this.handleOnOff(onOff);
     });
 
     this.eventAggregator.subscribe("Network.wrongNetwork", async (info: { provider: any, connectedTo: string, need: string }) => {

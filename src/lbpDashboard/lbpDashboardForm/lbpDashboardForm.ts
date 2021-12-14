@@ -17,6 +17,7 @@ import TransactionsService from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";
 import { LaunchService } from "services/LaunchService";
 import { Utils } from "services/utils";
+import { toBigNumberJs } from "services/BigNumberService";
 
 @customElement("lbpdashboardform")
 export class lbpDashboardForm {
@@ -73,12 +74,19 @@ export class lbpDashboardForm {
     return !!this.ethereumService.defaultAccountAddress && this.lbpManager?.userHydrated;
   }
 
+  private async handleTokenChanged(): Promise<void> {
+    this.fundingTokensToPay = null;
+    this.sorSwapInfo = null;
+    this.refreshFromSorInfo();
+    this.hydrateUserData();
+  }
+
   private fundingTokensToPayChanged(): void {
     this.refreshFromSorInfo();
   }
 
   private async refreshFromSorInfo(): Promise<void> {
-    this.sorSwapInfo= await this.getProjectTokensPerFundingToken();
+    this.sorSwapInfo = await this.getProjectTokensPerFundingToken();
     if (this.fundingTokensToPay?.gt(0) && this.projectTokensPerFundingToken) {
       this.projectTokensToPurchase = this.sorSwapInfo.returnAmount;
     } else {
@@ -92,9 +100,12 @@ export class lbpDashboardForm {
         if (this.sorSwapInfo) {
           const oldSorSwapInfo = this.sorSwapInfo;
           await this.refreshFromSorInfo();
-          this.sorSwapInfoChanged = !oldSorSwapInfo.returnAmount.eq(this.sorSwapInfo.returnAmount);
+          const change = oldSorSwapInfo.returnAmount.sub(this.sorSwapInfo.returnAmount);
+          // assume price tolerance of 2%
+          const changeRate = toBigNumberJs(change).div(oldSorSwapInfo.returnAmount.toString());
+          this.sorSwapInfoChanged = !change.isZero() && changeRate.gt(0.02);
           if (this.sorSwapInfoChanged) {
-            this.eventAggregator.publish("handleInfo", `Heads up that we just updated the exchange rate for ${this.lbpManager.projectTokenInfo.symbol} that you may receive`);
+            this.eventAggregator.publish("handleInfo", `Heads up that the exchange rate we're showing you for ${this.lbpManager.projectTokenInfo.symbol} has just changed by more than 2%`);
           }
         } else {
           this.sorSwapInfoChanged = false;
@@ -136,11 +147,6 @@ export class lbpDashboardForm {
       this.userFundingTokenAllowance = null;
       this.userFundingTokenBalance = null;
     }
-  }
-
-  private async handleTokenChanged(): Promise<void> {
-    this.fundingTokensToPay = null;
-    this.hydrateUserData();
   }
 
   handleMaxBuy() : void {
@@ -209,6 +215,7 @@ export class lbpDashboardForm {
   }
 
   async swap(): Promise<void> {
+
     if (await this.validateEndedOrPaused()) {
       return;
     }
@@ -227,7 +234,7 @@ export class lbpDashboardForm {
        * is fluctuating so much that sorSwapInfoChanged never can get cleared.
        * But that seems unlikely.
        */
-      if (this.sorSwapInfo && !this.sorSwapInfoChanged) {
+      if (this.sorSwapInfo) {
         if (!this.fundingTokensToPay?.gt(0)) {
           this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.selectedFundingTokenInfo.symbol} you wish to contribute`);
         } else if (!this.projectTokensToPurchase?.gt(0)) {
@@ -240,12 +247,22 @@ export class lbpDashboardForm {
         else if (await this.disclaimLbp()) {
           const receipt = await this.transactionsService.send(() => this.balancerService.swapSor(this.sorSwapInfo));
           if (receipt) {
-            await this.lbpManager.hydrate();
-            this.lbpManager.ensurePriceData(true);
-            this.hydrateUserData();
+            try {
+              this.eventAggregator.publish("launch.updating", true);
+              /**
+               * await so the UI is updated before the congratulations.  Cleaner that way.
+               */
+              await this.lbpManager.hydrate();
+              await this.lbpManager.ensurePriceData(true);
+              await this.balancerService.updateSorState().then(() =>
+              {
+                this.handleTokenChanged();
+              });
+            } finally {
+              this.eventAggregator.publish("launch.updating", false);
+            }
 
             this.congratulationsService.show(`You have purchased ${this.lbpManager.projectTokenInfo.name} and in doing so have contributed to the ${this.lbpManager.metadata.general.projectName}!`);
-            this.fundingTokensToPay = null;
           }
         }
       }
