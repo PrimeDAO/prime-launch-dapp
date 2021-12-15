@@ -117,6 +117,22 @@ export class LbpManager implements ILaunch {
     return !this.lbpInitialized || !this.poolFunded;
   }
 
+  @computedFrom("lbp.vault.tokenTotals", "fundingTokenInfo.price")
+  get averagePrice(): number {
+    let result = 0;
+    if (this.lbp?.vault?.tokenTotals.fundingRaised !== undefined) {
+      const totals = this.lbp.vault.tokenTotals;
+      /**
+       * fundingTokensSpentPerProjectToken = totalFundingTokensSpent/projectTokensPurchased
+       * totals.fundingRaised includes fees
+       */
+      result =
+          (this.numberService.fromString(fromWei(totals.fundingRaised, this.fundingTokenInfo.decimals)) * this.fundingTokenInfo.price) /
+           this.numberService.fromString(fromWei(totals.projectSold, this.projectTokenInfo.decimals));
+    }
+    return result;
+  }
+
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
@@ -412,6 +428,7 @@ export class LbpManager implements ILaunch {
       this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = this.lbp.poolTokenBalance;
+
       this.hydrateFeesCollected(); // save load time by not awaiting this
     }
   }
