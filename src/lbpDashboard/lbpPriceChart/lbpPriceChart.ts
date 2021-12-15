@@ -64,7 +64,7 @@ export class LbpPriceChart {
       const priceHistoryLength = this.lbpMgr.priceHistory?.length;
       const trajectoryForecastData = await this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this.lbpMgr);
 
-      const trajectoryForecastLength = trajectoryForecastData?.length;
+      const trajectoryForecastLength = trajectoryForecastData.length;
 
       const lbpAveragePrice = this.lbpMgr.averagePrice;
       const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
