@@ -509,11 +509,12 @@ export class LbpManager implements ILaunch {
   }
 
   /**
-   * returns projectTokensPerFundingToken
+   * returns the number of funding tokens required to purchase one project token.
    *
-   *  fundingTokensPerProjectToken = 1.0 / fundingTokensPerProjectToken
+   *  projectTokensPerFundingToken = 1.0 / fundingTokensPerProjectToken
    *
-   *  USD price of a project token
+   *  USD price of a project token:
+   *
    *  price = fundingTokensPerProjectToken * fundingTokenInfo.price
    */
   public getCurrentExchangeRate(): number {

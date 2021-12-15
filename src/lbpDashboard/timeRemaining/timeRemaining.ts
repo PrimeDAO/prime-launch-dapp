@@ -1,3 +1,4 @@
+import { NumberService } from "./../../services/NumberService";
 import { DateService, TimespanResolution } from "./../../services/DateService";
 import { autoinject, bindable, computedFrom } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
@@ -6,6 +7,7 @@ import "./timeRemaining.scss";
 import tippy from "tippy.js";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
+import { fromWei } from "services/EthereumService";
 
 @autoinject
 export class TimeRemaining {
@@ -17,7 +19,9 @@ export class TimeRemaining {
 
   constructor(
     private dateService: DateService,
-    private eventAggregator: EventAggregator) {
+    private eventAggregator: EventAggregator,
+    private numberService: NumberService,
+  ) {
   }
 
   attached(): void {
@@ -36,10 +40,20 @@ export class TimeRemaining {
     }
   }
 
-  @computedFrom("lbpMgr.priceHistory")
+  @computedFrom("lbpMgr.lbp.vault.tokenTotals", "lbpMgr.fundingTokenInfo.price")
   get averagePrice(): number {
-    return this.lbpMgr?.priceHistory?.length ?
-      (this.lbpMgr.priceHistory.reduce((a, b) => a + b.price, 0) / this.lbpMgr.priceHistory.length) : 0;
+    let result = 0;
+    if (this.lbpMgr?.lbp?.vault?.tokenTotals.fundingRaised !== undefined) {
+      const totals = this.lbpMgr.lbp.vault.tokenTotals;
+      /**
+       * fundingTokensSpentPerProjectToken = totalFundingTokensSpent/projectTokensPurchased
+       * totals.fundingRaised includes fees
+       */
+      result =
+          (this.numberService.fromString(fromWei(totals.fundingRaised, this.lbpMgr.fundingTokenInfo.decimals)) * this.lbpMgr.fundingTokenInfo.price) /
+           this.numberService.fromString(fromWei(totals.projectSold, this.lbpMgr.projectTokenInfo.decimals));
+    }
+    return result;
   }
 
   private setTooltip() {
