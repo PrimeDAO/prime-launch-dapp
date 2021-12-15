@@ -12,12 +12,11 @@
       <img src="/pie_graph.svg" />
       <formatted-number
         thousands-separated
-        value.bind="lbpMgr.startingProjectTokenAmount | ethwei:lbpMgr.projectTokenInfo.decimals"
-      ></formatted-number>
+        value.bind="lbpMgr.startingProjectTokenAmount | ethwei:lbpMgr.projectTokenInfo.decimals"></formatted-number>
     </div>
     <div class="averagePrice value">
       <img src="/dollar.svg" />
-      <formatted-number thousands-separated value.bind="averagePrice"></formatted-number>
+      <formatted-number thousands-separated value.bind="lbpMgr.averagePrice" notWei></formatted-number>
     </div>
   </div>
 </template>

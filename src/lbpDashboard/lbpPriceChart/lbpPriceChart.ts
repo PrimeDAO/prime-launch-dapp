@@ -64,9 +64,7 @@ export class LbpPriceChart {
 
       const trajectoryForecastLength = trajectoryForecastData?.length;
 
-      const lbpAveragePrice = priceHistoryLength
-        ? (this.lbpMgr.priceHistory.reduce((a, b) => a + b.price, 0) / priceHistoryLength)
-        : 0;
+      const lbpAveragePrice = this.lbpMgr.averagePrice;
       const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
         {
           time: this.lbpMgr.priceHistory[0]?.time,

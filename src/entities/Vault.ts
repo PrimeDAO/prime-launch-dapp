@@ -116,7 +116,7 @@ export class Vault {
     const totals = {} as ITokenTotals;
     const filter = this.contract.filters.PoolBalanceChanged(this.poolId);
 
-    this.contract.queryFilter(filter, StartingBlockNumber)
+    return this.contract.queryFilter(filter, StartingBlockNumber)
       .then(async (events: Array<IStandardEvent<IPoolBalanceChangedEventArgs>>) => {
         if (events[0]) {
           totals.fundingStart = events[0].args.deltas[this.fundingTokenIndex];
@@ -126,10 +126,11 @@ export class Vault {
           totals.fundingRaised = events[1].args.deltas[this.fundingTokenIndex].abs().sub(totals.fundingStart);
           totals.projectSold = events[1].args.deltas[this.projectTokenIndex].add(totals.projectStart);
         } else {
+          // includes fees
           totals.fundingRaised = this.fundingTokenBalance.sub(totals.fundingStart);
           totals.projectSold = totals.projectStart.sub(this.projectTokenBalance);
         }
+        return totals;
       });
-    return totals;
   }
 }
