@@ -32,7 +32,7 @@ Please read these Terms carefully before participating on our launch platform. T
 
 **WHAT YOU NEED TO USE OUR PLATFORM**
 
-4.1. A detailed step-by-step guide on how to use the Platform can be found in the "Prime Launch Documentation - ADD LINK" section on the Platform.
+4.1. A detailed step-by-step guide on how to use the Platform can be found in the [Prime Liquid Launch (LBP) Guide](https://medium.com/primedao/prime-liquid-launch-lbp-guide-d8cd22c6336c).
 
 4.2	To use the Platform, you need:
 
