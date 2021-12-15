@@ -1,3 +1,4 @@
+import { LbpManager } from './../entities/LbpManager';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
@@ -10,6 +11,7 @@ import { Utils } from "services/utils";
 import { SeedService } from "services/SeedService";
 import { ILaunch } from "services/launchTypes";
 import { LbpManagerService } from "services/LbpManagerService";
+import { LaunchType } from "services/launchTypes";
 
 @singleton(false)
 @autoinject
@@ -90,7 +92,11 @@ export class Launches {
   }
 
   gotoEtherscan(launch: ILaunch, event: Event): boolean {
-    Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
+    if (launch.launchType === LaunchType.LBP ){
+      Utils.goto(this.ethereumService.getEtherscanLink((launch as LbpManager).lbp.address));
+    } else {
+      Utils.goto(this.ethereumService.getEtherscanLink(launch.address));
+    }
     event.stopPropagation();
     return false;
   }
