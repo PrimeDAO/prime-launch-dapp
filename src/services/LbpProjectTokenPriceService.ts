@@ -76,33 +76,6 @@ export class LbpProjectTokenPriceService {
   }
 
   /**
-   * Returns the project token price in terms of funding tokens
-   *
-   * ```ts
-   * (Amount of Project Tokens / Amount of Funding Tokens)
-   * X
-   * (Start Weight Funding / Start Weight Project)
-   * =
-   * Project Token Price in terms of Funding Tokens (Ratio)
-   * ```
-   *
-   * @param projectTokenInPool Amount of project tokens in pool (In Units).
-   * @param fundingTokenInPool Amount of funding tokens in pool (In Units).
-   * @param projectTokenWeight Current weight of the project token (Number 0 > n > 1).
-   */
-  public getProjectPriceRatio(
-    projectTokenInPool: number, // units of project tokens in the pool
-    fundingTokenInPool: number, // units of funding tokens in the pool
-    projectTokenWeight: number,
-  ): number {
-    const a = (projectTokenInPool) / (fundingTokenInPool);
-    const b = (1 - projectTokenWeight) / projectTokenWeight;
-    if (b === Infinity) return a;
-
-    return a * b;
-  }
-
-  /**
    * Returns the Market Cap at a specific weight in USD.
    *
    * @param projectTokenMaxSupply Max supply of project tokens (BigNumber).
@@ -215,17 +188,4 @@ export class LbpProjectTokenPriceService {
     }
     return trajectoryData;
   }
-
-  // public getFundsRaised(
-  //   initialFundingTokenAmount: BigNumber,
-  //   currentFundingTokenAmount: BigNumber, // TODO: Where does this value come from? (Contracts?, TheGraph?)
-  //   pricePerFundingToken: number,
-  // ): BigNumber {
-  //   return BigNumber.from(
-  //     toBigNumberJs(
-  //       toBigNumberJs(initialFundingTokenAmount)
-  //         .minus(toBigNumberJs(currentFundingTokenAmount)),
-  //     ).multipliedBy(pricePerFundingToken).toString(),
-  //   );
-  // }
 }
