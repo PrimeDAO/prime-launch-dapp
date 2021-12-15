@@ -66,19 +66,12 @@ export class ProjectTokenInfo {
         await this.lbpMgr.lbp.vault.hydrate();
       }
 
-      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getCurrentProjectTokenWeight(
-        this.lbpMgr.startTime,
-        this.lbpMgr.endTime,
-        this.lbpMgr.projectTokenStartWeight,
-        this.lbpMgr.projectTokenEndWeight,
-      );
-
       await this.tokenService.getTokenPrices([this.lbpMgr.fundingTokenInfo]);
 
       this.currentPrice = this.lbpProjectTokenPriceService.getPriceAtWeight(
         this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
         this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
-        currentProjectTokenWeight,
+        this.lbpMgr.currentProjectTokenWeight,
         this.lbpMgr.fundingTokenInfo.price,
       );
     } else {

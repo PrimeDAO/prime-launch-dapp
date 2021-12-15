@@ -67,6 +67,7 @@ export class LbpManager implements ILaunch {
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
   public projectTokenStartWeight: number;
+  public currentProjectTokenWeight: number;
   public projectTokenEndWeight: number;
   public swapFeePercentage: number;
 
@@ -138,6 +139,10 @@ export class LbpManager implements ILaunch {
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("secondPassed", async (state: { now: Date }) => {
       this._now = state.now;
+    }));
+
+    this.subscriptions.push(this.eventAggregator.subscribe("minutePassed", async () => {
+      this.hydrateCurrentWeight();
     }));
 
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
@@ -370,6 +375,8 @@ export class LbpManager implements ILaunch {
 
       await this.hydrateTokensState();
 
+      this.hydrateCurrentWeight();
+
       // console.log(this.metadata.general.projectName, ": ", this.address);
       // console.log(this.metadata.general.projectName, ": ", this.endTime.toString(), ", ", this.startTime.toString());
       // console.log(this.metadata.general.projectName, ": ", this.metadataHash);
@@ -390,6 +397,15 @@ export class LbpManager implements ILaunch {
 
   public async hydratePaused(): Promise<boolean> {
     return this.isPaused = !(await this.getSwapEnabled());
+  }
+
+  private hydrateCurrentWeight(): void {
+    this.currentProjectTokenWeight = this.priceService.getCurrentProjectTokenWeight(
+      this.startTime,
+      this.endTime,
+      this.projectTokenStartWeight,
+      this.projectTokenEndWeight,
+    );
   }
 
   private async hydrateMetadata(): Promise<void> {
@@ -506,25 +522,6 @@ export class LbpManager implements ILaunch {
     } else {
       return this.priceHistoryPromise;
     }
-  }
-
-  /**
-   * returns projectTokensPerFundingToken
-   *
-   *  fundingTokensPerProjectToken = 1.0 / fundingTokensPerProjectToken
-   *
-   *  USD price of a project token
-   *  price = fundingTokensPerProjectToken * fundingTokenInfo.price
-   */
-  public getCurrentExchangeRate(): number {
-    const fundingTokensPerProjectToken = this.priceService.getProjectPriceRatio(
-      this.numberService.fromString(fromWei(this.projectTokenBalance, this.projectTokenInfo.decimals)),
-      this.numberService.fromString(fromWei(this.fundingTokenBalance, this.fundingTokenInfo.decimals)),
-      this.lbp.projectTokenWeight,
-    );
-
-    const result = 1.0 / fundingTokensPerProjectToken;
-    return Number.isFinite(result) ? result : 0;
   }
 }
 
