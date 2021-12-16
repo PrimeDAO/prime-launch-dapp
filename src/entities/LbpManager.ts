@@ -465,7 +465,7 @@ export class LbpManager implements ILaunch {
 
       this.projectTokenInfo.price = this.priceService.getPriceAtWeight(
         this.numberService.fromString(fromWei(vault.projectTokenBalance, this.projectTokenInfo.decimals)),
-        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.fundingTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.fundingTokenInfo.decimals)) * (1 + this.swapFeePercentage),
         currentProjectTokenWeight,
         cloneTokenInfo.price,
       );
