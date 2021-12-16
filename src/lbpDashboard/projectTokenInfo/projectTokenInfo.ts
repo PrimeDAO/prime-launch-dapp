@@ -1,42 +1,20 @@
-import { TokenService } from "./../../services/TokenService";
-import { DisposableCollection } from "./../../services/DisposableCollection";
-import { EventAggregator } from "aurelia-event-aggregator";
 import { bindable, computedFrom, autoinject } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
-import { fromWei } from "services/EthereumService";
-import { LbpProjectTokenPriceService } from "services/LbpProjectTokenPriceService";
-import { NumberService } from "services/NumberService";
 import "./projectTokenInfo.scss";
 
 @autoinject
 export class ProjectTokenInfo {
   @bindable lbpMgr: LbpManager;
 
-  private subscriptions = new DisposableCollection();
-  private currentPrice: number;
-
-  constructor(
-    private lbpProjectTokenPriceService: LbpProjectTokenPriceService,
-    private numberService: NumberService,
-    private eventAggregator: EventAggregator,
-    private tokenService: TokenService,
-  ) {}
-
-  attached(): void {
-    this.subscriptions.push(this.eventAggregator.subscribe("minutePassed", async () => {
-      this.hydrateCurrentPrice(true);
-    }));
-  }
-
-  detached(): void {
-    this.subscriptions.dispose();
-  }
-
   lbpMgrChanged(): void {
     if (!this.lbpMgr?.priceHistory) {
-      this.hydrateCurrentPrice();
       this.lbpMgr.ensurePriceData();
     }
+  }
+
+  @computedFrom("lbpMgr.projectTokenInfo.price")
+  get currentPrice(): number {
+    return this.lbpMgr?.projectTokenInfo?.price;
   }
 
   @computedFrom("currentPriceChange")
@@ -57,39 +35,10 @@ export class ProjectTokenInfo {
     return ((this.fundingTokenTrend > 0) ? "+" : (this.fundingTokenTrend < 0) ? "-" : "" );
   }
 
-  async hydrateCurrentPrice(reset = false): Promise<void> {
-
-    if (this.lbpMgr) {
-      const vault = this.lbpMgr.lbp.vault;
-
-      if (reset) {
-        await this.lbpMgr.lbp.vault.hydrate();
-      }
-
-      const currentProjectTokenWeight = this.lbpProjectTokenPriceService.getCurrentProjectTokenWeight(
-        this.lbpMgr.startTime,
-        this.lbpMgr.endTime,
-        this.lbpMgr.projectTokenStartWeight,
-        this.lbpMgr.projectTokenEndWeight,
-      );
-
-      await this.tokenService.getTokenPrices([this.lbpMgr.fundingTokenInfo]);
-
-      this.currentPrice = this.lbpProjectTokenPriceService.getPriceAtWeight(
-        this.numberService.fromString(fromWei(vault.projectTokenBalance, this.lbpMgr.projectTokenInfo.decimals)),
-        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.lbpMgr.fundingTokenInfo.decimals)),
-        currentProjectTokenWeight,
-        this.lbpMgr.fundingTokenInfo.price,
-      );
-    } else {
-      this.currentPrice = 0.0;
-    }
-  }
-
   @computedFrom("currentPrice", "lbpMgr.priceHistory")
   get currentPriceChange(): number {
     const len = this.lbpMgr?.priceHistory?.length;
-    if (len > 1) {
+    if ((len > 1) && this.currentPrice) {
       const prevPrice = this.lbpMgr.priceHistory[len-2].price;
       return this.currentPrice - prevPrice;
     } else {

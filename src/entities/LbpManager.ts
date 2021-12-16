@@ -429,6 +429,8 @@ export class LbpManager implements ILaunch {
       this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
       this.poolTokenBalance = this.lbp.poolTokenBalance;
 
+      this.hydrateProjectTokenPrice();
+
       this.hydrateFeesCollected(); // save load time by not awaiting this
     }
   }
@@ -436,6 +438,38 @@ export class LbpManager implements ILaunch {
   private async hydrateFeesCollected(): Promise<void> {
     this.swapFeesCollected = (await this.projectTokenHistoricalPriceService.getTotalSwapFees(this))
       * this.fundingTokenInfo.price;
+  }
+
+  public async hydrateProjectTokenPrice(reset = false): Promise<void> {
+
+    if (this.lbp?.vault) {
+      const vault = this.lbp.vault;
+
+      if (reset) {
+        // force refetching totals from contracts
+        await this.lbp.vault.hydrate();
+      }
+
+      /**
+       * so we only set fundingTokenInfo.price once, to avoid thrashing of dependents
+       */
+      const currentProjectTokenWeight = this.priceService.getCurrentProjectTokenWeight(
+        this.startTime,
+        this.endTime,
+        this.projectTokenStartWeight,
+        this.projectTokenEndWeight,
+      );
+
+      const cloneTokenInfo = Object.assign({}, this.fundingTokenInfo);
+      await this.tokenService.getTokenPrices([cloneTokenInfo]);
+
+      this.projectTokenInfo.price = this.priceService.getPriceAtWeight(
+        this.numberService.fromString(fromWei(vault.projectTokenBalance, this.projectTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.fundingTokenInfo.decimals)),
+        currentProjectTokenWeight,
+        cloneTokenInfo.price,
+      );
+    }
   }
 
   public getFundingTokenAllowance(token: Address): Promise<BigNumber> {

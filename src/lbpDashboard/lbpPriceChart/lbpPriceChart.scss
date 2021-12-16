@@ -4,7 +4,10 @@
   .loading {
     text-align: center;
     font-size: 32px;
-    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     i {
       color: $Primary01;
     }

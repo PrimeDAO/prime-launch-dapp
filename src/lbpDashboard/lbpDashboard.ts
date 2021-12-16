@@ -10,32 +10,26 @@ import { LbpManager } from "entities/LbpManager";
 import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { NumberService } from "services/NumberService";
-import { DisposableCollection } from "services/DisposableCollection";
 import { IHistoricalPriceRecord } from "services/ProjectTokenHistoricalPriceService";
-import { DateService } from "services/DateService";
+import { IDisposable } from "services/IDisposable";
 
 @autoinject
 export class lbpDashboard {
   address: Address;
-  subscriptions: DisposableCollection = new DisposableCollection();
+  perMinuteSubscription: IDisposable;
   lbpMgr: LbpManager;
   loading = true;
   projectTokenHistoricalPrices: Array<IHistoricalPriceRecord>;
+  poke = false;
 
   constructor(
-    private dateService: DateService,
     private eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
-    private numberService: NumberService,
     private ethereumService: EthereumService,
     private disclaimerService: DisclaimerService,
     private router: Router,
     private storageService: BrowserStorageService,
   ) {
-    this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.hydrateUserData();
-    }));
   }
 
   @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
@@ -85,9 +79,12 @@ export class lbpDashboard {
         }
         await lbpmgr.ensureInitialized();
       }
-      this.lbpMgr = lbpmgr;
 
-      await this.hydrateUserData();
+      this.perMinuteSubscription = this.eventAggregator.subscribe("minutePassed", () => this.handleNewMinute(this.lbpMgr) );
+
+      this.handleNewMinute(lbpmgr);
+
+      this.lbpMgr = lbpmgr;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -100,10 +97,33 @@ export class lbpDashboard {
     }
   }
 
-  async hydrateUserData(): Promise<void> {
-    // eslint-disable-next-line no-empty
-    if (this.ethereumService.defaultAccountAddress) {
-    }
+  detached(): void {
+    this.perMinuteSubscription.dispose();
+  }
+
+  private async handleNewMinute(lbpMgr: LbpManager): Promise<void> {
+    /**
+     * this updates
+     *   lbpMgr.projectTokenInfo.price,
+     *     upon which both project-token-info and lbp-price-chart depend, and
+     *   lbpMgr.averagePrice,
+     *     upon which time-remaining and lbp-price-chart depends
+     */
+    await lbpMgr.hydrateProjectTokenPrice(true);
+    /**
+     * this updates
+     *   lbpMgr.priceHistory,
+     *     upon which project-token and lbp-price-chart depend
+     */
+    await lbpMgr.ensurePriceData(true);
+    /**
+     * force graph to redraw.  This is a little hack to make it redraw just once,
+     * a number of its dependencies having changed above.
+     *
+     * Note: we need to have executed serially the functions above because
+     * ensurePriceData depends on stuff that is changed in hydrateProjectTokenPrice.
+     */
+    this.poke = !this.poke;
   }
 
   connect(): void {
