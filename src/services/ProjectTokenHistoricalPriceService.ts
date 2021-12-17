@@ -84,7 +84,7 @@ export class ProjectTokenHistoricalPriceService {
     const currentTime = this.dateService.utcNow.getTime() / 1000;
     /* Rounded to the nearest hour */
     const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
-    const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const endTimeSeconds = Math.floor(Math.min(endTime, currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
     /**
      * subgraph will return a maximum of 1000 records at a time.  so for a very active pool,
@@ -198,9 +198,12 @@ export class ProjectTokenHistoricalPriceService {
      * If the last swap is before the current time, we need to add a
      * calculated forecast to the end of the array up to the current time.
      */
-    const forecastData = await this.getTrajectoryForecastData(lbpMgr);
-    const pastForecast = forecastData?.filter((item) => item.time < currentTime);
-    returnArray.pop(); // avoid duplicate last item
+    let pastForecast = [];
+    if ( endTimeSeconds > currentTime) {
+      const forecastData = await this.getTrajectoryForecastData(lbpMgr);
+      pastForecast = forecastData?.filter((item) => item.time < currentTime);
+      returnArray.pop(); // avoid duplicate last item
+    }
     return [...returnArray, ...pastForecast];
   }
 
@@ -214,13 +217,13 @@ export class ProjectTokenHistoricalPriceService {
     const startTime = lbpMgr.startTime.getTime() / 1000;
     const endTime = lbpMgr.endTime.getTime() / 1000;
     const currentTime = this.dateService.utcNow.getTime() / 1000;
-    const startTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
-    const endTimeSeconds = Math.floor((endTime <= currentTime ? endTime : currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
+    const historicalStartTimeSeconds = (Math.floor(startTime / intervalSeconds) * intervalSeconds)/* Rounded */;
+    const historicalEndTimeSeconds = Math.floor(Math.min(endTime, currentTime) / intervalSeconds) * intervalSeconds + intervalSeconds; // rounded hour
 
     const prices = await this.getFundingTokenUSDPricesByID(
       lbpMgr.fundingTokenInfo.id,
-      endTimeSeconds,
-      (startTimeSeconds < currentTime) ? startTimeSeconds : (Math.floor(currentTime) - 3600),
+      historicalEndTimeSeconds,
+      (historicalStartTimeSeconds < currentTime) ? historicalStartTimeSeconds : (Math.floor(currentTime) - 3600),
       intervalMinutes,
     );
 

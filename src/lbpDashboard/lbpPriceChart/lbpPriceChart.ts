@@ -32,23 +32,7 @@ export class LbpPriceChart {
         }
 
         const priceHistoryLength = this.lbpMgr.priceHistory?.length;
-        const trajectoryForecastData = await this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this.lbpMgr);
-
-        const trajectoryForecastLength = trajectoryForecastData?.length;
-
-        const lbpAveragePrice = this.lbpMgr.averagePrice;
-        const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
-          {
-            time: this.lbpMgr.priceHistory[0]?.time,
-            price: lbpAveragePrice,
-          },
-          {
-            time: trajectoryForecastLength > 0
-              ? trajectoryForecastData[trajectoryForecastLength - 1]?.time
-              : this.lbpMgr.priceHistory[priceHistoryLength - 1]?.time,
-            price: lbpAveragePrice,
-          },
-        ] : [];
+        const trajectoryForecastData = this.lbpMgr.isLive? await this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this.lbpMgr): [];
 
         const forecast = trajectoryForecastData?.map(i => {
           return {
@@ -64,13 +48,27 @@ export class LbpPriceChart {
           };
         });
 
-        const currentPrice = this.lbpMgr.projectTokenInfo.price;
 
         const forecastStartTime = history[history.length - 1]?.time || 0;
-        const futureForecast = forecast?.filter((item) => item.time >= forecastStartTime);
+        const futureForecast = forecast?.filter((item) => item.time >= forecastStartTime && item.time < (this.dateService.dateToTicks(this.lbpMgr.endTime) / 1000));
 
+        const currentPrice = this.lbpMgr.projectTokenInfo.price;
         history[history.length - 1].price = currentPrice;
-        futureForecast[0].price = currentPrice;
+        if (futureForecast?.length) {
+          futureForecast[0].price = currentPrice;
+        }
+
+        const lbpAveragePrice = this.lbpMgr.averagePrice;
+        const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
+          {
+            time: trajectoryForecastData[0]?.time || history[0]?.time,
+            price: lbpAveragePrice,
+          },
+          {
+            time: trajectoryForecastData[trajectoryForecastData.length - 1]?.time || history[history.length - 1]?.time,
+            price: lbpAveragePrice,
+          },
+        ] : [];
 
         this.graphConfig = [
           {
@@ -84,12 +82,7 @@ export class LbpPriceChart {
           },
           {
             name: "Average Price",
-            data: averagePriceData?.map(i => {
-              return {
-                price: i.price,
-                time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
-              };
-            }),
+            data: averagePriceData,
             color: "#A258A7",
             lineWidth: 1,
           },
