@@ -239,7 +239,7 @@ export class ProjectTokenHistoricalPriceService {
     const projectTokenAmount = this.numberService.fromString(lastSwap.tokenAmountOut);
     const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
       poolPTBalance,
-      poolFTBalance * (1 + lbpMgr.swapFeePercentage),
+      poolFTBalance,
       {
         start: lastSwapDate,
         end: lbpMgr.endTime,
