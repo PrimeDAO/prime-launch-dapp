@@ -60,9 +60,21 @@ export class LbpManager implements ILaunch {
   public startingFundingTokenAmount: BigNumber;
   public startingProjectTokenAmount: BigNumber;
   public startingProjectTokenAmountWithFees: BigNumber;
-  public projectTokenBalance: BigNumber;
-  public fundingTokenBalance: BigNumber;
-  public poolTokenBalance: BigNumber;
+
+  @computedFrom("lbp.vault.projectTokenBalance")
+  public get projectTokenBalance(): BigNumber {
+    return this.lbp.vault.projectTokenBalance;
+  }
+
+  @computedFrom("lbp.vault.fundingTokenBalance")
+  public get fundingTokenBalance(): BigNumber {
+    return this.lbp.vault.fundingTokenBalance;
+  }
+
+  @computedFrom("lbp.poolTokenBalance")
+  public get poolTokenBalance(): BigNumber {
+    return this.lbp.poolTokenBalance;
+  }
 
   // private userFundingTokenBalance: BigNumber;
   public priceHistory: Array<IHistoricalPriceRecord>;
@@ -425,10 +437,6 @@ export class LbpManager implements ILaunch {
 
   private async hydrateTokensState(): Promise<void> {
     if (this.lbp) {
-      this.projectTokenBalance = this.lbp.vault.projectTokenBalance;
-      this.fundingTokenBalance = this.lbp.vault.fundingTokenBalance;
-      this.poolTokenBalance = this.lbp.poolTokenBalance;
-
       this.hydrateProjectTokenPrice();
 
       this.hydrateFeesCollected(); // save load time by not awaiting this
