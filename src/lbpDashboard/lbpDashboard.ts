@@ -80,7 +80,9 @@ export class lbpDashboard {
         await lbpmgr.ensureInitialized();
       }
 
-      this.perMinuteSubscription = this.eventAggregator.subscribe("minutePassed", () => this.handleNewMinute(this.lbpMgr) );
+      if (!lbpmgr.isDefunded) {
+        this.perMinuteSubscription = this.eventAggregator.subscribe("minutePassed", () => this.handleNewMinute(this.lbpMgr) );
+      }
 
       this.handleNewMinute(lbpmgr);
 
@@ -98,7 +100,9 @@ export class lbpDashboard {
   }
 
   detached(): void {
-    this.perMinuteSubscription.dispose();
+    if (this.perMinuteSubscription) {
+      this.perMinuteSubscription.dispose();
+    }
   }
 
   private async handleNewMinute(lbpMgr: LbpManager): Promise<void> {

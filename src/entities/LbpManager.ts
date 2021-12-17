@@ -145,6 +145,11 @@ export class LbpManager implements ILaunch {
     return result;
   }
 
+  @computedFrom("lbp.vault.isDefunded")
+  get isDefunded(): boolean {
+    return this.lbp?.vault?.isDefunded;
+  }
+
   private initializedPromise: Promise<void>;
   private subscriptions = new DisposableCollection();
   private _now = new Date();
@@ -471,6 +476,9 @@ export class LbpManager implements ILaunch {
       const cloneTokenInfo = Object.assign({}, this.fundingTokenInfo);
       await this.tokenService.getTokenPrices([cloneTokenInfo]);
 
+      /**
+       * if isDefunded, compute the price using the last balance before defunding
+       */
       const fundingTokenBalance = vault.isDefunded ? vault.fundingTokenEndingBalance: vault.fundingTokenBalance;
       const projectTokenBalance = vault.isDefunded ? vault.projectTokenEndingBalance : vault.projectTokenBalance;
 
