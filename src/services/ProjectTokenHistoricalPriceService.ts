@@ -118,7 +118,7 @@ export class ProjectTokenHistoricalPriceService {
     );
 
     let previousTimePoint;
-    let previousPriceAtTimePoint;
+    let previousUsdPriceAtTimePoint;
 
     // first swap amounts should be weighted after the lbp start weight
     swaps.push({
@@ -159,31 +159,31 @@ export class ProjectTokenHistoricalPriceService {
 
 
       if (todaysSwaps?.length) {
-        const priceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, todaysSwaps[todaysSwaps.length-1].timestamp );
+        const usdPriceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, todaysSwaps[todaysSwaps.length-1].timestamp );
         returnArray.push({
           time: timestamp,
           price: (
-            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn)) /
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage)) /
             (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)) *
-            priceAtTimePoint
+            usdPriceAtTimePoint
           ),
         });
 
         previousTimePoint = (
-          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn)) /
+          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage)) /
           (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut))
         );
-        previousPriceAtTimePoint = priceAtTimePoint;
+        previousUsdPriceAtTimePoint = usdPriceAtTimePoint;
       } else if (previousTimePoint) {
         /**
          * previous value effected by USD course change
          */
-        if (lastSwap.timestamp <= swaps[swaps.length -1]?.timestamp) {
+        if (lastSwap.timestamp <= swaps[swaps.length - 1]?.timestamp) {
           returnArray.push({
             time: timestamp,
             price: (
               previousTimePoint *
-              previousPriceAtTimePoint
+              previousUsdPriceAtTimePoint
             ),
           });
         }
@@ -237,7 +237,6 @@ export class ProjectTokenHistoricalPriceService {
     const poolPTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.projectTokenBalance, lbpMgr.projectTokenInfo.decimals));
     const poolFTBalance = this.numberService.fromString(fromWei(lbpMgr.lbp.vault.fundingTokenBalance, lbpMgr.fundingTokenInfo.decimals));
     const projectTokenAmount = this.numberService.fromString(lastSwap.tokenAmountOut);
-    // const fundingTokenAmount = this.numberService.fromString(lastSwap.tokenAmountIn);
     const forecastData = await this.priceService.getInterpolatedPriceDataPoints(
       poolPTBalance,
       poolFTBalance,
@@ -246,8 +245,11 @@ export class ProjectTokenHistoricalPriceService {
         end: lbpMgr.endTime,
       },
       {
-        // Special case: No swaps- calculation is based on the pool balance and start weight
-        // For all other cases, the calculation is based on the last swap amounts price impact
+        /**
+         * Special case:
+         * If no swaps have been made, we can't calculate the last swap's weight,
+         * therefore we use the start weight instead.
+         * */
         start: (projectTokenAmount !== poolPTBalance) ? lastSwapWeight : lbpMgr.projectTokenStartWeight,
         end: lbpMgr.projectTokenEndWeight,
       },
