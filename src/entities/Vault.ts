@@ -31,8 +31,11 @@ export class Vault {
   public lbpAdminAddress: Address;
   public projectTokenBalance: BigNumber;
   public fundingTokenBalance: BigNumber;
+  public projectTokenEndingBalance: BigNumber;
+  public fundingTokenEndingBalance: BigNumber;
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   public tokenTotals = {} as ITokenTotals;
+  public isDefunded = false;
   private projectTokenIndex: any;
   private fundingTokenIndex: number;
 
@@ -123,8 +126,13 @@ export class Vault {
           totals.projectStart = events[0].args.deltas[this.projectTokenIndex];
         }
         if (events[1]) {
+          this.isDefunded = true;
+
           totals.fundingRaised = events[1].args.deltas[this.fundingTokenIndex].abs().sub(totals.fundingStart);
           totals.projectSold = events[1].args.deltas[this.projectTokenIndex].add(totals.projectStart);
+
+          this.fundingTokenEndingBalance = events[1].args.deltas[this.fundingTokenIndex].abs().add(this.fundingTokenBalance);
+          this.projectTokenEndingBalance = events[1].args.deltas[this.projectTokenIndex].abs().add(this.projectTokenBalance);
         } else {
           // includes fees
           totals.fundingRaised = this.fundingTokenBalance.sub(totals.fundingStart);

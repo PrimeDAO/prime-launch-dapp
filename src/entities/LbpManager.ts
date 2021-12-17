@@ -471,9 +471,12 @@ export class LbpManager implements ILaunch {
       const cloneTokenInfo = Object.assign({}, this.fundingTokenInfo);
       await this.tokenService.getTokenPrices([cloneTokenInfo]);
 
+      const fundingTokenBalance = vault.isDefunded ? vault.fundingTokenEndingBalance: vault.fundingTokenBalance;
+      const projectTokenBalance = vault.isDefunded ? vault.projectTokenEndingBalance : vault.projectTokenBalance;
+
       this.projectTokenInfo.price = this.priceService.getPriceAtWeight(
-        this.numberService.fromString(fromWei(vault.projectTokenBalance, this.projectTokenInfo.decimals)),
-        this.numberService.fromString(fromWei(vault.fundingTokenBalance, this.fundingTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(projectTokenBalance, this.projectTokenInfo.decimals)),
+        this.numberService.fromString(fromWei(fundingTokenBalance, this.fundingTokenInfo.decimals)),
         currentProjectTokenWeight,
         cloneTokenInfo.price,
       );
