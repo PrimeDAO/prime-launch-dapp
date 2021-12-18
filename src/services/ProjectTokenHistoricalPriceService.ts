@@ -122,7 +122,7 @@ export class ProjectTokenHistoricalPriceService {
 
     // first swap amounts should be weighted after the lbp start weight
     swaps.push({
-      timestamp: Math.floor(startTimeSeconds / 3600) * 3600,
+      timestamp: startTimeSeconds,
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
@@ -135,7 +135,7 @@ export class ProjectTokenHistoricalPriceService {
     /**
      * enumerate every day
      */
-    for (let timestamp = startTimeSeconds; timestamp <= endTimeSeconds - intervalSeconds; timestamp += intervalSeconds) {
+    for (let timestamp = startTimeSeconds; timestamp < endTimeSeconds; timestamp += intervalSeconds) {
 
       const todaysSwaps = new Array<ISwapRecord>();
       const nextInterval = timestamp + intervalSeconds;
@@ -161,12 +161,12 @@ export class ProjectTokenHistoricalPriceService {
       if (todaysSwaps?.length) {
         const usdPriceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, todaysSwaps[todaysSwaps.length-1].timestamp );
         returnArray.push({
-          time: timestamp,
           price: (
             (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage)) /
             (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)) *
             usdPriceAtTimePoint
           ),
+          time: timestamp,
         });
 
         previousTimePoint = (
@@ -180,11 +180,11 @@ export class ProjectTokenHistoricalPriceService {
          */
         if (lastSwap.timestamp <= swaps[swaps.length - 1]?.timestamp) {
           returnArray.push({
-            time: timestamp,
             price: (
               previousTimePoint *
               previousUsdPriceAtTimePoint
             ),
+            time: timestamp,
           });
         }
       } else {
@@ -198,13 +198,24 @@ export class ProjectTokenHistoricalPriceService {
      * If the last swap is before the current time, we need to add a
      * calculated forecast to the end of the array up to the current time.
      */
-    let pastForecast = [];
-    if ( endTimeSeconds > currentTime) {
-      const forecastData = await this.getTrajectoryForecastData(lbpMgr);
-      pastForecast = forecastData?.filter((item) => item.time < currentTime);
-      returnArray.pop(); // avoid duplicate last item
-    }
-    return [...returnArray, ...pastForecast];
+    const forecastData = await this.getTrajectoryForecastData(lbpMgr);
+    const pastForecast = forecastData?.filter((item) => item.time < Math.min(currentTime, endTime));
+    returnArray.pop(); // avoid duplicate last item
+
+    /**
+     * Calculate the initial price of the pool based on the initial funding sums
+     * as if it's the first swap.
+     */
+    const initialFundingSwap = {
+      time: startTimeSeconds - intervalSeconds,
+      price: this.priceService.getPriceAtWeight(
+        startProjectTokenAmount,
+        startFundingTokenAmount,
+        lbpMgr.projectTokenStartWeight,
+        this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
+      ),
+    };
+    return [initialFundingSwap, ...returnArray, ...pastForecast];
   }
 
   private usdPriceAtLastSwap: number;
