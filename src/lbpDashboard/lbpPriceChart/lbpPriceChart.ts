@@ -1,4 +1,4 @@
-import { ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
+import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { DateService } from "services/DateService";
 import { bindable, autoinject } from "aurelia-framework";
 import { LbpManager } from "entities/LbpManager";
@@ -31,49 +31,59 @@ export class LbpPriceChart {
           await this.lbpMgr.ensurePriceData();
         }
 
-        const priceHistoryLength = this.lbpMgr.priceHistory?.length;
-        const trajectoryForecastData = this.lbpMgr.isLive? await this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this.lbpMgr): [];
-
-        const forecast = trajectoryForecastData?.map(i => {
-          return {
-            price: i.price,
-            time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
-          };
-        });
-
         const history = this.lbpMgr.priceHistory?.map(i => {
           return {
             price: i.price,
-            time: this.dateService.translateLocalTimestampToUtc(i.time * 1000) / 1000,
+            time: i.time + 3600,
           };
-        });
+        }) || [];
 
+        const futureForecast = [];
+        await this.projectTokenHistoricalPriceService.getTrajectoryForecastData(this.lbpMgr).then(data => {
+          if (data?.length) {
+            data.reduce((_: any, option: IHistoricalPriceRecord):IHistoricalPriceRecord => {
+              if (option.time > (history[history.length - 1]?.time || this.dateService.dateToTicks(this.lbpMgr.startTime) / 1000)
+               && option.time <= (this.dateService.dateToTicks(this.lbpMgr.endTime) / 1000)) {
+                futureForecast.push({
+                  price: option.price,
+                  time: option.time,
+                });
+                return;
+              }
+            });
+          }});
 
-        const forecastStartTime = history[history.length - 1]?.time || 0;
-        const futureForecast = forecast?.filter((item) => item.time >= forecastStartTime && item.time < (this.dateService.dateToTicks(this.lbpMgr.endTime) / 1000));
-
-        const currentPrice = this.lbpMgr.projectTokenInfo.price;
-        history[history.length - 1].price = currentPrice;
-        if (futureForecast?.length) {
-          futureForecast[0].price = currentPrice;
+        if (!history.length) {
+          history.push({
+            time: this.dateService.dateToTicks(this.lbpMgr.startTime) / 1000,
+            price: futureForecast[0].price,
+          });
+          history.push({
+            time: this.dateService.dateToTicks(this.lbpMgr.startTime) / 1000 + 3600,
+            price: futureForecast[0].price,
+          });
+        } else {
+          history[history.length - 1].price = this.lbpMgr.projectTokenInfo.price;
         }
 
         const lbpAveragePrice = this.lbpMgr.averagePrice;
-        const averagePriceData = (lbpAveragePrice > 0 && priceHistoryLength > 1)? [
+        const averagePriceData = (lbpAveragePrice > 0)? [
           {
-            time: trajectoryForecastData[0]?.time || history[0]?.time,
+            time: history[0]?.time,
             price: lbpAveragePrice,
           },
           {
-            time: trajectoryForecastData[trajectoryForecastData.length - 1]?.time || history[history.length - 1]?.time,
+            time: (futureForecast[futureForecast.length - 1]?.time || history[history.length - 1]?.time),
             price: lbpAveragePrice,
           },
         ] : [];
 
         this.graphConfig = [
           {
-            data: history,
-            color: "#FF497A",
+            name: "Average Price",
+            data: averagePriceData,
+            color: "#A258A7",
+            lineWidth: 1,
           },
           {
             data: futureForecast,
@@ -81,10 +91,8 @@ export class LbpPriceChart {
             lineStyle: 2,
           },
           {
-            name: "Average Price",
-            data: averagePriceData,
-            color: "#A258A7",
-            lineWidth: 1,
+            data: history,
+            color: "#FF497A",
           },
         ];
       } finally {
