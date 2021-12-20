@@ -52,8 +52,13 @@ export class LbpProjectTokenPriceService {
     startWeight: number,
     endWeight: number,
   ): number {
-    const time = new Date();
-    const secondsPassedSinceStart = (time.getTime() - start.getTime()) / 1000;
+    let now = new Date();
+    if (now.getTime() < start.getTime()) {
+      now = start;
+    } else if (now.getTime() > end.getTime()) {
+      now = end;
+    }
+    const secondsPassedSinceStart = (now.getTime() - start.getTime()) / 1000;
     const lbpDuration = (end.getTime() - start.getTime()) / 1000;
 
     const totalWeightDifference = startWeight - endWeight;
