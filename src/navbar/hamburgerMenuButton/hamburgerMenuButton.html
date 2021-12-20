@@ -1,11 +1,5 @@
-<template>
-  <div class="hamburger-menu" class.bind="isOpen?'is-open':''">
-    <!-- <div class="close-button" click.delegate="closeMenu()">
-      <span>X</span>
-    </div> -->
-    Menu
-  </div>
-  <div class="hamburger-menu-button"  class.bind="isOpen?'is-open':''" click.delegate="toggleMenu()">
+<template bindable="isOpen">
+  <div class="hamburger-menu-button ${isOpen?'is-open':''}">
     <span></span>
     <span></span>
     <span></span>

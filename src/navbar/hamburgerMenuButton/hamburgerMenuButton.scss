@@ -55,39 +55,4 @@
       }
     }
   }
-  z-index: 999;
-}
-
-.hamburger-menu {
-  display: grid;
-  grid-template-rows: 18px auto;
-  grid-template-columns: 100%;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  // z-index: 998;
-  right: 0;
-  top: 0;
-  background: $BG02;
-  overflow: hidden;
-  width: calc(100% - 40px);
-  height: 100vh;
-  transform: translate(calc(50vw - 29px), calc(-50% + 33px));  clip-path: circle(0%);
-  transition: transform 0.2s ease-in-out, clip-path 0.3s ease-in-out;
-  padding: 20px;
-
-  &.is-open {
-    clip-path: circle(100%);
-    transform: translate(0, 0);
-    .close-button {
-      opacity: 1;
-    }
-  }
-
-  .close-button {
-    transition: opacity 0.3s ease-in-out;
-    transition-delay: 0.2s;
-    opacity: 0;
-    text-align: end;
-  }
 }
