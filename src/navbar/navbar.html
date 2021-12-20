@@ -1,4 +1,5 @@
 <template>
+  <require from="./hamburgerMenuButton/hamburgerMenuButton"></require>
   <nav class="navbar-container">
     <div class="logo">
       <img src="/logomark.svg" alt="PrimeDAO">
@@ -41,6 +42,7 @@
     <div class="headerConnectButton">
       <connectbutton></connectbutton>
     </div>
+    <hamburger-menu-button class="mobileOnly"></hamburger-menu-button>
     <!-- <div if.to-view="isConnected" class="wallet-balance">
         <div class="wallet-balance-text">
           <span>XX.xx Prime</span>

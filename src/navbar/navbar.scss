@@ -14,6 +14,10 @@
   grid-template-areas: "logo products networkFeedback connect" "subPages subPages subPages subPages";
   background-color: $BG01;
 
+  .mobileOnly {
+    display: none;
+  }
+
   .logo {
     grid-area: logo;
     padding-left: 20px;
@@ -152,7 +156,7 @@
 }
 
 @media screen and (max-width: 1072px) {
-  .navbar-container {
+  .navbar-container {  
     grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
 
@@ -184,9 +188,13 @@
 
 @media screen and (max-width: 450px) {
   .navbar-container {
-    grid-template-columns: auto auto;
-    grid-template-areas: "logo connect";
+    grid-template-columns: auto 1fr 40px;
+    grid-template-areas: "logo connect hamburger-menu";
     justify-content: space-between;
+
+    .mobileOnly {
+      display: block;
+    }
 
     .products,
     .productSubpages {
