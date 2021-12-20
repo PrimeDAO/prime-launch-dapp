@@ -8,15 +8,27 @@ import "./navbar.scss";
 export class Navbar {
   @bindable.booleanAttr vertical: boolean;
   @bindable onNavigate?: () => void;
+  @bindable menuOpen = false;
 
   constructor(private router: Router) {}
 
+  private toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+  private openMenu() {
+    this.menuOpen = true;
+  }
+  private closeMenu() {
+    this.menuOpen = false;
+  }
 
   goto(url: string): void {
+    this.closeMenu();
     Utils.goto(url);
   }
 
   navigate(href: string): void {
+    this.closeMenu();
     if (this.onNavigate) {
       this.onNavigate();
     }
