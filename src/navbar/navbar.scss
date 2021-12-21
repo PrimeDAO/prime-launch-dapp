@@ -202,8 +202,8 @@ $menu-open-duration: 0.1s;
       grid-area: hamburger-menu;
     }
 
-    .products:not(.mobile-only),
-    .productSubpages:not(.mobile-only) {
+    &>.products,
+    &>.productSubpages {
       display: none;
     }
   }
