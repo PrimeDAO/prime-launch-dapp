@@ -6,7 +6,6 @@ import "./navbar.scss";
 
 @autoinject
 export class Navbar {
-  @bindable.booleanAttr vertical: boolean;
   @bindable onNavigate?: () => void;
   @bindable menuOpen = false;
 

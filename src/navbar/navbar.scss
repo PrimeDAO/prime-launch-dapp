@@ -264,11 +264,6 @@ $menu-open-duration: 0.1s;
       }
 
       .item {
-        // display: flex;
-        // align-items: center;
-        // justify-self: center;
-        // gap: 10px;
-        // width: 100%;
         .icon {
           img {
             width: 32px;
@@ -294,21 +289,6 @@ $menu-open-duration: 0.1s;
             }
           }
         }
-      
-        // &:hover {
-        //   background-color: $BG02;
-      
-        //   .icon {
-        //     img {
-        //       &.color {
-        //         display: inline-block;
-        //       }
-        //       &.mono {
-        //         display: none;
-        //       }
-        //     }
-        //   }
-        // }
       }
     }
 
