@@ -1,4 +1,4 @@
-import { autoinject } from "aurelia-framework";
+﻿import { autoinject } from "aurelia-framework";
 import * as moment from "moment-timezone";
 import Moment = moment.Moment;
 
@@ -214,7 +214,7 @@ export class DateService {
     }
 
     let firstResolution = false;
-    let stop = false;
+    let largestTwoCounter = 0;
 
     const days = Math.floor(ms / 86400000);
     ms = ms % 86400000;
@@ -232,13 +232,13 @@ export class DateService {
       result = `${days}${abbrev ? "d" : (days === 1 ? " day" : " days")}`;
 
       if (largest) {
-        stop = true;
+        largestTwoCounter += 1;
       } else {
         firstResolution = true;
       }
     }
 
-    if (!stop && ((hours ||
+    if (!shouldStopOnLargest2(largestTwoCounter) && ((hours ||
       // show zero if not the first or is the res
       firstResolution ||
       (resolution === TimespanResolution.hours)) &&
@@ -247,13 +247,13 @@ export class DateService {
       result += `${result.length ? ", " : ""}${hours}${abbrev ? "h" : (hours === 1 ? " hour" : " hours")}`;
 
       if (largest) {
-        stop = true;
+        largestTwoCounter += 1;
       } else {
         firstResolution = true;
       }
     }
 
-    if (!stop && ((minutes ||
+    if (!shouldStopOnLargest2(largestTwoCounter) && ((minutes ||
       // show zero if not the first or is the res
       firstResolution ||
       (resolution === TimespanResolution.minutes)) &&
@@ -262,26 +262,26 @@ export class DateService {
       result += `${result.length ? ", " : ""}${minutes}${abbrev ? "m" : (minutes === 1 ? " minute" : " minutes")}`;
 
       if (largest) {
-        stop = true;
+        largestTwoCounter += 1;
       }
       // else {
       //   firstResolution = true;
       // }
     }
 
-    if (!stop && (resolution <= TimespanResolution.seconds)) {
+    if (!shouldStopOnLargest2(largestTwoCounter) && resolution <= TimespanResolution.seconds) {
 
       result += `${result.length ? ", " : ""}${seconds}${abbrev ? "s" : (seconds === 1 ? " second" : " seconds")}`;
 
       if (largest) {
-        stop = true;
+        largestTwoCounter += 1;
       }
       // else {
       //   firstResolution = true;
       // }
     }
 
-    if (!stop && (ms && (resolution === TimespanResolution.milliseconds))) {
+    if (!shouldStopOnLargest2(largestTwoCounter) && (ms && (resolution === TimespanResolution.milliseconds))) {
       result += `${result.length ? ", " : ""}${ms}${abbrev ? "ms" : (ms === 1 ? " millisecond" : " milliseconds")}`;
     }
 
@@ -452,6 +452,10 @@ export class DateService {
   }
 }
 
+function shouldStopOnLargest2(largestCounter: number) {
+  return largestCounter === 2;
+}
+
 interface IFormat {
   key: string;
   format: string;
@@ -465,7 +469,7 @@ export interface IFormatParameters {
 
 export enum TimespanResolution {
   /**
-   * show only the largest unit, down to the resolution or'd with this
+   * show only the largest 2 units, down to the resolution or'd with this
    */
   largest = 0x20,
   days = 0x10,
