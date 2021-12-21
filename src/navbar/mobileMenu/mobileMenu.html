@@ -24,7 +24,7 @@
           <div click.delegate="navigateCallback({href: '/register'})" class="item ${(router.currentInstruction.config.name === 'register') ? 'active' : ''}">Register</div>
           <div click.delegate="navigateCallback({href: '/launches'})" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
           <div click.delegate="navigateCallback({href: '/documentation'})" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</div>
-          <div click.delegate="goto({url: 'https://primedao.typeform.com/PrimeLaunchSup'})" class="item">Support</div>
+          <div click.delegate="gotoCallback({url: 'https://primedao.typeform.com/PrimeLaunchSup'})" class="item">Support</div>
         </div>
       </div>
     </div>
