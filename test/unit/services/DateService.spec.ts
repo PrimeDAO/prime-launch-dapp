@@ -22,6 +22,23 @@ describe("DateService", () => {
   describe("#ticksToTimeSpanString", () => {
     /* prettier-ignore */
     const testData: TestData[] = [
+      [TimespanResolution.largest, [1, 1, 1, 1], "1 day, 1 hour"],
+      [TimespanResolution.largest, [1, 1, 1, 0], "1 day, 1 hour"],
+      [TimespanResolution.largest, [1, 1, 0, 1], "1 day, 1 hour"],
+      [TimespanResolution.largest, [1, 1, 0, 0], "1 day, 1 hour"],
+      [TimespanResolution.largest, [1, 0, 1, 1], "1 day, 1 minute"],
+      [TimespanResolution.largest, [1, 0, 1, 0], "1 day, 1 minute"],
+      [TimespanResolution.largest, [1, 0, 0, 1], "1 day, 1 second"],
+      [TimespanResolution.largest, [1, 0, 0, 0], "1 day, 0 seconds"],
+      [TimespanResolution.largest, [0, 1, 1, 1], "1 hour, 1 minute"],
+      [TimespanResolution.largest, [0, 1, 1, 0], "1 hour, 1 minute"],
+      [TimespanResolution.largest, [0, 1, 0, 1], "1 hour, 1 second"],
+      [TimespanResolution.largest, [0, 1, 0, 0], "1 hour, 0 seconds"],
+      [TimespanResolution.largest, [0, 0, 1, 1], "1 minute, 1 second"],
+      [TimespanResolution.largest, [0, 0, 1, 0], "1 minute, 0 seconds"],
+      [TimespanResolution.largest, [0, 0, 0, 1], "1 second"],
+      [TimespanResolution.largest, [0, 0, 0, 0], "0 seconds"],
+
       [TimespanResolution.days, [1, 1, 1, 1], "1 day"],
       [TimespanResolution.days, [1, 1, 1, 0], "1 day"],
       [TimespanResolution.days, [1, 1, 0, 1], "1 day"],
