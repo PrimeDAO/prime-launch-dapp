@@ -1,5 +1,6 @@
 <template>
   <require from="./hamburgerMenuButton/hamburgerMenuButton"></require>
+  <require from="./mobileMenu/mobileMenu"></require>
   <nav class="navbar-container">
     <div class="logo">
       <img src="/logomark.svg" alt="PrimeDAO">
@@ -43,37 +44,18 @@
       <connectbutton></connectbutton>
     </div>
 
-    <div class="mobile-only mobile-menu ${menuOpen?'is-open':''}">
-      <div class="menu-header">
-        <img src="/logomark.svg" alt="PrimeDAO">
-      </div>
-      <div class="menu-body">
-        <div class="products mobile-only">
-          <div class="item active">
-            <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
-          </div>
-          <div class="item" click.delegate="goto('https://www.prime.xyz/pools')">
-            <div class="icon pools"><img class="mono" src="/pools-mono.svg" /><img class="color" src="/pools.svg" /></div>
-          </div>
-          <div class="item" click.delegate="goto('https://www.prime.xyz/rating')">
-            <div class="icon rating"><img class="mono" src="/rating-mono.svg" /><img class="color" src="/rating.svg" /></div>
-          </div>
-          <div class="item" click.delegate="goto('https://www.prime.xyz/deals')">
-            <div class="icon deals"><img class="mono" src="/deals-mono.svg" /><img class="color" src="/deals.svg" /></div>
-          </div>
-        </div>
-        <div class="productSubpages mobile-only">
-          <div class="container">
-            <div click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</div>
-            <div click.delegate="navigate('/register')" class="item ${(router.currentInstruction.config.name === 'register') ? 'active' : ''}">Register</div>
-            <div click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
-            <div click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</div>
-            <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hamburger-menu-button class="mobile-only" click.delegate="toggleMenu()" is-open.bind="menuOpen"></hamburger-menu-button>
+    <mobile-menu 
+      class="mobile-only" 
+      goto-callback.call="goto(url)" 
+      navigate-callback.call="navigate(href)" 
+      menu-open.bind="menuOpen"
+    >
+    </mobile-menu>
+    <hamburger-menu-button
+      class="mobile-only"
+      menu-open.bind="menuOpen"
+      click.delegate="toggleMenu()"
+    >
+    </hamburger-menu-button>
   </nav>
 </template>
