@@ -1,10 +1,12 @@
 <template>
+  <require from="./hamburgerMenuButton/hamburgerMenuButton"></require>
+  <require from="./mobileMenu/mobileMenu"></require>
   <nav class="navbar-container">
     <div class="logo">
       <img src="/logomark.svg" alt="PrimeDAO">
     </div>
 
-    <div class="products ${vertical ? 'vertical' : ''}">
+    <div class="products">
       <div class="container">
         <div class="item active">
           <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
@@ -41,15 +43,19 @@
     <div class="headerConnectButton">
       <connectbutton></connectbutton>
     </div>
-    <!-- <div if.to-view="isConnected" class="wallet-balance">
-        <div class="wallet-balance-text">
-          <span>XX.xx Prime</span>
-          <span>X.xx ETH</span>
-        </div>
-        <div class="wallet-user-details">
-          <span>JohnDoe.eth</span>
-          <span> ⌄ </span>
-        </div>
-      </div> -->
+
+    <mobile-menu 
+      class="mobile-only" 
+      goto-callback.call="goto(url)" 
+      navigate-callback.call="navigate(href)" 
+      menu-open.bind="menuOpen"
+    >
+    </mobile-menu>
+    <hamburger-menu-button
+      class="mobile-only"
+      menu-open.bind="menuOpen"
+      click.delegate="toggleMenu()"
+    >
+    </hamburger-menu-button>
   </nav>
 </template>

@@ -1,5 +1,7 @@
 @import "styles/styles.scss";
 
+$menu-open-duration: 0.1s;
+
 .navbar-container {
   position: fixed;
   z-index: 998;
@@ -13,6 +15,10 @@
   grid-template-columns: $BodyPaddingLeftRight auto auto auto;
   grid-template-areas: "logo products networkFeedback connect" "subPages subPages subPages subPages";
   background-color: $BG01;
+
+  .mobile-only {
+    display: none;
+  }
 
   .logo {
     grid-area: logo;
@@ -152,7 +158,7 @@
 }
 
 @media screen and (max-width: 1072px) {
-  .navbar-container {
+  .navbar-container {  
     grid-template-columns: calc(#{$BodyPaddingLeftRightMobile} + 50px) 1fr auto;
     grid-template-areas: "logo products connect" "subPages subPages subPages";
 
@@ -184,12 +190,20 @@
 
 @media screen and (max-width: 450px) {
   .navbar-container {
-    grid-template-columns: auto auto;
-    grid-template-areas: "logo connect";
+    grid-template-columns: auto 1fr 0 40px;
+    grid-template-areas: "logo connect sub-pages hamburger-menu";
     justify-content: space-between;
 
-    .products,
-    .productSubpages {
+    .mobile-only {
+      display: block;
+    }
+    .hamburger-menu-button {
+      z-index: 999;
+      grid-area: hamburger-menu;
+    }
+
+    &>.products,
+    &>.productSubpages {
       display: none;
     }
   }

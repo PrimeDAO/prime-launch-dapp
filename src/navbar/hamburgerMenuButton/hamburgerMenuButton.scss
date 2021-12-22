@@ -1,0 +1,58 @@
+@import "styles/styles.scss";
+
+.hamburger-menu-button {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  transform: scale(1);
+  span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: $White;
+    border-radius: 2px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+
+    &:nth-child(1) {
+      top: 5px;
+    }
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      top: 11px;
+    }
+
+    &:nth-child(4) {
+      top: 17px;
+    }
+  }
+
+  &.is-open {
+    span {
+      &:nth-child(1) {
+        width: 0%;
+        left: 50%;
+      }
+
+      &:nth-child(2) {
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg);
+      }
+
+      &:nth-child(4) {
+        width: 0%;
+        left: 50%;
+      }
+    }
+  }
+}
