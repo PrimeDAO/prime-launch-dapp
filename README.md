@@ -82,7 +82,7 @@ npm run analyze
 ### Dependencies
 Various code dependencies include:
 * Token information - etherscan.io, at api.etherscan.io/api
-* Token information - coingecko, at api.coingecko.com/api/v3
+* Token information - coingecko, at pro-api.coingecko.com/api/v3
 * Pool information - the Balancer subgraph, at api.thegraph.com/subgraphs/name/balancer-labs/balancer
 * IPFS gateway - primedao.mypinata.cloud
 * Wallet providers - [Web3Modal](https://github.com/Web3Modal/web3modal)

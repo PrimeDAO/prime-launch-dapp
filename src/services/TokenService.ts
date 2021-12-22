@@ -45,7 +45,7 @@ export class TokenService {
 
   async initialize(): Promise<TokenListMap> {
     this.geckoCoinInfo = new Map<string, string>();
-    const uri = "https://api.coingecko.com/api/v3/coins/list";
+    const uri = `https://pro-api.coingecko.com/api/v3/coins/list?x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
 
     TimingService.start("get geckoCoinInfo");
     /**
@@ -168,7 +168,7 @@ export class TokenService {
 
     if (tokensByGeckoId.size) {
 
-      const uri = `https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}`;
+      const uri = `https://pro-api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
 
       await axios.get(uri)
         .then((response) => {
@@ -252,7 +252,7 @@ export class TokenService {
       tokenInfo.id = this.getTokenGeckoId(tokenInfo.name, tokenInfo.symbol);
     }
 
-    const uri = `https://api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false`;
+    const uri = `https://pro-api.coingecko.com/api/v3/coins/${tokenInfo.id}?market_data=true&localization=false&community_data=false&developer_data=false&sparkline=false&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
 
     return axios.get(uri)
       .then((response) => {

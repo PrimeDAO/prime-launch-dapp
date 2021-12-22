@@ -39,7 +39,7 @@ export class ProjectTokenHistoricalPriceService {
   }
 
   private getCoingeckoUrl(fundingTokenId: string, startTime: number, endTime: number): string {
-    return `https://api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`;
+    return `https://pro-api.coingecko.com/api/v3/coins/${fundingTokenId}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
   }
 
   private nearestUSDPriceAtTimestamp(prices: Array<number>, timestamp: number): number {
