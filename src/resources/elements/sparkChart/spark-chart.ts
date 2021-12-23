@@ -61,7 +61,8 @@ export class SparkChart {
       width: this.width,
       height: this.height,
       timeScale: {
-        rightBarStaysOnScroll: true,
+        fixLeftEdge: true,
+        fixRightEdge: true,
         visible: true,
         timeVisible: true,
         secondsVisible: false,
