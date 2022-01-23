@@ -79,7 +79,12 @@ export class App {
       this.handleOnOff(onOff);
     });
 
-    this.eventAggregator.subscribe("Network.wrongNetwork", async (info: { provider: any, connectedTo: string, need: string }) => {
+    this.eventAggregator.subscribe("Network.wrongNetwork", async (info:
+    {
+      provider: any,
+      connectedTo: string,
+      need: string,
+    }) => {
 
       let notChanged = true;
       const connect = await this.alertService.showAlert(

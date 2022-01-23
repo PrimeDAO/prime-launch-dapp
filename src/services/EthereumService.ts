@@ -49,12 +49,13 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby";
+export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum";
 
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
   Kovan = "kovan",
+  Arbitrum = "arbitrum",
 }
 
 export interface IChainEventInfo {
@@ -76,6 +77,7 @@ export class EthereumService {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
+    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
   }
   private static providerOptions = {
     torus: {
@@ -100,6 +102,7 @@ export class EthereumService {
           1: EthereumService.ProviderEndpoints[Networks.Mainnet],
           4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
+          42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
         },
       },
     },
@@ -107,6 +110,7 @@ export class EthereumService {
 
   public static targetedNetwork: AllowedNetworks;
   public static targetedChainId: number;
+  public static isTestNet: boolean;
 
   /**
    * provided by ethers
@@ -130,6 +134,7 @@ export class EthereumService {
     EthereumService.targetedNetwork = network;
     EthereumService.targetedChainId = this.chainIdByName.get(network);
     EthereumService.providerOptions.torus.options.network = network;
+    EthereumService.isTestNet = ((network !== Networks.Mainnet) && (network !== Networks.Arbitrum));
 
     const readonlyEndPoint = EthereumService.ProviderEndpoints[EthereumService.targetedNetwork];
     if (!readonlyEndPoint) {
@@ -152,16 +157,26 @@ export class EthereumService {
    */
   private web3ModalProvider: Web3Provider & IEIP1193;
 
-  private chainNameById = new Map<number, AllowedNetworks>([
-    [1, Networks.Mainnet],
-    [4, Networks.Rinkeby],
-    [42, Networks.Kovan],
+  // private chainNameById = new Map<number, AllowedNetworks>([
+  //   [1, Networks.Mainnet],
+  //   [4, Networks.Rinkeby],
+  //   [42, Networks.Kovan],
+  //   [42161, Networks.Arbitrum],
+  // ]);
+
+  private friendlyChainNameById = new Map<number, string>([
+    [1, "Mainnet"],
+    [4, "Rinkeby"],
+    [42, "Kovan"],
+    [42161, "Arbitrum One"],
   ]);
+
 
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Rinkeby, 4],
     [Networks.Kovan, 42],
+    [Networks.Arbitrum, 42161],
   ]);
 
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
@@ -265,8 +280,8 @@ export class EthereumService {
      * but it sure helps us know whether we can connect without MetaMask asking the user to log in.
      */
     if (provider && provider._metamask.isUnlocked && (await provider._metamask.isUnlocked())) {
-      const chainId = this.chainNameById.get(Number(await provider.request({ method: "eth_chainId" })));
-      if (chainId === EthereumService.targetedNetwork) {
+      const chainId = Number(await provider.request({ method: "eth_chainId" }));
+      if (chainId === EthereumService.targetedChainId) {
         const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts?.length) {
           const account = getAddress(accounts[0]);
@@ -312,8 +327,12 @@ export class EthereumService {
         const walletProvider = new ethers.providers.Web3Provider(web3ModalProvider as any);
         (walletProvider as any).provider.autoRefreshOnNetworkChange = false; // mainly for metamask
         const network = await this.getNetwork(walletProvider);
-        if (network.name !== EthereumService.targetedNetwork) {
-          this.eventAggregator.publish("Network.wrongNetwork", { provider: web3ModalProvider, connectedTo: network.name, need: EthereumService.targetedNetwork });
+        if (network.chainId !== EthereumService.targetedChainId) {
+          this.eventAggregator.publish("Network.wrongNetwork", {
+            provider: web3ModalProvider,
+            connectedTo: this.friendlyChainNameById.get(network.chainId) || network.name,
+            need: this.friendlyChainNameById.get(EthereumService.targetedChainId),
+          });
           return;
         }
         /**
@@ -327,7 +346,7 @@ export class EthereumService {
         /**
            * because the events aren't fired on first connection
            */
-        this.fireConnectHandler({ chainId: network.chainId, chainName: network.name, provider: this.walletProvider });
+        this.fireConnectHandler({ chainId: network.chainId, chainName: EthereumService.targetedNetwork, provider: this.walletProvider });
         this.fireAccountsChangedHandler(this.defaultAccountAddress);
 
         this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
@@ -383,12 +402,16 @@ export class EthereumService {
   private handleChainChanged = async (chainId: number) => {
     const network = ethers.providers.getNetwork(Number(chainId));
 
-    if (network.name !== EthereumService.targetedNetwork) {
-      this.eventAggregator.publish("Network.wrongNetwork", { provider: this.web3ModalProvider, connectedTo: network.name, need: EthereumService.targetedNetwork });
+    if (network.chainId !== EthereumService.targetedChainId) {
+      this.eventAggregator.publish("Network.wrongNetwork", {
+        provider: this.web3ModalProvider,
+        connectedTo: this.friendlyChainNameById.get(network.chainId) || network.name,
+        need: this.friendlyChainNameById.get(EthereumService.targetedChainId),
+      });
       return;
     }
     else {
-      this.fireChainChangedHandler({ chainId: network.chainId, chainName: network.name, provider: this.walletProvider });
+      this.fireChainChangedHandler({ chainId: network.chainId, chainName: EthereumService.targetedNetwork, provider: this.walletProvider });
     }
   }
 
@@ -418,6 +441,9 @@ export class EthereumService {
    */
   public async switchToTargetedNetwork(provider: ExternalProvider): Promise<boolean> {
     const hexChainId = `0x${EthereumService.targetedChainId.toString(16)}`;
+    let tryCreateChainProvider = false;
+    let gotProvider = false;
+
     try {
       if (provider.request) {
         /**
@@ -427,22 +453,41 @@ export class EthereumService {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: hexChainId }],
         });
-        this.setProvider(provider as unknown as Web3Provider);
-        return true;
+        gotProvider = true;
       }
     } catch (err) {
       // user rejected request
       if (err.code === 4001) {
         // return false;
+      } else if ((err.code === 4902) && (EthereumService.targetedNetwork === Networks.Arbitrum)) {
+        tryCreateChainProvider = true;
       }
-      // chain does not exist, let's add it (see balancer)
-      // if (err.code === 4902) {
-      //   return importNetworkDetailsToWallet(provider);
-      // }
     }
-    return false;
-  }
 
+    if (tryCreateChainProvider) {
+      try {
+        await provider.request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: hexChainId,
+              chainName: this.friendlyChainNameById.get(EthereumService.targetedChainId),
+              rpcUrls: [EthereumService.ProviderEndpoints[Networks.Arbitrum]],
+            },
+          ],
+        });
+        gotProvider = true;
+      } catch (addError) {
+        // handle "add" error
+      }
+    }
+    if (gotProvider) {
+      this.setProvider(provider as unknown as Web3Provider);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   private _lastBlockDate: Date;
 

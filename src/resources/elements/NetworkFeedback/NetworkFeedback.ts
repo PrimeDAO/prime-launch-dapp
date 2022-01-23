@@ -8,8 +8,10 @@ import { EthereumService } from "services/EthereumService";
 export class NetworkFeedback {
 
   private network: string;
+  private isTestNet;
 
   constructor(private ethereumService: EthereumService) {
     this.network = EthereumService.targetedNetwork;
+    this.isTestNet = EthereumService.isTestNet;
   }
 }

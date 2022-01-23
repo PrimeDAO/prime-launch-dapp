@@ -60,8 +60,20 @@ export class SeedService {
       this.seeds.delete(seedAddress);
     });
 
-    this.startingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ?
-      13764353 : 9468353;
+    switch (EthereumService.targetedNetwork) {
+      case Networks.Mainnet:
+        this.startingBlockNumber = 13764353;
+        break;
+      case Networks.Rinkeby:
+        this.startingBlockNumber = 9468353;
+        break;
+      case Networks.Arbitrum:
+        this.startingBlockNumber = 4918834;
+        break;
+      default:
+        this.startingBlockNumber = 0;
+        break;
+    }
   }
 
   public async initialize(): Promise<void> {

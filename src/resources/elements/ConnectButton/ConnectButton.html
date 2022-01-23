@@ -2,15 +2,17 @@
   <div class="connectButtonContainer ${accountAddress ? 'connected' : ''}">
     <div class="connectedButtons" if.to-view="accountAddress">
       <template if.to-view="!hideBalances">
-        <div class="ethBalanceContainer">
-          <tokenbalance formatted="0.00a" token-address.to-view="primeAddress"></tokenbalance>D2D
-        </div>
-        <span class="separator">|</span>
-        <!-- <div class="ethBalanceContainer">
+        <template if.bind="primeAddress">
+          <div class="ethBalanceContainer">
+            <tokenbalance formatted="0.00a" token-address.to-view="primeAddress"></tokenbalance>D2D
+          </div>
+          <span class="separator">|</span>
+          <!-- <div class="ethBalanceContainer">
           <tokenbalance formatted="0.00a" token-address.to-view="daiAddress"></tokenbalance>DAI
         </div>
           <span class="separator">|</span>
         -->
+        </template>
         <div class="ethBalanceContainer ETH">
           <ethbalance formatted="0.00a"></ethbalance>ETH
         </div>
@@ -21,9 +23,8 @@
           <div class="phase">${txPhase}</div><i class="spinner fas fa-circle-notch fa-spin"></i>
         </div>
         <div else class="balances">
-          <etherscanlink
-            address.to-view="accountAddress"
-            text.to-view="accountAddress | smallHexString"></etherscanlink>
+          <etherscanlink address.to-view="accountAddress" text.to-view="accountAddress | smallHexString">
+          </etherscanlink>
         </div>
       </div>
     </div>

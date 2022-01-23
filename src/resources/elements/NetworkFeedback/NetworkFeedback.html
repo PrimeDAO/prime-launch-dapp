@@ -1,6 +1,6 @@
 <template>
   <div class="networkfeedback">
-    <div if.bind="network !== 'mainnet'" class="testnet">
+    <div if.bind="isTestNet" class="testnet">
       Testing (${network})
     </div>
     <div else>&nbsp;</div>

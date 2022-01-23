@@ -57,10 +57,23 @@ export class LbpManagerService {
       this.lbpManagers.delete(lbpAddress);
     });
 
-    StartingBlockNumber = (EthereumService.targetedNetwork === Networks.Mainnet) ? 13764353 :
-      (EthereumService.targetedNetwork === Networks.Rinkeby) ? 9580627
-        : 28079815; // kovan
-
+    switch (EthereumService.targetedNetwork) {
+      case Networks.Mainnet:
+        StartingBlockNumber = 13764353;
+        break;
+      case Networks.Rinkeby:
+        StartingBlockNumber = 9580627;
+        break;
+      case Networks.Kovan:
+        StartingBlockNumber = 28079815;
+        break;
+      case Networks.Arbitrum:
+        StartingBlockNumber = 4918834;
+        break;
+      default:
+        StartingBlockNumber = 0;
+        break;
+    }
   }
 
 

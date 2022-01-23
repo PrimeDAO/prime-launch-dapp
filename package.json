@@ -11,6 +11,7 @@
   "license": "MIT",
   "scripts": {
     "build": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=mainnet webpack --env.production --extractCss",
+    "build-arbitrum": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=arbitrum webpack --env.production --extractCss",
     "build-kovan": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=kovan webpack --env.production  --extractCss",
     "build-rinkeby": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=rinkeby webpack --env.production  --extractCss",
     "build-dev": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=rinkeby webpack --env.development --extractCss",
