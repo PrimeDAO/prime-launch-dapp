@@ -79,7 +79,7 @@
 @media screen and (max-width: 1220px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
-      grid-template-columns: auto;
+      grid-template-columns: 100%;
       grid-template-areas:
         "tokenInfo"
         "timeLeft"
@@ -101,7 +101,7 @@
       .graphFormContainer {
         background-color: unset;
         border-radius: none;
-        grid-template-columns: auto;
+        grid-template-columns: 100%;
         grid-template-areas: "form" "graph";
         justify-items: center;
         row-gap: 32px;
@@ -142,17 +142,31 @@
       .graphFormContainer {
         .graph {
           width: calc(100vw - 160px);
+          height: calc(100vh - 160px);
+          max-height: 400px;
         }
       }
     }
   }
 }
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 575px) {
   .page.lbpDashboardContainer {
     .lbpDashboard {
       .graphFormContainer {
         .graph {
-          width: 88%;
+          width: calc(100vw - 100px);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .page.lbpDashboardContainer {
+    .lbpDashboard {
+      .graphFormContainer {
+        .form {
+          padding: 24px 12px;
         }
       }
     }
