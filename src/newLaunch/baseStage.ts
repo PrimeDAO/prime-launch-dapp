@@ -59,7 +59,7 @@ export abstract class BaseStage<IConfig> {
     const safeAddress = ContractsService.getContractAddress(ContractNames.SAFE);
 
     this.multiSigWalletUri =
-      `https://${(EthereumService.targetedNetwork === Networks.Mainnet) ? "" : "rinkeby." }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
+      `https://${(EthereumService.targetedNetwork === Networks.Rinkeby) ? "rinkeby." : "" }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
