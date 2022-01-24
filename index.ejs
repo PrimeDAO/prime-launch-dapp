@@ -12,9 +12,10 @@
   <link rel="stylesheet" href="./base.css">
   <script src="https://kit.fontawesome.com/bf98881e0a.js" crossorigin="anonymous"></script>
 
-  <% if ((process.env.NODE_ENV==="production" ) && (process.env.NETWORK==="mainnet" )) { %>
-    <script src="https://cdn.usefathom.com/script.js" data-site="DPJWXNFE" data-spa="history" defer></script>
-    <% } %>
+  <% if (process.env.NODE_ENV==="production" ) { var dataSite; if (process.env.NETWORK==="mainnet" ) {
+    dataSite="DPJWXNFE" ; } else if (process.env.NETWORK==="arbitrum" ) { dataSite="CBSKCLDZ" ; } if (dataSite) { %>
+    <script src="https://cdn.usefathom.com/script.js" data-site="<%= dataSite%>" data-spa="history" defer></script>
+    <% } } %>
 
       <style>
         /* these are here so webpack will pick up the fonts */
