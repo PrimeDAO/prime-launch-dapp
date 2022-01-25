@@ -77,7 +77,7 @@ export class EthereumService {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+    "arbitrum": "https://arb1.arbitrum.io/rpc",
   }
   private static providerOptions = {
     torus: {
