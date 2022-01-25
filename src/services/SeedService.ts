@@ -68,7 +68,7 @@ export class SeedService {
         this.startingBlockNumber = 9468353;
         break;
       case Networks.Arbitrum:
-        this.startingBlockNumber = 4918834;
+        this.startingBlockNumber = 5038789;
         break;
       default:
         this.startingBlockNumber = 0;
