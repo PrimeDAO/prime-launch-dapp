@@ -58,8 +58,25 @@ export abstract class BaseStage<IConfig> {
 
     const safeAddress = ContractsService.getContractAddress(ContractNames.SAFE);
 
+    let prefix: string;
+
+    switch (EthereumService.targetedNetwork) {
+      case Networks.Mainnet:
+        prefix = "eth:";
+        break;
+      case Networks.Rinkeby:
+        prefix = "rin:";
+        break;
+      case Networks.Arbitrum:
+        prefix = "arb1:";
+        break;
+      default:
+        prefix = "";
+        break;
+    }
+
     this.multiSigWalletUri =
-      `https://${(EthereumService.targetedNetwork === Networks.Rinkeby) ? "rinkeby." : "" }gnosis-safe.io/app/#/safes/${safeAddress}/transactions`;
+      `https://gnosis-safe.io/app/${prefix}${safeAddress}/transactions`;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {
