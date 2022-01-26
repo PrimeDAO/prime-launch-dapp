@@ -16,15 +16,12 @@
           <div class="heading heading1 lbpAdministrationHeader">
             LBP Administration
           </div>
-          <a if.bind="selectedLbp.address && !selectedLbp.uninitialized " href="lbp/${selectedLbp.address}">Go to ${selectedLbp.metadata.general.projectName} Dashboard</a>
+          <a if.bind="selectedLbp.address && !selectedLbp.uninitialized " href="lbp/${selectedLbp.address}">Go to
+            ${selectedLbp.metadata.general.projectName} Dashboard</a>
         </div>
         <div if.bind="lbps.length">
-          <dropdown
-            class="lbpsDropdown"
-            if.bind="lbps.length !== 1"
-            item-changed.call="selectLbp(index)"
-            selected-item-index.to-view="selectedLbpIndex"
-            placeholder="Select an LBP...">
+          <dropdown class="lbpsDropdown" if.bind="lbps.length !== 1" item-changed.call="selectLbp(index)"
+            selected-item-index.to-view="selectedLbpIndex" placeholder="Select an LBP...">
             <div repeat.for="lbp of lbps">${lbp.metadata.general.projectName}</div>
           </dropdown>
           <div else class="heading heading3 projectTitle">
@@ -38,20 +35,28 @@
               <div class="fundingAmounts">
                 Required to fund:
                 <div class="amount">
-                  ${selectedLbp.startingProjectTokenAmountWithFees.toString() | ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
+                  ${selectedLbp.startingProjectTokenAmountWithFees.toString() |
+                  ethwei:selectedLbp.projectTokenInfo.decimals} ${selectedLbp.projectTokenInfo.symbol} <img
+                    class="tokenImage" src.to-view="selectedLbp.projectTokenInfo.logoURI"></img>
                 </div>
                 <div class="amount">
-                  ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals} ${selectedLbp.fundingTokenInfo.symbol} <img class="tokenImage" src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img>
+                  ${selectedLbp.startingFundingTokenAmount.toString() | ethwei:selectedLbp.fundingTokenInfo.decimals}
+                  ${selectedLbp.fundingTokenInfo.symbol} <img class="tokenImage"
+                    src.to-view="selectedLbp.fundingTokenInfo.logoURI"></img>
                 </div>
               </div>
               <div class="featureDescription">
-                Note this will require your approval of three transactions, to approve the token transfers, then to initialize the Lbp.
+                <p>Note this will require your approval of three transactions, to approve the token transfers, then to
+                  initialize the Lbp.</p>
+                <p>Please note that as the LBP administrator, you are responsible for unpausing the
+                  LBP at the start time and pausing the LBP at the closing time to ensure an accurate LBP launch.</p>
               </div>
               <div class="button1 small" click.delegate="fund()">
                 Fund and Initialize
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance.gt(0)">
+            <div class="featureContainer"
+              if.bind="selectedLbp.poolFunded && selectedLbp.isDead && selectedLbp.poolTokenBalance.gt(0)">
               <div class="featureTitle">
                 Remove Liquidity
               </div>
@@ -63,14 +68,17 @@
                 Remove Liquidity
               </div>
             </div>
-            <div class="featureContainer" if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance.gt(0) && !selectedLbp.isDead">
+            <div class="featureContainer"
+              if.bind="selectedLbp.poolFunded && selectedLbp.poolTokenBalance.gt(0) && !selectedLbp.isDead">
               <div class="featureTitle">
                 ${selectedLbp.isPaused ? "Unpause LBP" : "Pause LBP"}
               </div>
               <div class="featureDescription">
-                ${selectedLbp.isPaused ? "Unpausing" : "Pausing"} will ${selectedLbp.isPaused ? "enable" : "disable"} the ability to swap. After pausing the LBP, as the administrator you can unpause it.
+                ${selectedLbp.isPaused ? "Unpausing" : "Pausing"} will ${selectedLbp.isPaused ? "enable" : "disable"}
+                the ability to swap. After pausing the LBP, as the administrator you can unpause it.
               </div>
-              <div if.bind="!selectedLbp.isPaused" class="button1 small" click.delegate="selectedLbp.setSwapEnabled(false)">
+              <div if.bind="!selectedLbp.isPaused" class="button1 small"
+                click.delegate="selectedLbp.setSwapEnabled(false)">
                 Pause Swapping
               </div>
               <div else class="button1 small" click.delegate="selectedLbp.setSwapEnabled(true)">

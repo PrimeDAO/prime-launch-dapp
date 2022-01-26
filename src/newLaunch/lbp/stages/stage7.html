@@ -3,14 +3,20 @@
   <div class="page animated-page stageContainer stage7 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Ready to Go!</div>
-      <div class="body">By clicking SUBMIT, you will initiate the process of creating a new ${wizardState.launchTypeTitle}! This will:
+      <div class="body">By clicking SUBMIT, you will initiate the process of creating a new
+        ${wizardState.launchTypeTitle}! This will:
         <ol>
-          <li>Create a request for creation of the LBP that the PrimeDAO must accept to be displayed in the Prime Launch interface.</li>
-          <li>Give you an IPFS URL which you can use to review the saved LBP information. <span class="importantText">Please save this URL.</span></li>
+          <li>Create a request for creation of the LBP that the PrimeDAO must accept to be displayed in the Prime Launch
+            interface.</li>
+          <li>Give you an IPFS URL which you can use to review the saved LBP information. <span
+              class="importantText">Please save this URL.</span></li>
         </ol>
-        <p>PrimeDAO Governance needs to approve and initialize your new LBP before it can appear in and be used in the Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
+        <p>PrimeDAO Governance needs to approve and initialize your new LBP before it can appear in and be used in the
+          Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank"
+            rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
-        <p>After being approved, the <etherscanlink hide-clipboard-button address.to-view="launchConfig.launchDetails.adminAddress" text="Liquid Launch Admin"></etherscanlink>
+        <p>After being approved, the <etherscanlink hide-clipboard-button
+            address.to-view="launchConfig.launchDetails.adminAddress" text="Liquid Launch Admin"></etherscanlink>
 
           will have to fund the ${wizardState.launchTypeTitle} with
 
@@ -26,18 +32,27 @@
             thousands-separated></formatted-number>
           ${launchConfig.launchDetails.fundingTokenInfo.symbol}.
 
-          This can be done by connecting the Liquid Launch Admin wallet to the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
+          This can be done by connecting the Liquid Launch Admin wallet to the <a
+            href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
         </p>
 
-        <p>After adding the funds, the ${wizardState.launchTypeTitle} will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
+        <p>After adding the funds, the ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on
+          the start date ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
+          But please note that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it
+          to open up swapping. At close time, to ensure an accurate LBP launch, you will need to
+          pause the LBP to turn off swapping.
+          You can do this in the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>
+        </p>
 
       </div>
 
       <submit-disclaimers all-confirmed.bind="disclaimersConfirmed" back.call="back()"></submit-disclaimers>
 
       <div class="buttonContainer">
-        <button if.to-view="!connected" class="stageButton proceed button1" click.delegate="connect()">CONNECT TO YOUR WALLET PROVIDER</button>
-        <button else class="stageButton proceed button1 ${disclaimersConfirmed ? '' : 'disabled'}" disabled.bind="!disclaimersConfirmed" click.delegate="submit()">SUBMIT</button>
+        <button if.to-view="!connected" class="stageButton proceed button1" click.delegate="connect()">CONNECT TO YOUR
+          WALLET PROVIDER</button>
+        <button else class="stageButton proceed button1 ${disclaimersConfirmed ? '' : 'disabled'}"
+          disabled.bind="!disclaimersConfirmed" click.delegate="submit()">SUBMIT</button>
       </div>
     </div>
   </div>
