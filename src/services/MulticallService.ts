@@ -1,5 +1,4 @@
-import { EthereumService } from "services/EthereumService";
-import { Address } from "./EthereumService";
+import { Address, EthereumService, Networks } from "services/EthereumService";
 import { createWatcher } from "@makerdao/multicall";
 const addresses = require("/node_modules/@makerdao/multicall/src/addresses.json");
 
@@ -25,6 +24,13 @@ export interface IBatcher {
 }
 
 export class MultiCallService {
+
+  constructor() {
+    addresses[Networks.Arbitrum] = {
+      "multicall": "0xC2E9dDC765303D86B0D349bB5FE44D76d41cA74A",
+      "rpcUrl": EthereumService.ProviderEndpoints[Networks.Arbitrum],
+    };
+  }
   public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
     const config = {
       multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
