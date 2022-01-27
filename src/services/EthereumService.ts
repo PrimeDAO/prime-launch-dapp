@@ -511,7 +511,10 @@ export class EthereumService {
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
     let targetedNetwork = EthereumService.targetedNetwork as string;
-    if (targetedNetwork === Networks.Mainnet) {
+    if (targetedNetwork === Networks.Arbitrum) {
+      return `https://arbiscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
+    }
+    else if (targetedNetwork === Networks.Mainnet) {
       targetedNetwork = "";
     } else {
       targetedNetwork = targetedNetwork + ".";
