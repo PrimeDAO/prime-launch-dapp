@@ -204,7 +204,12 @@ export class LbpManagerService {
     // console.log("estimating transaction:");
     // console.dir(transaction);
 
-    const estimate = (await gnosis.getEstimate(transaction)).data;
+    let estimate;
+    if (EthereumService.targetedNetwork === Networks.Arbitrum) {
+      estimate = 0;
+    } else {
+      estimate = (await gnosis.getEstimate(transaction)).data;
+    }
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
