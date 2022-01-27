@@ -36,9 +36,9 @@
 
           <span if.bind="wizardState.requiredFundingTokenDeposit">
             <formatted-number
-              value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.tokenDetails.fundingTokenInfo.decimals"
+              value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals"
               thousands-separated>
-            </formatted-number> ${launchConfig.tokenDetails.fundingTokenInfo.symbol}
+            </formatted-number> ${launchConfig.launchConfig.fundingTokenInfo.symbol}
           </span><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by
           connecting the ${wizardState.launchTypeTitle} Admin wallet to the <a
             href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
