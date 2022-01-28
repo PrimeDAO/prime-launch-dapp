@@ -206,7 +206,7 @@ export class LbpManagerService {
 
     let estimate;
     if (EthereumService.targetedNetwork === Networks.Arbitrum) {
-      estimate = 0;
+      estimate = { safeTxGas: 0 };
     } else {
       estimate = (await gnosis.getEstimate(transaction)).data;
     }
