@@ -372,9 +372,11 @@ export class LbpManager implements ILaunch {
         );
       }
 
+      TimingService.start(`LbpManager-${this.address}: batch`);
       const batcher = this.multiCallService.createBatcher(batchedCalls);
 
       await batcher.start();
+      TimingService.end(`LbpManager-${this.address}: batch`);
 
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));

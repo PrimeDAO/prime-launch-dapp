@@ -95,7 +95,7 @@ export class SeedService {
     /**
      * seeds will take care of themselves on account changes
      */
-    return this.getSeeds();
+    this.getSeeds();
   }
 
   // async hydrateStartingBlock(): Promise<void> {
@@ -107,43 +107,60 @@ export class SeedService {
   // }
 
   private async getSeeds(): Promise<void> {
-    return this.initializedPromise = new Promise(
-      (resolve: (value: void | PromiseLike<void>) => void,
-        reject: (reason?: any) => void): void => {
-        if (!this.seeds?.size) {
-          try {
-            const seedsMap = new Map<Address, Seed>();
-            const filter = this.seedFactory.filters.SeedCreated();
-            this.seedFactory.queryFilter(filter, this.startingBlockNumber)
-              .then(async (txEvents: Array<IStandardEvent<ISeedCreatedEventArgs>>) => {
-                for (const event of txEvents) {
-                  const seed = this.createSeedFromConfig(event);
-                  seedsMap.set(seed.address, seed);
-                  /**
-                   * remove the seed if it is corrupt
-                   */
-                  this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
-                    if (newValue) { // pretty much the only case
-                      this.seeds.delete(seed.address);
-                    }
-                  });
-                  this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
-                  seed.initialize(); // set this off asyncronously.
-                }
-                this.seeds = seedsMap;
-                this.initializing = false;
-                resolve();
-              });
-          }
-          catch (error) {
-            this.seeds = new Map();
-            this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
-            this.initializing = false;
-            reject();
-          }
-        }
+    let resolve: (value: void | PromiseLike<void>) => void;
+    let reject: (reason?: any) => void;
+
+    this.initializedPromise = new Promise(
+      (
+        resolveFn: (value: void | PromiseLike<void>) => void,
+        rejectFn: (reason?: any) => void): void => {
+        resolve = resolveFn;
+        reject = rejectFn;
       },
     );
+
+    try {
+      const seedsMap = new Map<Address, Seed>();
+      const filter = this.seedFactory.filters.SeedCreated();
+      const deletables = new Array<Address>();
+
+      await this.contractsService.filterEventsInBlocks<ISeedCreatedEventArgs>(
+        this.seedFactory,
+        filter,
+        this.startingBlockNumber,
+        txEvents => {
+          for (const event of txEvents) {
+            const seed = this.createSeedFromConfig(event);
+            seedsMap.set(seed.address, seed);
+            /**
+             * remove the seed if it is corrupt
+             */
+            this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
+              if (newValue) { // pretty much the only case
+                if (this.seeds) {
+                  this.seeds.delete(seed.address);
+                } else {
+                  deletables.push(seed.address);
+                }
+              }
+            });
+            this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
+            seed.initialize(); // set this off asyncronously.
+          }
+        });
+
+      deletables.map(seedAddress => seedsMap.delete(seedAddress));
+
+      this.seeds = seedsMap;
+      this.initializing = false;
+      resolve();
+    }
+    catch (error) {
+      this.seeds = new Map();
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
+      this.initializing = false;
+      reject();
+    }
   }
 
   private createSeedFromConfig(config: IStandardEvent<ISeedCreatedEventArgs>): Seed {

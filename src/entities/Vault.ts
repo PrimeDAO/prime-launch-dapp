@@ -1,12 +1,13 @@
 import { Address } from "services/EthereumService";
 /* eslint-disable no-console */
 import { EthereumService } from "services/EthereumService";
-import { ContractNames, ContractsService, IStandardEvent } from "services/ContractsService";
+import { ContractNames, ContractsService } from "services/ContractsService";
 import { autoinject } from "aurelia-framework";
 import { BigNumber } from "ethers";
 import { BalancerService } from "services/BalancerService";
 import { TransactionResponse } from "services/TransactionsService";
 import { StartingBlockNumber } from "services/LbpManagerService";
+import { TimingService } from "services/TimingService";
 
 export interface ITokenTotals {
   fundingStart: BigNumber;
@@ -68,7 +69,9 @@ export class Vault {
     const poolTokensInfo = await this.contract.getPoolTokens(this.poolId);
     this.projectTokenBalance = poolTokensInfo.balances[this.projectTokenIndex];
     this.fundingTokenBalance = poolTokensInfo.balances[this.fundingTokenIndex];
+    TimingService.start(`Vault-${this.address}: getTokenTotals`);
     this.tokenTotals = await this.getTokenTotals();
+    TimingService.end(`Vault-${this.address}: getTokenTotals`);
   }
 
   public async loadContracts(): Promise<void> {
@@ -119,8 +122,11 @@ export class Vault {
     const totals = {} as ITokenTotals;
     const filter = this.contract.filters.PoolBalanceChanged(this.poolId);
 
-    return this.contract.queryFilter(filter, StartingBlockNumber)
-      .then(async (events: Array<IStandardEvent<IPoolBalanceChangedEventArgs>>) => {
+    await this.contractsService.filterEventsInBlocks<IPoolBalanceChangedEventArgs>(
+      this.contract,
+      filter,
+      StartingBlockNumber,
+      events => {
         if (events[0]) {
           totals.fundingStart = events[0].args.deltas[this.fundingTokenIndex];
           totals.projectStart = events[0].args.deltas[this.projectTokenIndex];
@@ -138,7 +144,7 @@ export class Vault {
           totals.fundingRaised = this.fundingTokenBalance.sub(totals.fundingStart);
           totals.projectSold = totals.projectStart.sub(this.projectTokenBalance);
         }
-        return totals;
       });
+    return totals;
   }
 }

@@ -1,4 +1,3 @@
-import { LbpManager } from './../entities/LbpManager';
 import { EventAggregator } from "aurelia-event-aggregator";
 import { EthereumService } from "services/EthereumService";
 import { SortOrder } from "./../services/SortService";
@@ -12,6 +11,7 @@ import { SeedService } from "services/SeedService";
 import { ILaunch } from "services/launchTypes";
 import { LbpManagerService } from "services/LbpManagerService";
 import { LaunchType } from "services/launchTypes";
+import { LbpManager } from "entities/LbpManager";
 
 @singleton(false)
 @autoinject

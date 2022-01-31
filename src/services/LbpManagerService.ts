@@ -96,7 +96,7 @@ export class LbpManagerService {
     /**
      * seeds will take care of themselves on account changes
      */
-    return this.getLbps();
+    this.getLbps();
   }
 
   public ensureInitialized(): Promise<void> {
@@ -111,43 +111,60 @@ export class LbpManagerService {
   }
 
   private async getLbps(): Promise<void> {
-    return this.initializedPromise = new Promise(
-      (resolve: (value: void | PromiseLike<void>) => void,
-        reject: (reason?: any) => void): void => {
-        if (!this.lbpManagers?.size) {
-          try {
-            const lbpMgrsMap = new Map<Address, LbpManager>();
-            const filter = this.lbpManagerFactory.filters.LBPManagerDeployed();
-            this.lbpManagerFactory.queryFilter(filter, StartingBlockNumber)
-              .then(async (txEvents: Array<IStandardEvent<ILBPManagerDeployedEventArgs>>) => {
-                for (const event of txEvents) {
-                  const lbpMgr = this.createLbpManagerFromConfig(event);
-                  lbpMgrsMap.set(lbpMgr.address, lbpMgr);
-                  /**
-                   * remove the seed if it is corrupt
-                   */
-                  this.aureliaHelperService.createPropertyWatch(lbpMgr, "corrupt", (newValue: boolean) => {
-                    if (newValue) { // pretty much the only case
-                      this.lbpManagers.delete(lbpMgr.address);
-                    }
-                  });
-                  this.consoleLogService.logMessage(`instantiated LBP: ${lbpMgr.address}`, "info");
-                  lbpMgr.initialize(); // set this off asyncronously.
-                }
-                this.lbpManagers = lbpMgrsMap;
-                this.initializing = false;
-                resolve();
-              });
-          }
-          catch (error) {
-            this.lbpManagers = new Map();
-            this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
-            this.initializing = false;
-            reject();
-          }
-        }
+    let resolve: (value: void | PromiseLike<void>) => void;
+    let reject: (reason?: any) => void;
+
+    this.initializedPromise = new Promise(
+      (
+        resolveFn: (value: void | PromiseLike<void>) => void,
+        rejectFn: (reason?: any) => void): void => {
+        resolve = resolveFn;
+        reject = rejectFn;
       },
     );
+
+    try {
+      const lbpMgrsMap = new Map<Address, LbpManager>();
+      const filter = this.lbpManagerFactory.filters.LBPManagerDeployed();
+      const deletables = new Array<Address>();
+
+      await this.contractsService.filterEventsInBlocks<ILBPManagerDeployedEventArgs>(
+        this.lbpManagerFactory,
+        filter,
+        StartingBlockNumber,
+        txEvents => {
+          for (const event of txEvents) {
+            const lbpMgr = this.createLbpManagerFromConfig(event);
+            lbpMgrsMap.set(lbpMgr.address, lbpMgr);
+            /**
+               * remove the LBP if it is corrupt
+               */
+            this.aureliaHelperService.createPropertyWatch(lbpMgr, "corrupt", (newValue: boolean) => {
+              if (newValue) { // pretty much the only case
+                if (this.lbpManagers) {
+                  this.lbpManagers.delete(lbpMgr.address);
+                } else {
+                  deletables.push(lbpMgr.address);
+                }
+              }
+            });
+            this.consoleLogService.logMessage(`instantiated LBP: ${lbpMgr.address}`, "info");
+            lbpMgr.initialize(); // set this off asyncronously.
+          }
+        });
+
+      deletables.map(lbpMgrAddress => lbpMgrsMap.delete(lbpMgrAddress));
+
+      this.lbpManagers = lbpMgrsMap;
+      this.initializing = false;
+      resolve();
+    }
+    catch (error) {
+      this.lbpManagers = new Map();
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", error));
+      this.initializing = false;
+      reject();
+    }
   }
 
   private createLbpManagerFromConfig(config: IStandardEvent<ILBPManagerDeployedEventArgs>): LbpManager {

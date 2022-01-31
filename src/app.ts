@@ -106,14 +106,18 @@ export class App {
 
     setInterval(async () => {
       this.signaler.signal("secondPassed");
-      const blockDate = this.ethereumService.lastBlockDate;
-      this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
+      const blockDate = this.ethereumService.lastBlock?.blockDate;
+      if (blockDate) {
+        this.eventAggregator.publish("secondPassed", {blockDate, now: new Date()});
+      }
     }, 1000);
 
     setInterval(async () => {
       this.signaler.signal("minutePassed");
-      const blockDate = this.ethereumService.lastBlockDate;
-      this.eventAggregator.publish("minutePassed", {blockDate, now: new Date()});
+      const blockDate = this.ethereumService.lastBlock?.blockDate;
+      if (blockDate) {
+        this.eventAggregator.publish("minutePassed", {blockDate, now: new Date()});
+      }
     }, 60000);
 
     const getShowCountdownPage = () =>

@@ -200,4 +200,36 @@ export class ContractsService {
 
     return bnResult.isZero() ? null : bnResult.toHexString();
   }
+
+  /**
+   * fetch Events in small blocks to avoid "block range is too wide" error from the provider
+   */
+  public async filterEventsInBlocks<TEventArgs>(
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    contract: any,
+    filter: unknown,
+    startingBlockNumber: number,
+    handler: (event: Array<IStandardEvent<TEventArgs>>) => void): Promise<void> {
+
+    const blocksToFetch = (await this.ethereumService.getLastBlock()).number - startingBlockNumber;
+    let startingBlock = startingBlockNumber;
+
+    /**
+       * fetch in small blocks to avoid "block range is too wide" error from the provider
+       */
+    const blocksize = (EthereumService.targetedNetwork === Networks.Arbitrum) ? 100000 : blocksToFetch;
+    let fetched = 0;
+
+    do {
+      await contract.queryFilter(filter, startingBlock, startingBlock + blocksize - 1)
+        .then((events: Array<IStandardEvent<TEventArgs>>): void => {
+          if (events?.length) {
+            handler(events);
+          }
+        });
+      fetched += blocksize;
+      startingBlock += blocksize;
+    } while (fetched < blocksToFetch);
+
+  }
 }

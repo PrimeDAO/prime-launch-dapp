@@ -77,7 +77,7 @@ export class EthereumService {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    "arbitrum": "https://arb1.arbitrum.io/rpc",
+    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
   }
   private static providerOptions = {
     torus: {
@@ -121,7 +121,7 @@ export class EthereumService {
 
   private handleNewBlock = async (blockNumber: number): Promise<void> => {
     const block = await this.getBlock(blockNumber);
-    this._lastBlockDate = block.blockDate;
+    this.lastBlock = block;
     this.eventAggregator.publish("Network.NewBlock", block);
   }
 
@@ -489,10 +489,11 @@ export class EthereumService {
     }
   }
 
-  private _lastBlockDate: Date;
+  public lastBlock: IBlockInfo;
 
-  public get lastBlockDate(): Date {
-    return this._lastBlockDate;
+  public async getLastBlock(): Promise<IBlockInfo> {
+    const blockNumber = await this.readOnlyProvider.getBlockNumber();
+    return this.getBlock(blockNumber);
   }
 
   /**
@@ -502,12 +503,11 @@ export class EthereumService {
     this.readOnlyProvider.off("block", (blockNumber: number) => this.handleNewBlock(blockNumber));
   }
 
-  public async getBlock(blockNumber: number): Promise<IBlockInfo> {
+  private async getBlock(blockNumber: number): Promise<IBlockInfo> {
     const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
     block.blockDate = new Date(block.timestamp * 1000);
     return block;
   }
-
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
     let targetedNetwork = EthereumService.targetedNetwork as string;
