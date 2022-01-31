@@ -16,7 +16,7 @@
       </div>
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
-      </div>${geoBlocked ? "true" : "false"}
+      </div>
       <div class="graphFormContainer">
         <lbp-price-chart lbp-mgr.bind="lbpMgr" refresh.bind="poke"></lbp-price-chart>
         <div class="form" if.bind="lbpMgr.isLive && !geoBlocked">
