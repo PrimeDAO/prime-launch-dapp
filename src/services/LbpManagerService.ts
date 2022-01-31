@@ -170,7 +170,6 @@ export class LbpManagerService {
   private createLbpManagerFromConfig(config: IStandardEvent<ILBPManagerDeployedEventArgs>): LbpManager {
     const lbpMgr = this.container.get(LbpManager);
     return lbpMgr.create({ admin: config.args.admin, address: config.args.lbpManager, metadata: config.args.metadata });
-    return null;
   }
 
 

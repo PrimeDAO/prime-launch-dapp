@@ -493,7 +493,7 @@ export class EthereumService {
 
   public async getLastBlock(): Promise<IBlockInfo> {
     const blockNumber = await this.readOnlyProvider.getBlockNumber();
-    return this.getBlock(blockNumber);
+    return this.getBlock(blockNumber-1);// -1 to be safe cuz sometimes is not valid
   }
 
   /**
