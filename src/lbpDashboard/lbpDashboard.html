@@ -16,13 +16,13 @@
       </div>
       <div class="timeLeft">
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
-      </div>
+      </div>${geoBlocked ? "true" : "false"}
       <div class="graphFormContainer">
         <lbp-price-chart lbp-mgr.bind="lbpMgr" refresh.bind="poke"></lbp-price-chart>
-        <div class="form" if.bind="lbpMgr.isLive && !lbpMgr.geoBlocked">
+        <div class="form" if.bind="lbpMgr.isLive && !geoBlocked">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
         </div>
-        <div class="form" if.to-view="lbpMgr.geoBlocked">
+        <div class="form" if.to-view="geoBlocked">
           Sorry, you are located in a country that is not able to participate.
         </div>
       </div>
