@@ -25,4 +25,8 @@ export class LaunchAbout{
   get showAdminDashboardLink(): boolean {
     return this.launch?.userHydrated && (this.ethereumService.defaultAccountAddress === this.launch?.admin);
   }
+
+  formatLink(link: string): string {
+    return this.launchService.formatLink(link);
+  }
 }

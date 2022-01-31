@@ -40,6 +40,8 @@ export class LaunchService {
     const pattern = /^(?:http(s)?:\/\/)/i;
     if (!pattern.test(link)) {
       return "//" + link;
+    } else {
+      return link;
     }
   }
 

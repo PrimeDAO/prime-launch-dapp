@@ -16,7 +16,7 @@
         <div class="name">Github</div>
       </a>
       <template if.to-view="launch.metadata.general.customLinks.length">
-        <a repeat.for="link of launch.metadata.general.customLinks" href.to-view="formatLink(link.url)" target="_blank" rel="noopener noreferrer">
+        <a repeat.for="link of launch.metadata.general.customLinks" href="${formatLink(link.url)}" target="_blank" rel="noopener noreferrer">
           <div class="icon ${launchService.iconClassForLinkType(link.media)}"></div>
           <div class="name">${link.media}</div>
         </a>
