@@ -57,7 +57,7 @@ export class SeedService {
     private tokenService: TokenService,
   ) {
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
-      this.seeds.delete(seedAddress);
+      this.seeds?.delete(seedAddress);
     });
 
     switch (EthereumService.targetedNetwork) {

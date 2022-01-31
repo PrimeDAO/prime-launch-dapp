@@ -54,7 +54,7 @@ export class LbpManagerService {
     private aureliaHelperService: AureliaHelperService,
   ) {
     this.eventAggregator.subscribe("LbpManager.InitializationFailed", async (lbpAddress: string) => {
-      this.lbpManagers.delete(lbpAddress);
+      this.lbpManagers?.delete(lbpAddress);
     });
 
     switch (EthereumService.targetedNetwork) {
