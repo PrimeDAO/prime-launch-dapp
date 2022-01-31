@@ -68,7 +68,7 @@ export class LbpManagerService {
         StartingBlockNumber = 28079815;
         break;
       case Networks.Arbitrum:
-        StartingBlockNumber = 5038789;
+        StartingBlockNumber = 5288502;
         break;
       default:
         StartingBlockNumber = 0;
