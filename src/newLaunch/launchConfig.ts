@@ -61,6 +61,7 @@ export interface ILaunchDetails {
   endDate: string,
   adminAddress: string,
   legalDisclaimer: string,
+  geoBlock: boolean,
 }
 
 export interface ILaunchConfig {
@@ -121,6 +122,7 @@ export class LaunchConfig implements ILaunchConfig {
       endDate: "",
       adminAddress: "",
       legalDisclaimer: "",
+      geoBlock: false,
     };
   }
 }

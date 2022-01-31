@@ -1,5 +1,6 @@
 <template>
   <require from="newLaunch/tokenLabel.html"></require>
+  <require from="newLaunch/geoblocking.html"></require>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">SEED Details</div>
@@ -206,28 +207,10 @@
           value.bind="launchConfig.launchDetails.legalDisclaimer"
           placeholder="(Optional) URL to a disclaimer (https://...)" />
       </div>
-      <div class="infoInput">
-        <div class="labeledQuestion">
-          <label for="geoBlock">Geoblock</label>
-          <div class="questionMark">
-            <question-mark allow-html text="When enabled, geoblock prevents a standard list of geographic locations from contributing to your launch.
-
-              <p>Disallowed regions:
-              
-              <p>Afghanistan, Cuba, Ethiopia, Guyana, Iran, Iraq, North Korea, Sudan, Syria, United States, United States Minor Outlying Islands, Venezuela, Yemen, the Crimea.</p></p>"></question-mark>
-          </div>
-        </div>
-        <div class="checkboxContainer ${!launchConfig.launchDetails.geoBlock ? 'isInactive' : ''}" click.delegate="toggleGeoBlocking()">
-          <i class="fas fa-check yes"></i>
-          <i class="fas fa-times no"></i>
-          <div class="checkbox">
-            <input
-              id="geoBlock" type="checkbox"
-              checked.bind="launchConfig.launchDetails.geoBlock" />
-            <label for="geoBlock" />
-          </div>
-        </div>
-      </div>
+      <geoblocking
+        checked.bind="launchConfig.launchDetails.geoBlock"
+        toggle.call="toggleGeoBlocking()">
+      </geoblocking>
       <div class="infoInput admin">
         <div class="labeledQuestion">
           <label for="admin">Seed Administrator</label>

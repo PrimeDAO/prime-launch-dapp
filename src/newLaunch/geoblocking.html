@@ -1,0 +1,25 @@
+<template bindable="checked, toggle">
+  <div class="infoInput">
+    <div class="labeledQuestion">
+      <label for="geoBlock">Geoblock</label>
+      <div class="questionMark">
+        <question-mark allow-html
+          text="When enabled, geoblock prevents a standard list of geographic locations from contributing to your launch.
+        
+                      <p>Disallowed regions:
+                      
+                      <p>Afghanistan, Cuba, Ethiopia, Guyana, Iran, Iraq, North Korea, Sudan, Syria, United States, United States Minor Outlying Islands, Venezuela, Yemen, the Crimea.</p></p>">
+        </question-mark>
+      </div>
+    </div>
+    <div class="checkboxContainer ${!checked ? 'isInactive' : ''}"
+      click.delegate="toggle()">
+      <i class="fas fa-check yes"></i>
+      <i class="fas fa-times no"></i>
+      <div class="checkbox">
+        <input id="geoBlock" type="checkbox" checked.bind="checked" />
+        <label for="geoBlock" />
+      </div>
+    </div>
+  </div>
+</template>

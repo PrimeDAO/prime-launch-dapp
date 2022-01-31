@@ -185,6 +185,20 @@
             [optional input not supplied]
           </div>
         </div>
+        <div class="stageLaunchDetails">
+          <div class="heading heading4">
+            Geoblock
+          </div>
+          <div>
+            ${launchConfig.launchDetails.geoBlock ? "Yes" : "No"}
+          </div>
+        </div>
+        <div class="stageLaunchDetails">
+          <div class="heading heading4">
+            Admin Address
+          </div>
+          <etherscanlink address.to-view="launchConfig.launchDetails.adminAddress" text.to-view="launchConfig.launchDetails.adminAddress | smallHexString"></etherscanlink>
+        </div>
       </div>
       <hr />
       <div class="summaryContainer">

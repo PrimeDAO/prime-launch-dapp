@@ -108,6 +108,10 @@ export class Stage4 extends BaseStage<ILbpConfig> {
     this.launchConfig.launchDetails.amountFundingToken = "";
   }
 
+  toggleGeoBlocking(): void {
+    this.launchConfig.launchDetails.geoBlock = !this.launchConfig.launchDetails.geoBlock;
+  }
+
   handleStartWeightChange(event: Event): void {
     // Move the end weight to the same value as the start weight
     // if its greater than the start weight.

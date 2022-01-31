@@ -1,6 +1,7 @@
 <template>
   <require from="newLaunch/lbp/elements/launch-preview/launch-preview"></require>
   <require from="newLaunch/tokenLabel.html"></require>
+  <require from="newLaunch/geoblocking.html"></require>
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Liquid Launch Details</div>
@@ -218,6 +219,11 @@
             value.bind="launchConfig.launchDetails.legalDisclaimer"
             placeholder="(Optional) URL to a disclaimer (https://...)" />
         </div>
+
+        <geoblocking
+          checked.bind="launchConfig.launchDetails.geoBlock"
+          toggle.call="toggleGeoBlocking()">
+        </geoblocking>
 
         <div class="infoInput admin">
           <div class="labeledQuestion">

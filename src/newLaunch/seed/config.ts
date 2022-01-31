@@ -24,7 +24,6 @@ export interface ISeedDetails extends ILaunchDetails {
   vestingPeriod: number,
   vestingCliff: number,
   whitelist: string,
-  geoBlock: boolean,
   legalDisclaimer: string,
 }
 
@@ -48,7 +47,6 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
     this.launchDetails.vestingPeriod = null;
     this.launchDetails.vestingCliff = null;
     this.launchDetails.whitelist = "";
-    this.launchDetails.geoBlock = false;
     this.launchDetails.legalDisclaimer = "";
   }
 }

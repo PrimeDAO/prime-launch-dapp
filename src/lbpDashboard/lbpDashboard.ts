@@ -12,6 +12,7 @@ import { EventConfigException } from "services/GeneralEvents";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { IHistoricalPriceRecord } from "services/ProjectTokenHistoricalPriceService";
 import { IDisposable } from "services/IDisposable";
+import { GeoBlockService } from "services/GeoBlockService";
 
 @autoinject
 export class lbpDashboard {
@@ -21,12 +22,14 @@ export class lbpDashboard {
   loading = true;
   projectTokenHistoricalPrices: Array<IHistoricalPriceRecord>;
   poke = false;
+  geoBlocked: boolean;
 
   constructor(
     private eventAggregator: EventAggregator,
     private lbpManagerService: LbpManagerService,
     private ethereumService: EthereumService,
     private disclaimerService: DisclaimerService,
+    private geoBlockService: GeoBlockService,
     private router: Router,
     private storageService: BrowserStorageService,
   ) {
@@ -55,6 +58,7 @@ export class lbpDashboard {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
+    this.geoBlocked = this.geoBlockService.blackisted;
   }
 
   async attached(): Promise<void> {
@@ -87,6 +91,7 @@ export class lbpDashboard {
       this.handleNewMinute(lbpmgr);
 
       this.lbpMgr = lbpmgr;
+      this.geoBlocked = this.geoBlocked && this.lbpMgr.metadata.launchDetails.geoBlock;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
