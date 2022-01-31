@@ -7,7 +7,6 @@ import { BigNumber } from "ethers";
 import { BalancerService } from "services/BalancerService";
 import { TransactionResponse } from "services/TransactionsService";
 import { StartingBlockNumber } from "services/LbpManagerService";
-import { TimingService } from "services/TimingService";
 
 export interface ITokenTotals {
   fundingStart: BigNumber;

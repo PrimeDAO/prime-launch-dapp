@@ -246,6 +246,8 @@ export class LbpManager implements ILaunch {
       this.projectTokenIndex = await this.contract.projectTokenIndex();
       this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
 
+      this.poolFunded = await this.contract.poolFunded();
+
       const batchedCalls: Array<IBatcherCallsModel> = [
         {
           contractAddress: this.address,
@@ -265,12 +267,12 @@ export class LbpManager implements ILaunch {
           returnType: "bytes",
           resultHandler: (result) => { rawMetadata = result; },
         },
-        {
-          contractAddress: this.address,
-          functionName: "poolFunded",
-          returnType: "bool",
-          resultHandler: (result) => { this.poolFunded = result; },
-        },
+        // {
+        //   contractAddress: this.address,
+        //   functionName: "poolFunded",
+        //   returnType: "bool",
+        //   resultHandler: (result) => { this.poolFunded = result; },
+        // },
         {
           contractAddress: this.address,
           functionName: "projectTokenIndex",
@@ -361,7 +363,7 @@ export class LbpManager implements ILaunch {
         },
       ];
 
-      if (!this.uninitialized) {
+      if (this.poolFunded) {
         batchedCalls.push(
           {
             contractAddress: this.address,
