@@ -73,7 +73,7 @@ export class LbpManager implements ILaunch {
 
   @computedFrom("lbp.poolTokenBalance")
   public get poolTokenBalance(): BigNumber {
-    return this.lbp.poolTokenBalance;
+    return this.lbp?.poolTokenBalance;
   }
 
   // private userFundingTokenBalance: BigNumber;
@@ -241,7 +241,7 @@ export class LbpManager implements ILaunch {
 
       let rawMetadata: any;
       let lbpAddress: Address;
-      let isSwapEnabled = true;
+      let isSwapEnabled = false;
 
       this.projectTokenIndex = await this.contract.projectTokenIndex();
       this.fundingTokenIndex = this.projectTokenIndex ? 0 : 1;
@@ -401,6 +401,10 @@ export class LbpManager implements ILaunch {
       this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
       this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
 
+      /**
+       * we want to show the status as "uninitialized" rather than paused,
+       * even though swapping is at that point disabled
+       */
       this.isPaused = !this.uninitialized && !isSwapEnabled;
 
       await this.hydrateTokensState();
