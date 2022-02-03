@@ -77,7 +77,7 @@ export class EthereumService {
     "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    "arbitrum": "https://arb1.arbitrum.io/rpc",
+    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
   }
   private static providerOptions = {
     torus: {
@@ -493,7 +493,11 @@ export class EthereumService {
 
   public async getLastBlock(): Promise<IBlockInfo> {
     const blockNumber = await this.readOnlyProvider.getBlockNumber();
-    return this.getBlock(blockNumber-1);// -1 to be safe cuz sometimes is not valid
+    /**
+     * -1 to be safer on arbitrum cuz sometimes is not valid, perhaps because of block reorganization,
+     * (but I'm not sure this entirely suffices)
+     */
+    return this.getBlock(blockNumber-1);
   }
 
   /**
