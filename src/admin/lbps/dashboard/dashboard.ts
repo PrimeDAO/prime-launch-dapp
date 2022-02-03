@@ -63,7 +63,7 @@ export class LbpAdminDashboard {
     if (this.ethereumService.defaultAccountAddress) {
       const defaultAccount: Address = this.ethereumService.defaultAccountAddress.toLowerCase();
       this.lbps = this.lbpManagerService.lbpManagersArray
-        .filter((seed) => { return seed.admin.toLowerCase() === defaultAccount;});
+        .filter(lbp => { return lbp.admin.toLowerCase() === defaultAccount;});
       if (this.lbps.length === 1){
         this.selectedLbp = this.lbps[0];
         this.selectedLbpIndex = 0;
@@ -72,10 +72,10 @@ export class LbpAdminDashboard {
       this.lbps = [];
     }
     if (this.defaultLbpAddress) {
-      const defaultSeed = this.lbps.filter((seed) => this.defaultLbpAddress === seed.address);
-      if (defaultSeed.length === 1) {
-        this.selectedLbpIndex = this.lbps.indexOf(defaultSeed[0]);
-        this.selectedLbp = defaultSeed[0];
+      const defaultLbp = this.lbps.filter((seed) => this.defaultLbpAddress === seed.address);
+      if (defaultLbp.length === 1) {
+        this.selectedLbpIndex = this.lbps.indexOf(defaultLbp[0]);
+        this.selectedLbp = defaultLbp[0];
       }
     }
   }
