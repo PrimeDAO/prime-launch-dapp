@@ -192,8 +192,8 @@ export class LbpManagerService {
     const lbpArguments = [
       config.launchDetails.adminAddress,
       isKovan ? this.ethereumService.defaultAccountAddress : safeAddress,
-      config.tokenDetails.projectTokenInfo.name,
-      config.tokenDetails.projectTokenInfo.symbol,
+      `${config.tokenDetails.projectTokenInfo.name} - ${config.launchDetails.fundingTokenInfo.name} LBP`,
+      `${config.tokenDetails.projectTokenInfo.symbol} - ${config.launchDetails.fundingTokenInfo.symbol} LBP`,
       [config.tokenDetails.projectTokenInfo.address.toLowerCase(), config.launchDetails.fundingTokenInfo.address.toLowerCase()],
       [config.launchDetails.amountProjectToken, config.launchDetails.amountFundingToken],
       [toWei(config.launchDetails.startWeight / 100), toWei((100 - config.launchDetails.startWeight) / 100)],
