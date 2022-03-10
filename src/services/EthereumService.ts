@@ -242,7 +242,7 @@ export class EthereumService {
   public walletProvider: Web3Provider;
   public defaultAccountAddress: Address;
 
-  public async connect(): Promise<void> {
+  private async connect(): Promise<void> {
     if (!this.walletProvider) {
       this.ensureWeb3Modal();
       const web3ModalProvider = await this.web3Modal.connect();
