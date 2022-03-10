@@ -19,6 +19,7 @@ import { Utils } from "services/utils";
 import { Lbp } from "entities/Lbp";
 import { IHistoricalPriceRecord, ProjectTokenHistoricalPriceService } from "services/ProjectTokenHistoricalPriceService";
 import { TimingService } from "services/TimingService";
+import { getAddress } from "ethers/lib/utils";
 
 export interface ILbpManagerConfiguration {
   address: Address;
@@ -394,8 +395,11 @@ export class LbpManager implements ILaunch {
       }
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+      this.fundingTokenInfo.address = getAddress(this.fundingTokenInfo.address); // just to be sure
 
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
+      this.projectTokenInfo.address = getAddress(this.projectTokenInfo.address); // just to be sure
+
       if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
         throw new Error("project token info is not found or does not match the LbpManager contract");
       }
