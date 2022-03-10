@@ -134,6 +134,15 @@ export class LbpManagerService {
         StartingBlockNumber,
         txEvents => {
           for (const event of txEvents) {
+
+            /**
+             * for some reason getSwapEnabled crashes with this LBP
+             */
+            if ((EthereumService.targetedNetwork === Networks.Rinkeby) &&
+                (event.args.lbpManager === "0x81A9ea03cD2DF39d5b01A202BBbCc741c97069B6")) {
+              continue;
+            }
+
             const lbpMgr = this.createLbpManagerFromConfig(event);
             lbpMgrsMap.set(lbpMgr.address, lbpMgr);
             /**
