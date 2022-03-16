@@ -13,7 +13,7 @@ Official Prime Launches are curated by PrimeDAO to ensure all listed projects ar
 
 If the launch is approved, it will become visible in the Prime Launch UI, and you will be ready to continue the launch process, as described in the next section. 
 
-If your application is not accepted, consider opening a <a href="https://daotalk.org/c/primedao/38" target="_blank" rel="noopener noreferrer">Prime Forum</a> thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
+If your application is not accepted, consider opening a <a href="https://forum.prime.xyz" target="_blank" rel="noopener noreferrer">Prime Forum</a> thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
 
 ## Launch Process
 
