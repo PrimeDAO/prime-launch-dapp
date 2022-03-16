@@ -17,7 +17,7 @@ If your application is not accepted, consider opening a <a href="https://forum.p
 
 ## Launch Process
 
-Once your launch is approved, you will need to finish setting it up using the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>. On the dashboard, depending on the stage of your launch, you will see buttons to:
+Once your launch is approved, you will need to finish setting it up using a launch administration dashboard, the link to which you will have been given after you registered the launch. On the dashboard, depending on the stage of your launch, you will see buttons to:
 
 - Send the required project tokens to the launch contract
 - Set up a whitelist for contributors (if applicable for your launch)
@@ -25,7 +25,7 @@ Once your launch is approved, you will need to finish setting it up using the <a
 - Close the launch
 - Reclaim any extra project tokens (once the launch is over)
 
-These buttons will only work for the admin address you chose for your launch.
+These buttons will only work for the administrator address you provided for your launch.
 
 ## Post Launch
 
