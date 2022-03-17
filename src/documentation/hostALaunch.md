@@ -25,8 +25,8 @@ Once your launch is approved, you will need to finish setting it up using a laun
 - Close the launch
 - Reclaim any extra project tokens (once the launch is over)
 
-These buttons will only work for the administrator address you provided for your launch.
+These buttons will only work for the project administrator you identified for your launch.
 
 ## Post Launch
 
-Once a launch is complete, the project admin may reclaim any unused project tokens from the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>.
+Once a launch is complete, the project administrator may reclaim any unused project tokens from the administration dashboard.
