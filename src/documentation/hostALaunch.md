@@ -29,4 +29,4 @@ These buttons will only work for the project administrator you identified for yo
 
 ## Post Launch
 
-Once a launch is complete, the project administrator may reclaim any unused project tokens from the administration dashboard.
+Once a launch is complete, the project administrator may reclaim any unused project tokens using the administration dashboard.
