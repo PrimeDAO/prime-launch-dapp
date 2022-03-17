@@ -13,11 +13,11 @@ Official Prime Launches are curated by PrimeDAO to ensure all listed projects ar
 
 If the launch is approved, it will become visible in the Prime Launch UI, and you will be ready to continue the launch process, as described in the next section. 
 
-If your application is not accepted, consider opening a <a href="https://daotalk.org/c/primedao/38" target="_blank" rel="noopener noreferrer">Prime Forum</a> thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
+If your application is not accepted, consider opening a <a href="https://forum.prime.xyz" target="_blank" rel="noopener noreferrer">Prime Forum</a> thread to receive feedback on your application and potentially resubmit your application after incorporating feedback.
 
 ## Launch Process
 
-Once your launch is approved, you will need to finish setting it up using the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>. On the dashboard, depending on the stage of your launch, you will see buttons to:
+Once your launch is approved, you will need to finish setting it up using a launch administration dashboard, the link to which you will have been given after you registered the launch. On the dashboard, depending on the stage of your launch, you will see buttons to:
 
 - Send the required project tokens to the launch contract
 - Set up a whitelist for contributors (if applicable for your launch)
@@ -25,8 +25,8 @@ Once your launch is approved, you will need to finish setting it up using the <a
 - Close the launch
 - Reclaim any extra project tokens (once the launch is over)
 
-These buttons will only work for the admin address you chose for your launch.
+These buttons will only work for the project administrator you identified for your launch.
 
 ## Post Launch
 
-Once a launch is complete, the project admin may reclaim any unused project tokens from the <a href= "https://admin.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">admin dashboard</a>.
+Once a launch is complete, the project administrator may reclaim any unused project tokens from the administration dashboard.

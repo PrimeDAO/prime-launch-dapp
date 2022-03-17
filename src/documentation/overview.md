@@ -17,7 +17,7 @@ While IDOs remove some friction, they also create new challenges, namely:
 
 Prime Launch provides token-launchers with ready-to-go launch infrastructure: smooth UX, low initial capital requirements, well-curated project lists, and a relevant network of users. 
 
-All official Prime Launches must be submitted through the <a href="/documentation/application-process">application process</a> and are curated by PrimeDAO to ensure the quality of listed projects.
+All official Prime Launches must be submitted through the <a href="/documentation/host-a-launch">application process</a> and are curated by PrimeDAO to ensure the quality of listed projects.
 
 ### Launch options
 
