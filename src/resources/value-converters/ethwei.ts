@@ -1,4 +1,4 @@
-﻿import { BigNumber, BigNumberish } from "ethers";
+﻿import { BigNumber } from "ethers";
 import { fromWei, toWei } from "services/EthereumService";
 /**
  * Convert between Wei (as BigNumber) in viewmodel and eth (as string) in view.
