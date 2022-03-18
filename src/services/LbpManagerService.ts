@@ -135,12 +135,20 @@ export class LbpManagerService {
         txEvents => {
           for (const event of txEvents) {
 
+            if (EthereumService.targetedNetwork === Networks.Rinkeby) {
             /**
              * for some reason getSwapEnabled crashes with this LBP
              */
-            if ((EthereumService.targetedNetwork === Networks.Rinkeby) &&
-                (event.args.lbpManager === "0x81A9ea03cD2DF39d5b01A202BBbCc741c97069B6")) {
-              continue;
+              if (event.args.lbpManager === "0x81A9ea03cD2DF39d5b01A202BBbCc741c97069B6") {
+                continue;
+              }
+            } else if (EthereumService.targetedNetwork === Networks.Mainnet) {
+              /**
+               * PrimeDAO test app
+               */
+              if (event.args.lbpManager === "0xc3E8CBDd384a02918BeeEF44ba0Dbd8aee194a53") {
+                continue;
+              }
             }
 
             const lbpMgr = this.createLbpManagerFromConfig(event);
