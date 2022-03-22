@@ -87,7 +87,7 @@ export class LbpManager implements ILaunch {
   private fundingTokenIndex: number;
   private processingPriceHistory = false;
   private processingTrajectoryData = false;
-  private swapFeesCollected: number;
+  private swapFeesCollected: string; // in ETH
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
@@ -460,9 +460,10 @@ export class LbpManager implements ILaunch {
     }
   }
 
-  private async hydrateFeesCollected(): Promise<void> {
-    this.swapFeesCollected = (await this.projectTokenHistoricalPriceService.getTotalSwapFees(this))
-      * this.fundingTokenInfo.price;
+  private hydrateFeesCollected(): Promise<void> {
+    return this.projectTokenHistoricalPriceService.getTotalSwapFees(this).then((fee) => {this.swapFeesCollected = fee;});
+    //  * this.fundingTokenInfo.price removed because it seems that the subgraph value used here already includes the USD price
+
   }
 
   public async hydrateProjectTokenPrice(reset = false): Promise<void> {

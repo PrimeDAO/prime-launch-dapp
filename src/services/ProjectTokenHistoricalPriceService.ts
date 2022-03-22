@@ -374,7 +374,7 @@ export class ProjectTokenHistoricalPriceService {
    *
    * @param lbpMgr LbpManager
    */
-  public getTotalSwapFees(lbpMgr: LbpManager): Promise<number> {
+  public getTotalSwapFees(lbpMgr: LbpManager): Promise<string> {
     if (!lbpMgr.lbp || !lbpMgr.lbp.poolId) {
       return null;
     }
@@ -405,7 +405,7 @@ export class ProjectTokenHistoricalPriceService {
           throw new Error(response.data.errors[0]);
         }
 
-        return this.numberService.fromString(response.data?.data.pools?.[0]?.totalSwapFee);
+        return response.data?.data.pools?.[0]?.totalSwapFee;
       })
       .catch((error) => {
         throw new Error(`${error.response?.data?.error.message ?? "Error fetching total swap fee"}`);
