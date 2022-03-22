@@ -18,7 +18,7 @@
         <time-remaining lbp-mgr.bind="lbpMgr"></time-remaining>
       </div>
       <div class="graphFormContainer">
-        <lbp-price-chart lbp-mgr.bind="lbpMgr" refresh.bind="poke"></lbp-price-chart>
+        <!-- <lbp-price-chart lbp-mgr.bind="lbpMgr" refresh.bind="poke"></lbp-price-chart> -->
         <div class="form" if.bind="lbpMgr.isLive && !geoBlocked">
           <lbpdashboardform lbp-manager.bind="lbpMgr" disclaim-lbp.call="disclaimLbp()"></lbpdashboardform>
         </div>
