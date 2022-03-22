@@ -14,6 +14,7 @@ import { autoinject } from "aurelia-framework";
 
 interface ISwapRecord {
   timestamp: number,
+  tokenIn: string,
   tokenAmountIn: string,
   tokenAmountOut: string,
   priceUSD: number,
@@ -123,6 +124,7 @@ export class ProjectTokenHistoricalPriceService {
     // first swap amounts should be weighted after the lbp start weight
     swaps.push({
       timestamp: startTimeSeconds,
+      tokenIn: lbpMgr.fundingTokenInfo.address,
       tokenAmountOut: (startProjectTokenAmount / (lbpMgr.projectTokenStartWeight)).toString(),
       tokenAmountIn: (startFundingTokenAmount / (1 - lbpMgr.projectTokenStartWeight)).toString(),
       priceUSD: this.nearestUSDPriceAtTimestamp(prices, startTimeSeconds),
@@ -160,19 +162,23 @@ export class ProjectTokenHistoricalPriceService {
 
       if (todaysSwaps?.length) {
         const usdPriceAtTimePoint = this.nearestUSDPriceAtTimestamp(prices, todaysSwaps[todaysSwaps.length-1].timestamp );
-        returnArray.push({
-          price: (
+
+        const price = todaysSwaps[todaysSwaps.length-1].tokenIn.toLowerCase() === lbpMgr.fundingTokenInfo.address.toLowerCase()
+          ? (
             (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage)) /
-            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)) *
-            usdPriceAtTimePoint
-          ),
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut))
+          )
+          : (
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut)) /
+            (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage))
+          );
+
+        returnArray.push({
+          price: price * usdPriceAtTimePoint,
           time: timestamp,
         });
 
-        previousTimePoint = (
-          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountIn) * (1 + lbpMgr.swapFeePercentage)) /
-          (this.numberService.fromString(todaysSwaps[todaysSwaps.length-1].tokenAmountOut))
-        );
+        previousTimePoint = price;
         previousUsdPriceAtTimePoint = usdPriceAtTimePoint;
       } else if (previousTimePoint) {
         /**
@@ -344,6 +350,7 @@ export class ProjectTokenHistoricalPriceService {
           },
         },
         timestamp: true,
+        tokenIn: true,
         tokenAmountIn: true,
         tokenAmountOut: true,
       },
