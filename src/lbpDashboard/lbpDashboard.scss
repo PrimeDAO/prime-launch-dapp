@@ -26,16 +26,9 @@
       background-color: $BG02;
       border-radius: 10px;
 
-      /* TEMPORARY HIDE CHART
       display: grid;
       grid-template-columns: calc(100% - 420px) 420px;
       grid-template-areas: "graph form";
-      */
-
-      /* TEMPORARY HIDE CHART STYLE FIX */
-      display: flex;
-      justify-content: center;
-      /* FIX END */
 
       align-items: center;
 
