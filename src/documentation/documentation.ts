@@ -1,16 +1,21 @@
-import "./documentation.scss";
 import { PLATFORM } from "aurelia-pal";
 import { singleton, computedFrom } from "aurelia-framework";
 import { Router, RouterConfiguration } from "aurelia-router";
+import {activationStrategy } from "aurelia-router";
+import axios from "axios";
+const marked = require("marked");
+
+import "./documentation.scss";
 
 @singleton(false)
 export class Documentation {
   router: Router;
+  numDocs: number;
 
   @computedFrom("router.currentInstruction")
   get nextDocTitle(): string {
     const docNumber = this.router.currentInstruction.config.settings.docNumber;
-    if (docNumber < 6) {
+    if (docNumber < this.numDocs) {
       return this.router.routes[docNumber + 1].title;
     } else {
       return "";
@@ -27,106 +32,65 @@ export class Documentation {
     }
   }
 
-  configureRouter(config: RouterConfiguration, router: Router): void {
+  async configureRouter(config: RouterConfiguration, router: Router): Promise<void> {
+
     config.title = "Documentation";
 
-    const routes = [
-      {
-        route: ["", "overview"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document1"),
-        name: "document1",
-        title: "Overview",
-        settings: {
-          content: require("/src/documentation/overview.md").default,
-          docNumber: 1,
-        },
-      },
-      {
-        route: ["seed-launch"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document2"),
-        name: "document2",
-        title: "Seed Launch",
-        settings: {
-          content: require("/src/documentation/seedLaunch.md").default,
-          docNumber: 2,
-        },
-      },
-      {
-        route: ["liquid-launch"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document3"),
-        name: "document3",
-        title: "Liquid Launch",
-        settings: {
-          content: require("/src/documentation/liquidLaunch.md").default,
-          docNumber: 3,
-        },
-      },
-      {
-        route: ["contribute-to-a-launch"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document4"),
-        name: "document4",
-        title: "Contribute to a Launch",
-        settings: {
-          content: require("/src/documentation/contributeToALaunch.md").default,
-          docNumber: 4,
-        },
-      },
-      {
-        route: ["host-a-launch"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document5"),
-        name: "document5",
-        title: "Host a Launch",
-        settings: {
-          content: require("/src/documentation/hostALaunch.md").default,
-          docNumber: 5,
-        },
-      },
-      /*
-      {
-        route: ["prime-support"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document6"),
-        name: "document6",
-        title: "Prime Support and Services",
-        settings: {
-          content: require("/src/documentation/primeSupportAndServices.md").default,
-        }
-      },
-      */
-      {
-        route: ["FAQ"],
-        nav: true,
-        moduleId: PLATFORM.moduleName("./document7"),
-        name: "document7",
-        title: "FAQ",
-        settings: {
-          content: require("/src/documentation/FAQ.md").default,
-          docNumber: 6,
-        },
-      },
+    let documentsSpec: Array<{ title: string, url: string }>;
 
-      // {
-      //   route: ["document8"],
-      //   nav: true,
-      //   moduleId: PLATFORM.moduleName("./document8.html"),
-      //   name: "document8",
-      //   title: "Host your own LBP",
-      // },
-    ];
+    await axios.get(process.env.DOCUMENTS_LIST_CONFIG)
+      .then((response) => {
+        if (response.data && response.data.documents) {
+          documentsSpec = response.data.documents;
+        }
+      });
+
+    const markdowns = [];
+
+    /**
+     * preload the markdown or else the pages will load with visible flickering
+     */
+    for (const doc of documentsSpec) {
+      await axios.get(doc.url)
+        .then((response) => {
+          if (response.data && response.data.length) {
+            markdowns.push(marked(response.data));
+          }
+        });
+    }
+
+    /**
+     * activationStrategy is docspec.filespecso baseDocument will be reactivated on each change
+     * in route (see https://aurelia.io/docs/routing/configuration#reusing-an-existing-view-model)
+     */
+    const routes = documentsSpec.map((docspec: {title: string, url: string }, ndx: number) => {
+      const route = {
+        route: [docspec.title.replaceAll(" ", "")],
+        nav: true,
+        moduleId: PLATFORM.moduleName("./baseDocument"),
+        title: docspec.title,
+        activationStrategy: activationStrategy.replace,
+        settings: {
+          content: markdowns[ndx],
+          docNumber: ndx+1,
+        },
+      };
+      if (ndx === 0) {
+        route.route.push("");
+      }
+      return route;
+    });
 
     config.map(routes);
+
+    this.numDocs = documentsSpec.length;
 
     this.router = router;
   }
 
   next(): void {
     const docNumber = this.router.currentInstruction.config.settings.docNumber;
-    if (docNumber < 6) {
+    if (docNumber < this.numDocs) {
       // @ts-ignore
       this.router.navigate(this.router.routes[docNumber + 1].route);
     }
