@@ -29,8 +29,9 @@
             background-color: $BG02;
             border-radius: 6px;
             padding: 56px;
+
             .documentBodyContainer {
-                > .title.heading {
+                >.title.heading {
                     margin-bottom: 28px;
                     font-size: 36px;
                 }
@@ -42,6 +43,7 @@
                     line-height: 140%;
                     color: $Neutral03;
                     margin-bottom: 28px;
+
                     p,
                     h1,
                     h2,
@@ -53,6 +55,31 @@
                     a {
                         color: $Secondary03-dev;
                     }
+
+                    p {
+                        line-height: 1.5;
+                        font-weight: 400;
+                        margin-bottom: 16px
+                    }
+
+                    ul {
+                        padding-inline-start: 2em;
+                    }
+
+                    h2 {
+                        font-size: 1.5em;
+                        padding-bottom: 0.3em;
+                        font-weight: 600;
+                        line-height: 1.25;
+                        margin-top: 24px;
+                    }
+
+                    h3 {
+                        font-weight: 600;
+                        line-height: 1.5;
+                        margin-top: 24px;
+                        margin-bottom: 16px;
+                    }
                 }
             }
 
@@ -60,10 +87,12 @@
                 display: flex;
                 justify-content: space-between;
                 color: $Secondary02;
+
                 .navigationNext {
                     @include standardTextGradient;
                     cursor: pointer;
                 }
+
                 .navigationPrevious {
                     @include standardTextGradientReversed;
                     cursor: pointer;
@@ -75,14 +104,17 @@
 
 @media screen and (max-width: 1072px) {
     .documentsContainer {
-        > .title.heading {
+        >.title.heading {
             font-size: 34px;
         }
+
         .documentContainer {
             grid-template-columns: auto;
+
             .rightSection {
                 padding: 0;
             }
+
             .sidebar {
                 padding-top: 0;
                 margin-bottom: 30px;
@@ -90,8 +122,9 @@
 
             .rightSection {
                 background-color: unset;
+
                 .documentBodyContainer {
-                    > .title.heading {
+                    >.title.heading {
                         font-size: 28px;
                         white-space: normal;
                         line-height: 56px;
