@@ -80,6 +80,43 @@
                         margin-top: 24px;
                         margin-bottom: 16px;
                     }
+
+                    img {
+                        width: 600px;
+                        // height: 600px;
+                    }
+
+                    table {
+                        border-spacing: 0;
+                        /* Removes the cell spacing via CSS */
+                        border-collapse: collapse;
+
+                        th {
+                            padding: 6px 13px;
+                            border: 1px solid;
+                        }
+
+                        tr {
+                            border-top: 1px solid;
+
+                            &:nth-child(2n) {
+                                background-color: $BG01;
+                            }
+
+                            td {
+                                width: 215px;
+                                height: 40px;
+                                padding: 6px 13px;
+                                border: 1px solid;
+                            }
+
+                            td:not(td:first-child) {
+                                text-align: center;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+
                 }
             }
 
