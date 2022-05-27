@@ -599,6 +599,17 @@ export class Seed implements ILaunch {
       });
   }
 
+  public setClass(_class, address: Address) : Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.addClass(_class, address))
+      .then(async (receipt) => {
+        if (receipt) {
+          await this.hydrate();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.buy(amount))
       .then(async (receipt) => {
