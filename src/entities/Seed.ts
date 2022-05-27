@@ -588,6 +588,17 @@ export class Seed implements ILaunch {
       });
   }
 
+  public addClass(cup: BigNumber, individualCap: BigNumber, price: BigNumber, vestingDuration: BigNumber, classVestingStartTime: BigNumber, classFee: BigNumber) : Promise<TransactionReceipt> {
+    return this.transactionsService.send(() => this.contract.addClass(cup, individualCap, price, vestingDuration, classVestingStartTime, classFee))
+      .then(async (receipt) => {
+        if (receipt) {
+          await this.hydrate();
+          this.hydrateUser();
+          return receipt;
+        }
+      });
+  }
+
   public buy(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.contract.buy(amount))
       .then(async (receipt) => {
