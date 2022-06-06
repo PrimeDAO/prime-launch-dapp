@@ -269,6 +269,13 @@ export class App {
         route: ["comingSoon"],
         title: "Coming Soon!",
       },
+      {
+        moduleId: PLATFORM.moduleName("./seedSale/seedSale"),
+        nav: false,
+        name: "seedSale",
+        route: ["seed-sale"],
+        title: "Seed Sale",
+      },
     ]);
 
     config.fallbackRoute("home");

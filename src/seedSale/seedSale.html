@@ -1,0 +1,245 @@
+<template>
+  <require from="resources/elements/questionMark/questionMark.html"></require>
+  <div class="page animated-page au-animate seed-sale">
+    <div class="seed-info section row">
+      <div class="col-6 seed-info-title">
+        <div class="live-text">•  LIVE</div>
+        <div class="title heading heading2">BananaFi SEED</div>
+        <p class="description">
+          Short description goes here. This text is exactly 200 characters.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore maga aliqua. Ut enim ad.
+        </p>
+      <div class="verified">
+        <div class="icon"></div>
+        <div class="text">Verified by Prime Rating</div>
+      </div>
+      </div>
+      <div class="seed-info col-4">
+        <div class="text-container">
+          <div class="icon">🍌</div>
+          <div class="text">BananaFi (BNN)</div>
+        </div>
+        <div class="progress">
+        </div>
+        <div class="info">
+          <div class="text">$ <strong>834,205</strong> USD raised</div>
+          <div class="text">60%</div>
+        </div>
+      </div>
+      <div class="seed-info col-2">
+        <div class="title">
+          TIME LEFT
+        </div>
+        <div class="text">
+          16h, 34m
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="seed-info section toppadding">
+      <div class="seed-info halfsection1">
+        <div class="seed-info container">
+          <div class="markPosition">
+            <div class="questionMark">
+              <question-mark text="some text"></question-mark>
+            </div>
+          </div>
+          <div class="subtitle">
+            Contribute
+          </div>
+          <div class="infoInputs">
+            <div class="inputContainer">
+              <div class="cryptoInput">
+                <div class="half">
+                  <img class="halfIcon" src="/daitoken.svg" />
+                  <div class="halfText">dai</div>
+                </div>
+                <numeric-input
+                  class="withIcon"
+                  placeholder="0"
+                  id=""
+                  not-wei>
+                </numeric-input>
+                <div class="maxIcon">
+                  <div class="iconText">
+                    MAX
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="inputContainer">
+              <div class="cryptoInput">
+                <div class="half">
+                  <img class="halfIcon" src="/bnntoken.svg" />
+                  <div class="halfText">bnn</div>
+                </div>
+                <numeric-input
+                  placeholder="0"
+                  id=""
+                  not-wei>
+                </numeric-input>
+              </div>
+            </div>
+          </div>
+          <div class="text">
+            Project tokens will unlock gradually over 21 day(s) after launch.
+          </div>
+          <div class="buttonLeft">
+            contribute
+          </div>
+        </div>
+        <div class="seed-info container">
+          <div class="markPosition">
+            <div class="questionMark">
+              <question-mark text="some text"></question-mark>
+            </div>
+          </div>
+          <div class="subtitle">
+            Claim
+          </div>
+          <div class="infoInputs">
+            <div class="inputContainer">
+              <div class="cryptoInput">
+                <div class="half">
+                  <img class="halfIcon" src="/daitoken.svg" />
+                  <div class="halfText">dai</div>
+                </div>
+                <numeric-input
+                  class="withIcon"
+                  placeholder="0.0"
+                  id=""
+                  not-wei>
+                </numeric-input>
+                <div class="maxIcon">
+                  <div class="iconText">
+                    MAX
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="inputContainer">
+              <div class="cryptoInput">
+                <div class="half">
+                  <img class="halfIcon" src="/bnntoken.svg" />
+                  <div class="halfText">bnn</div>
+                </div>
+                <numeric-input
+                  placeholder="0.0"
+                  id=""
+                  not-wei>
+                </numeric-input>
+              </div>
+            </div>
+          </div>
+          <div class="text">
+            Tokens can be claimed 10 days after the Max is reached or when the campaign expires on 2022-03-31, assuming the Target has been met.
+          </div>
+          <div class="buttonLeft">
+            contribute
+          </div>
+        </div>
+        <div class="seed-info container2">
+          <div class="markPosition">
+            <div class="questionMark">
+              <question-mark text="some text"></question-mark>
+            </div>
+          </div>
+          <div class="subtitle">
+            Retrieve Contribution
+          </div>
+          <div class="text">
+            If Seed Target is not reached by the round end date, all contributions made can be retrieved here.
+          </div>
+          <div class="text2">
+            You have contributed 0.00 DAI tokens.
+          </div>
+          <div class="buttonLeft">
+            Retrieve
+          </div>
+        </div>
+      </div>
+      <div class="seed-info halfsection2">
+        <div class="seed-info container">
+          <div class="subtitle">
+            Connect wallet to check eligibility and see your specific class information
+          </div>
+          <div class="buttonRight">
+            Connect wallet
+          </div>
+        </div>
+        <div class="table">
+          <div class="row">
+            <div class="col">
+              <div class="title">SEED TARGET</div>
+              <div class="text">$ 1.5M</div>
+            </div>
+            <div class="col">
+              <div class="title">max seed</div>
+              <div class="text">$ 2.5M</div>
+            </div>
+            <div class="col">
+              <div class="title">valuation</div>
+              <div class="text">$ 18M</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="title">Class sold</div>
+              <div class="text">N/A</div>
+            </div>
+            <div class="col">
+              <div class="title">Class price</div>
+              <div class="text">N/A</div>
+            </div>
+            <div class="col">
+              <div class="tokenPair">
+                <img class="tokenIcon" src="/daitoken.svg" />
+                <img class="tokenIcon underToken" src="/bnntoken.svg" />
+              </div>
+              <div class="text2"><strong>1</strong> BNN = <strong>10</strong> DAI</div>
+            </div>
+          </div>
+        </div>
+        <div class="title heading heading2">About BananaFi</div>
+        <p class="description2">
+          Short description goes here. This text is exactly 200 characters.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore maga aliqua. Ut enim ad.
+        </p>
+        <div class="tagsContainer">
+          <div class="tagContainer">
+            <div class="tagWorld"></div>
+            <div class="tagText">Website</div>
+          </div>
+          <div class="tagContainer">
+            <div class="tagPDF"></div>
+            <div class="tagText">Whitepaper</div>
+          </div>
+          <div class="tagContainer">
+            <div class="tagTwitter"></div>
+            <div class="tagText">Twitter</div>
+          </div>
+          <div class="tagContainer">
+            <div class="tagTelegramm"></div>
+            <div class="tagText">Telegram</div>
+          </div>
+        </div>
+        <div class="tagsContainer">
+          <div class="tagContainer">
+            <div class="tagDiscord"></div>
+            <div class="tagText">Discord</div>
+          </div>
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <div class="tagText">Tokenomics Article</div>
+          </div>
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <div class="tagText">Etherscan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

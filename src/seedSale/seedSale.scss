@@ -1,0 +1,581 @@
+@import "styles/styles.scss";
+
+@mixin logo($url) {
+  -webkit-mask: url("../../static/" + $url) no-repeat center;
+  mask: url("../../static/" + $url) no-repeat center;
+}
+
+.page.seed-sale {
+  hr {
+    background-color: #403453;
+    margin: 0;
+  }
+
+  .tagsContainer {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .tagContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .tagText {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: $Neutral02;
+  }
+
+  .tagTwitter {
+    @include logo("twitterTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .tagTelegramm {
+    @include logo("telegramTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .tagWorld {
+    @include logo("newWindowTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .tagDiscord {
+    @include logo("discordTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .tagSearch {
+    @include logo("searchTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .tagPDF {
+    @include logo("pdfTag.svg");
+    height: 30px;
+    width: 30px;
+    background-color: $Neutral02;
+  }
+
+  .infoInputs {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 20px;
+    font-family: Inter;
+    padding-right: 12px;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+    input {
+      height: fit-content;
+      border: 1px solid $Border01;
+      border-radius: 10px;
+      color: $White  !important;
+      padding: 12px 10px;
+      text-align: end;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+    }
+
+    input::placeholder {
+      opacity: 1;
+    }
+
+    .inputContainer {}
+  }
+
+  .cryptoInput {
+    display: flex;
+    gap: 0;
+    position: relative;
+
+    .withIcon {
+      >input {
+        padding-right: 58px;
+      }
+    }
+
+    .maxIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 20px;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      margin-top: -10px;
+      background: $Gradient01;
+      border-radius: 50px;
+
+      .iconText {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 16px;
+        background: $BG01;
+        border-radius: 50px;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 8px;
+        line-height: 10px;
+        color: $White;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+    }
+
+    input {
+      width: 150px;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+
+    .half {
+      padding: 0 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background-color: $BG01;
+      border: 1px solid $Border01;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+
+      .halfText {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+      }
+
+      .halfIcon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .section {
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10%;
+  }
+
+  .toppadding {
+    padding-top: 60px;
+  }
+
+  .halfsection1 {
+    width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .subtitle {
+      font-family: "Inter";
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 140%;
+      color: $Neutral04;
+      white-space: normal;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+
+    .markPosition {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .container {
+      position: relative;
+      background-color: $BG02;
+      padding: 8px 8px 20px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 6px;
+
+      .text {
+        font-family: "Inter";
+        font-style: italic;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 140%;
+        color: $Neutral02;
+        white-space: normal;
+      }
+    }
+
+    .container2 {
+      position: relative;
+      background-color: $BG02;
+      border-radius: 25px;
+      padding: 8px 8px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+
+      .text {
+        font-family: "Inter";
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 140%;
+        color: $Neutral04;
+        white-space: normal;
+        margin-bottom: 30px;
+      }
+
+      .text2 {
+        font-family: "Inter";
+        font-style: italic;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 140%;
+        color: $Secondary01;
+        white-space: normal;
+      }
+    }
+  }
+
+  .halfsection2 {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+
+    .container {
+      background: $Gradient01;
+      border-radius: 25px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 6px;
+      align-items: flex-start;
+
+      .subtitle {
+        font-family: "Inter";
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 140%;
+        padding-right: 58px;
+        color: $White;
+        white-space: normal;
+      }
+    }
+
+    .table {
+      margin-top: 34px;
+      margin-bottom: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .col {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .title {
+        font-family: 'Aeonik';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 24px;
+        text-transform: uppercase;
+        color: $Secondary05;
+        mix-blend-mode: normal;
+      }
+
+      .text {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 37px;
+        display: flex;
+        align-items: center;
+        color: $White;
+      }
+
+      .text2 {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+      }
+
+      .tokenPair{
+        width: 51.63px;
+        height: 31.50px;
+        position: relative;
+        margin-bottom: 11px;
+      }
+      .tokenIcon{
+        width: 31.50px;
+        height: 31.50px;
+      }
+      .underToken{
+        position: absolute;
+        z-index: -1;
+        right: 0;
+      }
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
+  .seed-info {
+
+    &-title {}
+  }
+
+  .live-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    color: $AlertGreen;
+  }
+
+  .verified {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 6px;
+    gap: 6px;
+    border-radius: 6px;
+    background: #2B3239;
+
+    .text {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #18BAB0;
+    }
+
+    .icon {
+      @include logo("verified.svg");
+      width: 20px;
+      height: 20px;
+      background-color: #18BAB0;
+    }
+  }
+
+  .description {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: $Neutral02;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .description2 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $Neutral02;
+    margin: 0;
+    margin-bottom: 30px;
+  }
+
+  .col {
+    &-2 {
+      width: 16%;
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      background-color: $BG02;
+      border-radius: 6px;
+
+      .title {
+        font-family: 'Aeonik';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 24px;
+        text-transform: uppercase;
+        color: $Secondary05;
+        mix-blend-mode: normal;
+      }
+
+      .text {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 26px;
+        line-height: 37px;
+        display: flex;
+        align-items: center;
+        color: $AlertOrange;
+      }
+    }
+
+    &-4 {
+      width: 33.33%;
+      display: flex;
+      flex-direction: column;
+
+      .text-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+
+        .icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(220.2deg, #5D3CC8 0%, #1D0B3A 100%);
+        }
+
+        .text {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 24px;
+          color: #FFFFFF;
+        }
+      }
+
+      .progress {
+        height: 14px;
+        width: 300px;
+        background: $Gradient01;
+        border-radius: 6px;
+        margin-bottom: 6px;
+      }
+
+      .info {
+        display: flex;
+        justify-content: space-between;
+
+        .text {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 22px;
+          color: #FFFFFF;
+        }
+      }
+    }
+
+    &-6 {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .buttonLeft,
+  .buttonRight {
+    display: inline-block;
+    border-radius: 50px;
+    border: none;
+    padding: 15px 24px;
+    outline: none;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+
+    color: $White;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.2;
+    }
+
+    &.small {
+      padding: 8px 17px;
+      font-size: 11px;
+    }
+  }
+
+  .buttonLeft {
+    background: $Neutral02;
+    color: $Neutral04;
+    align-self: flex-end;
+    margin-right: 12px;
+  }
+
+  .buttonRight {
+    background: $Gradient05;
+
+    // &:hover {
+    //   -webkit-text-fill-color: $Secondary06;
+    // }
+  }
+}
+
+@media screen and (min-width: 1070px) {
+  .page.sale {}
+}
+
+@media screen and (max-width: 900px) {
+  .page.sale {}
+}
