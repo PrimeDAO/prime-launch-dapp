@@ -77,12 +77,12 @@
   .infoInputs {
     margin-bottom: 12px;
     display: flex;
-    gap: 20px;
     font-family: Inter;
     padding-right: 12px;
     width: 100%;
     justify-content: space-between;
     box-sizing: border-box;
+    align-items: center;
 
     input {
       height: fit-content;
@@ -100,17 +100,29 @@
       opacity: 1;
     }
 
-    .inputContainer {}
+    .inputContainer {
+      width: calc(50% - 30px);
+      box-sizing: border-box;
+    }
+  }
+
+  .arrow{
+    width: 16px;
+    height: 16px;
   }
 
   .cryptoInput {
     display: flex;
     gap: 0;
     position: relative;
+    box-sizing: border-box;
+    width: min-content;
+    width: 100%;
 
     .withIcon {
       >input {
         padding-right: 58px;
+        width: calc(100% - 70px) !important;
       }
     }
 
@@ -147,7 +159,7 @@
     }
 
     input {
-      width: 150px;
+      width: calc(100% - 20px);
       border-top-left-radius: 0px;
       border-bottom-left-radius: 0px;
     }
@@ -307,6 +319,7 @@
       }
 
       .col {
+        width: 102px;
         display: flex;
         flex-direction: column;
       }
