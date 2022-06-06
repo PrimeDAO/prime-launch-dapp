@@ -269,11 +269,18 @@ export class App {
         route: ["comingSoon"],
         title: "Coming Soon!",
       },
+      // {
+      //   moduleId: PLATFORM.moduleName("./seedSale/seedSale"),
+      //   nav: false,
+      //   name: "seedSale",
+      //   route: ["seed-sale"],
+      //   title: "Seed Sale",
+      // },
       {
         moduleId: PLATFORM.moduleName("./seedSale/seedSale"),
         nav: false,
         name: "seedSale",
-        route: ["seed-sale"],
+        route: ["seed-sale/:address"],
         title: "Seed Sale",
       },
     ]);

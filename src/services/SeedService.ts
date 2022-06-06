@@ -26,6 +26,22 @@ export interface ISeedCreatedEventArgs {
 //   [network: string]: { seeds: Array<Address> } ;
 // }
 
+const seed1 = {
+  launchType: 'seed',
+  address: '0x677rkyuf67c76fc',
+  startTime: Date,
+  endTime: Date,
+  admin: '0x677rkyuf67c76fc',
+  beneficiary: '',
+
+  hasNotStarted: false,
+  isLive: true,
+  isDead: false,
+  uninitialized: true,
+  canGoToDashboard: false,
+  userHydrated: true,
+}
+
 @autoinject
 export class SeedService {
 
