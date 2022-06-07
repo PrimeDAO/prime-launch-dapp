@@ -319,7 +319,7 @@
       }
 
       .col {
-        width: 102px;
+        min-width: 102px;
         display: flex;
         flex-direction: column;
       }
@@ -506,10 +506,21 @@
 
       .progress {
         height: 14px;
-        width: 300px;
         background: $Gradient01;
         border-radius: 6px;
         margin-bottom: 6px;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        position: absolute;
+      }
+      .fullProgress {
+        position: relative;
+        width: 100%;
+        background: $BG02;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        height: 14px;
       }
 
       .info {

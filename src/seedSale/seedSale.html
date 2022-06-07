@@ -20,11 +20,13 @@
           <div class="icon">🍌</div>
           <div class="text">BananaFi (BNN)</div>
         </div>
-        <div class="progress">
+        <div class="fullProgress">
+          <div class="progress" css="width: ${percentsRaised}%;">
+        </div>
         </div>
         <div class="info">
-          <div class="text">$ <strong>834,205</strong> USD raised</div>
-          <div class="text">60%</div>
+          <div class="text">$ <strong>${seed.amountRaised.toNumber()}</strong> USD raised</div>
+          <div class="text"><formatted-number average mantissa="0"></formatted-number>${percentsRaised}%</div>
         </div>
       </div>
       <div class="seed-info col-2">
@@ -173,7 +175,7 @@
           <div class="row">
             <div class="col">
               <div class="title">SEED TARGET</div>
-              <div class="text">$ 1.5M</div>
+              <div class="text">$ ${seed.target.toNumber() / 1000000}M</div>
             </div>
             <div class="col">
               <div class="title">max seed</div>
@@ -181,7 +183,7 @@
             </div>
             <div class="col">
               <div class="title">valuation</div>
-              <div class="text">$ 18M</div>
+              <div class="text">$ ${seed.valuation}M</div>
             </div>
           </div>
           <div class="row">
