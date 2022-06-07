@@ -15,11 +15,8 @@ body > ux-dialog-container {
   left: 10vw;
 
   background: linear-gradient(to bottom, $Primary01 0%, $Secondary02 100%);
-  padding-left: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-right: 4px;
-  border-radius: 6px;
+  padding-left: 6px;
+  border-radius: 10px;
 
   > div {
     margin: 0 !important;
@@ -44,12 +41,11 @@ body > ux-dialog-container {
     ux-dialog-header,
     ux-dialog-body,
     ux-dialog-footer {
-      background-color: $BG02;
+      background-color: $Border01;
     }
 
     ux-dialog-header {
       border: none;
-      border-top-left-radius: 6px;
       border-top-right-radius: 6px;
       .heading {
         @include standardTextGradient;
@@ -74,11 +70,9 @@ body > ux-dialog-container {
     }
 
     ux-dialog-footer {
-      padding-top: 8px;
       border-top: 1px solid $White;
-      border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      padding-right: 32px;
+      padding-right: 20px;
     }
 
     &.disclaimer {

@@ -9,6 +9,8 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { TransactionReceipt } from "services/TransactionsService";
 import { SeedService } from "services/SeedService";
 import { LbpManagerService } from "services/LbpManagerService";
+import { CongratulationsService } from "services/CongratulationsService";
+import { Utils } from "services/utils";
 
 enum Phase {
     None = "None",
@@ -33,6 +35,7 @@ export class SeedSale {
     private seedService: SeedService,
     private lbpManagerService: LbpManagerService,
     private router: Router,
+    private congratulationsService: CongratulationsService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
     this.accountAddress = account;
@@ -47,6 +50,21 @@ export class SeedSale {
 
   async activate(params: { address: Address}): Promise<void> {
     this.address = params.address;
+  }
+
+  async show1(): Promise<void> {
+    await Utils.waitUntilTrue(() => true, 5000);
+    this.congratulationsService.show(`it's works!`);
+  }
+
+  async show2(): Promise<void> {
+    await Utils.waitUntilTrue(() => true, 5000);
+    this.congratulationsService.show(`it's works!`);
+  }
+
+  async show3(): Promise<void> {
+    await Utils.waitUntilTrue(() => true, 5000);
+    this.congratulationsService.show(`it's works!`);
   }
 
   async attached(): Promise<void> {
