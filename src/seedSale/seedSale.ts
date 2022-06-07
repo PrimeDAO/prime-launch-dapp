@@ -52,7 +52,6 @@ export class SeedSale {
   async attached(): Promise<void> {
     this.loading = true;
     await this.seedService.ensureAllSeedsInitialized();
-    await this.lbpManagerService.ensureAllLbpsInitialized();
     const seed = this.seedService.seeds.get(this.address)
     this.seed = seed;
     this.loading = true;

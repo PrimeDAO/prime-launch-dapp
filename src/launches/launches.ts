@@ -105,7 +105,7 @@ export class Launches {
     if (launch.canGoToDashboard) {
       this.router.navigate(`${launch.launchType}/${launch.address}`);
     } else {
-      this.router.navigate(`seed-sale/${launch.address}`);
+      this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
     }
   }
 }
