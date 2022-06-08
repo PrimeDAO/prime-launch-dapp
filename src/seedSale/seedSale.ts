@@ -1,3 +1,4 @@
+import { ITokenInfo, TokenService } from "services/TokenService";
 /* eslint-disable linebreak-style */
 import "./seedSale.scss";
 import { autoinject } from "aurelia-framework";
@@ -30,6 +31,9 @@ export class SeedSale {
   seed: Seed;
   userFundingTokenAllowance: BigNumber;
   percentsRaised: number
+  timeLeft: string
+  fundingTokenInfo: ITokenInfo;
+  projectTokenInfo: ITokenInfo;
 
   private accountAddress: Address = null;
   private txPhase = Phase.None;
@@ -44,6 +48,7 @@ export class SeedSale {
     private congratulationsService: CongratulationsService,
     private geoBlockService: GeoBlockService,
     private dateService: DateService,
+    private tokenService: TokenService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
@@ -52,20 +57,15 @@ export class SeedSale {
     }));
   }
 
-  get timeLeft(): string {
-    let ms = this.seed.startsInMilliseconds;
+  async getTimeLeft(): Promise<void> {
+    let ms = -1 * this.seed.startsInMilliseconds;
     const days = ms>86400000 ? Math.floor(ms / 86400000) : 0;
     ms = ms>86400000 ? ms % 86400000 : ms;
     const hrs = ms>3600000 ? Math.floor(ms / 3600000) : 0;
     ms = ms>3600000 ? ms % 3600000 : ms;
     const mins = ms>60000 ? Math.floor(ms / 60000) : 0;
-    const result = `${days}day${days > 1 ? "s" : ""}, ${hrs}h, ${mins}m`;
-    console.log("THIS TIME", result);
-    return result;
-  }
-
-  get seedTarget(): number {
-    return this.seed.target.toNumber() / 1000000;
+    const result = `${days}d${days > 1 ? "s" : ""}, ${hrs}h, ${mins}m`;
+    this.timeLeft = result;
   }
 
   async getPercentOfRaised():Promise<void> {
@@ -122,6 +122,10 @@ export class SeedSale {
       }
       this.seed = seed;
       this.getPercentOfRaised();
+      this.getTimeLeft();
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.fundingTokenAddress);
+      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.projectTokenAddress);
+      console.log("THIS TIME", await this.tokenService.getTokenInfoFromAddress(this.address));
       //this.disclaimSeed();
 
     } catch (ex) {
@@ -133,8 +137,6 @@ export class SeedSale {
       }
       this.loading = false;
       console.log("THIS SEED", this.seed);
-      console.log("THIS TIME", this.timeLeft);
-      console.log("THIS v", this.percentsRaised);
     }
   }
 }

@@ -4,7 +4,7 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="live-text">•  LIVE</div>
-        <div class="title heading heading2">BananaFi SEED</div>
+        <div class="title heading heading2">${projectTokenInfo.name} SEED</div>
         <p class="description">
           Short description goes here. This text is exactly 200 characters.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -17,8 +17,8 @@
       </div>
       <div class="seed-info col-4">
         <div class="text-container">
-          <div class="icon">🍌</div>
-          <div class="text">BananaFi (BNN)</div>
+          <img class="icon" src.to-view="projectTokenInfo.logoURI"></img>
+          <div class="text">${projectTokenInfo.name} (${projectTokenInfo.symbol})</div>
         </div>
         <div class="fullProgress">
           <div class="progress" css="width: ${percentsRaised}%;">
@@ -34,7 +34,7 @@
           TIME LEFT
         </div>
         <div class="text">
-          16h, 34m
+          ${timeLeft}
         </div>
       </div>
     </div>
@@ -54,8 +54,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src="/daitoken.svg" />
-                  <div class="halfText">dai</div>
+                  <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
+                  <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   class="withIcon"
@@ -74,8 +74,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src="/bnntoken.svg" />
-                  <div class="halfText">bnn</div>
+                  <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
+                  <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   placeholder="0"
@@ -105,8 +105,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src="/daitoken.svg" />
-                  <div class="halfText">dai</div>
+                  <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
+                  <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   class="withIcon"
@@ -124,8 +124,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src="/bnntoken.svg" />
-                  <div class="halfText">bnn</div>
+                  <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
+                  <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   placeholder="0.0"
@@ -179,7 +179,7 @@
             </div>
             <div class="col">
               <div class="title">max seed</div>
-              <div class="text">$ 2.5M</div>
+              <div class="text">$ ${seed.cap.toNumber() / 1000000}M</div>
             </div>
             <div class="col">
               <div class="title">valuation</div>
@@ -197,14 +197,14 @@
             </div>
             <div class="col">
               <div class="tokenPair">
-                <img class="tokenIcon" src="/daitoken.svg" />
-                <img class="tokenIcon underToken" src="/bnntoken.svg" />
+                <img class="tokenIcon" src.to-view="fundingTokenInfo.logoURI" />
+                <img class="tokenIcon underToken" src.to-view="projectTokenInfo.logoURI" />
               </div>
-              <div class="text2"><strong>1</strong> BNN = <strong>10</strong> DAI</div>
+              <div class="text2"><strong>1</strong> ${projectTokenInfo.symbol} = <strong>10</strong> ${fundingTokenInfo.symbol}</div>
             </div>
           </div>
         </div>
-        <div class="title heading heading2">About BananaFi</div>
+        <div class="title heading heading2">About ${projectTokenInfo.name}</div>
         <p class="description2">
           Short description goes here. This text is exactly 200 characters.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor

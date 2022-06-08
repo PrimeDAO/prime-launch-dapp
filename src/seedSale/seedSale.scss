@@ -319,7 +319,7 @@
       }
 
       .col {
-        min-width: 102px;
+        min-width: 120px;
         display: flex;
         flex-direction: column;
       }
@@ -487,11 +487,9 @@
         .icon {
           width: 34px;
           height: 34px;
-          border-radius: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(220.2deg, #5D3CC8 0%, #1D0B3A 100%);
         }
 
         .text {
