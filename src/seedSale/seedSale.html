@@ -40,6 +40,49 @@
     </div>
     <hr />
     <div class="seed-info section toppadding">
+      <div class="seed-info halfsection2 visibile">
+        <div class="seed-info container">
+          <div class="subtitle">
+            Connect wallet to check eligibility and see your specific class information
+          </div>
+          <div class="buttonRight" click.delegate="connect()">
+            Connect wallet
+          </div>
+        </div>
+        <div class="table">
+          <div class="row">
+            <div class="col">
+              <div class="title">SEED TARGET</div>
+              <div class="text">$ ${seed.target.toNumber() / 1000000}M</div>
+            </div>
+            <div class="col">
+              <div class="title">max seed</div>
+              <div class="text">$ ${seed.cap.toNumber() / 1000000}M</div>
+            </div>
+            <div class="col">
+              <div class="title">valuation</div>
+              <div class="text">$ ${seed.valuation}M</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="title">Class sold</div>
+              <div class="text">N/A</div>
+            </div>
+            <div class="col">
+              <div class="title">Class price</div>
+              <div class="text">N/A</div>
+            </div>
+            <div class="col">
+              <div class="tokenPair">
+                <img class="tokenIcon" src.to-view="fundingTokenInfo.logoURI" />
+                <img class="tokenIcon underToken" src.to-view="projectTokenInfo.logoURI" />
+              </div>
+              <div class="text2"><strong>1</strong> ${projectTokenInfo.symbol} = <strong>10</strong> ${fundingTokenInfo.symbol}</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="seed-info halfsection1">
         <div class="seed-info container">
           <div class="markPosition">
@@ -57,12 +100,12 @@
                   <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
                   <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
-                <numeric-input
+                <input
                   class="withIcon"
                   placeholder="0"
                   id=""
                   not-wei>
-                </numeric-input>
+                </input>
                 <div class="maxIcon">
                   <div class="iconText">
                     MAX
@@ -77,11 +120,11 @@
                   <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
                   <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
-                <numeric-input
+                <input
                   placeholder="0"
                   id=""
                   not-wei>
-                </numeric-input>
+                </input>
               </div>
             </div>
           </div>
@@ -103,17 +146,17 @@
           </div>
           <div class="infoInputs">
             <div class="inputContainer">
-              <div class="cryptoInput">
+              <div class="cryptoInput margin">
                 <div class="half">
                   <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
                   <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
-                <numeric-input
+                <input
                   class="withIcon"
                   placeholder="0.0"
                   id=""
                   not-wei>
-                </numeric-input>
+                </input>
                 <div class="maxIcon">
                   <div class="iconText">
                     MAX
@@ -127,11 +170,11 @@
                   <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
                   <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
-                <numeric-input
+                <input
                   placeholder="0.0"
                   id=""
                   not-wei>
-                </numeric-input>
+                </input>
               </div>
             </div>
           </div>
@@ -163,7 +206,7 @@
         </div>
       </div>
       <div class="seed-info halfsection2">
-        <div class="seed-info container">
+        <div class="seed-info container unvisible">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
           </div>
@@ -171,7 +214,7 @@
             Connect wallet
           </div>
         </div>
-        <div class="table">
+        <div class="table unvisible">
           <div class="row">
             <div class="col">
               <div class="title">SEED TARGET</div>
