@@ -10,6 +10,15 @@
   hr {
     background-color: #403453;
     margin: 0;
+    @media screen and (max-width: 570px) {
+      background-color: transparent;
+    }
+  }
+
+  .mobileTitle{
+    @media screen and (max-width: 570px) {
+      font-size: 24px;
+    }
   }
 
   .tagsContainer {
@@ -17,6 +26,9 @@
     gap: 12px;
     margin-bottom: 28px;
     flex-wrap: wrap;
+    @media screen and (max-width: 570px) { 
+      margin-bottom: 12px;
+    }
   }
 
   .tagContainer {
@@ -230,6 +242,18 @@
     }
   }
 
+  .visibile2 {
+    @media screen and (min-width: 570px) {
+      display: none !important;
+    }
+  }
+
+  .unvisible2 {
+    @media screen and (max-width: 570px) {
+      display: none !important;
+    }
+  }
+
   .toppadding {
     padding-top: 60px;
   }
@@ -243,6 +267,9 @@
     @media screen and (max-width: 1400px) {
       width: 100%;
       margin-bottom: 30px;
+    }
+    @media screen and (max-width: 570px) {
+      gap: 30px;
     }
 
     .subtitle {
@@ -282,6 +309,9 @@
         line-height: 140%;
         color: $Neutral02;
         white-space: normal;
+        @media screen and (max-width: 570px) {
+          text-align: center;
+      }
       }
     }
 
@@ -333,6 +363,12 @@
       gap: 20px;
       border-radius: 6px;
       align-items: flex-start;
+      @media screen and (max-width: 1400px) {
+        margin-bottom: 20px;
+      }
+      @media screen and (max-width: 570px) {
+        margin-bottom: 30px;
+      }
 
       .subtitle {
         font-family: "Inter";
@@ -351,16 +387,35 @@
       display: flex;
       flex-direction: column;
       gap: 48px;
+      @media screen and (max-width: 570px) {
+        flex-direction: row;
+        gap: 22px;
+        margin-bottom: 50px;
+        margin-top: 20px;
+      }
 
       .row {
         display: flex;
         justify-content: space-between;
+        @media screen and (max-width: 570px) {
+          flex-direction: column;
+          flex-grow: 1;
+          gap: 22px;
+        }
       }
 
       .col {
         min-width: 120px;
         display: flex;
         flex-direction: column;
+        @media screen and (max-width: 570px) {
+          width: 100%;
+          border-radius: 6px;
+          padding-top: 14px;
+          padding-bottom: 14px;
+          align-items: center;
+          background: #292235;
+        }
       }
 
       .title {
@@ -383,6 +438,14 @@
         display: flex;
         align-items: center;
         color: $White;
+
+        @media screen and (max-width: 570px) {
+          background: linear-gradient(220.2deg, #FF497A 0%, #A258A7 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+        }
       }
 
       .text2 {
@@ -391,22 +454,31 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 17px;
+        @media screen and (max-width: 570px) {
+          background: linear-gradient(220.2deg, #FF497A 0%, #A258A7 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+        }
       }
 
       .tokenPair{
         width: 51.63px;
         height: 31.50px;
         position: relative;
+        display: flex;
+        justify-content: flex-end;
         margin-bottom: 11px;
       }
       .tokenIcon{
         width: 31.50px;
         height: 31.50px;
       }
-      .underToken{
+      .belowToken{
         position: absolute;
-        z-index: -1;
-        right: 0;
+        z-index: 2;
+        left: 0;
       }
     }
   }
@@ -467,6 +539,9 @@
     color: $Neutral02;
     margin: 0;
     margin-bottom: 20px;
+    @media screen and (max-width: 570px) {
+      margin-bottom: 0px;
+    }
   }
 
   .description2 {
@@ -493,6 +568,17 @@
         width: 192px;
       }
 
+      @media screen and (max-width: 570px) {
+        padding: 0;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        width: 100%;
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: center;
+        margin-bottom: 26px;
+      }
+
       .title {
         font-family: 'Aeonik';
         font-style: normal;
@@ -502,6 +588,9 @@
         text-transform: uppercase;
         color: $Secondary05;
         mix-blend-mode: normal;
+        @media screen and (max-width: 570px) {
+          margin-right: 20px;
+        }
       }
 
       .text {
@@ -527,7 +616,7 @@
       }
       @media screen and (max-width: 570px) {
         width: 100%;
-        margin-bottom: 30px;
+        margin-bottom: 0px;
       }
 
       .text-container {
@@ -558,19 +647,25 @@
         height: 14px;
         background: $Gradient01;
         border-radius: 6px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         top: 0;
         left: 0;
         z-index: 1;
         position: absolute;
+        @media screen and (max-width: 570px) {
+          height: 24px;
+        }
       }
       .fullProgress {
         position: relative;
         width: 100%;
         background: $BG02;
         border-radius: 6px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         height: 14px;
+        @media screen and (max-width: 570px) {
+          height: 24px;
+        }
       }
 
       .info {
@@ -584,6 +679,9 @@
           font-size: 16px;
           line-height: 22px;
           color: #FFFFFF;
+          @media screen and (max-width: 570px) {
+            font-size: 20px;
+          }
         }
       }
     }
@@ -595,6 +693,19 @@
       @media screen and (max-width: 1400px) {
         width: 100%;
         margin-bottom: 30px;
+      }
+      .mobile-head {
+        @media screen and (max-width: 570px) {
+          width: 100%;
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+          >.mobileTitle{
+            line-height: 30px;
+          }
+        }
       }
     }
   }

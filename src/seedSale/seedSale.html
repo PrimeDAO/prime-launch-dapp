@@ -2,21 +2,31 @@
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
     <div class="seed-info section row">
+      <div class="seed-info col-2 visibile2">
+        <div class="title">
+          TIME LEFT
+        </div>
+        <div class="text">
+          ${timeLeft}
+        </div>
+      </div>
       <div class="col-6 seed-info-title">
-        <div class="live-text">•  LIVE</div>
-        <div class="title heading heading2">${projectTokenInfo.name} SEED</div>
+        <div class="mobile-head">
+            <div class="live-text">•  LIVE</div>
+            <div class="title heading heading2 mobileTitle">${projectTokenInfo.name} SEED</div>
+        </div>
         <p class="description">
           Short description goes here. This text is exactly 200 characters.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
           incididunt ut labore et dolore maga aliqua. Ut enim ad.
         </p>
-      <div class="verified">
+      <div class="verified unvisible2">
         <div class="icon"></div>
         <div class="text">Verified by Prime Rating</div>
       </div>
       </div>
       <div class="seed-info col-4">
-        <div class="text-container">
+        <div class="text-container unvisible2">
           <img class="icon" src.to-view="projectTokenInfo.logoURI"></img>
           <div class="text">${projectTokenInfo.name} (${projectTokenInfo.symbol})</div>
         </div>
@@ -29,7 +39,7 @@
           <div class="text"><formatted-number average mantissa="0"></formatted-number>${percentsRaised}%</div>
         </div>
       </div>
-      <div class="seed-info col-2">
+      <div class="seed-info col-2 unvisible">
         <div class="title">
           TIME LEFT
         </div>
@@ -47,39 +57,6 @@
           </div>
           <div class="buttonRight" click.delegate="connect()">
             Connect wallet
-          </div>
-        </div>
-        <div class="table">
-          <div class="row">
-            <div class="col">
-              <div class="title">SEED TARGET</div>
-              <div class="text">$ ${seed.target.toNumber() / 1000000}M</div>
-            </div>
-            <div class="col">
-              <div class="title">max seed</div>
-              <div class="text">$ ${seed.cap.toNumber() / 1000000}M</div>
-            </div>
-            <div class="col">
-              <div class="title">valuation</div>
-              <div class="text">$ ${seed.valuation}M</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div class="title">Class sold</div>
-              <div class="text">N/A</div>
-            </div>
-            <div class="col">
-              <div class="title">Class price</div>
-              <div class="text">N/A</div>
-            </div>
-            <div class="col">
-              <div class="tokenPair">
-                <img class="tokenIcon" src.to-view="fundingTokenInfo.logoURI" />
-                <img class="tokenIcon underToken" src.to-view="projectTokenInfo.logoURI" />
-              </div>
-              <div class="text2"><strong>1</strong> ${projectTokenInfo.symbol} = <strong>10</strong> ${fundingTokenInfo.symbol}</div>
-            </div>
           </div>
         </div>
       </div>
@@ -214,7 +191,7 @@
             Connect wallet
           </div>
         </div>
-        <div class="table unvisible">
+        <div class="table">
           <div class="row">
             <div class="col">
               <div class="title">SEED TARGET</div>
@@ -241,13 +218,13 @@
             <div class="col">
               <div class="tokenPair">
                 <img class="tokenIcon" src.to-view="fundingTokenInfo.logoURI" />
-                <img class="tokenIcon underToken" src.to-view="projectTokenInfo.logoURI" />
+                <img class="tokenIcon belowToken" src.to-view="projectTokenInfo.logoURI" />
               </div>
               <div class="text2"><strong>1</strong> ${projectTokenInfo.symbol} = <strong>10</strong> ${fundingTokenInfo.symbol}</div>
             </div>
           </div>
         </div>
-        <div class="title heading heading2">About ${projectTokenInfo.name}</div>
+        <div class="title heading heading2 mobileTitle">About ${projectTokenInfo.name}</div>
         <p class="description2">
           Short description goes here. This text is exactly 200 characters.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
