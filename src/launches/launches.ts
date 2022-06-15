@@ -41,8 +41,11 @@ export class Launches {
     await this.seedService.ensureAllSeedsInitialized();
     await this.lbpManagerService.ensureAllLbpsInitialized();
 
-    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
-      .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+    const seeds = this.seedService.seedsArray as Array<ILaunch>;
+    const lbps = this.lbpManagerService.lbpManagersArray as Array<ILaunch>;
+
+    this.launches = (seeds).concat(lbps);
+    console.log("THIS launches", seeds);
 
     this.loading = false;
   }

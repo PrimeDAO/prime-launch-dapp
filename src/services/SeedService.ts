@@ -34,8 +34,10 @@ export class SeedService {
 
   @computedFrom("seeds.size")
   public get seedsArray(): Array<Seed> {
+    console.log("THIS", Array.from(this.seeds.values()));
     return this.seeds ? Array.from(this.seeds.values()) : [];
   }
+  public seeds2: Seed[]
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
@@ -177,6 +179,15 @@ export class SeedService {
     for (const seed of this.seedsArray) {
       await seed.ensureInitialized();
     }
+  }
+  public async ensureAllSeedsInitialized2(): Promise<Seed[]> {
+    await this.ensureInitialized();
+    let seeds: Seed[];
+    for (const seed of this.seedsArray) {
+      await seed.ensureInitialized();
+      seeds.push(seed);
+    }
+    return seeds;
   }
 
   private projectTokenPriceInWei(
