@@ -7,7 +7,19 @@
       </div>
     </div>
     <div class="section launches">
-      <div class="title heading heading1">Launches</div>
+      <div class="title-container">
+        <div class="title heading heading1">Launches</div>
+        <template if.to-view="launches.length > 4">
+          <div if.to-view="!loading && !seeingMore" class="seeMore">
+            <div class="arrow">&darr;</div>
+            <div class="text" click.delegate="seeMore(true)">Show All</div>
+          </div>
+          <div if.to-view="!loading && seeingMore" class="seeMore">
+            <div class="arrow">&uarr;</div>
+            <div class="text" click.delegate="seeMore(false)">Hide</div>
+          </div>
+        </template>
+      </div>
       <div if.to-view="loading" class="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
       <!-- Desktop grid -->
       <div if.to-view="!loading" class="grid launchGrid">
@@ -15,30 +27,28 @@
           <div class="cell project header sortable" click.delegate="sort('project')">PROJECT</div>
           <div class="cell projectToken header sortable" click.delegate="sort('projectToken')">PROJECT TOKEN</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
-          <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
           <div class="cell type header sortable" click.delegate="sort('type')">TYPE</div>
-          <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
-          <div class="cell eslink header">ETHERSCAN</div>
+          <div class="cell starts header sortable" click.delegate="sort('starts')">STATUS</div>
+          <div class="cell whitelist header" click.delegate="sort('whitelist')">ALLOWLIST</div>
         </div>
         <template repeat.for="launch of launches | sort:sortEvaluator">
           <a
             class="row body hot"
-            if.to-view="!launch.initializing && (($index < 4) || seeingMore)"
+            if.to-view="!launch.initializing && (($index < 10) || seeingMore)"
             click.delegate="onLaunchClick(launch)">
             <div class="project cell body ellipses hot">
-              <div class="ellipsesContainer">${launch.metadata.general.projectName}</div>
+              <div class="ellipsesContainer">${launch.projectTokenInfo.name}</div>
             </div>
             <div class="projectToken cell body hot"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
             <div class="fundingToken cell body hot"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
+            <div class="type cell body hot">${launch.launchType.toUpperCase()}</div>
             <div class="starts cell body hot">
               <time-left launch.to-view="launch" hide-icons largest></time-left>
             </div>
-            <div class="type cell body hot">${launch.launchType.toUpperCase()}</div>
             <div class="whitelist cell body hot">
               <span if.to-view="launch.whitelisted" class="fa fa-check"></span>
               <span else>N/A</span>
             </div>
-            <div class="eslink cell body hot"><i class="fa fa-external-link-alt" click.trigger="gotoEtherscan(launch, $event)"></i></div>
           </a>
         </template>
       </div>
@@ -49,7 +59,7 @@
           <div class="cell projectToken header sortable" click.delegate="sort('projectToken')">PROJECT TOKEN</div>
           <div class="cell type header sortable" click.delegate="sort('type')">TYPE</div>
           <div class="cell whitelist header" click.delegate="sort('whitelist')">WHITELIST</div>
-          <div class="cell starts header sortable" click.delegate="sort('starts')">STARTS</div>
+          <div class="cell starts header sortable" click.delegate="sort('starts')">STATUS</div>
           <div class="cell fundingToken header sortable" click.delegate="sort('fundingToken')">FUNDING TOKEN</div>
           <div class="cell target header">&nbsp;</div>
           <div class="cell eslink header">ETHERSCAN</div>
@@ -72,16 +82,6 @@
           </a>
         </template>
       </div>
-      <template if.to-view="launches.length > 4">
-        <div if.to-view="!loading && !seeingMore" class="seeMore">
-          <div class="arrow">&darr;</div>
-          <div class="text" click.delegate="seeMore(true)">SEE ALL</div>
-        </div>
-        <div if.to-view="!loading && seeingMore" class="seeMore">
-          <div class="arrow">&uarr;</div>
-          <div class="text" click.delegate="seeMore(false)">SEE A FEW</div>
-        </div>
-      </template>
     </div>
   </div>
 </template>

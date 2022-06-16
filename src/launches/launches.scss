@@ -1,5 +1,11 @@
 @import "styles/styles.scss";
 .page.launches {
+  .title-container{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
   .section {
     &.featured,
     &.launches {
@@ -24,7 +30,7 @@
     &.launches {
       .grid {
         margin-bottom: 20px;
-        font-size: 16px;
+        font-size: 14px;
 
         .row {
           cursor: default;
@@ -52,9 +58,20 @@
 
           .cell {
             &.body {
+              border-bottom: 1px solid $Border01;
               height: 74px;
               display: flex;
               align-items: center;
+
+              &.type,
+              &.projectToken,
+              &.fundingToken,
+              &.project,
+              &.whitelist {
+                color: $Neutral03;
+                font-size: 16px;
+                font-weight: 400;
+              }
             }
             /**
              * for when columns get scrunched together
@@ -64,7 +81,8 @@
             }
 
             &.header {
-              color: $Neutral02;
+              color: $White;
+              font-weight: 700;
 
               &.sortable {
                 cursor: pointer;
@@ -72,12 +90,14 @@
             }
 
             &.project {
+              padding-left: 22px;
               .ellipsesContainer {
                 display: inline-block;
                 overflow-x: hidden;
                 text-overflow: ellipsis;
               }
             }
+
 
             &.whitelist,
             &.starts,
@@ -92,8 +112,10 @@
               white-space: nowrap;
 
               img {
-                margin-right: 6px;
+                margin-right: 10px;
                 @include tokenIcon;
+                width: 32px;
+                height: 32px;
               }
             }
 
@@ -116,7 +138,7 @@
 
       .launchGrid {
         display: grid;
-        grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr 0.5fr;
+        grid-template-columns: 2fr 0.5fr 0.5fr 0.75fr 0.75fr 0.75fr;
 
         .row {
           &.header {
@@ -211,6 +233,11 @@
         display: flex;
         color: $Neutral02;
         cursor: pointer;
+        background: #292236;
+        border-radius: 6px;
+        padding: 12px 12px;
+        font-weight: 700;
+        font-size: 16px;
 
         > .arrow {
           margin-right: 6px;

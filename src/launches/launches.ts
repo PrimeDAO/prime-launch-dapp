@@ -12,6 +12,7 @@ import { ILaunch } from "services/launchTypes";
 import { LbpManagerService } from "services/LbpManagerService";
 import { LaunchType } from "services/launchTypes";
 import { LbpManager } from "entities/LbpManager";
+import { TokenService } from "services/TokenService";
 
 @singleton(false)
 @autoinject
@@ -27,6 +28,7 @@ export class Launches {
     private seedService: SeedService,
     private lbpManagerService: LbpManagerService,
     private eventAggregator: EventAggregator,
+    private tokenService: TokenService,
   ) {
     this.sort("starts"); // sort order will be ASC
   }
@@ -45,7 +47,13 @@ export class Launches {
     const lbps = this.lbpManagerService.lbpManagersArray as Array<ILaunch>;
 
     this.launches = (seeds).concat(lbps);
-    console.log("THIS launches", seeds);
+
+    for (const launch of this.launches) {
+      const fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(launch.fundingTokenAddress);
+      const projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(launch.projectTokenAddress);
+      launch.fundingTokenInfo = fundingTokenInfo;
+      launch.projectTokenInfo = projectTokenInfo;
+    }
 
     this.loading = false;
   }
@@ -107,6 +115,8 @@ export class Launches {
   onLaunchClick(launch: ILaunch): void {
     if (launch.canGoToDashboard) {
       this.router.navigate(`${launch.launchType}/${launch.address}`);
+    } else if (launch.launchType === "seed") {
+      this.router.navigate(`seed-sale/${launch.address}`);
     } else {
       this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
     }

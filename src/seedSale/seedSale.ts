@@ -125,7 +125,6 @@ export class SeedSale {
       this.getTimeLeft();
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.fundingTokenAddress);
       this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.projectTokenAddress);
-      console.log("THIS TIME", await this.tokenService.getTokenInfoFromAddress(this.address));
       //this.disclaimSeed();
 
     } catch (ex) {
@@ -136,7 +135,6 @@ export class SeedSale {
         this.eventAggregator.publish("launches.loading", false);
       }
       this.loading = false;
-      console.log("THIS SEED", this.seed);
     }
   }
 }
