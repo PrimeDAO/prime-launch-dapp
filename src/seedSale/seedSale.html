@@ -77,13 +77,15 @@
                   <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
                   <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
-                <input
+                <numeric-input
+                  value.bind="fundingTokenToPay"
+                  decimals.bind="seed.fundingTokenInfo.decimals"
                   class="withIcon"
                   placeholder="0"
                   id=""
                   not-wei>
-                </input>
-                <div class="maxIcon">
+                </numeric-input>
+                <div class="maxIcon" click.delegate="handleMaxBuy()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -97,11 +99,11 @@
                   <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
                   <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
-                <input
+                <numeric-input
+                  value.to-view="projectTokenReward"
                   placeholder="0"
-                  id=""
-                  not-wei>
-                </input>
+                  average>
+                </numeric-input>
               </div>
             </div>
           </div>
@@ -128,13 +130,13 @@
                   <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
                   <div class="halfText">${fundingTokenInfo.symbol}</div>
                 </div>
-                <input
+                <numeric-input
                   class="withIcon"
                   placeholder="0.0"
                   id=""
                   not-wei>
-                </input>
-                <div class="maxIcon">
+                </numeric-input>
+                <div class="maxIcon" click.delegate="handleMaxBuy()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -147,11 +149,11 @@
                   <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
                   <div class="halfText">${projectTokenInfo.symbol}</div>
                 </div>
-                <input
+                <numeric-input
                   placeholder="0.0"
                   id=""
                   not-wei>
-                </input>
+                </numeric-input>
               </div>
             </div>
           </div>

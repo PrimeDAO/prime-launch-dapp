@@ -10,13 +10,13 @@
       <div class="title-container">
         <div class="title heading heading1">Launches</div>
         <template if.to-view="launches.length > 4">
-          <div if.to-view="!loading && !seeingMore" class="seeMore">
+          <div if.to-view="!loading && !seeingMore" class="seeMore" click.delegate="seeMore(true)">
             <div class="arrow">&darr;</div>
-            <div class="text" click.delegate="seeMore(true)">Show All</div>
+            <div class="text">Show All</div>
           </div>
-          <div if.to-view="!loading && seeingMore" class="seeMore">
+          <div if.to-view="!loading && seeingMore" class="seeMore" click.delegate="seeMore(false)">
             <div class="arrow">&uarr;</div>
-            <div class="text" click.delegate="seeMore(false)">Hide</div>
+            <div class="text">Hide</div>
           </div>
         </template>
       </div>

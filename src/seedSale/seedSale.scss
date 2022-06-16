@@ -149,12 +149,18 @@
     width: min-content;
     width: 100%;
 
+    numeric-input {
+      width: 100% !important;
+    }
     .withIcon {
-      padding-right: 58px;
-      width: calc(100% ) !important;
+        > input {
+          padding-right: 58px;
+          width: calc(100% - 70px);
+        }
     }
 
     .maxIcon {
+      cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
