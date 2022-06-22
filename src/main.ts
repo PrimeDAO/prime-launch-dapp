@@ -92,8 +92,9 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
       seedService.initialize();
 
-      const lbpManagerService = aurelia.container.get(LbpManagerService);
-      lbpManagerService.initialize();
+      // TODO: rollback. Commented to test pinata with limited requests
+      // const lbpManagerService = aurelia.container.get(LbpManagerService);
+      // lbpManagerService.initialize();
 
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);

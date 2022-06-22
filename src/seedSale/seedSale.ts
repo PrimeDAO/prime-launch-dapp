@@ -9,7 +9,6 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { TransactionReceipt } from "services/TransactionsService";
 import { SeedService } from "services/SeedService";
-import { LbpManagerService } from "services/LbpManagerService";
 import { CongratulationsService } from "services/CongratulationsService";
 import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
@@ -49,7 +48,6 @@ export class SeedSale {
     private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
-    private lbpManagerService: LbpManagerService,
     private router: Router,
     private congratulationsService: CongratulationsService,
     private geoBlockService: GeoBlockService,

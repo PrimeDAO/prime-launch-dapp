@@ -55,9 +55,9 @@ export class SeedService {
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
-  ) {// TODO: find out why seed become []
+  ) {
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
-      // this.seeds?.delete(seedAddress);
+      this.seeds?.delete(seedAddress);
     });
 
     switch (EthereumService.targetedNetwork) {
@@ -130,22 +130,25 @@ export class SeedService {
         this.startingBlockNumber,
         txEvents => {
           for (const event of txEvents) {
-            const seed = this.createSeedFromConfig(event);
-            seedsMap.set(seed.address, seed);
-            /**
-             * remove the seed if it is corrupt
-             */
-            this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
-              if (newValue) { // pretty much the only case
-                if (this.seeds) {
-                  // this.seeds.delete(seed.address);
-                } else {
-                  deletables.push(seed.address);
+            // TODO: ROLLBACK. Commented to test pinata with limited requests
+            if (event.args.newSeed === "0xB348c762d0D90159c9FC2F4D09039447731Baecc") {
+              const seed = this.createSeedFromConfig(event);
+              seedsMap.set(seed.address, seed);
+              /**
+                 * remove the seed if it is corrupt
+                 */
+              this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
+                if (newValue) { // pretty much the only case
+                  if (this.seeds) {
+                    this.seeds.delete(seed.address);
+                  } else {
+                    deletables.push(seed.address);
+                  }
                 }
-              }
-            });
-            this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
-            seed.initialize(); // set this off asyncronously.
+              });
+              this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
+              seed.initialize(); // set this off asyncronously.
+            }
           }
         });
 
