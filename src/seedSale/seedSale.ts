@@ -1,4 +1,4 @@
-import { ITokenInfo, TokenService } from "services/TokenService";
+import { TokenService } from "services/TokenService";
 /* eslint-disable linebreak-style */
 import "./seedSale.scss";
 import { autoinject, computedFrom } from "aurelia-framework";
@@ -32,10 +32,7 @@ export class SeedSale {
   loading: boolean;
   seed: Seed;
   userFundingTokenAllowance: BigNumber;
-  percentsRaised: number
   timeLeft: string
-  fundingTokenInfo: ITokenInfo;
-  projectTokenInfo: ITokenInfo;
   fundingTokenToPay: BigNumber;
   projectTokenToReceive: BigNumber;
 
@@ -64,6 +61,17 @@ export class SeedSale {
       this.txPhase = Phase.None;
       this.txReceipt = null;
     }));
+  }
+
+  @computedFrom("seed.amountRaised", "seed.target")
+  get fractionComplete(): number {
+
+    let fraction = 0;
+    if (this.seed?.target) {
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised, this.seed.fundingTokenInfo.decimals)) /
+        this.numberService.fromString(fromWei(this.seed.target, this.seed.fundingTokenInfo.decimals));
+    }
+    return fraction;
   }
 
   @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
@@ -125,20 +133,53 @@ export class SeedSale {
   }
 
   async getTimeLeft(): Promise<void> {
-    let ms = -1 * this.seed.startsInMilliseconds;
-    const days = ms>86400000 ? Math.floor(ms / 86400000) : 0;
-    ms = ms>86400000 ? ms % 86400000 : ms;
-    const hrs = ms>3600000 ? Math.floor(ms / 3600000) : 0;
-    ms = ms>3600000 ? ms % 3600000 : ms;
-    const mins = ms>60000 ? Math.floor(ms / 60000) : 0;
-    const result = `${days}d${days > 1 ? "s" : ""}, ${hrs}h, ${mins}m`;
-    this.timeLeft = result;
+    let ms = this.seed.startsInMilliseconds;
+    if (ms < 0) {
+      this.timeLeft = "didn't start";
+    } else {
+      const days = ms>86400000 ? Math.floor(ms / 86400000) : 0;
+      ms = ms>86400000 ? ms % 86400000 : ms;
+      const hrs = ms>3600000 ? Math.floor(ms / 3600000) : 0;
+      ms = ms>3600000 ? ms % 3600000 : ms;
+      const mins = ms>60000 ? Math.floor(ms / 60000) : 0;
+      const result = `${days}d${days > 1 ? "s" : ""}, ${hrs}h, ${mins}m`;
+      this.timeLeft = result;
+    }
   }
 
-  async getPercentOfRaised():Promise<void> {
-    const percent = Math.floor(this.seed.target.toNumber() / 100);
-    const percentsRaised = Math.floor(this.seed.amountRaised.toNumber() / percent);
-    this.percentsRaised = percentsRaised;
+  exponentialToDecimal(exponential: number): string {
+    let decimal = exponential.toString().toLowerCase();
+    if (decimal.includes("e+")) {
+      const exponentialSplitted = decimal.split("e+");
+      let postfix = "";
+      for (
+        let i = 0; i <
+        +exponentialSplitted[1] -
+        (exponentialSplitted[0].includes(".") ? exponentialSplitted[0].split(".")[1].length : 0); i++
+      ) {
+        postfix += "0";
+      }
+      const addCommas = text => {
+        let j = 3;
+        let textLength = text.length;
+        while (j < textLength) {
+          text = `${text.slice(0, textLength - j)},${text.slice(textLength - j, textLength)}`;
+          textLength++;
+          j += 3 + 1;
+        }
+        return text;
+      };
+      decimal = addCommas(exponentialSplitted[0].replace(".", "") + postfix);
+    }
+    if (decimal.toLowerCase().includes("e-")) {
+      const exponentialSplitted = decimal.split("e-");
+      let prefix = "0.";
+      for (let i = 0; i < +exponentialSplitted[1] - 1; i++) {
+        prefix += "0";
+      }
+      decimal = prefix + exponentialSplitted[0].replace(".", "");
+    }
+    return decimal;
   }
 
   connect(): void {
@@ -173,10 +214,7 @@ export class SeedSale {
         await seed.ensureInitialized();
       }
       this.seed = seed;
-      this.getPercentOfRaised();
       this.getTimeLeft();
-      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.fundingTokenAddress);
-      this.projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.seed.projectTokenAddress);
       this.hydrateUserData();
       console.log("THIS", seed);
       //this.disclaimSeed();

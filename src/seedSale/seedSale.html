@@ -13,12 +13,10 @@
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
             <div class="live-text">•  LIVE</div>
-            <div class="title heading heading2 mobileTitle">${projectTokenInfo.name} SEED</div>
+            <div class="title heading heading2 mobileTitle">${seed.projectTokenInfo.name} SEED</div>
         </div>
         <p class="description">
-          Short description goes here. This text is exactly 200 characters.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore maga aliqua. Ut enim ad.
+          ${seed.metadata.projectDetails.proposition}
         </p>
       <div class="verified unvisible2">
         <div class="icon"></div>
@@ -27,16 +25,16 @@
       </div>
       <div class="seed-info col-4">
         <div class="text-container unvisible2">
-          <img class="icon" src.to-view="projectTokenInfo.logoURI"></img>
-          <div class="text">${projectTokenInfo.name} (${projectTokenInfo.symbol})</div>
+          <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
+          <div class="text">${seed.projectTokenInfo.name} (${seed.projectTokenInfo.symbol})</div>
         </div>
         <div class="fullProgress">
-          <div class="progress" css="width: ${percentsRaised}%;">
+          <div class="progress" css="width: ${fractionComplete}%;">
         </div>
         </div>
         <div class="info">
           <div class="text">$ <strong>${seed.amountRaised.toNumber()}</strong> USD raised</div>
-          <div class="text"><formatted-number average mantissa="0"></formatted-number>${percentsRaised}%</div>
+          <div class="text"><formatted-number average mantissa="0"></formatted-number>${fractionComplete}%</div>
         </div>
       </div>
       <div class="seed-info col-2 unvisible">
@@ -50,7 +48,7 @@
     </div>
     <hr />
     <div class="seed-info section toppadding">
-      <div class="seed-info halfsection2 visibile">
+      <div class="seed-info halfsection2 visibile" show.bind="!accountAddress">
         <div class="seed-info container">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
@@ -74,10 +72,11 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
-                  <div class="halfText">${fundingTokenInfo.symbol}</div>
+                  <img class="halfIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
+                  <div class="halfText">${seed.fundingTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
+                  disabled.to-view="!seed.contributingIsOpen"
                   value.bind="fundingTokenToPay"
                   decimals.bind="seed.fundingTokenInfo.decimals"
                   class="withIcon"
@@ -85,7 +84,7 @@
                   id=""
                   not-wei>
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxBuy()">
+                <div class="maxIcon" click.delegate="handleMaxBuy()" disabled.to-view="!seed.contributingIsOpen">
                   <div class="iconText">
                     MAX
                   </div>
@@ -96,8 +95,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
-                  <div class="halfText">${projectTokenInfo.symbol}</div>
+                  <img class="halfIcon" src.to-view="seed.projectTokenInfo.logoURI" />
+                  <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   value.to-view="projectTokenReward"
@@ -108,7 +107,7 @@
             </div>
           </div>
           <div class="text">
-            Project tokens will unlock gradually over 21 day(s) after launch.
+            Project tokens will unlock gradually over ${seed.vestingDuration | secondsDays} day(s) after launch.
           </div>
           <div class="buttonLeft" click.delegate="show1()">
             contribute
@@ -127,16 +126,17 @@
             <div class="inputContainer">
               <div class="cryptoInput margin">
                 <div class="half">
-                  <img class="halfIcon" src.to-view="fundingTokenInfo.logoURI" />
-                  <div class="halfText">${fundingTokenInfo.symbol}</div>
+                  <img class="halfIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
+                  <div class="halfText">${seed.fundingTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
+                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
                   class="withIcon"
                   placeholder="0.0"
                   id=""
                   not-wei>
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxBuy()">
+                <div class="maxIcon" click.delegate="handleMaxClaim()" disabled.to-view="!seed.claimingIsOpen && !seed.userCanClaim">
                   <div class="iconText">
                     MAX
                   </div>
@@ -146,8 +146,8 @@
             <div class="inputContainer">
               <div class="cryptoInput">
                 <div class="half">
-                  <img class="halfIcon" src.to-view="projectTokenInfo.logoURI" />
-                  <div class="halfText">${projectTokenInfo.symbol}</div>
+                  <img class="halfIcon" src.to-view="seed.projectTokenInfo.logoURI" />
+                  <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   placeholder="0.0"
@@ -158,7 +158,7 @@
             </div>
           </div>
           <div class="text">
-            Tokens can be claimed 10 days after the Max is reached or when the campaign expires on 2022-03-31, assuming the Target has been met.
+            Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
           <div class="buttonLeft" click.delegate="show2()">
             contribute
@@ -177,7 +177,7 @@
             If Seed Target is not reached by the round end date, all contributions made can be retrieved here.
           </div>
           <div class="text2">
-            You have contributed 0.00 DAI tokens.
+            You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
           <div class="buttonLeft" click.delegate="show3()">
             Retrieve
@@ -185,7 +185,7 @@
         </div>
       </div>
       <div class="seed-info halfsection2">
-        <div class="seed-info container unvisible">
+        <div class="seed-info container unvisible" show.bind="!accountAddress">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
           </div>
@@ -197,15 +197,20 @@
           <div class="row">
             <div class="col">
               <div class="title">SEED TARGET</div>
-              <div class="text">$ ${seed.target.toNumber() / 1000000}M</div>
+              <div class="text">$<formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
             </div>
             <div class="col">
               <div class="title">max seed</div>
-              <div class="text">$ ${seed.cap.toNumber() / 1000000}M</div>
+              <div class="text">$<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
             </div>
             <div class="col">
               <div class="title">valuation</div>
-              <div class="text">$ ${seed.valuation}M</div>
+              <div class="text">$ <formatted-number
+                if.to-view="seed.valuation"
+                value.to-view="exponentialToDecimal(seed.valuation)"
+                average></formatted-number>
+                <span else>N/A</span>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -219,50 +224,30 @@
             </div>
             <div class="col">
               <div class="tokenPair">
-                <img class="tokenIcon" src.to-view="fundingTokenInfo.logoURI" />
-                <img class="tokenIcon belowToken" src.to-view="projectTokenInfo.logoURI" />
+                <img class="tokenIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
+                <img class="tokenIcon belowToken" src.to-view="seed.projectTokenInfo.logoURI" />
               </div>
-              <div class="text2"><strong>1</strong> ${projectTokenInfo.symbol} = <strong>10</strong> ${fundingTokenInfo.symbol}</div>
+              <div class="text2"><strong>1</strong> ${seed.projectTokenInfo.symbol} = <strong>${seed.fundingTokensPerProjectToken}</strong> ${seed.fundingTokenInfo.symbol}</div>
             </div>
           </div>
         </div>
-        <div class="title heading heading2 mobileTitle">About ${projectTokenInfo.name}</div>
+        <div class="title heading heading2 mobileTitle">About ${seed.projectTokenInfo.name}</div>
         <p class="description2">
-          Short description goes here. This text is exactly 200 characters.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore maga aliqua. Ut enim ad.
+          ${seed.metadata.projectDetails.summary}
         </p>
         <div class="tagsContainer">
-          <div class="tagContainer">
-            <div class="tagWorld"></div>
-            <div class="tagText">Website</div>
-          </div>
-          <div class="tagContainer">
-            <div class="tagPDF"></div>
-            <div class="tagText">Whitepaper</div>
-          </div>
-          <div class="tagContainer">
-            <div class="tagTwitter"></div>
-            <div class="tagText">Twitter</div>
-          </div>
-          <div class="tagContainer">
-            <div class="tagTelegramm"></div>
-            <div class="tagText">Telegram</div>
-          </div>
-        </div>
-        <div class="tagsContainer">
-          <div class="tagContainer">
-            <div class="tagDiscord"></div>
-            <div class="tagText">Discord</div>
-          </div>
-          <div class="tagContainer">
-            <div class="tagSearch"></div>
-            <div class="tagText">Tokenomics Article</div>
-          </div>
-          <div class="tagContainer">
-            <div class="tagSearch"></div>
-            <div class="tagText">Etherscan</div>
-          </div>
+          <template repeat.for="link of seed.metadata.general.customLinks | sort:sortEvaluator">
+            <div class="tagContainer">
+              <div class="tagWorld" if.bind="link.media === 'Website'"></div>
+              <div class="tagPDF" if.bind="link.media === 'Whitepaper'"></div>
+              <div class="tagTwitter" if.bind="link.media === 'Twitter'"></div>
+              <div class="tagTelegram" if.bind="link.media === 'Telegram'"></div>
+              <div class="tagDiscord" if.bind="link.media === 'Discord'"></div>
+              <div class="tagSearch" if.bind="link.media === 'Etherscan'"></div>
+              <div class="tagSearch" if.bind="link.media === 'Tokenomics Article'"></div>
+              <a class="tagText" href=`${link.url}` target="_blank">${link.media}</a>
+            </div>
+          </template>
         </div>
       </div>
     </div>
