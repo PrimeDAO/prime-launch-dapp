@@ -49,13 +49,14 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum";
+export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "silo";
 
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
   Kovan = "kovan",
   Arbitrum = "arbitrum",
+  Silo = "silo",
 }
 
 export interface IChainEventInfo {
@@ -78,6 +79,8 @@ export class EthereumService {
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+    // TODO: need to change
+    "silo": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
   }
   private static providerOptions = {
     torus: {
@@ -175,6 +178,7 @@ export class EthereumService {
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Rinkeby, 4],
+    [Networks.Silo, 4],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
   ]);

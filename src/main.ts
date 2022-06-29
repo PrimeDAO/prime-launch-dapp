@@ -22,6 +22,7 @@ import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
 import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
+import LocalStorageService from "services/LocalStorageService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -35,7 +36,8 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  const network = process.env.NETWORK as AllowedNetworks;
+  const isStorageSupported = LocalStorageService.isStorageSupported();
+  const network = isStorageSupported && LocalStorageService.get<AllowedNetworks>("network") ? LocalStorageService.get<AllowedNetworks>("network") : process.env.NETWORK as AllowedNetworks;
   const inDev = process.env.NODE_ENV === "development";
 
   if (inDev) {

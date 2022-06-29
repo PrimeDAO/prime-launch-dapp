@@ -1,6 +1,10 @@
 @import "styles/styles.scss";
 
 $menu-open-duration: 0.1s;
+@mixin logo($url) {
+  -webkit-mask: url("../../static/" + $url) no-repeat center;
+  mask: url("../../static/" + $url) no-repeat center;
+}
 
 .navbar-container {
   position: fixed;
@@ -136,12 +140,61 @@ $menu-open-duration: 0.1s;
   .networkFeedback {
     grid-area: networkFeedback;
     font-family: Inter;
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .testnet {
-      color: $Shade01;
+      color: $Neutral03;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 126px;
+      height: 33px;
+      background: $Border02;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid $BG01
     }
     a {
       color: $Secondary01;
+    }
+    .eth {
+      width: 9.6px;
+      height: 16px;
+      background: url('../../static/eth.svg');
+    }
+    .arrow {
+      @include logo("arrowDownMore.svg");
+      width: 10px;
+      height: 5px;
+      background: $Neutral03;
+    }
+    .dropdown {
+      width: inherit;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -33px;
+      background: $Border02;
+      border: 1px solid $BG01
+    }
+    .dropdownItem {
+      width: inherit;
+      height: 33px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $Neutral03;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
+      text-transform: capitalize;
     }
   }
 
