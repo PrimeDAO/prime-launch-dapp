@@ -216,7 +216,6 @@ export class SeedSale {
       this.seed = seed;
       this.getTimeLeft();
       this.hydrateUserData();
-      console.log("THIS", seed);
       //this.disclaimSeed();
 
     } catch (ex) {

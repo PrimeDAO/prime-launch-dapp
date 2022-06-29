@@ -15,6 +15,7 @@ export class Stage7 extends BaseStage<ISeedConfig> {
 
   disclaimersConfirmed = false;
 
+
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
