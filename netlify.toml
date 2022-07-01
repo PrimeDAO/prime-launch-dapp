@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/assets/*"
-  to = "/assets/:splat"
+  to = "/assets"
   status = 200
   force = true
 
