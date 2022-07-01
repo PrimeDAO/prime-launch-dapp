@@ -25,6 +25,6 @@
     "open": false,
     "port": 3330,
     "host": "localhost",
-    "output": "dist"
+    "output": "dist/assets"
   }
 }

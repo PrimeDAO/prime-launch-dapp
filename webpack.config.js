@@ -19,7 +19,7 @@ const when = (condition, config, negativeConfig) =>
 // primary config:
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
-const baseUrl = '/';
+const baseUrl = './assets';
 
 const cssRules = [
   {
@@ -287,6 +287,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
       } ),
       new HtmlWebpackPlugin( {
         template: 'index.ejs',
+        filename: "../index.html",
         metadata: {
           // available in index.ejs //
           baseUrl
