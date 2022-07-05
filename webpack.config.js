@@ -19,7 +19,6 @@ const when = (condition, config, negativeConfig) =>
 // primary config:
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
-const baseUrl = './assets';
 
 const cssRules = [
   {
@@ -80,7 +79,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
     mode: production ? 'production' : 'development',
     output: {
       path: outDir,
-      publicPath: baseUrl,
+      publicPath: './assets/',
       filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
       sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
       chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
@@ -287,7 +286,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
         filename: "../index.html",
         metadata: {
           // available in index.ejs //
-          baseUrl
+          baseUrl: './assets'
         }
       } ),
       // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/

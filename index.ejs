@@ -9,7 +9,7 @@
     content="A decentralized autonomous organization and ecosystem for the adoption of decentralized, open finance.">
   <base href="<%- htmlWebpackPlugin.options.metadata.baseUrl %>">
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="./assets/base.css">
+  <link rel="stylesheet" href="<%- htmlWebpackPlugin.options.metadata.baseUrl %>/base.css">
   <script src="https://kit.fontawesome.com/bf98881e0a.js" crossorigin="anonymous"></script>
 
   <% if (process.env.NODE_ENV==="production" ) { var dataSite; if (process.env.NETWORK==="mainnet" ) {
@@ -21,53 +21,53 @@
         /* these are here so webpack will pick up the fonts */
         @font-face {
           font-family: "Inter";
-          src: url("./assets/Inter-Light.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-Light.ttf");
           font-weight: 300;
         }
 
         @font-face {
           font-family: "Inter";
-          src: url("./ssets/Inter-Regular.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-Regular.ttf");
           font-weight: 400;
         }
 
         @font-face {
           font-family: "Inter";
-          src: url("./assets/Inter-Medium.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-Medium.ttf");
           font-weight: 500;
         }
 
         @font-face {
           font-family: "Inter";
-          src: url("./assets/Inter-SemiBold.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-SemiBold.ttf");
           font-weight: 600;
         }
 
         @font-face {
           font-family: "Inter";
-          src: url("./assets/Inter-Bold.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-Bold.ttf");
           font-weight: 700;
         }
 
         @font-face {
           font-family: "Inter";
-          src: url("./assets/Inter-ExtraBold.ttf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Inter-ExtraBold.ttf");
           font-weight: 800;
         }
 
         @font-face {
           font-family: "Aeonik";
-          src: url("./assets/Aeonik-Regular.otf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Aeonik-Regular.otf");
         }
 
         @font-face {
           font-family: "Aeonik";
-          src: url("./assets/Aeonik-Bold.otf");
+          src: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/Aeonik-Bold.otf");
           font-weight: 600;
         }
 
         .page.home>.banner {
-          background: url("/assets/210125_CURVE_PD_APP_BANNER_V01-1.jpg") no-repeat center center;
+          background: url("<%- htmlWebpackPlugin.options.metadata.baseUrl %>/210125_CURVE_PD_APP_BANNER_V01-1.jpg") no-repeat center center;
           background-size: cover;
         }
       </style>
@@ -77,7 +77,7 @@
 
   <!-- <body class="loading"> -->
   <div class="initialLoading preload">
-    <img src="/assets/PD_Logo-Loop.gif">
+    <img src="<%- htmlWebpackPlugin.options.metadata.baseUrl %>/PD_Logo-Loop.gif">
     <div class="body">Almost There!</div>
     <div class="body body2">Thanks for your patience</div>
   </div>

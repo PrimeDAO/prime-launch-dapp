@@ -48,6 +48,7 @@
     "cids": "^1.1.7",
     "dompurify": "^2.2.9",
     "ethers": "5.5.0",
+    "http-server": "^14.1.1",
     "json-to-graphql-query": "^2.1.0",
     "lightweight-charts": "^3.6.1",
     "litepicker": "^2.0.11",
