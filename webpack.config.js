@@ -282,9 +282,6 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
     plugins: [
       ...when( !tests, new DuplicatePackageCheckerPlugin() ),
       new AureliaPlugin(),
-      new ModuleDependenciesPlugin( {
-        'aurelia-testing': [ './compile-spy', './view-spy' ]
-      } ),
       new HtmlWebpackPlugin( {
         template: 'index.ejs',
         filename: "../index.html",
