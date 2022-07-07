@@ -3,25 +3,25 @@
   <require from="./mobileMenu/mobileMenu"></require>
   <nav class="navbar-container">
     <div class="logo">
-      <img src="/logomark.svg" alt="PrimeDAO">
+      <img src="/assets/logomark.svg" alt="PrimeDAO">
     </div>
 
     <div class="products">
       <div class="container">
         <div class="item active">
-          <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
+          <div class="icon launch"><img class="mono" src="/assets/launch-mono.svg" /><img class="color" src="/assets/launch.svg" /></div>
           <div class="text">Launch</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/pools')">
-          <div class="icon pools"><img class="mono" src="/pools-mono.svg" /><img class="color" src="/pools.svg" /></div>
+          <div class="icon pools"><img class="mono" src="/assets/pools-mono.svg" /><img class="color" src="/assets/pools.svg" /></div>
           <div class="text">Pools</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/rating')">
-          <div class="icon rating"><img class="mono" src="/rating-mono.svg" /><img class="color" src="/rating.svg" /></div>
+          <div class="icon rating"><img class="mono" src="/assets/rating-mono.svg" /><img class="color" src="/assets/rating.svg" /></div>
           <div class="text">Rating</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/deals')">
-          <div class="icon deals"><img class="mono" src="/deals-mono.svg" /><img class="color" src="/deals.svg" /></div>
+          <div class="icon deals"><img class="mono" src="/assets/deals-mono.svg" /><img class="color" src="/assets/deals.svg" /></div>
           <div class="text">Deals</div>
         </div>
       </div>
@@ -44,10 +44,10 @@
       <connectbutton></connectbutton>
     </div>
 
-    <mobile-menu 
-      class="mobile-only" 
-      goto-callback.call="goto(url)" 
-      navigate-callback.call="navigate(href)" 
+    <mobile-menu
+      class="mobile-only"
+      goto-callback.call="goto(url)"
+      navigate-callback.call="navigate(href)"
       menu-open.bind="menuOpen"
     >
     </mobile-menu>
