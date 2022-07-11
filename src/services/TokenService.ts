@@ -22,7 +22,7 @@ export class TokenService {
   tokenLists: TokenListMap;
   devFundingTokens: Array<Address>;
 
-  static DefaultLogoURI = "/genericToken.svg";
+  static DefaultLogoURI = "/assets/genericToken.svg";
   static DefaultNameSymbol = "N/A";
   static DefaultDecimals = 0;
 
