@@ -46,6 +46,7 @@
     "aurelia-typed-observable-plugin": "^0.4.2",
     "axios": "^0.21.4",
     "cids": "^1.1.7",
+    "dayjs": "^1.11.3",
     "dompurify": "^2.2.9",
     "ethers": "5.5.0",
     "json-to-graphql-query": "^2.1.0",

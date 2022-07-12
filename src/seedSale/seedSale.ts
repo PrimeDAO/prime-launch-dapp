@@ -18,6 +18,7 @@ import { DateService } from "services/DateService";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
+import dayjs from "dayjs";
 
 enum Phase {
   None = "None",
@@ -132,18 +133,23 @@ export class SeedSale {
     }
   }
 
-  async getTimeLeft(): Promise<void> {
-    let ms = this.seed.startsInMilliseconds;
-    if (ms < 0) {
+  getTimeLeft(): void {
+    const now = dayjs();
+    const startDate = dayjs(this.seed.startTime);
+    const endDate = dayjs(this.seed.endTime);
+
+    let diff = endDate.diff(now, "minutes");
+
+    const diffDays = Math.floor(diff / 60 / 24);
+    diff = diff - (diffDays*60*24);
+    const diffHours = Math.floor(diff / 60);
+    diff = diff - (diffHours*60);
+    const diffMins = diff;
+
+    if (now.diff(startDate) < 0) {
       this.timeLeft = "didn't start";
     } else {
-      const days = ms>86400000 ? Math.floor(ms / 86400000) : 0;
-      ms = ms>86400000 ? ms % 86400000 : ms;
-      const hrs = ms>3600000 ? Math.floor(ms / 3600000) : 0;
-      ms = ms>3600000 ? ms % 3600000 : ms;
-      const mins = ms>60000 ? Math.floor(ms / 60000) : 0;
-      const result = `${days}d${days > 1 ? "s" : ""}, ${hrs}h, ${mins}m`;
-      this.timeLeft = result;
+      this.timeLeft = `${diffDays}d${diffDays > 1 ? "s" : ""}, ${diffHours}h, ${diffMins}m`;
     }
   }
 
