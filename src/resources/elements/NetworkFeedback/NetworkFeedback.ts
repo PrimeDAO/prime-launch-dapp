@@ -11,14 +11,14 @@ export class NetworkFeedback {
   private network: string;
   private isTestNet;
   private show: boolean
-  private networkItem: "silo" | "rinkeby"
+  private networkItem: "celo" | "rinkeby"
   private aurelia: Aurelia
 
   constructor(private ethereumService: EthereumService) {
     this.network = EthereumService.targetedNetwork;
     this.isTestNet = EthereumService.isTestNet;
     this.show = false;
-    this.networkItem = this.network === "rinkeby" ? "silo" : "rinkeby";
+    this.networkItem = this.network === "rinkeby" ? "celo" : "rinkeby";
   }
 
   setShow(): void {
@@ -30,6 +30,6 @@ export class NetworkFeedback {
     window.location.reload();
     this.network = EthereumService.targetedNetwork;
     this.show = false;
-    this.networkItem = this.networkItem === "rinkeby" ? "silo" : "rinkeby";
+    this.networkItem = this.networkItem === "rinkeby" ? "celo" : "rinkeby";
   }
 }
