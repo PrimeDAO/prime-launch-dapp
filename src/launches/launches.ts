@@ -113,9 +113,7 @@ export class Launches {
   }
 
   onLaunchClick(launch: ILaunch): void {
-    if (launch.canGoToDashboard) {
-      this.router.navigate(`${launch.launchType}/${launch.address}`);
-    } else if (launch.launchType === "seed") {
+    if (launch.launchType === "seed") {
       this.router.navigate(`seed-sale/${launch.address}`);
     } else {
       this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);

@@ -221,7 +221,7 @@ export class SeedSale {
       }
       this.seed = seed;
       this.getTimeLeft();
-      this.hydrateUserData();
+      await this.hydrateUserData();
       //this.disclaimSeed();
 
     } catch (ex) {
@@ -271,6 +271,22 @@ export class SeedSale {
       return true;
     } else {
       return false;
+    }
+  }
+
+  async unlockFundingTokens(): Promise<void> {
+    if (await this.validateClosedOrPaused()) {
+      return;
+    }
+
+    if (await this.disclaimSeed()) {
+      this.seed.unlockFundingTokens(this.fundingTokenToPay)
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+            // this.congratulationsService.show(`You have unlocked ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol}.  The last step is to click the Contribute button!`);
+          }
+        });
     }
   }
 
