@@ -33,8 +33,17 @@
         </div>
         </div>
         <div class="info">
-          <div class="text">$ <strong>${seed.amountRaised.toNumber()}</strong> USD raised</div>
-          <div class="text"><formatted-number average mantissa="0"></formatted-number>${fractionComplete}%</div>
+          <div class="text">$ <strong>
+            <formatted-number
+              value.to-view="seed.amountRaised | ethwei:seed.fundingTokenInfo.decimals"
+              thousands-separated>
+            </formatted-number>
+            </strong> USD raised
+          </div>
+          <div class="text">$<formatted-number
+            average
+            mantissa="0"
+            value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
       <div class="seed-info col-3">
@@ -81,8 +90,7 @@
                   decimals.bind="seed.fundingTokenInfo.decimals"
                   class="withIcon"
                   placeholder="0"
-                  id=""
-                  not-wei>
+                  id="">
                 </numeric-input>
                 <div class="maxIcon" click.delegate="handleMaxBuy()" disabled.to-view="!seed.contributingIsOpen">
                   <div class="iconText">
@@ -99,9 +107,9 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  value.to-view="projectTokenReward"
-                  placeholder="0"
-                  average>
+                  disabled
+                  placeholder.to-view="projectTokenReward"
+                  id="">
                 </numeric-input>
               </div>
             </div>
@@ -109,9 +117,12 @@
           <div class="text">
             Project tokens will unlock gradually over ${seed.vestingDuration | secondsDays} day(s) after launch.
           </div>
-          <div class="buttonLeft" click.delegate="show1()">
-            contribute
-          </div>
+          <div class="unlockButton" if.to-view="lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+          <template else>
+            <button class="buttonLeft" click.delegate="buy()" disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))">
+              contribute
+            </button>
+          </template>
         </div>
         <div class="seed-info container">
           <div class="markPosition">
