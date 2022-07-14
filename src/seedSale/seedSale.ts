@@ -55,7 +55,7 @@ export class SeedSale {
     private storageService: BrowserStorageService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
-      this.hydrateUserData();
+      await this.hydrateUserData();
     }));
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
