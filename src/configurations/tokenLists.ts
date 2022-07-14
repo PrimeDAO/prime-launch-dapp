@@ -91,10 +91,10 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
     //   "https://umaproject.org/uma.tokenlist.json",
     // ],
   },
-  "silo": {
+  "celo": {
     PrimeDao: {
       Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primeCeloPayment.json",
     },
     // Balancer: {
     //   Default:

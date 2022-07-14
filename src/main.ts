@@ -79,8 +79,10 @@ export function configure(aurelia: Aurelia): void {
       TimingService.end("LaunchService Initialization");
 
       // TimingService.start("BalancerService Initialization");
-      const balancerService = aurelia.container.get(BalancerService);
-      balancerService.initialize();
+      if (network !== Networks.Celo) {
+        const balancerService = aurelia.container.get(BalancerService);
+        balancerService.initialize();
+      }
       // TimingService.end("BalancerService Initialization");
 
       TimingService.start("GeoBlockService Initialization");

@@ -49,14 +49,14 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "silo";
+export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "celo";
 
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
   Kovan = "kovan",
   Arbitrum = "arbitrum",
-  Silo = "silo",
+  Celo = "celo",
 }
 
 export interface IChainEventInfo {
@@ -79,8 +79,7 @@ export class EthereumService {
     "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-    // TODO: need to change
-    "silo": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
+    "celo": "https://forno.celo.org",
   }
   private static providerOptions = {
     torus: {
@@ -106,6 +105,7 @@ export class EthereumService {
           4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
+          42220: EthereumService.ProviderEndpoints[Networks.Celo],
         },
       },
     },
@@ -172,15 +172,16 @@ export class EthereumService {
     [4, "Rinkeby"],
     [42, "Kovan"],
     [42161, "Arbitrum One"],
+    [42220, "Celo"],
   ]);
 
 
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Rinkeby, 4],
-    [Networks.Silo, 4],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
+    [Networks.Celo, 42220],
   ]);
 
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {

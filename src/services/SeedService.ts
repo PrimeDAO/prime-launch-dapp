@@ -131,7 +131,7 @@ export class SeedService {
         txEvents => {
           for (const event of txEvents) {
             // TODO: ROLLBACK. Commented to test pinata with limited requests
-            if (event.args.newSeed === "0xB348c762d0D90159c9FC2F4D09039447731Baecc") {
+            if (event.args.newSeed === "0x931A6F9Be99Edb6949EEA5fF3e3B9852412d87e3") {
               const seed = this.createSeedFromConfig(event);
               seedsMap.set(seed.address, seed);
               /**
