@@ -19,6 +19,7 @@ import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import dayjs from "dayjs";
+import { LaunchService } from "services/LaunchService";
 
 enum Phase {
   None = "None",
@@ -53,6 +54,7 @@ export class SeedSale {
     private tokenService: TokenService,
     private disclaimerService: DisclaimerService,
     private storageService: BrowserStorageService,
+    private launchService: LaunchService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       await this.hydrateUserData();
@@ -62,6 +64,10 @@ export class SeedSale {
       this.txPhase = Phase.None;
       this.txReceipt = null;
     }));
+  }
+
+  formatLink(link: string): string {
+    return this.launchService.formatLink(link);
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -220,6 +226,7 @@ export class SeedSale {
         await seed.ensureInitialized();
       }
       this.seed = seed;
+      console.log("THIS", seed);
       this.getTimeLeft();
       await this.hydrateUserData();
       //this.disclaimSeed();

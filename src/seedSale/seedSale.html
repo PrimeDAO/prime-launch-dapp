@@ -247,6 +247,14 @@
           ${seed.metadata.projectDetails.summary}
         </p>
         <div class="tagsContainer">
+          <div class="tagContainer">
+            <div class="tagWorld"></div>
+            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank">Website</a>
+          </div>
+          <div class="tagContainer">
+            <div class="tagWorld"></div>
+            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank">Whitepaper</a>
+          </div>
           <template repeat.for="link of seed.metadata.general.customLinks | sort:sortEvaluator">
             <div class="tagContainer">
               <div class="tagWorld" if.bind="link.media === 'Website'"></div>
@@ -256,7 +264,7 @@
               <div class="tagDiscord" if.bind="link.media === 'Discord'"></div>
               <div class="tagSearch" if.bind="link.media === 'Etherscan'"></div>
               <div class="tagSearch" if.bind="link.media === 'Tokenomics Article'"></div>
-              <a class="tagText" href=`${link.url}` target="_blank">${link.media}</a>
+              <a class="tagText" href="${formatLink(link.url)}" target="_blank">${link.media}</a>
             </div>
           </template>
         </div>
