@@ -205,7 +205,7 @@ export class SeedService {
 
     const transaction = {
       to: seedFactory.address,
-      value: 0,
+      value: EthereumService.targetedNetwork === Networks.Celo ? "0" : 0,
       operation: 0,
     } as any;
 
