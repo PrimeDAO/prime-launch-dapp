@@ -206,6 +206,8 @@ export class SeedSale {
     let waiting = false;
     this.loading = true;
 
+    this.accountAddress = this.ethereumService.defaultAccountAddress;
+
     try {
       if (this.seedService.initializing) {
         await Utils.sleep(200);
@@ -226,7 +228,6 @@ export class SeedSale {
         await seed.ensureInitialized();
       }
       this.seed = seed;
-      console.log("THIS", seed);
       this.getTimeLeft();
       await this.hydrateUserData();
       //this.disclaimSeed();

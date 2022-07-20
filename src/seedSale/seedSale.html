@@ -2,14 +2,6 @@
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
     <div class="seed-info section row">
-      <div class="seed-info col-3 visibile2">
-        <div class="title">
-          TIME LEFT
-        </div>
-        <div class="text">
-          ${timeLeft}
-        </div>
-      </div>
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
             <div class="live-text">•  LIVE</div>
@@ -18,13 +10,13 @@
         <p class="description">
           ${seed.metadata.projectDetails.proposition}
         </p>
-      <div class="verified unvisible2">
+      <div class="verified">
         <div class="icon"></div>
         <div class="text">Verified by Prime Rating</div>
       </div>
       </div>
       <div class="seed-info col-4">
-        <div class="text-container unvisible2">
+        <div class="text-container">
           <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
           <div class="text">${seed.projectTokenInfo.name} (${seed.projectTokenInfo.symbol})</div>
         </div>
@@ -46,7 +38,7 @@
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
-      <div class="seed-info col-3">
+      <div class="seed-info col-3 seed-info_time-left">
         <div class="title">
           TIME LEFT
         </div>
@@ -57,16 +49,6 @@
     </div>
     <hr />
     <div class="seed-info section toppadding">
-      <div class="seed-info halfsection2 visibile" show.bind="!accountAddress">
-        <div class="seed-info container">
-          <div class="subtitle">
-            Connect wallet to check eligibility and see your specific class information
-          </div>
-          <div class="buttonRight" click.delegate="connect()">
-            Connect wallet
-          </div>
-        </div>
-      </div>
       <div class="seed-info halfsection1">
         <div class="seed-info container">
           <div class="markPosition">
@@ -196,7 +178,7 @@
         </div>
       </div>
       <div class="seed-info halfsection2">
-        <div class="seed-info container unvisible" show.bind="!accountAddress">
+        <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
           </div>

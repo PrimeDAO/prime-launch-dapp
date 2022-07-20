@@ -5,6 +5,16 @@
   mask: url("../../static/" + $url) no-repeat center;
 }
 
+//.seed-info {
+//
+//  &_time-left {
+//    @media screen and (min-width: 1080px) {
+//      .page.seed-sale.section {
+//        flex-direction: column;
+//      }
+//  }
+//}
+
 .page.seed-sale {
 
   hr {
@@ -237,30 +247,6 @@
     }
   }
 
-  .visibile {
-    @media screen and (min-width: 1400px) {
-      display: none !important;
-    }
-  }
-
-  .unvisible {
-    @media screen and (max-width: 1400px) {
-      display: none !important;
-    }
-  }
-
-  .visibile2 {
-    @media screen and (min-width: 570px) {
-      display: none !important;
-    }
-  }
-
-  .unvisible2 {
-    @media screen and (max-width: 570px) {
-      display: none !important;
-    }
-  }
-
   .toppadding {
     padding-top: 60px;
   }
@@ -415,6 +401,7 @@
         min-width: 120px;
         display: flex;
         flex-direction: column;
+
         @media screen and (max-width: 570px) {
           width: 100%;
           border-radius: 6px;
@@ -493,11 +480,6 @@
   .row {
     display: flex;
     align-items: center;
-  }
-
-  .seed-info {
-
-    &-title {}
   }
 
   .live-text {
