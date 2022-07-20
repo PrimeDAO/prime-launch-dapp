@@ -81,6 +81,17 @@ export class SeedSale {
     return fraction;
   }
 
+  @computedFrom("seed.amountRaised", "seed.target")
+  get fractionCompleteForBar(): number {
+
+    let fraction = 0;
+    if (this.seed?.target) {
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised, this.seed.fundingTokenInfo.decimals)) /
+        this.numberService.fromString(fromWei(this.seed.target, this.seed.fundingTokenInfo.decimals));
+    }
+    return Math.min(fraction, 1.0)*100;
+  }
+
   @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
   get connected(): boolean {
     return !!this.ethereumService.defaultAccountAddress && this.seed?.userHydrated;
