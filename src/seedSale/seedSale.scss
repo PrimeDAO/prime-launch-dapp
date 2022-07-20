@@ -725,7 +725,6 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.2;
     }
 
     &.small {
@@ -735,10 +734,15 @@
   }
 
   .buttonLeft {
-    background: $Neutral02;
+    background: $Gradient01;
     color: $Neutral04;
     align-self: flex-end;
     margin-right: 12px;
+
+    &:disabled {
+      cursor: not-allowed;
+      background: $Neutral02;
+    }
   }
 
   .buttonRight {

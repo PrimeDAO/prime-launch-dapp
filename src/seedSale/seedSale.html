@@ -153,9 +153,9 @@
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <div class="buttonLeft" click.delegate="show2()">
+          <button class="buttonLeft" click.delegate="show2()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
             contribute
-          </div>
+          </button>
         </div>
         <div class="seed-info container2">
           <div class="markPosition">
@@ -172,9 +172,9 @@
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
-          <div class="buttonLeft" click.delegate="show3()">
+          <button class="buttonLeft" click.delegate="show3()" disabled>
             Retrieve
-          </div>
+          </button>
         </div>
       </div>
       <div class="seed-info halfsection2">
