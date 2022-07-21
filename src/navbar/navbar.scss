@@ -169,6 +169,11 @@ $menu-open-duration: 0.1s;
       height: 16px;
       background: url('../../static/eth.svg');
     }
+    .celo {
+      width: 18px;
+      height: 18px;
+      background: url('../../static/celo.svg');
+    }
     .arrow {
       @include logo("arrowDownMore.svg");
       width: 10px;

@@ -19,6 +19,7 @@ import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import dayjs from "dayjs";
+import { LaunchService } from "services/LaunchService";
 
 enum Phase {
   None = "None",
@@ -53,6 +54,7 @@ export class SeedSale {
     private tokenService: TokenService,
     private disclaimerService: DisclaimerService,
     private storageService: BrowserStorageService,
+    private launchService: LaunchService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       await this.hydrateUserData();
@@ -64,6 +66,10 @@ export class SeedSale {
     }));
   }
 
+  formatLink(link: string): string {
+    return this.launchService.formatLink(link);
+  }
+
   @computedFrom("seed.amountRaised", "seed.target")
   get fractionComplete(): number {
 
@@ -73,6 +79,17 @@ export class SeedSale {
         this.numberService.fromString(fromWei(this.seed.target, this.seed.fundingTokenInfo.decimals));
     }
     return fraction;
+  }
+
+  @computedFrom("seed.amountRaised", "seed.target")
+  get fractionCompleteForBar(): number {
+
+    let fraction = 0;
+    if (this.seed?.target) {
+      fraction = this.numberService.fromString(fromWei(this.seed.amountRaised, this.seed.fundingTokenInfo.decimals)) /
+        this.numberService.fromString(fromWei(this.seed.target, this.seed.fundingTokenInfo.decimals));
+    }
+    return Math.min(fraction, 1.0)*100;
   }
 
   @computedFrom("seed.userHydrated", "ethereumService.defaultAccountAddress")
@@ -199,6 +216,8 @@ export class SeedSale {
   async attached(): Promise<void> {
     let waiting = false;
     this.loading = true;
+
+    this.accountAddress = this.ethereumService.defaultAccountAddress;
 
     try {
       if (this.seedService.initializing) {

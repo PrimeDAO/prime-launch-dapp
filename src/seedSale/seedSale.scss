@@ -5,6 +5,16 @@
   mask: url("../../static/" + $url) no-repeat center;
 }
 
+//.seed-info {
+//
+//  &_time-left {
+//    @media screen and (min-width: 1080px) {
+//      .page.seed-sale.section {
+//        flex-direction: column;
+//      }
+//  }
+//}
+
 .page.seed-sale {
 
   hr {
@@ -237,30 +247,6 @@
     }
   }
 
-  .visibile {
-    @media screen and (min-width: 1400px) {
-      display: none !important;
-    }
-  }
-
-  .unvisible {
-    @media screen and (max-width: 1400px) {
-      display: none !important;
-    }
-  }
-
-  .visibile2 {
-    @media screen and (min-width: 570px) {
-      display: none !important;
-    }
-  }
-
-  .unvisible2 {
-    @media screen and (max-width: 570px) {
-      display: none !important;
-    }
-  }
-
   .toppadding {
     padding-top: 60px;
   }
@@ -415,6 +401,7 @@
         min-width: 120px;
         display: flex;
         flex-direction: column;
+
         @media screen and (max-width: 570px) {
           width: 100%;
           border-radius: 6px;
@@ -495,11 +482,6 @@
     align-items: center;
   }
 
-  .seed-info {
-
-    &-title {}
-  }
-
   .live-text {
     font-family: 'Inter';
     font-style: normal;
@@ -519,6 +501,10 @@
     gap: 6px;
     border-radius: 6px;
     background: #2B3239;
+
+    @media screen and (max-width: 570px) { 
+      display: none;
+    }
 
     .text {
       font-family: 'Inter';
@@ -583,7 +569,7 @@
         flex-direction: row;
         align-items: baseline;
         justify-content: center;
-        margin-bottom: 26px;
+        margin-top: 40px;
       }
 
       .title {
@@ -699,7 +685,7 @@
       flex-direction: column;
       @media screen and (max-width: 1400px) {
         width: 100%;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
       }
       .mobile-head {
         @media screen and (max-width: 570px) {
@@ -711,6 +697,7 @@
           margin-bottom: 20px;
           >.mobileTitle{
             line-height: 30px;
+            margin: 0px;
           }
         }
       }
@@ -743,7 +730,6 @@
 
     &:disabled {
       cursor: not-allowed;
-      opacity: 0.2;
     }
 
     &.small {
@@ -753,10 +739,15 @@
   }
 
   .buttonLeft {
-    background: $Neutral02;
+    background: $Gradient01;
     color: $Neutral04;
     align-self: flex-end;
     margin-right: 12px;
+
+    &:disabled {
+      cursor: not-allowed;
+      background: $Neutral02;
+    }
   }
 
   .buttonRight {

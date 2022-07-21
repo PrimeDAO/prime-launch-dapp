@@ -13,12 +13,14 @@ export class NetworkFeedback {
   private show: boolean
   private networkItem: "celo" | "rinkeby"
   private aurelia: Aurelia
+  private isCelo: boolean;
 
   constructor(private ethereumService: EthereumService) {
     this.network = EthereumService.targetedNetwork;
     this.isTestNet = EthereumService.isTestNet;
     this.show = false;
     this.networkItem = this.network === "rinkeby" ? "celo" : "rinkeby";
+    this.isCelo = this.network === "celo";
   }
 
   setShow(): void {

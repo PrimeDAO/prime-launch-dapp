@@ -26,12 +26,16 @@ export class ConnectButton {
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
   private primeAddress: Address;
+  private network: string;
+  private networkSymbol: string;
   @bindable.booleanAttr private hideBalances: boolean;
 
   constructor(
     private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
   ) {
+    this.network = EthereumService.targetedNetwork;
+    this.networkSymbol = this.network === "celo" ? "CELO" : "ETH";
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
       this.txPhase = Phase.None;

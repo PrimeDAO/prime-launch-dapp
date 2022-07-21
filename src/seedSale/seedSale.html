@@ -2,14 +2,6 @@
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
     <div class="seed-info section row">
-      <div class="seed-info col-3 visibile2">
-        <div class="title">
-          TIME LEFT
-        </div>
-        <div class="text">
-          ${timeLeft}
-        </div>
-      </div>
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
             <div class="live-text">•  LIVE</div>
@@ -18,18 +10,18 @@
         <p class="description">
           ${seed.metadata.projectDetails.proposition}
         </p>
-      <div class="verified unvisible2">
+      <div class="verified">
         <div class="icon"></div>
         <div class="text">Verified by Prime Rating</div>
       </div>
       </div>
       <div class="seed-info col-4">
-        <div class="text-container unvisible2">
+        <div class="text-container">
           <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
           <div class="text">${seed.projectTokenInfo.name} (${seed.projectTokenInfo.symbol})</div>
         </div>
         <div class="fullProgress">
-          <div class="progress" css="width: ${fractionComplete}%;">
+          <div class="progress" css="width: ${fractionCompleteForBar}%;">
         </div>
         </div>
         <div class="info">
@@ -46,7 +38,7 @@
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
-      <div class="seed-info col-3">
+      <div class="seed-info col-3 seed-info_time-left">
         <div class="title">
           TIME LEFT
         </div>
@@ -57,16 +49,6 @@
     </div>
     <hr />
     <div class="seed-info section toppadding">
-      <div class="seed-info halfsection2 visibile" show.bind="!accountAddress">
-        <div class="seed-info container">
-          <div class="subtitle">
-            Connect wallet to check eligibility and see your specific class information
-          </div>
-          <div class="buttonRight" click.delegate="connect()">
-            Connect wallet
-          </div>
-        </div>
-      </div>
       <div class="seed-info halfsection1">
         <div class="seed-info container">
           <div class="markPosition">
@@ -171,9 +153,9 @@
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <div class="buttonLeft" click.delegate="show2()">
+          <button class="buttonLeft" click.delegate="show2()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
             contribute
-          </div>
+          </button>
         </div>
         <div class="seed-info container2">
           <div class="markPosition">
@@ -190,13 +172,13 @@
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
-          <div class="buttonLeft" click.delegate="show3()">
+          <button class="buttonLeft" click.delegate="show3()" disabled>
             Retrieve
-          </div>
+          </button>
         </div>
       </div>
       <div class="seed-info halfsection2">
-        <div class="seed-info container unvisible" show.bind="!accountAddress">
+        <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
           </div>
@@ -247,6 +229,14 @@
           ${seed.metadata.projectDetails.summary}
         </p>
         <div class="tagsContainer">
+          <div class="tagContainer">
+            <div class="tagWorld"></div>
+            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank">Website</a>
+          </div>
+          <div class="tagContainer">
+            <div class="tagWorld"></div>
+            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank">Whitepaper</a>
+          </div>
           <template repeat.for="link of seed.metadata.general.customLinks | sort:sortEvaluator">
             <div class="tagContainer">
               <div class="tagWorld" if.bind="link.media === 'Website'"></div>
@@ -256,7 +246,7 @@
               <div class="tagDiscord" if.bind="link.media === 'Discord'"></div>
               <div class="tagSearch" if.bind="link.media === 'Etherscan'"></div>
               <div class="tagSearch" if.bind="link.media === 'Tokenomics Article'"></div>
-              <a class="tagText" href="`${link.url}`" target="_blank">${link.media}</a>
+              <a class="tagText" href="${formatLink(link.url)}" target="_blank">${link.media}</a>
             </div>
           </template>
         </div>

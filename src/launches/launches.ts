@@ -48,13 +48,6 @@ export class Launches {
 
     this.launches = (seeds).concat(lbps);
 
-    for (const launch of this.launches) {
-      const fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(launch.fundingTokenAddress);
-      const projectTokenInfo = await this.tokenService.getTokenInfoFromAddress(launch.projectTokenAddress);
-      launch.fundingTokenInfo = fundingTokenInfo;
-      launch.projectTokenInfo = projectTokenInfo;
-    }
-
     this.loading = false;
   }
 

@@ -2,7 +2,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 // import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { BigNumber, BigNumberish, ethers, Signer } from "ethers";
+import { BigNumber, BigNumberish, ethers, Signer, constants } from "ethers";
 import { BaseProvider, ExternalProvider, Web3Provider, Network } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -146,6 +146,21 @@ export class EthereumService {
 
     // comment out to run DISCONNECTED
     this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
+
+    // CELO doesn't return gasLimit in response and crashes ethers
+    if (EthereumService.targetedNetwork === Networks.Celo) {
+      const originalBlockFormatter = this.readOnlyProvider.formatter._block;
+      this.readOnlyProvider.formatter._block = (value, format) => {
+        return originalBlockFormatter(
+          {
+            gasLimit: constants.Zero,
+            ...value,
+          },
+          format,
+        );
+      };
+    }
+
     this.readOnlyProvider.pollingInterval = 15000;
 
     if (!this.blockSubscribed) {
@@ -513,7 +528,13 @@ export class EthereumService {
   }
 
   private async getBlock(blockNumber: number): Promise<IBlockInfo> {
-    const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+    let block;
+    try {
+      block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+    } catch (e) {
+      console.log("BLOCK GET ERR", e);
+    }
+    block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
     block.blockDate = new Date(block.timestamp * 1000);
     return block;
   }
