@@ -37,6 +37,8 @@ export class SeedSale {
   timeLeft: string
   fundingTokenToPay: BigNumber;
   projectTokenToReceive: BigNumber;
+  userTokenBalance: string
+  userUsdBalance: number
 
   private accountAddress: Address = null;
   private txPhase = Phase.None;
@@ -64,6 +66,10 @@ export class SeedSale {
       this.txPhase = Phase.None;
       this.txReceipt = null;
     }));
+  }
+
+  onAdminButtonClick(): void {
+    this.router.navigate(`/admin/seeds/dashboard/${this.address}`);
   }
 
   formatLink(link: string): string {
@@ -121,6 +127,18 @@ export class SeedSale {
 
   @computedFrom("maxFundable", "seed.userFundingTokenBalance")
   get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
+
+  @computedFrom("maxUserCanPay")
+  get maxUserTokenBalance(): string {
+    const tokenBalance = this.maxUserCanPay ? fromWei(this.maxUserCanPay) : "0";
+    return tokenBalance;
+  }
+
+  @computedFrom("maxUserTokenBalance", "seed.fundingTokenInfo.price")
+  get maxUserUsdBalance(): number {
+    const usdBalance = Number(this.maxUserTokenBalance) * this.seed.fundingTokenInfo.price;
+    return usdBalance;
+  }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
@@ -240,6 +258,8 @@ export class SeedSale {
       }
       this.seed = seed;
       this.getTimeLeft();
+      this.userTokenBalance = this.maxUserTokenBalance;
+      this.userUsdBalance = this.maxUserUsdBalance;
       await this.hydrateUserData();
       //this.disclaimSeed();
 

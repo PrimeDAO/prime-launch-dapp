@@ -17,6 +17,124 @@
 
 .page.seed-sale {
 
+  .admin-container {
+    width: 100%;
+    background: $BG02;
+    border-radius: 6px;
+    padding: 20px 60px 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .admin-container__block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 70%;
+  }
+
+  .admin-container__block__title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 28px;
+    color: #FFFFFF;
+  }
+
+  .admin-container__block__text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: $Neutral02;
+  }
+
+  .admin-container__button {
+    cursor: pointer;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    background: $Gradient01;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: $Neutral04;
+  }
+
+
+  .class-container{
+    background: $BG02;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 6px;
+    justify-content: space-between;
+    margin-bottom: 34px;
+    @media screen and (max-width: 1400px) {
+      margin-bottom: 20px;
+    }
+    @media screen and (max-width: 570px) {
+      margin-bottom: 30px;
+    }
+  }
+
+  .class-container__blocks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .class-container__block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .class-container__block__image-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  .class-container__block__image {
+    width: 34px;
+    height: 34px;
+  }
+
+  .class-container__block__title {
+    color: $Secondary05;
+    font-family: 'Aeonik';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+
+  .class-container__block__text {
+    color: $Neutral04;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 35px;
+    text-transform: uppercase;
+  }
+
+  .class-container__block__text--small {
+    color: $Neutral04;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
   hr {
     background-color: #403453;
     margin: 0;
@@ -132,6 +250,9 @@
     .inputContainer {
       width: calc(50% - 30px);
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
       @media screen and (max-width: 570px) {
         width: 100%;
         .margin {
@@ -139,11 +260,23 @@
         }
       }
     }
+
+    .inputText {
+      color: $Neutral02;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      margin-top: 6px;
+      margin-right: 10px;
+    }
   }
 
   .arrow{
     width: 16px;
     height: 16px;
+    margin-bottom: 22px;
     @media screen and (max-width: 570px) {
       margin-top: 16px;
       margin-bottom: 16px;
