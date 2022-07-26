@@ -1,0 +1,160 @@
+<template>
+  <ux-dialog class="dialog addClass">
+    <ux-dialog-header class="bg-confetti-animated">
+      Add class
+      <img src="../../../../static/close.svg" class="close-icon" click.trigger="controller.ok()"/>
+    </ux-dialog-header>
+    <ux-dialog-body with.bind="model">
+      <div class="body">
+        <div class="add-class-container">
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Class Name</label>
+              <div class="question-mark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <input />
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Project Token Purchase Limit</label>
+              <div class="question-mark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <input />
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Vesting Set-up</label>
+              <div class="question-mark">
+                <question-mark text="The duration in days in which the Project token is vested. Vesting is released linearly by default. The vesting cliff is the period in which no tokens can be withdrawn or used — they are locked until this date"></question-mark>
+              </div>
+            </div>
+            <div class="info-block">
+              <div>
+                <label class="label--small">Project tokens vested for</label>
+                <div class="vesting-period">
+                  <numeric-input
+                    placeholder="100.2"
+                    id="vestingPeriod"
+                    not-wei
+                    value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
+                  </numeric-input>
+                  <div>days</div>
+                </div>
+              </div>
+              <div>
+                <label class="label--small">with a cliff of</label>
+                <div class="vesting-period">
+                  <numeric-input
+                    placeholder="20.8"
+                    id="vestingCliff"
+                    not-wei
+                    value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
+                  </numeric-input>
+                  <div>days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Allowlist (Optional)</label>
+              <div class="question-mark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <input />
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>What Token Would You Like To Raise? (the "Funding Token")</label>
+              <div class="question-mark">
+                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+              </div>
+            </div>
+            <div class="tokenSelector">
+              <token-select
+                id="fundingTokenAddress"
+                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
+                token-list.to-view="tokenList"
+                item-changed.call="tokenChanged()">
+              </token-select>
+              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
+                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
+                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <label>Project Token Exchange Ratio</label>
+            <div class="info-block">
+              <div class="info-block__input">
+                <numeric-input
+                  output-as-string="true"
+                  id="ppt"
+                  value.bind="launchConfig.launchDetails.pricePerToken"
+                  not-wei
+                  placeholder="1.5">
+                </numeric-input>
+              </div>
+              <div class="info-block__text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> = ${launchConfig.launchDetails.pricePerToken ? launchConfig.launchDetails.pricePerToken : '1.5'} Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <label>Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Target</label>
+            <div class="info-section__text">
+              The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
+            </div>
+            <numeric-input
+              output-as-string="true"
+              id="fundingTarget"
+              value.bind="launchConfig.launchDetails.fundingTarget"
+              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              placeholder="100">
+            </numeric-input>
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Maximum</label>
+              <div class="question-mark">
+                <question-mark text="Measured in funding tokens"></question-mark>
+              </div>
+            </div>
+            <div class="info-section__text">
+              The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
+            </div>
+            <numeric-input
+              output-as-string="true"
+              id="fundingMax"
+              value.bind="launchConfig.launchDetails.fundingMax"
+              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              placeholder="1000">
+            </numeric-input>
+          </div>
+        </div>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <div class="button-container">
+        <div class="delete-button">
+          <div class="delete-button__text">delete</div>
+          <img src="../../../../static/trash.svg" class="delete-button__icon" />
+        </div>
+        <button class="button1 small" ref="okButton">Save</button>
+      </div>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

@@ -14,6 +14,7 @@ import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
+import { AddClassService } from "services/AddClassService";
 
 @singleton(false)
 @autoinject
@@ -46,6 +47,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
     private launchService: LaunchService,
+    private addClassService: AddClassService,
   ) {
     super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
@@ -224,5 +226,9 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else {
       this.whitelist = null;
     }
+  }
+
+  openAddClassModal(): void {
+    this.addClassService.show();
   }
 }
