@@ -10,10 +10,10 @@ export class AddClassService {
   ) {
   }
 
-  public show(): Promise<DialogCloseResult> {
+  public show(parameter: string): Promise<DialogCloseResult> {
     let theContainer: Element;
 
-    return this.dialogService.open(AddClassModal, "", {
+    return this.dialogService.open(AddClassModal, {parameter}, {
       keyboard: true,
       position: (modalContainer: Element, _modalOverlay: Element): void => {
         theContainer = modalContainer;

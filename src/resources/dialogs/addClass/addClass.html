@@ -1,7 +1,7 @@
 <template>
   <ux-dialog class="dialog addClass">
     <ux-dialog-header class="bg-confetti-animated">
-      Add class
+      ${model.parameter === 'edit' ? "Edit class" : "Add class"}
       <img src="../../../../static/close.svg" class="close-icon" click.trigger="controller.ok()"/>
     </ux-dialog-header>
     <ux-dialog-body with.bind="model">
@@ -15,7 +15,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <input />
+            <input id="className" value.bind="className"/>
           </div>
 
           <div class="info-section">
@@ -25,7 +25,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <input />
+            <numeric-input not-wei></numeric-input>
           </div>
 
           <div class="info-section">
@@ -83,8 +83,8 @@
             <div class="tokenSelector">
               <token-select
                 id="fundingTokenAddress"
-                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
-                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
+                selected-token-address.bind="token.address"
+                selected-token-info.bind="token"
                 token-list.to-view="tokenList"
                 item-changed.call="tokenChanged()">
               </token-select>
@@ -149,7 +149,7 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">
-        <div class="delete-button">
+        <div class="delete-button" show.bind="model.parameter === 'edit'">
           <div class="delete-button__text">delete</div>
           <img src="../../../../static/trash.svg" class="delete-button__icon" />
         </div>
