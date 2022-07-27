@@ -25,6 +25,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media screen and (max-width: 570px) {
+      padding: 14px;
+      flex-direction: column;
+      width: auto;
+    }
   }
 
   .admin-container__block {
@@ -32,6 +37,10 @@
     flex-direction: column;
     align-items: flex-start;
     width: 70%;
+    @media screen and (max-width: 570px) {
+      width: 100%;
+      margin-bottom: 20px;
+    }
   }
 
   .admin-container__block__title {
@@ -41,6 +50,10 @@
     font-size: 20px;
     line-height: 28px;
     color: #FFFFFF;
+    @media screen and (max-width: 570px) {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
   }
 
   .admin-container__block__text {
@@ -50,6 +63,9 @@
     font-size: 14px;
     line-height: 17px;
     color: $Neutral02;
+    @media screen and (max-width: 570px) {
+      font-size: 12px;
+    }
   }
 
   .admin-container__button {
@@ -99,11 +115,19 @@
   .class-container__block__image-container {
     display: flex;
     gap: 10px;
+    align-items: center;
+    @media screen and (max-width: 570px) {
+      gap: 5px;
+    }
   }
 
   .class-container__block__image {
     width: 34px;
     height: 34px;
+    @media screen and (max-width: 570px) {
+      width: 28px;
+      height: 28px;
+    }
   }
 
   .class-container__block__title {
@@ -124,6 +148,9 @@
     font-size: 28px;
     line-height: 35px;
     text-transform: uppercase;
+    @media screen and (max-width: 570px) {
+      font-size: 24px;
+    }
   }
 
   .class-container__block__text--small {

@@ -1,7 +1,7 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
-    <div class="seed-info section row" show.bind="seed.admin === accountAddress">
+    <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">
       <div class="admin-container">
         <div class="admin-container__block">
           <div class="admin-container__block__title">Administration Dashboard</div>
@@ -211,7 +211,7 @@
               <div class="class-container__block__title">purchase limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
-                <div class="class-container__block__text">0/500</div>
+                <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>/<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>
           </div>
