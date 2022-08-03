@@ -23,10 +23,21 @@ export interface ISeedConfiguration {
 }
 
 interface IFunderPortfolio {
+  class: number;
   totalClaimed: BigNumber;
   fundingAmount: BigNumber;
   // fee: BigNumber;
   // feeClaimed: BigNumber;
+}
+
+interface IContributorClass {
+  classCap: BigNumber; // Amount of tokens that can be donated for class
+  individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
+  price: BigNumber; // Price of seed tokens for class, expressed in fundingTokens, with precision of 10**18
+  vestingDuration: BigNumber; // Vesting duration for class
+  classVestingStartTime: BigNumber;
+  classFee: BigNumber; // Fee of class
+  classFundingCollected: BigNumber; // Total amount of staked tokens
 }
 
 @autoinject
@@ -129,6 +140,7 @@ export class Seed implements ILaunch {
   public userCanClaim: boolean;
   public userCurrentFundingContributions: BigNumber;
   public userFundingTokenBalance: BigNumber;
+  public userIndividualCap: BigNumber;
 
   public initializing = true;
   public metadata: ISeedConfig;
@@ -415,6 +427,13 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.feeRemainder = result; },
         },
+        // can't figure out how to supply the returnType for a struct array
+        // {
+        //   contractAddress: this.address,
+        //   functionName: "classes",
+        //   returnType: "",
+        //   resultHandler: (result) => { this.classes = result; },
+        // },
       ];
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -538,8 +557,12 @@ export class Seed implements ILaunch {
 
       // can't figure out how to supply the returnType for a struct in the batch
       const lock: IFunderPortfolio = await this.contract.funders(account);
-
       this.userCurrentFundingContributions = lock.fundingAmount;
+
+      // const classes: IContributorClass[] = await this.contract.classes();
+      // const userClass: IContributorClass = classes[lock.class];
+      // this.userIndividualCap = userClass.individualCap;
+
       this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
       const seedAmount = this.seedsFromFunding(lock.fundingAmount);

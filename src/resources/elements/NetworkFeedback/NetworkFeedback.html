@@ -1,6 +1,6 @@
 <template>
   <div class="networkfeedback">
-    <div if.bind="isTestNet" class="testnet" click.trigger="setShow()">
+    <div class="testnet" click.trigger="setShow()">
       <div class="${isCelo ? 'celo' : 'eth'}"></div>
       <div>${network}</div>
       <div class="arrow"></div>
@@ -8,6 +8,5 @@
         <div class="dropdownItem" click.delegate="onDropDownItemClick()">${networkItem}</div>
       </div>
     </div>
-    <div else>&nbsp;</div>
   </div>
 </template>

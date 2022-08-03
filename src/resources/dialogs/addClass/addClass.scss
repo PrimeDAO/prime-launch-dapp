@@ -1,0 +1,209 @@
+@import "styles/colors.scss";
+body > ux-dialog-container.addClass {
+  overflow-y: scroll;
+  height: 80%;
+  width: 35%;
+  min-width: 800px;
+  max-width: 800px;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ux-dialog {
+    ux-dialog-header {
+      position: relative;
+      font-family: Inter;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      padding: 34px;
+      padding-top: 30px;
+      padding-bottom: 10px;
+    }
+
+    ux-dialog-body {
+      border-top-width: 0;
+      padding: 0;
+      font-family: Inter;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    ux-dialog-footer {
+      border-top-width: 0;
+      padding-top: 50px;
+      padding-bottom: 20px;
+      .button1 {
+        &.small {
+          width: 98px;
+        }
+      }
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 32px;
+    color: $Secondary02;
+  }
+  input {
+    width: 368px;
+    height: fit-content;
+    border: 1px solid $Border01;
+    border-radius: 10px;
+    color: $Neutral02;
+    padding: 5px 12px;
+  }
+
+  select {
+    border: 1px solid $Border01;
+    color: $Neutral02;
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .delete-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .delete-button__icon {
+    width: 14px;
+    height: 18px;
+  }
+
+  .delete-button__text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $Neutral03;
+  }
+
+  .add-class-container {
+    width: 90%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: flex-start;
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .info-block__input {
+    input {
+      width: 80px;
+    }
+  }
+
+  .info-block__text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 33px;
+    color: $Neutral02;
+  }
+
+  .info-section__text {
+    width: 90%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: $Neutral03;
+    margin-bottom: 5px;
+  }
+
+  .label--question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .label--small {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 33px;
+    color: #FFFFFF;
+  }
+
+  .vesting-period{
+    width: 176px;
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    gap: 0;
+    input {
+      width: 80px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    > div {
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $Border01;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  .question-mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #98979b;
+    cursor: default;
+    > div{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > .mark{
+        font-size: 12px;
+        line-height: 8px;
+      }
+    }
+  }
+}

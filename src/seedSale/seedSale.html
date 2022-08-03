@@ -1,6 +1,15 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
+    <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">
+      <div class="admin-container">
+        <div class="admin-container__block">
+          <div class="admin-container__block__title">Administration Dashboard</div>
+          <div class="admin-container__block__text">Access the Dashboard to carry out actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
+        </div>
+        <button class="admin-container__button" click.delegate="onAdminButtonClick()">access dashboard</button>
+      </div>
+    </div>
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
@@ -80,6 +89,9 @@
                   </div>
                 </div>
               </div>
+              <div class="inputText" show.bind="accountAddress">
+                Balance: <formatted-number value.to-view="userTokenBalance" average mantissa="3"></formatted-number>
+              </div>
             </div>
             <img class="arrow" src="/assets/toRightArrow.svg" />
             <div class="inputContainer">
@@ -93,6 +105,9 @@
                   placeholder.to-view="projectTokenReward"
                   id="">
                 </numeric-input>
+              </div>
+              <div class="inputText" show.bind="accountAddress">
+                ~ <formatted-number value.to-view="userUsdBalance" average mantissa="3"></formatted-number> USD
               </div>
             </div>
           </div>
@@ -184,6 +199,27 @@
           </div>
           <div class="buttonRight" click.delegate="connect()">
             Connect wallet
+          </div>
+        </div>
+        <div class="class-container" show.bind="accountAddress">
+          <div class="class-container__blocks">
+            <div class="class-container__block">
+              <div class="class-container__block__title">your class</div>
+              <div class="class-container__block__text">BACKER</div>
+            </div>
+            <div class="class-container__block">
+              <div class="class-container__block__title">purchase limit</div>
+              <div class="class-container__block__image-container">
+                <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
+                <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>/<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
+              </div>
+            </div>
+          </div>
+          <div class="class-container__blocks">
+            <div class="class-container__block">
+              <div class="class-container__block__title">vesting</div>
+              <div class="class-container__block__text--small">24 months with 2 month lock</div>
+            </div>
           </div>
         </div>
         <div class="table">

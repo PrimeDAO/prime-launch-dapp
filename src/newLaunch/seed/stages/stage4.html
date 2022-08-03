@@ -229,6 +229,30 @@
           </template>
         </div>
       </div>
+      <div class="classes-overview-container">
+        <div class="classes-overview-container__title">Classes Overview</div>
+        <div class="classes-overview-container__table-container">
+          <table class="classes-overview-container__table">
+            <tr>
+              <th>Name</th>
+              <th>Token</th>
+              <th>Max. Amount</th>
+              <th><div class="table__center-cell">Exchange Ratio</div></th>
+              <th><div class="table__center-cell">Edit</div></th>
+            </tr>
+            <tr>
+              <td>Backer</td>
+              <td>BAL</td>
+              <td>20.000,00</td>
+              <td><div class="table__center-cell">2.4</div></td>
+              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal('edit')"/></div></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="stageButton proceed button1" click.delegate="openAddClassModal('add')">Add class +</div>
+      </div>
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
         <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
