@@ -235,16 +235,14 @@
           <table class="classes-overview-container__table">
             <tr>
               <th>Name</th>
-              <th>Token</th>
               <th>Max. Amount</th>
               <th><div class="table__center-cell">Exchange Ratio</div></th>
               <th><div class="table__center-cell">Edit</div></th>
             </tr>
-            <tr>
-              <td>Backer</td>
-              <td>BAL</td>
-              <td>20.000,00</td>
-              <td><div class="table__center-cell">2.4</div></td>
+            <tr repeat.for="class of seedClasses">
+              <td>${seed.name}</td>
+              <td>${seed.classCap}</td>
+              <td>${seed.price}</td>
               <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal('edit')"/></div></td>
             </tr>
           </table>

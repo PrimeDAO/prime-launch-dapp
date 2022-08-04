@@ -14,7 +14,7 @@ import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
-import { AddClassService } from "services/AddClassService";
+import { AddClassService, ISeedClass } from "services/AddClassService";
 
 @singleton(false)
 @autoinject
@@ -36,6 +36,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
+  seedClasses: ISeedClass[];
 
   constructor(
     eventAggregator: EventAggregator,
@@ -56,6 +57,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       this.startTime = undefined;
       this.endTime = undefined;
     });
+    this.seedClasses = [];
   }
 
   async attached(): Promise<void> {

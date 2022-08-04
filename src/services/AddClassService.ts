@@ -2,6 +2,16 @@ import { autoinject } from "aurelia-framework";
 import { DialogCloseResult, DialogService } from "./DialogService";
 import { AddClassModal } from "../resources/dialogs/addClass/addClass";
 
+export interface ISeedClass {
+  name: string
+  classCap: number
+  individualCap: number
+  price: number
+  vestingDuration: number
+  classVestingStartTime: number
+  classFee: number
+}
+
 @autoinject
 export class AddClassService {
 
