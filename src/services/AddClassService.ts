@@ -1,6 +1,17 @@
 import { autoinject } from "aurelia-framework";
 import { DialogCloseResult, DialogService } from "./DialogService";
-import { AddClassModal } from "../resources/dialogs/addClass/addClass";
+import { AddClassModal, IParameter } from "../resources/dialogs/addClass/addClass";
+import { IClass } from "newLaunch/launchConfig";
+
+export interface ISeedClass {
+  name: string
+  classCap: number
+  individualCap: number
+  price: number
+  vestingDuration: number
+  classVestingStartTime: number
+  classFee: number
+}
 
 @autoinject
 export class AddClassService {
@@ -10,10 +21,10 @@ export class AddClassService {
   ) {
   }
 
-  public show(parameter: number | undefined): Promise<DialogCloseResult> {
+  public show(parameter: IParameter | undefined, addFunction: (classToAdd: any) => void, editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void): Promise<DialogCloseResult> {
     let theContainer: Element;
 
-    return this.dialogService.open(AddClassModal, {parameter}, {
+    return this.dialogService.open(AddClassModal, {parameter, addFunction, editFunction}, {
       keyboard: true,
       position: (modalContainer: Element, _modalOverlay: Element): void => {
         theContainer = modalContainer;

@@ -36,7 +36,6 @@
           <label for="ppt">Project Token Exchange Ratio</label>
           <div class="pptContainer">
             <numeric-input
-              output-as-string="true"
               id="ppt"
               value.bind="launchConfig.launchDetails.pricePerToken"
               not-wei
@@ -245,7 +244,7 @@
               <td>BAL</td>
               <td>20.000,00</td>
               <td><div class="table__center-cell">2.4</div></td>
-              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(50)"/></div></td>
+              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg"/></div></td>
             </tr>
             <template repeat.for="(class, index) of launchConfig.classes" show.bind="launchConfig.classes.length">
               <tr>
@@ -260,7 +259,7 @@
         </div>
       </div>
       <div class="buttonContainer">
-        <div class="stageButton proceed button1" click.delegate="openAddClassModal('add')">Add class +</div>
+        <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
       </div>
       <div class="buttonContainer">
         <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>

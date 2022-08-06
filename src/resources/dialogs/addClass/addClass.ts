@@ -1,18 +1,17 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, singleton } from "aurelia-framework";
-import { BaseStage } from "newLaunch/baseStage";
-import { Router } from "aurelia-router";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { EthereumService } from "services/EthereumService";
-import { ITokenInfo, TokenService } from "services/TokenService";
+import { ITokenInfo } from "services/TokenService";
 import "./addClass.scss";
 import { LaunchService } from "services/LaunchService";
+import { IClass } from "newLaunch/launchConfig";
 // import "@stackoverflow/stacks/dist/css/stacks.min.css";
 
 @singleton(false)
 @autoinject
-export class AddClassModal extends BaseStage<ISeedConfig> {
+export class AddClassModal {
 
   private model: IAddClassModal;
   private okButton: HTMLElement;
@@ -35,17 +34,24 @@ export class AddClassModal extends BaseStage<ISeedConfig> {
     private controller: DialogController,
     eventAggregator: EventAggregator,
     ethereumService: EthereumService,
-    router: Router,
-    tokenService: TokenService,
     private launchService: LaunchService,
-  ) {
-    super(router, ethereumService, eventAggregator, tokenService);
-  }
+  ) {}
 
   public async activate(model: IAddClassModal): Promise<void> {
     this.model = model;
     if (!this.tokenList) {
       this.tokenList = await this.launchService.fetchFundingTokenInfos();
+    }
+    if (model.parameter) {
+      this.className = model.parameter.class.className;
+      this.projectTokenPurchaseLimit = model.parameter.class.projectTokenPurchaseLimit;
+      this.allowList = model.parameter.class.allowList;
+      this.token = model.parameter.class.token;
+      this.tokenExchangeRatio = model.parameter.class.tokenExchangeRatio;
+      this.fundingTokensTarget = model.parameter.class.fundingTokensTarget;
+      this.fundingTokenMaximum = model.parameter.class.fundingTokenMaximum;
+      this.vestingPeriod = model.parameter.class.vestingPeriod;
+      this.vestingCliff = model.parameter.class.vestingCliff;
     }
   }
 
@@ -55,7 +61,18 @@ export class AddClassModal extends BaseStage<ISeedConfig> {
   }
 
   tokenChanged(): void {
-    console.log("THIS", this.launchConfig);
+    console.log("THIS",
+      this.className,
+      this.projectTokenPurchaseLimit,
+      this.allowList,
+      this.token,
+      this.tokenExchangeRatio,
+      this.fundingTokensTarget,
+      this.fundingTokenMaximum,
+      this.vestingPeriod,
+      this.vestingCliff,
+
+    );
   }
 
   addClass(): void {
@@ -70,10 +87,32 @@ export class AddClassModal extends BaseStage<ISeedConfig> {
       vestingPeriod: this.vestingPeriod,
       vestingCliff: this.vestingCliff,
     };
-    this.launchConfig.classes.push(newClass);
+    this.model.addFunction(newClass);
+  }
+  editClass(): void {
+    const newClass: IClass = {
+      className: this.className,
+      projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
+      allowList: this.allowList,
+      token: this.token,
+      tokenExchangeRatio: this.tokenExchangeRatio,
+      fundingTokensTarget: this.fundingTokensTarget,
+      fundingTokenMaximum: this.fundingTokenMaximum,
+      vestingPeriod: this.vestingPeriod,
+      vestingCliff: this.vestingCliff,
+    };
+    const index = this.model.parameter.index;
+    this.model.editFunction({newClass, index});
   }
 }
 
 interface IAddClassModal {
-  parameter: number;
+  parameter: IParameter | undefined;
+  addFunction: (newClass: IClass) => void,
+  editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void,
+}
+
+export interface IParameter {
+  class: IClass,
+  index: number
 }

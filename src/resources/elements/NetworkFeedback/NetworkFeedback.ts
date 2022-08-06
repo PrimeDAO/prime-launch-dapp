@@ -11,7 +11,7 @@ export class NetworkFeedback {
   private network: string;
   private isTestNet;
   private show: boolean
-  private networkItem: "celo" | "rinkeby"
+  private networkItem: AllowedNetworks
   private aurelia: Aurelia
   private isCelo: boolean;
 
@@ -19,7 +19,7 @@ export class NetworkFeedback {
     this.network = EthereumService.targetedNetwork;
     this.isTestNet = EthereumService.isTestNet;
     this.show = false;
-    this.networkItem = this.network === "rinkeby" ? "celo" : "rinkeby";
+    this.networkItem = this.network === EthereumService.targetedNetwork ? "celo" : EthereumService.targetedNetwork;
     this.isCelo = this.network === "celo";
   }
 

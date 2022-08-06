@@ -130,26 +130,22 @@ export class SeedService {
         this.startingBlockNumber,
         txEvents => {
           for (const event of txEvents) {
-            // TODO: ROLLBACK. Commented to test pinata with limited requests
-            if (event.args.newSeed === "0xcd6B20dAB60E0E4Df2d490f36969d643A62f9f57" ||
-            event.args.newSeed === "0x931A6F9Be99Edb6949EEA5fF3e3B9852412d87e3") {
-              const seed = this.createSeedFromConfig(event);
-              seedsMap.set(seed.address, seed);
-              /**
+            const seed = this.createSeedFromConfig(event);
+            seedsMap.set(seed.address, seed);
+            /**
                  * remove the seed if it is corrupt
                  */
-              this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
-                if (newValue) { // pretty much the only case
-                  if (this.seeds) {
-                    this.seeds.delete(seed.address);
-                  } else {
-                    deletables.push(seed.address);
-                  }
+            this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
+              if (newValue) { // pretty much the only case
+                if (this.seeds) {
+                  this.seeds.delete(seed.address);
+                } else {
+                  deletables.push(seed.address);
                 }
-              });
-              this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
-              seed.initialize(); // set this off asyncronously.
-            }
+              }
+            });
+            this.consoleLogService.logMessage(`instantiated seed: ${seed.address}`, "info");
+            seed.initialize(); // set this off asyncronously.
           }
         });
 
@@ -189,6 +185,15 @@ export class SeedService {
     projectToken: ITokenInfo): BigNumber {
     return toWei(pricePerTokenAsEth, Seed.projectTokenPriceDecimals(fundingToken, projectToken));
   }
+
+  // addClass(class: any): Promise<TransactionReceipt> {
+  //   return this.transactionsService.send(() => this.contract.addClass(class))
+  //     .then(async (receipt) => {
+  //       if (receipt) {
+  //         return receipt;
+  //       }
+  //     });
+  // }
 
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
 
@@ -232,6 +237,20 @@ export class SeedService {
     ];
 
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+
+    const classesToAdd = [{
+      classCaps: 1000,
+      individualCaps: 100,
+      prices: 6,
+      vestingDurations: 8640000,
+      classVestingStartTime: 8640000,
+      classFee: 1,
+    }];
+
+    if (transaction.data) {
+      const deployedSeedcontract = await this.contractsService.getContractAtAddress(ContractNames.SEED, transaction.data);
+      classesToAdd.map( async (classToAdd) => { await deployedSeedcontract.addClass(classToAdd); });
+    }
 
     // console.log("estimating transaction:");
     // console.dir(transaction);

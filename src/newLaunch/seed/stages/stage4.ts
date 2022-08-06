@@ -15,6 +15,8 @@ import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { AddClassService } from "services/AddClassService";
+import { IClass } from "newLaunch/launchConfig";
+import { IParameter } from "resources/dialogs/addClass/addClass";
 
 @singleton(false)
 @autoinject
@@ -228,8 +230,16 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-  openAddClassModal(parameter: number): void {
+
+  addClass(newClass: IClass): void {
+    this.launchConfig.classes.push(newClass);
+  }
+  editClass({newClass, index}: {newClass: IClass, index: number}): void {
+    this.launchConfig.classes[index] = newClass;
+  }
+
+  openAddClassModal( parameter: IParameter | undefined): void {
     console.log("THIS", this.launchConfig);
-    this.addClassService.show(parameter);
+    this.addClassService.show(parameter, this.addClass, this.editClass);
   }
 }
