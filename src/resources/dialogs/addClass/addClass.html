@@ -1,10 +1,10 @@
 <template>
   <ux-dialog class="dialog addClass">
     <ux-dialog-header class="bg-confetti-animated">
-      ${model.parameter === 'edit' ? "Edit class" : "Add class"}
+      ${model.parameter ? "Edit class" : "Add class"}
       <img src="../../../../static/close.svg" class="close-icon" click.trigger="controller.ok()"/>
     </ux-dialog-header>
-    <ux-dialog-body with.bind="model">
+    <ux-dialog-body>
       <div class="body">
         <div class="add-class-container">
 
@@ -25,7 +25,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <numeric-input not-wei></numeric-input>
+            <numeric-input value.bind="projectTokenPurchaseLimit" not-wei></numeric-input>
           </div>
 
           <div class="info-section">
@@ -43,7 +43,7 @@
                     placeholder="100.2"
                     id="vestingPeriod"
                     not-wei
-                    value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
+                    value.bind="vestingPeriod | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -55,7 +55,7 @@
                     placeholder="20.8"
                     id="vestingCliff"
                     not-wei
-                    value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
+                    value.bind="vestingCliff | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -70,7 +70,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <input />
+            <input value.bind="allowList" />
           </div>
 
           <div class="info-section">
@@ -88,9 +88,9 @@
                 token-list.to-view="tokenList"
                 item-changed.call="tokenChanged()">
               </token-select>
-              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
-                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
-                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
+              <div if.to-view="token.address">
+                <etherscanlink address.to-view="token.address"
+                  text.to-view="token.address | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@
                 <numeric-input
                   output-as-string="true"
                   id="ppt"
-                  value.bind="launchConfig.launchDetails.pricePerToken"
+                  value.bind="tokenExchangeRatio"
                   not-wei
                   placeholder="1.5">
                 </numeric-input>
@@ -113,22 +113,22 @@
           </div>
 
           <div class="info-section">
-            <label>Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Target</label>
+            <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Target</label>
             <div class="info-section__text">
               The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
             </div>
             <numeric-input
               output-as-string="true"
               id="fundingTarget"
-              value.bind="launchConfig.launchDetails.fundingTarget"
-              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              value.bind="fundingTokensTarget"
+              decimals.bind="token.decimals"
               placeholder="100">
             </numeric-input>
           </div>
 
           <div class="info-section">
             <div class="label--question">
-              <label>Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Maximum</label>
+              <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Maximum</label>
               <div class="question-mark">
                 <question-mark text="Measured in funding tokens"></question-mark>
               </div>
@@ -139,8 +139,8 @@
             <numeric-input
               output-as-string="true"
               id="fundingMax"
-              value.bind="launchConfig.launchDetails.fundingMax"
-              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+              value.bind="fundingTokenMaximum"
+              decimals.bind="token.decimals"
               placeholder="1000">
             </numeric-input>
           </div>
@@ -149,11 +149,11 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">
-        <div class="delete-button" show.bind="model.parameter === 'edit'">
+        <div class="delete-button" show.bind="model.parameter">
           <div class="delete-button__text">delete</div>
           <img src="../../../../static/trash.svg" class="delete-button__icon" />
         </div>
-        <button class="button1 small" ref="okButton">Save</button>
+        <button class="button1 small" ref="okButton" click.delegate="addClass()">Save</button>
       </div>
     </ux-dialog-footer>
   </ux-dialog>

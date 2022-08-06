@@ -10,7 +10,7 @@ export class AddClassService {
   ) {
   }
 
-  public show(parameter: string): Promise<DialogCloseResult> {
+  public show(parameter: number | undefined): Promise<DialogCloseResult> {
     let theContainer: Element;
 
     return this.dialogService.open(AddClassModal, {parameter}, {

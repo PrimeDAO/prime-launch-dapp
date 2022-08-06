@@ -228,7 +228,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-  openAddClassModal(parameter: string): void {
+  openAddClassModal(parameter: number): void {
+    console.log("THIS", this.launchConfig);
     this.addClassService.show(parameter);
   }
 }

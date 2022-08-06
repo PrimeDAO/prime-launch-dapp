@@ -6,6 +6,7 @@ import {
   IContactDetails,
   ILaunchDetails,
   LaunchConfig,
+  IClass,
 } from "newLaunch/launchConfig";
 
 export interface ISeedDetails extends ILaunchDetails {
@@ -38,6 +39,7 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ISeedDetails;
+  public classes: IClass[];
 
   clearState(): void {
     super.clearState();
