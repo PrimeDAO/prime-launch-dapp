@@ -5,7 +5,16 @@
       <div>${network}</div>
       <div class="arrow"></div>
       <div class="dropdown" show.bind="show">
-        <div class="dropdownItem" click.delegate="onDropDownItemClick()">${networkItem}</div>
+        <div class="dropdown__title">Select Network</div>
+        <div class="dropdown__hr"></div>
+        <div class="${isActive('celo') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('celo')">
+          <div class="celo"></div>
+          <div>celo</div>
+        </div>
+        <div class="${isActive('rinkeby') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('rinkeby')">
+          <div class="eth"></div>
+          <div>rinkeby</div>
+        </div>
       </div>
     </div>
   </div>
