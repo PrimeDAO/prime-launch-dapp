@@ -4,235 +4,244 @@
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">SEED Details</div>
-      <div class="subtext">
-        Use <a href="/documentation/seed-launch" target="_blank" rel="noopener noreferrer">Seed Details &amp; Benefits</a> to learn more or
-        <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> to request further information.
-      </div>
-      <div>
-        <div class="infoInput ticker">
-          <div class="address">
-            <div class="labeledQuestion">
-              <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
-              <div class="questionMark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+        <div class="content-block">
+          <div class="subtext">
+            Use <a href="/documentation/seed-launch" target="_blank" rel="noopener noreferrer">Seed Details &amp; Benefits</a> to learn more or
+            <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> to request further information.
+          </div>
+            <div class="form-content">
+          <div>
+            <div class="infoInput ticker">
+              <div class="address">
+                <div class="labeledQuestion">
+                  <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
+                  <div class="questionMark">
+                    <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+                  </div>
+                </div>
+                <div class="tokenSelector">
+                  <token-select
+                    id="fundingTokenAddress"
+                    selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
+                    selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
+                    token-list.to-view="tokenList"
+                    item-changed.call="tokenChanged()">
+                  </token-select>
+                  <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
+                    <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
+                      text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="tokenSelector">
-              <token-select
-                id="fundingTokenAddress"
-                selected-token-address.bind="launchConfig.launchDetails.fundingTokenInfo.address"
-                selected-token-info.bind="launchConfig.launchDetails.fundingTokenInfo"
-                token-list.to-view="tokenList"
-                item-changed.call="tokenChanged()">
-              </token-select>
-              <div if.to-view="launchConfig.launchDetails.fundingTokenInfo.address">
-                <etherscanlink address.to-view="launchConfig.launchDetails.fundingTokenInfo.address"
-                  text.to-view="launchConfig.launchDetails.fundingTokenInfo.address | smallHexString"></etherscanlink>
+            <div class="infoInput">
+              <label for="ppt">Project Token Exchange Ratio</label>
+              <div class="pptContainer">
+                <numeric-input
+                  output-as-string="true"
+                  id="ppt"
+                  value.bind="launchConfig.launchDetails.pricePerToken"
+                  not-wei
+                  placeholder="1.5">
+                </numeric-input>
+                <div class="text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> = ${launchConfig.launchDetails.pricePerToken ? launchConfig.launchDetails.pricePerToken : '1.5'} Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="infoInput">
-          <label for="ppt">Project Token Exchange Ratio</label>
-          <div class="pptContainer">
-            <numeric-input
-              output-as-string="true"
-              id="ppt"
-              value.bind="launchConfig.launchDetails.pricePerToken"
-              not-wei
-              placeholder="1.5">
-            </numeric-input>
-            <div class="text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> = ${launchConfig.launchDetails.pricePerToken ? launchConfig.launchDetails.pricePerToken : '1.5'} Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
+          <div class="infoInput maxTarget fundingTarget">
+            <div>
+              <label for="fundingTarget">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Target</label>
+              <div class="fundingDescrp">
+                The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
+              </div>
+              <div class="fundingTicker">
+                <numeric-input
+                  output-as-string="true"
+                  id="fundingTarget"
+                  value.bind="launchConfig.launchDetails.fundingTarget"
+                  decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+                  placeholder="100">
+                </numeric-input>
+              </div>
+            </div>
+            <div>
+              <div class="labeledQuestion">
+                <label for="fundingMax">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Maximum</label>
+                <div class="questionMark">
+                  <question-mark text="Measured in funding tokens"></question-mark>
+                </div>
+              </div>
+              <div class="fundingDescrp">
+                The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
+              </div>
+              <numeric-input
+                output-as-string="true"
+                id="fundingMax"
+                value.bind="launchConfig.launchDetails.fundingMax"
+                decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
+                placeholder="1000">
+              </numeric-input>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="infoInput maxTarget fundingTarget">
-        <div>
-          <label for="fundingTarget">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Target</label>
-          <div class="fundingDescrp">
-            The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
-          </div>
-          <div class="fundingTicker">
-            <numeric-input
-              output-as-string="true"
-              id="fundingTarget"
-              value.bind="launchConfig.launchDetails.fundingTarget"
-              decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
-              placeholder="100">
-            </numeric-input>
-          </div>
-        </div>
-        <div>
           <div class="labeledQuestion">
-            <label for="fundingMax">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Maximum</label>
+            <label for="vestingPeriod">Vesting Schedule</label>
             <div class="questionMark">
-              <question-mark text="Measured in funding tokens"></question-mark>
+              <question-mark text="The duration in days in which the Project token is vested. Vesting is released linearly by default. The vesting cliff is the period in which no tokens can be withdrawn or used — they are locked until this date"></question-mark>
             </div>
           </div>
-          <div class="fundingDescrp">
-            The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
+          <div class="infoInput maxTarget maxTargetLabel">
+            <div>
+              <label for="vestingPeriod">Project tokens vested for</label>
+              <div class="vestingPeriod">
+                <numeric-input
+                  placeholder="100.2"
+                  id="vestingPeriod"
+                  not-wei
+                  value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
+                </numeric-input>
+                <div>days</div>
+              </div>
+            </div>
+            <div>
+              <label for="vestingCliff">with a cliff of</label>
+              <div class="vestingPeriod">
+                <numeric-input
+                  placeholder="20.8"
+                  id="vestingCliff"
+                  not-wei
+                  value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
+                </numeric-input>
+                <div>days</div>
+              </div>
+            </div>
           </div>
-          <numeric-input
-            output-as-string="true"
-            id="fundingMax"
-            value.bind="launchConfig.launchDetails.fundingMax"
-            decimals.bind="launchConfig.launchDetails.fundingTokenInfo.decimals"
-            placeholder="1000">
-          </numeric-input>
-        </div>
-      </div>
-      <div class="labeledQuestion">
-        <label for="vestingPeriod">Vesting Schedule</label>
-        <div class="questionMark">
-          <question-mark text="The duration in days in which the Project token is vested. Vesting is released linearly by default. The vesting cliff is the period in which no tokens can be withdrawn or used — they are locked until this date"></question-mark>
-        </div>
-      </div>
-      <div class="infoInput maxTarget maxTargetLabel">
-        <div>
-          <label for="vestingPeriod">Project tokens vested for</label>
-          <div class="vestingPeriod">
-            <numeric-input
-              placeholder="100.2"
-              id="vestingPeriod"
-              not-wei
-              value.bind="launchConfig.launchDetails.vestingPeriod | secondsDays">
-            </numeric-input>
-            <div>days</div>
+          <label>Seed Schedule</label>
+          <div class="infoInput maxTarget maxTargetLabel">
+            <div>
+              <label for="startDate">Start Date</label>
+              <div class="vestingDates">
+                <input
+                  id="startDate"
+                  placeholder="YYYY-MM-DD"
+                  class="input-style vestingDateInput"
+                  value.bind="startDate | date"
+                  ref="startDateRef"
+                  click.delegate="startDatePicker.show()"
+                  autocomplete="off" disabled />
+                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
+              </div>
+            </div>
+            <div>
+              <label for="startTime">Start Time (GMT)</label>
+              <div class="vestingDatesContainer">
+                <div class="vestingDates">
+                  <input
+                    id="startTime"
+                    value.bind="startTime"
+                    class="input-style"
+                    keydown.delegate="hoursMinutesFilter($event)"
+                    autocomplete="off" />
+                  <div class="inputIcon"><i class="far fa-clock"></i></div>
+                </div>
+                <div class="questionMark">
+                  <question-mark text="The start time for the launch, in GMT"></question-mark>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <label for="vestingCliff">with a cliff of</label>
-          <div class="vestingPeriod">
-            <numeric-input
-              placeholder="20.8"
-              id="vestingCliff"
-              not-wei
-              value.bind="launchConfig.launchDetails.vestingCliff | secondsDays">
-            </numeric-input>
-            <div>days</div>
+          <div class="infoInput maxTarget maxTargetLabel">
+            <div>
+              <label for="endDate">End Date</label>
+              <div class="vestingDates">
+                <input
+                  id="endDate"
+                  class="input-style vestingDateInput"
+                  value.bind="endDate | date"
+                  placeholder="YYYY-MM-DD"
+                  ref="endDateRef"
+                  click.delegate="endDatePicker.show()"
+                  autocomplete="off" disabled />
+                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+              </div>
+            </div>
+            <div>
+              <label for="endTime">End Time (GMT)</label>
+              <div class="vestingDatesContainer">
+                <div class="vestingDates">
+                  <input
+                    id="endTime" class="input-style" value.bind="endTime"
+                    keydown.delegate="hoursMinutesFilter($event)"
+                    autocomplete="off" />
+                  <div class="inputIcon"><i class="far fa-clock"></i></div>
+                </div>
+                <div class="questionMark">
+                  <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <label>Seed Schedule</label>
-      <div class="infoInput maxTarget maxTargetLabel">
-        <div>
-          <label for="startDate">Start Date</label>
-          <div class="vestingDates">
+          <div class="infoInput whitelistContainer">
+            <div class="labeledQuestion">
+              <label for="whitelist">Whitelist</label>
+              <div class="questionMark">
+                <question-mark allow-html text="A file containing a list of addresses that are allowed to purchase Project tokens. The file must be formatted as plain text and each address must be separated from its neighbor addresses by one or more commas, spaces, tabs or carriage returns. A CSV file would work. <p>Example using only commas:  <pre>0x1234,0x5678,0xabcd,0x7890</pre></p>">
+                </question-mark>
+              </div>
+            </div>
+            <input id="whitelist"
+                   class="input-style"
+              value.bind="launchConfig.launchDetails.whitelist"
+              input.trigger="getWhiteListFeedback()"
+              placeholder="(Optional) URL to a whitelist (https://...)" />
+            <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
+            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
+            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
+          </div>
+          <div class="infoInput">
+            <div class="labeledQuestion">
+              <label for="disclaimer">Legal Disclaimer</label>
+              <div class="questionMark">
+                <question-mark allow-html text='If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or Markdown. <a target="_blank" href="https://www.markdownguide.org/getting-started/" rel="noopener noreferrer">(More info about Markdown)</a>'>
+                </question-mark>
+              </div>
+            </div>
             <input
-              id="startDate"
-              placeholder="YYYY-MM-DD"
-              class="vestingDateInput"
-              value.bind="startDate | date"
-              ref="startDateRef"
-              click.delegate="startDatePicker.show()"
-              autocomplete="off" disabled />
-            <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
+              id="disclaimer"
+              class="input-style"
+              value.bind="launchConfig.launchDetails.legalDisclaimer"
+              placeholder="(Optional) URL to a disclaimer (https://...)" />
           </div>
-        </div>
-        <div>
-          <label for="startTime">Start Time (GMT)</label>
-          <div class="vestingDatesContainer">
-            <div class="vestingDates">
+          <geoblocking
+            checked.bind="launchConfig.launchDetails.geoBlock"
+            toggle.call="toggleGeoBlocking()">
+          </geoblocking>
+          <div class="infoInput admin">
+            <div class="labeledQuestion">
+              <label for="admin">Seed Administrator</label>
+              <div class="questionMark">
+                <question-mark text="The Seed administrator has the ability to pause and close the seed, alter the whitelist and withdraw funding tokens"></question-mark>
+              </div>
+            </div>
+            <div class="adminInputContainer">
               <input
-                id="startTime"
-                value.bind="startTime"
-                keydown.delegate="hoursMinutesFilter($event)"
-                autocomplete="off" />
-              <div class="inputIcon"><i class="far fa-clock"></i></div>
-            </div>
-            <div class="questionMark">
-              <question-mark text="The start time for the launch, in GMT"></question-mark>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="infoInput maxTarget maxTargetLabel">
-        <div>
-          <label for="endDate">End Date</label>
-          <div class="vestingDates">
-            <input
-              id="endDate"
-              class="vestingDateInput"
-              value.bind="endDate | date"
-              placeholder="YYYY-MM-DD"
-              ref="endDateRef"
-              click.delegate="endDatePicker.show()"
-              autocomplete="off" disabled />
-            <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
-          </div>
-        </div>
-        <div>
-          <label for="endTime">End Time (GMT)</label>
-          <div class="vestingDatesContainer">
-            <div class="vestingDates">
-              <input
-                id="endTime" value.bind="endTime"
-                keydown.delegate="hoursMinutesFilter($event)"
-                autocomplete="off" />
-              <div class="inputIcon"><i class="far fa-clock"></i></div>
-            </div>
-            <div class="questionMark">
-              <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+                id="admin"
+                class="input-style"
+                value.bind="launchConfig.launchDetails.adminAddress"
+                placeholder="Administrator wallet address" />
+              <template if.to-view="!launchConfig.launchDetails.adminAddress">
+                <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
+                <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
+              </template>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="infoInput whitelistContainer">
-        <div class="labeledQuestion">
-          <label for="whitelist">Whitelist</label>
-          <div class="questionMark">
-            <question-mark allow-html text="A file containing a list of addresses that are allowed to purchase Project tokens. The file must be formatted as plain text and each address must be separated from its neighbor addresses by one or more commas, spaces, tabs or carriage returns. A CSV file would work. <p>Example using only commas:  <pre>0x1234,0x5678,0xabcd,0x7890</pre></p>">
-            </question-mark>
+          <div class="buttonContainer">
+              <div class="stageButton previousButton" click.delegate="back()">PREVIOUS</div>
+              <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
+              <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
           </div>
         </div>
-        <input id="whitelist"
-          value.bind="launchConfig.launchDetails.whitelist"
-          input.trigger="getWhiteListFeedback()"
-          placeholder="(Optional) URL to a whitelist (https://...)" />
-        <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
-        <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
-        <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
-      </div>
-      <div class="infoInput">
-        <div class="labeledQuestion">
-          <label for="disclaimer">Legal Disclaimer</label>
-          <div class="questionMark">
-            <question-mark allow-html text='If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or Markdown. <a target="_blank" href="https://www.markdownguide.org/getting-started/" rel="noopener noreferrer">(More info about Markdown)</a>'>
-            </question-mark>
-          </div>
+            </div>
         </div>
-        <input
-          id="disclaimer"
-          value.bind="launchConfig.launchDetails.legalDisclaimer"
-          placeholder="(Optional) URL to a disclaimer (https://...)" />
-      </div>
-      <geoblocking
-        checked.bind="launchConfig.launchDetails.geoBlock"
-        toggle.call="toggleGeoBlocking()">
-      </geoblocking>
-      <div class="infoInput admin">
-        <div class="labeledQuestion">
-          <label for="admin">Seed Administrator</label>
-          <div class="questionMark">
-            <question-mark text="The Seed administrator has the ability to pause and close the seed, alter the whitelist and withdraw funding tokens"></question-mark>
-          </div>
-        </div>
-        <div class="adminInputContainer">
-          <input
-            id="admin"
-            value.bind="launchConfig.launchDetails.adminAddress"
-            placeholder="Administrator wallet address" />
-          <template if.to-view="!launchConfig.launchDetails.adminAddress">
-            <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
-            <div class="button2 small" else click.delegate="makeMeAdmin()">I will be the administrator</div>
-          </template>
-        </div>
-      </div>
-      <div class="buttonContainer">
-        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
-        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
-      </div>
-    </div>
   </div>
 </template>

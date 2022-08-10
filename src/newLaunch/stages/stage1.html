@@ -2,75 +2,77 @@
   <div class="page animated-page stageContainer stage1 au-animate">
     <div class="infoContainer">
       <div class="heading heading2 title">General Information</div>
-      <div class="subtext">
-        Basic information and key documentation about your project.
-      </div>
-      <div>
-        <div class="infoInput withCounter">
-          <div class="labelContainer">
-            <label for="projName">Project Name</label>
-            <span>
-              ${launchConfig.general.projectName.length}/50
-            </span>
+        <div class="content-block">
+          <div class="subtext">
+            Basic information and key documentation about your project.
           </div>
-          <input id="projName" value.bind="launchConfig.general.projectName" maxlength="50" />
-        </div>
-        <div class="infoInput">
-          <label for="projSite">Project Website</label>
-          <input id="projSite" value.bind="launchConfig.general.projectWebsite" placeholder="https://..." />
-        </div>
-        <div class="infoInput">
-          <label for="whitePaper">Whitepaper</label>
-          <input id="whitePaper" value.bind="launchConfig.general.whitepaper"
-            placeholder="URL of the project's whitepaper (https://...)" />
-        </div>
-        <div class="infoInput">
-          <label for="gitLink">Github</label>
-          <input id="gitLink" value.bind="launchConfig.general.github"
-            placeholder="URL of the project's Github repository (https://...)" />
-        </div>
-        <template repeat.for="link of launchConfig.general.customLinks">
-          <div class="otherLinks">
-            <div class="addLinkContainer">
-              <div class="sMedia">
-                <!-- selected-item-index is used only for assigning the initial value -->
-                <dropdown
-                  item-changed.call="setMediaFromIndex(value, index, link)"
-                  selected-item-index.to-view="getMediaIndexForLink(link)"
-                  placeholder="Select Media...">
-                  <div repeat.for="name of socialLinkNames">${name}</div>
-                </dropdown>
+          <div class="form-content">
+            <div class="infoInput withCounter">
+              <div class="labelContainer">
+                <label for="projName">Project Name</label>
+                <span>
+                  ${launchConfig.general.projectName.length}/50
+                </span>
               </div>
-              <input
-                id="${`url${$index}`}"
-                placeholder="${link.media ? `Your ${link.media}` : 'Platform'} URL"
-                value.bind="link.url" />
-              <div
-                class="deleteLink"
-                title="Delete this row"
-                click.delegate="deleteCustomLinks($index)">
-                <i class="far fa-trash-alt"></i>
-              </div>
+              <input class="input-style" id="projName" value.bind="launchConfig.general.projectName" maxlength="50" placeholder="This line of text is exactly 50 characters longgg." />
             </div>
+            <div class="infoInput">
+              <label for="projSite">Project Website</label>
+              <input class="input-style" id="projSite" value.bind="launchConfig.general.projectWebsite" placeholder="https://..." />
+            </div>
+            <div class="infoInput">
+              <label for="whitePaper">Whitepaper</label>
+              <input class="input-style" id="whitePaper" value.bind="launchConfig.general.whitepaper"
+                placeholder="URL of the project's whitepaper (https://...)" />
+            </div>
+            <div class="infoInput">
+              <label for="gitLink">Github</label>
+              <input class="input-style" id="gitLink" value.bind="launchConfig.general.github"
+                placeholder="URL of the project's Github repository (https://...)" />
+            </div>
+            <template repeat.for="link of launchConfig.general.customLinks">
+              <div class="otherLinks">
+                <div class="addLinkContainer">
+                  <div class="sMedia">
+                    <!-- selected-item-index is used only for assigning the initial value -->
+                    <dropdown
+                      item-changed.call="setMediaFromIndex(value, index, link)"
+                      selected-item-index.to-view="getMediaIndexForLink(link)"
+                      placeholder="Select Media...">
+                      <div repeat.for="name of socialLinkNames">${name}</div>
+                    </dropdown>
+                  </div>
+                  <input class="input-style"
+                    id="${`url${$index}`}"
+                    placeholder="${link.media ? `Your ${link.media}` : 'Platform'} URL"
+                    value.bind="link.url" />
+                  <div
+                    class="deleteLink"
+                    title="Delete this row"
+                    click.delegate="deleteCustomLinks($index)">
+                    <i class="far fa-trash-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="addLink"
+                click.delegate="addCustomLink()"
+                if.bind="$index == launchConfig.general.customLinks.length - 1">
+                <a id="add-social-link">+ Add link</a>
+              </div>
+            </template>
+            <div
+              if.to-view="launchConfig.general.customLinks.length <= 0"
+              class="addSingleLink"
+              click.delegate="addCustomLink(-1)">
+              <a id="add-social-link">+ Add link</a>
+            </div>
+              <div class="buttonContainer">
+                  <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
+                  <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+              </div>
           </div>
-          <div
-            class="addLink"
-            click.delegate="addCustomLink()"
-            if.bind="$index == launchConfig.general.customLinks.length - 1">
-            <a>+ Add Social Media Link</a>
-          </div>
-        </template>
-        <div
-          if.to-view="launchConfig.general.customLinks.length <= 0"
-          class="addSingleLink"
-          click.delegate="addCustomLink(-1)">
-          <a>+ Add Social Media Link</a>
         </div>
-      </div>
-      <div class="buttonContainer">
-        <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
-        <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
-      </div>
     </div>
   </div>
 </template>
