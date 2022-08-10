@@ -29,11 +29,13 @@
                     placeholder="(Optional)"
                     maxlength="250"></textarea>
                 </div>
-                <div class="buttonContainer">
-                    <div class="stageButton previousButton" click.delegate="back()">PREVIOUS</div>
-                    <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
-                    <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
-              </div>
+                  <div class="footerButtons">
+                      <div class="view-buttons">
+                          <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
+                          <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
+                      </div>
+                      <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+                  </div>
             </div>
         </div>
     </div>
