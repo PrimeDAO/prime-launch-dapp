@@ -14,6 +14,7 @@ export class NetworkFeedback {
   private show: boolean
   private aurelia: Aurelia
 
+
   constructor(private ethereumService: EthereumService) {
     this.etheriumNetwork = process.env.NETWORK;
     this.network = EthereumService.targetedNetwork;
