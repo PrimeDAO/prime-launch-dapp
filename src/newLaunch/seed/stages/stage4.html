@@ -239,20 +239,13 @@
               <th><div class="table__center-cell">Exchange Ratio</div></th>
               <th><div class="table__center-cell">Edit</div></th>
             </tr>
-            <tr>
-              <td>Backer</td>
-              <td>BAL</td>
-              <td>20.000,00</td>
-              <td><div class="table__center-cell">2.4</div></td>
-              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg"/></div></td>
-            </tr>
-            <template repeat.for="(class, index) of launchConfig.classes" show.bind="launchConfig.classes.length">
+            <template repeat.for="class of launchConfig.classes">
               <tr>
                 <td>${class.className}</td>
                 <td>${class.token.symbol}</td>
                 <td>${class.fundingTokenMaximum}</td>
                 <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(index)"/></div></td>
+                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/></div></td>
               </tr>
             </template>
           </table>

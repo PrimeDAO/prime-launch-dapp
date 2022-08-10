@@ -233,13 +233,14 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
   addClass(newClass: IClass): void {
     this.launchConfig.classes.push(newClass);
+    console.log(this.launchConfig.classes, this.launchConfig)
   }
+
   editClass({newClass, index}: {newClass: IClass, index: number}): void {
     this.launchConfig.classes[index] = newClass;
   }
 
   openAddClassModal( parameter: IParameter | undefined): void {
-    console.log("THIS", this.launchConfig);
-    this.addClassService.show(parameter, this.addClass, this.editClass);
+    this.addClassService.show(parameter, this.addClass.bind(this), this.editClass.bind(this));
   }
 }
