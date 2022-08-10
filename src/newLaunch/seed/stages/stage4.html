@@ -235,40 +235,52 @@
               </template>
             </div>
           </div>
-
-              <div class="classes-overview-container">
-                <div class="classes-overview-container__title">Classes Overview</div>
-                <div class="classes-overview-container__table-container">
-                  <table class="classes-overview-container__table">
-                    <tr>
-                      <th>Name</th>
-                      <th>Token</th>
-                      <th>Max. Amount</th>
-                      <th><div class="table__center-cell">Exchange Ratio</div></th>
-                      <th><div class="table__center-cell">Edit</div></th>
-                    </tr>
-                    <template repeat.for="class of launchConfig.classes">
-                      <tr>
-                        <td>${class.className}</td>
-                        <td>${class.token.symbol}</td>
-                        <td>${class.fundingTokenMaximum}</td>
-                        <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                        <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/></div></td>
-                      </tr>
-                    </template>
-                  </table>
-                </div>
-              </div>
-              <div class="buttonContainer">
-                <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
-              </div>
-          <div class="buttonContainer">
-              <div class="stageButton previousButton" click.delegate="back()">PREVIOUS</div>
-              <div class="stageButton proceed button1" click.delegate="proceed()">NEXT</div>
-              <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
-          </div>
+            </div>
         </div>
             </div>
         </div>
-  </div>
+
+
+
+    <div class="content-classes">
+        <div>
+            <div class="class-title">Classes (optional)</div>
+            <div class="subtext classes-description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+        </div>
+        <div>
+            <div class="classes-overview-container">
+                <div class="classes-overview-container__title">Classes Overview</div>
+                <div class="classes-overview-container__table-container">
+                    <table class="classes-overview-container__table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Token</th>
+                            <th>Max. Amount</th>
+                            <th><div class="table__center-cell">Exchange Ratio</div></th>
+                            <th><div class="table__center-cell">Edit</div></th>
+                        </tr>
+                        <template repeat.for="class of launchConfig.classes">
+                            <tr>
+                                <td>${class.className}</td>
+                                <td>${class.token.symbol}</td>
+                                <td>${class.fundingTokenMaximum}</td>
+                                <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/></div></td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+            </div>
+            <div style="margin-top: 16px;" class="buttonContainer">
+                <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
+            </div>
+            <div class="footerButtons">
+                <div class="stageButton previousButton" click.delegate="back()">PREVIOUS</div>
+                <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
+                <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+            </div>
+        </div>
+    </div>
 </template>
