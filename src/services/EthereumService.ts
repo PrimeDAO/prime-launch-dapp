@@ -1,5 +1,5 @@
 import detectEthereumProvider from "@metamask/detect-provider";
-// import { BrowserStorageService } from "./BrowserStorageService";
+import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { BigNumber, BigNumberish, ethers, Signer, constants } from "ethers";
@@ -71,7 +71,7 @@ export class EthereumService {
     private eventAggregator: EventAggregator,
     private disclaimerService: DisclaimerService,
     private consoleLogService: ConsoleLogService,
-    // private storageService: BrowserStorageService,
+    private storageService: BrowserStorageService,
   ) { }
 
   public static ProviderEndpoints = {
@@ -256,6 +256,11 @@ export class EthereumService {
     return this.walletProvider.getSigner(this.defaultAccountAddress);
   }
 
+  public metaMaskWalletProvider: Web3Provider & IEIP1193 & ExternalProvider;
+  /**
+   * Might be duplication of `walletProvider`, but it was easier to duplicate.
+   */
+  public safeProvider: Web3Provider & IEIP1193 & ExternalProvider;
   /**
    * provided by ethers given provider from Web3Modal
    */
@@ -313,6 +318,26 @@ export class EthereumService {
       }
     }
   }
+
+
+  public async ensureMetaMaskWalletProvider(): Promise<void> {
+    if (!this.metaMaskWalletProvider) {
+      try {
+        const provider = detectEthereumProvider ? (await detectEthereumProvider({ mustBeMetaMask: true })) as any : undefined;
+        this.metaMaskWalletProvider = provider;
+      } catch (error) {
+        console.log(error.message, error, "error");
+      }
+    }
+  }
+
+  private async removeWalletProviderListeners(): Promise<void> {
+    await this.ensureMetaMaskWalletProvider();
+    this.metaMaskWalletProvider.removeListener("accountsChanged", this.handleAccountsChanged);
+    this.metaMaskWalletProvider.removeListener("chainChanged", this.handleChainChanged);
+    this.metaMaskWalletProvider.removeListener("disconnect", this.handleDisconnect);
+  }
+
 
   private ensureWeb3Modal(): void {
     if (!this.web3Modal) {
@@ -384,6 +409,89 @@ export class EthereumService {
       // this.cachedWalletAccount = null;
       // this.web3Modal?.clearCachedProvider();
     }
+  }
+
+
+  public async addTokenToMetamask(
+    tokenAddress: Address,
+    tokenSymbol: string,
+    tokenDecimals: number,
+    tokenImage: string,
+  ): Promise<boolean> {
+
+    let wasAdded = false;
+
+    if (this.walletProvider) {
+
+      if (this.getMetamaskHasToken(tokenAddress)) {
+        return true;
+      }
+
+      try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        wasAdded = await (this.web3ModalProvider as any).request({
+          method: "wallet_watchAsset",
+          params: {
+            type: "ERC20", // Initially only supports ERC20, but eventually more!
+            options: {
+              address: tokenAddress, // The address that the token is at.
+              symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+              decimals: tokenDecimals, // The number of decimals in the token
+              image: tokenImage, // A string url of the token logo
+            },
+          },
+        });
+
+        if (wasAdded) {
+          this.setMetamaskHasToken(tokenAddress);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    return wasAdded;
+  }
+  /**
+   * returns ENS if the address maps to one
+   * @param address
+   * @returns null if there is no ENS
+   */
+  public getEnsForAddress(address: Address): Promise<string> {
+    return this.readOnlyProvider?.lookupAddress(address)
+      .catch(() => null);
+  }
+
+
+  /**
+   * Returns address that is represented by the ENS.
+   * Returns null if it can't resolve the ENS to an address
+   * Returns address if it already is an address
+   */
+  public getAddressForEns(ens: string): Promise<Address> {
+    /**
+     * returns the address if ens already is an address
+     */
+    return this.readOnlyProvider?.resolveName(ens)
+      .catch(() => null); // is neither address nor ENS
+  }
+
+  public getMetamaskHasToken(tokenAddress: Address): boolean {
+    if (!this.defaultAccountAddress) {
+      throw new Error("metamaskHasToken: no account");
+    }
+    return !!this.storageService.lsGet(this.getKeyForMetamaskHasToken(tokenAddress));
+  }
+
+  private getKeyForMetamaskHasToken(tokenAddress: Address): string {
+    return `${this.defaultAccountAddress}_${tokenAddress}`;
+  }
+
+  private setMetamaskHasToken(tokenAddress: Address): void {
+    if (!this.defaultAccountAddress) {
+      throw new Error("metamaskHasToken: no account");
+    }
+    this.storageService.lsSet(this.getKeyForMetamaskHasToken(tokenAddress), true);
   }
 
   // private cachedProviderKey = "cachedWalletProvider";
