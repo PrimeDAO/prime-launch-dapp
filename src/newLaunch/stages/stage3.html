@@ -40,8 +40,8 @@
                                                   ${launchConfig.tokenDetails.projectTokenInfo.name ? 'supplied' : ''}">
                         <label>Name</label>
                         <input class="input-style" type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.name" class="textInput inputElement" />
-                        <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.name}</div>
                       </div>
+                        <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.name}</div>
                       <div class="field symbolInput ${wizardState.stage3State.tiSymbolInputPresupplied ? 'presupplied' : ''}
                                                     ${launchConfig.tokenDetails.projectTokenInfo.symbol ? 'supplied' : ''}">
                         <label>Symbol</label>
@@ -71,13 +71,13 @@
                             value.bind="launchConfig.tokenDetails.projectTokenInfo.logoURI"
                             input.trigger="isValidLogo()"
                             placeholder="URL to a valid image file">
-                          <div class="fileNote">
-                            JPG, GIF, PNG or BMP formats<br />
-                            Square aspect ratio<br />
-                            Recommended size: 400x400px<br />
-                            Maximum 5MB file size
-                          </div>
                         </div>
+                          <div class="fileNote">
+                              JPG, GIF, PNG or BMP formats<br />
+                              Square aspect ratio<br />
+                              Recommended size: 400x400px<br />
+                              Maximum 5MB file size
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -133,15 +133,15 @@
                     <div class="columnHeaders">Cliff (in days)</div>
                     <input type="number" value.bind="distrib.cliff | number" placeholder="0" class="numberInput">
                   </div>
-                </div>
-                  <div class="deleteContainer">
+                    <div class="deleteContainer">
                     <span
                         class="deleteLink"
                         title="Delete this row"
                         click.delegate="deleteTokenDistribution($index)">
                       <i class="far fa-trash-alt"></i>
                     </span>
-                  </div>
+                    </div>
+                </div>
               </template>
               <div
                 class="addLink"
