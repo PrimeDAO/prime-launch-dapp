@@ -1,6 +1,23 @@
 @import "styles/styles.scss";
 
+
 .page.home {
+  .footer-subtitle {
+    color: rgba(162, 88, 167, 1);
+    font-weight: 700;
+  }
+  .footer-title {
+    color: white;
+    font-size: 48px;
+    font-weight: 700;
+    font-family: Aeonik;
+    margin-bottom: 30px;
+  }
+  .footer-learnMore {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+  }
   .section {
     &.nomiss,
     &.launches {
