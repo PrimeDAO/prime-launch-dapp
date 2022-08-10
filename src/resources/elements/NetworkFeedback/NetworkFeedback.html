@@ -11,9 +11,9 @@
           <div class="celo"></div>
           <div>celo</div>
         </div>
-        <div class="${isActive('rinkeby') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('rinkeby')">
+        <div class="${isActive(etheriumNetwork) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(etheriumNetwork)">
           <div class="eth"></div>
-          <div>rinkeby</div>
+          <div>${etheriumNetwork}</div>
         </div>
       </div>
     </div>

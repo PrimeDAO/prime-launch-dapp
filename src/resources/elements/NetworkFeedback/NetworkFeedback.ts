@@ -9,11 +9,13 @@ import LocalStorageService from "services/LocalStorageService";
 export class NetworkFeedback {
 
   private network: string;
+  private etheriumNetwork: string
   private isTestNet;
   private show: boolean
   private aurelia: Aurelia
 
   constructor(private ethereumService: EthereumService) {
+    this.etheriumNetwork = process.env.NETWORK;
     this.network = EthereumService.targetedNetwork;
     this.isTestNet = EthereumService.isTestNet;
     this.show = false;
