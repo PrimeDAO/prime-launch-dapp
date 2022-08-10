@@ -12,6 +12,12 @@
   grid-template-columns: 1.5fr 2fr;
 }
 
+.content-end-stage {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 3fr 1.5fr;
+}
+
 .content-classes {
   border-top: 1px solid #a258a7;
   display: grid;
@@ -61,6 +67,25 @@
   color: $White;
   cursor: pointer;
   margin-bottom: 80px;
+}
+
+.end-stage-subtext {
+  line-height: 24px;
+  font-size: 16px;
+  color: $Neutral03;
+  margin-bottom: 48px;
+  margin-top: 32px;
+}
+
+.goodValue {
+  margin-bottom: 16px;
+  color: $Neutral02;
+  line-height: 24px;
+  margin-top: -5px;
+}
+
+.else-subtext {
+  margin-top: 16px;
 }
 
 .footerButtons {
@@ -442,6 +467,7 @@
         .fileNote {
           color: $Neutral02;
           line-height: 24px;
+          margin-top: 10px;
         }
 
         .explanation {
@@ -450,7 +476,6 @@
 
         .tokenForm {
           .field {
-            margin-left: 8px;
             &:not(:last-of-type) {
               margin-bottom: 16px;
             }
@@ -487,11 +512,6 @@
                 align-items: flex-start;
                 justify-content: flex-start;
               }
-            }
-
-            .goodValue {
-              display: none;
-              color: $Neutral02;
             }
 
             &.presupplied {
