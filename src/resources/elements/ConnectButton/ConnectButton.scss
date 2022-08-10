@@ -3,7 +3,7 @@
 .connectButtonContainer {
   display: inline-block;
   padding: 0;
-  border-radius: 0.75rem;
+  border-radius: 6px;
   border: 1px solid;
   background-color: #212429;
   border-color: transparent;
@@ -12,12 +12,9 @@
 
   .connectButton {
     display: inline-block;
-    padding: 0.6rem 0.9rem;
+    padding: 0.6rem 0rem;
     border-radius: 0.75rem;
     white-space: nowrap;
-    color: $Secondary01-dev;
-    background-color: $BG01;
-    border: $BG05;
     cursor: pointer;
 
     &:hover,
@@ -34,20 +31,16 @@
     .ethBalanceContainer {
       display: inline-block;
       white-space: nowrap;
-
-      &.ETH {
-        margin-right: 0.5em;
-      }
     }
   }
 
   &.connected {
-    background-color: $BG05;
-    border-color: $BG05;
+    background-color: $Border02;
+    border-color: $Border02;
     padding-left: 14px;
-    padding-right: 1px;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-right: 14px;
+    color: $Neutral02;
+    font-size: 14px;
 
     .separator {
       display: inline-block;
@@ -55,7 +48,9 @@
       margin-right: 0.5em;
       position: relative;
       bottom: 1px;
-      color: $Secondary02-dev;
+      color: $BG01;
+      font-weight: 500;
+      font-size: 20px;
     }
 
     .connectedButtons {

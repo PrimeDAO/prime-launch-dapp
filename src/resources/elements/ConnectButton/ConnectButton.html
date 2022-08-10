@@ -13,10 +13,11 @@
           <span class="separator">|</span>
         -->
         </template>
-        <div class="ethBalanceContainer ETH">
+        <div class="ethBalanceContainer">
           <ethbalance formatted="0.00a"></ethbalance>${networkSymbol}
         </div>
       </template>
+      <span class="separator">|</span>
       <div class="connectButton">
         <div if.to-view="txPhase !== 'None'" click.delegate="gotoTx()" class.bind="'pending' + ((txPhase==='Confirming')
           ? ' confirming' : '')">
