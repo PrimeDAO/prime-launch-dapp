@@ -48,6 +48,11 @@
   background-color: rgba(21, 19, 24, 1);
 }
 
+#open-adb {
+  color: white;
+  text-decoration: none;
+}
+
 .make-admin-button {
   display: inline-block;
   border-radius: 10px;
@@ -462,7 +467,6 @@
       }
 
       .projectTokenInfoFormContainer {
-        margin-left: 8px;
         .explanation,
         .fileNote {
           color: $Neutral02;
