@@ -29,6 +29,7 @@ export class ConnectButton {
   private network: string;
   private networkSymbol: string;
   @bindable.booleanAttr private hideBalances: boolean;
+  showingWalletMenu = false;
 
   constructor(
     private ethereumService: EthereumService,
@@ -81,5 +82,9 @@ export class ConnectButton {
     if (this.txReceipt) {
       Utils.goto(this.ethereumService.getEtherscanLink(this.txReceipt.transactionHash, true));
     }
+  }
+
+  handleShowWalletMenu(): void {
+    this.showingWalletMenu = !this.showingWalletMenu;
   }
 }

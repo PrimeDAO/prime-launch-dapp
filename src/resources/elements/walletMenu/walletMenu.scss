@@ -1,0 +1,126 @@
+@import "src/styles/colors.scss";
+
+$walletMenuWidth: 315px;
+
+.walletMenuContainer {
+  display: grid;
+  position: fixed;
+  width: $walletMenuWidth;
+  right: -($walletMenuWidth + 50);
+  top: 58px;
+  z-index: 998;
+  background-color: $Border02;
+  border: 2px solid $Border02;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 20px;
+  font-family: Inter;
+  font-size: 14px;
+
+  -webkit-transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -moz-transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  hr {
+    color: $Border01;
+    margin: 20px 0;
+  }
+
+  .title {
+    font-weight: 700;
+    line-height: 17px;
+    color: $Neutral03;
+    text-align: left;
+  }
+
+  .action {
+    color: $Secondary02;
+    font-weight: 400;
+    line-height: 17px;
+
+    &:hover {
+      color: $Neutral03;
+      cursor: pointer;
+    }
+  }
+
+  .pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+    img {
+      width: 34px;
+      height: 34px;
+    }
+  }
+
+  .connected {
+    margin-bottom: 6px;
+  }
+
+  .accountInfo {
+    padding: 8px 10px;
+    column-gap: 6px;
+    background-color: $BG01;
+    border-radius: 6px;
+    color: $Neutral02;
+    .buttons {
+      display: flex;
+      column-gap: 4px;
+      align-items: center;
+
+      .etherscan-button {
+        outline: none;
+        path {
+          fill: $Secondary05;
+        }
+        cursor: pointer;
+        &:hover > path {
+          fill: $White;
+        }
+      }
+    }
+  }
+
+  &.showing {
+    right: 20px;
+  }
+
+  .networkFeedbackContainer {
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-transform: capitalize;
+    color: $Neutral02;
+
+    .networkContainer {
+      display: flex;
+      gap: 5px
+    }
+
+    .dot {
+      color: #38DE67;
+      font-size: 18px;
+    }
+
+    .testnet {
+      .dot {
+        color: #FF5252;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $walletMenuWidth) {
+  .walletMenuContainer {
+    &.showing {
+      right: 0;
+    }
+  }
+}
