@@ -1,8 +1,8 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { autoinject, singleton } from "aurelia-framework";
+import { autoinject } from "aurelia-framework";
 import { ISeedConfig } from "newLaunch/seed/config";
-import {EthereumService, fromWei} from "services/EthereumService";
+import {EthereumService } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { IClass } from "newLaunch/launchConfig";
@@ -13,7 +13,6 @@ import {NumberService} from "../../../services/NumberService";
 import "./addClass.scss";
 import {BigNumber} from "ethers";
 
-@singleton(false)
 @autoinject
 export class AddClassModal {
 
@@ -35,30 +34,42 @@ export class AddClassModal {
   vestingPeriod: number;
   vestingCliff: number
 
-
   constructor(
     private controller: DialogController,
     protected eventAggregator: EventAggregator,
     protected ethereumService: EthereumService,
     private launchService: LaunchService,
     private numberService: NumberService,
-  ) {}
+  ) {
+  }
 
   public async activate(model: IAddClassModal): Promise<void> {
     this.model = model;
     if (!this.tokenList) {
       this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
-    if (model.parameter) {
-      this.className = model.parameter.class.className;
-      this.projectTokenPurchaseLimit = model.parameter.class.projectTokenPurchaseLimit;
-      this.allowList = model.parameter.class.allowList;
-      this.token = model.parameter.class.token;
-      this.tokenExchangeRatio = model.parameter.class.tokenExchangeRatio;
-      this.fundingTokensTarget = model.parameter.class.fundingTokensTarget;
-      this.fundingTokenMaximum = model.parameter.class.fundingTokenMaximum;
-      this.vestingPeriod = model.parameter.class.vestingPeriod;
-      this.vestingCliff = model.parameter.class.vestingCliff;
+    if (model.params.isEdit) {
+      const {
+        className,
+        projectTokenPurchaseLimit,
+        allowList,
+        token,
+        tokenExchangeRatio,
+        fundingTokensTarget,
+        fundingTokenMaximum,
+        vestingPeriod,
+        vestingCliff,
+      } = this.model.params.editedClass;
+
+      this.className = className;
+      this.projectTokenPurchaseLimit = projectTokenPurchaseLimit;
+      this.allowList = allowList;
+      this.token = token;
+      this.tokenExchangeRatio = tokenExchangeRatio;
+      this.fundingTokensTarget = fundingTokensTarget;
+      this.fundingTokenMaximum = fundingTokenMaximum;
+      this.vestingPeriod = vestingPeriod;
+      this.vestingCliff = vestingCliff;
     }
   }
 
@@ -97,11 +108,11 @@ export class AddClassModal {
   }
 
   public attached(): void {
-    // attach-focus doesn't work
     this.okButton.focus();
   }
 
   tokenChanged(): void {
+    return;
   }
 
   resetModal(): void {
@@ -116,12 +127,20 @@ export class AddClassModal {
     this.vestingCliff = undefined;
   }
 
-  async addClass(): Promise<boolean | void> {
+  async save(): Promise<void> {
+    if (this.model.params.isEdit) {
+      await this.editClass();
+    } else {
+      await this.addClass();
+    }
+  }
+
+  async addClass(): Promise<void> {
     const message: string = await this.validateInputs();
 
     if (message) {
       this.validationError(message);
-      return false;
+      return;
     } else {
       const newClass = {
         className: this.className,
@@ -134,33 +153,48 @@ export class AddClassModal {
         vestingPeriod: this.vestingPeriod,
         vestingCliff: this.vestingCliff,
       };
+
       this.model.addFunction(newClass);
       this.resetModal();
       await this.controller.ok();
     }
   }
 
-  editClass(): void {
-    const newClass: IClass = {
-      className: this.className,
-      projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
-      allowList: this.allowList,
-      token: this.token,
-      tokenExchangeRatio: this.tokenExchangeRatio,
-      fundingTokensTarget: this.fundingTokensTarget,
-      fundingTokenMaximum: this.fundingTokenMaximum,
-      vestingPeriod: this.vestingPeriod,
-      vestingCliff: this.vestingCliff,
-    };
-    const index = this.model.parameter.index;
-    this.model.editFunction({newClass, index});
+  async editClass(): Promise<void> {
+    const message: string = await this.validateInputs();
+
+    if (message) {
+      this.validationError(message);
+      return;
+    } else {
+      const editedClass: IClass = {
+        className: this.className,
+        projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
+        allowList: this.allowList,
+        token: this.token,
+        tokenExchangeRatio: this.tokenExchangeRatio,
+        fundingTokensTarget: this.fundingTokensTarget,
+        fundingTokenMaximum: this.fundingTokenMaximum,
+        vestingPeriod: this.vestingPeriod,
+        vestingCliff: this.vestingCliff,
+      };
+      const index = this.model.params.index;
+      this.model.editFunction({editedClass, index});
+
+      this.resetModal();
+      await this.controller.ok();
+    }
   }
 }
 
 interface IAddClassModal {
-  parameter: IParameter | undefined;
+  params: {
+    isEdit: boolean,
+    index: number,
+    editedClass: IClass | undefined
+  },
   addFunction: (newClass: IClass) => void,
-  editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void,
+  editFunction: ({ editedClass, index }: {editedClass: IClass; index: number}) => void,
 }
 
 export interface IParameter {

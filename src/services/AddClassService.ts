@@ -21,10 +21,10 @@ export class AddClassService {
   ) {
   }
 
-  public show(parameter: IParameter | undefined, addFunction: (classToAdd: any) => void, editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void): Promise<DialogCloseResult> {
+  public show(params: { isEdit: boolean, index: number, editedClass: IClass | undefined }, addFunction: (classToAdd: any) => void, editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void): Promise<DialogCloseResult> {
     let theContainer: Element;
 
-    return this.dialogService.open(AddClassModal, {parameter, addFunction, editFunction}, {
+    return this.dialogService.open(AddClassModal, {params, addFunction, editFunction}, {
       keyboard: true,
       position: (modalContainer: Element, _modalOverlay: Element): void => {
         theContainer = modalContainer;
@@ -35,8 +35,6 @@ export class AddClassService {
         (result: DialogCloseResult) => {
           theContainer.classList.remove("addClass");
           return result;
-        },
-        // not sure if this works for alert
-        (error: string) => { return { output: error, wasCancelled: false }; });
+        });
   }
 }
