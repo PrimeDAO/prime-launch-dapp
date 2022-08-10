@@ -19,7 +19,10 @@
     }
 
     input[type="checkbox"] {
-      all: revert;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      accent-color: rgba(255, 73, 122, 1);
       margin-right: 6px;
     }
   }
