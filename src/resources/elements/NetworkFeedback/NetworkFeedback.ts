@@ -11,27 +11,26 @@ export class NetworkFeedback {
   private network: string;
   private isTestNet;
   private show: boolean
-  private networkItem: AllowedNetworks
   private aurelia: Aurelia
-  private isCelo: boolean;
 
   constructor(private ethereumService: EthereumService) {
     this.network = EthereumService.targetedNetwork;
     this.isTestNet = EthereumService.isTestNet;
     this.show = false;
-    this.networkItem = this.network === EthereumService.targetedNetwork ? "celo" : EthereumService.targetedNetwork;
-    this.isCelo = this.network === "celo";
   }
 
   setShow(): void {
     this.show = !this.show;
   }
 
-  async onDropDownItemClick(): Promise<void> {
-    LocalStorageService.set<AllowedNetworks>("network", `${this.networkItem}`);
+  async onDropDownItemClick(item: AllowedNetworks): Promise<void> {
+    LocalStorageService.set<AllowedNetworks>("network", `${item}`);
     window.location.reload();
     this.network = EthereumService.targetedNetwork;
     this.show = false;
-    this.networkItem = this.networkItem === "rinkeby" ? "celo" : "rinkeby";
+  }
+
+  isActive(item: AllowedNetworks): boolean {
+    return this.network === item;
   }
 }

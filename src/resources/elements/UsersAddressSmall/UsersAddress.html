@@ -1,0 +1,7 @@
+<template>
+  <span if.bind="ens">${ens}</span>
+  <span else>
+    <span if.bind="small">${usersAddress | smallHexString}</span>
+    <span else>${usersAddress}</span>
+  </span>
+</template>

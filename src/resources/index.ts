@@ -8,6 +8,8 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./elements/EthBalance/EthBalance"),
     PLATFORM.moduleName("./elements/TokenBalance/TokenBalance"),
     PLATFORM.moduleName("./elements/UsersAddress/UsersAddress"),
+    PLATFORM.moduleName("./elements/walletMenu/walletMenu"),
+    PLATFORM.moduleName("./elements/UsersAddressSmall/UsersAddress"),
     PLATFORM.moduleName("./elements/copyToClipboardButton/copyToClipboardButton"),
     PLATFORM.moduleName("./elements/numericInput/numericInput"),
     PLATFORM.moduleName("./elements/formattedNumber/formattedNumber"),

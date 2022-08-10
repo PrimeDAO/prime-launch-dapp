@@ -6,6 +6,107 @@
   background-color: $Border03;
 }
 
+.content-block {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+}
+
+.content-classes {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  margin-left: 100px;
+}
+
+.form-content {
+  margin-top: 32px;
+}
+
+.class-title {
+  font-weight: 700;
+  font-size: 26px;
+  color: rgba(162, 88, 167, 1);
+  margin-top: 32px;
+}
+
+.classes-description {
+  width: 320px;
+  margin-top: 10px;
+  color: rgba(220, 218, 229, 1);
+  font-size: 16px;
+  font-family: Inter;
+}
+
+.input-style {
+  background-color: rgba(21, 19, 24, 1);
+}
+
+.make-admin-button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 15px;
+  margin-top: 40px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: rgba(64, 52, 83, 1);
+  color: $White;
+  cursor: pointer;
+  margin-bottom: 80px;
+}
+
+.footerButtons {
+  display: flex;
+  flex-flow: row;
+  column-gap: 48px;
+  margin-top: 80px;
+  justify-content: space-between;
+  .stageButton {
+    display: flex;
+    align-items: center;
+  }
+  .cancel {
+    cursor: pointer;
+    color: white;
+    font-family: Inter;
+    font-weight: 600;
+  }
+  .view-buttons {
+    display: flex;
+  }
+}
+
+#add-social-link {
+  color: rgba(147, 152, 168, 1);
+  text-decoration: underline;
+  font-family: Inter;
+}
+
+.previousButton {
+  border: 2px solid white;
+  border-radius: 50px;
+  border-color: rgba(162, 88, 167, 1);
+  padding-right: 20px;
+  padding-left: 20px;
+  cursor: pointer;
+  height: 48px;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.classes-previous {
+  margin-right: 21px;
+}
+
 .classes-overview-container {
   background: $BG02;
   border: 2px solid $BG01;
@@ -14,7 +115,10 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 10px;
+  margin-top: 32px;
+  max-width: 645px;
 }
+
 .classes-overview-container__title {
   font-family: 'Inter';
   font-style: normal;
@@ -24,16 +128,18 @@
   color: $Neutral04;
 
 }
+
 .classes-overview-container__table-container {
   background: $BG01;
   border-radius: 10px;
   padding: 4px;
 }
+
 .classes-overview-container__table {
   width: 100%;
-  border-collapse:separate; 
+  border-collapse:separate;
   font-size: 16px;
-  border-spacing: 16px; 
+  border-spacing: 16px;
   border: none;
   tr, td {
     border: none;
@@ -62,8 +168,6 @@
 
 .infoContainer {
   font-family: Inter;
-  background-color: $BG02;
-  border: 1px solid $Border01;
   border-radius: 16px;
   padding: 24px;
   min-width: 640px;
@@ -80,6 +184,8 @@
     font-size: 16px;
     color: $Neutral03;
     margin-bottom: 48px;
+    margin-top: 32px;
+    max-width: 360px;
   }
   .infoInput {
     margin-bottom: 32px;
@@ -104,16 +210,17 @@
   }
   .buttonContainer {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row;
     column-gap: 48px;
     margin-top: 80px;
+    justify-content: space-between;
     .stageButton {
       display: flex;
       align-items: center;
     }
     .cancel {
       cursor: pointer;
-      color: $Shade01;
+      color: white;
       font-family: Inter;
       font-weight: 600;
     }
@@ -286,6 +393,7 @@
     .infoInput.supply {
       input {
         width: 112px;
+        background-color: rgba(21, 19, 24, 1);
       }
     }
     .tickerContainer {
@@ -418,7 +526,7 @@
         flex-flow: row wrap;
         flex: 1;
         justify-content: space-between;
-        margin-bottom: 32px;
+        margin-bottom: 16px;
         column-gap: 10px;
         .category {
           display: flex;
@@ -451,6 +559,7 @@
     }
     .addLink {
       cursor: pointer;
+      margin-top: 16px;
     }
   }
 
@@ -474,6 +583,7 @@
         }
         input {
           width: 72px;
+          background-color: rgba(21, 19, 24, 1);
         }
         > label {
           align-self: center;
@@ -537,6 +647,9 @@
               position: relative;
               top: 1px;
             }
+          }
+          input {
+            background-color: rgba(21, 19, 24, 1);
           }
         }
       }
