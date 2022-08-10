@@ -1,9 +1,9 @@
 <template>
   <div class="walletMenuContainer ${ showing ? 'showing' : '' }" tabindex="0" ref="container">
-    <div class="heading heading3 gradient">Account</div>
+    <div class="heading heading3 gradient menu__title">Account</div>
 
     <div class="networkFeedbackContainer">
-      <hr />
+      <div class="menu__hr"></div>
       <div class="pair connected">
         <div class="title">
           <div>Connected with MetaMask</div>
@@ -27,20 +27,20 @@
           </svg>
         </div>
       </div>
-      <!-- <hr />
+      <!-- <div class="menu__hr"></div>
       <div class="pair">
         <div class="title">Recent Transactions</div>
       </div> -->
-      <!-- <hr />
+      <!-- <div class="menu__hr"></div>
       <div class="pair">
         <div class="title">0.5463 PRIME $14.10</div>
       </div> -->
-      <hr show.bind="!metamaskHasPrimeToken" />
+      <div class="menu__hr" show.bind="!metamaskHasPrimeToken"></div>
       <div class="pair" show.bind="!metamaskHasPrimeToken">
         <div class="title"><img src="../../../../static/logomark.svg" alt="Prime (D2D)"></img>Prime (D2D)</div>
         <div class="action" click.delegate="addTokenToWallet()">Add Token to Wallet</div>
       </div>
-      <hr />
+      <div class="menu__hr"></div>
       <div class="pair">
         <div class="title">Network</div>
         <div class="networkContainer">

@@ -1,4 +1,5 @@
 @import "src/styles/colors.scss";
+@import "styles/styles.scss";
 
 $walletMenuWidth: 315px;
 
@@ -21,9 +22,15 @@ $walletMenuWidth: 315px;
   -moz-transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-  hr {
-    color: $Border01;
-    margin: 20px 0;
+  .menu__title {
+    margin-bottom: 0px !important;
+  }
+
+  .menu__hr {
+    border: 1px solid $Border01;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .title {
