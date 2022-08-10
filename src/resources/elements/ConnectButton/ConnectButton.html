@@ -1,5 +1,5 @@
 <template>
-  <div class="connectButtonContainer ${accountAddress ? 'connected' : ''}">
+  <div class="connectButtonContainer ${accountAddress ? 'connected' : 'notconnected'}">
     <div class="connectedButtons" if.to-view="accountAddress">
       <template if.to-view="!hideBalances">
         <template if.bind="primeAddress">

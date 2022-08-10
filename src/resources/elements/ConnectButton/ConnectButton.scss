@@ -5,10 +5,18 @@
   padding: 0;
   border-radius: 6px;
   border: 1px solid;
-  background-color: #212429;
+  background: #212429;
   border-color: transparent;
   z-index: 1000; // stay over modal mask
   font-family: Inter;
+
+  &.notconnected {
+    padding: 0rem 0.9rem;
+    background: $Border02;
+    &:hover,&:focus {
+      background: $Gradient01;
+    }
+  }
 
   .connectButton {
     display: inline-block;
@@ -16,11 +24,6 @@
     border-radius: 0.75rem;
     white-space: nowrap;
     cursor: pointer;
-
-    &:hover,
-    &:focus {
-      color: $Secondary02-dev;
-    }
   }
 
   .connectedButtons {
