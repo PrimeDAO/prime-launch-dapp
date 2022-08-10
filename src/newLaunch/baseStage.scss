@@ -15,7 +15,7 @@
 .content-classes {
   border-top: 1px solid #a258a7;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.4fr;
   margin-left: 100px;
 }
 
@@ -33,17 +33,41 @@
 .classes-description {
   width: 360px;
   margin-top: 10px;
+  color: #DCDAE5;
+  font-size: 16px;
+  font-family: Inter;
 }
 
 .input-style {
   background-color: rgba(21, 19, 24, 1);
 }
 
+.make-admin-button {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 15px;
+  margin-top: 40px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: rgba(64, 52, 83, 1);
+  color: $White;
+  cursor: pointer;
+}
+
 .footerButtons {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row;
   column-gap: 48px;
   margin-top: 80px;
+  justify-content: space-between;
   .stageButton {
     display: flex;
     align-items: center;
@@ -53,6 +77,9 @@
     color: white;
     font-family: Inter;
     font-weight: 600;
+  }
+  .view-buttons {
+    display: flex;
   }
 }
 
@@ -69,6 +96,14 @@
   padding-right: 20px;
   padding-left: 20px;
   cursor: pointer;
+  height: 48px;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.classes-previous {
+  margin-right: 21px;
 }
 
 .classes-overview-container {
@@ -153,7 +188,6 @@
   }
   .infoInput {
     margin-bottom: 32px;
-    //padding-left: 95px;
     &.withCounter {
       width: fit-content;
     }
@@ -175,9 +209,10 @@
   }
   .buttonContainer {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row;
     column-gap: 48px;
     margin-top: 80px;
+    justify-content: space-between;
     .stageButton {
       display: flex;
       align-items: center;
