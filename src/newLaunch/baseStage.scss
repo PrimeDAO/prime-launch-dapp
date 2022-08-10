@@ -15,7 +15,7 @@
 .content-classes {
   border-top: 1px solid #a258a7;
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.7fr;
   margin-left: 100px;
 }
 
@@ -31,9 +31,9 @@
 }
 
 .classes-description {
-  width: 360px;
+  width: 320px;
   margin-top: 10px;
-  color: #DCDAE5;
+  color: rgba(220, 218, 229, 1);
   font-size: 16px;
   font-family: Inter;
 }
@@ -60,6 +60,7 @@
   background-color: rgba(64, 52, 83, 1);
   color: $White;
   cursor: pointer;
+  margin-bottom: 80px;
 }
 
 .footerButtons {
