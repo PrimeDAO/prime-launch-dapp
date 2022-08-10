@@ -9,15 +9,51 @@
 .content-block {
   border-top: 1px solid #a258a7;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.5fr 2fr;
+}
+
+.content-classes {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  margin-left: 100px;
 }
 
 .form-content {
   margin-top: 32px;
 }
 
+.class-title {
+  font-weight: 700;
+  font-size: 26px;
+  color: rgba(162, 88, 167, 1);
+  margin-top: 32px;
+}
+
+.classes-description {
+  width: 360px;
+  margin-top: 10px;
+}
+
 .input-style {
   background-color: rgba(21, 19, 24, 1);
+}
+
+.footerButtons {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 48px;
+  margin-top: 80px;
+  .stageButton {
+    display: flex;
+    align-items: center;
+  }
+  .cancel {
+    cursor: pointer;
+    color: white;
+    font-family: Inter;
+    font-weight: 600;
+  }
 }
 
 #add-social-link {
@@ -32,6 +68,7 @@
   border-color: rgba(162, 88, 167, 1);
   padding-right: 20px;
   padding-left: 20px;
+  cursor: pointer;
 }
 
 .classes-overview-container {
@@ -42,6 +79,8 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 10px;
+  margin-top: 32px;
+  max-width: 645px;
 }
 
 .classes-overview-container__title {
@@ -114,7 +153,7 @@
   }
   .infoInput {
     margin-bottom: 32px;
-    padding-right: 95px;
+    //padding-left: 95px;
     &.withCounter {
       width: fit-content;
     }
