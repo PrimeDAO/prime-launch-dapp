@@ -138,7 +138,7 @@ $menu-open-duration: 0.1s;
   }
 
   .networkFeedback {
-    grid-area: networkFeedback;
+    margin-right: 12px;
     font-family: Inter;
     display: flex;
     align-items: center;
@@ -154,7 +154,7 @@ $menu-open-duration: 0.1s;
       justify-content: center;
       gap: 10px;
       width: 126px;
-      height: 33px;
+      height: 38px;
       background: $Border02;
       border-radius: 6px;
       cursor: pointer;
@@ -182,9 +182,10 @@ $menu-open-duration: 0.1s;
     }
     .dropdown {
       padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
       width: 184px;
       position: absolute;
-      top: 40px;
+      top: 46px;
       left: 50%;
       -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
@@ -254,6 +255,8 @@ $menu-open-duration: 0.1s;
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
