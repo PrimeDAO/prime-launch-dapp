@@ -4,4 +4,7 @@ import { BaseStage } from "newLaunch/baseStage";
 
 @autoinject
 export class Stage6 extends BaseStage<ISeedConfig> {
+  toggle(): void {
+    return;
+  }
 }

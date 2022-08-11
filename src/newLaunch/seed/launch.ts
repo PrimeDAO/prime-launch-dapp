@@ -56,7 +56,7 @@ export class NewSeed {
         },
         {
           verified: true,
-          title: "Seed Summary",
+          title: "Seed Submit", // Seed Summary
         },
         {
           verified: true,
@@ -144,7 +144,7 @@ export class NewSeed {
       },
       {
         route: ["stage6"],
-        nav: false,
+        nav: true,
         moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage6"), // seed specific stage
         name: "stage6",
         title: this.stageStates[6].title,

@@ -61,7 +61,9 @@
                     </p>
                     <div class="footerButtons">
                         <div class="view-buttons">
-                            <div class="stageButton previousButton classes-previous">ADMIN DASHBOARD</div>
+                            <a id="open-adb" href="/admin/${wizardState.launchType}s/dashboard">
+                                <div class="stageButton previousButton classes-previous">ADMIN DASHBOARD</div>
+                            </a>
                             <div class="stageButton proceed button1" click.delegate="cancel()">HOME</div>
                         </div>
                     </div>
