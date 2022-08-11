@@ -1,7 +1,7 @@
 <template>
   <div class="networkfeedback">
     <div class="testnet" click.trigger="setShow()">
-      <div class="${isCelo ? 'celo' : 'eth'}"></div>
+      <div class="${getIconName()}"></div>
       <div>${network}</div>
       <div class="arrow"></div>
       <div class="dropdown" show.bind="show">
@@ -13,7 +13,7 @@
         </div>
         <div class="${isActive(etheriumNetwork) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(etheriumNetwork)">
           <div class="eth"></div>
-          <div>${etheriumNetwork}</div>
+          <div>Ethereum</div>
         </div>
       </div>
     </div>
