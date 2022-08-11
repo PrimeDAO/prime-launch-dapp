@@ -838,18 +838,87 @@
 
   &.stage6 {
     .infoContainer {
+      label {
+        font-size: 16px;
+      }
+    }
+    .infoInput {
+      margin-bottom: 0px;
+    }
+    .checkboxContainer {
+      width: 60px;
+      height: 32px;
+      border: 1px solid #2a2a2a;
+      border-radius: 23px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: $Gradient01;
+      cursor: pointer;
+      &.isInactive {
+        background: $Secondary05;
+      }
+      i.yes {
+        position: absolute;
+        left: 10px;
+        color: black;
+        font-weight: 800;
+      }
+      i.no {
+        position: absolute;
+        right: 10px;
+        color: black;
+        font-weight: 800;
+      }
+      .checkbox {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        > input {
+          width: 28px;
+          height: 28px;
+          visibility: hidden;
+          position: absolute;
+          &:checked + label {
+            left: 28px;
+          }
+        }
+        & label {
+          display: block;
+          width: 22px;
+          height: 22px;
+          position: absolute;
+          left: 4px;
+          background: white;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          border: 2px solid black;
+          cursor: pointer;
+        }
+      }
+    }
+    .infoContainer {
       .summaryContainer {
-        margin-bottom: 40px;
+        .heading4 {
+          font-size: 16px;
+        }
+        .classes-overview-container {
+          margin-top: 0px;
+        }
         word-break: break-word;
         > .heading.heading3 {
           margin-bottom: 20px;
         }
+        a{
+          color: white;
+        }
         .stageLaunchDetails {
           display: grid;
           gap: 10px;
-          margin-bottom: 20px;
-          font-size: 18px;
-          color: $Neutral02;
+          margin-bottom: 30px;
+          font-size: 16px;
+          color: white;
 
           .tokenAmountContainer {
             display: flex;
@@ -886,9 +955,6 @@
             margin-bottom: 20px;
             background-color: $Shade03;
           }
-        }
-        &:not(:first-child) {
-          margin-top: 40px;
         }
       }
     }
