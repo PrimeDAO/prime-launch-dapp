@@ -1,4 +1,4 @@
-import { Aurelia, autoinject, containerless, customElement } from "aurelia-framework";
+import { autoinject, containerless, customElement } from "aurelia-framework";
 import { AllowedNetworks, EthereumService } from "services/EthereumService";
 import LocalStorageService from "services/LocalStorageService";
 
@@ -12,7 +12,6 @@ export class NetworkFeedback {
   private etheriumNetwork: string
   private isTestNet;
   private show: boolean
-  private aurelia: Aurelia
 
 
   constructor(private ethereumService: EthereumService) {
@@ -24,6 +23,10 @@ export class NetworkFeedback {
 
   setShow(): void {
     this.show = !this.show;
+  }
+
+  getIconName(): string {
+    return this.network === "celo" ? "celo" : "eth";
   }
 
   async onDropDownItemClick(item: AllowedNetworks): Promise<void> {
