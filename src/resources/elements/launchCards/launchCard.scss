@@ -15,6 +15,7 @@
     display: grid;
     grid-template-columns: 58px 4fr 1fr;
     grid-template-rows: 10px;
+    max-width: 360px;
     grid-template-areas:
       ". . timeLeft"
       ". . ."
