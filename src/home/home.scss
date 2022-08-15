@@ -69,6 +69,16 @@
     max-width: 360px;
     min-height: 284px;
     border-radius: 6px;
+    cursor: pointer;
+  }
+  .launch-card-view:hover {
+    background-color: rgba(64, 52, 83, 1);
+    .launch-card-type-title {
+      color: rgba(255, 82, 82, 1);
+    }
+    .launch-card-footer-title {
+      color: rgba(255, 82, 82, 1);
+    }
   }
   .launch-card-image {
     border-radius: 50px;
