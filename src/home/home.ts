@@ -11,6 +11,8 @@ import { SortService } from "services/SortService";
 import { LbpManager } from "entities/LbpManager";
 import { Seed } from "entities/Seed";
 import {LbpManagerService} from "../services/LbpManagerService";
+import { DialogCloseResult, DialogService } from "../services/DialogService";
+import { HomeInfoModal } from "../resources/dialogs/homeInfo/homeInfo";
 
 interface ILaunch {
   id: number
@@ -130,6 +132,7 @@ export class Home {
     private seedService: SeedService,
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService,
+    private dialogService: DialogService,
 
     private lbpManagerService: LbpManagerService,
   ) {
@@ -202,5 +205,22 @@ export class Home {
         this.eventAggregator.publish("handleException", `Sorry, we are enable to submit the email: ${Utils.extractExceptionMessage(ex)}`);
       }
     }
+  }
+
+  openInfoModal(): Promise<DialogCloseResult> {
+    let theContainer: Element;
+
+    return this.dialogService.open(HomeInfoModal, {}, {
+      keyboard: true,
+      position: (modalContainer: Element, _modalOverlay: Element): void => {
+        theContainer = modalContainer;
+        modalContainer.classList.add("homeInfo");
+      },
+    })
+      .whenClosed(
+        (result: DialogCloseResult) => {
+          theContainer.classList.remove("homeInfo");
+          return result;
+        });
   }
 }

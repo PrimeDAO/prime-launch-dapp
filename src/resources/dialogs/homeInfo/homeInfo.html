@@ -1,0 +1,22 @@
+<template>
+    <ux-dialog class="dialog homeInfo">
+      <ux-dialog-body>
+        <div class="body-container">
+            <div class="modal__name">Seeds, LBP’s and more...</div>
+            <div class="modal__label">Seed Launch</div>
+            <div class="modal__text">A Seed Launch is a token offering by an early-stage project to a small group of contributors, in order to raise initial resources for the venture.</div>
+            <div class="modal__label">Liquid Launch</div>
+            <div class="modal__text">A Liquid Launch is a public token offering that works by attempting to bootstrap the liquidity of a new token. Liquid Launches use Balancer V2's Liquidity Bootstrapping Pools (LBPs) to facilitate fair and efficient environments for distributing tokens. The mechanism has been utilized dozens of times with promising results.</div>
+            <div class="modal__link__container">
+                <img class="modal__link__arrow" src="../../../../static/toRightArrow.svg"/>
+                <a class="modal__link" href="https://launch.prime.xyz/documentation">Click here to visit the Documentation page</a>
+            </div>
+        </div>
+      </ux-dialog-body>
+      <ux-dialog-footer>
+        <div class="action-buttons">
+          <button class="button1" ref="okButton" click.trigger="controller.ok(true)">close</button>
+        </div>
+      </ux-dialog-footer>
+    </ux-dialog>
+</template>

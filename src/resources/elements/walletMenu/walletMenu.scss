@@ -92,6 +92,12 @@ $walletMenuWidth: 315px;
           fill: $White;
         }
       }
+      i {
+        color: $Secondary05;
+        &:hover {
+          color: $White;
+        }
+      }
     }
   }
 
