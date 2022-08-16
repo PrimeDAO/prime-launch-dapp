@@ -3,9 +3,9 @@
   height: 23px;
   padding-bottom: 10px;
   > img {
-    @include tokenIcon;
-    border-radius: 13px;
-    border: 2px solid $BG02;
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
   }
 
   > img:nth-child(2) {

@@ -6,6 +6,10 @@
   background-color: $Border03;
 }
 
+.footer-input {
+  max-width: 100%;
+}
+
 .content-block {
   border-top: 1px solid #a258a7;
   display: grid;
@@ -23,6 +27,32 @@
   display: grid;
   grid-template-columns: 1fr 1.7fr;
   margin-left: 100px;
+}
+
+//#footer-date-content {
+//
+//}
+
+@media screen and (max-width: 730px) {
+  .content-block {
+    grid-template-columns: 1fr;
+  }
+  .footer-input {
+    max-width: 50%;
+  }
+  #footer-date-content {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 906px) {
+  .content-classes {
+    //border-top: 1px solid #a258a7;
+    //display: grid;
+    grid-template-columns: 1fr;
+    margin-left: 0px;
+  }
 }
 
 .form-content {

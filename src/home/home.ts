@@ -6,10 +6,16 @@ import { Router } from "aurelia-router";
 import "./home.scss";
 import { Utils } from "services/utils";
 import axios from "axios";
+import {LaunchType} from "../services/launchTypes";
+import { SortService } from "services/SortService";
+import { ILaunch } from "services/launchTypes";
+import { LbpManager } from "entities/LbpManager";
+import { Seed } from "entities/Seed";
+import {LbpManagerService} from "../services/LbpManagerService";
 
-interface ILaunch {
+interface ITabsLaunch {
   id: number
-  title: string
+  title: LaunchType | string
 }
 
 @singleton(false)
@@ -18,15 +24,17 @@ export class Home {
 
   subscriberEmail: string;
   loading: boolean;
-  launchesState: ILaunch[];
-  launchCard: any // !!!
-  activeLaunchState: ILaunch;
+  launchesState: ITabsLaunch[];
+  activeLaunchState: ITabsLaunch;
+
+  launches: Array<ILaunch>;
+  launchCards: Array<ILaunch>;
 
   launchData = [
     {
       id: 1,
       type: {
-        title: "SEED",
+        title: LaunchType.Seed,
         image: "https://s2.coinmarketcap.com/static/img/coins/64x64/16107.png",
       },
       title: "Green Lab Token",
@@ -56,7 +64,7 @@ export class Home {
     {
       id: 2,
       type: {
-        title: "LBP",
+        title: LaunchType.LBP,
         image: "http://cdn.shopify.com/s/files/1/0565/1375/7354/products/kiss-cut-stickers-4x4-default-609201d088ae2_1200x1200.jpg?v=1620181461",
       },
       title: "Green Lab Token",
@@ -85,7 +93,7 @@ export class Home {
     {
       id: 3,
       type: {
-        title: "LBP",
+        title: LaunchType.LBP,
         image: "https://play-lh.googleusercontent.com/IxfrWxUCBDHz8ecsjw0kVMsxlwmkuIpMPORJbNk2juqlaYWtRBbph55k2ncMFAyHlHY",
       },
       title: "Green Lab Token",
@@ -123,6 +131,8 @@ export class Home {
     private seedService: SeedService,
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService,
+
+    private lbpManagerService: LbpManagerService,
   ) {
     this.launchesState = [
       {
@@ -131,29 +141,47 @@ export class Home {
       },
       {
         id: 2,
-        title: "SEED",
+        title: LaunchType.Seed,
       },
       {
         id: 3,
-        title: "LBP",
+        title: LaunchType.LBP,
       },
     ];
     this.activeLaunchState = this.launchesState[0];
-    this.launchCard = this.launchData;
   }
 
-  setActiveLaunchState(launch: ILaunch): void {
+  setActiveLaunchState(launch: ITabsLaunch): void {
     this.activeLaunchState = launch;
 
-    this.launchCard = this.launchData;
+    this.launches = this.launchCards;
 
     if (launch.title !== "All Launches") {
-      this.launchCard = this.launchCard.filter(e => e.type.title === launch.title);
+      this.launches = this.launches.filter(e => e.launchType === launch.title);
     }
   }
 
   navigate(href: string): void {
     this.router.navigate(href);
+  }
+
+  async attached(): Promise<void> {
+    this.loading = true;
+
+    await this.seedService.ensureAllSeedsInitialized();
+    await this.lbpManagerService.ensureAllLbpsInitialized();
+
+    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
+      .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
+      .concat((this.lbpManagerService.lbpManagersArray as Array<ILaunch>)
+        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && !lbpMgr.isDead; }))
+      .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
+      .slice(0, 3)
+    ;
+
+    this.launchCards = this.launches;
+
+    this.loading = false;
   }
 
   async subscribe(): Promise<void> {

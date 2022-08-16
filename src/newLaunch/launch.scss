@@ -14,15 +14,19 @@
 .newLaunchContainer {
   justify-items: center;
   background-color: $BG01;
+
   &.stage8 {
     grid-template-columns: 1fr;
+
     .currentStageSidebar {
       display: none;
     }
   }
+
   .sideBarDropDownContainer {
     display: none;
     cursor: pointer;
+
     .sideBarDropDown {
       font-family: Inter;
       color: $Secondary02;
@@ -31,6 +35,7 @@
       padding-bottom: 32px;
     }
   }
+
   .currentStageSidebar {
     line-height: 32px;
     font-size: 18px;
@@ -40,6 +45,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+
     .currentstage {
       cursor: pointer;
       display: flex;
@@ -49,33 +55,49 @@
       margin-right: 25px;
       z-index: 1;
     }
+
     .active {
       color: rgba(162, 88, 167, 1);
     }
+
     .stagesNumber {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
       color: $Neutral04;
+
       .circledNumber {
         background-color: rgba(64, 52, 83, 1);
       }
     }
+
     .stagesNumber:hover {
       .circledNumber {
         background-color: $Neutral04;
       }
+
       color: $Neutral04;
     }
+
     .title {
       font-size: 18px;
       font-weight: 400;
       font-family: Inter;
     }
+
     .stageActive {
       .circledNumber {
         background-color: rgba(162, 88, 167, 1);
       }
+    }
+  }
+
+  @media screen and (max-width: 730px) {
+    .currentStageSidebar {
+      flex-direction: column;
+    }
+    .line {
+      display: none;
     }
   }
 }

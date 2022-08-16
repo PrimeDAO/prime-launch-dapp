@@ -17,6 +17,7 @@
     display:flex;
     align-items: center;
     justify-content: space-between;
+    text-transform: uppercase;
   }
   .row-launch-section {
     display: flex;
@@ -62,115 +63,6 @@
   .launch-active {
     color: rgba(162, 88, 167, 1);
     border-bottom: 5px solid rgba(162, 88, 167, 1);;
-  }
-  .launch-card-view {
-    background-color: rgba(41, 34, 54, 1);
-    max-width: 360px;
-    min-height: 284px;
-    border-radius: 6px;
-  }
-  .launch-card-image {
-    border-radius: 50px;
-    width: 48px;
-    height: 48px;
-    margin-right: 10px;
-  }
-  .launch-card-type-title {
-    color: rgba(100, 85, 125, 1);
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .launch-card-title {
-    font-family: Aeonik;
-    font-weight: 700;
-    font-size: 20px;
-  }
-  .launch-card-description {
-    font-family: Inter;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 140%;
-    color: rgba(220, 218, 229, 1);
-    margin-right: 20px;
-    margin-left: 20px;
-    margin-top: 14px;
-  }
-  .launch-card-header {
-    display: flex;
-    align-items: center;
-    margin-left: 18px;
-  }
-  .launch-card-footer {
-    padding: 20px;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .launch-card-currency-data {
-    display: flex;
-  }
-  .launch-card-currency-description {
-    font-family: Inter;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 12px;
-    line-height: 15px;
-    color: #38DE67;
-  }
-  .launch-card-currency-icon {
-    color: #38DE67;
-    transform: rotate(180deg);
-    margin-right: 7px;
-  }
-  .launch-card-currency-price {
-    font-family: Inter;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-  }
-  .launch-card-footer-currenyPrice-case {
-    margin-left: 50px;
-  }
-  .launch-card-event {
-    text-align: center;
-    font-size: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    font-family: Inter;
-    border-radius: 87px;
-    margin-top: 8px;
-    margin-right: 8px;
-  }
-  .launch-card-event-title {
-    margin-right: 6px;
-    margin-left: 6px;
-  }
-  .launch-card-crypto-image {
-    width: 32px;
-    height: 32px;
-    border-radius: 100px;
-  }
-  .launch-card-footer-title {
-    font-family: Aeonik;
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #64557D;
-  }
-  .launch-card-event-fullDate {
-    font-family: Inter;
-    font-size: 14px;
-  }
-  .launch-card-event-time {
-    font-family: Inter;
-    opacity: 0.4;
-    font-size: 14px;
-  }
-  .launch-card-event-view {
-    display: flex;
-    justify-content: flex-end;
   }
   .footer-learnMore {
     display: inline-block;
