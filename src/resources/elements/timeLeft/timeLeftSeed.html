@@ -5,27 +5,27 @@
         if.to-view="!launch.uninitialized && launch.hasNotStarted"
         ref="timeLeft"
         class="body timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}">
-        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${launch.startsInMilliseconds | timespan:"minutes":largest}
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft === "didn't start" ? "" : "Starts in "}${currentTimeLeft}
       </div>
       <div
         if.to-view="launch.contributingIsOpen"
-        class="body live">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE, ${currentTimeLeft} left
+        class="body timeLeft live">
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>LIVE, ${currentTimeLeft} left
       </div>
       <div
         if.to-view="launch.claimingIsOpen"
         class="body complete">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>Complete
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Complete
       </div>
       <div
         if.to-view="launch.incomplete"
         class="body incomplete">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>Incomplete
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Incomplete
       </div>
       <div
         if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused"
         class="body uninitialized">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>Uninitialized
+        <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>Uninitialized
       </div>
     </div>
     <div class="adminStatus">

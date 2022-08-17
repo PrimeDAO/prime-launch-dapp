@@ -5,12 +5,12 @@
         if.to-view="!launch.uninitialized && launch.hasNotStarted"
         ref="timeLeft"
         class="body timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}">
-        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${launch.startsInMilliseconds | timespan:"minutes":largest}
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Starts in ${currentTimeLeft}
       </div>
       <div
         if.to-view="!launch.uninitialized && launch.isLive"
         class="body live">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE, ${launch.startsInMilliseconds | timespan:"minutes":largest} left
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE, ${currentTimeLeft} left
       </div>
       <div
         if.to-view="launch.isDead"
