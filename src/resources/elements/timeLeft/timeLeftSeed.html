@@ -4,8 +4,8 @@
       <div
         if.to-view="!launch.uninitialized && launch.hasNotStarted"
         ref="timeLeft"
-        class="body timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}">
-        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft === "didn't start" ? "" : "Starts in "}${currentTimeLeft}
+        class="body timeLeft ${(proximity===1) ? 'comingUp' : ((proximity===2) ? 'soon' : 'soon' )}">
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft}
       </div>
       <div
         if.to-view="launch.contributingIsOpen"
