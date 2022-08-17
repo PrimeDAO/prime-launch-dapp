@@ -39,13 +39,11 @@ export class TimeLeft {
     const diffDays = Math.floor(diff / 60 / 24);
     diff = diff - (diffDays*60*24);
     const diffHours = Math.floor(diff / 60);
-    diff = diff - (diffHours*60);
-    const diffMins = diff;
 
-    if (now.diff(startDate) < 0) {
-      this.currentTimeLeft = "didn't start";
+    if (now.diff(startDate) > 0) {
+      this.currentTimeLeft = diffDays > 1 ? `${diffDays} day${diffDays > 1 ? "s" : ""}`: `${diffHours} hours`;
     } else {
-      this.currentTimeLeft = `${diffDays}d${diffDays > 1 ? "s" : ""}, ${diffHours}h, ${diffMins}m`;
+      this.currentTimeLeft = "didn't start";
     }
   }
 
