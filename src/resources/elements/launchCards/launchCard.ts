@@ -3,6 +3,7 @@ import { Router } from "aurelia-router";
 import { Seed } from "entities/Seed";
 import { LbpManager } from "entities/LbpManager";
 import "./launchCard.scss";
+import dayjs from "dayjs";
 
 @autoinject
 export class LaunchCard {
@@ -39,9 +40,9 @@ export class LaunchCard {
     this.launch = model;
 
     this.dates.start.date = this.getTime(this.launch.startTime);
-    this.dates.start.time = new Date(this.launch.startTime).getHours() + ":" + new Date(this.launch.startTime).getMinutes();
+    this.dates.start.time = dayjs(this.launch.startTime).format("h:mm A");
 
     this.dates.end.date = this.getTime(this.launch.endTime);
-    this.dates.end.time = new Date(this.launch.endTime).getHours() + ":" + new Date(this.launch.endTime).getMinutes();
+    this.dates.end.time = dayjs(this.launch.endTime).format("h:mm A");
   }
 }

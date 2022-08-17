@@ -6,6 +6,7 @@ import { bindable } from "aurelia-typed-observable-plugin";
 import "./timeLeft.scss";
 import tippy from "tippy.js";
 import { Seed } from "entities/Seed";
+import dayjs from "dayjs";
 
 // for webpack
 PLATFORM.moduleName("./timeLeftSeed.html");
@@ -22,9 +23,31 @@ export class TimeLeft {
   timeLeft: HTMLElement;
   tippyInstance: any;
 
+  currentTimeLeft: string;
+
   constructor(
     private dateService: DateService,
   ) {}
+
+  attached() {
+    const now = dayjs();
+    const startDate = dayjs(this.launch.startTime);
+    const endDate = dayjs(this.launch.endTime);
+
+    let diff = endDate.diff(now, "minutes");
+
+    const diffDays = Math.floor(diff / 60 / 24);
+    diff = diff - (diffDays*60*24);
+    const diffHours = Math.floor(diff / 60);
+    diff = diff - (diffHours*60);
+    const diffMins = diff;
+
+    if (now.diff(startDate) < 0) {
+      this.currentTimeLeft = "didn't start";
+    } else {
+      this.currentTimeLeft = `${diffDays}d${diffDays > 1 ? "s" : ""}, ${diffHours}h, ${diffMins}m`;
+    }
+  }
 
   @computedFrom("launch.startsInMilliseconds", "launch.hasNotStarted")
   get proximity(): number {

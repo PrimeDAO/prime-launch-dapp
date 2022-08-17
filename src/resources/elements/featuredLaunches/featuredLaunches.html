@@ -3,7 +3,7 @@
     <horizontal-scroller item-count.to-view="launchesData.length">
       <template repeat.for="launch of launchesData">
         <compose
-          if.bind="launchesData.length <= 3"
+          if.bind="launchesData.length <= 3 && !launch.isClosed"
           view-model="../launchCards/launchCard"
           view='${ launch.launchType === "seed" ? "../launchCards/seedCard.html" : "../launchCards/lbpCard.html" }'
           model.bind="launch">
