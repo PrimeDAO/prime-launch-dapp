@@ -35,7 +35,7 @@
         <div class="main-launch-sections">
             <div class="row-launch-section">
                 <div repeat.for="value of launchesState">
-                    <div class="launch-section ${activeLaunchState.id === value.id ? 'launch-active' : ''}" click.delegate="setActiveLaunchState(value)">${value.title}</div>
+                    <div class="launch-section ${activeLaunchState.id === value.id ? 'launch-active' : ''}" click.delegate="loading ? null : setActiveLaunchState(value)">${value.title}</div>
                 </div>
             </div>
             <div class="row-launch-section info-modal" click.delegate="openInfoModal()">
@@ -44,58 +44,8 @@
             </div>
         </div>
         <div class="launch-line"></div>
-<!--        <div class="launches-cards-content">-->
-<!--            <div repeat.for="value of launchCard">-->
-<!--                <div class="launch-card-view">-->
-<!--                    <div class="launch-card-event-view">-->
-<!--                        <div class="launch-card-event" style="color: ${value.event.color};background-color: ${value.event.backgroundColor};">-->
-<!--                            <div class="launch-card-event-title">${value.event.time}</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="launch-card-header">-->
-<!--                        <image src="${value.type.image}" class="launch-card-image" />-->
-<!--                        <div>-->
-<!--                            <div class="launch-card-type-title">${value.type.title}</div>-->
-<!--                            <div class="launch-card-title">${value.title}</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="launch-card-description">${value.description}</div>-->
-<!--                    <div class="launch-card-footer">-->
-<!--                        <div class="launch-card-currency-data">-->
-<!--                            <div repeat.for="crypto of value.crypto">-->
-<!--                                <div class="launch-card-footer-title">${crypto.currency}${$index === 0 && value.crypto.length >= 2 ? '/' : ''}</div>-->
-<!--                                <image class="launch-card-crypto-image" src="${crypto.image}" />-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <div class="launch-card-footer-title">${value.start.title}</div>-->
-<!--                            <div class="launch-card-event-fullDate">${value.start.fullDate}</div>-->
-<!--                            <div class="launch-card-event-time">${value.start.time}</div>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <div class="launch-card-footer-title">${value.end.title}</div>-->
-<!--                            <div class="launch-card-event-fullDate">${value.end.fullDate}</div>-->
-<!--                            <div class="launch-card-event-time">${value.end.time}</div>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <div class="launch-card-footer-title">${value.currencyPrice.title}</div>-->
-<!--                            <div class="launch-card-currency-data">-->
-<!--                                <div if.bind="value.currencyPrice.price" class="launch-card-currency-icon">▾</div>-->
-<!--                                <div class="launch-card-currency-price">-->
-<!--                                    ${value.currencyPrice.price}-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="launch-card-currency-description">${value.currencyPrice.description}</div>-->
-<!--                        </div>-->
-<!--                        <div if.bind="value.currencyPrice.title">-->
-<!--                            <div class="launch-card-footer-currenyPrice-case"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
         <featuredlaunches launches-data.bind="launches" launch-type.bind="activeLaunchState.title" loading.bind="loading"></featuredlaunches>
-      <div if.bind="!loading" class="launchesButton"><a class="button-view-all" href="launches">VIEW ALL LAUNCHES</a></div>
+      <div if.bind="!loading && launches.length !== 0" class="launchesButton"><a class="button-view-all" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">

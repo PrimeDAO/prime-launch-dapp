@@ -44,6 +44,7 @@ interface IContributorClass {
 export class Seed implements ILaunch {
   public launchType = LaunchType.Seed;
   public contract: any;
+  public classes: IContributorClass[];
   public address: Address;
   public seedInitialized: boolean;
   public beneficiary: Address;
@@ -303,7 +304,7 @@ export class Seed implements ILaunch {
   private async hydrate(): Promise<void> {
     try {
       let rawMetadata: any;
-      let exchangeRate: BigNumber;
+      // let exchangeRate: BigNumber;
       let totalSupply: BigNumber;
 
       let batchedCalls: Array<IBatcherCallsModel> = [
@@ -349,12 +350,21 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
         },
-        {
-          contractAddress: this.address,
-          functionName: "price",
-          returnType: "uint256",
-          resultHandler: (result) => { exchangeRate = result; },
-        },
+        // {
+        //   contractAddress: this.address,
+        //   functionName: "classes",
+        //   returnType: "uint256",
+        //   paramTypes: ["uint256"],
+        //   paramValues: [0],
+        //   resultHandler: (result: IContributorClass[], b) => {
+        //     this.classes = result;
+        //
+        //     // Default class
+        //     const { price, vestingDuration } = result[0];
+        //     exchangeRate = price;
+        //     this.vestingDuration = vestingDuration.toNumber();
+        //   },
+        // },
         {
           contractAddress: this.address,
           functionName: "softCap",
@@ -384,12 +394,6 @@ export class Seed implements ILaunch {
           functionName: "permissionedSeed",
           returnType: "bool",
           resultHandler: (result) => { this.whitelisted = result; },
-        },
-        {
-          contractAddress: this.address,
-          functionName: "vestingDuration",
-          returnType: "uint256",
-          resultHandler: (result) => { this.vestingDuration = result.toNumber(); },
         },
         {
           contractAddress: this.address,
@@ -427,14 +431,11 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.feeRemainder = result; },
         },
-        // can't figure out how to supply the returnType for a struct array
-        // {
-        //   contractAddress: this.address,
-        //   functionName: "classes",
-        //   returnType: "",
-        //   resultHandler: (result) => { this.classes = result; },
-        // },
       ];
+
+      const defaultClass = await this.contract.classes(0);
+      const exchangeRate = defaultClass.price as BigNumber;
+      this.vestingDuration = defaultClass.vestingDuration.toNumber();
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
 

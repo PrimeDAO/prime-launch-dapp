@@ -8,13 +8,14 @@ import { Utils } from "services/utils";
 import axios from "axios";
 import {LaunchType} from "../services/launchTypes";
 import { SortService } from "services/SortService";
+import { ILaunch } from "services/launchTypes";
 import { LbpManager } from "entities/LbpManager";
 import { Seed } from "entities/Seed";
 import {LbpManagerService} from "../services/LbpManagerService";
 import { DialogCloseResult, DialogService } from "../services/DialogService";
 import { HomeInfoModal } from "../resources/dialogs/homeInfo/homeInfo";
 
-interface ILaunch {
+interface ITabsLaunch {
   id: number
   title: LaunchType | string
 }
@@ -25,8 +26,8 @@ export class Home {
 
   subscriberEmail: string;
   loading: boolean;
-  launchesState: ILaunch[];
-  activeLaunchState: ILaunch;
+  launchesState: ITabsLaunch[];
+  activeLaunchState: ITabsLaunch;
 
   launches: Array<ILaunch>;
   launchCards: Array<ILaunch>;
@@ -153,7 +154,7 @@ export class Home {
     this.activeLaunchState = this.launchesState[0];
   }
 
-  setActiveLaunchState(launch: ILaunch): void {
+  setActiveLaunchState(launch: ITabsLaunch): void {
     this.activeLaunchState = launch;
 
     this.launches = this.launchCards;

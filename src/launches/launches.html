@@ -1,7 +1,8 @@
 <template>
   <div class="page animated-page au-animate launches">
     <div class="section featured" show.to-view="!loading">
-      <div class="title heading heading1">Featured</div>
+      <div class="title heading heading1">Latest Launches</div>
+        <featuredlaunches launches-data.bind="launches" loading.bind="loading"></featuredlaunches>
       <div class="launches">
         <featuredlaunches loading.bind="loading"></featuredlaunches>
       </div>
