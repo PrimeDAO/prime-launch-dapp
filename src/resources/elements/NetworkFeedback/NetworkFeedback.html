@@ -2,7 +2,7 @@
   <div class="networkfeedback">
     <div class="testnet" click.trigger="setShow()">
       <div class="${getIconName()}"></div>
-      <div>${network}</div>
+      <div>${network === 'rinkeby' ? 'Ethereum' : network}</div>
       <div class="arrow"></div>
       <div class="dropdown" show.bind="show">
         <div class="dropdown__title">Select Network</div>
