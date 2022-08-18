@@ -16,6 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
+import moment from "moment";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -436,6 +437,9 @@ export class Seed implements ILaunch {
       const defaultClass = await this.contract.classes(0);
       const exchangeRate = defaultClass.price as BigNumber;
       this.vestingDuration = defaultClass.vestingDuration.toNumber();
+
+      // console.log("123 default class", moment(defaultClass.vestingDuration.toNumber(), "milliseconds").toDate());
+      // console.log("123 default class");
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
 

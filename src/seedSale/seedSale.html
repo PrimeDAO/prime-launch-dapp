@@ -13,7 +13,7 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div class="live-text">•  LIVE</div>
+            <div if.bind="!seed.hasNotStarted" class="live-text">•  LIVE</div>
             <div class="title heading heading2 mobileTitle">${seed.projectTokenInfo.name} SEED</div>
         </div>
         <p class="description">
@@ -218,7 +218,7 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">vesting</div>
-              <div class="class-container__block__text--small">24 months with 2 month lock</div>
+              <div class="class-container__block__text--small">24 months with 2 month lock ${vestingDuration}</div>
             </div>
           </div>
         </div>
