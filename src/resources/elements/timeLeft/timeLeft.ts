@@ -4,8 +4,9 @@ import { PLATFORM } from "aurelia-pal";
 import { computedFrom, autoinject } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./timeLeft.scss";
-import tippy from "tippy.js";
 import { Seed } from "entities/Seed";
+import dayjs from "dayjs";
+import moment from "moment";
 
 // for webpack
 PLATFORM.moduleName("./timeLeftSeed.html");
@@ -22,27 +23,51 @@ export class TimeLeft {
   timeLeft: HTMLElement;
   tippyInstance: any;
 
+  currentTimeLeft: string;
+
   constructor(
     private dateService: DateService,
   ) {}
 
+  attached() {
+    const now = dayjs();
+    const startDate = dayjs(this.launch.startTime);
+    const endDate = dayjs(this.launch.endTime);
+
+    let diff = endDate.diff(now, "minutes");
+
+    const diffDays = Math.floor(diff / 60 / 24);
+    diff = diff - (diffDays*60*24);
+    const diffHours = Math.floor(diff / 60);
+
+    if (now.diff(startDate) > 0) {
+      const title = this.launch?.hasNotStarted ? "Starts in " : "";
+      this.currentTimeLeft = diffDays > 1 ? `${title}${diffDays} day${diffDays > 1 ? "s" : ""}`: `${title}${diffHours} hours`;
+    } else {
+      const soon = 86400000;
+
+      const myDate = Number(now.diff(startDate).toString().replace("-", ""));
+
+      const days = Math.floor(moment.duration(myDate, "milliseconds").asDays());
+      const hours = Math.floor(moment.duration(myDate, "milliseconds").asHours());
+      const milliseconds = Math.floor(moment.duration(myDate, "milliseconds").asMilliseconds());
+
+      const title = "Starts in ";
+
+      this.currentTimeLeft = milliseconds < soon && hours <= 24 ? `${title}${hours} hours` : `${title}${days.toString().replace("-", "")} days`;
+    }
+  }
+
   @computedFrom("launch.startsInMilliseconds", "launch.hasNotStarted")
   get proximity(): number {
     const soon = 86400000;
-    const comingUp = soon * 5;
+    const milliseconds = Number(String(this.launch.startsInMilliseconds).replace("-", ""));
+
     if (this.launch?.hasNotStarted) {
-      if (!this.tippyInstance) {
-        this.tippyInstance = tippy(this.timeLeft,
-          {
-            content: this.dateService.toString(this.launch.startTime, "ddd MMM do - kk:mm z"),
-          });
-      }
-      if (this.launch.startsInMilliseconds > comingUp) {
-        return 3; // faroff
-      } else if (this.launch.startsInMilliseconds <= soon) {
-        return 1; // soon
-      } else {
-        return 2; // comingUp
+      if (milliseconds < soon) {
+        return 2; // soon
+      } else if (milliseconds > soon) {
+        return 1; // comingUp
       }
     }
   }
