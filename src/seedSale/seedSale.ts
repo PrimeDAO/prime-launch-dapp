@@ -20,6 +20,7 @@ import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import dayjs from "dayjs";
 import { LaunchService } from "services/LaunchService";
+import moment from "moment";
 
 enum Phase {
   None = "None",
@@ -39,6 +40,11 @@ export class SeedSale {
   projectTokenToReceive: BigNumber;
   userTokenBalance: string
   userUsdBalance: number
+
+  classCap: number;
+
+  lockDate: string;
+  vestingDate: string;
 
   private accountAddress: Address = null;
   private txPhase = Phase.None;
@@ -178,13 +184,24 @@ export class SeedSale {
     const diffDays = Math.floor(diff / 60 / 24);
     diff = diff - (diffDays*60*24);
     const diffHours = Math.floor(diff / 60);
-    diff = diff - (diffHours*60);
-    const diffMins = diff;
 
-    if (now.diff(startDate) < 0) {
-      this.timeLeft = "didn't start";
+    const endTitle = this.seed?.hasNotStarted ? "" : "left";
+
+    if (now.diff(startDate) > 0) {
+      const title = this.seed?.hasNotStarted ? "Starts in " : "";
+      this.timeLeft = diffDays > 1 ? `${title}${diffDays} day${diffDays > 1 ? "s" : ""} ${endTitle}`: `${title}${diffHours} hours ${endTitle}`;
     } else {
-      this.timeLeft = `${diffDays}d${diffDays > 1 ? "s" : ""}, ${diffHours}h, ${diffMins}m`;
+      const soon = 86400000;
+
+      const myDate = Number(now.diff(startDate).toString().replace("-", ""));
+
+      const days = Math.floor(moment.duration(myDate, "milliseconds").asDays());
+      const hours = Math.floor(moment.duration(myDate, "milliseconds").asHours());
+      const milliseconds = Math.floor(moment.duration(myDate, "milliseconds").asMilliseconds());
+
+      const title = "Starts in ";
+
+      this.timeLeft = milliseconds < soon && hours <= 24 ? `${title}${hours} hours ${endTitle}` : `${title}${days.toString().replace("-", "")} days ${endTitle}`;
     }
   }
 
@@ -262,6 +279,17 @@ export class SeedSale {
       this.userUsdBalance = this.maxUserUsdBalance;
       await this.hydrateUserData();
       //this.disclaimSeed();
+
+      const convertToDate = (date) => {
+        const months = Math.floor(moment.duration(date, "seconds").asMonths());
+        const days = Math.floor(moment.duration(date, "seconds").asDays());
+
+        return `${months === 0 ? `${days} days` : `${months} months`}`;
+      };
+
+      this.vestingDate = convertToDate(this.seed.vestingDuration);
+      this.lockDate = convertToDate(this.seed.vestingCliff);
+      this.classCap = this.seed.classCap;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
