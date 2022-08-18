@@ -62,7 +62,8 @@ export class WalletMenu {
   }
 
   async addTokenToWallet(): Promise<void> {
-    const tokenInfo = await this.tokenService.getTokenInfoFromAddress(this.primeAddress);
+    const address = this.network === "celo" ? "0xBc440BB632ac311F8877dEE23e77ddb1065703B7" : this.primeAddress;
+    const tokenInfo = await this.tokenService.getTokenInfoFromAddress(address);
     this.metamaskHasPrimeToken = await this.ethereumService.addTokenToMetamask(
       tokenInfo.address,
       tokenInfo.symbol,

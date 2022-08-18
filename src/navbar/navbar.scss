@@ -159,7 +159,10 @@ $menu-open-duration: 0.1s;
       border-radius: 6px;
       cursor: pointer;
       position: relative;
-      border: 1px solid $BG01
+      border: 1px solid $BG01;
+      &:hover {
+        background: $Border01;
+      }
     }
     a {
       color: $Secondary01;

@@ -45,6 +45,11 @@
     color: $Neutral02;
     font-size: 14px;
 
+    &:hover {
+      background-color: $Border01;
+      border-color: $Border01;
+    }
+
     .separator {
       display: inline-block;
       margin-left: 0.5em;
@@ -58,7 +63,7 @@
 
     .connectedButtons {
       .connectButton {
-        cursor: default;
+        cursor: pointer;
         text-align: center;
         border: 0;
         color: white;

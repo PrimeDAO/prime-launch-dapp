@@ -1,0 +1,87 @@
+@import "styles/colors.scss";
+body > ux-dialog-container.homeInfo {
+  width: 35%;
+  min-width: 536px;
+  max-width: 536px;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ux-dialog {
+    ux-dialog-header {
+      position: relative;
+      font-family: Inter;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      padding: 34px;
+      padding-top: 30px;
+      padding-bottom: 10px;
+      border: none;
+    }
+
+    ux-dialog-body {
+      border: none;
+      padding: 34px;
+      font-family: Inter;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    ux-dialog-footer {
+      border: none;
+      padding-bottom: 20px;
+      .button1 {
+        &.small {
+          width: 98px;
+        }
+      }
+    }
+
+    .body-container {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        font-family: 'Inter';
+        font-style: normal;
+    }
+
+    .modal__name {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 33px;
+        color: $Neutral04;
+    }
+    .modal__label {
+        margin-top: 20px;
+        margin-bottom: 6px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 120%;
+        color: $Secondary01;
+    }
+    .modal__text {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 120%;
+        color: $Neutral03;
+    }
+    .modal__link__container {
+        margin-top: 42px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .modal__link__arrow {
+        height: 14px;
+    }
+    .modal__link {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 120%;
+        color: $Neutral04;
+    }
+  }
+}
