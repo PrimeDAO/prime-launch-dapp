@@ -52,6 +52,7 @@ export class Seed implements ILaunch {
   public startTime: Date;
   public endTime: Date;
   public admin: Address;
+
   /**
    * a state set by the admin (creator) of the Seed
    */
@@ -87,6 +88,7 @@ export class Seed implements ILaunch {
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
+  public classCap: number;
   public vestingCliff: number;
   public minimumReached: boolean;
   /**
@@ -437,9 +439,7 @@ export class Seed implements ILaunch {
       const defaultClass = await this.contract.classes(0);
       const exchangeRate = defaultClass.price as BigNumber;
       this.vestingDuration = defaultClass.vestingDuration.toNumber();
-
-      // console.log("123 default class", moment(defaultClass.vestingDuration.toNumber(), "milliseconds").toDate());
-      // console.log("123 default class");
+      this.classCap = defaultClass.classFee;
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
 
