@@ -13,8 +13,8 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div class="live-text">•  LIVE</div>
-            <div class="title heading heading2 mobileTitle">${seed.projectTokenInfo.name} SEED</div>
+            <div if.bind="!seed.hasNotStarted" class="live-text">•  LIVE</div>
+            <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
         </div>
         <p class="description">
           ${seed.metadata.projectDetails.proposition}
@@ -27,7 +27,7 @@
       <div class="seed-info col-4">
         <div class="text-container">
           <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
-          <div class="text">${seed.projectTokenInfo.name} (${seed.projectTokenInfo.symbol})</div>
+          <div class="text">${seed.metadata.general.projectName} (${seed.projectTokenInfo.symbol})</div>
         </div>
         <div class="fullProgress">
           <div class="progress" css="width: ${fractionCompleteForBar}%;">
@@ -204,21 +204,21 @@
         <div class="class-container" show.bind="accountAddress">
           <div class="class-container__blocks">
             <div class="class-container__block">
-              <div class="class-container__block__title">your class</div>
+              <div if.bind="true" class="class-container__block__title">your class</div>
               <div class="class-container__block__text">BACKER</div>
             </div>
             <div class="class-container__block">
               <div class="class-container__block__title">purchase limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
-                <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>/<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
+                <div class="class-container__block__text"><formatted-number value.to-view="classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>/<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>
           </div>
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">vesting</div>
-              <div class="class-container__block__text--small">24 months with 2 month lock</div>
+              <div class="class-container__block__text--small">${vestingDate} with ${lockDate} lock</div>
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
+import moment from "moment";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -51,6 +52,7 @@ export class Seed implements ILaunch {
   public startTime: Date;
   public endTime: Date;
   public admin: Address;
+
   /**
    * a state set by the admin (creator) of the Seed
    */
@@ -86,6 +88,7 @@ export class Seed implements ILaunch {
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
+  public classCap: number;
   public vestingCliff: number;
   public minimumReached: boolean;
   /**
@@ -436,6 +439,7 @@ export class Seed implements ILaunch {
       const defaultClass = await this.contract.classes(0);
       const exchangeRate = defaultClass.price as BigNumber;
       this.vestingDuration = defaultClass.vestingDuration.toNumber();
+      this.classCap = defaultClass.classFee;
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
 
