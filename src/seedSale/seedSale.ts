@@ -42,6 +42,8 @@ export class SeedSale {
   userUsdBalance: number
 
   classCap: number;
+  classSold: number;
+  classPrice: number;
 
   lockDate: string;
   vestingDate: string;
@@ -280,16 +282,17 @@ export class SeedSale {
       await this.hydrateUserData();
       //this.disclaimSeed();
 
-      const convertToDate = (date) => {
-        const months = Math.floor(moment.duration(date, "seconds").asMonths());
-        const days = Math.floor(moment.duration(date, "seconds").asDays());
+      const convertToDate = (duration) => {
+        const days = Math.round(duration / 1000 / 60 / 24);
 
-        return `${months === 0 ? `${days} days` : `${months} months`}`;
+        return `${days} days`;
       };
 
       this.vestingDate = convertToDate(this.seed.vestingDuration);
       this.lockDate = convertToDate(this.seed.vestingCliff);
       this.classCap = this.seed.classCap;
+      this.classPrice = this.seed.classPrice.toNumber();
+      this.classSold = this.seed.classSold.toNumber();
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));

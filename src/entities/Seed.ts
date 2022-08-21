@@ -16,7 +16,6 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
-import moment from "moment";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -52,6 +51,8 @@ export class Seed implements ILaunch {
   public startTime: Date;
   public endTime: Date;
   public admin: Address;
+  public classPrice: any;
+  public classSold: any;
 
   /**
    * a state set by the admin (creator) of the Seed
@@ -88,6 +89,7 @@ export class Seed implements ILaunch {
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
+  public fundersClass: IContributorClass;
   public classCap: number;
   public vestingCliff: number;
   public minimumReached: boolean;
@@ -436,10 +438,17 @@ export class Seed implements ILaunch {
         },
       ];
 
-      const defaultClass = await this.contract.classes(0);
-      const exchangeRate = defaultClass.price as BigNumber;
-      this.vestingDuration = defaultClass.vestingDuration.toNumber();
-      this.classCap = defaultClass.classFee;
+      const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
+
+      // const defaultClass = await this.contract.classes(0);
+      const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
+      const individualClass = await this.contract.classes(funders.class);
+
+      const exchangeRate = individualClass.price as BigNumber;
+      this.vestingDuration = individualClass.vestingDuration.toNumber();
+      this.classCap = individualClass.classFee;
+      this.classPrice = exchangeRate;
+      this.classSold = individualClass.classFundingCollected;
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
 

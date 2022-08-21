@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="text">
-            Project tokens will unlock gradually over ${seed.vestingDuration | secondsDays} day(s) after launch.
+            Project tokens will unlock gradually over ${vestingDate} after launch.
           </div>
           <div class="unlockButton" if.to-view="lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
           <template else>
@@ -204,8 +204,8 @@
         <div class="class-container" show.bind="accountAddress">
           <div class="class-container__blocks">
             <div class="class-container__block">
-              <div if.bind="true" class="class-container__block__title">your class</div>
-              <div class="class-container__block__text">BACKER</div>
+                <div class="class-container__block__title">vesting</div>
+                <div class="class-container__block__text--small">${vestingDate} with ${lockDate} lock</div>
             </div>
             <div class="class-container__block">
               <div class="class-container__block__title">purchase limit</div>
@@ -217,8 +217,6 @@
           </div>
           <div class="class-container__blocks">
             <div class="class-container__block">
-              <div class="class-container__block__title">vesting</div>
-              <div class="class-container__block__text--small">${vestingDate} with ${lockDate} lock</div>
             </div>
           </div>
         </div>
@@ -245,11 +243,11 @@
           <div class="row">
             <div class="col">
               <div class="title">Class sold</div>
-              <div class="text">N/A</div>
+              <div class="text">${classSold || 'N/A'}</div>
             </div>
             <div class="col">
               <div class="title">Class price</div>
-              <div class="text">N/A</div>
+              <div class="text">${classPrice || 'N/A'}</div>
             </div>
             <div class="col">
               <div class="tokenPair">
