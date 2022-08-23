@@ -442,7 +442,7 @@ export class Seed implements ILaunch {
 
       // const defaultClass = await this.contract.classes(0);
       const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
-      const individualClass = await this.contract.classes(funders.class);
+      const individualClass = await this.contract.classes(funders.class ?? funders);
 
       const exchangeRate = individualClass.price as BigNumber;
       this.vestingDuration = individualClass.vestingDuration.toNumber();
