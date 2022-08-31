@@ -211,7 +211,8 @@ export class ContractsService {
     startingBlockNumber: number,
     handler: (event: Array<IStandardEvent<TEventArgs>>) => void): Promise<void> {
 
-    const blocksToFetch = (await this.ethereumService.getLastBlock()).number - startingBlockNumber;
+    const lastEthBlockNumber = (await this.ethereumService.getLastBlock()).number;
+    const blocksToFetch = lastEthBlockNumber - startingBlockNumber;
     let startingBlock = startingBlockNumber;
 
     /**
@@ -221,7 +222,9 @@ export class ContractsService {
     let fetched = 0;
 
     do {
-      await contract.queryFilter(filter, startingBlock, startingBlock + blocksize - 1)
+      // const endBlock = startingBlock + blocksize - 1;
+      const endBlock = startingBlock + blocksize + 1;
+      await contract.queryFilter(filter, startingBlock, endBlock)
         .then((events: Array<IStandardEvent<TEventArgs>>): void => {
           if (events?.length) {
             handler(events);

@@ -44,6 +44,7 @@ export class Launches {
     await this.lbpManagerService.ensureAllLbpsInitialized();
 
     const seeds = this.seedService.seedsArray as Array<ILaunch>;
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: launches.ts ~ line 47 ~ seeds", seeds);
     const lbps = this.lbpManagerService.lbpManagersArray as Array<ILaunch>;
 
     this.launches = (seeds).concat(lbps);

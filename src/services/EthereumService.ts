@@ -76,7 +76,9 @@ export class EthereumService {
   ) { }
 
   public static ProviderEndpoints = {
-    [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    // [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    [Networks.Mainnet]: "http://127.0.0.1:8545",
+    [Networks.Goerli]: "http://127.0.0.1:8545",
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
