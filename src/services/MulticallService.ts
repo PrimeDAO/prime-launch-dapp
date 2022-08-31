@@ -41,7 +41,8 @@ export class MultiCallService {
   }
   public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
     const config = {
-      multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
+      // multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
+      multicallAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9", // local hard Multicall deployed address
       rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
       interval: 5000000, // basically disable polling, just take the first batch
       errorRetryWait: 5000000, // basically disable polling
