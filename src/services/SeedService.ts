@@ -70,6 +70,12 @@ export class SeedService {
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
         break;
+      case Networks.Celo:
+        this.startingBlockNumber = 14836595;
+        break;
+      case Networks.Alfajores:
+        this.startingBlockNumber = 13297679;
+        break;
       default:
         this.startingBlockNumber = 0;
         break;
@@ -204,10 +210,10 @@ export class SeedService {
 
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
-    const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
+    // const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
-    const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
-    const gnosis = api(safeAddress, EthereumService.targetedNetwork);
+    // const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
+    // const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
     const transaction = {
       to: seedFactory.address,
@@ -221,7 +227,7 @@ export class SeedService {
       config.tokenDetails.projectTokenInfo);
 
     const seedArguments = [
-      safeAddress,
+      // safeAddress,
       config.launchDetails.adminAddress,
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
@@ -256,70 +262,70 @@ export class SeedService {
     // console.dir(transaction);
 
     let estimate;
-    if (EthereumService.targetedNetwork === Networks.Arbitrum) {
+    // if (EthereumService.targetedNetwork === Networks.Arbitrum) {
       estimate = { safeTxGas: 0 };
-    } else {
-      estimate = (await gnosis.getEstimate(transaction)).data;
-    }
+    // } else {
+    //   estimate = (await gnosis.getEstimate(transaction)).data;
+    // }
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
-      nonce: await gnosis.getCurrentNonce(),
+      // nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
       gasToken: "0x0000000000000000000000000000000000000000",
       refundReceiver: "0x0000000000000000000000000000000000000000",
-      safe: safeAddress,
+      // safe: safeAddress,
     });
 
-    const { hash, signature } = await signer.callStatic.generateSignature(
-      transaction.to,
-      transaction.value,
-      transaction.data,
-      transaction.operation,
-      transaction.safeTxGas,
-      transaction.baseGas,
-      transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
-      transaction.nonce,
-    );
+    // const { hash, signature } = await signer.callStatic.generateSignature(
+    //   transaction.to,
+    //   transaction.value,
+    //   transaction.data,
+    //   transaction.operation,
+    //   transaction.safeTxGas,
+    //   transaction.baseGas,
+    //   transaction.gasPrice,
+    //   transaction.gasToken,
+    //   transaction.refundReceiver,
+    //   transaction.nonce,
+    // );
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.contractTransactionHash = hash;
-    // eslint-disable-next-line require-atomic-updates
-    transaction.signature = signature;
+    // // eslint-disable-next-line require-atomic-updates
+    // transaction.contractTransactionHash = hash;
+    // // eslint-disable-next-line require-atomic-updates
+    // transaction.signature = signature;
 
     // console.log("generating signature for transaction:");
     // console.dir(transaction);
 
-    const result = await this.transactionsService.send(() => signer.generateSignature(
-      transaction.to,
-      transaction.value,
-      transaction.data,
-      transaction.operation,
-      transaction.safeTxGas,
-      transaction.baseGas,
-      transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
-      transaction.nonce,
-    ));
+    // const result = await this.transactionsService.send(() => signer.generateSignature(
+    //   transaction.to,
+    //   transaction.value,
+    //   transaction.data,
+    //   transaction.operation,
+    //   transaction.safeTxGas,
+    //   transaction.baseGas,
+    //   transaction.gasPrice,
+    //   transaction.gasToken,
+    //   transaction.refundReceiver,
+    //   transaction.nonce,
+    // ));
 
-    if (!result) {
-      return null;
-    }
+    // if (!result) {
+    //   return null;
+    // }
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.sender = signer.address;
+    // // eslint-disable-next-line require-atomic-updates
+    // transaction.sender = signer.address;
 
-    this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
+    // this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
 
-    const response = await gnosis.sendTransaction(transaction);
+    // const response = await gnosis.sendTransaction(transaction);
 
-    if (response.status !== 201) {
-      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
-    }
+    // if (response.status !== 201) {
+    //   throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+    // }
 
     return metaDataHash;
   }

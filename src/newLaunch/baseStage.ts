@@ -64,9 +64,17 @@ export abstract class BaseStage<IConfig> {
       case Networks.Mainnet:
         prefix = "eth:";
         break;
+      /* TODO - Add when ready */
+      // case Networks.Celo:
+      //   prefix = "celo:";
+      //   break;
       case Networks.Rinkeby:
         prefix = "rin:";
         break;
+      /* TODO - Add when ready */
+      // case Networks.Alfajores:
+      //   prefix = "alfa:";
+      //   break;
       case Networks.Arbitrum:
         prefix = "arb1:";
         break;

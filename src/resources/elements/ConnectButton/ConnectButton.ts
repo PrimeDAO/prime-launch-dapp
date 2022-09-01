@@ -36,7 +36,7 @@ export class ConnectButton {
     private eventAggregator: EventAggregator,
   ) {
     this.network = EthereumService.targetedNetwork;
-    this.networkSymbol = this.network === "celo" ? "CELO" : "ETH";
+    this.networkSymbol = this.network === "celo" || this.network === "alfajores" ? "CELO" : "ETH";
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
       this.txPhase = Phase.None;

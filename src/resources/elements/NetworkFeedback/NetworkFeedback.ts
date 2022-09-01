@@ -1,5 +1,5 @@
 import { autoinject, containerless, customElement } from "aurelia-framework";
-import { AllowedNetworks, EthereumService } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, Networks } from "services/EthereumService";
 import LocalStorageService from "services/LocalStorageService";
 
 @autoinject
@@ -8,15 +8,12 @@ import LocalStorageService from "services/LocalStorageService";
 
 export class NetworkFeedback {
 
-  private network: string;
-  private etheriumNetwork: string
-  private isTestNet;
+  private network: AllowedNetworks;
+  private isProduction;
   private show: boolean
 
   constructor(private ethereumService: EthereumService) {
-    this.etheriumNetwork = process.env.NETWORK;
     this.network = EthereumService.targetedNetwork;
-    this.isTestNet = EthereumService.isTestNet;
     this.show = false;
   }
 
@@ -25,7 +22,7 @@ export class NetworkFeedback {
   }
 
   getIconName(): string {
-    return this.network === "celo" ? "celo" : "eth";
+    return (this.network === Networks.Celo || this.network === Networks.Alfajores) ? "celo" : "eth";
   }
 
   async onDropDownItemClick(item: AllowedNetworks): Promise<void> {
@@ -33,6 +30,10 @@ export class NetworkFeedback {
     window.location.reload();
     this.network = EthereumService.targetedNetwork;
     this.show = false;
+  }
+  
+  attached() {
+    this.isProduction = process.env.NODE_ENV !== "development";
   }
 
   isActive(item: AllowedNetworks): boolean {

@@ -79,7 +79,8 @@ export function configure(aurelia: Aurelia): void {
       TimingService.end("LaunchService Initialization");
 
       // TimingService.start("BalancerService Initialization");
-      if (network !== Networks.Celo) {
+      // TODO: Remove condition once we have Balancer Subgraph for Celo networks
+      if (network !== Networks.Celo && network !== Networks.Alfajores) {
         const balancerService = aurelia.container.get(BalancerService);
         balancerService.initialize();
       }

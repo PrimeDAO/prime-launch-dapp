@@ -2,18 +2,26 @@
   <div class="networkfeedback">
     <div class="testnet" click.trigger="setShow()">
       <div class="${getIconName()}"></div>
-      <div>${network === 'rinkeby' ? 'Ethereum' : network}</div>
+      <div>${network}</div>
       <div class="arrow"></div>
       <div class="dropdown" show.bind="show">
         <div class="dropdown__title">Select Network</div>
         <div class="dropdown__hr"></div>
-        <div class="${isActive('celo') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('celo')">
+        <div if.bind="isProduction" class="${isActive('celo') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('celo')">
           <div class="celo"></div>
-          <div>celo</div>
+          <div>Celo</div>
         </div>
-        <div class="${isActive(etheriumNetwork) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(etheriumNetwork)">
+        <div if.bind="!isProduction" class="${isActive('alfajores') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('alfajores')">
+          <div class="celo"></div>
+          <div>Alfajores</div>
+        </div>
+        <div if.bind="isProduction" class="${isActive('mainnet') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('mainnet')">
           <div class="eth"></div>
           <div>Ethereum</div>
+        </div>
+        <div if.bind="!isProduction" class="${isActive('rinkeby') ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('rinkeby')">
+          <div class="eth"></div>
+          <div>Rinkeby</div>
         </div>
       </div>
     </div>
