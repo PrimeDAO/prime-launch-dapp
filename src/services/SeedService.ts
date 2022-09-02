@@ -70,6 +70,12 @@ export class SeedService {
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
         break;
+      case Networks.Celo:
+        this.startingBlockNumber = 14836595;
+        break;
+      case Networks.Alfajores:
+        this.startingBlockNumber = 13297679;
+        break;
       default:
         this.startingBlockNumber = 0;
         break;
@@ -202,7 +208,7 @@ export class SeedService {
 
     const transaction = {
       to: seedFactory.address,
-      value: 0,
+      value: EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores ? "0" : 0,
       operation: 0,
     } as any;
 

@@ -70,6 +70,13 @@ export abstract class BaseStage<IConfig> {
       case Networks.Arbitrum:
         prefix = "arb1:";
         break;
+      /* TODO - Add when ready */
+      // case Networks.Celo:
+      //   prefix = "celo:";
+      //   break;
+      // case Networks.Alfajores:
+      //   prefix = "alfa:";
+      //   break;
       default:
         prefix = "";
         break;

@@ -4,12 +4,12 @@ const parseErrorData = (data) => {
   return Object.values(data).reduce(
     (accumulator, error) =>
       `${accumulator}${accumulator.length == 0 ? "" : " , "}${error}`,
-    ""
+    "",
   );
 };
 
 const errorHandler = (error) => {
-  let errorMsg = {};
+  const errorMsg = {};
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -38,6 +38,10 @@ const getUrl = (network) => {
       return `https://safe-transaction.rinkeby.gnosis.io/api/v1/safes/`;
     case "arbitrum":
       return `https://safe-transaction.arbitrum.gnosis.io/api/v1/safes/`;
+    case "celo": // TODO: Check URL
+      return 'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/';
+    // case "alfajores": // TODO: Check URL
+    //   return 'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/';
     default:
       return `${network}, is not supported yet`;
   }

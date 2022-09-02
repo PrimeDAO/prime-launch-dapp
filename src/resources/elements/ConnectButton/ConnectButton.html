@@ -1,5 +1,5 @@
 <template>
-  <div class="connectButtonContainer ${accountAddress ? 'connected' : ''}">
+  <div class="connectButtonContainer ${accountAddress ? 'connected' : 'notconnected'}">
     <div class="connectedButtons" if.to-view="accountAddress">
       <template if.to-view="!hideBalances">
         <template if.bind="primeAddress">
@@ -13,10 +13,11 @@
           <span class="separator">|</span>
         -->
         </template>
-        <div class="ethBalanceContainer ETH">
-          <ethbalance formatted="0.00a"></ethbalance>ETH
+        <div class="ethBalanceContainer">
+          <ethbalance formatted="0.00a"></ethbalance>${networkSymbol}
         </div>
       </template>
+      <span class="separator">|</span>
       <div class="connectButton">
         <div if.to-view="txPhase !== 'None'" click.delegate="gotoTx()" class.bind="'pending' + ((txPhase==='Confirming')
           ? ' confirming' : '')">

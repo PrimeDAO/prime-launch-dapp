@@ -1,8 +1,8 @@
 import detectEthereumProvider from "@metamask/detect-provider";
-// import { BrowserStorageService } from "./BrowserStorageService";
+import { BrowserStorageService } from "./BrowserStorageService";
 /* eslint-disable no-console */
 import { ConsoleLogService } from "services/ConsoleLogService";
-import { BigNumber, BigNumberish, ethers, Signer } from "ethers";
+import { BigNumber, BigNumberish, ethers, Signer, constants } from "ethers";
 import { BaseProvider, ExternalProvider, Web3Provider, Network } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -49,13 +49,15 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum";
+export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "celo" | "alfajores";
 
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
   Kovan = "kovan",
   Arbitrum = "arbitrum",
+  Celo = "celo",
+  Alfajores = "alfajores",
 }
 
 export interface IChainEventInfo {
@@ -70,15 +72,18 @@ export class EthereumService {
     private eventAggregator: EventAggregator,
     private disclaimerService: DisclaimerService,
     private consoleLogService: ConsoleLogService,
-    // private storageService: BrowserStorageService,
+    private storageService: BrowserStorageService,
   ) { }
 
   public static ProviderEndpoints = {
-    "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
-    "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
-    "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    [Networks.Rinkeby]: `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
+    [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Celo]: "https://forno.celo.org",
+    [Networks.Alfajores]: `https://alfajores.rpcs.dev:8545`,
   }
+
   private static providerOptions = {
     torus: {
       package: Torus, // required
@@ -103,6 +108,8 @@ export class EthereumService {
           4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
+          42220: EthereumService.ProviderEndpoints[Networks.Celo],
+          44787: EthereumService.ProviderEndpoints[Networks.Alfajores],
         },
       },
     },
@@ -134,8 +141,7 @@ export class EthereumService {
     EthereumService.targetedNetwork = network;
     EthereumService.targetedChainId = this.chainIdByName.get(network);
     EthereumService.providerOptions.torus.options.network = network;
-    EthereumService.isTestNet = ((network !== Networks.Mainnet) && (network !== Networks.Arbitrum));
-
+    EthereumService.isTestNet = ((network !== Networks.Mainnet) && (network !== Networks.Arbitrum) && (network !== Networks.Celo));
     const readonlyEndPoint = EthereumService.ProviderEndpoints[EthereumService.targetedNetwork];
     if (!readonlyEndPoint) {
       throw new Error(`Please connect to either ${Networks.Mainnet} or ${Networks.Rinkeby}`);
@@ -143,6 +149,21 @@ export class EthereumService {
 
     // comment out to run DISCONNECTED
     this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
+
+    // CELO doesn't return gasLimit in response and crashes ethers
+    if (EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores) {
+      const originalBlockFormatter = this.readOnlyProvider.formatter._block;
+      this.readOnlyProvider.formatter._block = (value, format) => {
+        return originalBlockFormatter(
+          {
+            gasLimit: constants.Zero,
+            ...value,
+          },
+          format,
+        );
+      };
+    }
+
     this.readOnlyProvider.pollingInterval = 15000;
 
     if (!this.blockSubscribed) {
@@ -162,6 +183,8 @@ export class EthereumService {
   //   [4, Networks.Rinkeby],
   //   [42, Networks.Kovan],
   //   [42161, Networks.Arbitrum],
+  //   [42220, Networks.Celo],
+  //   [44787, Networks.Alfajores],
   // ]);
 
   private friendlyChainNameById = new Map<number, string>([
@@ -169,14 +192,17 @@ export class EthereumService {
     [4, "Rinkeby"],
     [42, "Kovan"],
     [42161, "Arbitrum One"],
+    [42220, "Celo"],
+    [44787, "Alfajores"],
   ]);
-
 
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Rinkeby, 4],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
+    [Networks.Celo, 42220],
+    [Networks.Alfajores, 44787],
   ]);
 
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
@@ -236,6 +262,11 @@ export class EthereumService {
     return this.walletProvider.getSigner(this.defaultAccountAddress);
   }
 
+  public metaMaskWalletProvider: Web3Provider & IEIP1193 & ExternalProvider;
+  /**
+   * Might be duplication of `walletProvider`, but it was easier to duplicate.
+   */
+  public safeProvider: Web3Provider & IEIP1193 & ExternalProvider;
   /**
    * provided by ethers given provider from Web3Modal
    */
@@ -292,6 +323,24 @@ export class EthereumService {
         }
       }
     }
+  }
+
+  public async ensureMetaMaskWalletProvider(): Promise<void> {
+    if (!this.metaMaskWalletProvider) {
+      try {
+        const provider = detectEthereumProvider ? (await detectEthereumProvider({ mustBeMetaMask: true })) as any : undefined;
+        this.metaMaskWalletProvider = provider;
+      } catch (error) {
+        console.log(error.message, error, "error");
+      }
+    }
+  }
+
+  private async removeWalletProviderListeners(): Promise<void> {
+    await this.ensureMetaMaskWalletProvider();
+    this.metaMaskWalletProvider.removeListener("accountsChanged", this.handleAccountsChanged);
+    this.metaMaskWalletProvider.removeListener("chainChanged", this.handleChainChanged);
+    this.metaMaskWalletProvider.removeListener("disconnect", this.handleDisconnect);
   }
 
   private ensureWeb3Modal(): void {
@@ -508,9 +557,14 @@ export class EthereumService {
   }
 
   private async getBlock(blockNumber: number): Promise<IBlockInfo> {
-    const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
-    block.blockDate = new Date(block.timestamp * 1000);
-    return block;
+    try {
+      const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+      block.blockDate = new Date(block.timestamp * 1000);
+      return block;
+    } catch (e) {
+      this.consoleLogService.logMessage("BLOCK GET ERR", e);
+      return null;
+    }
   }
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
