@@ -112,7 +112,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "engines": {
-    "node": ">=14.11.0"
+    "node": ">=14.11.0 <15"
   },
   "browser": {
     "http": false
