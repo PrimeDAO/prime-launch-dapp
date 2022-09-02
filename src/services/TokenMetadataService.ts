@@ -114,7 +114,23 @@ export default class TokenMetadataService {
 
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
         try {
-          const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+          let network = "";
+          switch (EthereumService.targetedNetwork) {
+            case "mainnet":
+            case "rinkeby":
+              network = "ethereum";
+              break;
+            case "arbitrum":
+              network = "arbitrum";
+              break;
+            case "celo":
+            case "alfajores":
+              network = "celo";
+              break;
+            default:
+              network = EthereumService.targetedNetwork;
+          }
+          const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${network}/assets/${address}/logo.png`;
           const logoFound = await axios.get(logoURI).catch(() => null);
           tokenInfo.logoURI = logoFound ? logoURI : null;
           /**
