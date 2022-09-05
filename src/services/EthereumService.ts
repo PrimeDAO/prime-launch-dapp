@@ -49,8 +49,6 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "celo" | "alfajores";
-
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
@@ -59,6 +57,8 @@ export enum Networks {
   Celo = "celo",
   Alfajores = "alfajores",
 }
+
+export type AllowedNetworks = Networks.Mainnet | Networks.Rinkeby | Networks.Kovan | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
 
 export interface IChainEventInfo {
   chainId: number;

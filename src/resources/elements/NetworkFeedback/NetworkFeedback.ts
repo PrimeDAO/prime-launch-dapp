@@ -18,6 +18,16 @@ export class NetworkFeedback {
   ) {
     this.network = EthereumService.targetedNetwork;
     this.show = false;
+
+    this.isProduction = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
+    const storedNetwork = this.storageService.lsGet<AllowedNetworks>("network");
+    if (
+      storedNetwork &&
+      (this.isProduction && ![Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(storedNetwork))
+      || (!this.isProduction && ![Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork))
+    ) {
+      this.storageService.lsRemove("network");
+    }
   }
 
   setShow(): void {
@@ -31,10 +41,6 @@ export class NetworkFeedback {
   async onDropDownItemClick(item: AllowedNetworks): Promise<void> {
     this.storageService.lsSet("network", `${item}`);
     window.location.reload();
-  }
-
-  attached() {
-    this.isProduction = process.env.NODE_ENV !== "development";
   }
 
   isActive(item: AllowedNetworks): boolean {
