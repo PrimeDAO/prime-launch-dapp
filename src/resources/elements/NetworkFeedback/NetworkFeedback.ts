@@ -11,6 +11,7 @@ export class NetworkFeedback {
   private network: AllowedNetworks;
   private isProduction;
   private show: boolean;
+  private Networks = Networks;
 
   constructor(
     private ethereumService: EthereumService,
