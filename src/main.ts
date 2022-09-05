@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -81,7 +81,7 @@ export function configure(aurelia: Aurelia): void {
 
       // TimingService.start("BalancerService Initialization");
       // TODO: Remove condition once we have Balancer Subgraph for Celo networks
-      if (network !== Networks.Celo && network !== Networks.Alfajores) {
+      if (isCeloNetworkLike(network)) {
         const balancerService = aurelia.container.get(BalancerService);
         balancerService.initialize();
       }

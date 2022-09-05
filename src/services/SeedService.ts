@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, Networks, toWei } from "services/EthereumService";
+import { EthereumService, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -208,7 +208,7 @@ export class SeedService {
 
     const transaction = {
       to: seedFactory.address,
-      value: EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores ? "0" : 0,
+      value: isCeloNetworkLike() ? "0" : 0,
       operation: 0,
     } as any;
 
