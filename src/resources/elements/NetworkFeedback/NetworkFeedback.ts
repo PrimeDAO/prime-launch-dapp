@@ -1,5 +1,5 @@
 import { autoinject, containerless, customElement } from "aurelia-framework";
-import { AllowedNetworks, EthereumService, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, Networks } from "services/EthereumService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
 @autoinject
@@ -35,7 +35,7 @@ export class NetworkFeedback {
   }
 
   getIconName(): string {
-    return (this.network === Networks.Celo || this.network === Networks.Alfajores) ? "celo" : "eth";
+    return isCeloNetworkLike(this.network) ? "celo" : "eth";
   }
 
   async onDropDownItemClick(item: AllowedNetworks): Promise<void> {

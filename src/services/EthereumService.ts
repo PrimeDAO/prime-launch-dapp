@@ -81,7 +81,7 @@ export class EthereumService {
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
-    [Networks.Alfajores]: `https://alfajores.rpcs.dev:8545`,
+    [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
   }
 
   private static providerOptions = {
@@ -580,6 +580,15 @@ export class EthereumService {
 
     return `http://${targetedNetwork}etherscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
   }
+}
+
+/**
+ * Either Celo Mainnet or Testnet
+ * @param network Default: Network the current wallet is connected to
+ */
+export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
+  const isCeloLike = network !== Networks.Celo && network !== Networks.Alfajores;
+  return isCeloLike;
 }
 
 /**
