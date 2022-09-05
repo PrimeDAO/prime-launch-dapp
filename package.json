@@ -1,7 +1,7 @@
 {
   "name": "@primedao/prime-launch-dapp",
   "version": "1.1.0",
-  "description": "The PrimeDAO’s Home for IDOs",
+  "description": "The PrimeDAO's Home for IDOs",
   "repository": {
     "type": "git",
     "url": "https://github.com/PrimeDAO/prime-launch-dapp"
