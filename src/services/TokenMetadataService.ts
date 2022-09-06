@@ -2,7 +2,7 @@ import axios from "axios";
 import { autoinject } from "aurelia-framework";
 import { ContractNames, ContractsService } from "./ContractsService";
 import { getAddress } from "ethers/lib/utils";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, Networks } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenTypes";
 import { ethers } from "ethers";
 import { ConsoleLogService } from "services/ConsoleLogService";
@@ -116,15 +116,15 @@ export default class TokenMetadataService {
         try {
           let network = "";
           switch (EthereumService.targetedNetwork) {
-            case "mainnet":
-            case "rinkeby":
+            case Networks.Mainnet:
+            case Networks.Rinkeby:
               network = "ethereum";
               break;
-            case "arbitrum":
+            case Networks.Arbitrum:
               network = "arbitrum";
               break;
-            case "celo":
-            case "alfajores":
+            case Networks.Celo:
+            case Networks.Alfajores:
               network = "celo";
               break;
             default:

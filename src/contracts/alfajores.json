@@ -3,7 +3,7 @@
   "chainId": "44787",
   "contracts": {
     "Seed": {
-      "address": "0x0788407B68acdd4009AE6c31411808c6fA24BEb3",
+      "address": "0xeF74A087d47527080C76005Cb34c9eFDd9326020",
       "abi": [
         {
           "anonymous": false,
@@ -230,49 +230,6 @@
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint8",
-              "name": "_class",
-              "type": "uint8"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_classCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_individualCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_price",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_vestingDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_classVestingStartTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_classFee",
-              "type": "uint256"
-            }
-          ],
-          "name": "changeClass",
-          "outputs": [],
-          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -3033,7 +2990,7 @@
       "abi": "ERC20"
     },
     "PrimeToken": {
-      "address": "0xD5264be94A7C69C8e77a7067993CF36C6d8D17c4",
+      "address": "0x63Dc36A83771a65bAFb1CA09a9EE4D009F3792b7",
       "abi": [
         {
           "inputs": [
@@ -3342,7 +3299,7 @@
       ]
     },
     "RatingReputation": {
-      "address": "0xdFFFBD92f0442D04143fABc127A8217F77E97149",
+      "address": "0xa1f30d104a4950236CEaB5c00BA24e12c1689eF0",
       "abi": [
         {
           "inputs": [
@@ -3757,7 +3714,7 @@
       ]
     },
     "Safe": {
-      "address": "0x79204a1E9a49D4C132931AdCB9F39dA90179ba1c",
+      "address": "0xEFc3a819695932394D89b8AF6f49e0D89EDf9A40",
       "abi": [
         {
           "inputs": [],
@@ -4793,7 +4750,7 @@
       ]
     },
     "SignerV2": {
-      "address": "0x86Be53D39fB8406a7192d3086ED644c5e5187cf1",
+      "address": "0x931B0459Cd92D3FFF58cD1Cb00F8B48098d0d65d",
       "abi": [
         {
           "inputs": [
