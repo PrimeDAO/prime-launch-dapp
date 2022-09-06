@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -22,6 +22,7 @@ import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
 import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
+import { BrowserStorageService } from "services/BrowserStorageService";
 
 export function configure(aurelia: Aurelia): void {
   aurelia.use
@@ -35,7 +36,9 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  const network = process.env.NETWORK as AllowedNetworks;
+  const storageService = new BrowserStorageService;
+  // storageService.lsSet("network", "alfajores");
+  const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
   const inDev = process.env.NODE_ENV === "development";
 
   if (inDev) {
@@ -77,8 +80,11 @@ export function configure(aurelia: Aurelia): void {
       TimingService.end("LaunchService Initialization");
 
       // TimingService.start("BalancerService Initialization");
-      const balancerService = aurelia.container.get(BalancerService);
-      balancerService.initialize();
+      // TODO: Remove condition once Symmetric Subgraph is being used
+      if (!isCeloNetworkLike(network)) {
+        const balancerService = aurelia.container.get(BalancerService);
+        balancerService.initialize();
+      }
       // TimingService.end("BalancerService Initialization");
 
       TimingService.start("GeoBlockService Initialization");

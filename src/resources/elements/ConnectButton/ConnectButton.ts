@@ -2,7 +2,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, containerless, customElement, singleton } from "aurelia-framework";
 import { ContractNames, ContractsService } from "services/ContractsService";
 import { DisposableCollection } from "services/DisposableCollection";
-import { Address, EthereumService } from "services/EthereumService";
+import { Address, EthereumService, isCeloNetworkLike } from "services/EthereumService";
 import { EventConfigTransaction } from "services/GeneralEvents";
 import { TransactionReceipt } from "services/TransactionsService";
 import "./ConnectButton.scss";
@@ -26,12 +26,16 @@ export class ConnectButton {
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
   private primeAddress: Address;
+  private networkSymbol: string;
   @bindable.booleanAttr private hideBalances: boolean;
 
   constructor(
     private ethereumService: EthereumService,
     private eventAggregator: EventAggregator,
   ) {
+    const network = EthereumService.targetedNetwork;
+    this.networkSymbol = isCeloNetworkLike(network) ? "CELO" : "ETH";
+
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
       this.txPhase = Phase.None;

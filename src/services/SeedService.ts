@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, Networks, toWei } from "services/EthereumService";
+import { EthereumService, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -69,6 +69,12 @@ export class SeedService {
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
+        break;
+      case Networks.Celo:
+        this.startingBlockNumber = 14836595;
+        break;
+      case Networks.Alfajores:
+        this.startingBlockNumber = 13297679;
         break;
       default:
         this.startingBlockNumber = 0;
@@ -202,7 +208,7 @@ export class SeedService {
 
     const transaction = {
       to: seedFactory.address,
-      value: 0,
+      value: isCeloNetworkLike() ? "0" : 0,
       operation: 0,
     } as any;
 

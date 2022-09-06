@@ -29,6 +29,14 @@ export class MultiCallService {
     addresses[Networks.Arbitrum] = {
       "multicall": "0xC2E9dDC765303D86B0D349bB5FE44D76d41cA74A",
       "rpcUrl": EthereumService.ProviderEndpoints[Networks.Arbitrum],
+    },
+    addresses[Networks.Celo] = {
+      "multicall": "0x57f9b1a50FcAbD56843DA648379C82b24ba464Dd",
+      "rpcUrl": EthereumService.ProviderEndpoints[Networks.Celo],
+    },
+    addresses[Networks.Alfajores] = {
+      "multicall": "0x51bbaE8F2C13E4613033148E0EeD12Fc82a896c5",
+      "rpcUrl": EthereumService.ProviderEndpoints[Networks.Alfajores],
     };
   }
   public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
