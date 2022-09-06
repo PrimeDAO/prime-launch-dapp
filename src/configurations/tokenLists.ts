@@ -108,4 +108,21 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
     //   "https://umaproject.org/uma.tokenlist.json",
     // ],
   },
+  "alfajores": {
+    PrimeDao: {
+      Payments:
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primeAlfajoresPayment.json",
+    },
+    // Balancer: {
+    //   Default:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",
+    //   Vetted:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
+    // },
+    // External: [
+    //   "ipns://tokens-uniswap-org",
+    //   // 'https://tokens.coingecko.com/uniswap/all.json',
+    //   "https://umaproject.org/uma.tokenlist.json",
+    // ],
+  },
 };

@@ -3642,7 +3642,7 @@
       ]
     },
     "Seed": {
-      "address": "0x12FC4507da705E641f657a84eb959E0Deb71C384",
+      "address": "0xeF74A087d47527080C76005Cb34c9eFDd9326020",
       "abi": [
         {
           "anonymous": false,
@@ -4468,7 +4468,7 @@
       ]
     },
     "SeedFactory": {
-      "address": "0x176a4D54c7Be1E20A6a671c48934EC42787f32Ea",
+      "address": "0xFb59890ec6bb01A2054f397AFAEf78228508D108",
       "abi": [
         {
           "anonymous": false,

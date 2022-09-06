@@ -13,7 +13,8 @@
     "target": "es2019",
     "lib": [
       "es2019",
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "moduleResolution": "node",
     "baseUrl": "src",

@@ -49,15 +49,16 @@ export interface IBlockInfo extends IBlockInfoNative {
   blockDate: Date;
 }
 
-export type AllowedNetworks = "mainnet" | "kovan" | "rinkeby" | "arbitrum" | "celo";
-
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
   Kovan = "kovan",
   Arbitrum = "arbitrum",
   Celo = "celo",
+  Alfajores = "alfajores",
 }
+
+export type AllowedNetworks = Networks.Mainnet | Networks.Rinkeby | Networks.Kovan | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
 
 export interface IChainEventInfo {
   chainId: number;
@@ -75,12 +76,14 @@ export class EthereumService {
   ) { }
 
   public static ProviderEndpoints = {
-    "mainnet": `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
-    "rinkeby": `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
-    "kovan": `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    "arbitrum": `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-    "celo": "https://forno.celo.org",
+    [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    [Networks.Rinkeby]: `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
+    [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Celo]: "https://forno.celo.org",
+    [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
   }
+
   private static providerOptions = {
     torus: {
       package: Torus, // required
@@ -106,6 +109,7 @@ export class EthereumService {
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
           42220: EthereumService.ProviderEndpoints[Networks.Celo],
+          44787: EthereumService.ProviderEndpoints[Networks.Alfajores],
         },
       },
     },
@@ -137,8 +141,7 @@ export class EthereumService {
     EthereumService.targetedNetwork = network;
     EthereumService.targetedChainId = this.chainIdByName.get(network);
     EthereumService.providerOptions.torus.options.network = network;
-    EthereumService.isTestNet = ((network !== Networks.Mainnet) && (network !== Networks.Arbitrum));
-
+    EthereumService.isTestNet = ((network !== Networks.Mainnet) && (network !== Networks.Arbitrum) && (network !== Networks.Celo));
     const readonlyEndPoint = EthereumService.ProviderEndpoints[EthereumService.targetedNetwork];
     if (!readonlyEndPoint) {
       throw new Error(`Please connect to either ${Networks.Mainnet} or ${Networks.Rinkeby}`);
@@ -148,7 +151,7 @@ export class EthereumService {
     this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
 
     // CELO doesn't return gasLimit in response and crashes ethers
-    if (EthereumService.targetedNetwork === Networks.Celo) {
+    if (EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores) {
       const originalBlockFormatter = this.readOnlyProvider.formatter._block;
       this.readOnlyProvider.formatter._block = (value, format) => {
         return originalBlockFormatter(
@@ -180,6 +183,8 @@ export class EthereumService {
   //   [4, Networks.Rinkeby],
   //   [42, Networks.Kovan],
   //   [42161, Networks.Arbitrum],
+  //   [42220, Networks.Celo],
+  //   [44787, Networks.Alfajores],
   // ]);
 
   private friendlyChainNameById = new Map<number, string>([
@@ -188,8 +193,8 @@ export class EthereumService {
     [42, "Kovan"],
     [42161, "Arbitrum One"],
     [42220, "Celo"],
+    [44787, "Alfajores"],
   ]);
-
 
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
@@ -197,6 +202,7 @@ export class EthereumService {
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
     [Networks.Celo, 42220],
+    [Networks.Alfajores, 44787],
   ]);
 
   private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
@@ -636,15 +642,14 @@ export class EthereumService {
   }
 
   private async getBlock(blockNumber: number): Promise<IBlockInfo> {
-    let block;
     try {
-      block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+      const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+      block.blockDate = new Date(block.timestamp * 1000);
+      return block;
     } catch (e) {
-      console.log("BLOCK GET ERR", e);
+      this.consoleLogService.logMessage("BLOCK GET ERR", e);
+      return null;
     }
-    block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
-    block.blockDate = new Date(block.timestamp * 1000);
-    return block;
   }
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
@@ -660,6 +665,15 @@ export class EthereumService {
 
     return `http://${targetedNetwork}etherscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
   }
+}
+
+/**
+ * Either Celo Mainnet or Testnet
+ * @param network Default: Network the current wallet is connected to
+ */
+export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
+  const isCeloLike = network === Networks.Celo || network === Networks.Alfajores;
+  return isCeloLike;
 }
 
 /**
