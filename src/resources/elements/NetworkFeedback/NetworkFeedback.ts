@@ -22,10 +22,11 @@ export class NetworkFeedback {
 
     this.isProduction = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
     const storedNetwork = this.storageService.lsGet<AllowedNetworks>("network");
+    const isMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(storedNetwork);
+    const isTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork);
     if (
       storedNetwork &&
-      (this.isProduction && ![Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(storedNetwork))
-      || (!this.isProduction && ![Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork))
+      (this.isProduction && !isMainnet) || (!this.isProduction && !isTestnet)
     ) {
       this.storageService.lsRemove("network");
     }

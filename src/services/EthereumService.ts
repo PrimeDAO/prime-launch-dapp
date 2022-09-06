@@ -262,11 +262,6 @@ export class EthereumService {
     return this.walletProvider.getSigner(this.defaultAccountAddress);
   }
 
-  public metaMaskWalletProvider: Web3Provider & IEIP1193 & ExternalProvider;
-  /**
-   * Might be duplication of `walletProvider`, but it was easier to duplicate.
-   */
-  public safeProvider: Web3Provider & IEIP1193 & ExternalProvider;
   /**
    * provided by ethers given provider from Web3Modal
    */
@@ -323,24 +318,6 @@ export class EthereumService {
         }
       }
     }
-  }
-
-  public async ensureMetaMaskWalletProvider(): Promise<void> {
-    if (!this.metaMaskWalletProvider) {
-      try {
-        const provider = detectEthereumProvider ? (await detectEthereumProvider({ mustBeMetaMask: true })) as any : undefined;
-        this.metaMaskWalletProvider = provider;
-      } catch (error) {
-        console.log(error.message, error, "error");
-      }
-    }
-  }
-
-  private async removeWalletProviderListeners(): Promise<void> {
-    await this.ensureMetaMaskWalletProvider();
-    this.metaMaskWalletProvider.removeListener("accountsChanged", this.handleAccountsChanged);
-    this.metaMaskWalletProvider.removeListener("chainChanged", this.handleChainChanged);
-    this.metaMaskWalletProvider.removeListener("disconnect", this.handleDisconnect);
   }
 
   private ensureWeb3Modal(): void {
