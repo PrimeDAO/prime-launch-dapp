@@ -564,7 +564,7 @@ export class EthereumService {
  * @param network Default: Network the current wallet is connected to
  */
 export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
-  const isCeloLike = network !== Networks.Celo && network !== Networks.Alfajores;
+  const isCeloLike = network === Networks.Celo || network === Networks.Alfajores;
   return isCeloLike;
 }
 

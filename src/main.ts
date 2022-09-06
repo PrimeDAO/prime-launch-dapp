@@ -81,7 +81,7 @@ export function configure(aurelia: Aurelia): void {
 
       // TimingService.start("BalancerService Initialization");
       // TODO: Remove condition once we have Balancer Subgraph for Celo networks
-      if (isCeloNetworkLike(network)) {
+      if (!isCeloNetworkLike(network)) {
         const balancerService = aurelia.container.get(BalancerService);
         balancerService.initialize();
       }
