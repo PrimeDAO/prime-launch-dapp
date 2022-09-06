@@ -10,7 +10,8 @@ import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage8 extends BaseStage<ILaunchConfig> {
-
+  private dataToken = "";
+  private copyMessage = "Hash has been copied to the clipboard";
   constructor(
     router: Router,
     ethereumService: EthereumService,
@@ -28,6 +29,7 @@ export class Stage8 extends BaseStage<ILaunchConfig> {
   }
 
   attached():void{
-    console.log("seedService", this.seedService, this.seedService.celoData);
+    console.log("first", EthereumService.targetedNetwork);
+    this.dataToken = this.seedService?.celoData;
   }
 }

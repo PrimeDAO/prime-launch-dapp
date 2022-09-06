@@ -13,10 +13,20 @@
           <span class="importantText">Please save this URL.</span>
         </p>
 
-        <p>
-          Youthis be celo hash thingy:
-          <!-- <a class='wrappedLink' href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>. -->
-          <span class="importantText">Please save this URL.</span>
+        <p if.to-view="dataToken">
+          <span class="importantText"
+            >Note that when you generate a new token, the value will only be displayed once, so be sure to write it
+            down</span
+          >
+          <span class="dataTokenWrapper">${dataToken}</span>
+          <span>
+            <copy-to-clipboard-button
+              if.to-view="!hideClipboardButton"
+              text-to-copy.to-view="dataToken"
+              message.to-view="copyMessage"
+            ></copy-to-clipboard-button>
+            Copy to clipboard
+          </span>
         </p>
 
         <p>
