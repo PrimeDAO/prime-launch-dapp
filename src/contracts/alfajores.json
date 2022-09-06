@@ -3,7 +3,7 @@
   "chainId": "44787",
   "contracts": {
     "Seed": {
-      "address": "0xeF74A087d47527080C76005Cb34c9eFDd9326020",
+      "address": "0x8Ab457C4c818153DE31bEF5Aa5D696A7E1EaD267",
       "abi": [
         {
           "anonymous": false,
@@ -86,82 +86,6 @@
           ],
           "name": "TokensClaimed",
           "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "_classCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_individualCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_price",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_vestingDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_classVestingStartTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_classFee",
-              "type": "uint256"
-            }
-          ],
-          "name": "addClass",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256[]",
-              "name": "_classCaps",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_individualCaps",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_prices",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_vestingDurations",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_classVestingStartTime",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_classFee",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "addClassBatch",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
         },
         {
           "inputs": [],
@@ -257,55 +181,6 @@
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "classes",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "classCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "individualCap",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "vestingDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "classVestingStartTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "classFee",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "classFundingCollected",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
           "inputs": [],
           "name": "close",
           "outputs": [],
@@ -328,6 +203,19 @@
         {
           "inputs": [],
           "name": "endTime",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "fee",
           "outputs": [
             {
               "internalType": "uint256",
@@ -425,11 +313,6 @@
           ],
           "name": "funders",
           "outputs": [
-            {
-              "internalType": "uint8",
-              "name": "class",
-              "type": "uint8"
-            },
             {
               "internalType": "uint256",
               "name": "totalClaimed",
@@ -587,6 +470,19 @@
         },
         {
           "inputs": [],
+          "name": "isWhitelistBatchInvoked",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
           "name": "maximumReached",
           "outputs": [
             {
@@ -652,6 +548,19 @@
               "internalType": "bool",
               "name": "",
               "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "price",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
             }
           ],
           "stateMutability": "view",
@@ -755,42 +664,6 @@
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_address",
-              "type": "address"
-            },
-            {
-              "internalType": "uint8",
-              "name": "_class",
-              "type": "uint8"
-            }
-          ],
-          "name": "setClass",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address[]",
-              "name": "_addresses",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint8[]",
-              "name": "_classes",
-              "type": "uint8[]"
-            }
-          ],
-          "name": "setClassBatch",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
           "inputs": [],
           "name": "softCap",
           "outputs": [
@@ -876,16 +749,37 @@
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "vestingDuration",
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "vestingStartTime",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
               "internalType": "address",
               "name": "_buyer",
               "type": "address"
-            },
-            {
-              "internalType": "uint8",
-              "name": "_class",
-              "type": "uint8"
             }
           ],
           "name": "whitelist",
@@ -899,11 +793,6 @@
               "internalType": "address[]",
               "name": "_buyers",
               "type": "address[]"
-            },
-            {
-              "internalType": "uint8[]",
-              "name": "_classes",
-              "type": "uint8[]"
             }
           ],
           "name": "whitelistBatch",
@@ -940,7 +829,7 @@
       ]
     },
     "SeedFactory": {
-      "address": "0x69E096E547831dD7447285E2DB030EB37eeB7ceC",
+      "address": "0x67DB2ed83cD7F60aa97D84676c10308c4EF14822",
       "abi": [
         {
           "anonymous": false,
@@ -1111,7 +1000,7 @@
       ]
     },
     "Badger": {
-      "address": "0x4153e3a4902DD74627E77c3De72c072fc770D795",
+      "address": "0x186E6AA7C156e5e0076cBAD5507a6878B56d6C46",
       "abi": [
         {
           "inputs": [
@@ -1773,7 +1662,7 @@
       ]
     },
     "LBPManager": {
-      "address": "0xce7aB0657C211941Cc629fb5f3823B07dbC4Fd95",
+      "address": "0xe90B606f0b8Bf334B57d1f19e40c907f423542eB",
       "abi": [
         {
           "anonymous": false,
@@ -2272,7 +2161,7 @@
       ]
     },
     "LBPManagerFactory": {
-      "address": "0x9F4116AdFd83c30dBAA5146D17d1f5A9a56b1502",
+      "address": "0x38fC952e6936339D9AC344CCd3A906F1c0Ad47A8",
       "abi": [
         {
           "inputs": [
@@ -2518,7 +2407,7 @@
       ]
     },
     "MerkleDrop": {
-      "address": "0xD0dB40F709783588dAA2ab4BBf5cb74076763Ac4",
+      "address": "0xC61E96F6A055A337D54d07dB2D9F6683111741C2",
       "abi": [
         {
           "anonymous": false,
@@ -2842,7 +2731,7 @@
       ]
     },
     "Multicall": {
-      "address": "0x57f9b1a50FcAbD56843DA648379C82b24ba464Dd",
+      "address": "0x51bbaE8F2C13E4613033148E0EeD12Fc82a896c5",
       "abi": [
         {
           "inputs": [

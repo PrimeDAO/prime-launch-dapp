@@ -19,9 +19,9 @@ const SUBGRAPH_URLS = {
     "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-rinkeby-v2",
   [Networks.Arbitrum]:
     "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-arbitrum-v2",
-  [Networks.Celo]: // TODO - Add correct Balancer-v2 subgraph
+  [Networks.Celo]: // TODO - Add correct Balancer-v2 subgraph (Symmetric?)
     "https://api.thegraph.com/subgraphs/name/anudit/celo-subgraph",
-  [Networks.Alfajores]:
+  [Networks.Alfajores]: // TODO - Add correct Balancer-v2 subgraph (Symmetric?)
     "https://api.thegraph.com/subgraphs/name/anudit/celo-subgraph",
 };
 
