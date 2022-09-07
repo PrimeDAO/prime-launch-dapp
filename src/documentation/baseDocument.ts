@@ -1,8 +1,6 @@
-import { singleton } from "aurelia-framework";
 import { RouteConfig } from "aurelia-router";
 
-@singleton(false)
-export abstract class BaseDocument {
+export class BaseDocument {
   content: string;
   title: string;
   activate(_params: unknown, routeConfig: RouteConfig): void {
