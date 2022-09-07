@@ -234,7 +234,6 @@ export class SeedService {
       toWei(SeedService.seedFee),
       Utils.asciiToHex(metaDataHash),
     ];
-    debugger;
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     this.celoData = transaction.data;
     // console.log("estimating transaction:");

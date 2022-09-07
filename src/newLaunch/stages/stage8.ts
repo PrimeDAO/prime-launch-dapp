@@ -1,4 +1,4 @@
-import { EthereumService } from "./../../services/EthereumService";
+import { EthereumService, Networks } from "./../../services/EthereumService";
 import { ILaunchConfig } from "../launchConfig";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -29,7 +29,8 @@ export class Stage8 extends BaseStage<ILaunchConfig> {
   }
 
   attached():void{
-    console.log("first", EthereumService.targetedNetwork);
-    this.dataToken = this.seedService?.celoData;
+    if (EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores) {
+      this.dataToken = this.seedService?.celoData;
+    }
   }
 }
