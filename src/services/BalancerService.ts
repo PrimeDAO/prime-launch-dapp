@@ -1,6 +1,6 @@
 import { TimingService } from "services/TimingService";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
+import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor2";
 import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { EthereumService, Networks } from "services/EthereumService";
