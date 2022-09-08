@@ -269,6 +269,13 @@ export class App {
         route: ["comingSoon"],
         title: "Coming Soon!",
       },
+      {
+        moduleId: PLATFORM.moduleName("./test/celoTransaction/celoTransaction"),
+        nav: true,
+        name: "celoTransaction",
+        route: ["celo-transaction"],
+        title: "Celo Transaction",
+      },
     ]);
 
     config.fallbackRoute("home");

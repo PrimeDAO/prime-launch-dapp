@@ -81,7 +81,7 @@ export class EthereumService {
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
-    [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
+    [Networks.Alfajores]: "https://celo-alfajores-rpc.allthatnode.com",
   }
 
   private static providerOptions = {

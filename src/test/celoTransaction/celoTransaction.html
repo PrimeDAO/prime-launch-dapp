@@ -1,0 +1,31 @@
+<template>
+  <div class="celo-transaction animated-page au-animate">
+    <img src="/primeLaunchLogo-color.svg">
+    <div class="body">Celo Transfer</div>
+    <div class="fundingAmount">
+      <div class="fundingInput">
+        <numeric-input
+          value.bind="tokenAmountToPay"
+          decimals.bind="18"
+          placeholder="0.0"></numeric-input>
+        <div class="maxButton">
+          <a class="${(!account || !balance || balance.eq(0)) ? 'disabled' : ''}" click.delegate="handleMaxBuy()">MAX</a>
+        </div>
+      </div>
+      <div class="balance">Balance: <formatted-number
+          value.bind="balance | ethwei:account.decimals & debounce:100"
+          default-text="N/A"
+          average></formatted-number>
+      </div>
+    </div>
+    <div>
+      <label for="ToAddress">To Address</label>
+      <div class="inputWrapper">
+        <input id="addressToAdd" value.bind="addressToPay" placeholder="0x6C4ef..." />
+        <div class="button1 small" click.delegate="doTransaction()">
+          Send
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

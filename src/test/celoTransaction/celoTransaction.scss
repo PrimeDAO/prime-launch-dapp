@@ -1,0 +1,32 @@
+@import "styles/styles.scss";
+
+.celo-transaction {
+  text-align: center;
+  padding-top: 120px;
+
+  form {
+    color: $Secondary01;
+    font-family: Aeonik;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 25px;
+
+    &.body2 {
+      font-size: 16px;
+      font-family: Inter;
+      font-weight: 400;
+      a {
+        color: #b783ac;
+        &:hover {
+          border-bottom: 1px solid $Secondary01;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  img {
+    width: 300px;
+    margin-bottom: 28px;
+  }
+}
