@@ -12,6 +12,7 @@ import { autoinject } from "aurelia-framework";
 import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 import { Utils } from "services/utils";
+import { CeloProvider } from "@celo-tools/celo-ethers-wrapper";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -151,17 +152,18 @@ export class EthereumService {
     this.readOnlyProvider = ethers.getDefaultProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
 
     // CELO doesn't return gasLimit in response and crashes ethers
-    if (EthereumService.targetedNetwork === Networks.Celo || EthereumService.targetedNetwork === Networks.Alfajores) {
-      const originalBlockFormatter = this.readOnlyProvider.formatter._block;
-      this.readOnlyProvider.formatter._block = (value, format) => {
-        return originalBlockFormatter(
-          {
-            gasLimit: constants.Zero,
-            ...value,
-          },
-          format,
-        );
-      };
+    if (isCeloNetworkLike()) {
+      this.readOnlyProvider = new CeloProvider(EthereumService.ProviderEndpoints[EthereumService.targetedNetwork]);
+      // const originalBlockFormatter = this.readOnlyProvider.formatter._block;
+      // this.readOnlyProvider.formatter._block = (value, format) => {
+      //   return originalBlockFormatter(
+      //     {
+      //       gasLimit: constants.Zero,
+      //       ...value,
+      //     },
+      //     format,
+      //   );
+      // };
     }
 
     this.readOnlyProvider.pollingInterval = 15000;
