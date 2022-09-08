@@ -33,4 +33,14 @@ export class Stage8 extends BaseStage<ILaunchConfig> {
       this.dataToken = this.seedService?.celoData;
     }
   }
+
+  detached():void{
+    if (this.wizardState.launchHash){
+      this.launchConfig.clearState();
+      for (let i = 1; i <= this.maxStage; ++i) {
+        this.stageStates[i].verified = false;
+      }
+      this.eventAggregator.publish("launch.clearState", true);
+    }
+  }
 }
