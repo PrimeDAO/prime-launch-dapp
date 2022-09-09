@@ -1,4 +1,4 @@
-import { EthereumService, isCeloNetworkLike, Networks } from "./../../services/EthereumService";
+import { EthereumService, isCeloNetworkLike } from "./../../services/EthereumService";
 import { ILaunchConfig } from "../launchConfig";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -34,7 +34,7 @@ export class Stage8 extends BaseStage<ILaunchConfig> {
     }
   }
 
-  detached():void{
+  async detached():Promise<void>{
     if (this.wizardState.launchHash){
       this.launchConfig.clearState();
       for (let i = 1; i <= this.maxStage; ++i) {
