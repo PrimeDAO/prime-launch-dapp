@@ -26,9 +26,10 @@ export class NetworkFeedback {
     const isTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork);
     if (
       storedNetwork &&
-      (this.isProduction && !isMainnet) || (!this.isProduction && !isTestnet)
+      (this.isProduction && isTestnet) || (!this.isProduction && isMainnet)
     ) {
-      this.storageService.lsRemove("network");
+      this.network = this.isProduction ? Networks.Mainnet : Networks.Rinkeby;
+      this.storageService.lsSet("network", `${this.network}`);
     }
   }
 
