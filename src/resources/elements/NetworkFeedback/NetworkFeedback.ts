@@ -20,7 +20,7 @@ export class NetworkFeedback {
     this.network = EthereumService.targetedNetwork;
     this.show = false;
 
-    this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
+    this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === Networks.Mainnet;
     const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
     const isLocallyMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
     const isLocallyTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
