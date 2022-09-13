@@ -2606,7 +2606,7 @@
       ]
     },
     "Safe": {
-      "address": "0x79204a1E9a49D4C132931AdCB9F39dA90179ba1c",
+      "address": "0x0276a552F424949C934bC74bB623886AAc9Ed807",
       "abi": [
         {
           "inputs": [],
@@ -4639,7 +4639,7 @@
       ]
     },
     "SignerV2": {
-      "address": "0x86Be53D39fB8406a7192d3086ED644c5e5187cf1",
+      "address": "0x985e5d7D6630b5262069479D8DBBE29A351103B7",
       "abi": [
         {
           "inputs": [
