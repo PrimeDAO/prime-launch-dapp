@@ -674,6 +674,7 @@
         flex-flow: row wrap;
         flex: 1;
         gap: 32px;
+
         &.maxTargetLabel label {
           font-size: 14px;
           line-height: 20px;
@@ -681,19 +682,26 @@
           -webkit-text-fill-color: $White;
           font-weight: 400;
         }
+
         &.fundingTarget {
           flex-flow: column;
+
           .fundingDescrp {
             color: $Neutral02;
+            max-width: 75%;
+            margin: 0 0 15px 0;
           }
+
           .fundingTicker {
             display: flex;
             align-items: center;
             gap: 12px;
+
             .ticker {
               font-family: Inter;
               color: $Neutral02;
             }
+
             img {
               @include tokenIcon;
               border-radius: 12px;
