@@ -22,18 +22,19 @@ export class NetworkFeedback {
 
     this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === Networks.Mainnet;
     const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
-    const isLocallyMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
-    const isLocallyTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
-    if (
-      locallyStoredNetwork &&
-      ((this.isProductionEnv && isLocallyTestnet) || (!this.isProductionEnv && isLocallyMainnet))
-    ) {
-      /**
-      * If stored network is illegal, should be treated as if not selected yet,
-      * thus Ethereum network is the default.
-      */
-      this.network = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
-      this.storageService.lsSet("network", `${this.network}`);
+    if (locallyStoredNetwork) {
+      const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
+
+      const invalidlyStoredTestnet = this.isProductionEnv
+        && [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
+      const invalidlyStoredMainnet = !this.isProductionEnv
+        && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+      const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
+
+      if (illegalNetwork) {
+        this.network = defaultNetwork;
+        this.storageService.lsSet("network", `${defaultNetwork}`);
+      }
     }
   }
 
