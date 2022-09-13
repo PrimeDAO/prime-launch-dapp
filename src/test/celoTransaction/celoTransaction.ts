@@ -42,9 +42,8 @@ export class celoTransaction {
         } else {
           this.balance = null;
         }
-        // tslint:disable-next-line:no-empty
-        // eslint-disable-next-line no-empty
       } catch (ex) {
+        console.log("Error", ex.message)
       } finally {
         this.checking = false;
       }
@@ -64,20 +63,27 @@ export class celoTransaction {
   }
 
   async doTransaction() {
-    const provider = this.ethereumService.walletProvider;
-    const gasPrice = provider.getGasPrice();
-    const signer = this.ethereumService.getDefaultSigner();
-    const recipient = this.addressToPay;
-    const tx = {
-      from: this.account,
-      to: recipient,
-      value: this.tokenAmountToPay,
-      gasPrice,
-      gasLimit: ethers.utils.hexlify(21000),
-      nonce: provider.getTransactionCount(this.account, "latest")
-    }
+    try {
+      const provider = this.ethereumService.walletProvider;
+      const gasPrice = provider.getGasPrice();
+      const signer = this.ethereumService.getDefaultSigner();
+      const recipient = this.addressToPay;
+      if (!provider || !gasPrice || !signer || !recipient) {
+        throw new Error("Missing information. Can't perform transaction.");
+      }
+      const tx = {
+        from: this.account,
+        to: recipient,
+        value: this.tokenAmountToPay,
+        gasPrice,
+        gasLimit: ethers.utils.hexlify(21000),
+        nonce: provider.getTransactionCount(this.account, "latest")
+      }
 
-    const recipt = await signer.sendTransaction(tx);
-    console.log({recipt});
+      const recipt = await signer.sendTransaction(tx);
+      console.log({recipt});
+    } catch (ex) {
+      console.log("Error:", ex.message);
+    }
   }
 }
