@@ -16,5 +16,13 @@
   },
   "mainnet": {
     "seeds": []
+  },
+  "celo": {
+    "seeds": [
+    ]
+  },
+  "alfajores": {
+    "seeds": [
+    ]
   }
 }

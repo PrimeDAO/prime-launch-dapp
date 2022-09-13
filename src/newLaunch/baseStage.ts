@@ -59,24 +59,36 @@ export abstract class BaseStage<IConfig> {
     const safeAddress = ContractsService.getContractAddress(ContractNames.SAFE);
 
     let prefix: string;
+    let url: string;
 
     switch (EthereumService.targetedNetwork) {
       case Networks.Mainnet:
         prefix = "eth:";
+        url = "gnosis-safe.io/app/";
         break;
       case Networks.Rinkeby:
         prefix = "rin:";
+        url = "gnosis-safe.io/app/";
         break;
       case Networks.Arbitrum:
         prefix = "arb1:";
+        url = "gnosis-safe.io/app/";
         break;
+      case Networks.Celo:
+        prefix = "";
+        url = "safe.celo.org/#/safes/";
+        break;
+      /* TODO - Add when ready */
+      // case Networks.Alfajores:
+      //   prefix = "alfa:";
+      //   break;
       default:
         prefix = "";
         break;
     }
 
     this.multiSigWalletUri =
-      `https://gnosis-safe.io/app/${prefix}${safeAddress}/transactions`;
+      `https://${url}${prefix}${safeAddress}/transactions`;
   }
 
   activate(_params: unknown, routeConfig: RouteConfig): void {

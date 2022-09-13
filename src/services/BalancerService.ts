@@ -10,7 +10,7 @@ import { BigNumber, BigNumberish } from "ethers";
 import { ITokenInfo } from "services/TokenTypes";
 import { TransactionResponse } from "@ethersproject/providers";
 
-const SUBGRAPH_URLS = {
+export const SUBGRAPH_URLS = {
   [Networks.Mainnet]:
     "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-v2",
   [Networks.Kovan]:
@@ -19,6 +19,10 @@ const SUBGRAPH_URLS = {
     "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-rinkeby-v2",
   [Networks.Arbitrum]:
     "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-arbitrum-v2",
+  [Networks.Celo]: // TODO - Add correct Balancer-v2 subgraph (Symmetric?)
+    "https://api.thegraph.com/subgraphs/name/centfinance/symmetric-v2-celo",
+  [Networks.Alfajores]: // TODO - Add correct Balancer-v2 subgraph (Symmetric?)
+    "https://api.thegraph.com/subgraphs/name/anudit/celo-subgraph",
 };
 
 @autoinject
