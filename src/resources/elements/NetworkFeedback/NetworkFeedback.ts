@@ -9,7 +9,7 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 export class NetworkFeedback {
 
   private network: AllowedNetworks;
-  private isProduction;
+  private isProductionEnv;
   private show: boolean;
   private Networks = Networks;
 
@@ -20,15 +20,19 @@ export class NetworkFeedback {
     this.network = EthereumService.targetedNetwork;
     this.show = false;
 
-    this.isProduction = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
-    const storedNetwork = this.storageService.lsGet<AllowedNetworks>("network");
-    const isMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(storedNetwork);
-    const isTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork);
+    this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
+    const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
+    const isLocallyMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+    const isLocallyTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
     if (
-      storedNetwork &&
-      (this.isProduction && isTestnet) || (!this.isProduction && isMainnet)
+      locallyStoredNetwork &&
+      (this.isProductionEnv && isLocallyTestnet || !this.isProductionEnv && isLocallyMainnet)
     ) {
-      this.network = this.isProduction ? Networks.Mainnet : Networks.Rinkeby;
+      /**
+      * If stored network is illegal, should be treated as if not selected yet,
+      * thus Ethereum network is the default.
+      */
+      this.network = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
       this.storageService.lsSet("network", `${this.network}`);
     }
   }
