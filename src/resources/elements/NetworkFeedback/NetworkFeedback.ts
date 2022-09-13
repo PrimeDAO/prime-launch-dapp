@@ -26,7 +26,7 @@ export class NetworkFeedback {
     const isLocallyTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
     if (
       locallyStoredNetwork &&
-      (this.isProductionEnv && isLocallyTestnet || !this.isProductionEnv && isLocallyMainnet)
+      ((this.isProductionEnv && isLocallyTestnet) || (!this.isProductionEnv && isLocallyMainnet))
     ) {
       /**
       * If stored network is illegal, should be treated as if not selected yet,
