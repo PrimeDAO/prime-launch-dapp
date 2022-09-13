@@ -7,19 +7,19 @@
       <div class="dropdown" show.bind="show">
         <div class="dropdown__title">Select Network</div>
         <div class="dropdown__hr"></div>
-        <div if.bind="isProduction" class="${isActive(Networks.Celo) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Celo)">
+        <div if.bind="isProductionEnv" class="${isActive(Networks.Celo) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Celo)">
           <div class="celo"></div>
           <div>Celo</div>
         </div>
-        <div if.bind="!isProduction" class="${isActive(Networks.Alfajores) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Alfajores)">
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Alfajores) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Alfajores)">
           <div class="celo"></div>
           <div>Alfajores</div>
         </div>
-        <div if.bind="isProduction" class="${isActive(Networks.Mainnet) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Mainnet)">
+        <div if.bind="isProductionEnv" class="${isActive(Networks.Mainnet) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Mainnet)">
           <div class="eth"></div>
           <div>Ethereum</div>
         </div>
-        <div if.bind="!isProduction" class="${isActive(Networks.Rinkeby) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Rinkeby)">
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Rinkeby) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Rinkeby)">
           <div class="eth"></div>
           <div>Rinkeby</div>
         </div>
