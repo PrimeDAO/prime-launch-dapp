@@ -2,24 +2,24 @@
   <div class="networkfeedback">
     <div class="testnet" click.trigger="setShow()">
       <div class="${getIconName()}"></div>
-      <div>${network}</div>
+      <div>${network === Networks.Mainnet ? "Ethereum" : network}</div>
       <div class="arrow"></div>
       <div class="dropdown" show.bind="show">
         <div class="dropdown__title">Select Network</div>
         <div class="dropdown__hr"></div>
-        <div if.bind="isProduction" class="${isActive(Networks.Celo) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('celo')">
+        <div if.bind="isProductionEnv" class="${isActive(Networks.Celo) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Celo)">
           <div class="celo"></div>
           <div>Celo</div>
         </div>
-        <div if.bind="!isProduction" class="${isActive(Networks.Alfajores) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('alfajores')">
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Alfajores) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Alfajores)">
           <div class="celo"></div>
           <div>Alfajores</div>
         </div>
-        <div if.bind="isProduction" class="${isActive(Networks.Mainnet) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('mainnet')">
+        <div if.bind="isProductionEnv" class="${isActive(Networks.Mainnet) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Mainnet)">
           <div class="eth"></div>
           <div>Ethereum</div>
         </div>
-        <div if.bind="!isProduction" class="${isActive(Networks.Rinkeby) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick('rinkeby')">
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Rinkeby) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Rinkeby)">
           <div class="eth"></div>
           <div>Rinkeby</div>
         </div>

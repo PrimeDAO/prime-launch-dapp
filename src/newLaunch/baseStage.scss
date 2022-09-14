@@ -345,18 +345,30 @@
   a {
     color: $Neutral02;
   }
+
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
     gap: 16px;
   }
+
   .questionMark {
     width: 20px;
     height: 20px;
     align-self: center;
   }
+
   .importantText {
     font-weight: 800;
+  }
+
+  .dataTokenWrapper {
+    word-wrap: anywhere;
+    display: block;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin: 20px 0;
   }
 }
 

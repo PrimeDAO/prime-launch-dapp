@@ -653,17 +653,22 @@ export class EthereumService {
   }
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
-    let targetedNetwork = EthereumService.targetedNetwork as string;
-    if (targetedNetwork === Networks.Arbitrum) {
-      return `https://arbiscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
+    const params = `${tx ? "tx" : "address"}/${addressOrHash}`;
+    switch (EthereumService.targetedNetwork) {
+      case Networks.Arbitrum:
+        return `https://arbiscan.io/${params}`;
+      case Networks.Alfajores:
+        return `https://alfajores-blockscout.celo-testnet.org/${params}`;
+      case Networks.Celo:
+        return `https://explorer.celo.org/${params}`;
+      case Networks.Rinkeby: // set for deprecation
+        return `https://rinkeby.etherscan.io/${params}`;
+      case Networks.Kovan: // deprecated
+        return `https://kovan.etherscan.io/${params}`;
+      case Networks.Mainnet:
+      default:
+        return `http://etherscan.io/${params}`;
     }
-    else if (targetedNetwork === Networks.Mainnet) {
-      targetedNetwork = "";
-    } else {
-      targetedNetwork = targetedNetwork + ".";
-    }
-
-    return `http://${targetedNetwork}etherscan.io/${tx ? "tx" : "address"}/${addressOrHash}`;
   }
 }
 

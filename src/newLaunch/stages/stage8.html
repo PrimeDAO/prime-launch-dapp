@@ -1,84 +1,111 @@
 
 <template>
-    <div class="page animated-page stageContainer stage8 au-animate ">
-        <div class="infoContainer">
-            <div class="heading heading2 title">Thank you!</div>
-            <div class="content-end-stage">
-                <div class="end-stage-subtext">
-                    <p>Congratulations!</p>
+  <div class="page animated-page stageContainer stage8 au-animate">
+    <div class="infoContainer">
+      <div class="heading heading2 title">Thank you!</div>
+      <div class="content-end-stage">
+        <div class="end-stage-subtext">
+          <p>Congratulations!</p>
 
-                    <p>You have created a ${wizardState.launchTypeTitle} according to your specifications.</p>
+          <p>You have created a ${wizardState.launchTypeTitle} according to your specifications.</p>
 
-                    <p>You may inspect the ${wizardState.launchTypeTitle} configuration, stored in the JSON format in IPFS, here:
-                        <a class='wrappedLink' href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>.
-                        <span class="importantText">Please save this URL.</span>
-                    </p>
+          <p>
+            You may inspect the ${wizardState.launchTypeTitle} configuration, stored in the JSON format in IPFS, here:
+            <a class="wrappedLink" href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>.
+            <span class="importantText">Please save this URL.</span>
+          </p>
 
-                    <p>PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can
-                        appear in and be used in the Prime Launch interface. The approval takes place in the <a
-                                href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>.
-                        Your ${wizardState.launchTypeTitle} may take up to 5 minutes to appear in the multisig. Reviews generally take
-                        5-7 days."</p>
+          <p if.to-view="dataToken">
+            <span class="importantText"
+              >Note that when you generate a new token, the value will only be displayed once, so be sure to write it
+              down</span
+            >
+            <span class="dataTokenWrapper">${dataToken}</span>
+            <span>
+              <copy-to-clipboard-button
+                if.to-view="!hideClipboardButton"
+                text-to-copy.to-view="dataToken"
+                message.to-view="copyMessage"
+              ></copy-to-clipboard-button>
+              Copy to clipboard
+            </span>
+          </p>
 
-                    <p>After being approved, the <etherscanlink hide-clipboard-button
-                                                                address.to-view="wizardState.launchAdminAddress" text="${wizardState.launchTypeTitle} Admin">
-                    </etherscanlink>
+          <p>PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can
+              appear in and be used in the Prime Launch interface. The approval takes place in the <a
+                      href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>.
+              Your ${wizardState.launchTypeTitle} may take up to 5 minutes to appear in the multisig. Reviews generally take
+              5-7 days."</p>
 
-                        will have to fund the ${wizardState.launchTypeTitle} with
+          <p>
+            After being approved, the
+            <etherscanlink
+              hide-clipboard-button
+              address.to-view="wizardState.launchAdminAddress"
+              text="${wizardState.launchTypeTitle} Admin"
+            >
+            </etherscanlink>
+          </p>
 
-                        <span if.bind="wizardState.requiredProjectTokenDeposit">
-                <formatted-number
-                        value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
-                        thousands-separated></formatted-number>
-                ${launchConfig.tokenDetails.projectTokenInfo.symbol}
-              </span>
+          will have to fund the ${wizardState.launchTypeTitle} with
 
-                        <span if.bind="wizardState.requiredProjectTokenDeposit && wizardState.requiredFundingTokenDeposit"> and
-              </span>
+          <span if.bind="wizardState.requiredProjectTokenDeposit">
+            <formatted-number
+              value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
+              thousands-separated
+            ></formatted-number>
+            ${launchConfig.tokenDetails.projectTokenInfo.symbol}
+          </span>
 
-                        <span if.bind="wizardState.requiredFundingTokenDeposit">
-                <formatted-number
-                        value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals"
-                        thousands-separated>
-                </formatted-number> ${launchConfig.launchConfig.fundingTokenInfo.symbol}
-              </span><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by
-                        connecting the ${wizardState.launchTypeTitle} Admin wallet to the <a
-                                href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
-                    </p>
+          <span if.bind="wizardState.requiredProjectTokenDeposit && wizardState.requiredFundingTokenDeposit">
+            and
+          </span>
 
-                    <p if.bind="wizardState.launchType === 'seed'">After adding the funds<span if.to-view="!!wizardState.whiteList">
-                and whitelist</span>, the ${wizardState.launchTypeTitle} is
-                        initialized. The ${wizardState.launchTypeTitle} will automatically start ${wizardState.launchStartDate |
-                        date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
+          <span if.bind="wizardState.requiredFundingTokenDeposit">
+            <formatted-number
+              value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals"
+              thousands-separated
+            >
+            </formatted-number>
+            ${launchConfig.launchConfig.fundingTokenInfo.symbol} </span
+          ><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by
+          connecting the ${wizardState.launchTypeTitle} Admin wallet to the
+          <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
 
-                    <p else>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>,
-                        the ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on
-                        the start date ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
-                        But please note that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it
-                        to open up swapping. At close time, to ensure an accurate LBP launch, you will need to
-                        pause the LBP to turn off swapping.
-                        You can do this in the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>
-                    </p>
-                    <div class="footerButtons">
-                        <div class="view-buttons">
-                            <a id="open-adb" href="/admin/${wizardState.launchType}s/dashboard">
-                                <div class="stageButton previousButton classes-previous">ADMIN DASHBOARD</div>
-                            </a>
-                            <div class="stageButton proceed button1" click.delegate="cancel()">HOME</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="linksContainer">
-                  <div>
-                    <i class="fas fa-arrow-right"></i>
-                    <a>Go to useful link</a>
-                  </div>
-                  <div>
-                    <i class="fas fa-arrow-right"></i>
-                    <a>Read our FAQ</a>
-                  </div>
-                </div> -->
+          <p if.bind="wizardState.launchType === 'seed'">
+            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start
+            ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
+          </p>
+
+          <p else>
+            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on the start date
+            ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}. But please note
+            that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it to open up
+            swapping. At close time, to ensure an accurate LBP launch, you will need to pause the LBP to turn off
+            swapping. You can do this in the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>
+          </p>
+          <!-- <div class="linksContainer">
+            <div>
+              <i class="fas fa-arrow-right"></i>
+              <a>Go to useful link</a>
             </div>
+            <div>
+              <i class="fas fa-arrow-right"></i>
+              <a>Read our FAQ</a>
+            </div>
+          </div> -->
+          <div class="footerButtons">
+            <div class="view-buttons">
+              <a id="open-adb" href="/admin/${wizardState.launchType}s/dashboard">
+                <div class="stageButton previousButton classes-previous">ADMIN DASHBOARD</div>
+              </a>
+              <div class="stageButton proceed button1" click.delegate="cancel()">HOME</div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
