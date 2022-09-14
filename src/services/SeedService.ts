@@ -39,6 +39,8 @@ export class SeedService {
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
+  public celoData: string;
+
   // private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
    * when the factory was created, pulled by hand from etherscan.io
@@ -241,8 +243,8 @@ export class SeedService {
       toWei(SeedService.seedFee),
       Utils.asciiToHex(metaDataHash),
     ];
-
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+    this.celoData = transaction.data;
 
     const classesToAdd = [{
       classCaps: 1000,

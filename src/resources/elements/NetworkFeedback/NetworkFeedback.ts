@@ -9,7 +9,7 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 export class NetworkFeedback {
 
   private network: AllowedNetworks;
-  private isProduction;
+  private isProductionEnv;
   private show: boolean;
   private Networks = Networks;
 
@@ -20,15 +20,21 @@ export class NetworkFeedback {
     this.network = EthereumService.targetedNetwork;
     this.show = false;
 
-    this.isProduction = process.env.NODE_ENV !== "development" || process.env.NETWORK === "mainnet";
-    const storedNetwork = this.storageService.lsGet<AllowedNetworks>("network");
-    const isMainnet = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(storedNetwork);
-    const isTestnet = [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(storedNetwork);
-    if (
-      storedNetwork &&
-      (this.isProduction && !isMainnet) || (!this.isProduction && !isTestnet)
-    ) {
-      this.storageService.lsRemove("network");
+    this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === Networks.Mainnet;
+    const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
+    if (locallyStoredNetwork) {
+      const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
+
+      const invalidlyStoredTestnet = this.isProductionEnv
+        && [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
+      const invalidlyStoredMainnet = !this.isProductionEnv
+        && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+      const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
+
+      if (illegalNetwork) {
+        this.network = defaultNetwork;
+        this.storageService.lsSet("network", `${defaultNetwork}`);
+      }
     }
   }
 
