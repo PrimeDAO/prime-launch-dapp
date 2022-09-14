@@ -148,6 +148,7 @@
     font-size: 28px;
     line-height: 35px;
     text-transform: uppercase;
+
     @media screen and (max-width: 570px) {
       font-size: 24px;
     }
@@ -174,12 +175,13 @@
   hr {
     background-color: #403453;
     margin: 0;
+
     @media screen and (max-width: 570px) {
       background-color: transparent;
     }
   }
 
-  .mobileTitle{
+  .mobileTitle {
     @media screen and (max-width: 570px) {
       font-size: 24px;
     }
