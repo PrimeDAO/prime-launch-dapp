@@ -83,13 +83,12 @@
   text-decoration: none;
 }
 
-.make-admin-button {
+@mixin boldButton {
   display: inline-block;
   border-radius: 10px;
   border: none;
   outline: none;
   padding: 15px;
-  margin-top: 40px;
   font-family: Inter;
   font-style: normal;
   font-weight: 500;
@@ -101,7 +100,16 @@
   background-color: rgba(64, 52, 83, 1);
   color: $White;
   cursor: pointer;
+}
+
+.make-admin-button {
+  @include boldButton;
+  margin-top: 40px;
   margin-bottom: 80px;
+}
+
+.upload-csv {
+  @include boldButton;
 }
 
 .end-stage-subtext {
