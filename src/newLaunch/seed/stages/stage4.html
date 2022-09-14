@@ -130,9 +130,11 @@
             <div class="csvUploadInputContainer">
               <input class="footer-input"
                 id="allowList"
-                value.bind="launchConfig.launchDetails.adminAddress"
+                type="file"
+                accept=".csv"
+                files.bind="csv"
                 placeholder="Upload your .csv allowlist..." />
-                <div class="upload-csv" click.delegate="makeMeAdmin()">Upload</div>
+                <div class="upload-csv" click.delegate="parseCsv()">Upload</div>
             </div>
           </div>
           <label>Seed Schedule</label>

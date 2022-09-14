@@ -38,6 +38,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
+  csv: File
 
   constructor(
     eventAggregator: EventAggregator,
@@ -102,6 +103,12 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
   toggleGeoBlocking(): void {
     this.launchConfig.launchDetails.geoBlock = !this.launchConfig.launchDetails.geoBlock;
+  }
+
+  async parseCsv(): Promise<any> {
+    const csvContent = this.csv && await this.csv[0].text();
+    // for BE adds allow list param
+    // this.launchConfig.launchDetails.allowList = csvContent;
   }
 
   setlaunchConfigStartDate(): Date {
