@@ -237,7 +237,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-
   addClass(newClass: IClass): void {
     this.launchConfig.classes.push(newClass);
   }
