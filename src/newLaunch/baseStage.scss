@@ -461,6 +461,15 @@
       align-items: center;
       flex-wrap: wrap;
     }
+    
+    .csvUploadInputContainer {
+      @extend .adminInputContainer;
+      gap: 15px;
+
+      input[id=allowList]::file-selector-button {
+        display: none;
+      }
+    }  
     .button2 {
       margin-left: 0;
     }
