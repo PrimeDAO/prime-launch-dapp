@@ -37,9 +37,11 @@
   .content-block {
     grid-template-columns: 1fr;
   }
+
   .footer-input {
     max-width: 50%;
   }
+
   #footer-date-content {
     display: grid;
     grid-template-columns: 1fr;
@@ -83,13 +85,12 @@
   text-decoration: none;
 }
 
-.make-admin-button {
+@mixin boldButton {
   display: inline-block;
   border-radius: 10px;
   border: none;
   outline: none;
   padding: 15px;
-  margin-top: 40px;
   font-family: Inter;
   font-style: normal;
   font-weight: 500;
@@ -101,7 +102,16 @@
   background-color: rgba(64, 52, 83, 1);
   color: $White;
   cursor: pointer;
+}
+
+.make-admin-button {
+  @include boldButton;
+  margin-top: 40px;
   margin-bottom: 80px;
+}
+
+.upload-csv {
+  @include boldButton;
 }
 
 .end-stage-subtext {
@@ -129,16 +139,19 @@
   column-gap: 48px;
   margin-top: 80px;
   justify-content: space-between;
+
   .stageButton {
     display: flex;
     align-items: center;
   }
+
   .cancel {
     cursor: pointer;
     color: white;
     font-family: Inter;
     font-weight: 600;
   }
+
   .view-buttons {
     display: flex;
   }
@@ -197,18 +210,22 @@
 
 .classes-overview-container__table {
   width: 100%;
-  border-collapse:separate;
+  border-collapse: separate;
   font-size: 16px;
   border-spacing: 16px;
   border: none;
-  tr, td {
+
+  tr,
+  td {
     border: none;
   }
+
   th {
     color: $Secondary02;
     text-align: start;
     font-weight: 700;
   }
+
   td {
     font-weight: 400;
   }
@@ -239,6 +256,7 @@
   .title {
     font-size: 26px;
   }
+
   .subtext {
     line-height: 24px;
     font-size: 16px;
@@ -247,18 +265,22 @@
     margin-top: 32px;
     max-width: 360px;
   }
+
   .infoInput {
     margin-bottom: 32px;
+
     &.withCounter {
       width: fit-content;
     }
-    > textarea {
+
+    >textarea {
       resize: none;
       width: 368px;
       height: 72px;
       color: $Neutral02;
       border: 1px solid $Border01;
     }
+
     .labelContainer {
       width: 100%;
       display: flex;
@@ -268,16 +290,19 @@
       color: $Neutral02;
     }
   }
+
   .buttonContainer {
     display: flex;
     flex-flow: row;
     column-gap: 48px;
     margin-top: 80px;
     justify-content: space-between;
+
     .stageButton {
       display: flex;
       align-items: center;
     }
+
     .cancel {
       cursor: pointer;
       color: white;
@@ -285,10 +310,12 @@
       font-weight: 600;
     }
   }
+
   .stageButton {
     display: flex;
     align-items: center;
   }
+
   label {
     display: block;
     font-size: 17px;
@@ -296,6 +323,7 @@
     line-height: 32px;
     color: $Secondary02;
   }
+
   input {
     width: 368px;
     height: fit-content;
@@ -316,14 +344,17 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
   /* Firefox */
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
   input[type="time"]::-webkit-calendar-picker-indicator {
     background: none;
     display: none;
   }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
@@ -333,6 +364,7 @@
     box-shadow: 0 0 0px 60px $BG01 inset;
     caret-color: $Neutral02;
   }
+
   textarea:-webkit-autofill,
   textarea:-webkit-autofill:hover,
   textarea:-webkit-autofill:focus {
@@ -345,16 +377,19 @@
   a {
     color: $Neutral02;
   }
+
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
     gap: 16px;
   }
+
   .questionMark {
     width: 20px;
     height: 20px;
     align-self: center;
   }
+
   .importantText {
     font-weight: 800;
   }
@@ -369,6 +404,7 @@
             width: 192px;
           }
         }
+
         .optional {
           padding-left: 0.48px;
           font-weight: 300;
@@ -397,10 +433,12 @@
           input {
             width: 224px;
           }
+
           .deleteLink {
             cursor: pointer;
             justify-self: flex-end;
           }
+
           .addLink {
             cursor: pointer;
             padding-right: 16px;
@@ -408,6 +446,7 @@
           }
         }
       }
+
       .addSingleLink {
         cursor: pointer;
         display: flex;
@@ -423,10 +462,12 @@
       display: flex;
       align-items: center;
       gap: 16px;
+
       .ticker {
         font-family: Inter;
         color: $Neutral02;
       }
+
       img {
         @include tokenIcon;
         border-radius: 12px;
@@ -436,14 +477,22 @@
         top: 1px;
       }
     }
+
     .adminInputContainer {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
     }
+
+    .csvUploadInputContainer {
+      @extend .adminInputContainer;
+      gap: 15px;
+    }
+
     .button2 {
       margin-left: 0;
     }
+
     input#admin {
       margin-right: 15px;
     }
@@ -456,6 +505,7 @@
         background-color: rgba(21, 19, 24, 1);
       }
     }
+
     .tickerContainer {
       display: flex;
       flex-direction: column;
@@ -473,6 +523,7 @@
 
         .loadingToken {
           font-size: 18px;
+
           i {
             color: $Primary01;
           }
@@ -483,6 +534,7 @@
         margin-left: 8px;
         white-space: normal;
         color: $Neutral02;
+
         i {
           color: $AlertRed;
           margin-right: 6px;
@@ -497,6 +549,7 @@
       }
 
       .projectTokenInfoFormContainer {
+
         .explanation,
         .fileNote {
           color: $Neutral02;
@@ -513,6 +566,7 @@
             &:not(:last-of-type) {
               margin-bottom: 16px;
             }
+
             label {
               font-size: 14px;
               color: $White;
@@ -524,6 +578,7 @@
                 width: 100px;
               }
             }
+
             &.logoInput {
               label {
                 display: grid;
@@ -536,6 +591,7 @@
                   @include tokenIcon;
                   padding-bottom: 2px;
                 }
+
                 padding-bottom: 2px;
               }
 
@@ -552,6 +608,7 @@
               .inputElement {
                 display: none;
               }
+
               .goodValue {
                 display: unset;
               }
@@ -568,6 +625,7 @@
         }
       }
     }
+
     .tokenDistribution {
       .columnHeaders {
         font-size: 14px;
@@ -575,6 +633,7 @@
         line-height: 32px;
         text-align: left;
       }
+
       .distribRow {
         display: flex;
         flex-flow: row wrap;
@@ -582,35 +641,43 @@
         justify-content: space-between;
         margin-bottom: 16px;
         column-gap: 10px;
+
         .category {
           display: flex;
           flex-flow: row nowrap;
           justify-content: space-between;
           align-items: center;
+
           span {
             color: $Neutral02;
           }
         }
+
         .infoInput {
           margin-bottom: unset;
         }
+
         input {
           height: 36px;
         }
+
         input.textInput {
           height: 36px;
         }
+
         .deleteContainer {
           padding-top: 30px;
           display: flex;
           align-items: center;
         }
+
         .deleteLink {
           cursor: pointer;
           justify-self: flex-end;
         }
       }
     }
+
     .addLink {
       cursor: pointer;
       margin-top: 16px;
@@ -631,15 +698,17 @@
 
       .pptContainer,
       .tokenAmountContainer {
-        > .text {
+        >.text {
           display: inline-block;
           color: $Neutral02;
         }
+
         input {
           width: 72px;
           background-color: rgba(21, 19, 24, 1);
         }
-        > label {
+
+        >label {
           align-self: center;
           -webkit-text-fill-color: $White;
           font-weight: 400;
@@ -652,18 +721,22 @@
         column-gap: 10px;
         grid-template-columns: auto auto auto;
         justify-content: start;
-        > img {
+
+        >img {
           border-radius: 50%;
           width: 23px;
         }
-        > .text {
+
+        >.text {
           align-self: center;
         }
+
         .warning {
           color: $AlertOrange;
           font-size: small;
           width: 225px;
         }
+
         &:not(:last-child) {
           margin-bottom: 10px;
         }
@@ -710,23 +783,27 @@
               top: 1px;
             }
           }
+
           input {
             background-color: rgba(21, 19, 24, 1);
           }
         }
       }
+
       .vestingPeriod {
         width: 176px;
         display: flex;
         flex-flow: row nowrap;
         flex: 1;
         gap: 0;
+
         input {
           width: 80px;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
         }
-        > div {
+
+        >div {
           width: 80px;
           display: flex;
           justify-content: center;
@@ -736,6 +813,7 @@
           border-bottom-right-radius: 10px;
         }
       }
+
       .vestingDatesContainer {
         display: grid;
         column-gap: 16px;
@@ -754,6 +832,7 @@
           border-bottom-right-radius: 0;
           border-right: 0px;
         }
+
         .inputIcon {
           width: 47px;
           display: flex;
@@ -766,17 +845,20 @@
           border-bottom-right-radius: 10px;
           z-index: 1;
           cursor: pointer;
-          > i {
+
+          >i {
             font-size: 22px;
           }
         }
       }
     }
+
     .whitelistContainer {
       .loadingWhitelist {
         display: inline-block;
         font-size: 18px;
         margin-left: 6px;
+
         i {
           color: $Primary01;
         }
@@ -795,6 +877,7 @@
         }
       }
     }
+
     .checkboxContainer {
       width: 60px;
       height: 32px;
@@ -806,35 +889,42 @@
       margin-bottom: 32px;
       background: $Gradient01;
       cursor: pointer;
+
       &.isInactive {
         background: $Secondary05;
       }
+
       i.yes {
         position: absolute;
         left: 10px;
         color: black;
         font-weight: 800;
       }
+
       i.no {
         position: absolute;
         right: 10px;
         color: black;
         font-weight: 800;
       }
+
       .checkbox {
         width: 28px;
         height: 28px;
         display: flex;
         align-items: center;
-        > input {
+
+        >input {
           width: 28px;
           height: 28px;
           visibility: hidden;
           position: absolute;
-          &:checked + label {
+
+          &:checked+label {
             left: 28px;
           }
         }
+
         & label {
           display: block;
           width: 22px;
@@ -855,6 +945,7 @@
       padding: 20px;
       margin-top: 16px;
       background-color: $BG01;
+
       h3 {
         font-family: "Aeonik";
         font-size: 24px;
@@ -880,9 +971,11 @@
         font-size: 16px;
       }
     }
+
     .infoInput {
       margin-bottom: 0px;
     }
+
     .checkboxContainer {
       width: 60px;
       height: 32px;
@@ -893,35 +986,42 @@
       align-items: center;
       background: $Gradient01;
       cursor: pointer;
+
       &.isInactive {
         background: $Secondary05;
       }
+
       i.yes {
         position: absolute;
         left: 10px;
         color: black;
         font-weight: 800;
       }
+
       i.no {
         position: absolute;
         right: 10px;
         color: black;
         font-weight: 800;
       }
+
       .checkbox {
         width: 28px;
         height: 28px;
         display: flex;
         align-items: center;
-        > input {
+
+        >input {
           width: 28px;
           height: 28px;
           visibility: hidden;
           position: absolute;
-          &:checked + label {
+
+          &:checked+label {
             left: 28px;
           }
         }
+
         & label {
           display: block;
           width: 22px;
@@ -936,21 +1036,27 @@
         }
       }
     }
+
     .infoContainer {
       .summaryContainer {
         .heading4 {
           font-size: 16px;
         }
+
         .classes-overview-container {
           margin-top: 0px;
         }
+
         word-break: break-word;
-        > .heading.heading3 {
+
+        >.heading.heading3 {
           margin-bottom: 20px;
         }
-        a{
+
+        a {
           color: white;
         }
+
         .stageLaunchDetails {
           display: grid;
           gap: 10px;
@@ -970,14 +1076,17 @@
           .customLinks {
             grid-template-columns: 0.4fr 1fr;
           }
+
           .tokenDist {
             grid-template-columns: 1fr 1fr 1fr 1fr;
           }
+
           .customLinks,
           .tokenDist {
             display: grid;
             row-gap: 2px;
             grid-template-rows: auto;
+
             .header {
               font-size: 12px;
               color: $Neutral03;
@@ -1019,14 +1128,17 @@
       display: flex;
       flex-flow: column;
       gap: 32px;
-      > div {
-        > a {
+
+      >div {
+        >a {
           color: $Neutral03;
         }
-        > i {
+
+        >i {
           color: $Secondary02;
         }
       }
+
       .closeButton {
         margin-top: 40px;
         margin-bottom: 40px;
@@ -1039,36 +1151,44 @@
 @media screen and (max-width: 790px) {
   .infoContainer {
     min-width: unset;
+
     .infoInput {
-      > textarea {
+      >textarea {
         width: 90%;
       }
-      & > input {
+
+      &>input {
         width: 90%;
         height: unset;
       }
+
       .labelContainer {
         width: unset;
       }
     }
+
     .labeledQuestion {
       label {
         margin-bottom: unset;
       }
+
       margin-bottom: 6px;
     }
-    > .heading.heading2 {
+
+    >.heading.heading2 {
       font-size: 26px;
     }
+
     label,
     span {
       line-height: 20px;
       margin-bottom: 5px;
     }
 
-    #geoBlock + label {
+    #geoBlock+label {
       margin-bottom: unset;
     }
+
     .summaryContainer {
       margin-bottom: 30px;
       word-break: break-word;
@@ -1090,12 +1210,13 @@
             grid-template-areas:
               "dropdown dropdown"
               "input delete";
+
             .sMedia {
               grid-area: dropdown;
               margin-bottom: 8px;
             }
 
-            & > input {
+            &>input {
               grid-area: input;
               width: unset;
               height: unset;
@@ -1116,6 +1237,7 @@
         column-gap: 0;
         row-gap: 8px;
       }
+
       .fileNote {
         padding-left: 8px;
       }
@@ -1140,13 +1262,14 @@
     &.stage4 {
       .infoInput {
         &.admin {
-          > input {
+          >input {
             margin-bottom: 8px;
           }
         }
       }
+
       .adminInputContainer {
-        & > input#admin {
+        &>input#admin {
           width: 90%;
           margin-bottom: 8px;
         }
@@ -1164,7 +1287,7 @@
     &.stage4 {
       .infoInput {
         .pptContainer {
-          > .text:first-of-type {
+          >.text:first-of-type {
             display: block;
           }
         }
@@ -1186,6 +1309,7 @@
     column-gap: 84px;
     max-width: 394px;
   }
+
   .page.stageContainer.stage3 .tokenDistribution .distribRow .deleteContainer {
     width: 100%;
     margin-left: 0px;
