@@ -42,45 +42,98 @@
       column-gap: 16px;
       align-items: center;
 
-      a {
-        position: relative;
-        bottom: 6px;
+      + hr {
+        background-color: $Secondary02;
+        height: 1px;
       }
     }
 
-    .featureContainer {
-      padding: 5px;
-      margin: 15px 0px;
-
-      .featureTitle {
-        font-size: 18px;
-        margin-bottom: 11px;
-        color: #a258a7;
-        font-weight: 300;
+    .body {
+      display: flex;
+      flex-flow: wrap;
+      gap: 10px;
+      .seed-selector {
+        width: clamp(260px, 100%, 400px);
       }
 
-      .featureDescription {
-        display: flex;
-        align-self: center;
-        color: #98979b;
-        font-size: 16px;
-        margin-bottom: 16px;
+      .seed-selected {
+        width: clamp(minmax(260px, 400px), 100%, calc(100% - 400px));
       }
 
-      .inputWrapper {
+      .featureContainer {
+        padding: 5px;
+        margin: 15px 0px;
+        &:last-child hr {
+          display: none;
+        }
+
+        & > hr {
+          background-color: inherit;
+          margin: 0;
+          border-bottom: 1px solid $Border01;
+        }
+
+        .featureTitle {
+          font-size: 18px;
+          font-family: 'Inter';
+          font-weight: 700;
+          margin-bottom: 11px;
+          color: #a258a7;
+          &.small {
+            font-size: 14px;
+            color: $Secondary05;
+          }
+        }
+
+        .featureDescription {
+          display: flex;
+          align-self: center;
+          color: #98979b;
+          font-size: 16px;
+          margin-bottom: 16px;
+        }
+
+        .inputWrapper {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .tokenDetails {
         display: flex;
         align-items: center;
+        margin-bottom: 40px;
+        gap: 32px;
+        >span {
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          font-family: 'Inter';
+        }
       }
-    }
 
-    .tokenImage {
-      @include tokenIcon;
-      margin-left: 6px;
-      margin-right: 6px;
-    }
+      .tokenImage {
+        @include tokenIcon;
+        width: 25px;
+        height: 25px;
+        margin: 0 6px;
+        border-radius: 50%;
+      }
 
-    .noSeedCreatedMessage {
-      padding-top: 15px;
+      .button1.small {
+        margin-bottom: 40px;
+      }
+
+      .buttonContainer {
+        margin-top: 24px;
+        .previousButton {
+          text-transform: capitalize;
+        }
+      }
+
+      .noSeedCreatedMessage {
+        padding-top: 15px;
+      }
     }
   }
 }

@@ -16,31 +16,54 @@
           <div class="heading heading1 seedAdministrationHeader">
             Seed Administration
           </div>
-          <a if.bind="selectedSeed.address" href="seed/${selectedSeed.address}">Go to ${selectedSeed.metadata.general.projectName} Dashboard</a>
         </div>
-        <div if.bind="seeds.length">
-          <dropdown
-            class="seedsDropdown"
-            if.bind="seeds.length !== 1"
-            item-changed.call="selectSeed(index)"
-            selected-item-index.to-view="selectedSeedIndex"
-            placeholder="Select a Seed...">
-            <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
-          </dropdown>
-          <div else class="heading heading3 projectTitle">
-            ${selectedSeed.metadata.general.projectName}
+        <hr />
+        <div if.bind="seeds.length" class="body">
+          <div class="seed-selector featureContainer">
+            <div class="featureTitle">
+              Seed
+            </div>
+            <dropdown
+              class="seedsDropdown"
+              if.bind="seeds.length !== 1"
+              item-changed.call="selectSeed(index)"
+              selected-item-index.to-view="selectedSeedIndex"
+              placeholder="Select a Seed...">
+              <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+            </dropdown>
+            <div else class="heading heading3 projectTitle">
+              ${selectedSeed.metadata.general.projectName}
+            </div>
+            <div class="buttonContainer" if.bind="selectedSeed.address">
+                <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
+                  Go To Dashboard
+                </div>
+            </div>
           </div>
-          <div if.bind="selectedSeed.address">
+
+          <div if.bind="selectedSeed.address" class="seed-selected">
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Fund Seed
               </div>
-              <div class="featureDescription">
-                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
+              <div class="">
+                <div class="featureTitle small">
+                  Required to fund
+                </div>
+                <div class="tokenDetails">
+                  <span>
+                    <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> 
+                    ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol})
+                  </span>
+                  <span class="tokenAmount">
+                    ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
+                  </span>
+                </div>
               </div>
               <div class="button1 small" click.delegate="selectedSeed.fund()">
                 Fund
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
@@ -52,6 +75,7 @@
               <div class="button1 small" click.delegate="addWhitelist()">
                 Add Whitelist
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
@@ -66,6 +90,7 @@
                   Add to whitelist
                 </div>
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
@@ -80,6 +105,7 @@
                   Remove from whitelist
                 </div>
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
@@ -94,6 +120,7 @@
                   Retrieve Project Tokens
                 </div>
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="selectedSeed.claimingIsOpen && selectedSeed.fundingTokenBalance != 0">
               <div class="featureTitle">
@@ -105,6 +132,7 @@
               <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="!selectedSeed.isClosed">
               <div class="featureTitle">
@@ -119,6 +147,7 @@
               <div else if.bind="!selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.unPause()">
                 UnPause
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="!selectedSeed.isClosed">
               <div class="featureTitle">
@@ -130,6 +159,7 @@
               <div class="button1 small" click.delegate="selectedSeed.close()">
                 Close
               </div>
+              <hr />
             </div>
           </div>
         </div>
@@ -138,4 +168,5 @@
         </div>
       </div>
     </div>
+  </div>
 </template>

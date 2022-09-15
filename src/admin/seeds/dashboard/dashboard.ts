@@ -10,6 +10,7 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
 import { BigNumber } from "ethers";
+import { Router } from "aurelia-router";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -45,6 +46,7 @@ export class SeedAdminDashboard {
     private seedService: SeedService,
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
+    private router: Router,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -138,4 +140,9 @@ export class SeedAdminDashboard {
   connect(): void {
     this.ethereumService.ensureConnected();
   }
+
+  private navigate(href: string): void {
+    this.router.navigate(href);
+  }
+
 }
