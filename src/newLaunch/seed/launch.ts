@@ -218,20 +218,29 @@ export class NewSeed {
 
   private dev_subscriteToUseSavedSeedInLocalStorage(): void {
     this.subscriptions.push(this.eventAggregator.subscribe("dev:use-saved-seed", () => {
-      const result = this.seedService.dev_getSeedConfigFromLocalStorage();
-      if (result !== null) {
-        this.launchConfig = { ...this.launchConfig, ...result };
-        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: stage7.ts ~ line 49 ~ this.launchConfig", this.launchConfig);
-
-        // Update setting of each route
-        this.router.routes.forEach(route => {
-          const rawSeedConfig = new SeedConfig();
-          route.settings.launchConfig = Object.assign(rawSeedConfig, this.launchConfig);
-        });
-
-        this.router.navigate("/newSeed/stage6");
-      }
+      this.dev_useSavedSeedInLocalStorage();
     }));
+  }
+
+  private dev_useSavedSeedInLocalStorage(customLaunchConfig?: ISeedConfig) {
+    const result = this.seedService.dev_getSeedConfigFromLocalStorage();
+    if (result !== null) {
+      const finalConfig = customLaunchConfig ?? result;
+      const rawSeedConfig = new SeedConfig();
+      this.launchConfig = Object.assign(rawSeedConfig, finalConfig);
+
+      // Update setting of each route
+      this.router.routes.forEach(route => {
+        route.settings.launchConfig = this.launchConfig;
+      });
+
+      const submitRoute = "/newSeed/stage6";
+      if (window.location.pathname === submitRoute) {
+        this.router.navigate("/newSeed/stage1");
+      } else {
+        this.router.navigate(submitRoute);
+      }
+    }
   }
 
   private dev_subscriteToUpdateSeedInLocalStorage(): void {
@@ -271,9 +280,7 @@ export class NewSeed {
 
   private dev_subscribeToUploadSeed(): void {
     this.subscriptions.push(this.eventAggregator.subscribe("dev:upload-seed", (seedJson: ISeedConfig) => {
-      this.launchConfig = seedJson;
-      this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
-      window.location.reload();
+      this.dev_useSavedSeedInLocalStorage(seedJson);
     }));
   }
 
