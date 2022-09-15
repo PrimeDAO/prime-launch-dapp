@@ -148,29 +148,40 @@
     font-size: 28px;
     line-height: 35px;
     text-transform: uppercase;
+
     @media screen and (max-width: 570px) {
       font-size: 24px;
     }
   }
 
-  .class-container__block__text--small {
+  .class-container__block__text {
     color: $Neutral04;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
+
+    &--small {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    &--large {
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 35px;
+    }
   }
 
   hr {
     background-color: #403453;
     margin: 0;
+
     @media screen and (max-width: 570px) {
       background-color: transparent;
     }
   }
 
-  .mobileTitle{
+  .mobileTitle {
     @media screen and (max-width: 570px) {
       font-size: 24px;
     }
