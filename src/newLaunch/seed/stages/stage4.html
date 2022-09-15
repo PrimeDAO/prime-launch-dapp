@@ -151,55 +151,7 @@
               value.bind="launchConfig.launchDetails.legalDisclaimer"
               placeholder="(Optional) URL to a disclaimer (https://...)" />
           </div>
-          <geoblocking
-            checked.bind="launchConfig.launchDetails.geoBlock"
-            toggle.call="toggleGeoBlocking()">
-          </geoblocking>
-          <div class="infoInput admin">
-            <div class="labeledQuestion">
-              <label for="admin">Seed Administrator</label>
-              <div class="questionMark">
-                <question-mark text="The Seed administrator has the ability to pause and close the seed, alter the whitelist and withdraw funding tokens"></question-mark>
-              </div>
-            </div>
-            <div class="adminInputContainer">
-              <input
-                id="admin"
-                class="input-style"
-                value.bind="launchConfig.launchDetails.adminAddress"
-                placeholder="Administrator wallet address" />
-              <template if.to-view="!launchConfig.launchDetails.adminAddress">
-                <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
-                <div class="make-admin-button" else click.delegate="makeMeAdmin()">I will be the administrator</div>
-              </template>
-            </div>
-            <div class="classes-overview-container">
-              <div class="classes-overview-container__title">Classes Overview</div>
-              <div class="classes-overview-container__table-container">
-                  <table class="classes-overview-container__table">
-                      <tr>
-                          <th>Name</th>
-                          <th>Token</th>
-                          <th>Max. Amount</th>
-                          <th><div class="table__center-cell">Exchange Ratio</div></th>
-                          <th><div class="table__center-cell">Edit</div></th>
-                      </tr>
-                      <template repeat.for="class of launchConfig.classes">
-                          <tr>
-                              <td>${class.className}</td>
-                              <td>${class.token.symbol}</td>
-                              <td>${class.fundingTokenMaximum}</td>
-                              <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
-                          </tr>
-                      </template>
-                  </table>
-              </div>
-            </div>
-            <div style="margin-top: 34px;" class="buttonContainer">
-              <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
-          </div>
-          </div>
+
             </div>
         </div>
             </div>
@@ -290,7 +242,30 @@
                 class="input-style"
                 value.bind="launchConfig.launchDetails.legalDisclaimer"
                 placeholder="(Optional) URL to a disclaimer (https://...)" />
-            </div>        
+            </div>      
+            <geoblocking
+            checked.bind="launchConfig.launchDetails.geoBlock"
+            toggle.call="toggleGeoBlocking()">
+          </geoblocking>  
+          <div class="infoInput admin">
+            <div class="labeledQuestion">
+              <label for="admin">Seed Administrator</label>
+              <div class="questionMark">
+                <question-mark text="The Seed administrator has the ability to pause and close the seed, alter the whitelist and withdraw funding tokens"></question-mark>
+              </div>
+            </div>
+            <div class="adminInputContainer">
+              <input
+                id="admin"
+                class="input-style"
+                value.bind="launchConfig.launchDetails.adminAddress"
+                placeholder="Administrator wallet address" />
+              <template if.to-view="!launchConfig.launchDetails.adminAddress">
+                <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
+                <div class="make-admin-button" else click.delegate="makeMeAdmin()">I will be the administrator</div>
+              </template>
+            </div>
+          </div>
           </div> 
             <div class="footerButtons">
                 <div class="view-buttons">
