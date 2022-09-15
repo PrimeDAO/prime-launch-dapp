@@ -29,13 +29,6 @@
     }
   }
 
-  // .projectTitle {
-  //   font-size: 20px;
-  //   color: #a258a7;
-  //   font-weight: 600;
-  //   margin-bottom: 40px;
-  // }
-
   .formContainer {
     .header {
       display: flex;
@@ -51,13 +44,13 @@
     .body {
       display: flex;
       flex-flow: wrap;
-      gap: 10px;
-      .seed-selector {
-        width: clamp(260px, 100%, 400px);
+      gap: 125px;
+      .seedSelector {
+        width: clamp(260px, 100%, 350px);
       }
 
-      .seed-selected {
-        width: clamp(minmax(260px, 400px), 100%, calc(100% - 400px));
+      .seedSelected {
+        width: clamp(550px, 100%, calc(100% - 485px));
       }
 
       .featureContainer {
@@ -78,7 +71,7 @@
           font-family: 'Inter';
           font-weight: 700;
           margin-bottom: 11px;
-          color: #a258a7;
+          color: $Secondary02;
           &.small {
             font-size: 14px;
             color: $Secondary05;
@@ -87,10 +80,14 @@
 
         .featureDescription {
           display: flex;
+          flex-direction: column;
           align-self: center;
-          color: #98979b;
+          color: $Neutral03;
           font-size: 16px;
           margin-bottom: 16px;
+          .important {
+            color: $AlertOrange;
+          }
         }
 
         .inputWrapper {
@@ -120,14 +117,17 @@
         border-radius: 50%;
       }
 
-      .button1.small {
+      .button1 {
         margin-bottom: 40px;
+        margin-left: 0;
       }
 
       .buttonContainer {
         margin-top: 24px;
         .previousButton {
-          text-transform: capitalize;
+          text-transform: uppercase;
+          display: flex;
+          gap: 15px;
         }
       }
 
