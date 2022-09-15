@@ -167,16 +167,22 @@
   margin-right: 21px;
 }
 
+.underline {
+  text-decoration: underline
+}
+
 .classes-overview-container {
   background: $BG02;
   border: 2px solid $BG01;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   border-radius: 10px;
-  margin-top: 32px;
   max-width: 645px;
+}
+
+.classes-overview-container__para {
+  color: $AlertOrange;
+  line-height: 24px;
+  margin:0;
 }
 
 .classes-overview-container__title {
@@ -289,7 +295,7 @@
     display: flex;
     align-items: center;
   }
-  label {
+  label, .label {
     display: block;
     font-size: 17px;
     font-weight: 600;
