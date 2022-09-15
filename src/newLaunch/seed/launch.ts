@@ -4,6 +4,7 @@ import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newLaunch/baseStage";
 import { LaunchType } from "services/launchTypes";
+import { SeedService } from "services/SeedService";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
@@ -25,9 +26,11 @@ export class NewSeed {
     return this.router.currentInstruction.config;
   }
 
-  constructor() {
+  constructor(private seedService: SeedService) {
     if (!this.launchConfig) {
       this.launchConfig = new SeedConfig();
+      this.dev_setSeedConfigFromLocalStorage();
+
       this.wizardState = { launchType: LaunchType.Seed, launchTypeTitle: "Seed" };
       /**
        * stageStates is 1-based, indexed by stage number
@@ -35,23 +38,23 @@ export class NewSeed {
       this.stageStates = [
         undefined,
         {
-          verified: false,
+          verified: true,
           title: "General Information",
         },
         {
-          verified: false,
+          verified: true,
           title: "Project Details",
         },
         {
-          verified: false,
+          verified: true,
           title: "Token Details",
         },
         {
-          verified: false,
+          verified: true,
           title: "SEED Details",
         },
         {
-          verified: false,
+          verified: true,
           title: "Contact Details",
         },
         {
@@ -144,7 +147,7 @@ export class NewSeed {
       },
       {
         route: ["stage6"],
-        nav: false,
+        nav: true,
         moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage6"), // seed specific stage
         name: "stage6",
         title: this.stageStates[6].title,
@@ -200,6 +203,14 @@ export class NewSeed {
       this.sideBar.classList.remove("show");
     } else {
       this.sideBar.classList.add("show");
+    }
+  }
+
+  private dev_setSeedConfigFromLocalStorage(): void {
+    const result = this.seedService.dev_setSeedConfigFromLocalStorage();
+    if (result !== null) {
+      this.launchConfig = { ...this.launchConfig, ...result };
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: stage7.ts ~ line 49 ~ this.launchConfig", this.launchConfig);
     }
   }
 }

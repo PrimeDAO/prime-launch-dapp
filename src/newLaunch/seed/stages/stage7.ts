@@ -1,5 +1,5 @@
 import { toBigNumberJs } from "services/BigNumberService";
-import { ISeedConfig } from "newLaunch/seed/config";
+import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";
 import { EthereumService, fromWei, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
@@ -23,6 +23,8 @@ export class Stage7 extends BaseStage<ISeedConfig> {
     tokenService: TokenService,
     private numberService: NumberService) {
     super(router, ethereumService, eventAggregator, tokenService);
+    // @ts-ignore
+    window.stage7 = this;
   }
 
   public async canActivate(_params: unknown, routeConfig: RouteConfig): Promise<boolean | Redirect> {
@@ -33,9 +35,23 @@ export class Stage7 extends BaseStage<ISeedConfig> {
      * where the launchConfig will have been deleted.
      */
     if (!routeConfig.settings.launchConfig.general.projectName?.length) {
-      return new Redirect("");
+      // return new Redirect("");
     } else {
       return true;
+    }
+  }
+
+  bind(): void {
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: stage7.ts ~ line 45 ~ bind");
+    /** Dev  */
+    const result = this.seedService.dev_setSeedConfigFromLocalStorage();
+    if (result !== null) {
+      this.launchConfig = new SeedConfig();
+      this.launchConfig = {
+        ...this.launchConfig,
+        ...result,
+      };
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: stage7.ts ~ line 49 ~ this.launchConfig", this.launchConfig);
     }
   }
 
@@ -57,6 +73,10 @@ export class Stage7 extends BaseStage<ISeedConfig> {
   async submit(): Promise<void> {
     try {
       this.eventAggregator.publish("launch.creating", true);
+
+      // this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
+
+
       this.wizardState.launchHash = await this.seedService.deploySeed(this.launchConfig);
       if (this.wizardState.launchHash) {
         this.next();
