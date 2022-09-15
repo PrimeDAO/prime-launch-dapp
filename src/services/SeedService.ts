@@ -315,7 +315,7 @@ export class SeedService {
    * key: `@primedao/prime-launch-dapp.LOCAL_STORAGE_LAUNCH_CONFIG`
    * value: `{"data": {<ISeedConfig> ...}}`
    */
-  public dev_setSeedConfigFromLocalStorage(): ISeedConfig | null {
+  public dev_getSeedConfigFromLocalStorage(): ISeedConfig | null {
     const inDev = process.env.NODE_ENV === "development";
     const isLocalhost = window.location.hostname === "localhost";
 
@@ -328,5 +328,9 @@ export class SeedService {
     }
 
     return null;
+  }
+
+  public dev_setSeedConfigFromLocalStorage(config: ISeedConfig): void {
+    this.browserStorageService.lsSet("LOCAL_STORAGE_LAUNCH_CONFIG", config);
   }
 }
