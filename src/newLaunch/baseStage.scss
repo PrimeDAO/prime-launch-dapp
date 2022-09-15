@@ -27,6 +27,7 @@
   display: grid;
   grid-template-columns: 1fr 1.7fr;
   margin-left: 100px;
+  padding-top: 32px;
 }
 
 //#footer-date-content {
@@ -68,7 +69,6 @@
 
 .classes-description {
   width: 320px;
-  margin-top: 10px;
   color: rgba(220, 218, 229, 1);
   font-size: 16px;
   font-family: Inter;
@@ -372,7 +372,12 @@
   }
 }
 
+.content-classes .infoContainer {
+  padding: 0 0 0 24px;
+}
+
 .page.stageContainer, .content-classes {
+  margin-bottom: 130px;
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -687,13 +692,13 @@
         flex: 1;
         gap: 32px;
 
-        &.maxTargetLabel label {
-          font-size: 14px;
-          line-height: 20px;
-          margin-bottom: 5px;
-          -webkit-text-fill-color: $White;
-          font-weight: 400;
-        }
+        // &.maxTargetLabel label {
+        //   font-size: 14px;
+        //   line-height: 20px;
+        //   margin-bottom: 5px;
+        //   -webkit-text-fill-color: $White;
+        //   font-weight: 400;
+        // }
 
         &.fundingTarget {
           flex-flow: column;
