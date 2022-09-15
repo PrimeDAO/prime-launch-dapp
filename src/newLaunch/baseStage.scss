@@ -372,7 +372,7 @@
   }
 }
 
-.page.stageContainer {
+.page.stageContainer, .content-classes {
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -1091,7 +1091,7 @@
     }
   }
 
-  .page.stageContainer {
+  .page.stageContainer,.content-classes {
     &.stage1 {
       .infoContainer {
         .otherLinks {
@@ -1172,7 +1172,8 @@
 }
 
 @media screen and (max-width: 600px) {
-  .page.stageContainer {
+  .page.stageContainer,
+  .content-classes {
     &.stage4 {
       .infoInput {
         .pptContainer {

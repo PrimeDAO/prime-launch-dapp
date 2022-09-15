@@ -120,71 +120,6 @@
               </div>
             </div>
           </div>
-          <label>Seed Schedule</label>
-          <div class="infoInput maxTarget maxTargetLabel">
-            <div>
-              <label for="startDate">Start Date</label>
-              <div class="vestingDates">
-                <input
-                  id="startDate"
-                  placeholder="YYYY-MM-DD"
-                  class="input-style vestingDateInput"
-                  value.bind="startDate | date"
-                  ref="startDateRef"
-                  click.delegate="startDatePicker.show()"
-                  autocomplete="off" disabled />
-                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
-              </div>
-            </div>
-            <div>
-              <label for="startTime">Start Time (GMT)</label>
-              <div class="vestingDatesContainer">
-                <div class="vestingDates">
-                  <input
-                    id="startTime"
-                    value.bind="startTime"
-                    class="input-style"
-                    keydown.delegate="hoursMinutesFilter($event)"
-                    autocomplete="off" />
-                  <div class="inputIcon"><i class="far fa-clock"></i></div>
-                </div>
-                <div class="questionMark">
-                  <question-mark text="The start time for the launch, in GMT"></question-mark>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="infoInput maxTarget maxTargetLabel">
-            <div>
-              <label for="endDate">End Date</label>
-              <div class="vestingDates">
-                <input
-                  id="endDate"
-                  class="input-style vestingDateInput"
-                  value.bind="endDate | date"
-                  placeholder="YYYY-MM-DD"
-                  ref="endDateRef"
-                  click.delegate="endDatePicker.show()"
-                  autocomplete="off" disabled />
-                <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
-              </div>
-            </div>
-            <div>
-              <label for="endTime">End Time (GMT)</label>
-              <div class="vestingDatesContainer">
-                <div class="vestingDates">
-                  <input
-                    id="endTime" class="input-style" value.bind="endTime"
-                    keydown.delegate="hoursMinutesFilter($event)"
-                    autocomplete="off" />
-                  <div class="inputIcon"><i class="far fa-clock"></i></div>
-                </div>
-                <div class="questionMark">
-                  <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="infoInput whitelistContainer">
             <div class="labeledQuestion">
               <label for="whitelist">Whitelist</label>
@@ -238,12 +173,38 @@
                 <div class="make-admin-button" else click.delegate="makeMeAdmin()">I will be the administrator</div>
               </template>
             </div>
+            <div class="classes-overview-container">
+              <div class="classes-overview-container__title">Classes Overview</div>
+              <div class="classes-overview-container__table-container">
+                  <table class="classes-overview-container__table">
+                      <tr>
+                          <th>Name</th>
+                          <th>Token</th>
+                          <th>Max. Amount</th>
+                          <th><div class="table__center-cell">Exchange Ratio</div></th>
+                          <th><div class="table__center-cell">Edit</div></th>
+                      </tr>
+                      <template repeat.for="class of launchConfig.classes">
+                          <tr>
+                              <td>${class.className}</td>
+                              <td>${class.token.symbol}</td>
+                              <td>${class.fundingTokenMaximum}</td>
+                              <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                              <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
+                          </tr>
+                      </template>
+                  </table>
+              </div>
+            </div>
+            <div style="margin-top: 34px;" class="buttonContainer">
+              <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
+          </div>
           </div>
             </div>
         </div>
             </div>
         </div>
-    <div class="content-classes">
+    <div class="content-classes stage4">
         <div>
             <div class="class-title">Classes (optional)</div>
             <div class="classes-description">
@@ -251,32 +212,86 @@
             </div>
         </div>
         <div>
-            <div class="classes-overview-container">
-                <div class="classes-overview-container__title">Classes Overview</div>
-                <div class="classes-overview-container__table-container">
-                    <table class="classes-overview-container__table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Token</th>
-                            <th>Max. Amount</th>
-                            <th><div class="table__center-cell">Exchange Ratio</div></th>
-                            <th><div class="table__center-cell">Edit</div></th>
-                        </tr>
-                        <template repeat.for="class of launchConfig.classes">
-                            <tr>
-                                <td>${class.className}</td>
-                                <td>${class.token.symbol}</td>
-                                <td>${class.fundingTokenMaximum}</td>
-                                <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
-                            </tr>
-                        </template>
-                    </table>
+          <div class="infoContainer">
+            <div class="infoInput maxTarget maxTargetLabel">
+              <div>
+                <label for="startDate">Start Date</label>
+                <div class="vestingDates">
+                  <input
+                    id="startDate"
+                    placeholder="YYYY-MM-DD"
+                    class="input-style vestingDateInput"
+                    value.bind="startDate | date"
+                    ref="startDateRef"
+                    click.delegate="startDatePicker.show()"
+                    autocomplete="off" disabled />
+                  <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="startDatePicker.show()"></i></div>
                 </div>
+              </div>
+              <div>
+                <label for="startTime">Start Time (GMT)</label>
+                <div class="vestingDatesContainer">
+                  <div class="vestingDates">
+                    <input
+                      id="startTime"
+                      value.bind="startTime"
+                      class="input-style"
+                      keydown.delegate="hoursMinutesFilter($event)"
+                      autocomplete="off" />
+                    <div class="inputIcon"><i class="far fa-clock"></i></div>
+                  </div>
+                  <div class="questionMark">
+                    <question-mark text="The start time for the launch, in GMT"></question-mark>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="margin-top: 34px;" class="buttonContainer">
-                <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
+            <div class="infoInput maxTarget maxTargetLabel">
+              <div>
+                <label for="endDate">End Date</label>
+                <div class="vestingDates">
+                  <input
+                    id="endDate"
+                    class="input-style vestingDateInput"
+                    value.bind="endDate | date"
+                    placeholder="YYYY-MM-DD"
+                    ref="endDateRef"
+                    click.delegate="endDatePicker.show()"
+                    autocomplete="off" disabled />
+                  <div class="inputIcon"><i class="far fa-calendar-alt" click.delegate="endDatePicker.show()"></i></div>
+                </div>
+              </div>
+              <div>
+                <label for="endTime">End Time (GMT)</label>
+                <div class="vestingDatesContainer">
+                  <div class="vestingDates">
+                    <input
+                      id="endTime" class="input-style" value.bind="endTime"
+                      keydown.delegate="hoursMinutesFilter($event)"
+                      autocomplete="off" />
+                    <div class="inputIcon"><i class="far fa-clock"></i></div>
+                  </div>
+                  <div class="questionMark">
+                    <question-mark text="The maximum end time for the launch, in GMT. The launch will conclude at the latest at this time"></question-mark>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="infoInput">
+              <div class="labeledQuestion">
+                <label for="disclaimer">Legal Disclaimer</label>
+                <div class="questionMark">
+                  <question-mark allow-html text='If supplied, all contributors must accept the disclaimer in order to access the launch. The disclaimer must be formatted as plain text or Markdown. <a target="_blank" href="https://www.markdownguide.org/getting-started/" rel="noopener noreferrer">(More info about Markdown)</a>'>
+                  </question-mark>
+                </div>
+              </div>
+              <input
+                id="disclaimer"
+                class="input-style"
+                value.bind="launchConfig.launchDetails.legalDisclaimer"
+                placeholder="(Optional) URL to a disclaimer (https://...)" />
+            </div>        
+          </div> 
             <div class="footerButtons">
                 <div class="view-buttons">
                     <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
