@@ -4,12 +4,29 @@ import { Router } from "aurelia-router";
 import { Utils } from "services/utils";
 import "./navbar.scss";
 
+const DEV_ADDRESSES = [
+  "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
+];
+
 @autoinject
 export class Navbar {
   menuOpen = false;
   private seedJsonFiles: File[]
+  private showDevCode = false;
 
   constructor(private router: Router, private eventAggregator: EventAggregator) {}
+
+  bind(): void {
+    this.eventAggregator.subscribe("Network.Changed.Account", (account: string) => {
+      const isDevAccount = DEV_ADDRESSES.find(address => address.toLowerCase() === account.toLowerCase());
+      if (isDevAccount) {
+        this.showDevCode = true;
+        return;
+      }
+
+      this.showDevCode = false;
+    });
+  }
 
   private toggleMenu() {
     this.menuOpen = !this.menuOpen;
