@@ -27,8 +27,7 @@ export class BrowserStorageService {
     defaultValue: any = null,
     version?: string,
   ): T {
-    const targetKey = this.getKey(key);
-    const rawValue = storage.getItem(targetKey);
+    const rawValue = storage.getItem(this.getKey(key));
 
     if (rawValue !== null) {
       try {

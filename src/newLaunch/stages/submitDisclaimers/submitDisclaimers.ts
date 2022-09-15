@@ -7,7 +7,7 @@ export class SubmitDisclaimers {
   @bindable.booleanAttr({ defaultBindingMode: bindingMode.twoWay }) allConfirmed = false;
   @bindable({ defaultBindingMode: bindingMode.toView }) back: () => void;
 
-  _checkedTerms = true;
+  _checkedTerms = false;
   get checkedTerms(): boolean {
     return this._checkedTerms;
   }
@@ -17,7 +17,7 @@ export class SubmitDisclaimers {
     this.updateConfirmed();
   }
 
-  _checkedReviewed = true;
+  _checkedReviewed = false;
   get checkedReviewed(): boolean {
     return this._checkedReviewed;
   }
@@ -27,7 +27,7 @@ export class SubmitDisclaimers {
     this.updateConfirmed();
   }
 
-  _checkedPrivacy = true;
+  _checkedPrivacy = false;
   get checkedPrivacy(): boolean {
     return this._checkedPrivacy;
   }

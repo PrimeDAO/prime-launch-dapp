@@ -421,10 +421,8 @@ export class Seed implements ILaunch {
 
       await batcher.start();
 
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 425 ~ rawMetadata", rawMetadata);
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 427 ~ this.metadataHash", this.metadataHash);
       } else {
         this.eventAggregator.publish("Seed.InitializationFailed", this.address);
         throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);

@@ -27,8 +27,7 @@
       <submit-disclaimers all-confirmed.bind="disclaimersConfirmed" back.call="back()"></submit-disclaimers>
       <div class="buttonContainer">
         <button if.to-view="!connected" class="stageButton proceed button1" click.delegate="connect()">CONNECT TO YOUR WALLET PROVIDER</button>
-        <button else class="stageButton proceed button1 ${disclaimersConfirmed ? '' : 'disabled'}" disabled.bind="false" click.delegate="submit()">SUBMIT</button>
-        <!-- <button else class="stageButton proceed button1 ${disclaimersConfirmed ? '' : 'disabled'}" disabled.bind="!disclaimersConfirmed" click.delegate="submit()">SUBMIT</button> -->
+        <button else class="stageButton proceed button1 ${disclaimersConfirmed ? '' : 'disabled'}" disabled.bind="!disclaimersConfirmed" click.delegate="submit()">SUBMIT</button>
       </div>
     </div>
   </div>
