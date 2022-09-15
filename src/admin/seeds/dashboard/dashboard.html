@@ -19,7 +19,7 @@
         </div>
         <hr />
         <div if.bind="seeds.length" class="body">
-          <div class="seed-selector featureContainer">
+          <div class="seedSelector featureContainer">
             <div class="featureTitle">
               Seed
             </div>
@@ -35,13 +35,13 @@
               ${selectedSeed.metadata.general.projectName}
             </div>
             <div class="buttonContainer" if.bind="selectedSeed.address">
-                <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
-                  Go To Dashboard
-                </div>
+              <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
+                Go To Dashboard
+              </div>
             </div>
           </div>
 
-          <div if.bind="selectedSeed.address" class="seed-selected">
+          <div if.bind="selectedSeed.address" class="seedSelected">
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Fund Seed
