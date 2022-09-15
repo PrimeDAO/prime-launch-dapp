@@ -65,44 +65,44 @@
               </div>
               <hr />
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
-                Add Whitelists
+                Classes
               </div>
-              <div class="featureDescription">
-                Add addresses from the list that was supplied during registration
-              </div>
-              <div class="button1" click.delegate="addWhitelist()">
-                Add Whitelist
-              </div>
-              <hr />
-            </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
-              <div class="featureTitle">
-                Whitelist an account
-              </div>
-              <div class="featureDescription">
-                Add an account to the whitelist
-              </div>
-              <div class='inputWrapper'>
-                <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                <div class="button1" click.delegate="addToWhiteList()">
-                  Add to whitelist
+              <div class="">
+                <div class="featureDescription">
+                  <p>
+                    You can add multiple classes with different options. Make sure you add the classes before the starting date.
+                  </p>
+                  <p class="important">
+                    Important: Adding classes and whitelists will cost gas which you’ll need to pay after confirmation. Classes cannot be deleted (and editted?) after the confirmation proces has been completed.
+                  </p>
                 </div>
-              </div>
-              <hr />
-            </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
-              <div class="featureTitle">
-                Unwhitelist an account
-              </div>
-              <div class="featureDescription">
-                Remove an account from the whitelist
-              </div>
-              <div class='inputWrapper'>
-                <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
-                <div class="button1" click.delegate="removeFromWhiteList()">
-                  Remove from whitelist
+                <div class="classes-overview-container">
+                  <div class="classes-overview-container__title">Classes Overview</div>
+                  <div class="classes-overview-container__table-container">
+                    <table class="classes-overview-container__table">
+                      <tr>
+                        <th>Name</th>
+                        <th>Token</th>
+                        <th>Max. Amount</th>
+                        <th><div class="table__center-cell">Exchange Ratio</div></th>
+                        <th><div class="table__center-cell">Edit</div></th>
+                      </tr>
+                      <template repeat.for="class of selectedSeed.classes">
+                        <tr>
+                          <td>${class.className}</td>
+                          <td>${class.token.symbol}</td>
+                          <td>${class.fundingTokenMaximum}</td>
+                          <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                          <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
+                        </tr>
+                      </template>
+                    </table>
+                  </div>
+                  <div class="buttonContainer">
+                    <div class="stageButton previousButton" click.delegate="openAddClassModal()"><span>Add Class</span><i class="fas fa-plus"></i></div>
+                  </div>
                 </div>
               </div>
               <hr />

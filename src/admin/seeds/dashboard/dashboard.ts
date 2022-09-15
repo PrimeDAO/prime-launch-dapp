@@ -11,6 +11,9 @@ import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
 import { BigNumber } from "ethers";
 import { Router } from "aurelia-router";
+import { AddClassService } from "services/AddClassService";
+import { IClass } from "newLaunch/launchConfig";
+import { IParameter } from "resources/dialogs/addClass/addClass";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -47,6 +50,7 @@ export class SeedAdminDashboard {
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
     private router: Router,
+    private addClassService: AddClassService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -145,4 +149,22 @@ export class SeedAdminDashboard {
     this.router.navigate(href);
   }
 
+
+
+  addClass(newClass: IClass): void {
+    // TODO
+    if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
+    this.selectedSeed.classes.push(newClass);
+  }
+
+  editClass({ newClass, index }: { newClass: IClass, index: number; }): void {
+    // TODO
+    this.selectedSeed.classes[index] = newClass;
+  }
+
+  openAddClassModal(isEdit = false, index: number): void {
+    const editedClass = isEdit ? this.selectedSeed.classes[index] : undefined;
+
+    this.addClassService.show({ isEdit, index, editedClass }, this.addClass.bind(this), this.editClass.bind(this));
+  }
 }
