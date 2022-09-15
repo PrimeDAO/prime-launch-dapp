@@ -698,13 +698,13 @@
         flex: 1;
         gap: 32px;
 
-        // &.maxTargetLabel label {
-        //   font-size: 14px;
-        //   line-height: 20px;
-        //   margin-bottom: 5px;
-        //   -webkit-text-fill-color: $White;
-        //   font-weight: 400;
-        // }
+        &.maxTargetLabel label:not(.label) {
+          font-size: 14px;
+          line-height: 20px;
+          margin-bottom: 5px;
+          -webkit-text-fill-color: $White;
+          font-weight: 400;
+        }
 
         &.fundingTarget {
           flex-flow: column;
