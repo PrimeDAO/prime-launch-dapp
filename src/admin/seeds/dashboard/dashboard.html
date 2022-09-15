@@ -47,7 +47,7 @@
                 Fund Seed
               </div>
               <div class="">
-                <div class="featureTitle small">
+                <div class="featureTitle">
                   Required to fund
                 </div>
                 <div class="tokenDetails">
@@ -60,7 +60,7 @@
                   </span>
                 </div>
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.fund()">
+              <div class="button1" click.delegate="selectedSeed.fund()">
                 Fund
               </div>
               <hr />
@@ -72,7 +72,7 @@
               <div class="featureDescription">
                 Add addresses from the list that was supplied during registration
               </div>
-              <div class="button1 small" click.delegate="addWhitelist()">
+              <div class="button1" click.delegate="addWhitelist()">
                 Add Whitelist
               </div>
               <hr />
@@ -86,7 +86,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="addToWhiteList()">
+                <div class="button1" click.delegate="addToWhiteList()">
                   Add to whitelist
                 </div>
               </div>
@@ -101,7 +101,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="removeFromWhiteList()">
+                <div class="button1" click.delegate="removeFromWhiteList()">
                   Remove from whitelist
                 </div>
               </div>
@@ -116,7 +116,7 @@
               </div>
               <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="retrieveProjectTokens()">
+                <div class="button1" click.delegate="retrieveProjectTokens()">
                   Retrieve Project Tokens
                 </div>
               </div>
@@ -129,7 +129,7 @@
               <div class="featureDescription">
                 ${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
+              <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
               </div>
               <hr />
@@ -141,10 +141,10 @@
               <div class="featureDescription">
                 Pausing will make seed inactive. As the administrator, you will be able to unpause the Seed.
               </div>
-              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.pause()">
+              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.pause()">
                 Pause
               </div>
-              <div else if.bind="!selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.unPause()">
+              <div else if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.unPause()">
                 UnPause
               </div>
               <hr />
@@ -156,7 +156,7 @@
               <div class="featureDescription">
                 Close will permanently stop the seed. The seed cannot be unclosed.
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.close()">
+              <div class="button1" click.delegate="selectedSeed.close()">
                 Close
               </div>
               <hr />
