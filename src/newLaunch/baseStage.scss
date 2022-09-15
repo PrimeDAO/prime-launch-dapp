@@ -10,6 +10,40 @@
   max-width: 100%;
 }
 
+.csvList {
+  display: flex;
+  align-items: end;
+
+  label[for='allowList'] {
+    display: flex;
+  }
+
+  .fakeLabel {
+    position: relative;
+  }
+
+  .fakeLabel:before {
+    content: 'Upload your .csv allowlist...';
+    position: absolute;
+    background: $BG01;
+    color: $Neutral02;
+    left: 10px;
+    pointer-events: none;
+    font-size: 16px;
+    padding: 5px 0 5px 5px;
+    bottom: 7px;
+  }
+
+  .questionMark {
+    line-height: 1;
+    font-weight: normal
+  }
+
+  .csvLabelContent {
+    margin-right: 15px;
+  }
+}
+
 .content-block {
   border-top: 1px solid #a258a7;
   display: grid;
@@ -464,7 +498,7 @@
     
     .csvUploadInputContainer {
       @extend .adminInputContainer;
-      gap: 15px;
+      gap: 5px;
 
       input[id=allowList]::file-selector-button {
         display: none;
