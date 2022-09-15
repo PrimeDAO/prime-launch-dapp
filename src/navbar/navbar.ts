@@ -1,3 +1,4 @@
+import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { Utils } from "services/utils";
@@ -6,8 +7,9 @@ import "./navbar.scss";
 @autoinject
 export class Navbar {
   menuOpen = false;
+  private seedJsonFiles: File[]
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private eventAggregator: EventAggregator) {}
 
   private toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -22,4 +24,11 @@ export class Navbar {
     this.menuOpen = false;
     this.router.navigate(href);
   }
+
+  private async dev_uploadSeed(): Promise<void> {
+    const seedData = await this.seedJsonFiles[0].text();
+    const seedJson = JSON.parse(seedData);
+    this.eventAggregator.publish("dev:upload-seed", seedJson);
+  }
+
 }
