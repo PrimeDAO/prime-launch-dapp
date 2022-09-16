@@ -16,6 +16,9 @@ import { EventConfigException } from "services/GeneralEvents";
 import { api } from "services/GnosisService";
 import { Utils } from "services/utils";
 import { BigNumber } from "ethers";
+import { BrowserStorageService } from "./BrowserStorageService";
+
+const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
 
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
@@ -57,6 +60,7 @@ export class SeedService {
     private ipfsService: IpfsService,
     private aureliaHelperService: AureliaHelperService,
     private tokenService: TokenService,
+    private browserStorageService: BrowserStorageService,
   ) {
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds?.delete(seedAddress);
@@ -67,7 +71,7 @@ export class SeedService {
         this.startingBlockNumber = 13764353;
         break;
       case Networks.Rinkeby:
-        this.startingBlockNumber = 9468353;
+        this.startingBlockNumber = 11338489;
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
@@ -204,13 +208,8 @@ export class SeedService {
   // }
 
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
-
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
-
-    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-
-    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
@@ -227,6 +226,9 @@ export class SeedService {
       config.launchDetails.pricePerToken,
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
+
+    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
       safeAddress,
@@ -330,5 +332,28 @@ export class SeedService {
     }
 
     return metaDataHash;
+  }
+
+  /**
+   * Manually add to the browser local storage
+   * key: `@primedao/prime-launch-dapp.LOCAL_STORAGE_LAUNCH_CONFIG`
+   * value: `{"data": {<ISeedConfig> ...}}`
+   */
+  public dev_getSeedConfigFromLocalStorage(): ISeedConfig | null {
+    if (IS_PRODUCTION_APP) return null;
+
+    const localStorageLaunchConfig = this.browserStorageService.lsGet<ISeedConfig>("LOCAL_STORAGE_LAUNCH_CONFIG");
+
+    if (localStorageLaunchConfig) {
+      return localStorageLaunchConfig;
+    }
+
+    return null;
+  }
+
+  public dev_setSeedConfigFromLocalStorage(config: ISeedConfig): void {
+    if (IS_PRODUCTION_APP) return;
+
+    this.browserStorageService.lsSet("LOCAL_STORAGE_LAUNCH_CONFIG", config);
   }
 }
