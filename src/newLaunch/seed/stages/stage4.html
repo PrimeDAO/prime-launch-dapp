@@ -121,20 +121,21 @@
             </div>
           </div>
           <div class="infoInput csvList">
-              <div class="csvUploadInputContainer">
-              <label for="allowList"><span class="csvLabelContent">Allowlist (Optional)</span><question-mark text="Upload your allowlist in CSV format"></question-mark></label>
-              <span class="fakeLabel">
-                <input class="footer-input"
-                id="allowList"
-                type="file"
-                accept=".csv"
-                files.bind="csv"
-                placeholder="Upload your .csv allowlist..." />
+            <div class="csvUploadInputContainer">
+              <span class="label"><span class="csvLabelContent">Allowlist (Optional)</span><question-mark text="Upload your allowlist in CSV format"></question-mark></span>
+              <p class="csvUploadPara">Choose a .csv file to import your allowlist.</p>
+              <span class="inlineWrapper">
+                <label class="csvInputWrapper">
+                  <input class="footer-input"
+                  id="allowList"
+                  type="file"
+                  accept=".csv"
+                  files.bind="csv"
+                  placeholder="Upload your .csv allowlist..." />
+                </label>
+                <span>${csv ? csv[0].name : 'No File Chosen'}</span>
+              </span>
               </div>
-            </span>
-              <div >
-                <button class="upload-csv" click.delegate="parseCsv()">Upload</button>
-                </div>
           </div>
           <label>Seed Schedule</label>
           <div class="infoInput maxTarget maxTargetLabel">

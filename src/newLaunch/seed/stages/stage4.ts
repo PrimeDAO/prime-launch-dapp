@@ -1,6 +1,6 @@
 import { LaunchService } from "services/LaunchService";
 import { WhiteListService } from "services/WhiteListService";
-import { autoinject, singleton, computedFrom } from "aurelia-framework";
+import { autoinject, singleton, computedFrom, observable } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "services/DateService";
 import { BaseStage } from "newLaunch/baseStage";
@@ -38,7 +38,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
-  csv: File
+  @observable csv: File
 
   constructor(
     eventAggregator: EventAggregator,
@@ -59,6 +59,12 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       this.startTime = undefined;
       this.endTime = undefined;
     });
+  }
+
+  async csvChanged(newValue, oldValue){
+    const csvContent = newValue && await newValue[0].text();
+    // for BE adds allow list param
+    // this.launchConfig.launchDetails.allowList = csvContent;
   }
 
   async attached(): Promise<void> {
@@ -103,12 +109,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
   toggleGeoBlocking(): void {
     this.launchConfig.launchDetails.geoBlock = !this.launchConfig.launchDetails.geoBlock;
-  }
-
-  async parseCsv(): Promise<any> {
-    const csvContent = this.csv && await this.csv[0].text();
-    // for BE adds allow list param
-    // this.launchConfig.launchDetails.allowList = csvContent;
   }
 
   setlaunchConfigStartDate(): Date {
