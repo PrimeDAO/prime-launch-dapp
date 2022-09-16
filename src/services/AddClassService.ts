@@ -21,7 +21,13 @@ export class AddClassService {
   ) {
   }
 
-  public show(params: { isEdit: boolean, index: number, editedClass: IClass | undefined }, addFunction: (classToAdd: any) => void, editFunction: ({ newClass, index }: {newClass: IClass; index: number}) => void): Promise<DialogCloseResult> {
+  public show(
+    params: {
+      index: number,
+      editedClass: IClass | undefined;
+    },
+    addFunction: (classToAdd: IClass) => void,
+    editFunction: ({ newClass, index }: { newClass: IClass; index: number; }) => void): Promise<DialogCloseResult> {
     let theContainer: Element;
 
     return this.dialogService.open(AddClassModal, {params, addFunction, editFunction}, {

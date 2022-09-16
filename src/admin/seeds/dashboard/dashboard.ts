@@ -152,19 +152,22 @@ export class SeedAdminDashboard {
 
 
   addClass(newClass: IClass): void {
-    // TODO
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
+    console.log("ADD:", {newClass});
     this.selectedSeed.classes.push(newClass);
   }
 
-  editClass({ newClass, index }: { newClass: IClass, index: number; }): void {
-    // TODO
-    this.selectedSeed.classes[index] = newClass;
+  editClass({ index, editedClass }: {index: number, editedClass: IClass}): void {
+    console.log("Edit", {index, editedClass, classes: this.selectedSeed.classes});
+    this.selectedSeed.classes[index] = {...editedClass};
   }
 
-  openAddClassModal(isEdit = false, index: number): void {
-    const editedClass = isEdit ? this.selectedSeed.classes[index] : undefined;
-
-    this.addClassService.show({ isEdit, index, editedClass }, this.addClass.bind(this), this.editClass.bind(this));
+  openAddClassModal(index: number = null): void {
+    const editedClass = index !== null ? this.selectedSeed.classes[index] : undefined;
+    this.addClassService.show(
+      { index, editedClass },
+      this.addClass.bind(this),
+      this.editClass.bind(this)
+    );
   }
 }

@@ -48,7 +48,7 @@ export class AddClassModal {
     if (!this.tokenList) {
       this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
-    if (model.params.isEdit) {
+    if (model.params.index !== null) {
       const {
         className,
         projectTokenPurchaseLimit,
@@ -128,7 +128,7 @@ export class AddClassModal {
   }
 
   async save(): Promise<void> {
-    if (this.model.params.isEdit) {
+    if (this.model.params.index !== null) {
       await this.editClass();
     } else {
       await this.addClass();
@@ -189,7 +189,6 @@ export class AddClassModal {
 
 interface IAddClassModal {
   params: {
-    isEdit: boolean,
     index: number,
     editedClass: IClass | undefined
   },

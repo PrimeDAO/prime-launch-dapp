@@ -89,15 +89,19 @@
                         <th><div class="table__center-cell">Exchange Ratio</div></th>
                         <th><div class="table__center-cell">Edit</div></th>
                       </tr>
-                      <template repeat.for="class of selectedSeed.classes">
-                        <tr>
-                          <td>${class.className}</td>
-                          <td>${class.token.symbol}</td>
-                          <td>${class.fundingTokenMaximum}</td>
-                          <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                          <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
-                        </tr>
-                      </template>
+                      <!-- <tr repeat.for="class of selectedSeed.classes"> -->
+                      <tr repeat.for="classIndex of selectedSeed.classes.length">
+                        <let class.bind="selectedSeed.classes[classIndex]"></let>
+                        <td>${class.className}</td>
+                        <td>${class.token.symbol}</td>
+                        <td>${class.fundingTokenMaximum}</td>
+                        <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                        <td>
+                          <div class="table__center-cell">
+                            <img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/>
+                          </div>
+                        </td>
+                      </tr>
                     </table>
                   </div>
                   <div class="buttonContainer">
