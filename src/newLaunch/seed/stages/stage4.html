@@ -1,19 +1,24 @@
 <template>
   <require from="newLaunch/tokenLabel.html"></require>
   <require from="newLaunch/geoblocking.html"></require>
+
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
+      <!-- Stage Title -->
       <div class="heading heading2 title">SEED Details</div>
-        <div class="content-block">
-          <div class="subtext">
-            Use <a href="/documentation/seed-launch" target="_blank" rel="noopener noreferrer">Seed Details &amp; Benefits</a> to learn more or
-            <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> to request further information.
-              <div class="else-subtext">
-                  <div>→ Seed Details & Benefits</div>
-                  <div>→ Get in touch</div>
-              </div>
+
+      <!-- Stage Content -->
+      <div class="content-block">
+        <div class="subtext">
+          Use <a href="/documentation/seed-launch" target="_blank" rel="noopener noreferrer">Seed Details &amp; Benefits</a> to learn more or
+          <a href="https://kolektivo.typeform.com/to/TPMzQKFE" target="_blank" rel="noopener noreferrer">get in touch</a> to request further information.
+          <div class="else-subtext">
+            <div>→ Seed Details & Benefits</div>
+            <div>→ Get in touch</div>
           </div>
-            <div class="form-content">
+        </div>
+
+        <div class="form-content">
           <div>
             <div class="infoInput ticker">
               <div class="address">
@@ -53,6 +58,7 @@
               </div>
             </div>
           </div>
+
           <div class="infoInput maxTarget fundingTarget">
             <div>
               <label for="fundingTarget">Funding Tokens <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> Target</label>
@@ -88,12 +94,14 @@
               </numeric-input>
             </div>
           </div>
+
           <div class="labeledQuestion">
             <label for="vestingPeriod">Vesting Schedule</label>
             <div class="questionMark">
               <question-mark text="The duration in days in which the Project token is vested. Vesting is released linearly by default. The vesting cliff is the period in which no tokens can be withdrawn or used — they are locked until this date"></question-mark>
             </div>
           </div>
+
           <div class="infoInput maxTarget maxTargetLabel">
             <div>
               <label for="vestingPeriod">Project tokens vested for</label>
@@ -120,6 +128,7 @@
               </div>
             </div>
           </div>
+
           <div class="infoInput csvList">
               <div class="csvUploadInputContainer">
               <label for="allowList"><span class="csvLabelContent">Allowlist (Optional)</span><question-mark text="Upload your allowlist in CSV format"></question-mark></label>
@@ -136,6 +145,7 @@
                 <button class="upload-csv" click.delegate="parseCsv()">Upload</button>
                 </div>
           </div>
+
           <label>Seed Schedule</label>
           <div class="infoInput maxTarget maxTargetLabel">
             <div>
@@ -170,6 +180,7 @@
               </div>
             </div>
           </div>
+
           <div class="infoInput maxTarget maxTargetLabel">
             <div>
               <label for="endDate">End Date</label>
@@ -201,6 +212,7 @@
               </div>
             </div>
           </div>
+
           <div class="infoInput whitelistContainer">
             <div class="labeledQuestion">
               <label for="whitelist">Allowlist</label>
@@ -210,7 +222,7 @@
               </div>
             </div>
             <input id="whitelist"
-                   class="input-style"
+                    class="input-style"
               value.bind="launchConfig.launchDetails.whitelist"
               input.trigger="getWhiteListFeedback()"
               placeholder="(Optional) URL to a whitelist (https://...)" />
@@ -218,6 +230,7 @@
             <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Allowlist contains ${whitelist.size} accounts</div>
             <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
           </div>
+
           <div class="infoInput">
             <div class="labeledQuestion">
               <label for="disclaimer">Legal Disclaimer</label>
@@ -232,10 +245,12 @@
               value.bind="launchConfig.launchDetails.legalDisclaimer"
               placeholder="(Optional) URL to a disclaimer (https://...)" />
           </div>
+
           <geoblocking
             checked.bind="launchConfig.launchDetails.geoBlock"
             toggle.call="toggleGeoBlocking()">
           </geoblocking>
+
           <div class="infoInput admin">
             <div class="labeledQuestion">
               <label for="admin">Seed Administrator</label>
@@ -255,51 +270,52 @@
               </template>
             </div>
           </div>
-            </div>
         </div>
-            </div>
-        </div>
-    <div class="content-classes">
-        <div>
-            <div class="class-title">Classes (optional)</div>
-            <div class="classes-description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-        </div>
-        <div>
-            <div class="classes-overview-container">
-                <div class="classes-overview-container__title">Classes Overview</div>
-                <div class="classes-overview-container__table-container">
-                    <table class="classes-overview-container__table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Token</th>
-                            <th>Max. Amount</th>
-                            <th><div class="table__center-cell">Exchange Ratio</div></th>
-                            <th><div class="table__center-cell">Edit</div></th>
-                        </tr>
-                        <template repeat.for="class of launchConfig.classes">
-                            <tr>
-                                <td>${class.className}</td>
-                                <td>${class.token.symbol}</td>
-                                <td>${class.fundingTokenMaximum}</td>
-                                <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
-                                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
-                            </tr>
-                        </template>
-                    </table>
-                </div>
-            </div>
-            <div style="margin-top: 34px;" class="buttonContainer">
-                <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
-            </div>
-            <div class="footerButtons">
-                <div class="view-buttons">
-                    <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
-                    <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
-                </div>
-                <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="content-classes">
+    <div>
+      <div class="class-title">Classes (optional)</div>
+      <div class="classes-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </div>
+    <div>
+      <div class="classes-overview-container">
+        <div class="classes-overview-container__title">Classes Overview</div>
+        <div class="classes-overview-container__table-container">
+          <table class="classes-overview-container__table">
+            <tr>
+              <th>Name</th>
+              <th>Token</th>
+              <th>Max. Amount</th>
+              <th><div class="table__center-cell">Exchange Ratio</div></th>
+              <th><div class="table__center-cell">Edit</div></th>
+            </tr>
+            <template repeat.for="class of launchConfig.classes">
+              <tr>
+                <td>${class.className}</td>
+                <td>${class.token.symbol}</td>
+                <td>${class.fundingTokenMaximum}</td>
+                <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                <td><div class="table__center-cell"><img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal(true, $index)"/></div></td>
+              </tr>
+            </template>
+          </table>
+        </div>
+      </div>
+      <div style="margin-top: 34px;" class="buttonContainer">
+          <div class="stageButton proceed button1" click.delegate="openAddClassModal()">Add class +</div>
+      </div>
+      <div class="footerButtons">
+        <div class="view-buttons">
+          <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
+          <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
+        </div>
+        <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+      </div>
+    </div>
+  </div>
 </template>
