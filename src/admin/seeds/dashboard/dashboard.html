@@ -104,8 +104,18 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="buttonContainer">
-                    <div class="stageButton previousButton" click.delegate="openAddClassModal()"><span>Add Class</span><i class="fas fa-plus"></i></div>
+                  <div class="actionPanel">
+                    <div class="buttonContainer">
+                      <div class="stageButton previousButton" click.delegate="openAddClassModal()"><span>Add Class</span><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="deployActions" if.bind="selectedSeed.classes.length">
+                      <div class="buttonContainer">
+                        <div class="stageButton cancel" click.delegate="cancel()"><span>Cancel</span></div>
+                      </div>
+                      <div class="buttonContainer">
+                        <div class="stageButton button1" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

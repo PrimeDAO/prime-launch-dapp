@@ -134,6 +134,23 @@
       .noSeedCreatedMessage {
         padding-top: 15px;
       }
+
+      .actionPanel {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        .deployActions {
+          display: flex;
+          gap: 44px;
+          align-items: center;
+          .button1 {
+            gap: 14px;
+          }
+        }
+        * {
+          margin-bottom: unset;
+        }
+      }
     }
 
     .classes-overview-container {

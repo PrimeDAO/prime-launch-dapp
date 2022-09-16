@@ -153,12 +153,10 @@ export class SeedAdminDashboard {
 
   addClass(newClass: IClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
-    console.log("ADD:", {newClass});
     this.selectedSeed.classes.push(newClass);
   }
 
   editClass({ index, editedClass }: {index: number, editedClass: IClass}): void {
-    console.log("Edit", {index, editedClass, classes: this.selectedSeed.classes});
     this.selectedSeed.classes[index] = {...editedClass};
   }
 
@@ -169,5 +167,20 @@ export class SeedAdminDashboard {
       this.addClass.bind(this),
       this.editClass.bind(this)
     );
+  }
+
+  deployClassesToContract() {
+    // TODO: Add deployment logic
+    // Differentiate between edited and newly added classes.
+    // Step 1: Deploy batched classes
+    // Step 2: Deploy bached Allowed Lists corresponding to the classes
+    alert("Deploying Classes to contract")
+  }
+
+  cancel() {
+    // TODO: Add cancel logic.
+    // Remove new add classes
+    // Undo edit
+    this.selectedSeed.classes = []; /* <- Temporary */
   }
 }
