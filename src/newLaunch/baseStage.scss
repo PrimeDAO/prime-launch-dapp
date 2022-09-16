@@ -10,6 +10,20 @@
   max-width: 100%;
 }
 
+.csvList {
+  display: flex;
+  align-items: end;
+
+  .questionMark {
+    line-height: 1;
+    font-weight: normal
+  }
+
+  .csvLabelContent {
+    margin-right: 15px;
+  }
+}
+
 .content-block {
   border-top: 1px solid #a258a7;
   display: grid;
@@ -83,13 +97,12 @@
   text-decoration: none;
 }
 
-.make-admin-button {
+@mixin boldButton {
   display: inline-block;
   border-radius: 10px;
   border: none;
   outline: none;
   padding: 15px;
-  margin-top: 40px;
   font-family: Inter;
   font-style: normal;
   font-weight: 500;
@@ -101,6 +114,11 @@
   background-color: rgba(64, 52, 83, 1);
   color: $White;
   cursor: pointer;
+}
+
+.make-admin-button {
+  @include boldButton;
+  margin-top: 40px;
   margin-bottom: 80px;
 }
 
@@ -464,6 +482,36 @@
       align-items: center;
       flex-wrap: wrap;
     }
+    
+    .csvUploadInputContainer {
+
+      .inlineWrapper {
+        display:flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .csvUploadPara {
+        color: $Neutral02;
+        margin: 10px 0;
+      }
+
+      input[id=allowList] {
+        display: none;
+      }
+
+      .label {
+        display: flex;
+        width: 100%;
+      }
+
+      .csvInputWrapper {
+        &:before {
+          content: 'Browse';
+          @include boldButton;
+        }
+      }
+    }  
     .button2 {
       margin-left: 0;
     }
