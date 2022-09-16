@@ -18,6 +18,8 @@ import { Utils } from "services/utils";
 import { BigNumber } from "ethers";
 import { BrowserStorageService } from "./BrowserStorageService";
 
+const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
+
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
   beneficiary: Address;
@@ -69,7 +71,8 @@ export class SeedService {
         this.startingBlockNumber = 13764353;
         break;
       case Networks.Rinkeby:
-        this.startingBlockNumber = 9468353;
+        // this.startingBlockNumber = 9468353;
+        this.startingBlockNumber = 11384155;
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
@@ -197,13 +200,8 @@ export class SeedService {
   }
 
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
-
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
-
-    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-
-    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
     const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
@@ -220,6 +218,9 @@ export class SeedService {
       config.launchDetails.pricePerToken,
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
+
+    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
       safeAddress,
@@ -316,10 +317,7 @@ export class SeedService {
    * value: `{"data": {<ISeedConfig> ...}}`
    */
   public dev_getSeedConfigFromLocalStorage(): ISeedConfig | null {
-    const inDev = process.env.NODE_ENV === "development";
-    const isLocalhost = window.location.hostname === "localhost";
-
-    if (!inDev && !isLocalhost) return null;
+    if (IS_PRODUCTION_APP) return null;
 
     const localStorageLaunchConfig = this.browserStorageService.lsGet<ISeedConfig>("LOCAL_STORAGE_LAUNCH_CONFIG");
 
@@ -331,6 +329,8 @@ export class SeedService {
   }
 
   public dev_setSeedConfigFromLocalStorage(config: ISeedConfig): void {
+    if (IS_PRODUCTION_APP) return;
+
     this.browserStorageService.lsSet("LOCAL_STORAGE_LAUNCH_CONFIG", config);
   }
 }

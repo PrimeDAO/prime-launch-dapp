@@ -8,17 +8,22 @@ const DEV_ADDRESSES = [
   "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
 ];
 
+const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
+
 @autoinject
 export class Navbar {
   menuOpen = false;
   private seedJsonFiles: File[]
-  private showDevCode = false;
+  private showDevCode = !IS_PRODUCTION_APP;
 
   constructor(private router: Router, private eventAggregator: EventAggregator) {}
 
   bind(): void {
     this.eventAggregator.subscribe("Network.Changed.Account", (account: string) => {
+      if (IS_PRODUCTION_APP) return false;
+
       const isDevAccount = DEV_ADDRESSES.find(address => address.toLowerCase() === account.toLowerCase());
+
       if (isDevAccount) {
         this.showDevCode = true;
         return;
