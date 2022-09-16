@@ -215,7 +215,7 @@
               input.trigger="getWhiteListFeedback()"
               placeholder="(Optional) URL to a whitelist (https://...)" />
             <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
-            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">ALlowlist contains ${whitelist.size} accounts</div>
+            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Allowlist contains ${whitelist.size} accounts</div>
             <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
           </div>
           <div class="infoInput">
