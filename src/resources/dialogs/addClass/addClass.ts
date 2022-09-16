@@ -25,12 +25,12 @@ export class AddClassModal {
 
 
   className: string;
-  projectTokenPurchaseLimit: number;
+  projectTokenPurchaseLimit: string;
   allowList: string;
   token: ITokenInfo;
   tokenExchangeRatio: number;
-  fundingTokensTarget: number;
-  fundingTokenMaximum: number;
+  fundingTokensTarget: string;
+  fundingTokenMaximum: string;
   vestingPeriod: number;
   vestingCliff: number
   isDev: boolean = false;
@@ -144,14 +144,14 @@ export class AddClassModal {
       this.validationError(message);
       return;
     } else {
-      const newClass = {
+      const newClass: IClass = {
         className: this.className,
         projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
         allowList: this.allowList,
         token: this.token,
         tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: this.fundingTokensTarget,
-        fundingTokenMaximum: this.fundingTokenMaximum,
+        fundingTokensTarget: this.fundingTokensTarget.toString(),
+        fundingTokenMaximum: this.fundingTokenMaximum.toString(),
         vestingPeriod: this.vestingPeriod,
         vestingCliff: this.vestingCliff,
       };
@@ -175,8 +175,8 @@ export class AddClassModal {
         allowList: this.allowList,
         token: this.token,
         tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: this.fundingTokensTarget,
-        fundingTokenMaximum: this.fundingTokenMaximum,
+        fundingTokensTarget: fromWei(this.fundingTokensTarget),
+        fundingTokenMaximum: fromWei(this.fundingTokenMaximum),
         vestingPeriod: this.vestingPeriod,
         vestingCliff: this.vestingCliff,
       };
@@ -190,7 +190,7 @@ export class AddClassModal {
 
   fillDummyValues() {
     this.className = "Test Class - " + new Date().toDateString();
-    this.projectTokenPurchaseLimit = 1000;
+    this.projectTokenPurchaseLimit = toWei(1000).toString();
     this.allowList = undefined;
     this.token = {
       "address": "0xF70d807A0828d2498fa01246c88bA5BaCd70889b",

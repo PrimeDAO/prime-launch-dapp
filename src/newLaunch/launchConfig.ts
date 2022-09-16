@@ -66,12 +66,12 @@ export interface ILaunchDetails {
 
 export interface IClass {
   className: string;
-  projectTokenPurchaseLimit: number;
+  projectTokenPurchaseLimit: string;
   allowList: string;
   token: ITokenInfo;
   tokenExchangeRatio: number;
-  fundingTokensTarget: number;
-  fundingTokenMaximum: number;
+  fundingTokensTarget: string;
+  fundingTokenMaximum: string;
   vestingPeriod: number;
   vestingCliff: number;
 }

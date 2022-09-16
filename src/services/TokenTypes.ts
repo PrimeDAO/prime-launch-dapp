@@ -24,6 +24,7 @@ export interface ITokenInfo {
   name: string; // token name,
   price?: number;
   symbol: string; // token symbol,
+  chainId: number;
   // readonly tags?: string[];
   // readonly extensions?: {
   //   readonly [key: string]: string | number | boolean | null;
