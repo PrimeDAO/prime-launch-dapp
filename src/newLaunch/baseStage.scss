@@ -48,6 +48,17 @@
 //
 //}
 
+.inline {
+  display: flex;
+  column-gap: 60px;
+  flex-wrap: wrap;
+}
+
+.grid2cols {
+  display: grid;
+  grid-template-columns: 185px 185px;
+}
+
 @media screen and (max-width: 730px) {
   .content-block {
     grid-template-columns: 1fr;
