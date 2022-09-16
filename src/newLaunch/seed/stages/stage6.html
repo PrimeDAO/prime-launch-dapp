@@ -116,9 +116,6 @@
                 <div class="stageLaunchDetails">
                   <div class="heading heading4">Funding Token</div>
                   <div class="tokenAmountContainer">
-                    <div class="tokenAmount">
-              toke nname
-                    </div>
                     <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                   </div>
                 </div>
@@ -126,28 +123,25 @@
                   <div class="heading heading4">Project Token Exchange Ratio</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-              toke exchange ratio
+              1.5
                     </div>
-                    <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                   </div>
                 </div>
+                <div class="inline">
                 <div class="stageLaunchDetails">
-                  <div>
                     <div class="heading heading4">Funding Tokens Target</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              toke efunding target
+              100.000
                       </div>
-                      <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                     </div>
-                  </div>
-                  <div>
-                    <div class="heading heading4">Funding Tokens MAximum</div>
+                    </div>
+                    <div class="stageLaunchDetails">
+                    <div class="heading heading4">Funding Tokens Maximum</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              toke efunding maximum
+              1 000 000
                       </div>
-                      <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                     </div>
                   </div>
                 </div>
@@ -155,39 +149,37 @@
                   <div class="heading heading4">Contributor Class Purchase Limit</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-              contrib purchse limit
+             10.000
                     </div>
-                    <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                   </div>
                 </div>
                 <div class="stageLaunchDetails">
                   <div class="heading heading4">Project Token Purchase Limit</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-              toke exchange purchse limit
+              2
                     </div>
-                    <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                   </div>
                 </div>
+                <div class="inline">
                 <div class="stageLaunchDetails">
-                  <div>
+            
                     <div class="heading heading4">Tokens vested for</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              t11 months
+              11 months
                       </div>
-                      <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                     </div>
                   </div>
-                  <div>
+                  <div class="stageLaunchDetails">
                     <div class="heading heading4">with a cliff of</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
               30 days
                       </div>
-                      <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                     </div>
                   </div>
+                </div>
                 </div>
                 <div class="stageLaunchDetails">
                   <div class="heading heading4">Allowlist</div>
@@ -195,18 +187,17 @@
                     <div class="tokenAmount">
               filename.csv
                     </div>
-                    <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
                   </div>
                 </div>
               </div>
               <div class="summaryContainer">
-                <div>
+                <div class="grid2cols">
                   <div class="stageLaunchDetails">
                     <div class="heading heading4">
                       Start Date (GMT)
                     </div>
                     <div>
-                      ${launchConfig.launchDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+                      ${launchConfig.launchDetails.startDate | date:{format:"dd-MM-YYYY", utc: true}}
                     </div>
                   </div>
                   <div class="stageLaunchDetails">
@@ -214,7 +205,7 @@
                       Start Time (GMT)
                     </div>
                     <div>
-                      ${launchConfig.launchDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+                      ${launchConfig.launchDetails.startDate | date:{format:"HH[:]mm z", utc: true}}
                     </div>
                   </div>
                   <div class="stageLaunchDetails">
@@ -222,7 +213,7 @@
                       End Date (GMT)
                     </div>
                     <div>
-                      ${launchConfig.launchDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+                      ${launchConfig.launchDetails.endDate | date:{format:"dd-MM-YYYY", utc:true}}
                     </div>
                   </div>
                   <div class="stageLaunchDetails">
@@ -230,7 +221,7 @@
                       End Time (GMT)
                     </div>
                     <div>
-                      ${launchConfig.launchDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
+                      ${launchConfig.launchDetails.endDate | date:{format:"HH[:]mm z", utc: true}}
                     </div>
                   </div>
                 </div>
