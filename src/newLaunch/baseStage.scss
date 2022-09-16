@@ -41,6 +41,7 @@
   display: grid;
   grid-template-columns: 1fr 1.7fr;
   margin-left: 100px;
+  padding-top: 32px;
 }
 
 //#footer-date-content {
@@ -82,7 +83,6 @@
 
 .classes-description {
   width: 320px;
-  margin-top: 10px;
   color: rgba(220, 218, 229, 1);
   font-size: 16px;
   font-family: Inter;
@@ -185,16 +185,22 @@
   margin-right: 21px;
 }
 
+.underline {
+  text-decoration: underline
+}
+
 .classes-overview-container {
   background: $BG02;
   border: 2px solid $BG01;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   border-radius: 10px;
-  margin-top: 32px;
   max-width: 645px;
+}
+
+.classes-overview-container__para {
+  color: $AlertOrange;
+  line-height: 24px;
+  margin:0;
 }
 
 .classes-overview-container__title {
@@ -390,7 +396,12 @@
   }
 }
 
-.page.stageContainer {
+.content-classes .infoContainer {
+  padding: 0 0 0 24px;
+}
+
+.page.stageContainer, .content-classes {
+  margin-bottom: 130px;
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -735,7 +746,7 @@
         flex: 1;
         gap: 32px;
 
-        &.maxTargetLabel label {
+        &.maxTargetLabel label:not(.label) {
           font-size: 14px;
           line-height: 20px;
           margin-bottom: 5px;
@@ -1139,7 +1150,7 @@
     }
   }
 
-  .page.stageContainer {
+  .page.stageContainer,.content-classes {
     &.stage1 {
       .infoContainer {
         .otherLinks {
@@ -1220,7 +1231,8 @@
 }
 
 @media screen and (max-width: 600px) {
-  .page.stageContainer {
+  .page.stageContainer,
+  .content-classes {
     &.stage4 {
       .infoInput {
         .pptContainer {

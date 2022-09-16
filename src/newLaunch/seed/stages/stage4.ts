@@ -14,9 +14,6 @@ import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
-import { AddClassService } from "services/AddClassService";
-import { IClass } from "newLaunch/launchConfig";
-import { IParameter } from "resources/dialogs/addClass/addClass";
 
 @singleton(false)
 @autoinject
@@ -50,7 +47,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     private whiteListService: WhiteListService,
     private disclaimerService: DisclaimerService,
     private launchService: LaunchService,
-    private addClassService: AddClassService,
   ) {
     super(router, ethereumService, eventAggregator, tokenService);
     this.eventAggregator.subscribe("launch.clearState", () => {
@@ -235,19 +231,5 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else {
       this.whitelist = null;
     }
-  }
-
-  addClass(newClass: IClass): void {
-    this.launchConfig.classes.push(newClass);
-  }
-
-  editClass({newClass, index}: {newClass: IClass, index: number}): void {
-    this.launchConfig.classes[index] = newClass;
-  }
-
-  openAddClassModal(isEdit = false, index: number): void {
-    const editedClass = isEdit ? this.launchConfig.classes[index] : undefined;
-
-    this.addClassService.show({ isEdit, index, editedClass }, this.addClass.bind(this), this.editClass.bind(this));
   }
 }
