@@ -123,7 +123,7 @@
                   <div class="heading heading4">Project Token Exchange Ratio</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-              1.5
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.pricePerToken | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
                     </div>
                   </div>
                 </div>
@@ -132,7 +132,7 @@
                     <div class="heading heading4">Funding Tokens Target</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              100.000
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
                       </div>
                     </div>
                     </div>
@@ -140,7 +140,7 @@
                     <div class="heading heading4">Funding Tokens Maximum</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              1 000 000
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
                       </div>
                     </div>
                   </div>
@@ -167,7 +167,7 @@
                     <div class="heading heading4">Tokens vested for</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              11 months
+                        ${formattedVestedFor}
                       </div>
                     </div>
                   </div>
@@ -175,7 +175,7 @@
                     <div class="heading heading4">with a cliff of</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-              30 days
+                        ${formattedCliffOf}
                       </div>
                     </div>
                   </div>
