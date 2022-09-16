@@ -2,7 +2,7 @@ import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ISeedConfig } from "newLaunch/seed/config";
-import {EthereumService } from "services/EthereumService";
+import {EthereumService, fromWei, toWei } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { IClass } from "newLaunch/launchConfig";
@@ -33,6 +33,7 @@ export class AddClassModal {
   fundingTokenMaximum: number;
   vestingPeriod: number;
   vestingCliff: number
+  isDev: boolean = false;
 
   constructor(
     private controller: DialogController,
@@ -41,6 +42,7 @@ export class AddClassModal {
     private launchService: LaunchService,
     private numberService: NumberService,
   ) {
+    this.isDev = process.env.NODE_ENV === 'development' && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
   }
 
   public async activate(model: IAddClassModal): Promise<void> {
@@ -184,6 +186,27 @@ export class AddClassModal {
       this.resetModal();
       await this.controller.ok();
     }
+  }
+
+  fillDummyValues() {
+    this.className = "Test Class - " + new Date().toDateString();
+    this.projectTokenPurchaseLimit = 1000;
+    this.allowList = undefined;
+    this.token = {
+      "address": "0xF70d807A0828d2498fa01246c88bA5BaCd70889b",
+      "chainId": 4,
+      "name": "Prime",
+      "symbol": "D2D",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/logos/D2D.png",
+      "id": "prime",
+      "price": 0.055392
+    };
+    this.tokenExchangeRatio = 1.5;
+    this.fundingTokensTarget = toWei(750).toString();
+    this.fundingTokenMaximum = toWei(950).toString();
+    this.vestingPeriod = 432000
+    this.vestingCliff = 172800
   }
 }
 
