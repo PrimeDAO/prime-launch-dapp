@@ -34,6 +34,24 @@
         <div click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
         <div click.delegate="navigate('/documentation')" class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">Documentation</div>
         <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div>
+
+        <!-- <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div> -->
+      </div>
+      <div if.bind="showDevCode" class="dev-go-to-seed-stage6">
+        <div click.delegate="navigate('/newSeed/stage6')" class="item">Go to Summary</div>
+        <div click.delegate="eventAggregator.publish('dev:use-saved-seed')" class="item">Use Saved</div>
+        <div click.delegate="eventAggregator.publish('dev:update-seed')" class="item">Update</div>
+        <div click.delegate="eventAggregator.publish('dev:download-seed')" class="item">Download</div>
+          <label class="item" for="avatar">Upload</label>
+          <input
+            type="file"
+            id="avatar" name="avatar"
+            accept="image/png, image/jpeg"
+            style="display: none;"
+            files.bind="seedJsonFiles"
+            change.delegate="dev_uploadSeed()"
+          >
+
       </div>
     </div>
 

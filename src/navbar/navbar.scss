@@ -113,6 +113,8 @@ $menu-open-duration: 0.1s;
     grid-area: subPages;
     background-color: $BG02;
     height: 40px;
+    display: flex;
+    justify-content: space-between;
 
     .container {
       list-style-type: none;
@@ -139,6 +141,24 @@ $menu-open-duration: 0.1s;
 
         &.active {
           color: $Secondary01;
+        }
+      }
+    }
+
+    .dev-go-to-seed-stage6 {
+      display: flex;
+
+      .item {
+        margin: 0 10px;
+
+        cursor: pointer;
+        padding: 10px 0;
+
+        color: $Neutral02;
+
+        &:hover {
+          color: $Neutral04;
+          text-decoration: none;
         }
       }
     }
