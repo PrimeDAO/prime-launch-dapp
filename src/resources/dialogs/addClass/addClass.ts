@@ -182,7 +182,7 @@ export class AddClassModal {
         vestingCliff: this.vestingCliff,
       };
       const index = this.model.params.index;
-      this.model.editFunction({editedClass, index});
+      this.model.editFunction({editedClass, index, projectTokenInfo: this.projectTokenInfo});
 
       this.resetModal();
       await this.controller.ok();
