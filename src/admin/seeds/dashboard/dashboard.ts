@@ -13,7 +13,6 @@ import { BigNumber } from "ethers";
 import { Router } from "aurelia-router";
 import { AddClassService } from "services/AddClassService";
 import { IClass } from "newLaunch/launchConfig";
-import { IParameter } from "resources/dialogs/addClass/addClass";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -162,8 +161,9 @@ export class SeedAdminDashboard {
 
   openAddClassModal(index: number = null): void {
     const editedClass = index !== null ? this.selectedSeed.classes[index] : undefined;
+    const projectTokenInfo = this.selectedSeed.projectTokenInfo;
     this.addClassService.show(
-      { index, editedClass },
+      { index, editedClass, projectTokenInfo },
       this.addClass.bind(this),
       this.editClass.bind(this)
     );

@@ -2,6 +2,7 @@ import { autoinject } from "aurelia-framework";
 import { DialogCloseResult, DialogService } from "./DialogService";
 import { AddClassModal, IParameter } from "../resources/dialogs/addClass/addClass";
 import { IClass } from "newLaunch/launchConfig";
+import { ITokenInfo } from "./TokenTypes";
 
 export interface ISeedClass {
   name: string
@@ -25,6 +26,7 @@ export class AddClassService {
     params: {
       index: number,
       editedClass: IClass | undefined;
+      projectTokenInfo: ITokenInfo,
     },
     addFunction: (classToAdd: IClass) => void,
     editFunction: ({ newClass, index }: { newClass: IClass; index: number; }) => void): Promise<DialogCloseResult> {

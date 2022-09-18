@@ -18,7 +18,7 @@ export class AddClassModal {
 
   private model: IAddClassModal;
   private okButton: HTMLElement;
-  launchConfig: ISeedConfig;
+  projectTokenInfo: ITokenInfo;
   tokenList: Array<ITokenInfo>;
 
   verified: boolean;
@@ -73,6 +73,7 @@ export class AddClassModal {
       this.vestingPeriod = vestingPeriod;
       this.vestingCliff = vestingCliff;
     }
+    this.projectTokenInfo = this.model.params.projectTokenInfo;
   }
 
   protected validationError(message: string): void {
@@ -213,13 +214,15 @@ export class AddClassModal {
 interface IAddClassModal {
   params: {
     index: number,
-    editedClass: IClass | undefined
+    editedClass: IClass | undefined,
+    projectTokenInfo: ITokenInfo,
   },
   addFunction: (newClass: IClass) => void,
-  editFunction: ({ editedClass, index }: {editedClass: IClass; index: number}) => void,
+  editFunction: ({ editedClass, index, projectTokenInfo }: IParameter) => void,
 }
 
 export interface IParameter {
-  class: IClass,
-  index: number
+  editedClass: IClass,
+  index: number,
+  projectTokenInfo: ITokenInfo,
 }
