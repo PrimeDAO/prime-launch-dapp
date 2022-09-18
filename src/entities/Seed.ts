@@ -31,21 +31,21 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
-// interface IContributorClass {
-//   classCap: BigNumber; // Amount of tokens that can be donated for class
-//   individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
-//   price: BigNumber; // Price of seed tokens for class, expressed in fundingTokens, with precision of 10**18
-//   vestingDuration: BigNumber; // Vesting duration for class
-//   classVestingStartTime: BigNumber;
-//   classFee: BigNumber; // Fee of class
-//   classFundingCollected: BigNumber; // Total amount of staked tokens
-// }
+export interface IContributorClass extends IClass {
+  classCap: BigNumber; // Amount of tokens that can be donated for class
+  individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
+  price: BigNumber; // Price of seed tokens for class, expressed in fundingTokens, with precision of 10**18
+  vestingDuration: BigNumber; // Vesting duration for class
+  classVestingStartTime: BigNumber;
+  classFee: BigNumber; // Fee of class
+  classFundingCollected: BigNumber; // Total amount of staked tokens
+}
 
 @autoinject
 export class Seed implements ILaunch {
   public launchType = LaunchType.Seed;
   public contract: any;
-  public classes: IClass[];
+  public classes: IContributorClass[];
   public address: Address;
   public seedInitialized: boolean;
   public beneficiary: Address;
@@ -90,7 +90,7 @@ export class Seed implements ILaunch {
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
-  public fundersClass: IClass;
+  public fundersClass: IContributorClass;
   public classCap: number;
   public vestingCliff: number;
   public minimumReached: boolean;

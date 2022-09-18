@@ -12,7 +12,7 @@ import { WhiteListService } from "services/WhiteListService";
 import { BigNumber } from "ethers";
 import { Router } from "aurelia-router";
 import { AddClassService } from "services/AddClassService";
-import { IClass } from "newLaunch/launchConfig";
+import { IContributorClass } from "entities/Seed";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -150,12 +150,12 @@ export class SeedAdminDashboard {
 
 
 
-  addClass(newClass: IClass): void {
+  addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
   }
 
-  editClass({ index, editedClass }: {index: number, editedClass: IClass}): void {
+  editClass({ index, editedClass }: {index: number, editedClass: IContributorClass}): void {
     this.selectedSeed.classes[index].className = editedClass.className;
     this.selectedSeed.classes[index].fundingTokenMaximum = editedClass.fundingTokenMaximum;
     this.selectedSeed.classes[index].fundingTokensTarget = editedClass.fundingTokensTarget;
