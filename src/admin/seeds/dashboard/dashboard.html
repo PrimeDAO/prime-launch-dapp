@@ -92,7 +92,7 @@
                       <tr repeat.for="class of selectedSeed.classes">
                         <td>${class.className}</td>
                         <td>${class.token.symbol}</td>
-                        <td>${class.fundingTokenMaximum | ethwei:selectedSeed.fundingTokenInfo.decimals }</td>
+                        <td>${class.fundingTokenMaximum | ethwei:class.token.decimals }</td>
                         <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
                         <td>
                           <div class="table__center-cell">
