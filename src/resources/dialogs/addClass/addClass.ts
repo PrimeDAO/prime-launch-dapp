@@ -1,11 +1,11 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { ISeedConfig } from "newLaunch/seed/config";
+import { Seed } from "entities/seed";
 import {EthereumService, fromWei, toWei } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
-import { IClass } from "newLaunch/launchConfig";
+import { LaunchConfig, IClass } from "newLaunch/launchConfig";
 import {Utils} from "../../../services/utils";
 import {EventConfigFailure} from "../../../services/GeneralEvents";
 import {NumberService} from "../../../services/NumberService";
@@ -22,17 +22,7 @@ export class AddClassModal {
   tokenList: Array<ITokenInfo>;
 
   verified: boolean;
-
-
-  className: string;
-  projectTokenPurchaseLimit: string;
-  allowList: string;
-  token: ITokenInfo;
-  tokenExchangeRatio: number;
-  fundingTokensTarget: string;
-  fundingTokenMaximum: string;
-  vestingPeriod: number;
-  vestingCliff: number
+  class: IClass = new LaunchConfig().class;
   isDev: boolean = false;
 
   constructor(
@@ -51,27 +41,7 @@ export class AddClassModal {
       this.tokenList = await this.launchService.fetchFundingTokenInfos();
     }
     if (model.params.index !== null) {
-      const {
-        className,
-        projectTokenPurchaseLimit,
-        allowList,
-        token,
-        tokenExchangeRatio,
-        fundingTokensTarget,
-        fundingTokenMaximum,
-        vestingPeriod,
-        vestingCliff,
-      } = this.model.params.editedClass;
-
-      this.className = className;
-      this.projectTokenPurchaseLimit = projectTokenPurchaseLimit;
-      this.allowList = allowList;
-      this.token = token;
-      this.tokenExchangeRatio = tokenExchangeRatio;
-      this.fundingTokensTarget = fundingTokensTarget;
-      this.fundingTokenMaximum = fundingTokenMaximum;
-      this.vestingPeriod = vestingPeriod;
-      this.vestingCliff = vestingCliff;
+      this.class = { ...this.model.params.editedClass };
     }
     this.projectTokenInfo = this.model.params.projectTokenInfo;
   }
@@ -83,25 +53,25 @@ export class AddClassModal {
   async validateInputs(): Promise<string> {
     let message: string;
 
-    if (!this.className) {
+    if (!this.class.className) {
       message = "Please enter Class Name";
-    } else if (!this.projectTokenPurchaseLimit) {
+    } else if (!this.class.projectTokenPurchaseLimit) {
       message = "Project Token Purchase Limit";
-    } else if (!this.numberService.stringIsNumber(this.vestingPeriod) || this.vestingPeriod < 0) {
+    } else if (!this.numberService.stringIsNumber(this.class.vestingPeriod) || this.class.vestingPeriod < 0) {
       message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
-    } else if (!this.numberService.stringIsNumber(this.vestingCliff) || this.vestingCliff < 0) {
+    } else if (!this.numberService.stringIsNumber(this.class.vestingCliff) || this.class.vestingCliff < 0) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.vestingCliff > this.vestingPeriod) {
+    } else if (this.class.vestingCliff > this.class.vestingPeriod) {
       message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for\"";
-    } else if (!Utils.isAddress(this.token?.address)) {
+    } else if (!Utils.isAddress(this.class.token?.address)) {
       message = "Please select a Funding Token seed";
-    } else if (!this.tokenExchangeRatio) {
+    } else if (!this.class.tokenExchangeRatio) {
       message = "Please enter a value for Project Token Exchange Ratio";
-    } else if (!this.fundingTokensTarget) {
+    } else if (!this.class.fundingTokensTarget) {
       message = "Please enter a number greater than zero for the Funding Target";
-    } else if (!this.fundingTokenMaximum) {
+    } else if (!this.class.fundingTokenMaximum) {
       message = "Please enter a number greater than zero for the Funding Maximum";
-    } else if (BigNumber.from(this.fundingTokensTarget).gt(this.fundingTokenMaximum)) {
+    } else if (BigNumber.from(this.class.fundingTokensTarget).gt(this.class.fundingTokenMaximum)) {
       message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     }
 
@@ -119,15 +89,15 @@ export class AddClassModal {
   }
 
   resetModal(): void {
-    this.className = undefined;
-    this.projectTokenPurchaseLimit = undefined;
-    this.allowList = undefined;
-    this.token = undefined;
-    this.tokenExchangeRatio = undefined;
-    this.fundingTokensTarget = undefined;
-    this.fundingTokenMaximum = undefined;
-    this.vestingPeriod = undefined;
-    this.vestingCliff = undefined;
+    this.class.className = undefined;
+    this.class.projectTokenPurchaseLimit = undefined;
+    this.class.allowList = undefined;
+    this.class.token = undefined;
+    this.class.tokenExchangeRatio = undefined;
+    this.class.fundingTokensTarget = undefined;
+    this.class.fundingTokenMaximum = undefined;
+    this.class.vestingPeriod = undefined;
+    this.class.vestingCliff = undefined;
   }
 
   async save(): Promise<void> {
@@ -146,15 +116,15 @@ export class AddClassModal {
       return;
     } else {
       const newClass: IClass = {
-        className: this.className,
-        projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
-        allowList: this.allowList,
-        token: this.token,
-        tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: this.fundingTokensTarget.toString(),
-        fundingTokenMaximum: this.fundingTokenMaximum.toString(),
-        vestingPeriod: this.vestingPeriod,
-        vestingCliff: this.vestingCliff,
+        className: this.class.className,
+        projectTokenPurchaseLimit: this.class.projectTokenPurchaseLimit,
+        allowList: this.class.allowList,
+        token: this.class.token,
+        tokenExchangeRatio: this.class.tokenExchangeRatio,
+        fundingTokensTarget: this.class.fundingTokensTarget,
+        fundingTokenMaximum: this.class.fundingTokenMaximum,
+        vestingPeriod: this.class.vestingPeriod,
+        vestingCliff: this.class.vestingCliff,
       };
 
       this.model.addFunction(newClass);
@@ -171,15 +141,15 @@ export class AddClassModal {
       return;
     } else {
       const editedClass: IClass = {
-        className: this.className,
-        projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
-        allowList: this.allowList,
-        token: this.token,
-        tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: fromWei(this.fundingTokensTarget),
-        fundingTokenMaximum: fromWei(this.fundingTokenMaximum),
-        vestingPeriod: this.vestingPeriod,
-        vestingCliff: this.vestingCliff,
+        className: this.class.className,
+        projectTokenPurchaseLimit: this.class.projectTokenPurchaseLimit,
+        allowList: this.class.allowList,
+        token: this.class.token,
+        tokenExchangeRatio: this.class.tokenExchangeRatio,
+        fundingTokensTarget: this.class.fundingTokensTarget,
+        fundingTokenMaximum: this.class.fundingTokenMaximum,
+        vestingPeriod: this.class.vestingPeriod,
+        vestingCliff: this.class.vestingCliff,
       };
       const index = this.model.params.index;
       this.model.editFunction({editedClass, index, projectTokenInfo: this.projectTokenInfo});
@@ -190,24 +160,15 @@ export class AddClassModal {
   }
 
   fillDummyValues() {
-    this.className = "Test Class - " + new Date().toDateString();
-    this.projectTokenPurchaseLimit = toWei(1000).toString();
-    this.allowList = undefined;
-    this.token = {
-      "address": "0xF70d807A0828d2498fa01246c88bA5BaCd70889b",
-      "chainId": 4,
-      "name": "Prime",
-      "symbol": "D2D",
-      "decimals": 18,
-      "logoURI": "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/logos/D2D.png",
-      "id": "prime",
-      "price": 0.055392
-    };
-    this.tokenExchangeRatio = 1.5;
-    this.fundingTokensTarget = toWei(750).toString();
-    this.fundingTokenMaximum = toWei(950).toString();
-    this.vestingPeriod = 432000
-    this.vestingCliff = 172800
+    this.class.className = "Test Class - " + new Date().toDateString();
+    this.class.projectTokenPurchaseLimit = toWei(1000, this.projectTokenInfo.decimals).toString();
+    this.class.allowList = undefined;
+    this.class.token = this.tokenList[0];
+    this.class.tokenExchangeRatio = 1.5;
+    this.class.fundingTokensTarget = toWei(750, this.class.token.decimals).toString();
+    this.class.fundingTokenMaximum = toWei(950, this.class.token.decimals).toString();
+    this.class.vestingPeriod = 432000
+    this.class.vestingCliff = 172800
   }
 }
 

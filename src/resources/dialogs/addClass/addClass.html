@@ -18,7 +18,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <input id="className" value.bind="className"/>
+            <input id="className" value.bind="class.className"/>
           </div>
 
           <div class="info-section">
@@ -28,7 +28,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <numeric-input value.bind="projectTokenPurchaseLimit"></numeric-input>
+            <numeric-input value.bind="class.projectTokenPurchaseLimit"></numeric-input>
           </div>
 
           <div class="info-section">
@@ -46,7 +46,7 @@
                     placeholder="100.2"
                     id="vestingPeriod"
                     not-wei
-                    value.bind="vestingPeriod | secondsDays">
+                    value.bind="class.vestingPeriod | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -58,7 +58,7 @@
                     placeholder="20.8"
                     id="vestingCliff"
                     not-wei
-                    value.bind="vestingCliff | secondsDays">
+                    value.bind="class.vestingCliff | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -73,7 +73,7 @@
                 <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
               </div>
             </div>
-            <input value.bind="allowList" />
+            <input value.bind="class.allowList" />
           </div>
 
           <div class="info-section">
@@ -86,14 +86,14 @@
             <div class="tokenSelector">
               <token-select
                 id="fundingTokenAddress"
-                selected-token-address.bind="token.address"
-                selected-token-info.bind="token"
+                selected-token-address.bind="class.token.address"
+                selected-token-info.bind="class.token"
                 token-list.to-view="tokenList"
                 item-changed.call="tokenChanged()">
               </token-select>
-              <div if.to-view="token.address">
-                <etherscanlink address.to-view="token.address"
-                  text.to-view="token.address | smallHexString"></etherscanlink>
+              <div if.to-view="class.token.address">
+                <etherscanlink address.to-view="class.token.address"
+                  text.to-view="class.token.address | smallHexString"></etherscanlink>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@
                 <numeric-input
                   output-as-string="true"
                   id="ppt"
-                  value.bind="tokenExchangeRatio"
+                  value.bind="class.tokenExchangeRatio"
                   not-wei
                   placeholder="1.5">
                 </numeric-input>
@@ -116,22 +116,22 @@
           </div>
 
           <div class="info-section">
-            <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Target</label>
+            <label>Funding Tokens <tokenlabel token-info.bind="class.token"></tokenlabel> Target</label>
             <div class="info-section__text">
               The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
             </div>
             <numeric-input
               output-as-string="true"
               id="fundingTarget"
-              value.bind="fundingTokensTarget"
-              decimals.bind="token.decimals"
+              value.bind="class.fundingTokensTarget"
+              decimals.bind="class.token.decimals"
               placeholder="100">
             </numeric-input>
           </div>
 
           <div class="info-section">
             <div class="label--question">
-              <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Maximum</label>
+              <label>Funding Tokens <tokenlabel token-info.bind="class.token"></tokenlabel> Maximum</label>
               <div class="question-mark">
                 <question-mark text="Measured in funding tokens"></question-mark>
               </div>
@@ -142,8 +142,8 @@
             <numeric-input
               output-as-string="true"
               id="fundingMax"
-              value.bind="fundingTokenMaximum"
-              decimals.bind="token.decimals"
+              value.bind="class.fundingTokenMaximum"
+              decimals.bind="class.token.decimals"
               placeholder="1000">
             </numeric-input>
           </div>
