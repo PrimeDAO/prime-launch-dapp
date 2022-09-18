@@ -89,9 +89,7 @@
                         <th><div class="table__center-cell">Exchange Ratio</div></th>
                         <th><div class="table__center-cell">Edit</div></th>
                       </tr>
-                      <!-- <tr repeat.for="class of selectedSeed.classes"> -->
-                      <tr repeat.for="classIndex of selectedSeed.classes.length">
-                        <let class.bind="selectedSeed.classes[classIndex]"></let>
+                      <tr repeat.for="class of selectedSeed.classes">
                         <td>${class.className}</td>
                         <td>${class.token.symbol}</td>
                         <td>${class.fundingTokenMaximum | ethwei:selectedSeed.fundingTokenInfo.decimals }</td>
