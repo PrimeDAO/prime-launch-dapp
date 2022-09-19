@@ -1,8 +1,7 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { Seed } from "entities/seed";
-import {EthereumService, fromWei, toWei } from "services/EthereumService";
+import {EthereumService, toWei } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { LaunchConfig, IClass } from "newLaunch/launchConfig";
