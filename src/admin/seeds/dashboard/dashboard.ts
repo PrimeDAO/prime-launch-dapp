@@ -155,16 +155,8 @@ export class SeedAdminDashboard {
     this.selectedSeed.classes.push(newClass);
   }
 
-  editClass({ index, editedClass }: {index: number, editedClass: IContributorClass}): void {
-    this.selectedSeed.classes[index].className = editedClass.className;
-    this.selectedSeed.classes[index].fundingTokenMaximum = editedClass.fundingTokenMaximum;
-    this.selectedSeed.classes[index].fundingTokensTarget = editedClass.fundingTokensTarget;
-    this.selectedSeed.classes[index].projectTokenPurchaseLimit = editedClass.projectTokenPurchaseLimit;
-    this.selectedSeed.classes[index].token = editedClass.token;
-    this.selectedSeed.classes[index].tokenExchangeRatio = editedClass.tokenExchangeRatio;
-    this.selectedSeed.classes[index].vestingCliff = editedClass.vestingCliff;
-    this.selectedSeed.classes[index].vestingPeriod = editedClass.vestingPeriod;
-    this.selectedSeed.classes[index].allowList = editedClass.allowList;
+  editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
+    this.selectedSeed.classes[index] = Object.assign(this.selectedSeed.classes[index], editedClass);
   }
 
   openAddClassModal(index: number = null): void {
