@@ -23,6 +23,7 @@ export class AddClassModal {
 
   private model: IAddClassModal;
   private okButton: HTMLElement;
+  private isEdit: boolean = false;
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
@@ -40,9 +41,9 @@ export class AddClassModal {
 
   public async activate(model: IAddClassModal): Promise<void> {
     this.model = model;
+    this.isEdit = this.model.params.index !== null;
 
-    const isEdited = this.model.params.index !== null;
-    if (isEdited) {
+    if (this.isEdit) {
       this.class = this.model.params.editedClass;
     }
   }
@@ -88,7 +89,7 @@ export class AddClassModal {
   }
 
   async save(): Promise<void> {
-    if (this.model.params.index !== null) {
+    if (this.isEdit) {
       await this.editClass();
     } else {
       await this.addClass();
