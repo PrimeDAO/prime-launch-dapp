@@ -107,6 +107,7 @@ export class SeedAdminDashboard {
   selectSeed(index: number): void {
     this.selectedSeed = this.seeds[index];
     this.selectedSeedIndex = index;
+    this.router.navigate(`admin/seeds/dashboard/${this.selectedSeed.address}`);
   }
 
   private hasValidatedAddress(address:Address, message: string): boolean {
