@@ -134,7 +134,7 @@ export class SeedSale {
   get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("maxFundable", "seed.userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
+  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0") ? this.maxFundable : this.seed.userFundingTokenBalance; }
 
   @computedFrom("maxUserCanPay")
   get maxUserTokenBalance(): string {
@@ -144,7 +144,7 @@ export class SeedSale {
 
   @computedFrom("maxUserTokenBalance", "seed.fundingTokenInfo.price")
   get maxUserUsdBalance(): number {
-    const usdBalance = Number(this.maxUserTokenBalance) * this.seed.fundingTokenInfo.price;
+    const usdBalance = this.numberService.fromString(this.maxUserTokenBalance) * this.seed.fundingTokenInfo.price;
     return usdBalance;
   }
 
@@ -172,7 +172,7 @@ export class SeedSale {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
+      this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
     }
   }
 
@@ -291,8 +291,8 @@ export class SeedSale {
       this.vestingDate = convertToDate(this.seed.vestingDuration);
       this.lockDate = convertToDate(this.seed.vestingCliff);
       this.classCap = this.seed.classCap;
-      this.classPrice = this.seed.classPrice.toNumber();
-      this.classSold = this.seed.classSold.toNumber();
+      this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice, this.seed.projectTokenInfo.decimals));
+      this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));

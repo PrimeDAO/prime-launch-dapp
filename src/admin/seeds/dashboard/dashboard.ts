@@ -10,6 +10,9 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
 import { BigNumber } from "ethers";
+import { Router } from "aurelia-router";
+import { AddClassService } from "services/AddClassService";
+import { IContributorClass } from "entities/Seed";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -45,6 +48,8 @@ export class SeedAdminDashboard {
     private seedService: SeedService,
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
+    private router: Router,
+    private addClassService: AddClassService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -137,5 +142,44 @@ export class SeedAdminDashboard {
 
   connect(): void {
     this.ethereumService.ensureConnected();
+  }
+
+  private navigate(href: string): void {
+    this.router.navigate(href);
+  }
+
+
+
+  addClass(newClass: IContributorClass): void {
+    if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
+    this.selectedSeed.classes.push(newClass);
+  }
+
+  editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
+    Object.assign(this.selectedSeed.classes[index], editedClass);
+  }
+
+  openAddClassModal(index: number = null): void {
+    const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
+    this.addClassService.show(
+      { index, editedClass },
+      this.addClass.bind(this),
+      this.editClass.bind(this)
+    );
+  }
+
+  deployClassesToContract() {
+    // TODO: Add deployment logic
+    // Differentiate between edited and newly added classes.
+    // Step 1: Deploy batched classes
+    // Step 2: Deploy bached Allowed Lists corresponding to the classes
+    alert("Deploying Classes to contract")
+  }
+
+  cancel() {
+    // TODO: Add cancel logic.
+    // Remove new add classes
+    // Undo edit
+    this.selectedSeed.classes = []; /* <- Temporary */
   }
 }

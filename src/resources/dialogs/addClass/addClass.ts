@@ -1,38 +1,33 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { ISeedConfig } from "newLaunch/seed/config";
-import {EthereumService } from "services/EthereumService";
+import { EthereumService, toWei } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
-import { IClass } from "newLaunch/launchConfig";
-import {Utils} from "../../../services/utils";
-import {EventConfigFailure} from "../../../services/GeneralEvents";
-import {NumberService} from "../../../services/NumberService";
-
+import { IContributorClass } from "entities/Seed";
+import { EventConfigFailure } from "services/GeneralEvents";
+import { NumberService } from "services/NumberService";
 import "./addClass.scss";
-import {BigNumber} from "ethers";
+
+const EMPTY_CLASS = {
+  className: undefined,
+  classCap: undefined,
+  individualCap: undefined,
+  classVestingDuration: undefined,
+  classVestingCliff: undefined,
+  allowList: undefined,
+}
 
 @autoinject
 export class AddClassModal {
 
   private model: IAddClassModal;
   private okButton: HTMLElement;
-  launchConfig: ISeedConfig;
-  tokenList: Array<ITokenInfo>;
+  private isEdit: boolean = false;
 
   verified: boolean;
-
-
-  className: string;
-  projectTokenPurchaseLimit: number;
-  allowList: string;
-  token: ITokenInfo;
-  tokenExchangeRatio: number;
-  fundingTokensTarget: number;
-  fundingTokenMaximum: number;
-  vestingPeriod: number;
-  vestingCliff: number
+  class: IContributorClass = EMPTY_CLASS;
+  isDev: boolean = false;
 
   constructor(
     private controller: DialogController,
@@ -41,35 +36,15 @@ export class AddClassModal {
     private launchService: LaunchService,
     private numberService: NumberService,
   ) {
+    this.isDev = process.env.NODE_ENV === 'development' && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
   }
 
   public async activate(model: IAddClassModal): Promise<void> {
     this.model = model;
-    if (!this.tokenList) {
-      this.tokenList = await this.launchService.fetchFundingTokenInfos();
-    }
-    if (model.params.isEdit) {
-      const {
-        className,
-        projectTokenPurchaseLimit,
-        allowList,
-        token,
-        tokenExchangeRatio,
-        fundingTokensTarget,
-        fundingTokenMaximum,
-        vestingPeriod,
-        vestingCliff,
-      } = this.model.params.editedClass;
+    this.isEdit = this.model.params.index !== null;
 
-      this.className = className;
-      this.projectTokenPurchaseLimit = projectTokenPurchaseLimit;
-      this.allowList = allowList;
-      this.token = token;
-      this.tokenExchangeRatio = tokenExchangeRatio;
-      this.fundingTokensTarget = fundingTokensTarget;
-      this.fundingTokenMaximum = fundingTokenMaximum;
-      this.vestingPeriod = vestingPeriod;
-      this.vestingCliff = vestingCliff;
+    if (this.isEdit) {
+      this.class = this.model.params.editedClass;
     }
   }
 
@@ -80,26 +55,24 @@ export class AddClassModal {
   async validateInputs(): Promise<string> {
     let message: string;
 
-    if (!this.className) {
+    if (!this.class.className) {
       message = "Please enter Class Name";
-    } else if (!this.projectTokenPurchaseLimit) {
-      message = "Project Token Purchase Limit";
-    } else if (!this.numberService.stringIsNumber(this.vestingPeriod) || this.vestingPeriod < 0) {
+    } else if (!this.class.classCap ) {
+      message = "Please enter a contributor class purchase limit";
+    } else if (this.class.classCap.lte(0)) {
+      message = "Please enter a number greater than zero for the contributor class purchase limit";
+    } else if (!this.class.individualCap) {
+      message = "Please enter a number a project token purchase limit";
+    } else if (this.class.individualCap.lte(0)) {
+      message = "Please enter a number greater than zero for the project token purchase limit";
+    } else if (this.class.individualCap.gt(this.class.classCap)) {
+      message = "Please enter a value for project token purchase limit less than or equal to contributor class purchase limit";
+    } else if (!this.class.classVestingDuration || this.class.classVestingDuration.lte(0)) {
       message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
-    } else if (!this.numberService.stringIsNumber(this.vestingCliff) || this.vestingCliff < 0) {
+    } else if (!this.class.classVestingCliff || this.class.classVestingCliff.lte(0)) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.vestingCliff > this.vestingPeriod) {
+    } else if (this.class.classVestingCliff >= this.class.classVestingDuration) {
       message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for\"";
-    } else if (!Utils.isAddress(this.token?.address)) {
-      message = "Please select a Funding Token seed";
-    } else if (!this.tokenExchangeRatio) {
-      message = "Please enter a value for Project Token Exchange Ratio";
-    } else if (!this.fundingTokensTarget) {
-      message = "Please enter a number greater than zero for the Funding Target";
-    } else if (!this.fundingTokenMaximum) {
-      message = "Please enter a number greater than zero for the Funding Maximum";
-    } else if (BigNumber.from(this.fundingTokensTarget).gt(this.fundingTokenMaximum)) {
-      message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
     }
 
 
@@ -111,24 +84,12 @@ export class AddClassModal {
     this.okButton.focus();
   }
 
-  tokenChanged(): void {
-    return;
-  }
-
   resetModal(): void {
-    this.className = undefined;
-    this.projectTokenPurchaseLimit = undefined;
-    this.allowList = undefined;
-    this.token = undefined;
-    this.tokenExchangeRatio = undefined;
-    this.fundingTokensTarget = undefined;
-    this.fundingTokenMaximum = undefined;
-    this.vestingPeriod = undefined;
-    this.vestingCliff = undefined;
+    this.class = EMPTY_CLASS;
   }
 
   async save(): Promise<void> {
-    if (this.model.params.isEdit) {
+    if (this.isEdit) {
       await this.editClass();
     } else {
       await this.addClass();
@@ -142,16 +103,13 @@ export class AddClassModal {
       this.validationError(message);
       return;
     } else {
-      const newClass = {
-        className: this.className,
-        projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
-        allowList: this.allowList,
-        token: this.token,
-        tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: this.fundingTokensTarget,
-        fundingTokenMaximum: this.fundingTokenMaximum,
-        vestingPeriod: this.vestingPeriod,
-        vestingCliff: this.vestingCliff,
+      const newClass: IContributorClass = {
+        className: this.class.className,
+        classCap: this.class.classCap,
+        individualCap: this.class.individualCap,
+        classVestingDuration: this.class.classVestingDuration,
+        classVestingCliff: this.class.classVestingCliff,
+        allowList: this.class.allowList,
       };
 
       this.model.addFunction(newClass);
@@ -167,17 +125,7 @@ export class AddClassModal {
       this.validationError(message);
       return;
     } else {
-      const editedClass: IClass = {
-        className: this.className,
-        projectTokenPurchaseLimit: this.projectTokenPurchaseLimit,
-        allowList: this.allowList,
-        token: this.token,
-        tokenExchangeRatio: this.tokenExchangeRatio,
-        fundingTokensTarget: this.fundingTokensTarget,
-        fundingTokenMaximum: this.fundingTokenMaximum,
-        vestingPeriod: this.vestingPeriod,
-        vestingCliff: this.vestingCliff,
-      };
+      const editedClass: IContributorClass = this.class;
       const index = this.model.params.index;
       this.model.editFunction({editedClass, index});
 
@@ -185,19 +133,32 @@ export class AddClassModal {
       await this.controller.ok();
     }
   }
+
+  fillDummyValues() {
+    const daysToSeconds = 60 * 60 * 24;
+
+    this.class = {
+      className: "Test Class - " + new Date().toDateString(),
+      classCap: toWei(1000),
+      individualCap: toWei(750),
+      classVestingDuration: toWei(4 * daysToSeconds),
+      classVestingCliff: toWei(2 * daysToSeconds),
+      allowList: undefined,
+    };
+  }
 }
 
 interface IAddClassModal {
   params: {
-    isEdit: boolean,
     index: number,
-    editedClass: IClass | undefined
+    editedClass: IContributorClass | undefined,
+    projectTokenInfo: ITokenInfo,
   },
-  addFunction: (newClass: IClass) => void,
-  editFunction: ({ editedClass, index }: {editedClass: IClass; index: number}) => void,
+  addFunction: (newClass: IContributorClass) => void,
+  editFunction: ({ editedClass, index }: IParameter) => void,
 }
 
 export interface IParameter {
-  class: IClass,
-  index: number
+  editedClass: IContributorClass,
+  index: number,
 }

@@ -238,6 +238,48 @@ html {
       }
     }
 
+    .previousButton {
+      border: 2px solid white;
+      border-radius: 50px;
+      border-color: rgba(162, 88, 167, 1);
+      padding-right: 20px;
+      padding-left: 20px;
+      cursor: pointer;
+      height: 48px;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .stageButton {
+      display: flex;
+      align-items: center;
+      text-transform: uppercase;
+    }
+    .cancel {
+      cursor: pointer;
+      color: white;
+      font-family: Inter;
+      font-weight: 600;
+    }
+    .buttonContainer {
+      display: flex;
+      flex-flow: row;
+      column-gap: 48px;
+      margin-top: 80px;
+      justify-content: space-between;
+    }
+    .footerButtons {
+      display: flex;
+      flex-flow: row;
+      column-gap: 48px;
+      margin-top: 80px;
+      justify-content: space-between;
+      .view-buttons {
+        display: flex;
+      }
+    }
+
     .ellipses {
       overflow-x: hidden;
       text-overflow: ellipsis;

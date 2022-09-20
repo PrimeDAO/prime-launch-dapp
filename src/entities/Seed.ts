@@ -30,14 +30,14 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
-interface IContributorClass {
+export interface IContributorClass {
+  className: string;
   classCap: BigNumber; // Amount of tokens that can be donated for class
   individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
-  price: BigNumber; // Price of seed tokens for class, expressed in fundingTokens, with precision of 10**18
-  vestingDuration: BigNumber; // Vesting duration for class
-  classVestingStartTime: BigNumber;
-  classFee: BigNumber; // Fee of class
-  classFundingCollected: BigNumber; // Total amount of staked tokens
+  classVestingCliff: BigNumber; // Vesting cliff for class
+  classVestingDuration: BigNumber; // Vesting duration for class
+  classVestingStartTime?: BigNumber; // NOT SUPPORTED YET
+  allowList?: string;
 }
 
 @autoinject

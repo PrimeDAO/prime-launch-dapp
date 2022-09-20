@@ -1,49 +1,85 @@
 <template>
   <ux-dialog class="dialog addClass">
-    <ux-dialog-header class="bg-confetti-animated">
+    <ux-dialog-header>
       ${model.params.isEdit ? "Edit class" : "Add class"}
-      <img src="../../../../static/close.svg" class="close-icon" click.trigger="controller.cancel()"/>
+      <span>
+        <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="fillDummyValues()">Prefill Fields</button>
+      </span>
+      <i class="close-icon fas fa-times" click.trigger="controller.cancel()"></i>
+      <label class="label--small">
+        Please add the Classes to set different parameters for different kind of contributors to the Seed.
+      </label>
     </ux-dialog-header>
     <ux-dialog-body>
-      <div class="body">
-        <div class="add-class-container">
+      <div class="body add-class-container">
 
           <div class="info-section">
             <div class="label--question">
               <label>Class Name</label>
               <div class="question-mark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+                <question-mark text="TODO: Add text"></question-mark>
               </div>
             </div>
-            <input id="className" value.bind="className"/>
+            <input id="className" value.bind="class.className"/>
           </div>
 
           <div class="info-section">
             <div class="label--question">
-              <label>Project Token Purchase Limit</label>
+              <label>Contributor class purchase limit</label>
               <div class="question-mark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+                <question-mark text="TODO: Add text"></question-mark>
               </div>
             </div>
-            <numeric-input value.bind="projectTokenPurchaseLimit" not-wei></numeric-input>
+            <label for="classCap" class="label--small">
+              The maximum amount of contribution the allowlisted users within one class can contribute to the launch.
+            </label>
+            <numeric-input name="classCap" value.bind="class.classCap"></numeric-input>
+          </div>
+
+          <div class="info-section">
+            <div class="label--question">
+              <label>Project token purchase limit</label>
+              <div class="question-mark">
+                <question-mark text="TODO: Add text"></question-mark>
+              </div>
+            </div>
+            <label for="individualCap" class="label--small">
+              The maximum amount of contribution a connected user can contribute to the launch.
+            </label>
+            <numeric-input name="individualCap" value.bind="class.individualCap"></numeric-input>
           </div>
 
           <div class="info-section">
             <div class="label--question">
               <label>Vesting Set-up</label>
               <div class="question-mark">
-                <question-mark text="The duration in days in which the Project token is vested. Vesting is released linearly by default. The vesting cliff is the period in which no tokens can be withdrawn or used — they are locked until this date"></question-mark>
+                <question-mark text="TODO: Add text"></question-mark>
               </div>
             </div>
             <div class="info-block">
+              <!-- Start time is not yet supported -->
+              <!-- <div>
+                <label class="label--small">Vesting Start Time</label>
+                <div class="vestingDatesContainer">
+                  <div class="vestingDates">
+                    <input
+                      id="startTime"
+                      value.bind="startTime"
+                      class="input-style"
+                      keydown.delegate="hoursMinutesFilter($event)"
+                      autocomplete="off" />
+                    <div class="inputIcon"><i class="far fa-clock"></i></div>
+                  </div>
+                </div>
+              </div> -->
               <div>
-                <label class="label--small">Project tokens vested for</label>
+                <label class="label--small">Token vested for</label>
                 <div class="vesting-period">
                   <numeric-input
                     placeholder="100.2"
-                    id="vestingPeriod"
+                    id="classVestingDuration"
                     not-wei
-                    value.bind="vestingPeriod | secondsDays">
+                    value.bind="class.classVestingDuration | secondsDays | ethwei">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -53,9 +89,9 @@
                 <div class="vesting-period">
                   <numeric-input
                     placeholder="20.8"
-                    id="vestingCliff"
+                    id="classVestingCliff"
                     not-wei
-                    value.bind="vestingCliff | secondsDays">
+                    value.bind="class.classVestingCliff | secondsDays | ethwei">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -63,89 +99,29 @@
             </div>
           </div>
 
-          <div class="info-section">
-            <div class="label--question">
-              <label>Allowlist (Optional)</label>
-              <div class="question-mark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+          <div class="infoInput csvList">
+            <div class="csvUploadInputContainer">
+              <div class="label--question">
+                <label>Allowlist (Optional)</label>
+                <div class="question-mark">
+                  <question-mark text="TODO: Add text"></question-mark>
+                </div>
               </div>
+              <label class="label--small">Choose a .csv file to import your allowlist.</label>
+              <span class="inlineWrapper">
+                <label class="csvInputWrapper">
+                  <input class="footer-input"
+                  id="allowList"
+                  type="file"
+                  accept=".csv"
+                  files.bind="csv"
+                  placeholder="Upload your .csv allowlist..." />
+                </label>
+                <span>${csv ? csv[0].name : 'No File Chosen'}</span>
+              </span>
             </div>
-            <input value.bind="allowList" />
-          </div>
-
-          <div class="info-section">
-            <div class="label--question">
-              <label>What Token Would You Like To Raise? (the "Funding Token")</label>
-              <div class="question-mark">
-                <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
-              </div>
-            </div>
-            <div class="tokenSelector">
-              <token-select
-                id="fundingTokenAddress"
-                selected-token-address.bind="token.address"
-                selected-token-info.bind="token"
-                token-list.to-view="tokenList"
-                item-changed.call="tokenChanged()">
-              </token-select>
-              <div if.to-view="token.address">
-                <etherscanlink address.to-view="token.address"
-                  text.to-view="token.address | smallHexString"></etherscanlink>
-              </div>
-            </div>
-          </div>
-
-          <div class="info-section">
-            <label>Project Token Exchange Ratio</label>
-            <div class="info-block">
-              <div class="info-block__input">
-                <numeric-input
-                  output-as-string="true"
-                  id="ppt"
-                  value.bind="tokenExchangeRatio"
-                  not-wei
-                  placeholder="1.5">
-                </numeric-input>
-              </div>
-              <div class="info-block__text">1 Funding Token <tokenlabel token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></tokenlabel> = ${launchConfig.launchDetails.pricePerToken ? launchConfig.launchDetails.pricePerToken : '1.5'} Project Tokens <tokenlabel token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></tokenlabel>
-              </div>
-            </div>
-          </div>
-
-          <div class="info-section">
-            <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Target</label>
-            <div class="info-section__text">
-              The Funding Target is the minimum amount raised for the seed to be deemed successful. If the Funding Target is not reached by the end of the seed duration, the contributors have the option to retrieve their contribution
-            </div>
-            <numeric-input
-              output-as-string="true"
-              id="fundingTarget"
-              value.bind="fundingTokensTarget"
-              decimals.bind="token.decimals"
-              placeholder="100">
-            </numeric-input>
-          </div>
-
-          <div class="info-section">
-            <div class="label--question">
-              <label>Funding Tokens <tokenlabel token-info.bind="token"></tokenlabel> Maximum</label>
-              <div class="question-mark">
-                <question-mark text="Measured in funding tokens"></question-mark>
-              </div>
-            </div>
-            <div class="info-section__text">
-              The Funding Maximum is the maximum amount to be raised in the seed. Once the Funding Maximum is reached, the seed will automatically end and the vesting period, if there is one, will begin
-            </div>
-            <numeric-input
-              output-as-string="true"
-              id="fundingMax"
-              value.bind="fundingTokenMaximum"
-              decimals.bind="token.decimals"
-              placeholder="1000">
-            </numeric-input>
           </div>
         </div>
-      </div>
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">
