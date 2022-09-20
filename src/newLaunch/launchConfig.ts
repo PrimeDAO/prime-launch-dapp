@@ -66,7 +66,7 @@ export interface ILaunchDetails {
 
 export interface IClass {
   className: string;
-  projectTokenPurchaseLimit: string;
+  projectTokenPurchaseLimit: number;
   allowList: string;
   token: ITokenInfo;
   tokenExchangeRatio: number;
@@ -138,5 +138,7 @@ export class LaunchConfig implements ILaunchConfig {
       legalDisclaimer: "",
       geoBlock: false,
     };
+
+    this.classes = [];
   }
 }
