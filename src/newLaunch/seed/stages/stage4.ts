@@ -31,8 +31,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   lastCheckedFundingAddress: string;
   fundingSymbol: string;
   fundingIcon: string;
-  whitelist: Set<Address>;
-  loadingWhitelist = false;
+  allowlist: Set<Address>;
+  loadingAllowlist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
   @observable csv: File
@@ -57,8 +57,11 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
   }
 
-  async csvChanged(newValue, oldValue){
+  async csvChanged(newValue, oldValue) {
+    this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
+    this.allowlist = new Set<string>(csvContent.split(","));
+    this.loadingAllowlist = false;
     // for BE adds allow list param
     // this.launchConfig.launchDetails.allowList = csvContent;
   }
@@ -87,14 +90,14 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-  @computedFrom("launchConfig.launchDetails.whitelist")
-  get whitelistUrlIsValid(): boolean {
-    return Utils.isValidUrl(this.launchConfig.launchDetails.whitelist);
-  }
+  @computedFrom("allowlist")
+  get allowlistUrlIsValid(): boolean {
+    if (!this.allowlist || !this.allowlist.size) return false;
 
-  @computedFrom("launchConfig.launchDetails.whitelist", "lastWhitelistUrlValidated")
-  get currentWhitelistIsValidated(): boolean {
-    return this.lastWhitelistUrlValidated === this.launchConfig.launchDetails.whitelist;
+    const validAddress = [...this.allowlist]
+      .filter((address: Address) => (address && Utils.isAddress(address)));
+    const listIsValid = validAddress.length === this.allowlist.size;
+    return listIsValid;
   }
 
   tokenChanged(): void {
@@ -132,7 +135,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     this.setlaunchConfigEndDate();
     // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
-    this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
+    // TODO: Refactor after BE enables allowlists:
+    // this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist; 
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 
