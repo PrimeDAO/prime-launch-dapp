@@ -84,16 +84,16 @@
                     <table class="classes-overview-container__table">
                       <tr>
                         <th>Name</th>
-                        <th>Token</th>
-                        <th>Max. Amount</th>
-                        <th><div class="table__center-cell">Exchange Ratio</div></th>
+                        <th><div class="table__center-cell">Class limit</div></th>
+                        <th><div class="table__center-cell">Purchase limit</div></th>
+                        <th><div class="table__center-cell">Vested (days)</div></th>
                         <th><div class="table__center-cell">Edit</div></th>
                       </tr>
                       <tr repeat.for="class of selectedSeed.classes">
                         <td>${class.className}</td>
-                        <td>${class.token.symbol}</td>
-                        <td>${class.fundingTokenMaximum | ethwei:class.token.decimals }</td>
-                        <td><div class="table__center-cell">${class.tokenExchangeRatio}</div></td>
+                        <td><div class="table__center-cell">${class.classCap | ethwei}</div></td>
+                        <td><div class="table__center-cell">${class.individualCap | ethwei}</div></td>
+                        <td><div class="table__center-cell">${class.classVestingDuration | secondsDays | ethwei}</div></td>
                         <td>
                           <div class="table__center-cell">
                             <img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/>

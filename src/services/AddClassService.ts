@@ -1,8 +1,7 @@
 import { autoinject } from "aurelia-framework";
-import { DialogCloseResult, DialogService } from "./DialogService";
-import { AddClassModal, IParameter } from "../resources/dialogs/addClass/addClass";
-import { IClass } from "newLaunch/launchConfig";
-import { ITokenInfo } from "./TokenTypes";
+import { DialogCloseResult, DialogService } from "services/DialogService";
+import { AddClassModal } from "resources/dialogs/addClass/addClass";
+import { IContributorClass } from "entities/Seed";
 
 export interface ISeedClass {
   name: string
@@ -25,11 +24,10 @@ export class AddClassService {
   public show(
     params: {
       index: number,
-      editedClass: IClass | undefined;
-      projectTokenInfo: ITokenInfo,
+      editedClass: IContributorClass | undefined,
     },
-    addFunction: (classToAdd: IClass) => void,
-    editFunction: ({ newClass, index }: { newClass: IClass; index: number; }) => void): Promise<DialogCloseResult> {
+    addFunction: (classToAdd: IContributorClass) => void,
+    editFunction: ({ newClass, index }: { newClass: IContributorClass; index: number; }) => void): Promise<DialogCloseResult> {
     let theContainer: Element;
 
     return this.dialogService.open(AddClassModal, {params, addFunction, editFunction}, {

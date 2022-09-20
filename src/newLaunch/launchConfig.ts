@@ -70,8 +70,8 @@ export interface IClass {
   allowList: string;
   token: ITokenInfo;
   tokenExchangeRatio: number;
-  fundingTokensTarget: string;
-  fundingTokenMaximum: string;
+  fundingTokensTarget: number;
+  fundingTokenMaximum: number;
   vestingPeriod: number;
   vestingCliff: number;
 }
@@ -86,7 +86,6 @@ export interface ILaunchConfig {
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
   launchDetails: ILaunchDetails,
-  class: IClass,
   classes: IClass[],
   clearState: () => void
 }
@@ -98,7 +97,6 @@ export class LaunchConfig implements ILaunchConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ILaunchDetails;
-  public class: IClass;
   public classes: IClass[];
 
   constructor() {
@@ -140,19 +138,5 @@ export class LaunchConfig implements ILaunchConfig {
       legalDisclaimer: "",
       geoBlock: false,
     };
-
-    this.class = {
-      className: "",
-      projectTokenPurchaseLimit: "",
-      allowList: "",
-      token: null,
-      tokenExchangeRatio: null,
-      fundingTokensTarget: "",
-      fundingTokenMaximum: "",
-      vestingPeriod: null,
-      vestingCliff: null,
-    }
-
-    this.classes = [];
   }
 }

@@ -156,14 +156,13 @@ export class SeedAdminDashboard {
   }
 
   editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
-    this.selectedSeed.classes[index] = Object.assign(this.selectedSeed.classes[index], editedClass);
+    Object.assign(this.selectedSeed.classes[index], editedClass);
   }
 
   openAddClassModal(index: number = null): void {
-    const editedClass = index !== null ? this.selectedSeed.classes[index] : undefined;
-    const projectTokenInfo = this.selectedSeed.projectTokenInfo;
+    const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(
-      { index, editedClass, projectTokenInfo },
+      { index, editedClass },
       this.addClass.bind(this),
       this.editClass.bind(this)
     );

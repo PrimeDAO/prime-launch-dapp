@@ -1,6 +1,25 @@
 @import "styles/colors.scss";
+
+@mixin boldButton {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: $Secondary05;
+  color: $White;
+  cursor: pointer;
+}
+
 body > ux-dialog-container.addClass {
-  // overflow-y: scroll;
   height: 95%;
   width: 35%;
   min-width: 800px;
@@ -12,6 +31,7 @@ body > ux-dialog-container.addClass {
   transform: translate(-50%, -50%);
 
   ux-dialog {
+    overflow-y: auto;
     ux-dialog-header {
       position: relative;
       font-family: Inter;
@@ -29,6 +49,7 @@ body > ux-dialog-container.addClass {
       font-family: Inter;
       font-size: 16px;
       line-height: 24px;
+      overflow: unset;
     }
 
     ux-dialog-footer {
@@ -45,9 +66,9 @@ body > ux-dialog-container.addClass {
 
   label {
     display: block;
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 32px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 33px;
     color: $Secondary02;
   }
   input {
@@ -55,7 +76,6 @@ body > ux-dialog-container.addClass {
     height: fit-content;
     border: 1px solid $Border01;
     border-radius: 10px;
-    color: $Neutral02;
     padding: 5px 12px;
   }
 
@@ -94,8 +114,6 @@ body > ux-dialog-container.addClass {
   }
 
   .delete-button__text {
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
@@ -132,7 +150,6 @@ body > ux-dialog-container.addClass {
   }
 
   .info-block__text {
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
@@ -142,7 +159,6 @@ body > ux-dialog-container.addClass {
 
   .info-section__text {
     width: 90%;
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -159,12 +175,9 @@ body > ux-dialog-container.addClass {
   }
 
   .label--small {
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 33px;
-    color: #FFFFFF;
+    color: $Neutral03;
   }
 
   .vesting-period{
@@ -206,4 +219,91 @@ body > ux-dialog-container.addClass {
       }
     }
   }
+
+  .csvList {
+    display: flex;
+    align-items: end;
+
+    .csvUploadInputContainer {
+
+      .inlineWrapper {
+        display:flex;
+        align-items: center;
+        gap: 10px;
+        .csvInputWrapper {
+          &:before {
+            content: 'Browse';
+            @include boldButton;
+          }
+
+          .csvUploadPara {
+            color: $Neutral02;
+            margin: 10px 0;
+          }
+
+          input[id=allowList] {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .vesting-period {
+    width: 176px;
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    gap: 0;
+    input {
+      width: 80px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    > div {
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $Secondary05;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  // .vestingDatesContainer {
+  //   display: grid;
+  //   column-gap: 16px;
+  //   grid-template-columns: auto auto;
+  // }
+
+  // .vestingDates {
+  //   width: 176px;
+  //   display: grid;
+  //   grid-template-columns: auto auto;
+  //   column-gap: 0;
+
+  //   input {
+  //     width: 112px;
+  //     border-top-right-radius: 0;
+  //     border-bottom-right-radius: 0;
+  //     border-right: 0px;
+  //   }
+  //   .inputIcon {
+  //     width: 47px;
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //     background-color: $BG01;
+  //     border: 1px solid $Border01;
+  //     border-left: 0px;
+  //     border-top-right-radius: 10px;
+  //     border-bottom-right-radius: 10px;
+  //     z-index: 1;
+  //     cursor: pointer;
+  //     > i {
+  //       font-size: 22px;
+  //     }
+  //   }
+  // }
 }
