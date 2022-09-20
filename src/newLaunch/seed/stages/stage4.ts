@@ -221,15 +221,4 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   makeMeAdmin() : void {
     this.launchConfig.launchDetails.adminAddress = this.ethereumService.defaultAccountAddress;
   }
-
-  async getWhiteListFeedback(): Promise<void> {
-    if (this.launchConfig.launchDetails.whitelist) {
-      this.loadingWhitelist = true;
-      this.whitelist = await this.whiteListService.getWhiteList(this.launchConfig.launchDetails.whitelist);
-      this.lastWhitelistUrlValidated = this.launchConfig.launchDetails.whitelist;
-      this.loadingWhitelist = false;
-    } else {
-      this.whitelist = null;
-    }
-  }
 }

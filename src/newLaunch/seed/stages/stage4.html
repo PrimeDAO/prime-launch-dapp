@@ -148,24 +148,6 @@
             </div>
           </div>
 
-          <div class="infoInput whitelistContainer">
-            <div class="labeledQuestion">
-              <label for="whitelist">Whitelist</label>
-              <div class="questionMark">
-                <question-mark allow-html text="A file containing a list of addresses that are allowed to purchase Project tokens. The file must be formatted as plain text and each address must be separated from its neighbor addresses by one or more commas, spaces, tabs or carriage returns. A CSV file would work. <p>Example using only commas:  <pre>0x1234,0x5678,0xabcd,0x7890</pre></p>">
-                </question-mark>
-              </div>
-            </div>
-            <input id="whitelist"
-                  class="input-style"
-              value.bind="launchConfig.launchDetails.whitelist"
-              input.trigger="getWhiteListFeedback()"
-              placeholder="(Optional) URL to a whitelist (https://...)" />
-            <div if.bind="loadingWhitelist" class="loadingWhitelist"><i class="fas fa-circle-notch fa-spin"></i></div>
-            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && whitelist && whitelist.size" class="whiteListFeedback good">Whitelist contains ${whitelist.size} accounts</div>
-            <div if.bind="whitelistUrlIsValid && currentWhitelistIsValidated && (!whitelist || !whitelist.size)" class="whiteListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
-          </div>
-
           <span class="label">Classes Set-up</span>
           <div class="classes-overview-container">
             <p class="classes-overview-container__para">This feature is still under development therefore it is only possible to add classes via the admin dashboard <span class="underline">after the registration wizard has been completed.</span> We’re working on improving this flow, sorry for the inconvenience.</p>
