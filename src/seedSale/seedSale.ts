@@ -291,8 +291,8 @@ export class SeedSale {
       this.vestingDate = convertToDate(this.seed.vestingDuration);
       this.lockDate = convertToDate(this.seed.vestingCliff);
       this.classCap = this.seed.classCap;
-      this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice));
-      this.classSold = this.numberService.fromString(fromWei(this.seed.classSold));
+      this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice, this.seed.projectTokenInfo.decimals));
+      this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
