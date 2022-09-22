@@ -106,6 +106,10 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     this.launchConfig.launchDetails.pricePerToken = null;
   }
 
+  togglePermissoned(): void {
+    this.launchConfig.launchDetails.isPermissoned = !this.launchConfig.launchDetails.isPermissoned;
+  }
+
   toggleGeoBlocking(): void {
     this.launchConfig.launchDetails.geoBlock = !this.launchConfig.launchDetails.geoBlock;
   }
@@ -136,7 +140,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     // TODO: Refactor after BE enables allowlists:
-    // this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist; 
+    // this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 

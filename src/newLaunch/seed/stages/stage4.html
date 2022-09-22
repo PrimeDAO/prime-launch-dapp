@@ -1,6 +1,7 @@
 <template>
   <require from="newLaunch/tokenLabel.html"></require>
   <require from="newLaunch/geoblocking.html"></require>
+  <require from="newLaunch/permissoned.html"></require>
 
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
@@ -150,6 +151,11 @@
               <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
             </div>
           </div>
+
+          <permissoned
+            checked.bind="launchConfig.launchDetails.isPermissoned"
+            toggle.call="togglePermissoned()">
+          </permissoned>
 
           <span class="label">Classes Set-up</span>
           <div class="classes-overview-container">
