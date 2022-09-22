@@ -25,6 +25,7 @@ export interface ISeedDetails extends ILaunchDetails {
   vestingPeriod: number,
   vestingCliff: number,
   whitelist: string,
+  isPermissoned: boolean,
   legalDisclaimer: string,
 }
 
