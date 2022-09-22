@@ -279,6 +279,27 @@
             </template>
           </div>
         </div>
+
+        <div class="labeledQuestion">
+          <label for="vestingPeriod">Tipping</label>
+          <div class="questionMark">
+            <question-mark text="TODO"></question-mark>
+          </div>
+        </div>
+
+        <div class="infoInput maxTarget maxTargetLabel">
+          <div>
+            <div class="seedTipping">
+              <numeric-input
+                placeholder="1"
+                id="vestingPeriod"
+                not-wei
+                value.bind="launchConfig.launchDetails.seedTip">
+              </numeric-input>
+              <div>%</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="footerButtons">

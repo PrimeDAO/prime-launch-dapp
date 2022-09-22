@@ -130,7 +130,7 @@
 .make-admin-button {
   @include boldButton;
   margin-top: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 16px;
 }
 
 .end-stage-subtext {
@@ -769,7 +769,8 @@
           }
         }
       }
-      .vestingPeriod {
+      .vestingPeriod,
+      .seedTipping {
         width: 176px;
         display: flex;
         flex-flow: row nowrap;
@@ -796,7 +797,8 @@
         grid-template-columns: auto auto;
       }
 
-      .vestingDates {
+      .vestingDates,
+      .seedTipping {
         width: 176px;
         display: grid;
         grid-template-columns: auto auto;
@@ -823,6 +825,18 @@
           > i {
             font-size: 22px;
           }
+        }
+      }
+
+      .seedTipping {
+        width: 104px;
+        margin-bottom: 80px;
+
+        input {
+          width: 57px;
+        }
+        > div {
+          width: 47px;
         }
       }
     }
