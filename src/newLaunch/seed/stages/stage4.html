@@ -143,11 +143,11 @@
                   files.bind="csv"
                   placeholder="Upload your .csv allowlist..." />
                 </label>
-                <span>${csv ? csv[0].name : 'No File Chosen'}</span>
+                <span if.bind="loadingAllowlist" class="loadingAllowlist"><i class="fas fa-circle-notch fa-spin"></i></span>
+                <span else>${csv ? csv[0].name : 'No File Chosen'}</span>
               </span>
-              <div if.bind="loadingAllowlist" class="loadingAllowlist"><i class="fas fa-circle-notch fa-spin"></i></div>
-              <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Whitelist contains ${allowlist.size} accounts</div>
-              <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Whitelist cannot be loaded or contains no accounts</div>
+              <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Allowlist contains ${allowlist.size} accounts</div>
+              <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
             </div>
           </div>
 
