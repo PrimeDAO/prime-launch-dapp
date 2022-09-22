@@ -65,6 +65,45 @@
               </div>
               <hr />
             </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+              <div class="featureTitle">
+                Add Whitelists
+              </div>
+              <div class="featureDescription">
+                Add addresses from the list that was supplied during registration
+              </div>
+              <div class="button1 small" click.delegate="addWhitelist()">
+                Add Whitelist
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+              <div class="featureTitle">
+                Whitelist an account
+              </div>
+              <div class="featureDescription">
+                Add an account to the whitelist
+              </div>
+              <div class='inputWrapper'>
+                <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
+                <div class="button1 small" click.delegate="addToWhiteList()">
+                  Add to whitelist
+                </div>
+              </div>
+            </div>
+            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+              <div class="featureTitle">
+                Unwhitelist an account
+              </div>
+              <div class="featureDescription">
+                Remove an account from the whitelist
+              </div>
+              <div class='inputWrapper'>
+                <input id="addressToRemove" value.bind="addressToRemove" placeholder="0x6C4ef..." />
+                <div class="button1 small" click.delegate="removeFromWhiteList()">
+                  Remove from whitelist
+                </div>
+              </div>
+            </div>
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Classes
