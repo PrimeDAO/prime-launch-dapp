@@ -42,7 +42,6 @@ export class SeedService {
   public initializing = true;
   private initializedPromise: Promise<void>;
   private seedFactory: any;
-  public celoData: string;
 
   // private featuredSeedsJson: IFeaturedSeedsConfig;
   /**
@@ -237,7 +236,6 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
-    this.celoData = transaction.data;
     // console.log("estimating transaction:");
     // console.dir(transaction);
 
