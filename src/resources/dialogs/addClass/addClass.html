@@ -13,22 +13,22 @@
     <ux-dialog-body>
       <div class="body add-class-container">
 
-          <div class="info-section">
+          <div class="info-section with-counter">
             <div class="label--question">
               <label>Class Name</label>
               <div class="question-mark">
                 <question-mark text="TODO: Add text"></question-mark>
               </div>
+              <span>
+                ${class.className.length || 0}/50
+              </span>
             </div>
-            <input id="className" value.bind="class.className"/>
+            <input id="className" maxlength="50" value.bind="class.className"/>
           </div>
 
           <div class="info-section">
-            <div class="label--question">
+            <div class="label">
               <label>Contributor class purchase limit</label>
-              <div class="question-mark">
-                <question-mark text="TODO: Add text"></question-mark>
-              </div>
             </div>
             <label for="classCap" class="label--small">
               The maximum amount of contribution the allowlisted users within one class can contribute to the launch.
@@ -37,14 +37,11 @@
           </div>
 
           <div class="info-section">
-            <div class="label--question">
+            <div class="label">
               <label>Project token purchase limit</label>
-              <div class="question-mark">
-                <question-mark text="TODO: Add text"></question-mark>
-              </div>
             </div>
             <label for="individualCap" class="label--small">
-              The maximum amount of contribution a connected user can contribute to the launch.
+              You can only change the vesting-period.
             </label>
             <numeric-input name="individualCap" value.bind="class.individualCap"></numeric-input>
           </div>
@@ -117,8 +114,11 @@
                   files.bind="csv"
                   placeholder="Upload your .csv allowlist..." />
                 </label>
-                <span>${csv ? csv[0].name : 'No File Chosen'}</span>
+                <span if.bind="loadingAllowlist" class="loadingAllowlist"><i class="fas fa-circle-notch fa-spin"></i></span>
+                <span else>${csv ? csv[0].name : 'No File Chosen'}</span>
               </span>
+              <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Allowlist contains ${class.allowList.size} account${class.allowList.size > 1 ? "s" : ""}</div>
+              <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ export interface IContributorClass {
   classVestingCliff: BigNumber; // Vesting cliff for class
   classVestingDuration: BigNumber; // Vesting duration for class
   classVestingStartTime?: BigNumber; // NOT SUPPORTED YET
-  allowList?: string;
+  allowList?: Set<Address>;
 }
 
 @autoinject
