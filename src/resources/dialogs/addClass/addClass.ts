@@ -1,12 +1,13 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
-import { EthereumService, toWei } from "services/EthereumService";
+import { EthereumService, toWei, fromWei } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { IContributorClass } from "entities/Seed";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { NumberService } from "services/NumberService";
+import { BigNumber } from "ethers";
 import "./addClass.scss";
 
 const EMPTY_CLASS = {
@@ -54,27 +55,32 @@ export class AddClassModal {
 
   async validateInputs(): Promise<string> {
     let message: string;
+    // Make sure that the Funding Token decimals are comparable (eg USDC has only 6 decimals)
+    const hardCap = toWei(this.numberService.fromString(
+      fromWei(
+        this.model.params.hardCap,
+        this.model.params.fundingTokenInfo.decimals)
+    ));
 
-    if (!this.class.className) {
-      message = "Please enter Class Name";
-    } else if (!this.class.classCap ) {
+    if (!this.class.className) { /* ⚠️ Empty Class name */
+      message = "Please enter a value for Class Name";
+    } else if (!this.class.classCap) {
       message = "Please enter a contributor class purchase limit";
-    } else if (this.class.classCap.lte(0)) {
-      message = "Please enter a number greater than zero for the contributor class purchase limit";
+    } else if (this.class.classCap.gt(hardCap)) { /* ⚠️ ClassCap ≤ HardCAP */
+      message = "Please enter a value for Class Purchase limit that is lower or equal to the Funding Tokens Maximum value";
     } else if (!this.class.individualCap) {
-      message = "Please enter a number a project token purchase limit";
-    } else if (this.class.individualCap.lte(0)) {
-      message = "Please enter a number greater than zero for the project token purchase limit";
-    } else if (this.class.individualCap.gt(this.class.classCap)) {
-      message = "Please enter a value for project token purchase limit less than or equal to contributor class purchase limit";
-    } else if (!this.class.classVestingDuration || this.class.classVestingDuration.lte(0)) {
-      message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
-    } else if (!this.class.classVestingCliff || this.class.classVestingCliff.lte(0)) {
-      message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
-    } else if (this.class.classVestingCliff >= this.class.classVestingDuration) {
-      message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for\"";
+      message = "Please enter a value for project token purchase limit";
+    } else if (this.class.individualCap.gt(hardCap)) { /* ⚠️ IndividualCap ≤ HardCAP */
+      message = "Please enter a value for Project token Purchase limit that is lower or equal to the Funding Tokens Maximum";
+    } else if (this.class.individualCap.gt(this.class.classCap)) { /* ⚠️ IndividualCap ≤ ClassCAP */
+      message = "Please enter a value for Project token Purchase limit that is lower or equal to the Class Purchase limit value";
+    } else if (this.class.classVestingDuration === null) {
+      message = "Please enter a value for \"Project tokens vested for\" ";
+    } else if (this.class.classVestingCliff === null) {
+      message = "Please enter a value for \"with a cliff of\" ";
+    } else if (this.class.classVestingCliff > this.class.classVestingDuration) {
+      message = "Please enter a value of \"with a cliff of\" lower or equal to \"Tokens vested for\"";
     }
-
 
     this.verified = !message;
     return Promise.resolve(message);
@@ -151,8 +157,9 @@ export class AddClassModal {
 interface IAddClassModal {
   params: {
     index: number,
+    hardCap: BigNumber,
+    fundingTokenInfo: ITokenInfo,
     editedClass: IContributorClass | undefined,
-    projectTokenInfo: ITokenInfo,
   },
   addFunction: (newClass: IContributorClass) => void,
   editFunction: ({ editedClass, index }: IParameter) => void,
