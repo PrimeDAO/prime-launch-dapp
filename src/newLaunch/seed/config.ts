@@ -27,6 +27,7 @@ export interface ISeedDetails extends ILaunchDetails {
   whitelist: string,
   isPermissoned: boolean,
   legalDisclaimer: string,
+  seedTip: number,
 }
 
 export interface ISeedConfig extends ILaunchConfig {
