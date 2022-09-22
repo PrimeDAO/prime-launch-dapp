@@ -926,6 +926,13 @@
       cursor: pointer;
       &.isInactive {
         background: $Secondary05;
+        cursor: default;
+
+        .checkbox {
+          label {
+            cursor: default;
+          }
+        }
       }
       i.yes {
         position: absolute;
