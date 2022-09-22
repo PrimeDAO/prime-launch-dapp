@@ -242,7 +242,7 @@ export class SeedService {
       Date.parse(config.launchDetails.endDate) / 1000,
       [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
       config.launchDetails.isPermissoned,
-      toWei(SeedService.seedFee),
+      toWei(config.launchDetails.seedTip ?? 0.0),
       Utils.asciiToHex(metaDataHash),
     ];
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
