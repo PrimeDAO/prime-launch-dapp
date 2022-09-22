@@ -251,6 +251,27 @@ body > ux-dialog-container.addClass {
           }
         }
       }
+      .loadingAllowlist {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: 6px;
+        i {
+          color: $Primary01;
+        }
+      }
+
+      .allowListFeedback {
+        color: $Neutral02;
+        margin-left: 6px;
+        margin-top: 6px;
+
+        &.bad {
+          i {
+            color: $AlertRed;
+            margin-right: 6px;
+          }
+        }
+      }
     }
   }
 

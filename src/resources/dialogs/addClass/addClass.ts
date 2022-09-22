@@ -1,13 +1,14 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { autoinject } from "aurelia-framework";
-import { EthereumService, toWei, fromWei } from "services/EthereumService";
+import { autoinject, observable, computedFrom } from "aurelia-framework";
+import { EthereumService, toWei, fromWei, Address } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { IContributorClass } from "entities/Seed";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { NumberService } from "services/NumberService";
 import { BigNumber } from "ethers";
+import { Utils } from "services/utils";
 import "./addClass.scss";
 
 const EMPTY_CLASS = {
@@ -25,10 +26,12 @@ export class AddClassModal {
   private model: IAddClassModal;
   private okButton: HTMLElement;
   private isEdit: boolean = false;
+  private loadingAllowlist: boolean = false;
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
   isDev: boolean = false;
+  @observable csv: File
 
   constructor(
     private controller: DialogController,
@@ -38,6 +41,13 @@ export class AddClassModal {
     private numberService: NumberService,
   ) {
     this.isDev = process.env.NODE_ENV === 'development' && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
+  }
+
+  async csvChanged(newValue, oldValue) {
+    this.loadingAllowlist = true;
+    const csvContent = newValue && await newValue[0].text();
+    this.class.allowList = new Set<string>(csvContent.split(","));
+    this.loadingAllowlist = false;
   }
 
   public async activate(model: IAddClassModal): Promise<void> {
@@ -88,6 +98,16 @@ export class AddClassModal {
 
   public attached(): void {
     this.okButton.focus();
+  }
+
+  @computedFrom("allowlist")
+  get allowlistUrlIsValid(): boolean {
+    if (!this.allowlist || !this.allowlist.size) return false;
+
+    const validAddress = [...this.allowlist]
+      .filter((address: Address) => (address && Utils.isAddress(address)));
+    const listIsValid = validAddress.length === this.allowlist.size;
+    return listIsValid;
   }
 
   resetModal(): void {
