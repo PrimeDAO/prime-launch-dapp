@@ -100,13 +100,13 @@ export class AddClassModal {
     this.okButton.focus();
   }
 
-  @computedFrom("allowlist")
+  @computedFrom("class.allowList")
   get allowlistUrlIsValid(): boolean {
-    if (!this.allowlist || !this.allowlist.size) return false;
+    if (!this.class.allowList || !this.class.allowList.size) return false;
 
-    const validAddress = [...this.allowlist]
+    const validAddress = [...this.class.allowList]
       .filter((address: Address) => (address && Utils.isAddress(address)));
-    const listIsValid = validAddress.length === this.allowlist.size;
+    const listIsValid = validAddress.length === this.class.allowList.size;
     return listIsValid;
   }
 

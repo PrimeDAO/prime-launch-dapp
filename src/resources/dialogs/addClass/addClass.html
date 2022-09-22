@@ -117,7 +117,7 @@
                 <span if.bind="loadingAllowlist" class="loadingAllowlist"><i class="fas fa-circle-notch fa-spin"></i></span>
                 <span else>${csv ? csv[0].name : 'No File Chosen'}</span>
               </span>
-              <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Allowlist contains ${allowlist.size} account${allowlist.size > 1 ? "s" : ""}</div>
+              <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Allowlist contains ${class.allowList.size} account${class.allowList.size > 1 ? "s" : ""}</div>
               <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
             </div>
           </div>
