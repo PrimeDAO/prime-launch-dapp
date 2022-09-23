@@ -120,6 +120,10 @@
       .button1 {
         margin-bottom: 40px;
         margin-left: 0;
+        &.disabled {
+          background: $Neutral02;
+          cursor: not-allowed;
+        }
       }
 
       .buttonContainer {

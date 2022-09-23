@@ -26,6 +26,8 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
+  newlyAddedClasses: number[] = [];
+  editedClasses: number[] = [];
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -154,10 +156,12 @@ export class SeedAdminDashboard {
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
+    this.newlyAddedClasses.push(this.selectedSeed.classes.length - 1);
   }
 
   editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
     Object.assign(this.selectedSeed.classes[index], editedClass);
+    if (!this.editedClasses.includes(index)) this.editedClasses.push(index);
   }
 
   openAddClassModal(index: number = null): void {
@@ -169,12 +173,51 @@ export class SeedAdminDashboard {
     );
   }
 
-  deployClassesToContract() {
+  async deployClassesToContract() {
     // TODO: Add deployment logic
     // Differentiate between edited and newly added classes.
     // Step 1: Deploy batched classes
     // Step 2: Deploy bached Allowed Lists corresponding to the classes
-    alert("Deploying Classes to contract")
+    const classNames: string[] = [];
+    const classCaps: BigNumber[] = [];
+    const individualCaps: BigNumber[] = [];
+    const prices: BigNumber[] = [];
+    const classVestingDurations: BigNumber[] = [];
+    const classVestingCliffs: BigNumber[] = [];
+    const classFees: BigNumber[] = [];
+
+    const noChanges = !this.newlyAddedClasses.length && !this.editedClasses.length;
+    if (noChanges) return;
+
+    (this.newlyAddedClasses.length ? this.newlyAddedClasses : this.editedClasses)
+    .forEach((index: number) => {
+      const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+      classNames.push(contributorClass.className);
+      classCaps.push(contributorClass.classCap);
+      individualCaps.push(contributorClass.individualCap);
+      prices.push(BigNumber.from(0)), // Temporary;
+      classVestingDurations.push(contributorClass.classVestingDuration);
+      classVestingCliffs.push(contributorClass.classVestingCliff);
+      classFees.push(BigNumber.from(0));
+    });
+
+    // Reset count.
+    this.newlyAddedClasses = [];
+    this.editedClasses = [];
+
+    try {
+      const doAddClass = await this.selectedSeed.addClassBatch({
+        classNames,
+        classCaps,
+        individualCaps,
+        prices,
+        classVestingDurations,
+        classVestingCliffs,
+        classFees,
+      });
+    } catch (ex) {
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+    }
   }
 
   cancel() {
