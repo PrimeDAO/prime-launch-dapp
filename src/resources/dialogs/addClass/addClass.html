@@ -1,7 +1,7 @@
 <template>
   <ux-dialog class="dialog addClass">
     <ux-dialog-header>
-      ${model.params.isEdit ? "Edit class" : "Add class"}
+      ${isEdit ? "Edit class" : "Add class"}
       <span>
         <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="fillDummyValues()">Prefill Fields</button>
       </span>
