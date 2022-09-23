@@ -134,7 +134,7 @@
                     <div class="heading heading4">Funding Tokens Target</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
                       </div>
                     </div>
                     </div>
@@ -142,7 +142,7 @@
                     <div class="heading heading4">Funding Tokens Maximum</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
-                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
                       </div>
                     </div>
                   </div>
