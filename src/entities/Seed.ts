@@ -730,16 +730,25 @@ export class Seed implements ILaunch {
   }
 
   async addClassBatch({classNames, classCaps, individualCaps, prices, classVestingDurations, classVestingCliffs, classFees}): Promise<TransactionReceipt> {
-    console.log({ classNames, classCaps, individualCaps, classVestingCliffs, classVestingDurations });
+    const classVestingStartTimes = new Array(classCaps.length).fill(BigNumber.from(this.endTime.getTime() / 1000 + 1));
+    console.log({
+      classNames: [...classNames.map((val:BigNumber) => (val.toString()))],
+      classCaps: [...classCaps.map((val:BigNumber) => (val.toString()))],
+      individualCaps: [...individualCaps.map((val:BigNumber) => (val.toString()))],
+      classVestingStartTime: [...classVestingStartTimes.map((val:BigNumber) => (val.toString()))],
+      classVestingCliffs: [...classVestingCliffs.map((val:BigNumber) => (val.toString()))],
+      classVestingDurations: [...classVestingDurations.map((val:BigNumber) => (val.toString()))],
+    });
     try {
       const receipt = await this.transactionsService.send(() => this.contract.addClassBatch(
         // params.classNames,
-        classCaps,
-        individualCaps,
-        prices,
-        classVestingDurations,
-        classVestingCliffs,
-        classFees,
+        classCaps,              // _classCaps: The total caps of the contributor class.,
+        classFees,              // _classFee: The fee for the contributor class.,
+        classVestingStartTimes,  // _classVestingStartTime: The class vesting start time for the contributor class.,
+        individualCaps,         // _individualCaps: The personal caps of each contributor in this class.,
+        prices,                 // _prices: The token prices for the addresses in this class.,
+        classVestingDurations,  // _classVestingStartTime: The class vesting start time for the contributor class.,
+        // classVestingCliffs,     // _vestingDurations: The vesting durations for this contributors class.
       ));
       return receipt;
     } catch (ex) {
