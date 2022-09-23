@@ -14,7 +14,7 @@ import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { GeoBlockService } from "services/GeoBlockService";
 import { BigNumber } from "ethers";
-import { DateService } from "services/DateService";
+import { DateService, TimespanResolution } from "services/DateService";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
@@ -283,16 +283,12 @@ export class SeedSale {
       await this.hydrateUserData();
       //this.disclaimSeed();
 
-      const convertToDate = (duration) => {
-        const days = Math.round(duration / 1000 / 60 / 24);
-
-        return `${days} days`;
-      };
-
-      this.vestingDate = convertToDate(this.seed.vestingDuration);
-      this.lockDate = convertToDate(this.seed.vestingCliff);
-
       this.targetClass = this.findUserClass(this.seed);
+
+      this.lockDate = this.targetClass.classVestingCliff && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff.toNumber() * 1000, TimespanResolution.largest);
+      this.vestingDate = this.targetClass.classVestingDuration && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration.toNumber() * 1000, TimespanResolution.largest);
+
+
       this.classCap = this.seed.classCap;
       this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
 
