@@ -5,6 +5,7 @@ import { DisposableCollection } from "./DisposableCollection";
 import { Utils } from "services/utils";
 
 export type ConsoleLogMessageTypes = "info"|"warn"|"warning"|"error"|"debug";
+const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
 
 @autoinject
 export class ConsoleLogService {
@@ -116,5 +117,21 @@ export class ConsoleLogService {
         this.logger.debug(msg);
         break;
     }
+  }
+
+  /**
+   *
+   * @param letter keyboard letter that should be pressed
+   * @param callback what should happen when `letter` is pressed (Note, this can be used to call methods as well)
+   */
+  public static __onlyDev(letter: string, callback: any): void {
+    if (IS_PRODUCTION_APP) return;
+
+    /**
+     * TODO: maybe have to care for, that not too many listeners will be added
+     */
+    document.addEventListener("keydown", (ev: KeyboardEvent) => {
+      if (ev.key === letter) { callback(); }
+    });
   }
 }
