@@ -38,7 +38,7 @@
             if.to-view="!launch.initializing && (($index < 10) || seeingMore)"
             click.delegate="onLaunchClick(launch)">
             <div class="project cell body ellipses hot">
-              <div class="ellipsesContainer">${launch.projectTokenInfo.name}</div>
+              <div class="ellipsesContainer">${launch.metadata.general.projectName}</div>
             </div>
             <div class="projectToken cell body hot"><img src.to-view="launch.projectTokenInfo.logoURI"></img>${launch.projectTokenInfo.symbol}</div>
             <div class="fundingToken cell body hot"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
