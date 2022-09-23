@@ -130,7 +130,7 @@
 .make-admin-button {
   @include boldButton;
   margin-top: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 16px;
 }
 
 .end-stage-subtext {
@@ -336,6 +336,11 @@
     width: 20px;
     height: 20px;
     align-self: center;
+  }
+
+  .toggle-description {
+    line-height: 24px;
+    margin: 2px 0;
   }
 
   .importantText {
@@ -764,7 +769,8 @@
           }
         }
       }
-      .vestingPeriod {
+      .vestingPeriod,
+      .seedTipping {
         width: 176px;
         display: flex;
         flex-flow: row nowrap;
@@ -791,7 +797,8 @@
         grid-template-columns: auto auto;
       }
 
-      .vestingDates {
+      .vestingDates,
+      .seedTipping {
         width: 176px;
         display: grid;
         grid-template-columns: auto auto;
@@ -818,6 +825,18 @@
           > i {
             font-size: 22px;
           }
+        }
+      }
+
+      .seedTipping {
+        width: 104px;
+        margin-bottom: 80px;
+
+        input {
+          width: 57px;
+        }
+        > div {
+          width: 47px;
         }
       }
     }
@@ -921,6 +940,13 @@
       cursor: pointer;
       &.isInactive {
         background: $Secondary05;
+        cursor: default;
+
+        .checkbox {
+          label {
+            cursor: default;
+          }
+        }
       }
       i.yes {
         position: absolute;

@@ -1,6 +1,7 @@
 <template>
   <require from="newLaunch/tokenLabel.html"></require>
   <require from="newLaunch/geoblocking.html"></require>
+  <require from="newLaunch/permissoned.html"></require>
 
   <div class="page animated-page stageContainer stage4 au-animate ">
     <div class="infoContainer">
@@ -151,6 +152,11 @@
             </div>
           </div>
 
+          <permissoned
+            checked.bind="launchConfig.launchDetails.isPermissoned"
+            toggle.call="togglePermissoned()">
+          </permissoned>
+
           <span class="label">Classes Set-up</span>
           <div class="classes-overview-container">
             <p class="classes-overview-container__para">This feature is still under development therefore it is only possible to add classes via the admin dashboard <span class="underline">after the registration wizard has been completed.</span> We’re working on improving this flow, sorry for the inconvenience.</p>
@@ -271,6 +277,27 @@
               <div class="button2 small" if.to-view="!ethereumService.defaultAccountAddress" click.delegate="connect()">Connect to get your wallet address</div>
               <div class="make-admin-button" else click.delegate="makeMeAdmin()">I will be the administrator</div>
             </template>
+          </div>
+        </div>
+
+        <div class="labeledQuestion">
+          <label for="vestingPeriod">Tipping</label>
+          <div class="questionMark">
+            <question-mark text="TODO"></question-mark>
+          </div>
+        </div>
+
+        <div class="infoInput maxTarget maxTargetLabel">
+          <div>
+            <div class="seedTipping">
+              <numeric-input
+                placeholder="1"
+                id="vestingPeriod"
+                not-wei
+                value.bind="launchConfig.launchDetails.seedTip">
+              </numeric-input>
+              <div>%</div>
+            </div>
           </div>
         </div>
       </div>

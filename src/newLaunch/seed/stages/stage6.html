@@ -1,6 +1,8 @@
 <template>
   <require from="../../stages/stageSixTokenInfo.html"></require>
   <require from="newLaunch/geoblocking.html"></require>
+  <require from="newLaunch/permissoned.html"></require>
+
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Seed Summary</div>
@@ -165,7 +167,7 @@
                 </div>
                 <div class="inline">
                 <div class="stageLaunchDetails">
-            
+
                     <div class="heading heading4">Tokens vested for</div>
                     <div class="tokenAmountContainer">
                       <div class="tokenAmount">
@@ -182,6 +184,14 @@
                     </div>
                   </div>
                 </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <permissoned
+                    checked.bind="launchConfig.launchDetails.isPermissoned"
+                    disabled.bind="true"
+                    toggle.call="toggle()"
+                  >
+                  </permissoned>
                 </div>
                 <div class="stageLaunchDetails">
                   <div class="heading heading4">Allowlist</div>
@@ -250,7 +260,7 @@
                   <div class="heading heading4">
                     Tipping
                   </div>
-                  1%
+                  ${launchConfig.launchDetails.seedTip || "--"}%
                 </div>
                 <div class="stageLaunchDetails">
                   <div class="heading heading4">

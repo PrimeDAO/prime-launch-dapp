@@ -241,8 +241,8 @@ export class SeedService {
       // convert from ISO string to Unix epoch seconds
       Date.parse(config.launchDetails.endDate) / 1000,
       [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
-      !!config.launchDetails.whitelist,
-      toWei(SeedService.seedFee),
+      config.launchDetails.isPermissoned,
+      toWei(config.launchDetails.seedTip ?? 0.0),
       Utils.asciiToHex(metaDataHash),
     ];
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
