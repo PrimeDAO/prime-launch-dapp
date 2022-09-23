@@ -150,7 +150,7 @@
                         <div class="stageButton cancel" click.delegate="cancel()"><span>Cancel</span></div>
                       </div>
                       <div class="buttonContainer">
-                        <div class="stageButton button1" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
+                        <div class="stageButton button1 ${newlyAddedClasses.length === 0 && editedClasses.length === 0 ? 'disabled' : ''}" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
                       </div>
                     </div>
                   </div>

@@ -729,6 +729,24 @@ export class Seed implements ILaunch {
       });
   }
 
+  async addClassBatch({classNames, classCaps, individualCaps, prices, classVestingDurations, classVestingCliffs, classFees}): Promise<TransactionReceipt> {
+    console.log({ classNames, classCaps, individualCaps, classVestingCliffs, classVestingDurations });
+    try {
+      const receipt = await this.transactionsService.send(() => this.contract.addClassBatch(
+        // params.classNames,
+        classCaps,
+        individualCaps,
+        prices,
+        classVestingDurations,
+        classVestingCliffs,
+        classFees,
+      ));
+      return receipt;
+    } catch (ex) {
+      console.log({ex});
+    }
+  }
+
   public fundingTokenAllowance(): Promise<BigNumber> {
     return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
   }
