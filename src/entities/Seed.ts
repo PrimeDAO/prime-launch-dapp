@@ -16,6 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
+import { parseEther, parseUnits } from "ethers/lib/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -729,26 +730,78 @@ export class Seed implements ILaunch {
       });
   }
 
-  async addClassBatch({classNames, classCaps, individualCaps, prices, classVestingDurations, classVestingCliffs, classFees}): Promise<TransactionReceipt> {
+  async addClassBatch({
+    classNames,
+    classCaps,
+    individualCaps,
+    prices,
+    classVestingDurations,
+    classVestingCliffs,
+    classFees,
+  }: Record<string, unknown[]>): Promise<TransactionReceipt> {
     const classVestingStartTimes = new Array(classCaps.length).fill(BigNumber.from(this.endTime.getTime() / 1000 + 1));
     console.log({
-      classNames: [...classNames.map((val:BigNumber) => (val.toString()))],
-      classCaps: [...classCaps.map((val:BigNumber) => (val.toString()))],
-      individualCaps: [...individualCaps.map((val:BigNumber) => (val.toString()))],
-      classVestingStartTime: [...classVestingStartTimes.map((val:BigNumber) => (val.toString()))],
-      classVestingCliffs: [...classVestingCliffs.map((val:BigNumber) => (val.toString()))],
-      classVestingDurations: [...classVestingDurations.map((val:BigNumber) => (val.toString()))],
+      // classCaps: [...classCaps.map((val:BigNumber) => (val.toString()))],
+      // individualCaps: [...individualCaps.map((val:BigNumber) => (val.toString()))],
+      // classVestingDurations: [...classVestingDurations.map((val:BigNumber) => (val.toString()))],
+      // classVestingStartTime: [...classVestingStartTimes.map((val:BigNumber) => (val.toString()))],
+      classCaps,
+      individualCaps,
+      prices,
+      classVestingDurations,
+      classVestingStartTimes,
+      classFees,
+
+      // classVestingCliffs: [...classVestingCliffs.map((val:BigNumber) => (val.toString()))],
+      // classNames: [...classNames.map((val:BigNumber) => (val.toString()))],
     });
     try {
-      const receipt = await this.transactionsService.send(() => this.contract.addClassBatch(
-        // params.classNames,
-        classCaps,              // _classCaps: The total caps of the contributor class.,
-        classFees,              // _classFee: The fee for the contributor class.,
-        classVestingStartTimes,  // _classVestingStartTime: The class vesting start time for the contributor class.,
-        individualCaps,         // _individualCaps: The personal caps of each contributor in this class.,
-        prices,                 // _prices: The token prices for the addresses in this class.,
-        classVestingDurations,  // _classVestingStartTime: The class vesting start time for the contributor class.,
-        // classVestingCliffs,     // _vestingDurations: The vesting durations for this contributors class.
+      const args = [
+        classCaps.map(value => value.toString()), // _classCaps: The total caps of the contributor class.,
+        individualCaps.map(value => value.toString()), // _individualCaps: The personal caps of each contributor in this class.,
+        prices,
+        classVestingDurations.map(value => value.toString()), // _classVestingStartTime: The class vesting start time for the contributor class.,
+        classVestingStartTimes.map(value => value.toString()), // _classVestingStartTime: The class vesting start time for the contributor class.,
+        classFees,
+      ];
+
+      const CLASS_PERSONAL_FUNDING_LIMIT = BigNumber.from("100000000000000000000");
+      const CLASS_VESTING_DURATION = 10000000;
+      const CLASS_VESTING_START_TIME = 5660944044 + 1;
+      const CLASS_FEE = parseEther("0.02").toString(); // 2%
+      const getTokenAmount = (tokenDecimal) => (amount) =>
+        parseUnits(amount, tokenDecimal.toString());
+      const getFundingAmounts = getTokenAmount("6");
+      const hardCap = getFundingAmounts("102").toString();
+      const price = parseUnits(
+        "0.01",
+        parseInt("6") - parseInt("18") + 18,
+        // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
+      ).toString();
+
+
+      const args_1 = [
+        hardCap,
+        CLASS_PERSONAL_FUNDING_LIMIT,
+        price,
+        CLASS_VESTING_DURATION,
+        CLASS_VESTING_START_TIME,
+        CLASS_FEE,
+      ];
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 791 ~ args_1", args_1);
+
+      const receipt = await this.transactionsService.send(() => this.contract.addClass(
+        // ...args,
+        ...args_1,
+
+        // // params.classNames,
+        // [classCaps], // _classCaps: The total caps of the contributor class.,
+        // [individualCaps], // _individualCaps: The personal caps of each contributor in this class.,
+        // [prices], // _prices: The token prices for the addresses in this class.,
+        // [classVestingDurations], // _classVestingStartTime: The class vesting start time for the contributor class.,
+        // [classVestingStartTimes], // _classVestingStartTime: The class vesting start time for the contributor class.,
+        // [classFees], // _classFee: The fee for the contributor class.,
+        // // classVestingCliffs,     // _vestingDurations: The vesting durations for this contributors class.
       ));
       return receipt;
     } catch (ex) {

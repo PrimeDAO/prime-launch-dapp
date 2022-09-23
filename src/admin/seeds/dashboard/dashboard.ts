@@ -1,7 +1,7 @@
 import { Utils } from "services/utils";
 import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
-import { Address, EthereumService } from "services/EthereumService";
+import { Address, EthereumService, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import "./dashboard.scss";
@@ -26,8 +26,8 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
-  newlyAddedClasses: number[] = [];
-  editedClasses: number[] = [];
+  newlyAddedClasses: IContributorClass[] = [];
+  editedClasses: IContributorClass[] = [];
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -63,13 +63,25 @@ export class SeedAdminDashboard {
   }
 
   async attached(): Promise<void> {
-
     try {
       if (this.seedService.initializing) {
         this.eventAggregator.publish("launches.loading", true);
         await this.seedService.ensureAllSeedsInitialized();
       }
       await this.hydrate();
+
+      const daysToSeconds = 60 * 60 * 24;
+      const testClass = {
+        className: "Test Class - " + new Date().toDateString(),
+        classCap: toWei(1000, this.selectedSeed.fundingTokenInfo.decimals),
+        individualCap: toWei(750, this.selectedSeed.fundingTokenInfo.decimals),
+        classVestingDuration: BigNumber.from(4 * daysToSeconds),
+        classVestingCliff: BigNumber.from(2 * daysToSeconds),
+        allowList: undefined,
+      };
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 83 ~ testClass", testClass);
+      this.newlyAddedClasses.push(testClass);
+      this.selectedSeed.classes.push(testClass);
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -156,12 +168,12 @@ export class SeedAdminDashboard {
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
-    this.newlyAddedClasses.push(this.selectedSeed.classes.length - 1);
+    // this.newlyAddedClasses.push(this.selectedSeed.classes.length - 1);
   }
 
   editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
     Object.assign(this.selectedSeed.classes[index], editedClass);
-    if (!this.editedClasses.includes(index)) this.editedClasses.push(index);
+    // if (!this.editedClasses.includes(index)) this.editedClasses.push(index);
   }
 
   openAddClassModal(index: number = null): void {
@@ -190,16 +202,16 @@ export class SeedAdminDashboard {
     if (noChanges) return;
 
     (this.newlyAddedClasses.length ? this.newlyAddedClasses : this.editedClasses)
-    .forEach((index: number) => {
-      const contributorClass: IContributorClass = this.selectedSeed.classes[index];
-      classNames.push(contributorClass.className);
-      classCaps.push(contributorClass.classCap);
-      individualCaps.push(contributorClass.individualCap);
-      prices.push(BigNumber.from(0)), // Temporary;
-      classVestingDurations.push(contributorClass.classVestingDuration);
-      classVestingCliffs.push(contributorClass.classVestingCliff);
-      classFees.push(BigNumber.from(0));
-    });
+      .forEach((contributorClass) => {
+        // const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+        classNames.push(contributorClass.className);
+        classCaps.push(contributorClass.classCap);
+        individualCaps.push(contributorClass.individualCap);
+        prices.push(BigNumber.from(0)); // Temporary;
+        classVestingDurations.push(contributorClass.classVestingDuration);
+        classVestingCliffs.push(contributorClass.classVestingCliff);
+        classFees.push(BigNumber.from(0));
+      });
 
     // Reset count.
     this.newlyAddedClasses = [];
