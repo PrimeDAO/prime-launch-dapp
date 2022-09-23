@@ -21,6 +21,7 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 import dayjs from "dayjs";
 import { LaunchService } from "services/LaunchService";
 import moment from "moment";
+import { BigNumberService } from "services/BigNumberService";
 
 enum Phase {
   None = "None",
@@ -51,7 +52,8 @@ export class SeedSale {
   private accountAddress: Address = null;
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
-  private targetClass: IContributorClass;
+  // @ts-ignore
+  private targetClass: IContributorClass = {};
 
   constructor(
     private numberService: NumberService,
@@ -66,6 +68,7 @@ export class SeedSale {
     private disclaimerService: DisclaimerService,
     private storageService: BrowserStorageService,
     private launchService: LaunchService,
+    private bigNumberService: BigNumberService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       await this.hydrateUserData();
@@ -134,8 +137,23 @@ export class SeedSale {
   @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
-  @computedFrom("maxFundable", "seed.userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0") ? this.maxFundable : this.seed.userFundingTokenBalance; }
+  @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance")
+  get maxUserCanPay(): BigNumber {
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 143 ~ this.targetClass.individualCap", this.targetClass.individualCap);
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 145 ~ this.targetClass.classCap", this.targetClass.classCap);
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 147 ~ this.seed.userFundingTokenBalance", this.seed.userFundingTokenBalance);
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 156 ~ this.maxFundable", this.maxFundable);
+    const min = this.bigNumberService.min([
+      this.targetClass.individualCap,
+      this.targetClass.classCap,
+      this.seed.userFundingTokenBalance,
+      this.maxFundable,
+    ]);
+    return min;
+    // return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0")
+    //   ? this.maxFundable
+    //   : this.seed.userFundingTokenBalance;
+  }
 
   @computedFrom("maxUserCanPay")
   get maxUserTokenBalance(): string {
