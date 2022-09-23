@@ -4,7 +4,7 @@ import "./seedSale.scss";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { IContributorClass, Seed } from "entities/Seed";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { TransactionReceipt } from "services/TransactionsService";
@@ -42,7 +42,7 @@ export class SeedSale {
   userUsdBalance: number
 
   classCap: number;
-  classSold: number;
+  classSold: string;
   classPrice: number;
 
   lockDate: string;
@@ -290,7 +290,9 @@ export class SeedSale {
 
 
       this.classCap = this.seed.classCap;
-      this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
+      let fundRatioForClass = this.targetClass.classFundingCollected.div(this.targetClass.classCap);
+      fundRatioForClass = fundRatioForClass.mul(toWei(100, this.seed.fundingTokenInfo.decimals));
+      this.classSold = `${fundRatioForClass}%`;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
