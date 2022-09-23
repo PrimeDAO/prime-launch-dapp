@@ -165,10 +165,10 @@ export class AddClassModal {
 
     this.class = {
       className: "Test Class - " + new Date().toDateString(),
-      classCap: toWei(1000),
-      individualCap: toWei(750),
-      classVestingDuration: toWei(4 * daysToSeconds),
-      classVestingCliff: toWei(2 * daysToSeconds),
+      classCap: toWei(1000, this.model.params.fundingTokenInfo.decimals),
+      individualCap: toWei(750, this.model.params.fundingTokenInfo.decimals),
+      classVestingDuration: BigNumber.from(4 * daysToSeconds),
+      classVestingCliff: BigNumber.from(2 * daysToSeconds),
       allowList: undefined,
     };
   }

@@ -130,9 +130,9 @@
                       </tr>
                       <tr repeat.for="class of selectedSeed.classes">
                         <td>${class.className}</td>
-                        <td><div class="table__center-cell">${class.classCap | ethwei}</div></td>
-                        <td><div class="table__center-cell">${class.individualCap | ethwei}</div></td>
-                        <td><div class="table__center-cell">${class.classVestingDuration | secondsDays | ethwei}</div></td>
+                        <td><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td>
                           <div class="table__center-cell">
                             <img class="table__edit-icon" src="../../../../static/editPencil.svg" click.delegate="openAddClassModal($index)"/>

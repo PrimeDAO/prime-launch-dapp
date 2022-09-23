@@ -33,7 +33,7 @@
             <label for="classCap" class="label--small">
               The maximum amount of contribution the allowlisted users within one class can contribute to the launch.
             </label>
-            <numeric-input name="classCap" value.bind="class.classCap"></numeric-input>
+            <numeric-input name="classCap" value.bind="class.classCap" decimals.bind="model.params.fundingTokenInfo.decimals"></numeric-input>
           </div>
 
           <div class="info-section">
@@ -43,7 +43,7 @@
             <label for="individualCap" class="label--small">
               You can only change the vesting-period.
             </label>
-            <numeric-input name="individualCap" value.bind="class.individualCap"></numeric-input>
+            <numeric-input name="individualCap" value.bind="class.individualCap" decimals.bind="model.params.fundingTokenInfo.decimals"></numeric-input>
           </div>
 
           <div class="info-section">
@@ -76,7 +76,7 @@
                     placeholder="100.2"
                     id="classVestingDuration"
                     not-wei
-                    value.bind="class.classVestingDuration | secondsDays | ethwei">
+                    value.bind="class.classVestingDuration | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
@@ -88,7 +88,7 @@
                     placeholder="20.8"
                     id="classVestingCliff"
                     not-wei
-                    value.bind="class.classVestingCliff | secondsDays | ethwei">
+                    value.bind="class.classVestingCliff | secondsDays">
                   </numeric-input>
                   <div>days</div>
                 </div>
