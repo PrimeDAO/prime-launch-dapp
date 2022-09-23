@@ -104,7 +104,7 @@
                 </div>
               </div>
             </div> -->
-            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
+            <div class="featureContainer" if.bind="selectedSeed.hasNotStarted && !this.selectedSeed.isClosed">
               <div class="featureTitle">
                 Classes
               </div>
