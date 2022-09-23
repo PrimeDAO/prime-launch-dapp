@@ -3,7 +3,7 @@ import { TokenService } from "services/TokenService";
 import "./seedSale.scss";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import { Seed } from "entities/Seed";
+import { IContributorClass, Seed } from "entities/Seed";
 import { Address, EthereumService, fromWei } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
@@ -51,6 +51,7 @@ export class SeedSale {
   private accountAddress: Address = null;
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
+  private targetClass: IContributorClass;
 
   constructor(
     private numberService: NumberService,
@@ -290,6 +291,8 @@ export class SeedSale {
 
       this.vestingDate = convertToDate(this.seed.vestingDuration);
       this.lockDate = convertToDate(this.seed.vestingCliff);
+
+      this.targetClass = this.findUserClass(this.seed);
       this.classCap = this.seed.classCap;
       this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice, this.seed.projectTokenInfo.decimals));
       this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
@@ -303,6 +306,16 @@ export class SeedSale {
       }
       this.loading = false;
     }
+  }
+
+  private findUserClass(seed: Seed): any {
+    const onlyDefaultClass = seed.classes.length === 1;
+    if (onlyDefaultClass) {
+      return seed.classes[0];
+    }
+
+    // TODO
+    return seed.classes[0];
   }
 
   async disclaimSeed(): Promise<boolean> {
