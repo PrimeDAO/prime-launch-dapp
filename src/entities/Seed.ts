@@ -30,10 +30,22 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
+export interface IContractClass {
+  classCap: BigNumber,
+  individualCap: BigNumber,
+  price: BigNumber,
+  vestingDuration : BigNumber,
+  classFundingCollected: BigNumber, // Keeps track of how much already was collected
+  classVestingStartTime: BigNumber,
+  classFee: BigNumber,
+}
+
 export interface IContributorClass {
   className: string;
   classCap: BigNumber; // Amount of tokens that can be donated for class
   individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
+  price?: BigNumber;
+  classFundingCollected?: BigNumber,
   classVestingCliff: BigNumber; // Vesting cliff for class
   classVestingDuration: BigNumber; // Vesting duration for class
   classVestingStartTime?: BigNumber; // NOT SUPPORTED YET
@@ -44,7 +56,7 @@ export interface IContributorClass {
 export class Seed implements ILaunch {
   public launchType = LaunchType.Seed;
   public contract: any;
-  public classes: IContributorClass[];
+  public classes: IContributorClass[] = [];
   public address: Address;
   public seedInitialized: boolean;
   public beneficiary: Address;
@@ -440,7 +452,10 @@ export class Seed implements ILaunch {
 
       const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
 
-      // const defaultClass = await this.contract.classes(0);
+      const rawDefaultClass: IContractClass = await this.contract.classes(0);
+      const defaultClass = convertContractClassToFrontendClass(rawDefaultClass);
+      this.classes.push(defaultClass);
+
       const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
       const individualClass = await this.contract.classes(funders.class ?? funders);
 
@@ -762,4 +777,21 @@ export class Seed implements ILaunch {
     this.isClosed = await this.contract.closed();
     return this.isPaused || this.isClosed;
   }
+}
+
+function convertContractClassToFrontendClass(contractClass: IContractClass) {
+  const result: IContributorClass = {
+    className: "Default Class",
+    // classCap: toWei(contractClass.classCap.toNumber(),
+    // classCap: toWei(contractClass.classCap),
+    classCap: contractClass.classCap,
+    classFundingCollected: contractClass.classFundingCollected,
+    classVestingStartTime: contractClass.classVestingStartTime,
+    individualCap: contractClass.individualCap,
+    price: contractClass.price,
+    classVestingDuration: contractClass.vestingDuration,
+    classVestingCliff: contractClass.vestingDuration, // TODO: what should actually go here?
+  };
+
+  return result;
 }
