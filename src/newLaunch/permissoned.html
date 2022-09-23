@@ -1,7 +1,7 @@
 <template bindable="checked, toggle, disabled">
   <div class="infoInput">
     <div class="labeledQuestion">
-      <label for="geoBlock">Set Permission-less SEED</label>
+      <label for="permissionedToggle">Set Permission-less SEED</label>
       <div class="questionMark">
         <question-mark allow-html
           text="TODO">
@@ -15,8 +15,8 @@
       <i class="fas fa-check yes"></i>
       <i class="fas fa-times no"></i>
       <div class="checkbox">
-        <input id="geoBlock" type="checkbox" disabled.bind="disabled" checked.bind="checked" />
-        <label for="geoBlock" />
+        <input id="permissionedToggle" type="checkbox" disabled.bind="disabled" checked.bind="checked" />
+        <label for="permissionedToggle" />
       </div>
     </div>
   </div>
