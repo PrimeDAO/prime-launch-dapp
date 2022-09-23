@@ -72,6 +72,7 @@ export class SeedService {
         break;
       case Networks.Rinkeby:
         this.startingBlockNumber = 11338489;
+        this.startingBlockNumber = 11418489;
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
@@ -143,6 +144,10 @@ export class SeedService {
         txEvents => {
           for (const event of txEvents) {
             const seed = this.createSeedFromConfig(event);
+            /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 148 ~ seed.address", seed.address);
+
+            if (seed.address !== "0x7Ba8727d1c2cfFe5323D2Acb905054c78E4cD29C") return;
+
             seedsMap.set(seed.address, seed);
             /**
                  * remove the seed if it is corrupt
@@ -227,7 +232,8 @@ export class SeedService {
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
 
-    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    // const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash = "";
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -245,6 +251,8 @@ export class SeedService {
       toWei(config.launchDetails.seedTip ?? 0.0),
       Utils.asciiToHex(metaDataHash),
     ];
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
+    return;
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     this.celoData = transaction.data;
 

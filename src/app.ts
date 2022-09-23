@@ -42,6 +42,8 @@ export class App {
   }
 
   public attached(): void {
+    ConsoleLogService.__onlyDev("c", () => console.clear());
+
     // so all elements with data-tippy-content will automatically have a tooltip
     tippy("[data-tippy-content]");
 
