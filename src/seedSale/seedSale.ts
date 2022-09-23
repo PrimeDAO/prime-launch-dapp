@@ -294,7 +294,6 @@ export class SeedSale {
 
       this.targetClass = this.findUserClass(this.seed);
       this.classCap = this.seed.classCap;
-      this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice, this.seed.projectTokenInfo.decimals));
       this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
 
     } catch (ex) {
