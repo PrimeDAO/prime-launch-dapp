@@ -161,14 +161,14 @@ export class AddClassModal {
   }
 
   fillDummyValues() {
-    const daysToSeconds = 60 * 60 * 24;
-
+    const CLASS_VESTING_DURATION = 10000000;
+    const CLASS_VESTING_START_TIME = 5660944044 + 1;
     this.class = {
       className: "Test Class - " + new Date().toDateString(),
       classCap: toWei(1000, this.model.params.fundingTokenInfo.decimals),
       individualCap: toWei(750, this.model.params.fundingTokenInfo.decimals),
-      classVestingDuration: BigNumber.from(4 * daysToSeconds),
-      classVestingCliff: BigNumber.from(2 * daysToSeconds),
+      classVestingDuration: CLASS_VESTING_DURATION,
+      classVestingCliff: CLASS_VESTING_START_TIME,
       allowList: undefined,
     };
   }

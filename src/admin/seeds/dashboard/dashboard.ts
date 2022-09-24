@@ -13,6 +13,7 @@ import { BigNumber } from "ethers";
 import { Router } from "aurelia-router";
 import { AddClassService } from "services/AddClassService";
 import { IContributorClass } from "entities/Seed";
+import { parseUnits } from "ethers/lib/utils";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -70,13 +71,14 @@ export class SeedAdminDashboard {
       }
       await this.hydrate();
 
-      const daysToSeconds = 60 * 60 * 24;
-      const testClass = {
+      const CLASS_VESTING_DURATION = 10000000;
+      const CLASS_VESTING_START_TIME = 5660944044 + 1;
+      const testClass: IContributorClass = {
         className: "Test Class - " + new Date().toDateString(),
         classCap: toWei(1000, this.selectedSeed.fundingTokenInfo.decimals),
         individualCap: toWei(750, this.selectedSeed.fundingTokenInfo.decimals),
-        classVestingDuration: BigNumber.from(4 * daysToSeconds),
-        classVestingCliff: BigNumber.from(2 * daysToSeconds),
+        classVestingDuration: CLASS_VESTING_DURATION,
+        classVestingCliff: CLASS_VESTING_START_TIME,
         allowList: undefined,
       };
       /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 83 ~ testClass", testClass);
@@ -193,9 +195,9 @@ export class SeedAdminDashboard {
     const classNames: string[] = [];
     const classCaps: BigNumber[] = [];
     const individualCaps: BigNumber[] = [];
-    const prices: BigNumber[] = [];
-    const classVestingDurations: BigNumber[] = [];
-    const classVestingCliffs: BigNumber[] = [];
+    const prices: string[] = [];
+    const classVestingDurations: number[] = [];
+    const classVestingCliffs: number[] = [];
     const classFees: BigNumber[] = [];
 
     const noChanges = !this.newlyAddedClasses.length && !this.editedClasses.length;
@@ -207,7 +209,14 @@ export class SeedAdminDashboard {
         classNames.push(contributorClass.className);
         classCaps.push(contributorClass.classCap);
         individualCaps.push(contributorClass.individualCap);
-        prices.push(BigNumber.from(0)); // Temporary;
+
+        const price = parseUnits(
+          "0.01",
+          parseInt("6") - parseInt("18") + 18,
+          // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
+        ).toString();
+        prices.push(price); // Temporary;
+
         classVestingDurations.push(contributorClass.classVestingDuration);
         classVestingCliffs.push(contributorClass.classVestingCliff);
         classFees.push(BigNumber.from(0));
