@@ -256,20 +256,6 @@ export class SeedService {
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     this.celoData = transaction.data;
 
-    const classesToAdd = [{
-      classCaps: 1000,
-      individualCaps: 100,
-      prices: 6,
-      vestingDurations: 8640000,
-      classVestingStartTime: 8640000,
-      classFee: 1,
-    }];
-
-    if (transaction.data) {
-      const deployedSeedcontract = await this.contractsService.getContractAtAddress(ContractNames.SEED, transaction.data);
-      classesToAdd.map( async (classToAdd) => { await deployedSeedcontract.addClass(classToAdd); });
-    }
-
     // console.log("estimating transaction:");
     // console.dir(transaction);
 
