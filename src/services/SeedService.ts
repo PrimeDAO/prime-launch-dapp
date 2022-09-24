@@ -232,8 +232,7 @@ export class SeedService {
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
 
-    // const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-    const metaDataHash = "";
+    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -252,7 +251,6 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
-    return;
     transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     this.celoData = transaction.data;
 
