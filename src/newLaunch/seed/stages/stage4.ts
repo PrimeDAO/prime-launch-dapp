@@ -67,6 +67,10 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   }
 
   async attached(): Promise<void> {
+    this.startDate = this.launchConfig.launchDetails.startDate && new Date(this.launchConfig.launchDetails.startDate);
+    this.endDate = this.launchConfig.launchDetails.endDate && new Date(this.launchConfig.launchDetails.endDate);
+    /** Could set start/end time as well, but don't care for that */
+
     this.startDatePicker = new Litepicker({
       element: this.startDateRef,
       minDate: Date.now(),
