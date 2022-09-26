@@ -457,6 +457,18 @@ export class Seed implements ILaunch {
       const defaultClass = convertContractClassToFrontendClass(rawDefaultClass);
       this.classes.push(defaultClass);
 
+      /**
+       * TODO: use contract method to get all classes
+       */
+      try {
+        const rawFirstClass: IContractContributorClass = await this.contract.classes(1);
+        const firstClass = convertContractClassToFrontendClass(rawFirstClass);
+        this.classes.push(firstClass);
+      } catch (error) {
+        // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 462 ~ error", error);
+
+      }
+
       const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
       const individualClass = await this.contract.classes(funders.class ?? funders);
 
@@ -810,9 +822,14 @@ export class Seed implements ILaunch {
   }
 }
 
+let classNameCounter = 0;
 function convertContractClassToFrontendClass(contractClass: IContractContributorClass) {
+  /**
+   * TODO: take class name from contract
+   */
+  const className = classNameCounter === 0 ? "Default Class" : `Class ${classNameCounter} (from code)`;
   const result: IContributorClass = {
-    className: "Default Class",
+    className,
     // classCap: toWei(contractClass.classCap.toNumber(),
     // classCap: toWei(contractClass.classCap),
     classCap: contractClass.classCap,
@@ -824,5 +841,6 @@ function convertContractClassToFrontendClass(contractClass: IContractContributor
     classVestingCliff: contractClass.vestingDuration.toNumber(), // TODO: what should actually go here?
   };
 
+  classNameCounter++;
   return result;
 }
