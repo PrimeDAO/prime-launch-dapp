@@ -18,19 +18,19 @@ const EMPTY_CLASS = {
   classVestingDuration: undefined,
   classVestingCliff: undefined,
   allowList: undefined,
-}
+};
 
 @autoinject
 export class AddClassModal {
 
   private model: IAddClassModal;
   private okButton: HTMLElement;
-  private isEdit: boolean = false;
-  private loadingAllowlist: boolean = false;
+  private isEdit = false;
+  private loadingAllowlist = false;
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
-  isDev: boolean = false;
+  isDev = false;
   @observable csv: File
 
   constructor(
@@ -40,7 +40,7 @@ export class AddClassModal {
     private launchService: LaunchService,
     private numberService: NumberService,
   ) {
-    this.isDev = process.env.NODE_ENV === 'development' && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
+    this.isDev = process.env.NODE_ENV === "development" && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
   }
 
   async csvChanged(newValue, oldValue) {
@@ -69,7 +69,7 @@ export class AddClassModal {
     const hardCap = toWei(this.numberService.fromString(
       fromWei(
         this.model.params.hardCap,
-        this.model.params.fundingTokenInfo.decimals)
+        this.model.params.fundingTokenInfo.decimals),
     ));
 
     if (!this.class.className) { /* ⚠️ Empty Class name */
