@@ -13,7 +13,9 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div if.bind="!seed.hasNotStarted" class="live-text">•  LIVE</div>
+            <div class="countdown">
+              <time-left launch.to-view="seed"></time-left>
+            </div>
             <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
         </div>
         <p class="description">
@@ -65,7 +67,8 @@
     <hr />
     <div class="seed-info section toppadding">
       <div class="seed-info halfsection1">
-        <div class="seed-info container">
+        <!-- ================ Section Two ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -127,7 +130,9 @@
             </button>
           </template>
         </div>
-        <div class="seed-info container">
+
+        <!-- ================ Section Three ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -178,7 +183,9 @@
             contribute
           </button>
         </div>
-        <div class="seed-info container2">
+
+        <!-- ================ Section Four ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container2">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -197,7 +204,14 @@
             Retrieve
           </button>
         </div>
+        <div class="notWhitelisted" if.to-view="geoBlocked">
+          Sorry, you are located in a country that is not able to participate.
+        </div>
+        <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
+          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
+        </div>
       </div>
+
       <div class="seed-info halfsection2">
         <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
