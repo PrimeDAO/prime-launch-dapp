@@ -21,7 +21,7 @@
                             <formatted-number
                                     value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
                                     thousands-separated></formatted-number>
-                            ${launchConfig.tokenDetails.projectTokenInfo.symbol}<span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
+                            ${launchConfig.tokenDetails.projectTokenInfo.symbol}<span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can be done by connecting the Seed Admin wallet to the <a href="/admin/${wizardState.launchType}s/dashboard" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.
                         </p>
 
                         <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the Seed is initialized. The Seed will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
