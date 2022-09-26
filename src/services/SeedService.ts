@@ -144,9 +144,11 @@ export class SeedService {
         txEvents => {
           for (const event of txEvents) {
             const seed = this.createSeedFromConfig(event);
-            /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 148 ~ seed.address", seed.address);
 
-            if (seed.address !== "0x7Ba8727d1c2cfFe5323D2Acb905054c78E4cD29C") return;
+            /**
+             * TODO: DEV only code
+             */
+            if (seed.address !== "0x18A0775BCF275704E7068BA04635411996114D3D") continue;
 
             seedsMap.set(seed.address, seed);
             /**
