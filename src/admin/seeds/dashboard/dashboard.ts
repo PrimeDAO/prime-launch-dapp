@@ -194,7 +194,7 @@ export class SeedAdminDashboard {
   openAddClassModal(index: number = null): void {
     const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(
-      { index, editedClass, hardCap: this.selectedSeed.cap, fundingTokenInfo: this.selectedSeed.fundingTokenInfo },
+      { index, editedClass, hardCap: this.selectedSeed.cap, fundingTokenInfo: this.selectedSeed.fundingTokenInfo, seed: this.selectedSeed },
       this.addClass.bind(this),
       this.editClass.bind(this),
     );
