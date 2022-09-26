@@ -3,7 +3,7 @@
     <ux-dialog-header>
       ${isEdit ? "Edit class" : "Add class"}
       <span>
-        <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="fillDummyValues()">Prefill Fields</button>
+        <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="fillDummyValues()">[DEV] Prefill Fields</button>
       </span>
       <i class="close-icon fas fa-times" click.trigger="controller.cancel()"></i>
       <label class="label--small">
@@ -121,7 +121,19 @@
               <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
             </div>
           </div>
-        </div>
+
+          <!-- DEV -->
+          <div class="info-section">
+            <div class="label">
+              <label>[DEV] Whitelist</label>
+            </div>
+            <label for="classCap" class="label--small">
+              [DEV] Comma-separated (eg. 0xa..b,0xy..z)
+            </label>
+            <input id="className" maxlength="50" value.bind="__dev_allowList"/>
+            <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="__dev_addAllowList(__dev_allowList)">[DEV] Add Address to Allowlist</button>
+          </div>
+      </div>
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">

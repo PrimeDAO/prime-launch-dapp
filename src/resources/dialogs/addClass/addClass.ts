@@ -4,7 +4,7 @@ import { autoinject, observable, computedFrom } from "aurelia-framework";
 import { EthereumService, toWei, fromWei, Address } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
-import { IContributorClass } from "entities/Seed";
+import { IContributorClass, Seed } from "entities/Seed";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { NumberService } from "services/NumberService";
 import { BigNumber } from "ethers";
@@ -27,6 +27,7 @@ export class AddClassModal {
   private okButton: HTMLElement;
   private isEdit = false;
   private loadingAllowlist = false;
+  private __dev_allowList = "";
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
@@ -173,6 +174,11 @@ export class AddClassModal {
       allowList: undefined,
     };
   }
+
+  private __dev_addAllowList(address: string): void {
+    const classIndex = this.model.params.index;
+    this.model.params.seed.contract.whitelist(address, classIndex);
+  }
 }
 
 interface IAddClassModal {
@@ -181,6 +187,7 @@ interface IAddClassModal {
     hardCap: BigNumber,
     fundingTokenInfo: ITokenInfo,
     editedClass: IContributorClass | undefined,
+    seed: Seed,
   },
   addFunction: (newClass: IContributorClass) => void,
   editFunction: ({ editedClass, index }: IParameter) => void,
