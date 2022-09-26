@@ -65,7 +65,7 @@
               </div>
               <hr />
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <!-- <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
                 Add Whitelists
               </div>
@@ -103,8 +103,8 @@
                   Remove from whitelist
                 </div>
               </div>
-            </div>
-            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
+            </div> -->
+            <div class="featureContainer" if.bind="selectedSeed.hasNotStarted && !this.selectedSeed.isClosed">
               <div class="featureTitle">
                 Classes
               </div>
