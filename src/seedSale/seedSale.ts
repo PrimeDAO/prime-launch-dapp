@@ -324,13 +324,10 @@ export class SeedSale {
   }
 
   private findUserClass(seed: Seed): any {
-    const onlyDefaultClass = seed.classes.length === 1;
-    if (onlyDefaultClass) {
-      return seed.classes[0];
-    }
+    const classIndex = seed.usersClass.class;
+    const targetClass = seed.classes[classIndex];
 
-    // TODO
-    return seed.classes[0];
+    return targetClass;
   }
 
   async disclaimSeed(): Promise<boolean> {
