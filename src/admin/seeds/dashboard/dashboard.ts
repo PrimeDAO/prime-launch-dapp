@@ -160,7 +160,7 @@ export class SeedAdminDashboard {
   }
 
   async editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): Promise<void> {
-    if (!this.noChanges) {
+    if (!this.noAdditions) {
       /**
        * Apply changes to newly added classes without storing in the contract
        */
@@ -201,7 +201,7 @@ export class SeedAdminDashboard {
   }
 
   @computedFrom("newlyAddedClassesIndexes.length")
-  get noChanges(): boolean {
+  get noAdditions(): boolean {
     return !this.newlyAddedClassesIndexes.length;
   }
 
@@ -218,7 +218,7 @@ export class SeedAdminDashboard {
     const classVestingCliffs: number[] = [];
     const classFees: BigNumber[] = [];
 
-    if (this.noChanges) return;
+    if (this.noAdditions) return;
 
     this.newlyAddedClassesIndexes.forEach((index) => {
         const contributorClass: IContributorClass = this.selectedSeed.classes[index];

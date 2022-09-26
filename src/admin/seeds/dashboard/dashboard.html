@@ -135,8 +135,8 @@
                         <td><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td>
                           <div class="table__center-cell">
-                            <img if.bind="noChanges || newlyAddedClassesIndexes.includes($index)"
-                              class="table__edit-icon" 
+                            <img if.bind="noAdditions || newlyAddedClassesIndexes.includes($index)"
+                              class="table__edit-icon"
                               click.delegate="openAddClassModal($index)"
                               src="../../../../static/editPencil.svg"/>
                             <img else
@@ -156,7 +156,7 @@
                         <div class="stageButton cancel" click.delegate="cancel()"><span>Cancel</span></div>
                       </div>
                       <div class="buttonContainer">
-                        <div class="stageButton button1 ${noChanges ? 'disabled' : ''}" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
+                        <div class="stageButton button1 ${noAdditions ? 'disabled' : ''}" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
                       </div>
                     </div>
                   </div>
