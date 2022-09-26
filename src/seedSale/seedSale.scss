@@ -124,6 +124,7 @@
   .class-container__block__image {
     width: 34px;
     height: 34px;
+    border-radius: 17px;
     @media screen and (max-width: 570px) {
       width: 28px;
       height: 28px;
@@ -627,24 +628,6 @@
           text-fill-color: transparent;
         }
       }
-
-      .tokenPair{
-        width: 51.63px;
-        height: 31.50px;
-        position: relative;
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 11px;
-      }
-      .tokenIcon{
-        width: 31.50px;
-        height: 31.50px;
-      }
-      .belowToken{
-        position: absolute;
-        z-index: 2;
-        left: 0;
-      }
     }
   }
 
@@ -761,6 +744,7 @@
         .icon {
           width: 34px;
           height: 34px;
+          border-radius: 17px;
           display: flex;
           align-items: center;
           justify-content: center;
