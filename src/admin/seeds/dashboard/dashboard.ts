@@ -27,7 +27,7 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
-  newlyAddedClassesIndex: number[] = [1];
+  newlyAddedClassesIndex: number[] = [];
   editedClassesIndex: number[] = [];
 
   @computedFrom("ethereumService.defaultAccountAddress")
@@ -70,19 +70,6 @@ export class SeedAdminDashboard {
         await this.seedService.ensureAllSeedsInitialized();
       }
       await this.hydrate();
-
-      const CLASS_VESTING_DURATION = 10000000;
-      const CLASS_VESTING_START_TIME = 5660944044 + 1;
-      const testClass: IContributorClass = {
-        className: "Test Class - " + new Date().toDateString(),
-        classCap: toWei(1000, this.selectedSeed.fundingTokenInfo.decimals),
-        individualCap: toWei(750, this.selectedSeed.fundingTokenInfo.decimals),
-        classVestingDuration: CLASS_VESTING_DURATION,
-        classVestingCliff: CLASS_VESTING_START_TIME,
-        allowList: undefined,
-      };
-      this.selectedSeed.classes[1] = testClass;
-
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
