@@ -49,10 +49,16 @@
       </div>
       <div class="seed-info col-3 seed-info_time-left">
         <div class="title">
-          TIME LEFT
+          <template if.bind="seed.isLive">TIME LEFT</template>
+          <template else>STARTS IN</template>
         </div>
         <div class="text">
-          ${timeLeft}
+          <template if.bind="seed.isLive">
+            <div class="timer">${seed.endsInMilliseconds | timespan:"minutes":false:true}</div>
+          </template>
+          <template else>
+            <div class="timer">${seed.startsInMilliseconds | timespan:"minutes":false:true}</div>
+          </template>
         </div>
       </div>
     </div>
