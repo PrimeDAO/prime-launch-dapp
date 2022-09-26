@@ -14,7 +14,7 @@
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
             <div class="countdown">
-              <time-left launch.to-view="seed"></time-left>
+              <time-left if.bind="seed" launch.to-view="seed"></time-left>
             </div>
             <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
         </div>
