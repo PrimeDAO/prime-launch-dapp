@@ -601,7 +601,21 @@ export class Seed implements ILaunch {
       const lock: IFunderPortfolio = await this.contract.funders(account);
       this.userCurrentFundingContributions = lock.fundingAmount;
 
-      // const classes: IContributorClass[] = await this.contract.classes();
+      let classLoadedSuccessfully = true;
+      let classFromContract: IContractContributorClass;
+      while (classLoadedSuccessfully) {
+        try {
+          classFromContract = await this.contract.classes(classNameCounter);
+        } catch (ex) {
+          classLoadedSuccessfully = false;
+        };
+
+        if (classLoadedSuccessfully) {
+          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract);
+          this.classes.push(convertedClass);
+        }
+      }
+
       // const userClass: IContributorClass = classes[lock.class];
       // this.userIndividualCap = userClass.individualCap;
 
@@ -827,7 +841,7 @@ function convertContractClassToFrontendClass(contractClass: IContractContributor
   /**
    * TODO: take class name from contract
    */
-  const className = classNameCounter === 0 ? "Default Class" : `Class ${classNameCounter} (from code)`;
+  const className = classNameCounter === 0 ? "Default Class" : `Class ${classNameCounter}`;
   const result: IContributorClass = {
     className,
     // classCap: toWei(contractClass.classCap.toNumber(),
