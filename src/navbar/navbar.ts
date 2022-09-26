@@ -14,13 +14,13 @@ const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
 export class Navbar {
   menuOpen = false;
   private seedJsonFiles: File[]
-  private showDevCode = !IS_PRODUCTION_APP;
+  private showDevCode = false;
 
   constructor(private router: Router, private eventAggregator: EventAggregator) {}
 
   bind(): void {
     this.eventAggregator.subscribe("Network.Changed.Account", (account: string) => {
-      if (IS_PRODUCTION_APP) return false;
+      if (IS_PRODUCTION_APP) return;
 
       const isDevAccount = DEV_ADDRESSES.find(address => address.toLowerCase() === account.toLowerCase());
 
