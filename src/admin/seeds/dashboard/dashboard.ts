@@ -27,8 +27,8 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
-  newlyAddedClasses: IContributorClass[] = [];
-  editedClasses: IContributorClass[] = [];
+  newlyAddedClassesIndex: number[] = [1];
+  editedClassesIndex: number[] = [];
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -81,9 +81,7 @@ export class SeedAdminDashboard {
         classVestingCliff: CLASS_VESTING_START_TIME,
         allowList: undefined,
       };
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 83 ~ testClass", testClass);
-      this.newlyAddedClasses.push(testClass);
-      this.selectedSeed.classes.push(testClass);
+      this.selectedSeed.classes[1] = testClass;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -170,12 +168,12 @@ export class SeedAdminDashboard {
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
-    // this.newlyAddedClasses.push(this.selectedSeed.classes.length - 1);
+    this.newlyAddedClassesIndex.push(this.selectedSeed.classes.length - 1);
   }
 
   editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
     Object.assign(this.selectedSeed.classes[index], editedClass);
-    // if (!this.editedClasses.includes(index)) this.editedClasses.push(index);
+    if (!this.editedClassesIndex.includes(index)) this.editedClassesIndex.push(index);
   }
 
   openAddClassModal(index: number = null): void {
@@ -200,12 +198,13 @@ export class SeedAdminDashboard {
     const classVestingCliffs: number[] = [];
     const classFees: BigNumber[] = [];
 
-    const noChanges = !this.newlyAddedClasses.length && !this.editedClasses.length;
+    const noChanges = !this.newlyAddedClassesIndex.length && !this.editedClassesIndex.length;
     if (noChanges) return;
 
-    (this.newlyAddedClasses.length ? this.newlyAddedClasses : this.editedClasses)
-      .forEach((contributorClass) => {
-        // const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+    (this.newlyAddedClassesIndex.length ? this.newlyAddedClassesIndex : this.editedClassesIndex)
+      .forEach((index) => {
+        const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+
         classNames.push(contributorClass.className);
         classCaps.push(contributorClass.classCap);
         individualCaps.push(contributorClass.individualCap);
@@ -223,8 +222,8 @@ export class SeedAdminDashboard {
       });
 
     // Reset count.
-    this.newlyAddedClasses = [];
-    this.editedClasses = [];
+    this.newlyAddedClassesIndex = [];
+    this.editedClassesIndex = [];
 
     try {
       const doAddClass = await this.selectedSeed.addClassBatch({
