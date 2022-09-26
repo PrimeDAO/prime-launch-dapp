@@ -303,8 +303,8 @@ export class SeedSale {
 
       this.targetClass = this.findUserClass(this.seed);
 
-      this.lockDate = this.targetClass.classVestingCliff && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff.toNumber() * 1000, TimespanResolution.largest);
-      this.vestingDate = this.targetClass.classVestingDuration && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration.toNumber() * 1000, TimespanResolution.largest);
+      this.lockDate = this.targetClass.classVestingCliff && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
+      this.vestingDate = this.targetClass.classVestingDuration && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
 
 
       this.classCap = this.seed.classCap;
