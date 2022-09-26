@@ -148,6 +148,7 @@ export class Seed implements ILaunch {
   public fundingTokenBalance: BigNumber;
 
   public userIsWhitelisted: boolean;
+  public usersClass: IFunderPortfolio;
   /**
    * claimable project (seed) tokens
    */
@@ -599,6 +600,7 @@ export class Seed implements ILaunch {
 
       // can't figure out how to supply the returnType for a struct in the batch
       const lock: IFunderPortfolio = await this.contract.funders(account);
+      this.usersClass = lock;
       this.userCurrentFundingContributions = lock.fundingAmount;
 
       let classLoadedSuccessfully = true;
@@ -608,7 +610,7 @@ export class Seed implements ILaunch {
           classFromContract = await this.contract.classes(classNameCounter);
         } catch (ex) {
           classLoadedSuccessfully = false;
-        };
+        }
 
         if (classLoadedSuccessfully) {
           const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract);
