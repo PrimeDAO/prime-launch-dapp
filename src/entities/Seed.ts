@@ -786,6 +786,38 @@ export class Seed implements ILaunch {
     }
   }
 
+  async changeClass({
+    classIndex,
+    className,
+    classCap,
+    individualCap,
+    price,
+    classVestingDuration,
+    classVestingCliff,
+    classFee,
+  }: Record<string, unknown>): Promise<TransactionReceipt> {
+    const classVestingStartTime = BigNumber.from(this.endTime.getTime() / 1000 + 1);
+
+    try {
+      const addClassArgs = [
+        classCap,
+        individualCap,
+        price,
+        classVestingDuration,
+        classVestingStartTime,
+        classFee,
+      ];
+
+      const receipt = await this.transactionsService.send(() => this.contract.changeClass(
+        classIndex,
+        ...addClassArgs,
+      ));
+      return receipt;
+    } catch (ex) {
+      this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`);
+    }
+  }
+
   public fundingTokenAllowance(): Promise<BigNumber> {
     return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
   }
