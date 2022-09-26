@@ -31,7 +31,7 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
-export interface IContractClass {
+export interface IContractContributorClass {
   classCap: BigNumber,
   individualCap: BigNumber,
   price: BigNumber,
@@ -453,7 +453,7 @@ export class Seed implements ILaunch {
 
       const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
 
-      const rawDefaultClass: IContractClass = await this.contract.classes(0);
+      const rawDefaultClass: IContractContributorClass = await this.contract.classes(0);
       const defaultClass = convertContractClassToFrontendClass(rawDefaultClass);
       this.classes.push(defaultClass);
 
@@ -810,7 +810,7 @@ export class Seed implements ILaunch {
   }
 }
 
-function convertContractClassToFrontendClass(contractClass: IContractClass) {
+function convertContractClassToFrontendClass(contractClass: IContractContributorClass) {
   const result: IContributorClass = {
     className: "Default Class",
     // classCap: toWei(contractClass.classCap.toNumber(),
