@@ -663,37 +663,6 @@
     color: $AlertGreen;
   }
 
-  .verified {
-    align-self: flex-start;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 4px 6px;
-    gap: 6px;
-    border-radius: 6px;
-    background: #2B3239;
-
-    @media screen and (max-width: 570px) { 
-      display: none;
-    }
-
-    .text {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 16px;
-      color: #18BAB0;
-    }
-
-    .icon {
-      @include logo("verified.svg");
-      width: 20px;
-      height: 20px;
-      background-color: #18BAB0;
-    }
-  }
-
   .description {
     font-family: 'Inter';
     font-style: normal;
