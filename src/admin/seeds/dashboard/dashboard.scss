@@ -214,6 +214,11 @@
         cursor: pointer;
         height: 18px;
         width: 18px;
+
+        &.disabled {
+          filter: brightness(0.35);
+          cursor: not-allowed;
+        }
       }
 
       .table__center-cell {
