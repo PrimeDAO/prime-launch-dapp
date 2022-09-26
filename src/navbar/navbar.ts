@@ -6,6 +6,7 @@ import "./navbar.scss";
 
 const DEV_ADDRESSES = [
   "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
+  "0xE834627cDE2dC8F55Fe4a26741D3e91527A8a498",
 ];
 
 const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
