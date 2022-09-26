@@ -264,10 +264,7 @@
               <div class="text">${classSold || 'N/A'}</div>
             </div>
             <div class="col">
-              <div class="tokenPair">
-                <img class="tokenIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
-                <img class="tokenIcon belowToken" src.to-view="seed.projectTokenInfo.logoURI" />
-              </div>
+              <token-pair token1.to-view="seed.projectTokenInfo.logoURI" token2.to-view="seed.fundingTokenInfo.logoURI"></token-pair>
               <div class="text2"><strong>1</strong> ${seed.projectTokenInfo.symbol} = <strong>${seed.fundingTokensPerProjectToken}</strong> ${seed.fundingTokenInfo.symbol}</div>
             </div>
           </div>
