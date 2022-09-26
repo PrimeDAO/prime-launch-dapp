@@ -187,7 +187,7 @@ export class SeedAdminDashboard {
       }
     } catch (ex) {
       this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
-      this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`)
+      this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`);
     }
   }
 
@@ -221,23 +221,23 @@ export class SeedAdminDashboard {
     if (this.noAdditions) return;
 
     this.newlyAddedClassesIndexes.forEach((index) => {
-        const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+      const contributorClass: IContributorClass = this.selectedSeed.classes[index];
 
-        classNames.push(contributorClass.className);
-        classCaps.push(contributorClass.classCap);
-        individualCaps.push(contributorClass.individualCap);
+      classNames.push(contributorClass.className);
+      classCaps.push(contributorClass.classCap);
+      individualCaps.push(contributorClass.individualCap);
 
-        const price = parseUnits(
-          "0.01",
-          parseInt("6") - parseInt("18") + 18,
-          // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
-        ).toString();
-        prices.push(price); // Temporary;
+      const price = parseUnits(
+        "0.01",
+        parseInt("6") - parseInt("18") + 18,
+        // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
+      ).toString();
+      prices.push(price); // Temporary;
 
-        classVestingDurations.push(contributorClass.classVestingDuration);
-        classVestingCliffs.push(contributorClass.classVestingCliff);
-        classFees.push(BigNumber.from(0));
-      });
+      classVestingDurations.push(contributorClass.classVestingDuration);
+      classVestingCliffs.push(contributorClass.classVestingCliff);
+      classFees.push(BigNumber.from(0));
+    });
 
     try {
       const receipt = await this.selectedSeed.addClassBatch({
@@ -256,7 +256,7 @@ export class SeedAdminDashboard {
       }
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
-      this.consoleLogService.logMessage(`Error executing 'add classes': ${ex.message}`)
+      this.consoleLogService.logMessage(`Error executing 'add classes': ${ex.message}`);
     }
   }
 
