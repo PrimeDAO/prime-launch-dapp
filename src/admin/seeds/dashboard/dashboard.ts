@@ -1,7 +1,7 @@
 import { Utils } from "services/utils";
 import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
-import { Address, EthereumService } from "services/EthereumService";
+import { Address, EthereumService, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import "./dashboard.scss";
@@ -13,6 +13,8 @@ import { BigNumber } from "ethers";
 import { Router } from "aurelia-router";
 import { AddClassService } from "services/AddClassService";
 import { IContributorClass } from "entities/Seed";
+import { parseUnits } from "ethers/lib/utils";
+import { ConsoleLogService } from "services/ConsoleLogService";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -26,6 +28,7 @@ export class SeedAdminDashboard {
   receiverAddress = "";
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
+  newlyAddedClassesIndexes: number[] = [];
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -50,6 +53,7 @@ export class SeedAdminDashboard {
     private whiteListService: WhiteListService,
     private router: Router,
     private addClassService: AddClassService,
+    private consoleLogService: ConsoleLogService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -61,14 +65,12 @@ export class SeedAdminDashboard {
   }
 
   async attached(): Promise<void> {
-
     try {
       if (this.seedService.initializing) {
         this.eventAggregator.publish("launches.loading", true);
         await this.seedService.ensureAllSeedsInitialized();
       }
       await this.hydrate();
-
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -154,10 +156,39 @@ export class SeedAdminDashboard {
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
+    this.newlyAddedClassesIndexes.push(this.selectedSeed.classes.length - 1);
   }
 
-  editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
-    Object.assign(this.selectedSeed.classes[index], editedClass);
+  async editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): Promise<void> {
+    if (!this.noAdditions) {
+      /**
+       * Apply changes to newly added classes without storing in the contract
+       */
+      Object.assign(this.selectedSeed.classes[index], editedClass);
+      return;
+    }
+    /**
+      Otherwise update changes in the contract directly after edit
+     */
+    try {
+      const receipt = await this.selectedSeed.changeClass({
+        classIndex: index,
+        className: editedClass.className,
+        classCap: editedClass.classCap,
+        individualCap: editedClass.individualCap,
+        price: editedClass.price,
+        classVestingDuration: editedClass.classVestingDuration,
+        classVestingCliff: editedClass.classVestingCliff,
+        classFee: BigNumber.from(0),
+      });
+      if (receipt) {
+        Object.assign(this.selectedSeed.classes[index], editedClass);
+        this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
+      }
+    } catch (ex) {
+      this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
+      this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`)
+    }
   }
 
   openAddClassModal(index: number = null): void {
@@ -169,12 +200,64 @@ export class SeedAdminDashboard {
     );
   }
 
-  deployClassesToContract() {
+  @computedFrom("newlyAddedClassesIndexes.length")
+  get noAdditions(): boolean {
+    return !this.newlyAddedClassesIndexes.length;
+  }
+
+  async deployClassesToContract() {
     // TODO: Add deployment logic
     // Differentiate between edited and newly added classes.
     // Step 1: Deploy batched classes
     // Step 2: Deploy bached Allowed Lists corresponding to the classes
-    alert("Deploying Classes to contract")
+    const classNames: string[] = [];
+    const classCaps: BigNumber[] = [];
+    const individualCaps: BigNumber[] = [];
+    const prices: string[] = [];
+    const classVestingDurations: number[] = [];
+    const classVestingCliffs: number[] = [];
+    const classFees: BigNumber[] = [];
+
+    if (this.noAdditions) return;
+
+    this.newlyAddedClassesIndexes.forEach((index) => {
+        const contributorClass: IContributorClass = this.selectedSeed.classes[index];
+
+        classNames.push(contributorClass.className);
+        classCaps.push(contributorClass.classCap);
+        individualCaps.push(contributorClass.individualCap);
+
+        const price = parseUnits(
+          "0.01",
+          parseInt("6") - parseInt("18") + 18,
+          // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
+        ).toString();
+        prices.push(price); // Temporary;
+
+        classVestingDurations.push(contributorClass.classVestingDuration);
+        classVestingCliffs.push(contributorClass.classVestingCliff);
+        classFees.push(BigNumber.from(0));
+      });
+
+    try {
+      const receipt = await this.selectedSeed.addClassBatch({
+        classNames,
+        classCaps,
+        individualCaps,
+        prices,
+        classVestingDurations,
+        classVestingCliffs,
+        classFees,
+      });
+      if (receipt) {
+        this.eventAggregator.publish("handleInfo", "Successfully added changes to the contract.");
+        // Reset count.
+        this.newlyAddedClassesIndexes = [];
+      }
+    } catch (ex) {
+      this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
+      this.consoleLogService.logMessage(`Error executing 'add classes': ${ex.message}`)
+    }
   }
 
   cancel() {
