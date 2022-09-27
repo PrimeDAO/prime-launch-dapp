@@ -132,7 +132,12 @@
           text-transform: uppercase;
           display: flex;
           gap: 15px;
-        }
+          &.disabled {
+            border-color: $Neutral02;
+            color: $Neutral02;
+            cursor: not-allowed;
+          }
+          }
       }
 
       .noSeedCreatedMessage {
@@ -198,6 +203,13 @@
       font-size: 16px;
       border-spacing: 16px;
       border: none;
+      tr.loading {
+        color: $Neutral02;
+        i {
+          color: $Primary01;
+        }
+      }
+
       tr, td {
         border: none;
       }
