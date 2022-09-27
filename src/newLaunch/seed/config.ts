@@ -22,6 +22,10 @@ export interface ISeedDetails extends ILaunchDetails {
    * In wei
    */
   fundingMax: string,
+  /**
+   * In wei
+   */
+  individualCap: string,
   vestingPeriod: number,
   vestingCliff: number,
   whitelist: string,
