@@ -454,22 +454,6 @@ export class Seed implements ILaunch {
 
       const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
 
-      const rawDefaultClass: IContractContributorClass = await this.contract.classes(0);
-      const defaultClass = convertContractClassToFrontendClass(rawDefaultClass);
-      this.classes.push(defaultClass);
-
-      /**
-       * TODO: use contract method to get all classes
-       */
-      try {
-        const rawFirstClass: IContractContributorClass = await this.contract.classes(1);
-        const firstClass = convertContractClassToFrontendClass(rawFirstClass);
-        this.classes.push(firstClass);
-      } catch (error) {
-        // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 462 ~ error", error);
-
-      }
-
       const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
       const individualClass = await this.contract.classes(funders.class ?? funders);
 
@@ -603,6 +587,7 @@ export class Seed implements ILaunch {
       this.usersClass = lock;
       this.userCurrentFundingContributions = lock.fundingAmount;
 
+      let classNameCounter = 0;
       let classLoadedSuccessfully = true;
       let classFromContract: IContractContributorClass;
       while (classLoadedSuccessfully) {
@@ -613,8 +598,9 @@ export class Seed implements ILaunch {
         }
 
         if (classLoadedSuccessfully) {
-          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract);
+          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract, classNameCounter);
           this.classes.push(convertedClass);
+          classNameCounter ++;
         }
       }
 
@@ -870,8 +856,7 @@ export class Seed implements ILaunch {
   }
 }
 
-let classNameCounter = 0;
-function convertContractClassToFrontendClass(contractClass: IContractContributorClass) {
+function convertContractClassToFrontendClass(contractClass: IContractContributorClass, classNameCounter = 0) {
   /**
    * TODO: take class name from contract
    */
@@ -889,6 +874,5 @@ function convertContractClassToFrontendClass(contractClass: IContractContributor
     classVestingCliff: contractClass.vestingDuration.toNumber(), // TODO: what should actually go here?
   };
 
-  classNameCounter++;
   return result;
 }
