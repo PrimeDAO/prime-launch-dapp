@@ -8,6 +8,7 @@ import {
   LaunchConfig,
   IClass,
 } from "newLaunch/launchConfig";
+import { Address } from "services/EthereumService";
 
 export interface ISeedDetails extends ILaunchDetails {
   /**
@@ -31,6 +32,7 @@ export interface ISeedDetails extends ILaunchDetails {
   whitelist: string,
   isPermissoned: boolean,
   legalDisclaimer: string,
+  allowList: Address[],
   seedTip: number,
 }
 
