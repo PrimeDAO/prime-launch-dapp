@@ -29,7 +29,6 @@ export class SeedAdminDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
-  isMinting: Record<number, boolean> = {};
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -168,13 +167,10 @@ export class SeedAdminDashboard {
       Object.assign(this.selectedSeed.classes[index], editedClass);
       return;
     }
-    if (this.isMinting[index]) return;
-
     /**
       Otherwise update changes in the contract directly after edit
      */
     try {
-      this.isMinting[index] = true;
       const receipt = await this.selectedSeed.changeClass({
         classIndex: index,
         className: editedClass.className,
@@ -192,14 +188,10 @@ export class SeedAdminDashboard {
     } catch (ex) {
       this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
       this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`);
-    } finally {
-      this.isMinting[index] = false;
     }
   }
 
   openAddClassModal(index: number = null): void {
-    if (this.isMinting[-1]) return;
-
     const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(
       { index, editedClass, hardCap: this.selectedSeed.cap, fundingTokenInfo: this.selectedSeed.fundingTokenInfo },
@@ -226,7 +218,7 @@ export class SeedAdminDashboard {
     const classVestingCliffs: number[] = [];
     const classFees: BigNumber[] = [];
 
-    if (this.noAdditions || this.isMinting[-1]) return;
+    if (this.noAdditions) return;
 
     this.newlyAddedClassesIndexes.forEach((index) => {
       const contributorClass: IContributorClass = this.selectedSeed.classes[index];
@@ -248,7 +240,6 @@ export class SeedAdminDashboard {
     });
 
     try {
-      this.isMinting[-1] = true;
       const receipt = await this.selectedSeed.addClassBatch({
         classNames,
         classCaps,
@@ -266,8 +257,6 @@ export class SeedAdminDashboard {
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
       this.consoleLogService.logMessage(`Error executing 'add classes': ${ex.message}`);
-    } finally {
-      this.isMinting[-1] = false;
     }
   }
 
