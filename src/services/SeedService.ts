@@ -248,7 +248,7 @@ export class SeedService {
       Date.parse(config.launchDetails.endDate) / 1000,
       [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
       config.launchDetails.isPermissoned,
-      toWei(config.launchDetails.seedTip ?? 0.0),
+      toWei((config.launchDetails.seedTip / 100) ?? 0.0),
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
