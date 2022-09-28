@@ -158,7 +158,7 @@
                     </div>
                     <div class="deployActions" if.bind="selectedSeed.classes.length">
                       <div class="buttonContainer">
-                        <div class="stageButton cancel" click.delegate="cancel()"><span>Cancel</span></div>
+                        <div class="stageButton cancel ${isDisabled.cancel ? 'disabled':''}" click.delegate="cancel()"><span>Cancel</span></div>
                       </div>
                       <div class="buttonContainer">
                         <div class="stageButton button1 ${noAdditions || isMinting[-1] ? 'disabled' : ''}" click.delegate="deployClassesToContract()">
