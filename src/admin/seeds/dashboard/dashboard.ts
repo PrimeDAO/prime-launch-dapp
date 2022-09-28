@@ -272,9 +272,9 @@ export class SeedAdminDashboard {
   }
 
   cancel() {
-    // TODO: Add cancel logic.
-    // Remove new add classes
-    // Undo edit
-    this.selectedSeed.classes = []; /* <- Temporary */
+    if (this.noAdditions) return;
+    const firstNewlyAddedClass = this.newlyAddedClassesIndexes[0];
+    this.selectedSeed.classes.splice(firstNewlyAddedClass);
+    this.newlyAddedClassesIndexes = [];
   }
 }
