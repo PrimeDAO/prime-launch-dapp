@@ -30,7 +30,6 @@ export class SeedAdminDashboard {
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
   isMinting: Record<number, boolean> = {};
-  isDisabled: Record<string, boolean> = {"cancel": true}
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -211,7 +210,6 @@ export class SeedAdminDashboard {
 
   @computedFrom("newlyAddedClassesIndexes.length")
   get noAdditions(): boolean {
-    this.isDisabled.cancel = !this.newlyAddedClassesIndexes.length;
     return !this.newlyAddedClassesIndexes.length;
   }
 
@@ -274,7 +272,7 @@ export class SeedAdminDashboard {
   }
 
   cancel() {
-    if (this.isDisabled.cancel) return;
+    if (this.noAdditions) return;
     // TODO: Add cancel logic.
     // Remove new add classes
     // Undo edit
