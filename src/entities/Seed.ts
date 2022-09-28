@@ -784,7 +784,19 @@ export class Seed implements ILaunch {
     } catch (ex) {
       console.log({ex});
     }
-  }
+  };
+
+  async setClassBatch(buyers: Address[], classes: number[]): Promise<TransactionReceipt> {
+    try {
+      const receipt = await this.transactionsService.send(() => this.contract.setClassBatch(
+        [...buyers],
+        [...classes],
+      ));
+      return receipt;
+    } catch ( ex ) {
+      console.log({ ex });
+    }
+  };
 
   async changeClass({
     classIndex,

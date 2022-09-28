@@ -16,6 +16,11 @@ import { IContributorClass } from "entities/Seed";
 import { parseUnits } from "ethers/lib/utils";
 import { ConsoleLogService } from "services/ConsoleLogService";
 
+interface IAllowListBatch {
+  buyers: Address[];
+  classes: number[];
+}
+
 @autoinject
 export class SeedAdminDashboard {
 
@@ -175,7 +180,7 @@ export class SeedAdminDashboard {
      */
     try {
       this.isMinting[index] = true;
-      const receipt = await this.selectedSeed.changeClass({
+      const changeClassReceipt = await this.selectedSeed.changeClass({
         classIndex: index,
         className: editedClass.className,
         classCap: editedClass.classCap,
@@ -185,7 +190,15 @@ export class SeedAdminDashboard {
         classVestingCliff: editedClass.classVestingCliff,
         classFee: BigNumber.from(0),
       });
-      if (receipt) {
+      if (changeClassReceipt) {
+        const allowedAddresses: IAllowListBatch = { buyers: [], classes: [] };
+        const addAllowListReceipt = await this.selectedSeed.setClassBatch(
+          allowedAddresses.buyers,
+          allowedAddresses.classes
+        );
+        if (addAllowListReceipt) {
+          this.eventAggregator.publish("handleInfo", "Successfully assigned classes allowlist to the contract.");
+        }
         Object.assign(this.selectedSeed.classes[index], editedClass);
         this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
       }
@@ -225,6 +238,7 @@ export class SeedAdminDashboard {
     const classVestingDurations: number[] = [];
     const classVestingCliffs: number[] = [];
     const classFees: BigNumber[] = [];
+    const allowedAddresses: IAllowListBatch = { buyers: [], classes: [] };
 
     if (this.noAdditions || this.isMinting[-1]) return;
 
@@ -245,11 +259,16 @@ export class SeedAdminDashboard {
       classVestingDurations.push(contributorClass.classVestingDuration);
       classVestingCliffs.push(contributorClass.classVestingCliff);
       classFees.push(BigNumber.from(0));
+
+      contributorClass.allowList.forEach((address: Address) => {
+        allowedAddresses.buyers.push(address);
+        allowedAddresses.classes.push(index);
+      });
     });
 
     try {
       this.isMinting[-1] = true;
-      const receipt = await this.selectedSeed.addClassBatch({
+      const addClassReceipt = await this.selectedSeed.addClassBatch({
         classNames,
         classCaps,
         individualCaps,
@@ -258,8 +277,15 @@ export class SeedAdminDashboard {
         classVestingCliffs,
         classFees,
       });
-      if (receipt) {
-        this.eventAggregator.publish("handleInfo", "Successfully added changes to the contract.");
+      if (addClassReceipt) {
+        this.eventAggregator.publish("handleInfo", "Successfully added new classes to the contract.");
+        const addAllowListReceipt = await this.selectedSeed.setClassBatch(
+          allowedAddresses.buyers,
+          allowedAddresses.classes
+        );
+        if (addAllowListReceipt) {
+          this.eventAggregator.publish("handleInfo", "Successfully assigned classes allowlist to the contract.");
+        }
         // Reset count.
         this.newlyAddedClassesIndexes = [];
       }
