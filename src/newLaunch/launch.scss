@@ -37,7 +37,7 @@
   }
 
   .currentStageSidebar {
-    line-height: 32px;
+    line-height: 22px;
     font-size: 18px;
     font-family: Inter;
     font-weight: 300;
@@ -83,6 +83,8 @@
       font-size: 18px;
       font-weight: 400;
       font-family: Inter;
+      text-align: center;
+      padding: 10px 0;
     }
 
     .stageActive {

@@ -61,10 +61,12 @@
     &.paused {
       color: #ff52cf;
       background: #38263E;
+      width: fit-content;
     }
 
     &.closed {
       background: #000000;
+      width: fit-content;
     }
   }
 
