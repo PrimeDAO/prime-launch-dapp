@@ -137,7 +137,13 @@
             color: $Neutral02;
             cursor: not-allowed;
           }
+        }
+        .cancel {
+          &.disabled {
+            color: $Neutral02;
+            cursor: not-allowed;
           }
+        }
       }
 
       .noSeedCreatedMessage {
