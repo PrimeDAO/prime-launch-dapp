@@ -139,16 +139,13 @@ export class SeedSale {
 
   @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance")
   get maxUserCanPay(): BigNumber {
-    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 143 ~ this.targetClass.individualCap", this.targetClass.individualCap);
-    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 145 ~ this.targetClass.classCap", this.targetClass.classCap);
-    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 147 ~ this.seed.userFundingTokenBalance", this.seed.userFundingTokenBalance);
-    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedSale.ts ~ line 156 ~ this.maxFundable", this.maxFundable);
-    const min = this.bigNumberService.min([
+    const args = [
       this.targetClass.individualCap,
       this.targetClass.classCap,
       this.seed.userFundingTokenBalance,
       this.maxFundable,
-    ]);
+    ];
+    const min = this.bigNumberService.min(args);
     return min;
     // return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0")
     //   ? this.maxFundable
