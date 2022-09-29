@@ -20,12 +20,26 @@ fdescribe("BigNumberService.spec", () => {
       expect(result_1.toNumber()).toBe(expected);
     });
 
-    it("min", () => {
+    it("min - 1", () => {
       const expected = 1000;
       const testInput = [
         BigNumber.from(14000),
         BigNumber.from(21000),
         BigNumber.from(expected),
+      ];
+
+      const result = bigNumberService.min(testInput);
+
+      expect(result.toNumber()).toBe(expected);
+    });
+
+    it("min - 2", () => {
+      const expected = 5;
+      const testInput = [
+        BigNumber.from(expected),
+        BigNumber.from(10),
+        BigNumber.from(572800),
+        BigNumber.from(14),
       ];
 
       const result = bigNumberService.min(testInput);

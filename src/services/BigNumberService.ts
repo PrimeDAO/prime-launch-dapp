@@ -25,10 +25,13 @@ export class BigNumberService {
     }
 
 
-    for (let i = 0; i < input.length - 1; i++) {
-      const first = input[i];
-      const second = input[i+1];
-      minNumber = this.min2(first, second);
+    const first = input[0];
+    const second = input[1];
+    minNumber = this.min2(first, second);
+    const startAtThirdIndex = 2;
+    for (let i = startAtThirdIndex; i < input.length; i++) {
+      minNumber = (this.min2(minNumber, input[i]));
+      minNumber.toString();/*?*/
     }
 
     return minNumber;
