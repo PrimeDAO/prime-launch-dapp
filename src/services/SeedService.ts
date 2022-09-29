@@ -147,7 +147,7 @@ export class SeedService {
             /**
              * TODO: DEV only code
              */
-            if (seed.address !== "0x18A0775BCF275704E7068BA04635411996114D3D") continue;
+            // if (seed.address !== "0x18A0775BCF275704E7068BA04635411996114D3D") continue;
 
             seedsMap.set(seed.address, seed);
             /**
@@ -249,14 +249,12 @@ export class SeedService {
         Date.parse(config.launchDetails.endDate) / 1000,
       ],
       [
-        // config.launchDetails.fundingMax, // inidivCap
-        14,
-        // [config.launchDetails.vestingCliff, config.launchDetails.vestingPeriod],
+        config.launchDetails.fundingMax, // inidivCap
         config.launchDetails.vestingCliff,
         config.launchDetails.vestingPeriod,
       ],
       config.launchDetails.isPermissoned,
-      [],
+      [], // TODO whitelist
       [
         toWei((config.launchDetails.seedTip / 100) ?? 0.0),
         0,
