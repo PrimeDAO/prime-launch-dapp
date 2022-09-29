@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -242,13 +242,26 @@ export class SeedService {
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
       pricePerToken,
-      // convert from ISO string to Unix epoch seconds
-      Date.parse(config.launchDetails.startDate) / 1000,
-      // convert from ISO string to Unix epoch seconds
-      Date.parse(config.launchDetails.endDate) / 1000,
-      [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
+      [
+        // convert from ISO string to Unix epoch seconds
+        Date.parse(config.launchDetails.startDate) / 1000,
+        // convert from ISO string to Unix epoch seconds
+        Date.parse(config.launchDetails.endDate) / 1000,
+      ],
+      [
+        // config.launchDetails.fundingMax, // inidivCap
+        14,
+        // [config.launchDetails.vestingCliff, config.launchDetails.vestingPeriod],
+        config.launchDetails.vestingCliff,
+        config.launchDetails.vestingPeriod,
+      ],
       config.launchDetails.isPermissoned,
-      toWei((config.launchDetails.seedTip / 100) ?? 0.0),
+      [],
+      [
+        toWei((config.launchDetails.seedTip / 100) ?? 0.0),
+        0,
+        0,
+      ],
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
