@@ -36,13 +36,13 @@
                       </div>
                       <div>
                           <div class="launch-card-footer-title">START</div>
-                          <div class="launch-card-event-fullDate">${dates.start.date}</div>
-                          <div class="launch-card-event-time">${dates.start.time}</div>
+                          <div class="launch-card-event-fullDate">${launch.startTime | date: {format:"MMM Do YYYY"}}</div>
+                          <div class="launch-card-event-time">${launch.startTime | date: {format:"HH[:]mm z"}}</div>
                       </div>
                       <div>
                           <div class="launch-card-footer-title">END</div>
-                          <div class="launch-card-event-fullDate">${dates.end.date}</div>
-                          <div class="launch-card-event-time">${dates.end.time}</div>
+                          <div class="launch-card-event-fullDate">${launch.endTime | date: {format:"MMM Do YYYY"}}</div>
+                          <div class="launch-card-event-time">${launch.endTime | date: {format:"HH[:]mm z"}}</div>
                       </div>
                       <!--                      <div>-->
                       <!--                          <div class="launch-card-footer-title">${value.currencyPrice.title}</div>-->
