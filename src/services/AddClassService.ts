@@ -11,7 +11,6 @@ export interface ISeedClass {
   individualCap: number
   price: number
   vestingDuration: number
-  classVestingStartTime: number
   classFee: number
 }
 
