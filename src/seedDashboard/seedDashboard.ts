@@ -176,7 +176,7 @@ export class SeedDashboard {
 
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
+      this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
     }
   }
 
