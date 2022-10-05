@@ -194,15 +194,8 @@ export class SeedDashboard {
   }
 
   private async updateSeedAmountRaised() {
-    await this.contractsService.filterEventsInBlocks(
-      this.seed.contract,
-      this.seed.contract.filters.SeedsPurchased(),
-      this.ethereumService.blockNumberOnAppInit,
-      async () => {
-        const updatedAmount = await this.seed.contract.callStatic.seedRemainder();
-        this.seed.amountRaised = updatedAmount;
-      },
-    );
+    const updatedAmount = await this.seed.contract.callStatic.seedRemainder();
+    this.seed.amountRaised = updatedAmount;
   }
 
   connect(): void {

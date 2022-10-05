@@ -521,9 +521,6 @@ export class Seed implements ILaunch {
           paramValues: [account],
           returnType: "uint256",
           resultHandler: (result) => { this.userFundingTokenBalance = result; },
-          // resultHandler: (result: BigNumber) => {
-          //   this.userFundingTokenBalance = result.div(BigNumber.from(100_000));
-          // },
         },
         {
           contractAddress: this.address,
