@@ -183,7 +183,7 @@ export class SeedDashboard {
   async handleNewBlock(): Promise<void> {
     this.subscriptions.push(
       this.eventAggregator.subscribe("Network.NewBlock", async() => {
-        await this.updateSeedAmountRaised();
+        await this.seed.updateAmountRaised();
         await this.seed.updateUserFundingTokenBalance(this.ethereumService.defaultAccountAddress);
 
         if (this.fundingTokenToPay?.gt(this.maxUserCanPay)) {
@@ -191,11 +191,6 @@ export class SeedDashboard {
         }
       }),
     );
-  }
-
-  private async updateSeedAmountRaised() {
-    const updatedAmount = await this.seed.contract.callStatic.seedRemainder();
-    this.seed.amountRaised = updatedAmount;
   }
 
   connect(): void {
