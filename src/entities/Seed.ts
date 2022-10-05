@@ -686,6 +686,11 @@ export class Seed implements ILaunch {
     this.userFundingTokenBalance = result;
   }
 
+  public async updateAmountRaised(): Promise<void> {
+    const updatedAmount = await this.contract.callStatic.fundingCollected() as BigNumber;
+    this.amountRaised = updatedAmount;
+  }
+
   public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.fundingTokenContract.approve(this.address, amount));
   }
