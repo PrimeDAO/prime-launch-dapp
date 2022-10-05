@@ -45,6 +45,8 @@ export class EthBalance {
   }
 
   private async getBalance() {
+    /** ! Temp: disable, because we are not using eth balance */
+    return;
     if (!this.checking) {
       try {
         this.checking = true;
