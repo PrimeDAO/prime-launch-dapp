@@ -125,10 +125,6 @@ export class EthereumService {
   public readOnlyProvider: BaseProvider;
 
   private blockSubscribed: boolean;
-  /**
-   * Store the latest block number, when the app was initialized
-   */
-  public blockNumberOnAppInit: number;
 
   private handleNewBlock = async (): Promise<void> => {
     this.eventAggregator.publish("Network.NewBlock");
@@ -174,13 +170,6 @@ export class EthereumService {
       });
       this.blockSubscribed = true;
     }
-
-    /**
-     * No need to wait, as we are fine with an approximate number
-     */
-    this.getLastBlock().then((lastBlock) => {
-      this.blockNumberOnAppInit = lastBlock.number;
-    });
   }
 
   private web3Modal: Web3Modal;
