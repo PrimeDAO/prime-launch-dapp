@@ -521,6 +521,9 @@ export class Seed implements ILaunch {
           paramValues: [account],
           returnType: "uint256",
           resultHandler: (result) => { this.userFundingTokenBalance = result; },
+          // resultHandler: (result: BigNumber) => {
+          //   this.userFundingTokenBalance = result.div(BigNumber.from(100_000));
+          // },
         },
         {
           contractAddress: this.address,
@@ -679,6 +682,11 @@ export class Seed implements ILaunch {
 
   public fundingTokenAllowance(): Promise<BigNumber> {
     return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+  }
+
+  public async updateUserFundingTokenBalance(userAddress: Address): Promise<void> {
+    const result = (await this.fundingTokenContract.callStatic.balanceOf(userAddress)) as BigNumber;
+    this.userFundingTokenBalance = result;
   }
 
   public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
