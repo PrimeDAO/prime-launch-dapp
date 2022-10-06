@@ -528,6 +528,11 @@ export class EthereumService {
   }
 }
 
+export function capitalizeNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): string {
+  const capitalizedNetwork = network.charAt(0).toUpperCase() + network.slice(1);
+  return capitalizedNetwork;
+}
+
 /**
  * @param ethValue
  * @param decimals Default is 18.  Can be decimal count or:
