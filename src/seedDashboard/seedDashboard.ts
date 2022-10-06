@@ -15,6 +15,7 @@ import { NumberService } from "services/NumberService";
 import { DisposableCollection } from "services/DisposableCollection";
 import { GeoBlockService } from "services/GeoBlockService";
 import { CongratulationsService } from "services/CongratulationsService";
+import { ContractsService } from "services/ContractsService";
 
 @autoinject
 export class SeedDashboard {
@@ -44,6 +45,7 @@ export class SeedDashboard {
     private router: Router,
     private storageService: BrowserStorageService,
     private congratulationsService: CongratulationsService,
+    private contractsService: ContractsService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       this.hydrateUserData();
@@ -94,10 +96,12 @@ export class SeedDashboard {
   }
 
   @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
-  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gte(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("maxFundable", "seed.userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
+  get maxUserCanPay(): BigNumber {
+    return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance;
+  }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
@@ -127,6 +131,8 @@ export class SeedDashboard {
 
   async attached(): Promise<void> {
     let waiting = false;
+
+    this.handleNewBlock();
 
     try {
       if (this.seedService.initializing) {
@@ -164,10 +170,27 @@ export class SeedDashboard {
     }
   }
 
+  detached(): void {
+    this.subscriptions.dispose();
+  }
+
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
-      this.userFundingTokenAllowance = await this.seed.fundingTokenAllowance();
+      this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
     }
+  }
+
+  async handleNewBlock(): Promise<void> {
+    this.subscriptions.push(
+      this.eventAggregator.subscribe("Network.NewBlock", async() => {
+        await this.seed.updateAmountRaised();
+        await this.seed.updateUserFundingTokenBalance(this.ethereumService.defaultAccountAddress);
+
+        if (this.fundingTokenToPay?.gt(this.maxUserCanPay)) {
+          this.handleMaxBuy();
+        }
+      }),
+    );
   }
 
   connect(): void {

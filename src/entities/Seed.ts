@@ -822,6 +822,16 @@ export class Seed implements ILaunch {
     return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
   }
 
+  public async updateUserFundingTokenBalance(userAddress: Address): Promise<void> {
+    const result = (await this.fundingTokenContract.callStatic.balanceOf(userAddress)) as BigNumber;
+    this.userFundingTokenBalance = result;
+  }
+
+  public async updateAmountRaised(): Promise<void> {
+    const updatedAmount = await this.contract.callStatic.fundingCollected() as BigNumber;
+    this.amountRaised = updatedAmount;
+  }
+
   public unlockFundingTokens(amount: BigNumber): Promise<TransactionReceipt> {
     return this.transactionsService.send(() => this.fundingTokenContract.approve(this.address, amount));
   }
