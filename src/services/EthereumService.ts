@@ -528,7 +528,7 @@ export class EthereumService {
   }
 }
 
-export function capitalizeNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): string {
+export function capitalizeNetworkName(network: AllowedNetworks = EthereumService.targetedNetwork): string {
   const capitalizedNetwork = network.charAt(0).toUpperCase() + network.slice(1);
   return capitalizedNetwork;
 }
