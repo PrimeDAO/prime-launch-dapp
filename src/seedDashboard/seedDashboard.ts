@@ -168,6 +168,10 @@ export class SeedDashboard {
       }
       this.loading = false;
     }
+
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedDashboard.ts ~ line 134 ~ this.seed", this.seed);
+    // @ts-ignore
+    window.seedDashboard = this;
   }
 
   detached(): void {
