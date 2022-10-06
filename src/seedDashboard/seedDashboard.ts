@@ -94,7 +94,7 @@ export class SeedDashboard {
   }
 
   @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
-  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gte(this.fundingTokenToPay ?? "0"); }
 
   @computedFrom("maxFundable", "seed.userFundingTokenBalance")
   get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance) ? this.maxFundable : this.seed.userFundingTokenBalance; }
