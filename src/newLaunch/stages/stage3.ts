@@ -9,13 +9,14 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 // import { fromWei } from "services/EthereumService";
 import { NumberService } from "services/NumberService";
-import { EthereumService } from "services/EthereumService";
+import { capitalizeNetworkName, EthereumService } from "services/EthereumService";
 
 @autoinject
 export class Stage3 extends BaseStage<ILaunchConfig> {
   loadingToken = false;
   logoIcon: HTMLElement;
   logoIsLoaded = false;
+  private projectTokenAddressText: string;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -32,6 +33,8 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     if (!this.wizardState.stage3State) {
       this.wizardState.stage3State = {} as any;
     }
+
+    this.projectTokenAddressText = `The ${capitalizeNetworkName()} address of the token you are offering to contributors`;
   }
 
   addTokenDistribution(): void {

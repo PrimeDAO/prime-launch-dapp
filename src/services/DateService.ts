@@ -232,8 +232,12 @@ export class DateService {
 
     let result = "";
 
-    if (days) {
+    const showLessThan1Day = days === 0 && (resolution === TimespanResolution.days);
+    if (showLessThan1Day) {
+      result = "< 1 day";
+    }
 
+    if (days) {
       result = `${days}${abbrev ? "d" : (days === 1 ? " day" : " days")}`;
 
       if (largest2) {
