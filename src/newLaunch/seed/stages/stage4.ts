@@ -10,7 +10,7 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { Address, capitalizeNetwork, EthereumService, fromWei, isCeloNetworkLike } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
@@ -35,6 +35,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
+  private fundingTokenQuestionMarkText: string;
 
   constructor(
     eventAggregator: EventAggregator,
@@ -54,6 +55,16 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       this.startTime = undefined;
       this.endTime = undefined;
     });
+  }
+
+  bind(): void {
+    this.setFundingTokenQuestionMarkText();
+  }
+
+  private setFundingTokenQuestionMarkText(): void {
+    const addressPart = `The ${capitalizeNetwork()} address of the token used to purchase project tokens`;
+    const exampleCurrency = isCeloNetworkLike() ? "cUSD" : "DAI";
+    this.fundingTokenQuestionMarkText = `${addressPart}. Simply put: the token you are raising funds in (e.g. ${exampleCurrency})`;
   }
 
   async attached(): Promise<void> {
