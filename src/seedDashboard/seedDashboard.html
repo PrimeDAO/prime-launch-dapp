@@ -98,8 +98,25 @@
                 <div class="token">${seed.projectTokenInfo.symbol}</div>
               </div>
             </div>
-            <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">Project tokens will be locked for ${seed.vestingCliff | secondsDays} day(s) after launch, then unlock gradually over ${seed.vestingDuration | secondsDays} day(s)</div>
-            <div class="vestedMessage subtext" else>Project tokens will unlock gradually over ${seed.vestingDuration | secondsDays} days(s) after launch</div>
+            <div class="vestedMessage subtext" if.to-view="seed.vestingCliff.gt(0)">
+              <div class="vestedMessage subtext" else>
+                Project tokens will be locked for
+                <formatted-date tooltip="${seed.vestingCliff | secondsDays} days">
+                  ${seed.vestingCliff | timespan:'days':largest }
+                </formatted-date>
+                after launch, then unlock gradually over
+                <formatted-date tooltip="${seed.vestingDuration | secondsDays} days">
+                  ${seed.vestingDuration | timespan:'days':largest }
+                </formatted-date>
+              </div>
+            </div>
+            <div class="vestedMessage subtext" else>
+              Project tokens will unlock gradually over
+              <formatted-date tooltip="${seed.vestingDuration | secondsDays} days">
+                ${seed.vestingDuration | timespan:'days':largest }
+              </formatted-date>
+              after launch
+            </div>
           </div>
           <div class="unlockButton" if.to-view="userCanPay && lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
           <template else>
@@ -154,7 +171,14 @@
               This seed round is incomplete, hence there are no tokens to be claimed. You can retrieve from the section below any funding tokens that you may have contributed.
             </div>
             <div else class="vestedMessage subtext">
-              <span if.to-view="seed.vestingCliff">Tokens can be claimed ${seed.vestingCliff | secondsDays} days</span>
+              <span if.to-view="seed.vestingCliff">
+                <div class="vestedMessage subtext" else>
+                  Tokens can be claimed
+                  <formatted-date tooltip="${seed.vestingCliff | secondsDays} days">
+                    ${seed.vestingCliff | timespan:'days':largest }
+                  </formatted-date>
+                </div>
+              </span>
               <span else>Tokens can be immediately claimed</span>
               after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
             </div>
