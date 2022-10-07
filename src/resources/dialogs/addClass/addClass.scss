@@ -21,9 +21,7 @@
 
 body > ux-dialog-container.addClass {
   height: 95%;
-  width: 35%;
-  min-width: 800px;
-  max-width: 800px;
+  width: 700px;
   top: 50%;
   right: unset;
   bottom: unset;
@@ -32,6 +30,7 @@ body > ux-dialog-container.addClass {
 
   ux-dialog {
     overflow-y: auto;
+    color: $Neutral04;
     ux-dialog-header {
       position: relative;
       font-family: Inter;
@@ -41,6 +40,11 @@ body > ux-dialog-container.addClass {
       padding: 34px;
       padding-top: 30px;
       padding-bottom: 10px;
+      .label--small {
+        width: 460px;
+        font-size: 16px;
+        line-height: 19.2px; // Why is this smaller then the rest?
+      }
     }
 
     ux-dialog-body {
@@ -56,9 +60,24 @@ body > ux-dialog-container.addClass {
       border-top-width: 0;
       padding-top: 50px;
       padding-bottom: 20px;
-      .button1 {
+      .cancel {
+        cursor: pointer;
+        background-color: transparent;
+        border: transparent;
+        border-radius: 50px;
+        font-family: Inter;
+        font-weight: 600;
+        padding: 8px 17px;
+        text-transform: uppercase;
+      }
+      .button1, .cancel {
+        &:hover {
+          background-color: $Secondary05;
+          color: $Neutral04;
+        }
         &.small {
           width: 98px;
+          font-size: 16px;
         }
       }
     }
@@ -72,25 +91,29 @@ body > ux-dialog-container.addClass {
     color: $Secondary02;
   }
   input {
-    width: 368px;
-    height: fit-content;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    height: 46px;
+    box-sizing: border-box;
     border: 1px solid $Border01;
     border-radius: 10px;
-    padding: 5px 12px;
   }
 
-  select {
-    border: 1px solid $Border01;
-    color: $Neutral02;
+  numeric-input {
+    &:not([not-wei]) {
+      width: -webkit-fill-available;
+      width: -moz-available;
+    }
   }
 
   .close-icon {
     position: absolute;
     top: 15px;
     right: 15px;
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
     cursor: pointer;
+    color: $Neutral02;
   }
 
   .button-container {
@@ -134,11 +157,14 @@ body > ux-dialog-container.addClass {
   .info-section {
     display: flex;
     flex-direction: column;
+    width: inherit;
     align-items: flex-start;
     &.with-counter span {
       width: fit-content;
       flex-grow: 2;
       text-align: end;
+      color: $Neutral02;
+      font-size: 14px;
     }
   }
 
@@ -183,8 +209,16 @@ body > ux-dialog-container.addClass {
     font-style: normal;
     font-weight: 400;
     color: $Neutral03;
+    font-size: 16px;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    width: 100%;
   }
 
+  .vesting .label--small {
+    line-height: 33px;
+    font-size: 14px;
+  }
   .vesting-period{
     width: 176px;
     display: flex;
@@ -195,6 +229,7 @@ body > ux-dialog-container.addClass {
       width: 80px;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      border: 1px solid $Secondary05;
     }
     > div {
       width: 80px;
