@@ -101,26 +101,26 @@ body > ux-dialog-container.addClass {
     justify-content: end;
   }
 
-  .delete-button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-  }
+  // .delete-button {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 10px;
+  //   cursor: pointer;
+  // }
 
-  .delete-button__icon {
-    width: 14px;
-    height: 18px;
-  }
+  // .delete-button__icon {
+  //   width: 14px;
+  //   height: 18px;
+  // }
 
-  .delete-button__text {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: $Neutral03;
-  }
+  // .delete-button__text {
+  //   font-weight: 700;
+  //   font-size: 16px;
+  //   line-height: 19px;
+  //   letter-spacing: 0.6px;
+  //   text-transform: uppercase;
+  //   color: $Neutral03;
+  // }
 
   .add-class-container {
     width: 90%;

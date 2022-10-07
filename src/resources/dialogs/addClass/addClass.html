@@ -125,10 +125,11 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">
-        <div class="delete-button" show.bind="model.params.isEdit">
+        <!-- <div class="delete-button" show.bind="isEdit">
           <div class="delete-button__text">delete</div>
           <img src="../../../../static/trash.svg" class="delete-button__icon" />
-        </div>
+        </div> -->
+        <button class="cancel small" click.trigger="controller.cancel()">Cancel</button>
         <button class="button1 small" ref="okButton" click.delegate="save()">Save</button>
       </div>
     </ux-dialog-footer>
