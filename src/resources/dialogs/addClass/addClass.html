@@ -41,7 +41,7 @@
               <label>Project token purchase limit</label>
             </div>
             <label for="individualCap" class="label--small">
-              You can only change the vesting-period.
+              The maximum amount of contribution a connected user can contribute to the launch.
             </label>
             <numeric-input name="individualCap" value.bind="class.individualCap" decimals.bind="model.params.fundingTokenInfo.decimals"></numeric-input>
           </div>
@@ -53,7 +53,10 @@
                 <question-mark text="TODO: Add text"></question-mark>
               </div>
             </div>
-            <div class="info-block">
+            <label for="individualCap" class="label--small">
+              You can change the vesting-period.
+            </label>
+            <div class="info-block vesting">
               <!-- Start time is not yet supported -->
               <!-- <div>
                 <label class="label--small">Vesting Start Time</label>
@@ -104,7 +107,6 @@
                   <question-mark text="TODO: Add text"></question-mark>
                 </div>
               </div>
-              <label class="label--small">Choose a .csv file to import your allowlist.</label>
               <span class="inlineWrapper">
                 <label class="csvInputWrapper">
                   <input class="footer-input"
