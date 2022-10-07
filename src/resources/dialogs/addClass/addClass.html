@@ -15,15 +15,18 @@
 
           <div class="info-section with-counter">
             <div class="label--question">
-              <label>Class Name</label>
-              <div class="question-mark">
+              <label>Class Name Contributor</label>
+              <!-- <div class="question-mark">
                 <question-mark text="TODO: Add text"></question-mark>
-              </div>
+              </div> -->
               <span>
                 ${class.className.length || 0}/50
               </span>
             </div>
-            <input id="className" maxlength="50" value.bind="class.className"/>
+            <label for="className" class="label--small">
+              Give a name to this contributor class.
+            </label>
+            <input id="className" name="className" maxlength="50" value.bind="class.className"/>
           </div>
 
           <div class="info-section">
@@ -50,11 +53,11 @@
             <div class="label--question">
               <label>Vesting Set-up</label>
               <div class="question-mark">
-                <question-mark text="TODO: Add text"></question-mark>
+                <question-mark text="To understand Vesting period and Cliff please refer here (TODO add link) on the documentation."></question-mark>
               </div>
             </div>
             <label for="individualCap" class="label--small">
-              You can change the vesting-period.
+              Define the Vesting period and the Cliff period for this contributor class.
             </label>
             <div class="info-block vesting">
               <!-- Start time is not yet supported -->
@@ -104,7 +107,7 @@
               <div class="label--question">
                 <label>Allowlist (Optional)</label>
                 <div class="question-mark">
-                  <question-mark text="TODO: Add text"></question-mark>
+                  <question-mark text="Upload a single column .csv file that contains all the addresses that are allowed to participate in this SEED for this contributor class."></question-mark>
                 </div>
               </div>
               <span class="inlineWrapper">
