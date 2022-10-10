@@ -51,6 +51,8 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
     this.launchDetails.vestingPeriod = null;
     this.launchDetails.vestingCliff = null;
     this.launchDetails.whitelist = "";
+    this.launchDetails.isPermissoned = true;
     this.launchDetails.legalDisclaimer = "";
+    this.launchDetails.seedTip = null;
   }
 }
