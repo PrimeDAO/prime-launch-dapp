@@ -620,11 +620,17 @@
         line-height: 32px;
         text-align: left;
       }
+
+      .distribRowWrapper {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+
       .distribRow {
         display: flex;
         flex-flow: row wrap;
         flex: 1;
-        justify-content: space-between;
         margin-bottom: 16px;
         column-gap: 10px;
         .category {

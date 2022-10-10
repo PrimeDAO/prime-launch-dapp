@@ -15,15 +15,18 @@
 
           <div class="info-section with-counter">
             <div class="label--question">
-              <label>Class Name</label>
-              <div class="question-mark">
+              <label>Class Name Contributor</label>
+              <!-- <div class="question-mark">
                 <question-mark text="TODO: Add text"></question-mark>
-              </div>
+              </div> -->
               <span>
-                ${class.className.length || 0}/50
+                ${class.className.length || 0}/32
               </span>
             </div>
-            <input id="className" maxlength="50" value.bind="class.className"/>
+            <label for="className" class="label--small">
+              Give a name to this contributor class.
+            </label>
+            <input id="className" name="className" maxlength="32" value.bind="class.className"/>
           </div>
 
           <div class="info-section">
@@ -41,7 +44,7 @@
               <label>Project token purchase limit</label>
             </div>
             <label for="individualCap" class="label--small">
-              You can only change the vesting-period.
+              The maximum amount of contribution a connected user can contribute to the launch.
             </label>
             <numeric-input name="individualCap" value.bind="class.individualCap" decimals.bind="model.params.fundingTokenInfo.decimals"></numeric-input>
           </div>
@@ -50,10 +53,13 @@
             <div class="label--question">
               <label>Vesting Set-up</label>
               <div class="question-mark">
-                <question-mark text="TODO: Add text"></question-mark>
+                <question-mark text="To understand Vesting period and Cliff please refer here (TODO add link) on the documentation."></question-mark>
               </div>
             </div>
-            <div class="info-block">
+            <label for="individualCap" class="label--small">
+              Define the Vesting period and the Cliff period for this contributor class.
+            </label>
+            <div class="info-block vesting">
               <!-- Start time is not yet supported -->
               <!-- <div>
                 <label class="label--small">Vesting Start Time</label>
@@ -101,10 +107,9 @@
               <div class="label--question">
                 <label>Allowlist (Optional)</label>
                 <div class="question-mark">
-                  <question-mark text="TODO: Add text"></question-mark>
+                  <question-mark text="Upload a single column .csv file that contains all the addresses that are allowed to participate in this SEED for this contributor class."></question-mark>
                 </div>
               </div>
-              <label class="label--small">Choose a .csv file to import your allowlist.</label>
               <span class="inlineWrapper">
                 <label class="csvInputWrapper">
                   <input class="footer-input"
@@ -125,10 +130,11 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <div class="button-container">
-        <div class="delete-button" show.bind="model.params.isEdit">
+        <!-- <div class="delete-button" show.bind="isEdit">
           <div class="delete-button__text">delete</div>
           <img src="../../../../static/trash.svg" class="delete-button__icon" />
-        </div>
+        </div> -->
+        <button class="cancel small" click.trigger="controller.cancel()">Cancel</button>
         <button class="button1 small" ref="okButton" click.delegate="save()">Save</button>
       </div>
     </ux-dialog-footer>

@@ -106,6 +106,7 @@
                 </div>
               </div>
               <template repeat.for="distrib of launchConfig.tokenDetails.tokenDistrib">
+                <div class="distribRowWrapper">
                 <div class="distribRow">
                   <div class="infoInput withCounter supply">
                     <div class="category">
@@ -133,7 +134,8 @@
                     <div class="columnHeaders">Cliff (in days)</div>
                     <input type="number" value.bind="distrib.cliff | number" placeholder="0" class="numberInput">
                   </div>
-                    <div class="deleteContainer">
+                  </div>
+                  <div class="deleteContainer">
                     <span
                         class="deleteLink"
                         title="Delete this row"
