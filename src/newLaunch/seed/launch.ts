@@ -4,6 +4,8 @@ import { ISeedConfig, SeedConfig } from "newLaunch/seed/config";
 import { Router, RouterConfiguration, RouteConfig } from "aurelia-router";
 import { IStageState, IWizardState } from "newLaunch/baseStage";
 import { LaunchType } from "services/launchTypes";
+import { SeedService } from "services/SeedService";
+import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
@@ -19,15 +21,18 @@ export class NewSeed {
   stageStates: Array<IStageState>;
   wizardState: IWizardState;
   sideBar: HTMLElement;
+  subscriptions: Subscription[] = []
 
   @computedFrom("router.currentInstruction")
   get currentStage(): RouteConfig {
     return this.router.currentInstruction.config;
   }
 
-  constructor() {
+  constructor(private seedService: SeedService, private eventAggregator: EventAggregator) {
     if (!this.launchConfig) {
       this.launchConfig = new SeedConfig();
+      this.dev_initSeedConfigFromLocalStorage();
+
       this.wizardState = { launchType: LaunchType.Seed, launchTypeTitle: "Seed" };
       /**
        * stageStates is 1-based, indexed by stage number
@@ -202,5 +207,84 @@ export class NewSeed {
       this.sideBar.classList.add("show");
     }
   }
-}
 
+  private dev_initSeedConfigFromLocalStorage(): void {
+    this.dev_subscriteToUseSavedSeedInLocalStorage();
+    this.dev_subscriteToUpdateSeedInLocalStorage();
+    this.dev_subscribeToDownloadSeed();
+    this.dev_subscribeToUploadSeed();
+
+  }
+
+  private dev_subscriteToUseSavedSeedInLocalStorage(): void {
+    this.subscriptions.push(this.eventAggregator.subscribe("dev:use-saved-seed", () => {
+      this.dev_useSavedSeedInLocalStorage();
+    }));
+  }
+
+  private dev_useSavedSeedInLocalStorage(customLaunchConfig?: ISeedConfig) {
+    const result = this.seedService.dev_getSeedConfigFromLocalStorage();
+    if (result !== null) {
+      const finalConfig = customLaunchConfig ?? result;
+      const rawSeedConfig = new SeedConfig();
+      this.launchConfig = Object.assign(rawSeedConfig, finalConfig);
+
+      // Update setting of each route
+      this.router.routes.forEach(route => {
+        route.settings.launchConfig = this.launchConfig;
+      });
+
+      const submitRoute = "/newSeed/stage6";
+      if (window.location.pathname === submitRoute) {
+        this.router.navigate("/newSeed/stage1");
+      } else {
+        this.router.navigate(submitRoute);
+      }
+    }
+  }
+
+  private dev_subscriteToUpdateSeedInLocalStorage(): void {
+    this.subscriptions.push(this.eventAggregator.subscribe("dev:update-seed", () => {
+      this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
+    }));
+  }
+
+  private dev_subscribeToDownloadSeed(): void {
+    function getRandomId (){
+      /**
+       * "0.g6ck5nyod4".substring(2, 9)
+       * -> g6ck5ny
+       */
+      return Math.random().toString(36).substring(2, 9);
+    }
+
+    function download(content: string) {
+      const element = document.createElement("a");
+      element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
+      element.setAttribute("download", `Generated_Seed_${getRandomId()}.json`);
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    }
+
+    this.subscriptions.push(this.eventAggregator.subscribe("dev:download-seed", () => {
+      this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
+      const stringify = JSON.stringify(this.launchConfig, null, 4);
+      download(stringify);
+    }));
+  }
+
+  private dev_subscribeToUploadSeed(): void {
+    this.subscriptions.push(this.eventAggregator.subscribe("dev:upload-seed", (seedJson: ISeedConfig) => {
+      this.dev_useSavedSeedInLocalStorage(seedJson);
+    }));
+  }
+
+  private detached(): void {
+    this.subscriptions.forEach(sub => sub.dispose());
+  }
+}

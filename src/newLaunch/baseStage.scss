@@ -124,16 +124,19 @@
   a {
     color: $Neutral02;
   }
+
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
     gap: 16px;
   }
+
   .questionMark {
     width: 20px;
     height: 20px;
     align-self: center;
   }
+
   .importantText {
     font-weight: 800;
   }
