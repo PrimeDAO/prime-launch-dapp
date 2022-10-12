@@ -15,6 +15,10 @@
           <div class="eth"></div>
           <div>Rinkeby</div>
         </div>
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Goerli) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Goerli)">
+          <div class="eth"></div>
+          <div>Goerli</div>
+        </div>
         <div if.bind="isProductionEnv" class="${isActive(Networks.Celo) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Celo)">
           <div class="celo"></div>
           <div>Celo</div>
@@ -22,7 +26,6 @@
         <div if.bind="!isProductionEnv" class="${isActive(Networks.Alfajores) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Alfajores)">
           <div class="celo"></div>
           <div>Alfajores</div>
-        </div>
       </div>
     </div>
   </div>

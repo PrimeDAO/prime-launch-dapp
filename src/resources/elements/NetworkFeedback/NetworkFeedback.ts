@@ -26,7 +26,7 @@ export class NetworkFeedback {
       const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
 
       const invalidlyStoredTestnet = this.isProductionEnv
-        && [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
+        && [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan, Networks.Goerli].includes(locallyStoredNetwork);
       const invalidlyStoredMainnet = !this.isProductionEnv
         && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
       const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
