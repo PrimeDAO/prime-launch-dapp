@@ -52,13 +52,14 @@ export interface IBlockInfo extends IBlockInfoNative {
 export enum Networks {
   Mainnet = "mainnet",
   Rinkeby = "rinkeby",
+  Goerli = "goerli",
   Kovan = "kovan",
   Arbitrum = "arbitrum",
   Celo = "celo",
   Alfajores = "alfajores",
 }
 
-export type AllowedNetworks = Networks.Mainnet | Networks.Rinkeby | Networks.Kovan | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
+export type AllowedNetworks = Networks.Mainnet | Networks.Rinkeby | Networks.Kovan | Networks.Goerli | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
 
 export interface IChainEventInfo {
   chainId: number;
@@ -79,6 +80,7 @@ export class EthereumService {
     [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     [Networks.Rinkeby]: `https://${process.env.RIVET_ID}.rinkeby.rpc.rivet.cloud/`,
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
+    [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
     [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
@@ -106,6 +108,7 @@ export class EthereumService {
         rpc: {
           1: EthereumService.ProviderEndpoints[Networks.Mainnet],
           4: EthereumService.ProviderEndpoints[Networks.Rinkeby],
+          5: EthereumService.ProviderEndpoints[Networks.Goerli],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
           42220: EthereumService.ProviderEndpoints[Networks.Celo],
@@ -190,6 +193,7 @@ export class EthereumService {
   private friendlyChainNameById = new Map<number, string>([
     [1, "Mainnet"],
     [4, "Rinkeby"],
+    [5, "Goreli"],
     [42, "Kovan"],
     [42161, "Arbitrum One"],
     [42220, "Celo"],
@@ -199,6 +203,7 @@ export class EthereumService {
   private chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Rinkeby, 4],
+    [Networks.Goerli, 5],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
     [Networks.Celo, 42220],
@@ -662,6 +667,8 @@ export class EthereumService {
         return `https://explorer.celo.org/${params}`;
       case Networks.Rinkeby: // set for deprecation
         return `https://rinkeby.etherscan.io/${params}`;
+      case Networks.Goerli:
+        return `https://goerli.etherscan.io/${params}`;
       case Networks.Kovan: // deprecated
         return `https://kovan.etherscan.io/${params}`;
       case Networks.Mainnet:
@@ -678,6 +685,11 @@ export class EthereumService {
 export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
   const isCeloLike = network === Networks.Celo || network === Networks.Alfajores;
   return isCeloLike;
+}
+
+export function capitalizeNetworkName(network: AllowedNetworks = EthereumService.targetedNetwork): string {
+  const capitalizedNetwork = network.charAt(0).toUpperCase() + network.slice(1);
+  return capitalizedNetwork;
 }
 
 /**

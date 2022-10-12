@@ -64,6 +64,9 @@ export class LbpManagerService {
       case Networks.Rinkeby:
         StartingBlockNumber = 11338489;
         break;
+      case Networks.Goerli:
+        StartingBlockNumber = 7722221;
+        break;
       case Networks.Kovan:
         StartingBlockNumber = 28079815;
         break;

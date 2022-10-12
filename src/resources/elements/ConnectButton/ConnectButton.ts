@@ -11,7 +11,7 @@ import { Utils } from "services/utils";
 
 enum Phase {
   None = "None",
-  Mining = "Mining",
+  Mining = "Pending",
   Confirming = "Confirming"
 }
 
