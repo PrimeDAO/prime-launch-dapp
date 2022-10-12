@@ -27,7 +27,7 @@
                 <div class="labeledQuestion">
                   <label for="fundingTokenAddress">What Token Would You Like To Raise? (the "Funding Token")</label>
                   <div class="questionMark">
-                    <question-mark text="The Ethereum address of the token used to purchase project tokens. Simply put: the token you are raising funds in (e.g. DAI)"></question-mark>
+                    <question-mark text.bind="fundingTokenQuestionMarkText"></question-mark>
                   </div>
                 </div>
                 <div class="tokenSelector">
