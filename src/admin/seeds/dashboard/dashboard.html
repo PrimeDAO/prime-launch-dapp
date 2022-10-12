@@ -128,13 +128,13 @@
                         <th><div class="table__center-cell">Vested (days)</div></th>
                         <th><div class="table__center-cell">Edit</div></th>
                       </tr>
-                      <tr repeat.for="class of selectedSeed.classes">
+                      <tr repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
                         <td>${class.className}</td>
                         <td><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
                         <td><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
                         <td><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td>
-                          <div class="table__center-cell">
+                          <div class="table__center-cell" if.bind="!isMinting[$index]">
                             <img if.bind="noAdditions || newlyAddedClassesIndexes.includes($index)"
                               class="table__edit-icon"
                               click.delegate="openAddClassModal($index)"
@@ -143,20 +143,27 @@
                               class="table__edit-icon disabled"
                               src="../../../../static/editPencil.svg"/>
                           </div>
+                          <div else class="table__center-cell loading">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                          </div>
                         </td>
                       </tr>
                     </table>
                   </div>
                   <div class="actionPanel">
                     <div class="buttonContainer">
-                      <div class="stageButton previousButton" click.delegate="openAddClassModal()"><span>Add Class</span><i class="fas fa-plus"></i></div>
+                      <div class="stageButton previousButton ${isMinting[-1] ? 'disabled' : ''}" click.delegate="openAddClassModal()">
+                        <span>Add Class</span><i class="fas fa-plus"></i>
+                      </div>
                     </div>
                     <div class="deployActions" if.bind="selectedSeed.classes.length">
                       <div class="buttonContainer">
-                        <div class="stageButton cancel" click.delegate="cancel()"><span>Cancel</span></div>
+                        <div class="stageButton cancel ${noAdditions || isMinting[-1] ? 'disabled':''}" click.delegate="cancel()"><span>Cancel</span></div>
                       </div>
                       <div class="buttonContainer">
-                        <div class="stageButton button1 ${noAdditions ? 'disabled' : ''}" click.delegate="deployClassesToContract()"><span>Confirm</span><i class="fas fa-check"></i></div>
+                        <div class="stageButton button1 ${noAdditions || isMinting[-1] ? 'disabled' : ''}" click.delegate="deployClassesToContract()">
+                          <span>Confirm</span><i if.bind="!isMinting[-1]" class="fas fa-check"></i><i else class="fas fa-circle-notch fa-spin"></i>
+                        </div>
                       </div>
                     </div>
                   </div>

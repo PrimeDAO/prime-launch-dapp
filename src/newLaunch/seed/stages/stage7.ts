@@ -51,8 +51,10 @@ export class Stage7 extends BaseStage<ISeedConfig> {
 
     const distributableSeeds = toBigNumberJs(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
       .idiv(this.launchConfig.launchDetails.pricePerToken);
-    this.wizardState.requiredProjectTokenDeposit = toWei(distributableSeeds.plus(distributableSeeds.multipliedBy(SeedService.seedFee)).toString(),
-      this.launchConfig.tokenDetails.projectTokenInfo.decimals);
+    this.wizardState.requiredProjectTokenDeposit = toWei(
+      distributableSeeds.plus(distributableSeeds.multipliedBy(this.launchConfig.launchDetails.seedTip / 100)).toString(),
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals
+    );
   }
 
   async submit(): Promise<void> {

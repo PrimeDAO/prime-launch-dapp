@@ -126,10 +126,8 @@ export class EthereumService {
 
   private blockSubscribed: boolean;
 
-  private handleNewBlock = async (blockNumber: number): Promise<void> => {
-    const block = await this.getBlock(blockNumber);
-    this.lastBlock = block;
-    this.eventAggregator.publish("Network.NewBlock", block);
+  private handleNewBlock = async (): Promise<void> => {
+    this.eventAggregator.publish("Network.NewBlock");
   }
 
   public initialize(network: AllowedNetworks): void {
@@ -167,7 +165,9 @@ export class EthereumService {
     this.readOnlyProvider.pollingInterval = 15000;
 
     if (!this.blockSubscribed) {
-      this.readOnlyProvider.on("block", (blockNumber: number) => this.handleNewBlock(blockNumber));
+      this.readOnlyProvider.on("block", () => {
+        this.handleNewBlock();
+      });
       this.blockSubscribed = true;
     }
   }
@@ -638,13 +638,12 @@ export class EthereumService {
    * so unit tests will be able to complete
    */
   public dispose(): void {
-    this.readOnlyProvider.off("block", (blockNumber: number) => this.handleNewBlock(blockNumber));
+    this.readOnlyProvider.off("block", () => this.handleNewBlock());
   }
 
   private async getBlock(blockNumber: number): Promise<IBlockInfo> {
     try {
       const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
-      block.blockDate = new Date(block.timestamp * 1000);
       return block;
     } catch (e) {
       this.consoleLogService.logMessage("BLOCK GET ERR", e);

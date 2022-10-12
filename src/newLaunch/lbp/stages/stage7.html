@@ -15,25 +15,23 @@
           Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank"
             rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
-        <p>After being approved, the <etherscanlink hide-clipboard-button
-            address.to-view="launchConfig.launchDetails.adminAddress" text="Liquid Launch Admin"></etherscanlink>
-
+        <p>
+          After being approved, the 
+          <etherscanlink hide-clipboard-button address.to-view="launchConfig.launchDetails.adminAddress" text="Liquid Launch Admin"></etherscanlink>
           will have to fund the ${wizardState.launchTypeTitle} with
-
           <formatted-number
             value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
-            thousands-separated></formatted-number>
-          ${launchConfig.tokenDetails.projectTokenInfo.symbol}
-
-          and
-
+            thousands-separated>
+          </formatted-number>
+          ${launchConfig.tokenDetails.projectTokenInfo.symbol} and 
           <formatted-number
             value.to-view="wizardState.requiredFundingTokenDeposit  | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals"
-            thousands-separated></formatted-number>
+            thousands-separated>
+          </formatted-number>
           ${launchConfig.launchDetails.fundingTokenInfo.symbol}.
 
-          This can be done by connecting the Liquid Launch Admin wallet to the <a
-            href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
+          This can be done by connecting the Liquid Launch Admin wallet to the 
+          <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
         </p>
 
         <p>After adding the funds, the ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on
