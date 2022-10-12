@@ -64,7 +64,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   private setFundingTokenQuestionMarkText(): void {
     const addressPart = `The ${capitalizeNetworkName()} address of the token used to purchase project tokens`;
     const exampleCurrency = isCeloNetworkLike() ? "cUSD" : "DAI";
-    this.fundingTokenQuestionMarkText = `${addressPart}. Simply put: the token you are raising funds in (e.g. ${exampleCurrency})`;
+    this.fundingTokenQuestionMarkText = `${addressPart}. Simply put: The Token used to purchase your project tokens (e.g. ${exampleCurrency})`;
   }
 
   async attached(): Promise<void> {
