@@ -937,13 +937,10 @@
       cursor: pointer;
       &.isInactive {
         background: $Secondary05;
-        cursor: default;
-
-        .checkbox {
-          label {
-            cursor: default;
-          }
-        }
+      }
+      /* Note: Only on stage 6! */
+      &, * {
+        cursor: not-allowed;
       }
       i.yes {
         position: absolute;
@@ -981,7 +978,6 @@
           border-radius: 50%;
           transition: all 0.3s ease;
           border: 2px solid black;
-          cursor: pointer;
         }
       }
     }
