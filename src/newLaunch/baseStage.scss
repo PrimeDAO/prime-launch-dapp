@@ -129,8 +129,7 @@
 
 .make-admin-button {
   @include boldButton;
-  margin-top: 40px;
-  margin-bottom: 16px;
+  width: max-content;
 }
 
 .end-stage-subtext {
@@ -433,6 +432,8 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      row-gap: 40px;
+      margin-bottom: 16px;
     }
 
     .csvUploadInputContainer {
