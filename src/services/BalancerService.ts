@@ -1,9 +1,9 @@
 import { TimingService } from "services/TimingService";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
 import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { EthereumService, Networks } from "services/EthereumService";
+import { BalancerSDK, BalancerSdkConfig, Network, SwapInfo, SwapTypes } from "@balancer-labs/sdk";
 import { autoinject } from "aurelia-dependency-injection";
 import { Utils } from "services/utils";
 import { BigNumber, BigNumberish } from "ethers";
