@@ -34,14 +34,12 @@ const getUrl = (network) => {
   switch (network) {
     case "mainnet":
       return `https://safe-transaction.gnosis.io/api/v1/safes/`;
-    case "rinkeby":
-      return `https://safe-transaction.rinkeby.gnosis.io/api/v1/safes/`;
+    case "goerli":
+      return `https://safe-transaction-goerli.safe.global/api/v1/safes/`;
     case "arbitrum":
       return `https://safe-transaction.arbitrum.gnosis.io/api/v1/safes/`;
-    case "celo": // TODO: Check URL
-      return 'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/';
-    // case "alfajores": // TODO: Check URL
-    //   return 'https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/';
+    case "celo":
+      return `https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/`;
     default:
       return `${network}, is not supported yet`;
   }

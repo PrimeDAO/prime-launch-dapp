@@ -63,7 +63,7 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
-      ethereumService.initialize(network ?? (inDev ? Networks.Rinkeby : Networks.Mainnet));
+      ethereumService.initialize(network ?? (inDev ? Networks.Goerli : Networks.Mainnet));
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 

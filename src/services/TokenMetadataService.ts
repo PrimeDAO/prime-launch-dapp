@@ -117,7 +117,7 @@ export default class TokenMetadataService {
           let network = "";
           switch (EthereumService.targetedNetwork) {
             case Networks.Mainnet:
-            case Networks.Rinkeby:
+            case Networks.Goerli:
               network = "ethereum";
               break;
             case Networks.Arbitrum:
