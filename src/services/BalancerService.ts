@@ -1,9 +1,9 @@
 import { TimingService } from "services/TimingService";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { SOR, SwapInfo, SwapTypes } from "@balancer-labs/sor";
 import { AddressZero } from "@ethersproject/constants";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { EthereumService, Networks } from "services/EthereumService";
+import { BalancerSDK, BalancerSdkConfig, Network, SwapInfo, SwapTypes } from "@balancer-labs/sdk";
 import { autoinject } from "aurelia-dependency-injection";
 import { Utils } from "services/utils";
 import { BigNumber, BigNumberish } from "ethers";
@@ -48,11 +48,16 @@ export class BalancerService {
   public async initialize(): Promise<void> {
     try {
       let success = false;
-      const balancerSubgraphUrl = SUBGRAPH_URLS[EthereumService.targetedNetwork];
-      const sor = new SOR(this.ethereumService.readOnlyProvider as any, EthereumService.targetedChainId, balancerSubgraphUrl);
+      const config: BalancerSdkConfig = {
+        network: Network.GOERLI,
+        rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
+      };
+      const balancer = new BalancerSDK(config);
+      const sor = balancer.sor;
+
       if (sor) { // yes, can be undefined
         // Update pools list with most recent onchain balances
-        success = await sor.fetchPools();
+        success = await balancer.sor.fetchPools();
       }
       if (success) {
         this.SOR = sor;
