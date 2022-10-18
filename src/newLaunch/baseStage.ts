@@ -66,10 +66,6 @@ export abstract class BaseStage<IConfig> {
         prefix = "eth:";
         url = "gnosis-safe.io/app/";
         break;
-      case Networks.Rinkeby:
-        prefix = "rin:";
-        url = "gnosis-safe.io/app/";
-        break;
       case Networks.Goerli:
         prefix = "gor:";
         url = "gnosis-safe.io/app/";
