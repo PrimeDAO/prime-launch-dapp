@@ -42,7 +42,7 @@ IPFS_GATEWAY=https://[insert gateway]/${protocol}/${hash}
 
 Following are the two most commonly used commands:
 
-#### Build and serve unoptimized code against rinkeby
+#### Build and serve unoptimized code against goerli
 Best for development and debugging, the output goes to webpack-dev-server for use with your favorate debugger, like VSCode:
 ```
 npm run serve-dev

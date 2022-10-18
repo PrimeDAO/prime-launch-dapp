@@ -23,10 +23,10 @@ export class NetworkFeedback {
     this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === Networks.Mainnet;
     const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
     if (locallyStoredNetwork) {
-      const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Rinkeby;
+      const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Goerli;
 
       const invalidlyStoredTestnet = this.isProductionEnv
-        && [Networks.Rinkeby, Networks.Alfajores, Networks.Kovan].includes(locallyStoredNetwork);
+        && [Networks.Alfajores, Networks.Kovan, Networks.Goerli].includes(locallyStoredNetwork);
       const invalidlyStoredMainnet = !this.isProductionEnv
         && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
       const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);

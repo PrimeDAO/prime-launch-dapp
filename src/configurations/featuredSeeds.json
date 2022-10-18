@@ -6,13 +6,8 @@
       "0xf4bAE84c7a5b7b70C9af54f403E83A7bB367A4Be"
     ]
   },
-  "rinkeby": {
-    "seeds": [
-      "0x745830195253b9ed939A6C834A76d8528F0A6498",
-      "0x530eb21034b3Bf53f33E9842Eff2F223b9782942",
-      "0x9CcEC472455C24b417697590BC793eC146332e82",
-      "0xa11952BAb94Ed472073Ce6773C0af0ff22a41eBe"
-    ]
+  "goerli": {
+    "seeds": []
   },
   "mainnet": {
     "seeds": []
