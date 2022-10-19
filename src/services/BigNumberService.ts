@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import { BigNumber as EthersBigNumber } from "ethers";
 
 BigNumber.config({
   EXPONENTIAL_AT: [-100, 100],
@@ -8,3 +9,41 @@ BigNumber.config({
 
 export const toBigNumberJs = (n: unknown): BigNumber => new BigNumber(n?.toString());
 export default BigNumber;
+
+export class BigNumberService {
+  public min(input: EthersBigNumber[]): EthersBigNumber {
+
+    let minNumber = input[0];
+
+    if (input.length === 1) {
+      return input[0];
+    }
+
+    if (input.length === 2) {
+      minNumber = this.min2(input[0], input[1]);
+      return minNumber;
+    }
+
+
+    const first = input[0];
+    const second = input[1];
+    minNumber = this.min2(first, second);
+    const startAtThirdIndex = 2;
+    for (let i = startAtThirdIndex; i < input.length; i++) {
+      minNumber = (this.min2(minNumber, input[i]));
+      minNumber.toString();/*?*/
+    }
+
+    return minNumber;
+  }
+
+  public min2(first: EthersBigNumber, second: EthersBigNumber): EthersBigNumber {
+    if (!first) return EthersBigNumber.from(0);
+    if (!second) return EthersBigNumber.from(0);
+
+    if (first.lt(second)) {
+      return first;
+    }
+    return second;
+  }
+}

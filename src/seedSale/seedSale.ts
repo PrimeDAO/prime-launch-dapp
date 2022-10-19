@@ -4,7 +4,7 @@ import "./seedSale.scss";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { IContributorClass, Seed } from "entities/Seed";
-import { Address, EthereumService, fromWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
 import { TransactionReceipt } from "services/TransactionsService";
@@ -14,13 +14,14 @@ import { Utils } from "services/utils";
 import { EventConfigException } from "services/GeneralEvents";
 import { GeoBlockService } from "services/GeoBlockService";
 import { BigNumber } from "ethers";
-import { DateService } from "services/DateService";
+import { DateService, TimespanResolution } from "services/DateService";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import dayjs from "dayjs";
 import { LaunchService } from "services/LaunchService";
 import moment from "moment";
+import { BigNumberService } from "services/BigNumberService";
 
 enum Phase {
   None = "None",
@@ -42,7 +43,7 @@ export class SeedSale {
   userUsdBalance: number
 
   classCap: number;
-  classSold: number;
+  classSold: string;
   classPrice: number;
 
   lockDate: string;
@@ -51,7 +52,8 @@ export class SeedSale {
   private accountAddress: Address = null;
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
-  private targetClass: IContributorClass;
+  // @ts-ignore
+  private targetClass: IContributorClass = {};
 
   constructor(
     private numberService: NumberService,
@@ -66,6 +68,7 @@ export class SeedSale {
     private disclaimerService: DisclaimerService,
     private storageService: BrowserStorageService,
     private launchService: LaunchService,
+    private bigNumberService: BigNumberService,
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       await this.hydrateUserData();
@@ -134,8 +137,20 @@ export class SeedSale {
   @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
   get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
 
-  @computedFrom("maxFundable", "seed.userFundingTokenBalance")
-  get maxUserCanPay(): BigNumber { return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0") ? this.maxFundable : this.seed.userFundingTokenBalance; }
+  @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance")
+  get maxUserCanPay(): BigNumber {
+    const args = [
+      this.targetClass.individualCap,
+      this.targetClass.classCap,
+      this.seed.userFundingTokenBalance,
+      this.maxFundable,
+    ];
+    const min = this.bigNumberService.min(args);
+    return min;
+    // return this.maxFundable.lt(this.seed.userFundingTokenBalance || "0")
+    //   ? this.maxFundable
+    //   : this.seed.userFundingTokenBalance;
+  }
 
   @computedFrom("maxUserCanPay")
   get maxUserTokenBalance(): string {
@@ -283,19 +298,16 @@ export class SeedSale {
       await this.hydrateUserData();
       //this.disclaimSeed();
 
-      const convertToDate = (duration) => {
-        const days = Math.round(duration / 1000 / 60 / 24);
-
-        return `${days} days`;
-      };
-
-      this.vestingDate = convertToDate(this.seed.vestingDuration);
-      this.lockDate = convertToDate(this.seed.vestingCliff);
-
       this.targetClass = this.findUserClass(this.seed);
+
+      this.lockDate = this.targetClass.classVestingCliff && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
+      this.vestingDate = this.targetClass.classVestingDuration && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
+
+
       this.classCap = this.seed.classCap;
-      this.classPrice = this.numberService.fromString(fromWei(this.seed.classPrice, this.seed.projectTokenInfo.decimals));
-      this.classSold = this.numberService.fromString(fromWei(this.seed.classSold, this.seed.projectTokenInfo.decimals));
+      let fundRatioForClass = this.targetClass.classFundingCollected.div(this.targetClass.classCap);
+      fundRatioForClass = fundRatioForClass.mul(toWei(100, this.seed.fundingTokenInfo.decimals));
+      this.classSold = `${fundRatioForClass}%`;
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -309,13 +321,10 @@ export class SeedSale {
   }
 
   private findUserClass(seed: Seed): any {
-    const onlyDefaultClass = seed.classes.length === 1;
-    if (onlyDefaultClass) {
-      return seed.classes[0];
-    }
+    const classIndex = seed.usersClass.class;
+    const targetClass = seed.classes[classIndex];
 
-    // TODO
-    return seed.classes[0];
+    return targetClass;
   }
 
   async disclaimSeed(): Promise<boolean> {

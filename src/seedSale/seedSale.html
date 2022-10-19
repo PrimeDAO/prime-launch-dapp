@@ -13,16 +13,14 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div if.bind="!seed.hasNotStarted" class="live-text">•  LIVE</div>
+            <div class="countdown">
+              <time-left if.bind="seed" launch.to-view="seed"></time-left>
+            </div>
             <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
         </div>
         <p class="description">
           ${seed.metadata.projectDetails.proposition}
         </p>
-      <div class="verified">
-        <div class="icon"></div>
-        <div class="text">Verified by Prime Rating</div>
-      </div>
       </div>
       <div class="seed-info col-4">
         <div class="text-container">
@@ -49,17 +47,24 @@
       </div>
       <div class="seed-info col-3 seed-info_time-left">
         <div class="title">
-          TIME LEFT
+          <template if.bind="seed.isLive">TIME LEFT</template>
+          <template else>STARTS IN</template>
         </div>
         <div class="text">
-          ${timeLeft}
+          <template if.bind="seed.isLive">
+            <div class="timer">${seed.endsInMilliseconds | timespan:"minutes":false:true}</div>
+          </template>
+          <template else>
+            <div class="timer">${seed.startsInMilliseconds | timespan:"minutes":false:true}</div>
+          </template>
         </div>
       </div>
     </div>
     <hr />
     <div class="seed-info section toppadding">
       <div class="seed-info halfsection1">
-        <div class="seed-info container">
+        <!-- ================ Section Two ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -121,7 +126,9 @@
             </button>
           </template>
         </div>
-        <div class="seed-info container">
+
+        <!-- ================ Section Three ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -172,7 +179,9 @@
             contribute
           </button>
         </div>
-        <div class="seed-info container2">
+
+        <!-- ================ Section Four ================ -->
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container2">
           <div class="markPosition">
             <div class="questionMark">
               <question-mark text="some text"></question-mark>
@@ -191,7 +200,14 @@
             Retrieve
           </button>
         </div>
+        <div class="notWhitelisted" if.to-view="geoBlocked">
+          Sorry, you are located in a country that is not able to participate.
+        </div>
+        <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
+          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
+        </div>
       </div>
+
       <div class="seed-info halfsection2">
         <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
@@ -205,13 +221,13 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">Your class</div>
-              <div class="class-container__block__text--large">BACKER</div>
+              <div class="class-container__block__text--large">${targetClass.className}</div>
             </div>
             <div class="class-container__block">
               <div class="class-container__block__title">purchase limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
-                <div class="class-container__block__text"><formatted-number value.to-view="classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number>/<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
+                <div class="class-container__block__text"><formatted-number value.to-view="0 | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>
           </div>
@@ -226,11 +242,11 @@
           <div class="row">
             <div class="col">
               <div class="title">SEED TARGET</div>
-              <div class="text">$<formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
+              <div class="text"><formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
             </div>
             <div class="col">
               <div class="title">max seed</div>
-              <div class="text">$<formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
+              <div class="text"><formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
             </div>
             <div class="col">
               <div class="title">valuation</div>
@@ -248,14 +264,7 @@
               <div class="text">${classSold || 'N/A'}</div>
             </div>
             <div class="col">
-              <div class="title">Class price</div>
-              <div class="text">${classPrice || 'N/A'}</div>
-            </div>
-            <div class="col">
-              <div class="tokenPair">
-                <img class="tokenIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
-                <img class="tokenIcon belowToken" src.to-view="seed.projectTokenInfo.logoURI" />
-              </div>
+              <token-pair token1.to-view="seed.projectTokenInfo.logoURI" token2.to-view="seed.fundingTokenInfo.logoURI"></token-pair>
               <div class="text2"><strong>1</strong> ${seed.projectTokenInfo.symbol} = <strong>${seed.fundingTokensPerProjectToken}</strong> ${seed.fundingTokenInfo.symbol}</div>
             </div>
           </div>

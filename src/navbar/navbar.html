@@ -38,6 +38,8 @@
         <!-- <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div> -->
       </div>
       <div if.bind="showDevCode" class="dev-go-to-seed-stage6">
+        <div click.delegate="navigate('/seed/0x5686c46e605b093f32aC6D4F0d9E615d99f71AFe')" class="item">Old Dash</div>
+        <div click.delegate="navigate('/seed-sale/0x5686c46e605b093f32aC6D4F0d9E615d99f71AFe')" class="item">New Dash</div>
         <div click.delegate="navigate('/newSeed/stage6')" class="item">Go to Summary</div>
         <div click.delegate="eventAggregator.publish('dev:use-saved-seed')" class="item">Use Saved</div>
         <div click.delegate="eventAggregator.publish('dev:update-seed')" class="item">Update</div>

@@ -1,9 +1,9 @@
 import { autoinject } from "aurelia-framework";
 import { DialogCloseResult, DialogService } from "services/DialogService";
 import { AddClassModal } from "resources/dialogs/addClass/addClass";
-import { IContributorClass } from "entities/Seed";
+import { IContributorClass, Seed } from "entities/Seed";
 import { ITokenInfo } from "./TokenTypes";
-import { BigNumber } from 'ethers';
+import { BigNumber } from "ethers";
 
 export interface ISeedClass {
   name: string
@@ -11,7 +11,6 @@ export interface ISeedClass {
   individualCap: number
   price: number
   vestingDuration: number
-  classVestingStartTime: number
   classFee: number
 }
 
@@ -29,6 +28,7 @@ export class AddClassService {
       editedClass: IContributorClass | undefined,
       hardCap: BigNumber,
       fundingTokenInfo: ITokenInfo,
+      seed: Seed,
     },
     addFunction: (classToAdd: IContributorClass) => void,
     editFunction: ({ newClass, index }: { newClass: IContributorClass; index: number; }) => void): Promise<DialogCloseResult> {

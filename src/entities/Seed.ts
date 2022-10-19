@@ -16,7 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
-import { parseEther, parseUnits } from "ethers/lib/utils";
+import { formatBytes32String, parseEther, parseUnits } from "ethers/lib/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -37,7 +37,6 @@ export interface IContractContributorClass {
   price: BigNumber,
   vestingDuration : BigNumber,
   classFundingCollected: BigNumber, // Keeps track of how much already was collected
-  classVestingStartTime: BigNumber,
   classFee: BigNumber,
 }
 
@@ -49,7 +48,6 @@ export interface IContributorClass {
   classFundingCollected?: BigNumber,
   classVestingCliff: number; // Vesting cliff for class
   classVestingDuration: number; // Vesting duration for class
-  classVestingStartTime?: number; // NOT SUPPORTED YET
   allowList?: Set<Address>;
 }
 
@@ -80,6 +78,7 @@ export class Seed implements ILaunch {
    * ie, the price of one project (seed) token in units of eth (no precision)
    */
   public fundingTokensPerProjectToken: number;
+  public globalPrice: BigNumber;
   /**
    * in terms of fundingToken
    */
@@ -104,7 +103,8 @@ export class Seed implements ILaunch {
    */
   public fundersClass: IContributorClass;
   public classCap: number;
-  public vestingCliff: number;
+  public vestingCliff = 0;
+  public vestingStartTime = 0;
   public minimumReached: boolean;
   /**
    * the amount of the fundingToken in the seed
@@ -148,6 +148,7 @@ export class Seed implements ILaunch {
   public fundingTokenBalance: BigNumber;
 
   public userIsWhitelisted: boolean;
+  public usersClass: IFunderPortfolio;
   /**
    * claimable project (seed) tokens
    */
@@ -173,12 +174,12 @@ export class Seed implements ILaunch {
 
   @computedFrom("_now")
   public get startsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this._now, this.startTime).asMilliseconds();
+    return this.dateService.getDurationBetween(this.startTime, this._now).asMilliseconds();
   }
 
   @computedFrom("_now")
   public get endsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this._now, this.endTime).asMilliseconds();
+    return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
   }
 
   @computedFrom("_now")
@@ -316,7 +317,8 @@ export class Seed implements ILaunch {
     priceFromContract: BigNumber,
     fundingTokenInfo: ITokenInfo,
     projectTokenInfo: ITokenInfo): string {
-    return fromWei(priceFromContract, Seed.projectTokenPriceDecimals(fundingTokenInfo, projectTokenInfo));
+    const priceInEth = fromWei(priceFromContract, Seed.projectTokenPriceDecimals(fundingTokenInfo, projectTokenInfo));
+    return priceInEth;
   }
 
   private async hydrate(): Promise<void> {
@@ -385,6 +387,12 @@ export class Seed implements ILaunch {
         // },
         {
           contractAddress: this.address,
+          functionName: "price",
+          returnType: "uint256",
+          resultHandler: (result) => { this.globalPrice = result; console.log(result); },
+        },
+        {
+          contractAddress: this.address,
           functionName: "softCap",
           returnType: "uint256",
           resultHandler: (result) => { this.target = result; },
@@ -415,9 +423,9 @@ export class Seed implements ILaunch {
         },
         {
           contractAddress: this.address,
-          functionName: "vestingCliff",
+          functionName: "vestingStartTime",
           returnType: "uint256",
-          resultHandler: (result) => { this.vestingCliff = result.toNumber(); },
+          resultHandler: (result) => { this.vestingStartTime = result.toNumber(); },
         },
         {
           contractAddress: this.address,
@@ -451,36 +459,26 @@ export class Seed implements ILaunch {
         },
       ];
 
-      const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
+      let batcher = this.multiCallService.createBatcher(batchedCalls);
 
-      const rawDefaultClass: IContractContributorClass = await this.contract.classes(0);
-      const defaultClass = convertContractClassToFrontendClass(rawDefaultClass);
-      this.classes.push(defaultClass);
-
-      /**
-       * TODO: use contract method to get all classes
-       */
       try {
-        const rawFirstClass: IContractContributorClass = await this.contract.classes(1);
-        const firstClass = convertContractClassToFrontendClass(rawFirstClass);
-        this.classes.push(firstClass);
+        await batcher.start();
       } catch (error) {
-        // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 462 ~ error", error);
-
+        this.consoleLogService.logMessage(error.message, "error");
       }
+
+      const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
 
       const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
       const individualClass = await this.contract.classes(funders.class ?? funders);
 
-      const exchangeRate = individualClass.price as BigNumber;
+      // const exchangeRate = individualClass.price as BigNumber;
+      const exchangeRate = this.globalPrice;
       this.vestingDuration = individualClass.vestingDuration.toNumber();
       this.classCap = individualClass.classFee;
       this.classPrice = exchangeRate;
       this.classSold = individualClass.classFundingCollected;
 
-      let batcher = this.multiCallService.createBatcher(batchedCalls);
-
-      await batcher.start();
 
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
@@ -599,8 +597,10 @@ export class Seed implements ILaunch {
 
       // can't figure out how to supply the returnType for a struct in the batch
       const lock: IFunderPortfolio = await this.contract.funders(account);
+      this.usersClass = lock;
       this.userCurrentFundingContributions = lock.fundingAmount;
 
+      let classNameCounter = 0;
       let classLoadedSuccessfully = true;
       let classFromContract: IContractContributorClass;
       while (classLoadedSuccessfully) {
@@ -608,11 +608,12 @@ export class Seed implements ILaunch {
           classFromContract = await this.contract.classes(classNameCounter);
         } catch (ex) {
           classLoadedSuccessfully = false;
-        };
+        }
 
         if (classLoadedSuccessfully) {
-          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract);
+          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract, classNameCounter);
           this.classes.push(convertedClass);
+          classNameCounter ++;
         }
       }
 
@@ -769,12 +770,11 @@ export class Seed implements ILaunch {
 
     try {
       const addClassArgs = [
+        classNames.map(name => formatBytes32String(name as string)),
         classCaps,
         individualCaps,
-        prices,
+        classVestingCliffs,
         classVestingDurations,
-        classVestingStartTimes,
-        classFees,
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.addClassBatch(
@@ -796,21 +796,18 @@ export class Seed implements ILaunch {
     classVestingCliff,
     classFee,
   }: Record<string, unknown>): Promise<TransactionReceipt> {
-    const classVestingStartTime = BigNumber.from(this.endTime.getTime() / 1000 + 1);
-
     try {
-      const addClassArgs = [
+      const changeClassArgs = [
+        formatBytes32String(className as string),
         classCap,
         individualCap,
-        price,
+        classVestingCliff,
         classVestingDuration,
-        classVestingStartTime,
-        classFee,
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.changeClass(
         classIndex,
-        ...addClassArgs,
+        ...changeClassArgs,
       ));
       return receipt;
     } catch (ex) {
@@ -878,8 +875,7 @@ export class Seed implements ILaunch {
   }
 }
 
-let classNameCounter = 0;
-function convertContractClassToFrontendClass(contractClass: IContractContributorClass) {
+function convertContractClassToFrontendClass(contractClass: IContractContributorClass, classNameCounter = 0) {
   /**
    * TODO: take class name from contract
    */
@@ -890,13 +886,11 @@ function convertContractClassToFrontendClass(contractClass: IContractContributor
     // classCap: toWei(contractClass.classCap),
     classCap: contractClass.classCap,
     classFundingCollected: contractClass.classFundingCollected,
-    classVestingStartTime: contractClass.classVestingStartTime.toNumber(),
     individualCap: contractClass.individualCap,
     price: contractClass.price,
     classVestingDuration: contractClass.vestingDuration.toNumber(),
     classVestingCliff: contractClass.vestingDuration.toNumber(), // TODO: what should actually go here?
   };
 
-  classNameCounter++;
   return result;
 }

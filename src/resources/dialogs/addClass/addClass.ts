@@ -4,7 +4,7 @@ import { autoinject, observable, computedFrom } from "aurelia-framework";
 import { EthereumService, toWei, fromWei, Address } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
-import { IContributorClass } from "entities/Seed";
+import { IContributorClass, Seed } from "entities/Seed";
 import { EventConfigFailure } from "services/GeneralEvents";
 import { NumberService } from "services/NumberService";
 import { BigNumber } from "ethers";
@@ -27,6 +27,7 @@ export class AddClassModal {
   private okButton: HTMLElement;
   private isEdit = false;
   private loadingAllowlist = false;
+  private __dev_allowList = "";
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
@@ -162,16 +163,21 @@ export class AddClassModal {
 
   fillDummyValues() {
     const daysToSeconds = 60 * 60 * 24;
-    const CLASS_VESTING_DURATION = 30 * daysToSeconds;
-    const CLASS_VESTING_START_TIME = 10 * daysToSeconds;
+    const CLASS_VESTING_DURATION = 1 * daysToSeconds;
+    const CLASS_VESTING_START_TIME = 0 * daysToSeconds;
     this.class = {
       className: "Test Class - " + new Date().toDateString(),
-      classCap: toWei(1000, this.model.params.fundingTokenInfo.decimals),
-      individualCap: toWei(750, this.model.params.fundingTokenInfo.decimals),
+      classCap: toWei(14, this.model.params.fundingTokenInfo.decimals),
+      individualCap: toWei(14, this.model.params.fundingTokenInfo.decimals),
       classVestingDuration: CLASS_VESTING_DURATION,
       classVestingCliff: CLASS_VESTING_START_TIME,
       allowList: undefined,
     };
+  }
+
+  private __dev_addAllowList(address: string): void {
+    const classIndex = this.model.params.index;
+    this.model.params.seed.contract.setClass(address, classIndex);
   }
 }
 
@@ -181,6 +187,7 @@ interface IAddClassModal {
     hardCap: BigNumber,
     fundingTokenInfo: ITokenInfo,
     editedClass: IContributorClass | undefined,
+    seed: Seed,
   },
   addFunction: (newClass: IContributorClass) => void,
   editFunction: ({ editedClass, index }: IParameter) => void,

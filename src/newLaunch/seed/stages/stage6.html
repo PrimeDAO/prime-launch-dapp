@@ -151,8 +151,7 @@
                   <div class="heading heading4">Contributor Class Contribution Limit</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-                      <!-- TODO add data -->
-             10.000
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
                     </div>
                   </div>
                 </div>
@@ -160,8 +159,7 @@
                   <div class="heading heading4">Funding Token Contribution Limit</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-                      <!-- TODO add data -->
-              2
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.individualCap | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
                     </div>
                   </div>
                 </div>
@@ -197,8 +195,7 @@
                   <div class="heading heading4">Allowlist</div>
                   <div class="tokenAmountContainer">
                     <div class="tokenAmount">
-                      <!-- TODO add data -->
-              filename.csv
+                      Allowlist contains ${launchConfig.launchDetails.allowList.length} accounts
                     </div>
                   </div>
                 </div>

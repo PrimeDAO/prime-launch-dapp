@@ -8,6 +8,7 @@ import {
   LaunchConfig,
   IClass,
 } from "newLaunch/launchConfig";
+import { Address } from "services/EthereumService";
 
 export interface ISeedDetails extends ILaunchDetails {
   /**
@@ -22,11 +23,16 @@ export interface ISeedDetails extends ILaunchDetails {
    * In wei
    */
   fundingMax: string,
+  /**
+   * In wei
+   */
+  individualCap: string,
   vestingPeriod: number,
   vestingCliff: number,
   whitelist: string,
   isPermissoned: boolean,
   legalDisclaimer: string,
+  allowList: Address[],
   seedTip: number,
 }
 

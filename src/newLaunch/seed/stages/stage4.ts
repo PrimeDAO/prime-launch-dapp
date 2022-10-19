@@ -31,7 +31,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   lastCheckedFundingAddress: string;
   fundingSymbol: string;
   fundingIcon: string;
-  allowlist: Set<Address>;
+  allowlist: Array<Address>;
   loadingAllowlist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
@@ -59,13 +59,16 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
   }
 
-  async csvChanged(newValue, oldValue) {
+  private async csvChanged(newValue): Promise<void> {
     this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
-    this.allowlist = new Set<string>(csvContent.split(","));
+    const rawCsvContent = new Set<string>(csvContent.split(","));
+    const cleanedCsv = Array.from(rawCsvContent).map(addressCell => addressCell.replace("\n", ""));
+    this.allowlist = cleanedCsv;
+
     this.loadingAllowlist = false;
     // for BE adds allow list param
-    // this.launchConfig.launchDetails.allowList = csvContent;
+    this.launchConfig.launchDetails.allowList = cleanedCsv;
   }
 
   bind(): void {
@@ -108,11 +111,11 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
   @computedFrom("allowlist")
   get allowlistUrlIsValid(): boolean {
-    if (!this.allowlist || !this.allowlist.size) return false;
+    if (!this.allowlist || !this.allowlist.length) return false;
 
     const validAddress = [...this.allowlist]
       .filter((address: Address) => (address && Utils.isAddress(address)));
-    const listIsValid = validAddress.length === this.allowlist.size;
+    const listIsValid = validAddress.length === this.allowlist.length;
     return listIsValid;
   }
 
