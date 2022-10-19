@@ -11,10 +11,6 @@
           <div class="eth"></div>
           <div>Ethereum</div>
         </div>
-        <div if.bind="!isProductionEnv" class="${isActive(Networks.Rinkeby) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Rinkeby)">
-          <div class="eth"></div>
-          <div>Rinkeby</div>
-        </div>
         <div if.bind="!isProductionEnv" class="${isActive(Networks.Goerli) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Goerli)">
           <div class="eth"></div>
           <div>Goerli</div>

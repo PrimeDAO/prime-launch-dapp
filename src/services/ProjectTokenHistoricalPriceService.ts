@@ -1,4 +1,4 @@
-import { SUBGRAPH_URLS } from 'services/BalancerService';
+import { SUBGRAPH_URLS } from "services/BalancerService";
 import { fromWei } from "./EthereumService";
 import { EthereumService, Networks } from "services/EthereumService";
 
@@ -52,7 +52,8 @@ export class ProjectTokenHistoricalPriceService {
       };
     }) || [{ timestamp: 0, priceInUSD: 0 }];
     const res = fundingTokenPricesUSD.filter(price => price.timestamp / 1000 <= timestamp );
-    return res[res.length - 1].priceInUSD;
+
+    return res[res.length - 1]?.priceInUSD ?? 0;
   }
 
   private async getFundingTokenUSDPricesByID(tokenId: string, endTimeSeconds: number, startTimeSeconds: number, intervalMinutes: number): Promise<Array<number>> {
