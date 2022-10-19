@@ -69,9 +69,8 @@ export class SeedService {
       case Networks.Mainnet:
         this.startingBlockNumber = 13764353;
         break;
-      case Networks.Rinkeby:
-        this.startingBlockNumber = 11338489;
-        this.startingBlockNumber = 11418489;
+      case Networks.Goerli:
+        this.startingBlockNumber = 7722221;
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
