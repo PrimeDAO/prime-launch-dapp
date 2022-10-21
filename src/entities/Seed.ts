@@ -137,7 +137,7 @@ export class Seed implements ILaunch {
    */
   public hasEnoughProjectTokens: boolean;
 
-  public feeRemainder: BigNumber;
+  public feeRemainder: BigNumber = BigNumber.from(0);
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
@@ -451,12 +451,12 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.seedAmountRequired = result; },
         },
-        {
-          contractAddress: this.address,
-          functionName: "feeRemainder",
-          returnType: "uint256",
-          resultHandler: (result) => { this.feeRemainder = result; },
-        },
+        // { GONE -> ???
+        //   contractAddress: this.address,
+        //   functionName: "feeRemainder",
+        //   returnType: "uint256",
+        //   resultHandler: (result) => { this.feeRemainder = result; },
+        // },
       ];
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -581,14 +581,14 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.userFundingTokenBalance = result; },
         },
-        {
-          contractAddress: this.address,
-          functionName: "whitelisted",
-          paramTypes: ["address"],
-          paramValues: [account],
-          returnType: "bool",
-          resultHandler: (result) => { whitelisted = result; },
-        },
+        // { GONE -> funders
+        //   contractAddress: this.address,
+        //   functionName: "whitelisted",
+        //   paramTypes: ["address"],
+        //   paramValues: [account],
+        //   returnType: "bool",
+        //   resultHandler: (result) => { whitelisted = result; },
+        // },
       ];
 
       const batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -605,6 +605,7 @@ export class Seed implements ILaunch {
       let classFromContract: IContractContributorClass;
       while (classLoadedSuccessfully) {
         try {
+          /** TODO: execution reverted ISSUE-O3HAH72H */
           classFromContract = await this.contract.classes(classNameCounter);
         } catch (ex) {
           classLoadedSuccessfully = false;
@@ -620,7 +621,8 @@ export class Seed implements ILaunch {
       // const userClass: IContributorClass = classes[lock.class];
       // this.userIndividualCap = userClass.individualCap;
 
-      this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
+      // this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
+      this.userClaimableAmount = BigNumber.from(1);
       this.userCanClaim = this.userClaimableAmount.gt(0);
       const seedAmount = this.seedsFromFunding(lock.fundingAmount);
       /**
