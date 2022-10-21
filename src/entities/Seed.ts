@@ -773,10 +773,8 @@ export class Seed implements ILaunch {
     className,
     classCap,
     individualCap,
-    price,
     classVestingDuration,
     classVestingCliff,
-    classFee,
   }: Record<string, unknown>): Promise<TransactionReceipt> {
     try {
       const changeClassArgs = [

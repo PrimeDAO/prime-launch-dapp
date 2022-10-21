@@ -180,10 +180,8 @@ export class SeedAdminDashboard {
         className: editedClass.className,
         classCap: editedClass.classCap,
         individualCap: editedClass.individualCap,
-        price: editedClass.price,
         classVestingDuration: editedClass.classVestingDuration,
         classVestingCliff: editedClass.classVestingCliff,
-        classFee: BigNumber.from(0),
       });
       if (receipt) {
         Object.assign(this.selectedSeed.classes[index], editedClass);
