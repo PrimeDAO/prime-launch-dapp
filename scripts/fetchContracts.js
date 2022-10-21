@@ -4,7 +4,7 @@ const path = require("path")
 const { exit } = require("process");
 const srcPath = "../launch-contracts/exports";
 const destPath = "./src/contracts";
-const gnosisServiceFilePath = "../launch-contracts/tasks/utils/gnosis.js";
+const gnosisServiceFilePath = "../launch-contracts/lib/gnosis.js";
 const gnosisServiceDestPath = "./src/services/GnosisService.js";
 
 if (!fs.existsSync(srcPath)) {
