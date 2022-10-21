@@ -9,7 +9,6 @@ export interface ISeedClass {
   name: string
   classCap: number
   individualCap: number
-  price: number
   vestingDuration: number
   classFee: number
 }

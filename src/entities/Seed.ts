@@ -16,7 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
-import { formatBytes32String, parseEther, parseUnits } from "ethers/lib/utils";
+import { formatBytes32String } from "ethers/lib/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -31,20 +31,19 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
-export interface IContractContributorClass {
-  classCap: BigNumber,
-  individualCap: BigNumber,
-  price: BigNumber,
-  vestingDuration : BigNumber,
-  classFundingCollected: BigNumber, // Keeps track of how much already was collected
-  classFee: BigNumber,
+export interface IContractContributorClasses {
+  classNames: string[];
+  classCaps: BigNumber[];
+  individualCaps: BigNumber[];
+  vestingDurations: BigNumber[];
+  vestingCliffs: BigNumber[];
+  classFundingsCollected: BigNumber[]; // Keeps track of how much already was collected
 }
 
 export interface IContributorClass {
   className: string;
   classCap: BigNumber; // Amount of tokens that can be donated for class
   individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
-  price?: BigNumber;
   classFundingCollected?: BigNumber,
   classVestingCliff: number; // Vesting cliff for class
   classVestingDuration: number; // Vesting duration for class
@@ -600,26 +599,8 @@ export class Seed implements ILaunch {
       this.usersClass = lock;
       this.userCurrentFundingContributions = lock.fundingAmount;
 
-      let classNameCounter = 0;
-      let classLoadedSuccessfully = true;
-      let classFromContract: IContractContributorClass;
-      while (classLoadedSuccessfully) {
-        try {
-          /** TODO: execution reverted ISSUE-O3HAH72H */
-          classFromContract = await this.contract.classes(classNameCounter);
-        } catch (ex) {
-          classLoadedSuccessfully = false;
-        }
-
-        if (classLoadedSuccessfully) {
-          const convertedClass: IContributorClass = convertContractClassToFrontendClass(classFromContract, classNameCounter);
-          this.classes.push(convertedClass);
-          classNameCounter ++;
-        }
-      }
-
-      // const userClass: IContributorClass = classes[lock.class];
-      // this.userIndividualCap = userClass.individualCap;
+      const classesFromContract: IContractContributorClasses = await this.contract.getAllClasses();
+      this.classes = convertContractClassesToFrontendClasses(classesFromContract);
 
       // this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
       this.userClaimableAmount = BigNumber.from(1);
@@ -763,23 +744,22 @@ export class Seed implements ILaunch {
     classNames,
     classCaps,
     individualCaps,
-    prices,
     classVestingDurations,
     classVestingCliffs,
-    classFees,
   }: Record<string, unknown[]>): Promise<TransactionReceipt> {
-    const classVestingStartTimes = new Array(classCaps.length).fill(BigNumber.from(this.endTime.getTime() / 1000 + 1));
-
     try {
+      const whitelistPlaceholder = Array.from({length: classNames.length}, (_) => []);
+
       const addClassArgs = [
         classNames.map(name => formatBytes32String(name as string)),
         classCaps,
         individualCaps,
         classVestingCliffs,
         classVestingDurations,
+        whitelistPlaceholder,
       ];
 
-      const receipt = await this.transactionsService.send(() => this.contract.addClassBatch(
+      const receipt = await this.transactionsService.send(() => this.contract.addClassesAndAllowlists(
         ...addClassArgs,
       ));
       return receipt;
@@ -877,22 +857,44 @@ export class Seed implements ILaunch {
   }
 }
 
-function convertContractClassToFrontendClass(contractClass: IContractContributorClass, classNameCounter = 0) {
-  /**
-   * TODO: take class name from contract
-   */
-  const className = classNameCounter === 0 ? "Default Class" : `Class ${classNameCounter}`;
-  const result: IContributorClass = {
-    className,
-    // classCap: toWei(contractClass.classCap.toNumber(),
-    // classCap: toWei(contractClass.classCap),
-    classCap: contractClass.classCap,
-    classFundingCollected: contractClass.classFundingCollected,
-    individualCap: contractClass.individualCap,
-    price: contractClass.price,
-    classVestingDuration: contractClass.vestingDuration.toNumber(),
-    classVestingCliff: contractClass.vestingDuration.toNumber(), // TODO: what should actually go here?
-  };
+/**
+ * @example
+ * contractClasses = {
+ *    classNames: [...] // length of this array is number of classes
+      classCaps: [...]
+      individualCaps: [...]
+      vestingDurations: [...]
+      vestingCliffs: [...]
+      classFundingsCollected: [...]
+ * }
 
-  return result;
+    -- convertContractClassesToFrontendClasses(contractClasses) -->
+
+    result: IContributorClass
+ */
+function convertContractClassesToFrontendClasses(contractClasses: IContractContributorClasses) {
+  const numOfClasses = contractClasses[0].length;
+  const allClasses = Array.from({ length: numOfClasses }, () => ({})) as IContributorClass[];
+
+  contractClasses.classNames.forEach((value, index) => {
+    const className = index === 0 ? "Default Class" : Utils.toAscii(value);
+    allClasses[index].className = className;
+  });
+  contractClasses.classCaps.forEach((value, index) => {
+    allClasses[index].classCap = value;
+  });
+  contractClasses.individualCaps.forEach((value, index) => {
+    allClasses[index].individualCap = value;
+  });
+  contractClasses.vestingDurations.forEach((value, index) => {
+    allClasses[index].classVestingDuration = value.toNumber();
+  });
+  contractClasses.vestingCliffs.forEach((value, index) => {
+    allClasses[index].classVestingCliff = value.toNumber();
+  });
+  contractClasses.classFundingsCollected.forEach((value, index) => {
+    allClasses[index].classFundingCollected = value;
+  });
+
+  return allClasses;
 }
