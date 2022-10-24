@@ -180,10 +180,8 @@ export class SeedAdminDashboard {
         className: editedClass.className,
         classCap: editedClass.classCap,
         individualCap: editedClass.individualCap,
-        price: editedClass.price,
         classVestingDuration: editedClass.classVestingDuration,
         classVestingCliff: editedClass.classVestingCliff,
-        classFee: BigNumber.from(0),
       });
       if (receipt) {
         Object.assign(this.selectedSeed.classes[index], editedClass);
@@ -213,18 +211,12 @@ export class SeedAdminDashboard {
     return !this.newlyAddedClassesIndexes.length;
   }
 
-  async deployClassesToContract() {
-    // TODO: Add deployment logic
-    // Differentiate between edited and newly added classes.
-    // Step 1: Deploy batched classes
-    // Step 2: Deploy bached Allowed Lists corresponding to the classes
+  async deployClassesToContract(): Promise<void> {
     const classNames: string[] = [];
     const classCaps: BigNumber[] = [];
     const individualCaps: BigNumber[] = [];
-    const prices: string[] = [];
     const classVestingDurations: number[] = [];
     const classVestingCliffs: number[] = [];
-    const classFees: BigNumber[] = [];
 
     if (this.noAdditions || this.isMinting[-1]) return;
 
@@ -234,17 +226,8 @@ export class SeedAdminDashboard {
       classNames.push(contributorClass.className);
       classCaps.push(contributorClass.classCap);
       individualCaps.push(contributorClass.individualCap);
-
-      const price = parseUnits(
-        "0.01",
-        parseInt("6") - parseInt("18") + 18,
-        // parseInt(fundingTokenDecimal) - parseInt(seedTokenDecimal) + 18,
-      ).toString();
-      prices.push(price); // Temporary;
-
       classVestingDurations.push(contributorClass.classVestingDuration);
       classVestingCliffs.push(contributorClass.classVestingCliff);
-      classFees.push(BigNumber.from(0));
     });
 
     try {
@@ -253,10 +236,8 @@ export class SeedAdminDashboard {
         classNames,
         classCaps,
         individualCaps,
-        prices,
         classVestingDurations,
         classVestingCliffs,
-        classFees,
       });
       if (receipt) {
         this.eventAggregator.publish("handleInfo", "Successfully added changes to the contract.");

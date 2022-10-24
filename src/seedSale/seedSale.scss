@@ -280,6 +280,11 @@
       font-weight: 700;
       font-size: 18px;
       line-height: 22px;
+
+      &:disabled {
+        mix-blend-mode: normal;
+        opacity: 0.43;
+      }
     }
 
     input::placeholder {

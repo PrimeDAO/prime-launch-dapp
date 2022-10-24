@@ -258,10 +258,10 @@ export class NewSeed {
       return Math.random().toString(36).substring(2, 9);
     }
 
-    function download(content: string) {
+    function download(content: string, fileName: string) {
       const element = document.createElement("a");
       element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(content));
-      element.setAttribute("download", `Generated_Seed_${getRandomId()}.json`);
+      element.setAttribute("download", `${fileName}.json`);
 
       element.style.display = "none";
       document.body.appendChild(element);
@@ -274,7 +274,8 @@ export class NewSeed {
     this.subscriptions.push(this.eventAggregator.subscribe("dev:download-seed", () => {
       this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
       const stringify = JSON.stringify(this.launchConfig, null, 4);
-      download(stringify);
+      const fileName = this.launchConfig.general.projectName;
+      download(stringify, fileName);
     }));
   }
 
