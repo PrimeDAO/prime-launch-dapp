@@ -644,7 +644,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
@@ -655,7 +654,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
@@ -666,7 +664,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
