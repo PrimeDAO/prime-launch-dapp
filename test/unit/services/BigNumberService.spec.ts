@@ -1,9 +1,14 @@
 import { BigNumber } from "ethers";
 import { BigNumberService } from "services/BigNumberService";
+import { NumberService } from "services/NumberService";
 
-fdescribe("BigNumberService.spec", () => {
+type InputMatrix<Expected = number> = [string, [number, number], Expected][]
+
+describe("BigNumberService.spec", () => {
+  const numberService = new NumberService();
+  const bigNumberService = new BigNumberService(numberService);
+
   describe("min", () => {
-    const bigNumberService = new BigNumberService();
 
     it("min2", () => {
       const expected = 1000;
@@ -45,6 +50,42 @@ fdescribe("BigNumberService.spec", () => {
       const result = bigNumberService.min(testInput);
 
       expect(result.toNumber()).toBe(expected);
+    });
+  });
+
+  describe("divide", () => {
+    const inputMatrix: InputMatrix = [
+      ["divide - 1/2", [1, 2], 0.5],
+      ["divide - 1/0", [1, 0], 0],
+      ["divide - 1/-2", [1, -2], 0],
+      ["divide - 0/2", [0, 2], 0],
+    ];
+
+    inputMatrix.forEach(([label, [nom, denom], expected]) => {
+      it(label, () => {
+        const finalNom = BigNumber.from(nom);
+        const finalDenom = BigNumber.from(denom);
+        const result = bigNumberService.divide(finalNom, finalDenom);
+        expect(result).toBe(expected);
+      });
+    });
+  });
+
+  describe("fractionString", () => {
+    const inputMatrix: InputMatrix<string> = [
+      ["fractionString - 1/2", [1, 2], "50%"],
+      ["fractionString - 1/0", [1, 0], "0%"],
+      ["fractionString - 1/-2", [1, -2], "0%"],
+      ["fractionString - 0/2", [0, 2], "0%"],
+    ];
+
+    inputMatrix.forEach(([label, [nom, denom], expected]) => {
+      it(label, () => {
+        const finalNom = BigNumber.from(nom);
+        const finalDenom = BigNumber.from(denom);
+        const result = bigNumberService.fractionString(finalNom, finalDenom);
+        expect(result).toBe(expected);
+      });
     });
   });
 });
