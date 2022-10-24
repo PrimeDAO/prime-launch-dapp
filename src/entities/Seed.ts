@@ -16,7 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
-import { formatBytes32String } from "ethers/lib/utils";
+import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -874,7 +874,7 @@ function convertContractClassesToFrontendClasses(contractClasses: IContractContr
   const allClasses = Array.from({ length: numOfClasses }, () => ({})) as IContributorClass[];
 
   contractClasses.classNames.forEach((value, index) => {
-    const className = index === 0 ? "Default Class" : Utils.toAscii(value);
+    const className = index === 0 ? "Default Class" : parseBytes32String(value);
     allClasses[index].className = className;
   });
   contractClasses.classCaps.forEach((value, index) => {

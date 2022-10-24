@@ -42,9 +42,7 @@ export class SeedSale {
   userTokenBalance: string
   userUsdBalance: number
 
-  classCap: number;
   classSold: string;
-  classPrice: number;
 
   lockDate: string;
   vestingDate: string;
@@ -307,10 +305,10 @@ export class SeedSale {
       this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
 
 
-      this.classCap = this.seed.classCap;
-      let fundRatioForClass = this.targetClass.classFundingCollected.div(this.targetClass.classCap);
-      fundRatioForClass = fundRatioForClass.mul(toWei(100, this.seed.fundingTokenInfo.decimals));
-      this.classSold = `${fundRatioForClass}%`;
+      this.classSold = this.bigNumberService.fractionString(
+        this.targetClass.classFundingCollected,
+        this.targetClass.classCap,
+      );
 
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -398,6 +396,17 @@ export class SeedSale {
             await this.hydrateUserData();
             this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
+          }
+        });
+    }
+  }
+
+  async retrieve(): Promise<void> {
+    if (this.seed.userCanRetrieve) {
+      this.seed.retrieveFundingTokens()
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
           }
         });
     }

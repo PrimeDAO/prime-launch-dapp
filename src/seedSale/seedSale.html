@@ -119,7 +119,11 @@
           <div class="text">
             Project tokens will unlock gradually over ${vestingDate} after launch.
           </div>
-          <div class="unlockButton" if.to-view="lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+
+          <!-- Unlock / Contribute button -->
+          <template if.to-view="lockRequired">
+            <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
+          </template>
           <template else>
             <button class="buttonLeft" click.delegate="buy()" disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))">
               contribute
@@ -197,7 +201,7 @@
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
-          <button class="buttonLeft" click.delegate="show3()" disabled>
+          <button class="buttonLeft" click.delegate="retrieve()" disabled.to-view="!seed.userCanRetrieve">
             Retrieve
           </button>
         </div>
@@ -228,7 +232,7 @@
               <div class="class-container__block__title">purchase limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
-                <div class="class-container__block__text"><formatted-number value.to-view="0 | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
+                <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>
           </div>
