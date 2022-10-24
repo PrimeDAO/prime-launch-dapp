@@ -27,6 +27,7 @@ interface IFunderPortfolio {
   class: number;
   totalClaimed: BigNumber;
   fundingAmount: BigNumber;
+  allowlist: boolean;
   // fee: BigNumber;
   // feeClaimed: BigNumber;
 }
@@ -147,7 +148,7 @@ export class Seed implements ILaunch {
   public fundingTokenBalance: BigNumber;
 
   public userIsWhitelisted: boolean;
-  public usersClass: IFunderPortfolio;
+  public usersClass: IContributorClass;
   /**
    * claimable project (seed) tokens
    */
@@ -466,17 +467,8 @@ export class Seed implements ILaunch {
         this.consoleLogService.logMessage(error.message, "error");
       }
 
-      const defaultAccountAddress = this.ethereumService?.defaultAccountAddress;
-
-      const funders = defaultAccountAddress ? await this.contract.funders(defaultAccountAddress) : 0;
-      const individualClass = await this.contract.classes(funders.class ?? funders);
-
-      // const exchangeRate = individualClass.price as BigNumber;
       const exchangeRate = this.globalPrice;
-      this.vestingDuration = individualClass.vestingDuration.toNumber();
-      this.classCap = individualClass.classFee;
       this.classPrice = exchangeRate;
-      this.classSold = individualClass.classFundingCollected;
 
 
       if (rawMetadata && Number(rawMetadata)) {
@@ -559,6 +551,19 @@ export class Seed implements ILaunch {
 
     this.userHydrated = false;
 
+    if (!account) return;
+
+    const lock: IFunderPortfolio = await this.contract.funders(account ?? 0);
+    const classesFromContract: IContractContributorClasses = await this.contract.getAllClasses();
+    this.classes = convertContractClassesToFrontendClasses(classesFromContract);
+    const individualClass = this.classes[lock.class ?? 0];
+    this.usersClass = individualClass;
+    this.userCurrentFundingContributions = lock.fundingAmount;
+
+    // this.vestingDuration = individualClass.vestingDuration.toNumber();
+    // this.classCap = individualClass.classFee;
+    // this.classSold = individualClass.classFundingCollected;
+
     if (account) {
       let whitelisted: boolean;
 
@@ -594,13 +599,7 @@ export class Seed implements ILaunch {
 
       await batcher.start();
 
-      // can't figure out how to supply the returnType for a struct in the batch
-      const lock: IFunderPortfolio = await this.contract.funders(account);
-      this.usersClass = lock;
-      this.userCurrentFundingContributions = lock.fundingAmount;
 
-      const classesFromContract: IContractContributorClasses = await this.contract.getAllClasses();
-      this.classes = convertContractClassesToFrontendClasses(classesFromContract);
 
       // this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
       this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
