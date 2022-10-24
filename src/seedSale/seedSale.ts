@@ -401,6 +401,18 @@ export class SeedSale {
     }
   }
 
+  async claim(): Promise<void> {
+    if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
+      if (!this.projectTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.projectTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
+        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
+      } else {
+        this.seed.claim(this.projectTokenToReceive);
+      }
+    }
+  }
+
   async retrieve(): Promise<void> {
     if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()

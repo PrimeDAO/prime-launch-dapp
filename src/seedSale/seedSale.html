@@ -180,8 +180,8 @@
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <button class="buttonLeft" click.delegate="show2()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
-            contribute
+          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
+            claim
           </button>
         </div>
 
