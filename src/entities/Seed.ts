@@ -603,7 +603,7 @@ export class Seed implements ILaunch {
       this.classes = convertContractClassesToFrontendClasses(classesFromContract);
 
       // this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
-      this.userClaimableAmount = BigNumber.from(1);
+      this.userClaimableAmount = await this.contract.callStatic.calculateClaimFunder(account);
       this.userCanClaim = this.userClaimableAmount.gt(0);
       const seedAmount = this.seedsFromFunding(lock.fundingAmount);
       /**
