@@ -119,7 +119,11 @@
           <div class="text">
             Project tokens will unlock gradually over ${vestingDate} after launch.
           </div>
-          <div class="unlockButton" if.to-view="lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+
+          <!-- Unlock / Contribute button -->
+          <template if.to-view="lockRequired">
+            <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
+          </template>
           <template else>
             <button class="buttonLeft" click.delegate="buy()" disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))">
               contribute
