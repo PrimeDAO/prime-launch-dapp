@@ -389,7 +389,7 @@ export class Seed implements ILaunch {
           contractAddress: this.address,
           functionName: "price",
           returnType: "uint256",
-          resultHandler: (result) => { this.globalPrice = result; console.log(result); },
+          resultHandler: (result) => { this.globalPrice = result; },
         },
         {
           contractAddress: this.address,
