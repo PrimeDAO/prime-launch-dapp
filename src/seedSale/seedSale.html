@@ -88,7 +88,7 @@
                   placeholder="0"
                   id="">
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxBuy()" disabled.to-view="!seed.contributingIsOpen">
+                <div class="maxIcon" click.delegate="handleMaxBuy()" if.to-view="seed.contributingIsOpen">
                   <div class="iconText">
                     MAX
                   </div>
@@ -151,7 +151,7 @@
                   id=""
                   not-wei>
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxClaim()" disabled.to-view="!seed.claimingIsOpen && !seed.userCanClaim">
+                <div class="maxIcon" click.delegate="handleMaxClaim()" if.to-view="seed.claimingIsOpen || seed.userCanClaim">
                   <div class="iconText">
                     MAX
                   </div>
@@ -165,6 +165,7 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
+                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
                   placeholder="0.0"
                   id=""
                   not-wei>
