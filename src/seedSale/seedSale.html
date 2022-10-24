@@ -201,7 +201,7 @@
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
-          <button class="buttonLeft" click.delegate="show3()" disabled>
+          <button class="buttonLeft" click.delegate="retrieve()" disabled.to-view="!seed.userCanRetrieve">
             Retrieve
           </button>
         </div>

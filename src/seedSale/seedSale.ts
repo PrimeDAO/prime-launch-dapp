@@ -402,5 +402,16 @@ export class SeedSale {
         });
     }
   }
+
+  async retrieve(): Promise<void> {
+    if (this.seed.userCanRetrieve) {
+      this.seed.retrieveFundingTokens()
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
+          }
+        });
+    }
+  }
 }
 
