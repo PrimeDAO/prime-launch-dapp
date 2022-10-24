@@ -298,10 +298,13 @@ export class SeedSale {
       await this.hydrateUserData();
       //this.disclaimSeed();
 
-      this.targetClass = this.findUserClass(this.seed);
+      /** Not connected, so just retunr */
+      if (!this.accountAddress) return;
 
-      this.lockDate = this.targetClass.classVestingCliff && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
-      this.vestingDate = this.targetClass.classVestingDuration && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
+      this.targetClass = this.seed.usersClass;
+
+      this.lockDate = this.targetClass.classVestingCliff !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
+      this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
 
 
       this.classCap = this.seed.classCap;
@@ -318,13 +321,6 @@ export class SeedSale {
       }
       this.loading = false;
     }
-  }
-
-  private findUserClass(seed: Seed): any {
-    const classIndex = seed.usersClass.class;
-    const targetClass = seed.classes[classIndex];
-
-    return targetClass;
   }
 
   async disclaimSeed(): Promise<boolean> {
