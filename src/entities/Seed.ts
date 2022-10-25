@@ -97,12 +97,11 @@ export class Seed implements ILaunch {
    * the number of seconds of over which project tokens vest
    */
   public vestingDuration: number;
+  public classCap: number;
   /**
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
-  public fundersClass: IContributorClass;
-  public classCap: number;
   public vestingCliff = 0;
   public vestingStartTime = 0;
   public minimumReached: boolean;
