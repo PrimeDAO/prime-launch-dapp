@@ -217,6 +217,7 @@ export class SeedSale {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
+      if (this.seed) this.targetClass = this.seed.usersClass;
     }
   }
 
