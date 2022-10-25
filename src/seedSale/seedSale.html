@@ -180,9 +180,11 @@
                 </div>
                 <numeric-input
                   disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  value.bind="seed.userPendingAmount"
+                  decimals.bind="seed.projectTokenInfo.decimals"
                   placeholder="0.0"
                   id=""
-                  not-wei>
+                >
                 </numeric-input>
               </div>
               <div class="inputText" show.bind="accountAddress">
