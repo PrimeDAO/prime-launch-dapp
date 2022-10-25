@@ -54,4 +54,14 @@ export class Navbar {
     this.eventAggregator.publish("dev:upload-seed", seedJson);
   }
 
+  private __dev_toNewDashboard(): void {
+    const seedHash = this.router.currentInstruction.params.address;
+    this.router.navigate(`seed-sale/${seedHash}`);
+  }
+
+  private __dev_toOldDashboard(): void {
+    const seedHash = this.router.currentInstruction.params.address;
+    this.router.navigate(`seed/${seedHash}`);
+  }
+
 }
