@@ -123,8 +123,24 @@ export class SeedSale {
     return !!this.ethereumService.defaultAccountAddress && this.seed?.userHydrated;
   }
 
-  @computedFrom("seed.amountRaised")
-  get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
+  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  get hasReachedContributionLimit(): boolean {
+    const cap = this.seed.usersClass.classCap;
+    const raised = this.seed.usersClass.classFundingCollected;
+    const hasReached = raised.gte(cap);
+    return hasReached;
+  }
+
+  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  get maxFundable(): BigNumber {
+    const cap = this.seed.usersClass.classCap;
+    const raised = this.seed.usersClass.classFundingCollected;
+    if (this.hasReachedContributionLimit) {
+      return BigNumber.from(0);
+    }
+
+    return cap.sub(raised);
+  }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
   get projectTokenReward(): number {
@@ -187,6 +203,10 @@ export class SeedSale {
   }
 
   handleMaxBuy() : void {
+    if (this.hasReachedContributionLimit) {
+      this.eventAggregator.publish("handleFailure", "Already reached contribution limit");
+    }
+
     this.fundingTokenToPay = this.maxUserCanPay;
   }
 
