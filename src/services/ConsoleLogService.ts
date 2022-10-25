@@ -131,7 +131,8 @@ export class ConsoleLogService {
      * TODO: maybe have to care for, that not too many listeners will be added
      */
     document.addEventListener("keydown", (ev: KeyboardEvent) => {
-      if (ev.key === letter) { callback(); }
+      const notCtrlKey = ev.ctrlKey === false;
+      if (ev.key === letter && notCtrlKey) { callback(); }
     });
   }
 }
