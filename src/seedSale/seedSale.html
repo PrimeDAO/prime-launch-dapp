@@ -266,7 +266,9 @@
           <div class="row">
             <div class="col">
               <div class="title">Class sold</div>
-              <div class="text">${classSold || 'N/A'}</div>
+              <div class="text">
+                <formatted-number value.to-view="classSold" average mantissa="2"></formatted-number>%
+              </div>
             </div>
             <div class="col">
               <token-pair token1.to-view="seed.projectTokenInfo.logoURI" token2.to-view="seed.fundingTokenInfo.logoURI"></token-pair>

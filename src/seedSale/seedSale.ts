@@ -85,11 +85,11 @@ export class SeedSale {
   }
 
   @computedFrom("targetClass.classFundingCollected", "targetClass.classCap")
-  get classSold(): string {
-    if (this.targetClass.classFundingCollected === undefined) return "";
-    if (this.targetClass.classCap === undefined) return "";
+  get classSold(): number {
+    if (this.targetClass.classFundingCollected === undefined) return NaN;
+    if (this.targetClass.classCap === undefined) return NaN;
 
-    const result = this.bigNumberService.fractionString(
+    const result = this.bigNumberService.fraction(
       this.targetClass.classFundingCollected,
       this.targetClass.classCap,
     );
