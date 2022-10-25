@@ -131,6 +131,9 @@ export class SeedDashboard {
   }
 
   async attached(): Promise<void> {
+    // @ts-ignore
+    window.seedDashboard = this;
+
     let waiting = false;
 
     this.handleNewBlock();
