@@ -42,8 +42,6 @@ export class SeedSale {
   userTokenBalance: string
   userUsdBalance: number
 
-  classSold: string;
-
   lockDate: string;
   vestingDate: string;
 
@@ -84,6 +82,18 @@ export class SeedSale {
 
   formatLink(link: string): string {
     return this.launchService.formatLink(link);
+  }
+
+  @computedFrom("targetClass.classFundingCollected", "targetClass.classCap")
+  get classSold(): string {
+    if (this.targetClass.classFundingCollected === undefined) return "";
+    if (this.targetClass.classCap === undefined) return "";
+
+    const result = this.bigNumberService.fractionString(
+      this.targetClass.classFundingCollected,
+      this.targetClass.classCap,
+    );
+    return result;
   }
 
   @computedFrom("seed.amountRaised", "seed.target")
@@ -303,13 +313,6 @@ export class SeedSale {
 
       this.lockDate = this.targetClass.classVestingCliff !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
       this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
-
-
-      this.classSold = this.bigNumberService.fractionString(
-        this.targetClass.classFundingCollected,
-        this.targetClass.classCap,
-      );
-
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
