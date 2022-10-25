@@ -179,7 +179,7 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  disabled="true"
                   value.bind="seed.userPendingAmount"
                   decimals.bind="seed.projectTokenInfo.decimals"
                   placeholder="0.0"
