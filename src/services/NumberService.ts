@@ -35,7 +35,7 @@ export class NumberService {
    * @param value
    * @param format
    */
-  public toString(value: number | string, options?: IToStringOptions,
+  public toString(value: number | string, options: IToStringOptions = {},
   ): string | null | undefined {
 
     // this helps to display the erroneus value in the GUI

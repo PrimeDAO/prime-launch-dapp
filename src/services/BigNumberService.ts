@@ -1,5 +1,8 @@
+import { autoinject } from "aurelia-framework";
 import { BigNumber } from "bignumber.js";
 import { BigNumber as EthersBigNumber } from "ethers";
+import { fromWei } from "./EthereumService";
+import { NumberService } from "./NumberService";
 
 BigNumber.config({
   EXPONENTIAL_AT: [-100, 100],
@@ -10,7 +13,10 @@ BigNumber.config({
 export const toBigNumberJs = (n: unknown): BigNumber => new BigNumber(n?.toString());
 export default BigNumber;
 
+@autoinject()
 export class BigNumberService {
+  constructor(private numberService: NumberService) {}
+
   public min(input: EthersBigNumber[]): EthersBigNumber {
 
     let minNumber = input[0];
@@ -45,5 +51,42 @@ export class BigNumberService {
       return first;
     }
     return second;
+  }
+
+  public divide(
+    numerator: EthersBigNumber,
+    denominator: EthersBigNumber,
+    numeratorDecimals = 18,
+    denominatorDecimals = 18,
+  ): number {
+    if (denominator.lte(0)) return 0;
+
+    const result =
+      this.numberService.fromString(fromWei(numerator, numeratorDecimals)) /
+      this.numberService.fromString(fromWei(denominator, denominatorDecimals));
+
+    return result;
+  }
+
+  public fraction(
+    numerator: EthersBigNumber,
+    denominator: EthersBigNumber,
+    numeratorDecimals = 18,
+    denominatorDecimals = 18,
+  ): number {
+    const fraction = this.divide(numerator, denominator, numeratorDecimals, denominatorDecimals);
+    const percentageFraction = fraction * 100;
+    return percentageFraction;
+  }
+
+  public fractionString(
+    numerator: EthersBigNumber,
+    denominator: EthersBigNumber,
+    numeratorDecimals = 18,
+    denominatorDecimals = 18,
+  ): string {
+    const fraction = this.divide(numerator, denominator, numeratorDecimals, denominatorDecimals);
+    const percentageFraction = fraction * 100;
+    return `${percentageFraction}%`;
   }
 }

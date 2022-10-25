@@ -177,7 +177,7 @@ export class AddClassModal {
 
   private __dev_addAllowList(address: string): void {
     const classIndex = this.model.params.index;
-    this.model.params.seed.contract.setClass(address, classIndex);
+    this.model.params.seed.contract.allowlist([address], [classIndex]);
   }
 }
 

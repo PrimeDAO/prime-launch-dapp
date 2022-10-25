@@ -42,10 +42,6 @@ export class SeedSale {
   userTokenBalance: string
   userUsdBalance: number
 
-  classCap: number;
-  classSold: string;
-  classPrice: number;
-
   lockDate: string;
   vestingDate: string;
 
@@ -88,6 +84,18 @@ export class SeedSale {
     return this.launchService.formatLink(link);
   }
 
+  @computedFrom("targetClass.classFundingCollected", "targetClass.classCap")
+  get classSold(): number {
+    if (this.targetClass.classFundingCollected === undefined) return NaN;
+    if (this.targetClass.classCap === undefined) return NaN;
+
+    const result = this.bigNumberService.fraction(
+      this.targetClass.classFundingCollected,
+      this.targetClass.classCap,
+    );
+    return result;
+  }
+
   @computedFrom("seed.amountRaised", "seed.target")
   get fractionComplete(): number {
 
@@ -115,8 +123,24 @@ export class SeedSale {
     return !!this.ethereumService.defaultAccountAddress && this.seed?.userHydrated;
   }
 
-  @computedFrom("seed.amountRaised")
-  get maxFundable(): BigNumber { return this.seed.cap.sub(this.seed.amountRaised); }
+  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  get hasReachedContributionLimit(): boolean {
+    const cap = this.seed.usersClass.classCap;
+    const raised = this.seed.usersClass.classFundingCollected;
+    const hasReached = raised.gte(cap);
+    return hasReached;
+  }
+
+  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  get maxFundable(): BigNumber {
+    const cap = this.seed.usersClass.classCap;
+    const raised = this.seed.usersClass.classFundingCollected;
+    if (this.hasReachedContributionLimit) {
+      return BigNumber.from(0);
+    }
+
+    return cap.sub(raised);
+  }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
   get projectTokenReward(): number {
@@ -179,6 +203,10 @@ export class SeedSale {
   }
 
   handleMaxBuy() : void {
+    if (this.hasReachedContributionLimit) {
+      this.eventAggregator.publish("handleFailure", "Already reached contribution limit");
+    }
+
     this.fundingTokenToPay = this.maxUserCanPay;
   }
 
@@ -189,6 +217,7 @@ export class SeedSale {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
+      if (this.seed) this.targetClass = this.seed.usersClass;
     }
   }
 
@@ -305,13 +334,6 @@ export class SeedSale {
 
       this.lockDate = this.targetClass.classVestingCliff !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
       this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
-
-
-      this.classCap = this.seed.classCap;
-      let fundRatioForClass = this.targetClass.classFundingCollected.div(this.targetClass.classCap);
-      fundRatioForClass = fundRatioForClass.mul(toWei(100, this.seed.fundingTokenInfo.decimals));
-      this.classSold = `${fundRatioForClass}%`;
-
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -398,6 +420,29 @@ export class SeedSale {
             await this.hydrateUserData();
             this.congratulationsService.show(`You have contributed ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol} to ${this.seed.metadata.general.projectName}!`);
             this.fundingTokenToPay = null;
+          }
+        });
+    }
+  }
+
+  async claim(): Promise<void> {
+    if (this.seed.claimingIsOpen && this.seed.userCanClaim) {
+      if (!this.projectTokenToReceive?.gt(0)) {
+        this.eventAggregator.publish("handleValidationError", `Please enter the amount of ${this.seed.projectTokenInfo.symbol} you wish to receive`);
+      } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
+        this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
+      } else {
+        this.seed.claim(this.projectTokenToReceive);
+      }
+    }
+  }
+
+  async retrieve(): Promise<void> {
+    if (this.seed.userCanRetrieve) {
+      this.seed.retrieveFundingTokens()
+        .then((receipt) => {
+          if (receipt) {
+            this.hydrateUserData();
           }
         });
     }

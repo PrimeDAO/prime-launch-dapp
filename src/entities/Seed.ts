@@ -16,7 +16,7 @@ import { Utils } from "services/utils";
 import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
-import { formatBytes32String } from "ethers/lib/utils";
+import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -97,12 +97,11 @@ export class Seed implements ILaunch {
    * the number of seconds of over which project tokens vest
    */
   public vestingDuration: number;
+  public classCap: number;
   /**
    * the initial period in seconds of the vestingDuration during which project tokens may not
    * be claimed
    */
-  public fundersClass: IContributorClass;
-  public classCap: number;
   public vestingCliff = 0;
   public vestingStartTime = 0;
   public minimumReached: boolean;
@@ -644,7 +643,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
@@ -655,7 +653,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
@@ -666,7 +663,6 @@ export class Seed implements ILaunch {
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
-          this.hydrateUser();
           return receipt;
         }
       });
@@ -874,7 +870,7 @@ function convertContractClassesToFrontendClasses(contractClasses: IContractContr
   const allClasses = Array.from({ length: numOfClasses }, () => ({})) as IContributorClass[];
 
   contractClasses.classNames.forEach((value, index) => {
-    const className = index === 0 ? "Default Class" : Utils.toAscii(value);
+    const className = index === 0 ? "Default Class" : parseBytes32String(value);
     allClasses[index].className = className;
   });
   contractClasses.classCaps.forEach((value, index) => {

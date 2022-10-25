@@ -4,7 +4,7 @@
       <div class="seedBanner">
         <div class="title heading heading2 ellipses">${seed.metadata.general.projectName}</div>
         <div class="countdown">
-          <time-left launch.to-view="seed"></time-left>
+          <time-left if.bind="seed" launch.to-view="seed"></time-left>
         </div>
         <div class="description subtext">${seed.metadata.projectDetails.proposition}</div>
         <div class="timeLeft">
@@ -43,9 +43,9 @@
 
       <div class="forms">
         <!--
-          ================ 
+          ================
           Section One
-          ================ 
+          ================
         -->
         <div if.to-view="!connected && !geoBlocked" class="section section1">
           <div class="description">Check eligibility</div>
@@ -56,9 +56,9 @@
           <div class="doit"><button class="button1" click.delegate="connect()">CONNECT</button></div>
         </div>
         <!--
-          ================ 
+          ================
           Section Two
-          ================ 
+          ================
         -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section2">
           <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
@@ -122,9 +122,9 @@
           </template>
         </div>
         <!--
-          ================ 
+          ================
           Section Three
-          ================ 
+          ================
         -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section3">
           <div class="description">Claim ${seed.projectTokenInfo.symbol}</div>
@@ -184,9 +184,9 @@
               class="submitButton button1" click.delegate="claim()">CLAIM</button></div>
         </div>
         <!--
-          ================ 
+          ================
           Section Four
-          ================ 
+          ================
         -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
@@ -206,9 +206,9 @@
         </div>
       </div>
       <!--
-          ================ 
+          ================
           Right Column
-          ================ 
+          ================
         -->
       <div class="section seedSummary">
         <div class="label targetLabel">FUNDING TARGET</div>

@@ -95,7 +95,7 @@
                 </div>
               </div>
               <div class="inputText" show.bind="accountAddress">
-                Balance: <formatted-number value.to-view="userTokenBalance" average mantissa="3"></formatted-number>
+                Balance: <tokenbalance token-address.to-view="seed.fundingTokenAddress"> </tokenbalance>
               </div>
             </div>
             <img class="arrow" src="/toRightArrow.svg" />
@@ -119,7 +119,11 @@
           <div class="text">
             Project tokens will unlock gradually over ${vestingDate} after launch.
           </div>
-          <div class="unlockButton" if.to-view="lockRequired"><button class="submitButton button1" click.delegate="unlockFundingTokens()">UNLOCK</button></div>
+
+          <!-- Unlock / Contribute button -->
+          <template if.to-view="lockRequired">
+            <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
+          </template>
           <template else>
             <button class="buttonLeft" click.delegate="buy()" disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))">
               contribute
@@ -141,21 +145,31 @@
             <div class="inputContainer">
               <div class="cryptoInput margin">
                 <div class="half">
-                  <img class="halfIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
-                  <div class="halfText">${seed.fundingTokenInfo.symbol}</div>
+                  <img class="halfIcon" src.to-view="seed.projectTokenInfo.logoURI" />
+                  <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
                   disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  value.bind="projectTokenToReceive"
+                  decimals.bind="seed.projectTokenInfo.decimals"
                   class="withIcon"
                   placeholder="0.0"
                   id=""
-                  not-wei>
+                >
                 </numeric-input>
                 <div class="maxIcon" click.delegate="handleMaxClaim()" if.to-view="seed.claimingIsOpen || seed.userCanClaim">
                   <div class="iconText">
                     MAX
                   </div>
                 </div>
+              </div>
+              <div class="inputText" show.bind="accountAddress">
+                Claimable:
+                <formatted-number
+                  value.to-view="seed.userClaimableAmount | ethwei:seed.projectTokenInfo.decimals"
+                  thousands-separated
+                >
+                </formatted-number>
               </div>
             </div>
             <div class="inputContainer">
@@ -165,19 +179,24 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  disabled="true"
+                  value.bind="seed.userPendingAmount"
+                  decimals.bind="seed.projectTokenInfo.decimals"
                   placeholder="0.0"
                   id=""
-                  not-wei>
+                >
                 </numeric-input>
+              </div>
+              <div class="inputText" show.bind="accountAddress">
+                Pending
               </div>
             </div>
           </div>
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <button class="buttonLeft" click.delegate="show2()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
-            contribute
+          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
+            claim
           </button>
         </div>
 
@@ -197,7 +216,7 @@
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
           </div>
-          <button class="buttonLeft" click.delegate="show3()" disabled>
+          <button class="buttonLeft" click.delegate="retrieve()" disabled.to-view="!seed.userCanRetrieve">
             Retrieve
           </button>
         </div>
@@ -225,10 +244,10 @@
               <div class="class-container__block__text--large">${targetClass.className}</div>
             </div>
             <div class="class-container__block">
-              <div class="class-container__block__title">purchase limit</div>
+              <div class="class-container__block__title">contribution limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
-                <div class="class-container__block__text"><formatted-number value.to-view="0 | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
+                <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>
           </div>
@@ -262,7 +281,9 @@
           <div class="row">
             <div class="col">
               <div class="title">Class sold</div>
-              <div class="text">${classSold || 'N/A'}</div>
+              <div class="text">
+                <formatted-number value.to-view="classSold" average mantissa="2"></formatted-number>%
+              </div>
             </div>
             <div class="col">
               <token-pair token1.to-view="seed.projectTokenInfo.logoURI" token2.to-view="seed.fundingTokenInfo.logoURI"></token-pair>
