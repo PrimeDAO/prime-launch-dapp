@@ -150,16 +150,26 @@
                 </div>
                 <numeric-input
                   disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  value.bind="projectTokenToReceive"
+                  decimals.bind="seed.projectTokenInfo.decimals"
                   class="withIcon"
                   placeholder="0.0"
                   id=""
-                  not-wei>
+                >
                 </numeric-input>
                 <div class="maxIcon" click.delegate="handleMaxClaim()" if.to-view="seed.claimingIsOpen || seed.userCanClaim">
                   <div class="iconText">
                     MAX
                   </div>
                 </div>
+              </div>
+              <div class="inputText" show.bind="accountAddress">
+                Claimable:
+                <formatted-number
+                  value.to-view="seed.userClaimableAmount | ethwei:seed.projectTokenInfo.decimals"
+                  thousands-separated
+                >
+                </formatted-number>
               </div>
             </div>
             <div class="inputContainer">
@@ -174,6 +184,9 @@
                   id=""
                   not-wei>
                 </numeric-input>
+              </div>
+              <div class="inputText" show.bind="accountAddress">
+                Pending
               </div>
             </div>
           </div>
