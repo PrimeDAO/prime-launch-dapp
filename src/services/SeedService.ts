@@ -221,18 +221,12 @@ export class SeedService {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
-    const transaction = {
-      to: seedFactory.address,
-      value: isCeloNetworkLike() ? "0" : 0,
-      operation: 0,
-    } as any;
-
     const pricePerToken = this.projectTokenPriceInWei(
       config.launchDetails.pricePerToken,
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
 
-    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -262,9 +256,17 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
-    transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
-    // console.log("estimating transaction:");
-    // console.dir(transaction);
+
+    const data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+    const transaction = {
+      to: seedFactory.address,
+      value: isCeloNetworkLike() ? "0" : 0,
+      data: data,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
+      operation: 0,
+      safe: safeAddress,
+    } as any;
 
     let estimate;
     if (EthereumService.targetedNetwork === Networks.Arbitrum) {
@@ -275,34 +277,46 @@ export class SeedService {
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
-      nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
-      gasToken: "0x0000000000000000000000000000000000000000",
-      refundReceiver: "0x0000000000000000000000000000000000000000",
-      safe: safeAddress,
+      nonce: await gnosis.getCurrentNonce(),
     });
 
-    const { hash, signature } = await signer.callStatic.generateSignature(
-      transaction.to,
-      transaction.value,
-      transaction.data,
-      transaction.operation,
-      transaction.safeTxGas,
-      transaction.baseGas,
-      transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
-      transaction.nonce,
-    );
+    const { hash, signature } =
+      await signer.callStatic.generateSignature(
+        transaction.to,
+        transaction.value,
+        transaction.data,
+        transaction.operation,
+        transaction.safeTxGas,
+        transaction.baseGas,
+        transaction.gasPrice,
+        transaction.gasToken,
+        transaction.refundReceiver,
+        transaction.nonce,
+      );
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.contractTransactionHash = hash;
     // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
 
     // console.log("generating signature for transaction:");
     // console.dir(transaction);
+    const options = {
+      safe: transaction.safe,
+      to: transaction.to,
+      value: transaction.value,
+      data: transaction.data,
+      operation: transaction.operation,
+      safeTxGas: transaction.safeTxGas,
+      baseGas: transaction.baseGas,
+      gasPrice: transaction.gasPrice,
+      gasToken: transaction.gasToken,
+      refundReceiver: transaction.refundReceiver,
+      nonce: transaction.nonce,
+      contractTransactionHash: hash,
+      sender: signer.address,
+      signature: transaction.signature,
+    };
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,
@@ -321,12 +335,9 @@ export class SeedService {
       return null;
     }
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.sender = signer.address;
-
     this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
 
-    const response = await gnosis.sendTransaction(transaction);
+    const response = await gnosis.sendTransaction(options);
 
     if (response.status !== 201) {
       throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
