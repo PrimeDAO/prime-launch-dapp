@@ -56,7 +56,7 @@
                     ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol})
                   </span>
                   <span class="tokenAmount">
-                    ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
+                    ${fundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals}
                   </span>
                 </div>
               </div>
