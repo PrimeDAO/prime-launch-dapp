@@ -1,14 +1,14 @@
 <template bindable="checked, toggle, disabled">
   <div class="infoInput">
     <div class="labeledQuestion">
-      <label for="permissionedToggle">Set Permission-less SEED</label>
+      <label for="permissionedToggle">Set Permissioned SEED</label>
       <div class="questionMark">
         <question-mark allow-html
           text="TODO">
         </question-mark>
       </div>
     </div>
-    <p class="toggle-description">Permission-less SEED is..</p>
+    <p class="toggle-description">SEED is permissioned..</p>
 
     <div class="checkboxContainer ${!checked ? 'isInactive' : ''}"
       click.delegate="toggle()">
