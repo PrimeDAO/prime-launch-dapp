@@ -47,6 +47,12 @@ export class SeedAdminDashboard {
       this.selectedSeed.projectTokenBalance;
   }
 
+  @computedFrom("selectedSeed.hasNotStarted")
+  get disableClassInteraction(): boolean {
+    const disable = !this.selectedSeed.hasNotStarted;
+    return disable;
+  }
+
   constructor(
     private eventAggregator: EventAggregator,
     private seedService: SeedService,
@@ -197,6 +203,7 @@ export class SeedAdminDashboard {
 
   openAddClassModal(index: number = null): void {
     if (this.isMinting[-1]) return;
+    if (this.disableClassInteraction) return;
 
     const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(

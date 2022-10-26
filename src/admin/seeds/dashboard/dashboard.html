@@ -126,14 +126,14 @@
                         <th><div class="table__center-cell">Class limit</div></th>
                         <th><div class="table__center-cell">Contribution limit</div></th>
                         <th><div class="table__center-cell">Vested (days)</div></th>
-                        <th><div class="table__center-cell">Edit</div></th>
+                        <th if.bind="!disableClassInteraction"><div class="table__center-cell">Edit</div></th>
                       </tr>
                       <tr repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
                         <td>${class.className}</td>
                         <td><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
                         <td><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
                         <td><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
-                        <td>
+                        <td if.bind="!disableClassInteraction">
                           <div class="table__center-cell" if.bind="!isMinting[$index]">
                             <img if.bind="noAdditions || newlyAddedClassesIndexes.includes($index)"
                               class="table__edit-icon"
@@ -152,7 +152,13 @@
                   </div>
                   <div class="actionPanel">
                     <div class="buttonContainer">
-                      <div class="stageButton previousButton ${isMinting[-1] ? 'disabled' : ''}" click.delegate="openAddClassModal()">
+                      <div
+                        class="stageButton previousButton
+                          ${isMinting[-1] ? 'disabled' : ''}
+                          ${disableClassInteraction ? 'disabled' : ''}
+                        "
+                        click.delegate="openAddClassModal()"
+                      >
                         <span>Add Class</span><i class="fas fa-plus"></i>
                       </div>
                     </div>
