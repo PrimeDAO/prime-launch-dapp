@@ -46,23 +46,51 @@
               <div class="featureTitle">
                 Fund Seed
               </div>
-              <div class="">
-                <div class="featureTitle">
-                  Required to fund
+              <div class="classes-overview-container">
+                <div class="classes-overview-container__title">Required to fund</div>
+                <div class="classes-overview-container__table-container">
+                  <table class="classes-overview-container__table">
+                    <tr>
+                      <th>Name</th>
+                      <th><div class="table__center-cell">Token</div></th>
+                      <th><div class="table__center-cell">Amount</div></th>
+                    </tr>
+                    <tr>
+                      <td>Project tokens for sale</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td><div class="table__center-cell">
+                        <formatted-number value.bind="selectedSeed.seedRemainder | ethwei:selectedSeed.projectTokenInfo.decimals"></formatted-number>
+                      </div></td>
+                    </tr>
+                    <tr>
+                      <td>${selectedSeed.seedTip | ethwei:selectedSeed.fundingTokenInfo.decimals} % tip</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td><div class="table__center-cell">
+                        <formatted-number value.bind="selectedSeed.seedTip | ethwei:selectedSeed.projectTokenInfo.decimals"></formatted-number>
+                      </div></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" style="border-bottom: 1px solid #64557D; line-height: 1px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td>
+                        <div class="table__center-cell">
+                          <formatted-number value.bind="fundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals"></formatted-number>
+                        </div>
+                      </td>
+                    </tr>
+
+
+                  </table>
                 </div>
-                <div class="tokenDetails">
-                  <span>
-                    <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>
-                    ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol})
-                  </span>
-                  <span class="tokenAmount">
-                    ${fundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals}
-                  </span>
+                <div class="button1" click.delegate="selectedSeed.fund()">
+                  Fund
                 </div>
               </div>
-              <div class="button1" click.delegate="selectedSeed.fund()">
-                Fund
-              </div>
+
+
               <hr />
             </div>
             <!-- <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
