@@ -857,8 +857,9 @@ export class Seed implements ILaunch {
   }
 
   /**
-   * result = Fund * ( 1 + tip/100 )
+   * result = Fund * ( 1 + tip )
    *                 percentageAmount
+   * (note, `tip` is already stored in percentage fraction)
    */
   public calculateFundWithTip(): BigNumber {
     const percentageAmount = fromWei(toWei(1).add(this.seedTip));
