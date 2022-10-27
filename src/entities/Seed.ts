@@ -5,7 +5,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, Hash } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash, toWei } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -137,6 +137,7 @@ export class Seed implements ILaunch {
   public hasEnoughProjectTokens: boolean;
 
   public feeRemainder: BigNumber = BigNumber.from(0);
+  public seedTip: BigNumber = BigNumber.from(0);
 
   public fundingTokenAddress: Address;
   public fundingTokenInfo: ITokenInfo;
@@ -449,6 +450,12 @@ export class Seed implements ILaunch {
           functionName: "seedAmountRequired",
           returnType: "uint256",
           resultHandler: (result) => { this.seedAmountRequired = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "tip",
+          returnType: "uint256",
+          resultHandler: (result) => { this.seedTip = result; },
         },
         // { GONE -> ???
         //   contractAddress: this.address,
@@ -847,6 +854,21 @@ export class Seed implements ILaunch {
     this.isPaused = await this.contract.paused();
     this.isClosed = await this.contract.closed();
     return this.isPaused || this.isClosed;
+  }
+
+  /**
+   * result = Fund * ( 1 + tip/100 )
+   *                 percentageAmount
+   */
+  public calculateFundWithTip(): BigNumber {
+    const percentageAmount = fromWei(toWei(1).add(this.seedTip));
+    const fundWithTip = BigNumber.from(
+      toBigNumberJs(this.seedRemainder)
+        .multipliedBy(toBigNumberJs(percentageAmount))
+        .toString(),
+    );
+
+    return fundWithTip;
   }
 }
 

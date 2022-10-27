@@ -126,6 +126,11 @@
         }
       }
 
+      .fundButton {
+        margin-bottom: unset; // from .button1
+        width: 45px;
+      }
+
       .buttonContainer {
         margin-top: 24px;
         .previousButton {

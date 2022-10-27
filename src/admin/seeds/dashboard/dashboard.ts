@@ -15,6 +15,7 @@ import { AddClassService } from "services/AddClassService";
 import { IContributorClass } from "entities/Seed";
 import { parseUnits } from "ethers/lib/utils";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import { BigNumberService } from "services/BigNumberService";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -30,6 +31,7 @@ export class SeedAdminDashboard {
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
   isMinting: Record<number, boolean> = {};
+  private fundWithTip: BigNumber;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -61,6 +63,7 @@ export class SeedAdminDashboard {
     private router: Router,
     private addClassService: AddClassService,
     private consoleLogService: ConsoleLogService,
+    private bigNumberService: BigNumberService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -106,6 +109,7 @@ export class SeedAdminDashboard {
         this.selectedSeed = defaultSeed[0];
       }
     }
+    this.fundWithTip = this.selectedSeed?.calculateFundWithTip();
   }
 
   @computedFrom("selectedSeed.isDead")

@@ -11,7 +11,7 @@ describe("NumberService.spec", () => {
       numberService.fromString(BigNumber.from(5), 100000);/*?*/
     });
 
-    fit("toString", () => {
+    it("toString", () => {
       const input = 123.456789;
 
       /** Guard cases */
