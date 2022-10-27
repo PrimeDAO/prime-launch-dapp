@@ -15,6 +15,7 @@ import { AddClassService } from "services/AddClassService";
 import { IContributorClass } from "entities/Seed";
 import { parseUnits } from "ethers/lib/utils";
 import { ConsoleLogService } from "services/ConsoleLogService";
+import { BigNumberService } from "services/BigNumberService";
 
 @autoinject
 export class SeedAdminDashboard {
@@ -62,6 +63,7 @@ export class SeedAdminDashboard {
     private router: Router,
     private addClassService: AddClassService,
     private consoleLogService: ConsoleLogService,
+    private bigNumberService: BigNumberService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
