@@ -68,6 +68,12 @@ export class BigNumberService {
     return result;
   }
 
+  public asPercentageToNumber(input: EthersBigNumber): number {
+    const inputFromWei = this.numberService.fromString(fromWei(input));
+    const percentage = inputFromWei * 100;
+    return percentage;
+  }
+
   public fractionAsPercentageToNumber(
     numerator: EthersBigNumber,
     denominator: EthersBigNumber,
@@ -77,16 +83,5 @@ export class BigNumberService {
     const fraction = this.divide(numerator, denominator, numeratorDecimals, denominatorDecimals);
     const percentageFraction = fraction * 100;
     return percentageFraction;
-  }
-
-  public fractionString(
-    numerator: EthersBigNumber,
-    denominator: EthersBigNumber,
-    numeratorDecimals = 18,
-    denominatorDecimals = 18,
-  ): string {
-    const fraction = this.divide(numerator, denominator, numeratorDecimals, denominatorDecimals);
-    const percentageFraction = fraction * 100;
-    return `${percentageFraction}%`;
   }
 }
