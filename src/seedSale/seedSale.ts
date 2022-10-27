@@ -125,6 +125,8 @@ export class SeedSale {
 
   @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
   get hasReachedContributionLimit(): boolean {
+    if (!this.seed.usersClass) return;
+
     const cap = this.seed.usersClass.classCap;
     const raised = this.seed.usersClass.classFundingCollected;
     const hasReached = raised.gte(cap);
@@ -133,6 +135,8 @@ export class SeedSale {
 
   @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
   get maxFundable(): BigNumber {
+    if (!this.seed.usersClass) return;
+
     const cap = this.seed.usersClass.classCap;
     const raised = this.seed.usersClass.classFundingCollected;
     if (this.hasReachedContributionLimit) {
