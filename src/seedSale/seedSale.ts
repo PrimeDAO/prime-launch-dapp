@@ -89,7 +89,7 @@ export class SeedSale {
     if (this.targetClass.classFundingCollected === undefined) return NaN;
     if (this.targetClass.classCap === undefined) return NaN;
 
-    const result = this.bigNumberService.fraction(
+    const result = this.bigNumberService.fractionAsPercentageToNumber(
       this.targetClass.classFundingCollected,
       this.targetClass.classCap,
     );

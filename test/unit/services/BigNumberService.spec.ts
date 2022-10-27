@@ -3,8 +3,9 @@ import { BigNumberService } from "services/BigNumberService";
 import { NumberService } from "services/NumberService";
 
 type InputMatrix<Expected = number> = [string, [number, number], Expected][]
+type InputMatrixPercentage<Expected = number> = [string, [string], Expected][]
 
-describe("BigNumberService.spec", () => {
+fdescribe("BigNumberService.spec", () => {
   const numberService = new NumberService();
   const bigNumberService = new BigNumberService(numberService);
 
@@ -71,19 +72,34 @@ describe("BigNumberService.spec", () => {
     });
   });
 
-  describe("fractionString", () => {
-    const inputMatrix: InputMatrix<string> = [
-      ["fractionString - 1/2", [1, 2], "50%"],
-      ["fractionString - 1/0", [1, 0], "0%"],
-      ["fractionString - 1/-2", [1, -2], "0%"],
-      ["fractionString - 0/2", [0, 2], "0%"],
+  describe("asPercentageToNumber", () => {
+    const inputMatrix: InputMatrixPercentage = [
+      ["asPercentageToNumber - 0.1", ["100000000000000000"], 10],
+      ["asPercentageToNumber - 1", ["1000000000000000000"], 100],
+    ];
+
+    inputMatrix.forEach(([label, [input], expected]) => {
+      it(label, () => {
+        const finalInput = BigNumber.from(input);
+        const result = bigNumberService.asPercentageToNumber(finalInput);
+        expect(result).toBe(expected);
+      });
+    });
+  });
+
+  describe("fractionAsPercentageToNumber", () => {
+    const inputMatrix: InputMatrix = [
+      ["fractionAsPercentageToNumber - 1/2", [1, 2], 50],
+      ["fractionAsPercentageToNumber - 1/0", [1, 0], 0],
+      ["fractionAsPercentageToNumber - 1/-2", [1, -2], 0],
+      ["fractionAsPercentageToNumber - 0/2", [0, 2], 0],
     ];
 
     inputMatrix.forEach(([label, [nom, denom], expected]) => {
       it(label, () => {
         const finalNom = BigNumber.from(nom);
         const finalDenom = BigNumber.from(denom);
-        const result = bigNumberService.fractionString(finalNom, finalDenom);
+        const result = bigNumberService.fractionAsPercentageToNumber(finalNom, finalDenom);
         expect(result).toBe(expected);
       });
     });

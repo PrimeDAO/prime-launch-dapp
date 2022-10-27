@@ -68,7 +68,7 @@ export class BigNumberService {
     return result;
   }
 
-  public fraction(
+  public fractionAsPercentageToNumber(
     numerator: EthersBigNumber,
     denominator: EthersBigNumber,
     numeratorDecimals = 18,
