@@ -235,8 +235,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
       message = "Please enter a valid wallet address for the Seed Administrator";
-    } else if (!this.launchConfig.launchDetails.seedTip) {
-      message = "Please enter a number equal to or higher than 0% and lower than or equal to 45% for the tips";
     } else if (this.launchConfig.launchDetails.seedTip > 45) {
       message = "Please enter a number lower than or equal to 45% for the tips";
     }
