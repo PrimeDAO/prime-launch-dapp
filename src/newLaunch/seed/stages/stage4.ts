@@ -180,20 +180,20 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else if (!this.launchConfig.launchDetails.pricePerToken) {
       message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.launchConfig.launchDetails.fundingTarget || this.launchConfig.launchDetails.fundingTarget === "0") {
-      message = "Please enter a number greater than zero for the Funding Target";
+      message = "Please enter a number greater than zero for the Funding Tokens Target";
     } else if (!this.launchConfig.launchDetails.fundingMax || this.launchConfig.launchDetails.fundingMax === "0") {
-      message = "Please enter a number greater than zero for the Funding Maximum";
+      message = "Please enter a number greater than zero for the Funding Tokens Maximum";
     } else if (!this.launchConfig.launchDetails.individualCap || this.launchConfig.launchDetails.individualCap === "0") {
       message = "Please enter a number greater than zero for the Funding Token Contribution Limit";
     } else if (this.launchConfig.tokenDetails.projectTokenInfo.address === this.launchConfig.launchDetails.fundingTokenInfo.address) {
       message = "Funding Token and Project Token cannot be the same. Please reenter one or the other.";
     } else if (BigNumber.from(this.launchConfig.launchDetails.fundingTarget).gt(this.launchConfig.launchDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
+      message = "Please enter a value for Funding Tokens Target less than or equal to Funding Tokens Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
       this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
       (this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
         this.launchConfig.launchDetails.pricePerToken)) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
+      message = "Funding Tokens Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingPeriod) || this.launchConfig.launchDetails.vestingPeriod < 0) {
       message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingCliff) || this.launchConfig.launchDetails.vestingCliff < 0) {
