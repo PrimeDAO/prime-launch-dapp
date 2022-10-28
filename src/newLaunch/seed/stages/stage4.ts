@@ -236,11 +236,9 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
       message = "Please enter a valid wallet address for the Seed Administrator";
     } else if (!this.launchConfig.launchDetails.seedTip) {
-      message = "Please enter a number equal to or higher than 1% and lower than or equal to 45% for the tips";
+      message = "Please enter a number equal to or higher than 0% and lower than or equal to 45% for the tips";
     } else if (this.launchConfig.launchDetails.seedTip > 45) {
       message = "Please enter a number lower than or equal to 45% for the tips";
-    } else if (this.launchConfig.launchDetails.seedTip < 1) {
-      message = "Please enter a number equal to or higher than 1% for the tips";
     }
 
     this.stageState.verified = !message;
