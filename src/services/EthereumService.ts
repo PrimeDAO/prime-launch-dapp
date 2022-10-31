@@ -670,6 +670,11 @@ export class EthereumService {
   }
 }
 
+export function capitalizeNetworkName(network: AllowedNetworks = EthereumService.targetedNetwork): string {
+  const capitalizedNetwork = network.charAt(0).toUpperCase() + network.slice(1);
+  return capitalizedNetwork;
+}
+
 /**
  * Either Celo Mainnet or Testnet
  * @param network Default: Network the current wallet is connected to

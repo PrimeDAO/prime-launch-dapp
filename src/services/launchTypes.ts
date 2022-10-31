@@ -1,3 +1,4 @@
+import { ILaunchConfig } from "newLaunch/launchConfig";
 import { Address } from "services/EthereumService";
 import { ITokenInfo } from "./TokenTypes";
 
@@ -27,4 +28,5 @@ export interface ILaunch {
   fundingTokenAddress: Address;
   fundingTokenInfo: ITokenInfo;
   projectTokenInfo: ITokenInfo;
+  metadata: ILaunchConfig;
 }

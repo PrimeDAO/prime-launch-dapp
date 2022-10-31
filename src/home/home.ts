@@ -12,6 +12,7 @@ import { ILaunch } from "services/launchTypes";
 import { LbpManager } from "entities/LbpManager";
 import { Seed } from "entities/Seed";
 import {LbpManagerService} from "../services/LbpManagerService";
+import { filterOutTestLaunches } from "launches/launches";
 
 interface ITabsLaunch {
   id: number
@@ -174,10 +175,11 @@ export class Home {
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
       .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
       .concat((this.lbpManagerService.lbpManagersArray as Array<ILaunch>)
-        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && !lbpMgr.isDead; }))
+        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && !lbpMgr.isDead; }));
+    this.launches = filterOutTestLaunches(this.launches);
+    this.launches = this.launches
       .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
-      .slice(0, 3)
-    ;
+      .slice(0, 3);
 
     this.launchCards = this.launches;
 
