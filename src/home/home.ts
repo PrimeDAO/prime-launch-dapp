@@ -127,6 +127,8 @@ export class Home {
     },
   ];
 
+  private allLaunches: ILaunch[];
+
   constructor(
     private router: Router,
     private seedService: SeedService,
@@ -152,13 +154,13 @@ export class Home {
     this.activeLaunchState = this.launchesState[0];
   }
 
-  setActiveLaunchState(launch: ITabsLaunch): void {
-    this.activeLaunchState = launch;
+  setActiveLaunchState(launchTab: ITabsLaunch): void {
+    this.activeLaunchState = launchTab;
 
-    this.launches = this.launchCards;
-
-    if (launch.title !== "All Launches") {
-      this.launches = this.launches.filter(e => e.launchType === launch.title);
+    if (launchTab.title !== "All Launches") {
+      this.launches = this.allLaunches.filter(e => e.launchType === launchTab.title);
+    } else {
+      this.launches = this.allLaunches;
     }
   }
 
@@ -173,15 +175,15 @@ export class Home {
     await this.lbpManagerService.ensureAllLbpsInitialized();
 
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
-      .filter((seed: Seed) => { return !seed.uninitialized && !seed.corrupt && (seed.hasNotStarted || seed.contributingIsOpen); })
+      .filter((seed: Seed) => { return !seed.corrupt; })
       .concat((this.lbpManagerService.lbpManagersArray as Array<ILaunch>)
-        .filter((lbpMgr: LbpManager) => { return !lbpMgr.uninitialized && !lbpMgr.corrupt && !lbpMgr.isDead; }));
+        .filter((lbpMgr: LbpManager) => { return !lbpMgr.corrupt; }));
     this.launches = filterOutTestLaunches(this.launches);
     this.launches = this.launches
       .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
       .slice(0, 3);
 
-    this.launchCards = this.launches;
+    this.allLaunches = this.launches;
 
     this.loading = false;
   }
