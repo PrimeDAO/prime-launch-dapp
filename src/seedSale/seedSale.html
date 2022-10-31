@@ -282,7 +282,8 @@
             <div class="col">
               <div class="title">Class sold</div>
               <div class="text">
-                <formatted-number value.to-view="classSold" average mantissa="2"></formatted-number>%
+                <formatted-number value.to-view="classSold" average mantissa="2"></formatted-number>
+                <template if.bind="classSold">%</template>
               </div>
             </div>
             <div class="col">
