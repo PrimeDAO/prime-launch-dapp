@@ -93,7 +93,7 @@
 
       .moonshot {
         position: absolute;
-        right: 0;
+        right: 113px;
         z-index: -1;
         background-color: $BG01;
 
@@ -306,7 +306,7 @@
   }
 }
 
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 1530px) {
   .page.home {
     .section {
       &.top {
