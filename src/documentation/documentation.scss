@@ -50,9 +50,79 @@
                         all: revert;
                     }
 
+                    p,
+                    h1,
+                    h2,
+                    h3,
+                    h4 {
+                        all: revert;
+                    }
+
                     a {
                         color: $Secondary03-dev;
                     }
+
+                    p {
+                        line-height: 1.5;
+                        font-weight: 400;
+                        margin-bottom: 16px
+                    }
+
+                    ul {
+                        padding-inline-start: 2em;
+                    }
+
+                    h2 {
+                        font-size: 1.5em;
+                        padding-bottom: 0.3em;
+                        font-weight: 600;
+                        line-height: 1.25;
+                        margin-top: 24px;
+                    }
+
+                    h3 {
+                        font-weight: 600;
+                        line-height: 1.5;
+                        margin-top: 24px;
+                        margin-bottom: 16px;
+                    }
+
+                    img {
+                        width: 600px;
+                        // height: 600px;
+                    }
+
+                    table {
+                        border-spacing: 0;
+                        /* Removes the cell spacing via CSS */
+                        border-collapse: collapse;
+
+                        th {
+                            padding: 6px 13px;
+                            border: 1px solid;
+                        }
+
+                        tr {
+                            border-top: 1px solid;
+
+                            &:nth-child(2n) {
+                                background-color: $BG01;
+                            }
+
+                            td {
+                                width: 215px;
+                                height: 40px;
+                                padding: 6px 13px;
+                                border: 1px solid;
+                            }
+
+                            td:not(td:first-child) {
+                                text-align: center;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+
                 }
             }
 
@@ -60,10 +130,12 @@
                 display: flex;
                 justify-content: space-between;
                 color: $Secondary02;
+
                 .navigationNext {
                     @include standardTextGradient;
                     cursor: pointer;
                 }
+
                 .navigationPrevious {
                     @include standardTextGradientReversed;
                     cursor: pointer;
@@ -75,14 +147,17 @@
 
 @media screen and (max-width: 1072px) {
     .documentsContainer {
-        > .title.heading {
+        >.title.heading {
             font-size: 34px;
         }
+
         .documentContainer {
             grid-template-columns: auto;
+
             .rightSection {
                 padding: 0;
             }
+
             .sidebar {
                 padding-top: 0;
                 margin-bottom: 30px;
@@ -90,8 +165,9 @@
 
             .rightSection {
                 background-color: unset;
+
                 .documentBodyContainer {
-                    > .title.heading {
+                    >.title.heading {
                         font-size: 28px;
                         white-space: normal;
                         line-height: 56px;
