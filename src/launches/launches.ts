@@ -43,6 +43,7 @@ export class Launches {
 
     this.launches = (this.seedService.seedsArray as Array<ILaunch>)
       .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+    this.launches = filterOutTestLaunches(this.launches);
 
     this.loading = false;
   }
@@ -108,4 +109,26 @@ export class Launches {
       this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
     }
   }
+}
+
+
+/**
+   * On Production, we don't want to show "Test" launches.
+   * We have the case of test launches in production due to:
+   *   1. Actually want to perform real tests on production env
+   *   2. Certain networks only have Gnosis Safe on production (ie. Celo)
+   */
+export function filterOutTestLaunches(launches: ILaunch[]): ILaunch[] {
+  const productionUrl = "launch.prime.xyz";
+  const isProductionUrl = window.location.host === productionUrl;
+  if (!isProductionUrl) return launches;
+
+  const filteredLaunches = launches.filter((launch) => {
+    const testIdentifier = "Test";
+    const isTest = launch.metadata.general.projectName.includes(testIdentifier);
+    const isAccepted = !isTest;
+    return isAccepted;
+  });
+
+  return filteredLaunches;
 }
