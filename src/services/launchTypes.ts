@@ -1,3 +1,4 @@
+import { ILaunchConfig } from "newLaunch/launchConfig";
 import { Address } from "services/EthereumService";
 
 export enum LaunchType {
@@ -21,4 +22,5 @@ export interface ILaunch {
   uninitialized: boolean;
   canGoToDashboard: boolean;
   userHydrated: boolean;
+  metadata: ILaunchConfig;
 }
