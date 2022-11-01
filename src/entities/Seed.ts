@@ -32,10 +32,16 @@ interface IFunderPortfolio {
   // feeClaimed: BigNumber;
 }
 
+/**
+ * Note: `interface` instead of `type`, because of type hinting.
+ *   `type ABC = BigNumber` shows `BigNumber` instead of `ABC`
+ */
+export interface IFundingToken extends BigNumber {}
+
 export interface IContractContributorClasses {
   classNames: string[];
-  classCaps: BigNumber[];
-  individualCaps: BigNumber[];
+  classCaps: IFundingToken[];
+  individualCaps: IFundingToken[];
   vestingDurations: BigNumber[];
   vestingCliffs: BigNumber[];
   classFundingsCollected: BigNumber[]; // Keeps track of how much already was collected
@@ -43,9 +49,9 @@ export interface IContractContributorClasses {
 
 export interface IContributorClass {
   className: string;
-  classCap: BigNumber; // Amount of tokens that can be donated for class
-  individualCap: BigNumber; // Amount of tokens that can be donated by specific contributor
-  classFundingCollected?: BigNumber,
+  classCap: IFundingToken; // Amount of tokens that can be donated for class
+  individualCap: IFundingToken; // Amount of tokens that can be donated by specific contributor
+  classFundingCollected?: IFundingToken,
   classVestingCliff: number; // Vesting cliff for class
   classVestingDuration: number; // Vesting duration for class
   allowList?: Set<Address>;
@@ -159,7 +165,7 @@ export class Seed implements ILaunch {
   public userPendingAmount: BigNumber;
   public userCanClaim: boolean;
   public userCurrentFundingContributions: BigNumber;
-  public userFundingTokenBalance: BigNumber;
+  public userFundingTokenBalance: IFundingToken;
   public userIndividualCap: BigNumber;
 
   public initializing = true;
