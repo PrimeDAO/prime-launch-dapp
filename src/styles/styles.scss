@@ -20,6 +20,24 @@
   border-radius: 9px;
 }
 
+@mixin multilineEllipsis(
+  $lines-to-show: 2,
+  $width: 100%,
+  $font-size: $fontSize-base,
+  $line-height: 1.6
+) {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: $width;
+  height: $font-size * $line-height * $lines-to-show; /* Fallback for non-webkit */
+  font-size: $font-size;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 $BodyPaddingLeftRight: 160px;
 $BodyPaddingLeftRightMobile: 20px;
 
