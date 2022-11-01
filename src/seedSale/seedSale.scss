@@ -361,6 +361,11 @@
       background: $Gradient01;
       border-radius: 50px;
 
+      &.disabled {
+        cursor: not-allowed;
+        background: $Neutral02;
+      }
+
       .iconText {
         display: flex;
         justify-content: center;
