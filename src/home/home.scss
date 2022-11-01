@@ -56,7 +56,7 @@
     color: rgba(147, 152, 168, 1);
   }
   .launch-line {
-    border-bottom: 2px solid #292236;
+    border-bottom: 5px solid #292236;
     width: 100%;
     margin-bottom: 40px;
   }
@@ -89,11 +89,11 @@
 
     &.top {
       width: 56%;
-      margin-bottom: 200px;
+      margin-bottom: 272px;
 
       .moonshot {
         position: absolute;
-        right: 0;
+        right: 113px;
         z-index: -1;
         background-color: $BG01;
 
@@ -114,9 +114,10 @@
         font-weight: 700;
         font-size: 24px;
         line-height: 33px;
-        max-width: 560px;
+        max-width: 582px;
         color: $Neutral03;
-        margin-bottom: 200px;
+        margin-bottom: 55px;
+        padding-bottom: 16px;
         white-space: normal;
       }
 
@@ -141,7 +142,7 @@
           background-color: $BG02;
           width: 335px;
 
-          padding: 18px;
+          padding: 24px;
 
           .title {
             display: flex;
@@ -151,7 +152,7 @@
             margin-right: 6px;
 
             .header {
-              font-weight: 600;
+              font-weight: 700;
               font-family: "Aeonik";
               font-size: 28px;
               white-space: nowrap;
@@ -163,7 +164,7 @@
             }
           }
 
-          > .subtitle {
+          >.subtitle {
             color: $Neutral03;
             font-size: 16px;
             font-family: "Inter";
@@ -305,7 +306,7 @@
   }
 }
 
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 1530px) {
   .page.home {
     .section {
       &.top {

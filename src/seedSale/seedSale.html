@@ -88,7 +88,7 @@
                   placeholder="0"
                   id="">
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxBuy()" if.to-view="seed.contributingIsOpen">
+                <div class="maxIcon ${seed.contributingIsOpen ? '' : 'disabled'}" click.delegate="handleMaxBuy()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -157,7 +157,7 @@
                   id=""
                 >
                 </numeric-input>
-                <div class="maxIcon" click.delegate="handleMaxClaim()" if.to-view="seed.claimingIsOpen || seed.userCanClaim">
+                <div class="maxIcon ${seed.claimingIsOpen || seed.userCanClaim ? '' : 'disabled'}" click.delegate="handleMaxClaim()">
                   <div class="iconText">
                     MAX
                   </div>

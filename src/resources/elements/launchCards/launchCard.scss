@@ -1,4 +1,5 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
+
 .launchSummaryContainer {
   display: inline-block;
   cursor: default;
@@ -211,17 +212,13 @@
 .launch-card-description {
   font-family: Inter;
   font-weight: 400;
-  font-size: 14px;
   line-height: 140%;
   color: rgba(220, 218, 229, 1);
   margin-right: 20px;
   margin-left: 20px;
   margin-top: 14px;
 
-  white-space: nowrap;
-  width: 320px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include multilineEllipsis(4, 320px, 14px, 1.4);
 }
 .launch-card-header {
   display: flex;
