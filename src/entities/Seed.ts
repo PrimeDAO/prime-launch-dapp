@@ -862,7 +862,8 @@ export class Seed implements ILaunch {
     return this.isPaused || this.isClosed;
   }
 
-  public getTipAmountFromFunding(): BigNumber {
+  @computedFrom("seedRemainder", "seedTip")
+  get getTipAmountFromFunding(): BigNumber {
     const fundWithTip = BigNumber.from(
       toBigNumberJs(this.seedRemainder)
         .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
@@ -877,7 +878,8 @@ export class Seed implements ILaunch {
    *                 percentageAmount
    * (note, `tip` is already stored in percentage fraction)
    */
-  public calculateFundWithTip(): BigNumber {
+  @computedFrom("seedRemainder", "seedTip")
+  get calculateFundWithTip(): BigNumber {
     const percentageAmount = fromWei(toWei(1).add(this.seedTip));
     const fundWithTip = BigNumber.from(
       toBigNumberJs(this.seedRemainder)
