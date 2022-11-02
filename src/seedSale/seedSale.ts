@@ -3,7 +3,7 @@ import { TokenService } from "services/TokenService";
 import "./seedSale.scss";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { Router } from "aurelia-router";
-import { IContributorClass, Seed } from "entities/Seed";
+import { IContributorClass, IFundingToken, Seed } from "entities/Seed";
 import { Address, EthereumService, fromWei, toWei } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { DisposableCollection } from "services/DisposableCollection";
@@ -134,7 +134,7 @@ export class SeedSale {
   }
 
   @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
-  get maxFundable(): BigNumber {
+  get maxFundable(): IFundingToken {
     if (!this.seed.usersClass) return;
 
     const cap = this.seed.usersClass.classCap;

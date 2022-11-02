@@ -66,7 +66,7 @@
                       <td>${bigNumberService.asPercentageToNumber(selectedSeed.seedTip)}% tip</td>
                       <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
                       <td><div class="table__center-cell">
-                        <formatted-number value.bind="selectedSeed.getTipAmountFromFunding() | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                        <formatted-number value.bind="selectedSeed.getTipAmountFromFunding | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
                       </div></td>
                     </tr>
                     <tr>
@@ -77,7 +77,7 @@
                       <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
                       <td>
                         <div class="table__center-cell">
-                          <formatted-number value.bind="fundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                          <formatted-number value.bind="selectedSeed.calculateFundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
                         </div>
                       </td>
                     </tr>

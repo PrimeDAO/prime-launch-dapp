@@ -31,7 +31,6 @@ export class SeedAdminDashboard {
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
   isMinting: Record<number, boolean> = {};
-  private fundWithTip: BigNumber;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -109,7 +108,6 @@ export class SeedAdminDashboard {
         this.selectedSeed = defaultSeed[0];
       }
     }
-    this.fundWithTip = this.selectedSeed?.calculateFundWithTip();
   }
 
   @computedFrom("selectedSeed.isDead")
