@@ -862,6 +862,16 @@ export class Seed implements ILaunch {
     return this.isPaused || this.isClosed;
   }
 
+  public getTipAmountFromFunding(): BigNumber {
+    const fundWithTip = BigNumber.from(
+      toBigNumberJs(this.seedRemainder)
+        .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
+        .toString(),
+    );
+
+    return fundWithTip;
+  }
+
   /**
    * result = Fund * ( 1 + tip )
    *                 percentageAmount
