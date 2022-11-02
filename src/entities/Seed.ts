@@ -253,6 +253,34 @@ export class Seed implements ILaunch {
     return !this.hasEnoughProjectTokens;
   }
 
+  @computedFrom("seedRemainder", "seedTip")
+  get getTipAmountFromFunding(): BigNumber {
+    const fundWithTip = BigNumber.from(
+      toBigNumberJs(this.seedRemainder)
+        .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
+        .toString(),
+    );
+
+    return fundWithTip;
+  }
+
+  /**
+   * result = Fund * ( 1 + tip )
+   *                 percentageAmount
+   * (note, `tip` is already stored in percentage fraction)
+   */
+  @computedFrom("seedRemainder", "seedTip")
+  get calculateFundWithTip(): BigNumber {
+    const percentageAmount = fromWei(toWei(1).add(this.seedTip));
+    const fundWithTip = BigNumber.from(
+      toBigNumberJs(this.seedRemainder)
+        .multipliedBy(toBigNumberJs(percentageAmount))
+        .toString(),
+    );
+
+    return fundWithTip;
+  }
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
@@ -860,34 +888,6 @@ export class Seed implements ILaunch {
     this.isPaused = await this.contract.paused();
     this.isClosed = await this.contract.closed();
     return this.isPaused || this.isClosed;
-  }
-
-  @computedFrom("seedRemainder", "seedTip")
-  get getTipAmountFromFunding(): BigNumber {
-    const fundWithTip = BigNumber.from(
-      toBigNumberJs(this.seedRemainder)
-        .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
-        .toString(),
-    );
-
-    return fundWithTip;
-  }
-
-  /**
-   * result = Fund * ( 1 + tip )
-   *                 percentageAmount
-   * (note, `tip` is already stored in percentage fraction)
-   */
-  @computedFrom("seedRemainder", "seedTip")
-  get calculateFundWithTip(): BigNumber {
-    const percentageAmount = fromWei(toWei(1).add(this.seedTip));
-    const fundWithTip = BigNumber.from(
-      toBigNumberJs(this.seedRemainder)
-        .multipliedBy(toBigNumberJs(percentageAmount))
-        .toString(),
-    );
-
-    return fundWithTip;
   }
 }
 
