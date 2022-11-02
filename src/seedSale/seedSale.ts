@@ -86,8 +86,8 @@ export class SeedSale {
 
   @computedFrom("targetClass.classFundingCollected", "targetClass.classCap")
   get classSold(): number {
-    if (this.targetClass.classFundingCollected === undefined) return NaN;
-    if (this.targetClass.classCap === undefined) return NaN;
+    if (this.targetClass?.classFundingCollected === undefined) return NaN;
+    if (this.targetClass?.classCap === undefined) return NaN;
 
     const result = this.bigNumberService.fractionAsPercentageToNumber(
       this.targetClass.classFundingCollected,
