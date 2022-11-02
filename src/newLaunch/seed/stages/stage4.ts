@@ -14,6 +14,7 @@ import { Address, capitalizeNetworkName, EthereumService, fromWei, isCeloNetwork
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
+import { splitByWordSeparators } from "services/StringService";
 
 @singleton(false)
 @autoinject
@@ -62,13 +63,12 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   private async csvChanged(newValue): Promise<void> {
     this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
-    const rawCsvContent = new Set<string>(csvContent.split(","));
-    const cleanedCsv = Array.from(rawCsvContent).map(addressCell => addressCell.replace("\n", ""));
-    this.allowlist = cleanedCsv;
+    const cleanedCsv = new Set<string>(splitByWordSeparators(csvContent));
+    this.allowlist = Array.from(cleanedCsv);
 
     this.loadingAllowlist = false;
     // for BE adds allow list param
-    this.launchConfig.launchDetails.allowList = cleanedCsv;
+    this.launchConfig.launchDetails.allowList = Array.from(cleanedCsv);
   }
 
   bind(): void {
