@@ -348,6 +348,8 @@ export class SeedSale {
   }
 
   private async hydrateClassData(seed: Seed): Promise<void> {
+    if (!seed) return;
+
     await Utils.waitUntilTrue(() => !!seed.usersClass, 6000);
     this.targetClass = seed.usersClass;
 
