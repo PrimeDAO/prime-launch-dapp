@@ -66,15 +66,7 @@ export class AddClassModal {
 
   async validateInputs(): Promise<string> {
     let message: string;
-    // Make sure that the Funding Token decimals are comparable (eg USDC has only 6 decimals)
-    const hardCap = toWei(this.numberService.fromString(
-      fromWei(
-        this.model.params.hardCap,
-        this.model.params.fundingTokenInfo.decimals),
-    ));
-
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: addClass.ts ~ line 77 ~ this.class.classVestingDuration", this.class.classVestingDuration);
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: addClass.ts ~ line 79 ~ this.class.classVestingCliff", this.class.classVestingCliff);
+    const hardCap = this.model.params.hardCap;
 
     if (!this.class.className) { /* ⚠️ Empty Class name */
       message = "Please enter a value for Class Name";
