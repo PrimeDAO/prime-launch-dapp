@@ -73,6 +73,9 @@ export class AddClassModal {
         this.model.params.fundingTokenInfo.decimals),
     ));
 
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: addClass.ts ~ line 77 ~ this.class.classVestingDuration", this.class.classVestingDuration);
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: addClass.ts ~ line 79 ~ this.class.classVestingCliff", this.class.classVestingCliff);
+
     if (!this.class.className) { /* ⚠️ Empty Class name */
       message = "Please enter a value for Class Name";
     } else if (!this.class.classCap) {
@@ -85,9 +88,9 @@ export class AddClassModal {
       message = "Please enter a value for Project token Purchase limit that is lower or equal to the Funding Tokens Maximum";
     } else if (this.class.individualCap.gt(this.class.classCap)) { /* ⚠️ IndividualCap ≤ ClassCAP */
       message = "Please enter a value for Project token Purchase limit that is lower or equal to the Class Purchase limit value";
-    } else if (this.class.classVestingDuration === null) {
+    } else if (this.class.classVestingDuration === null || this.class.classVestingDuration === undefined) {
       message = "Please enter a value for \"Project tokens vested for\" ";
-    } else if (this.class.classVestingCliff === null) {
+    } else if (this.class.classVestingCliff === null || this.class.classVestingCliff === undefined) {
       message = "Please enter a value for \"with a cliff of\" ";
     } else if (this.class.classVestingCliff > this.class.classVestingDuration) {
       message = "Please enter a value of \"with a cliff of\" lower or equal to \"Tokens vested for\"";
