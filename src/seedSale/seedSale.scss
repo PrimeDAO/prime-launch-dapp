@@ -361,6 +361,11 @@
       background: $Gradient01;
       border-radius: 50px;
 
+      &.disabled {
+        cursor: not-allowed;
+        background: $Neutral02;
+      }
+
       .iconText {
         display: flex;
         justify-content: center;
@@ -408,6 +413,7 @@
       .halfIcon {
         width: 24px;
         height: 24px;
+        border-radius: 12px;
       }
     }
   }

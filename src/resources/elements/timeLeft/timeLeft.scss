@@ -1,6 +1,8 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
   font-size: 12px;
+  font-family: "Inter";
+
   > div.mainStatus > div,
   > div.adminStatus > div {
     padding: 4px 8px 4px;
