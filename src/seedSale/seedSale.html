@@ -95,7 +95,7 @@
                 </div>
               </div>
               <div class="inputText" show.bind="accountAddress">
-                Balance: <tokenbalance token-address.to-view="seed.fundingTokenAddress"> </tokenbalance>
+                Balance: <tokenbalance if.bind="seed.fundingTokenAddress" token-address.to-view="seed.fundingTokenAddress"> </tokenbalance>
               </div>
             </div>
             <img class="arrow" src="/toRightArrow.svg" />
