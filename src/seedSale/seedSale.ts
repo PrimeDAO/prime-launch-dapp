@@ -68,6 +68,7 @@ export class SeedSale {
   ){
     this.subscriptions.push(this.eventAggregator.subscribe("Contracts.Changed", async () => {
       await this.hydrateUserData();
+      await this.hydrateClassData(this.seed);
     }));
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async (account: Address) => {
       this.accountAddress = account;
@@ -334,10 +335,7 @@ export class SeedSale {
       /** Not connected, so just retunr */
       if (!this.accountAddress) return;
 
-      this.targetClass = this.seed.usersClass;
-
-      this.lockDate = this.targetClass.classVestingCliff !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
-      this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
+      await this.hydrateClassData(seed);
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
     }
@@ -347,6 +345,14 @@ export class SeedSale {
       }
       this.loading = false;
     }
+  }
+
+  private async hydrateClassData(seed: Seed): Promise<void> {
+    await Utils.waitUntilTrue(() => !!seed.usersClass, 6000);
+    this.targetClass = seed.usersClass;
+
+    this.lockDate = this.targetClass.classVestingCliff !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingCliff * 1000, TimespanResolution.largest);
+    this.vestingDate = this.targetClass.classVestingDuration !== undefined && this.dateService.ticksToTimeSpanString(this.targetClass.classVestingDuration * 1000, TimespanResolution.largest);
   }
 
   async disclaimSeed(): Promise<boolean> {
