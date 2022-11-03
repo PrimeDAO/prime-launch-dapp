@@ -1,33 +1,37 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
-const project = require('./aurelia_project/aurelia.json');
-const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
+const project = require("./aurelia_project/aurelia.json");
+const {
+  AureliaPlugin,
+  ModuleDependenciesPlugin,
+} = require("aurelia-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { EnvironmentPlugin } = require("webpack");
-require("dotenv").config({ path: `${ process.env.DOTENV_CONFIG_PATH }`});
+require("dotenv").config({ path: `${process.env.DOTENV_CONFIG_PATH}` });
 
-console.dir({ path: `${process.env.DOTENV_CONFIG_PATH}` })
+console.dir({ path: `${process.env.DOTENV_CONFIG_PATH}` });
 // config helpers:
-const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
+const ensureArray = (config) =>
+  (config && (Array.isArray(config) ? config : [config])) || [];
 const when = (condition, config, negativeConfig) =>
   condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
 const outDir = path.resolve(__dirname, project.platform.output);
-const srcDir = path.resolve(__dirname, 'src');
-const baseUrl = '/';
+const srcDir = path.resolve(__dirname, "src");
+const baseUrl = "/";
 
 const cssRules = [
   {
-    loader: 'css-loader',
+    loader: "css-loader",
     options: {
-      esModule: false
-    }
-  }
+      esModule: false,
+    },
+  },
 ];
 
 const sassRules = [
@@ -35,25 +39,36 @@ const sassRules = [
     loader: "sass-loader",
     options: {
       sassOptions: {
-        includePaths: ['node_modules']
-      }
-    }
-  }
+        includePaths: ["node_modules"],
+      },
+    },
+  },
 ];
 
-module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port, host } = {} ) => {
-  const productionFlagFromEnvFile = process.env.PRODUCTION === "true"
-  production = productionFlagFromEnvFile ? productionFlagFromEnvFile : production
+module.exports = (
+  { production } = {},
+  { extractCss, analyze, tests, hmr, port, host } = {}
+) => {
+  const productionFlagFromEnvFile = process.env.PRODUCTION === "true";
+  production = productionFlagFromEnvFile
+    ? productionFlagFromEnvFile
+    : production;
 
-  const extractCssFlagFromEnvFile = process.env.EXTRACT_CSS === "true"
-  extractCss = extractCssFlagFromEnvFile ? extractCssFlagFromEnvFile : extractCss
+  const extractCssFlagFromEnvFile = process.env.EXTRACT_CSS === "true";
+  extractCss = extractCssFlagFromEnvFile
+    ? extractCssFlagFromEnvFile
+    : extractCss;
 
-  console.log( `Running ${ production ? "PRODUCTION" : "DEVELOPMENT" } build. ${ extractCss ? "" : "Not " }extracting CSS.` )
+  console.log(
+    `Running ${production ? "PRODUCTION" : "DEVELOPMENT"} build. ${
+      extractCss ? "" : "Not "
+    }extracting CSS.`
+  );
 
   return {
     resolve: {
-      extensions: [ '.ts', '.js' ],
-      modules: [ srcDir, 'node_modules' ],
+      extensions: [".ts", ".js"],
+      modules: [srcDir, "node_modules"],
 
       alias: {
         // https://github.com/aurelia/dialog/issues/387
@@ -63,9 +78,12 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
         // https://github.com/aurelia/binding/issues/702
         // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
         // out-of-date dependencies on 3rd party aurelia plugins
-        'aurelia-binding': path.resolve( __dirname, 'node_modules/aurelia-binding' ),
-        "styles": path.resolve( __dirname, "src/styles" ),
-      }
+        "aurelia-binding": path.resolve(
+          __dirname,
+          "node_modules/aurelia-binding"
+        ),
+        styles: path.resolve(__dirname, "src/styles"),
+      },
     },
     fallback: {
       stream: require.resolve("stream-browserify"),
@@ -77,25 +95,31 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
       app: [
         // Uncomment next line if you need to support IE11
         // 'promise-polyfill/src/polyfill',
-        'aurelia-bootstrapper'
-      ]
+        "aurelia-bootstrapper",
+      ],
     },
     node: {
-      fs: "empty"
+      fs: "empty",
     },
-    mode: production ? 'production' : 'development',
+    mode: production ? "production" : "development",
     output: {
       path: outDir,
       publicPath: baseUrl,
-      filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
-      sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[fullhash].bundle.map',
-      chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
+      filename: production
+        ? "[name].[chunkhash].bundle.js"
+        : "[name].[fullhash].bundle.js",
+      sourceMapFilename: production
+        ? "[name].[chunkhash].bundle.map"
+        : "[name].[fullhash].bundle.map",
+      chunkFilename: production
+        ? "[name].[chunkhash].chunk.js"
+        : "[name].[fullhash].chunk.js",
     },
     optimization: {
-      runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
+      runtimeChunk: true, // separates the runtime chunk, required for long term cacheability
       // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
       // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
-      moduleIds: 'deterministic',
+      moduleIds: "deterministic",
       // Use splitChunks to breakdown the App/Aurelia bundle down into smaller chunks
       // https://webpack.js.org/plugins/split-chunks-plugin/
       splitChunks: {
@@ -131,29 +155,32 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
           // },
 
           // This is the HTTP/1.1 optimized cacheGroup configuration.
-          vendors: { // picks up everything from node_modules as long as the sum of node modules is larger than minSize
+          vendors: {
+            // picks up everything from node_modules as long as the sum of node modules is larger than minSize
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
+            name: "vendors",
             priority: 19,
             enforce: true, // causes maxInitialRequests to be ignored, minSize still respected if specified in cacheGroup
-            minSize: 30000 // use the default minSize
+            minSize: 30000, // use the default minSize
           },
-          vendorsAsync: { // vendors async chunk, remaining asynchronously used node modules as single chunk file
+          vendorsAsync: {
+            // vendors async chunk, remaining asynchronously used node modules as single chunk file
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors.async',
-            chunks: 'async',
+            name: "vendors.async",
+            chunks: "async",
             priority: 9,
             reuseExistingChunk: true,
-            minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
+            minSize: 10000, // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
           },
-          commonsAsync: { // commons async chunk, remaining asynchronously used modules as single chunk file
-            name: 'commons.async',
+          commonsAsync: {
+            // commons async chunk, remaining asynchronously used modules as single chunk file
+            name: "commons.async",
             minChunks: 2, // Minimum number of chunks that must share a module before splitting
-            chunks: 'async',
+            chunks: "async",
             priority: 0,
             reuseExistingChunk: true,
-            minSize: 10000  // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
-          }
+            minSize: 10000, // use smaller minSize to avoid too much potential bundle bloat due to module duplication.
+          },
 
           /* This is the HTTP/2 optimized cacheGroup configuration.
           // generic 'initial/sync' vendor node module splits: separates out larger modules
@@ -215,8 +242,8 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
             enforce: true // create chunk regardless of the size of the chunk
           }
           */
-        }
-      }
+        },
+      },
     },
     performance: { hints: false },
     devServer: {
@@ -226,92 +253,123 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
       open: project.platform.open,
       hot: hmr || project.platform.hmr,
       port: port || project.platform.port,
-      host: host
+      host: host,
     },
     devtool: production ? undefined : "cheap-module-source-map",
     module: {
       rules: [
         {
           test: /\.md$/i,
-          use: 'raw-loader',
+          use: "raw-loader",
         },
         // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
         // only when the issuer is a .js/.ts file, so the loaders are not applied inside html templates
         {
           test: /\.css$/i,
           issuer: { not: [/\.html$/i] },
-          use: extractCss ? [ {
-            loader: MiniCssExtractPlugin.loader
-          }, ...cssRules
-          ] : [ 'style-loader', ...cssRules ]
+          use: extractCss
+            ? [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                },
+                ...cssRules,
+              ]
+            : ["style-loader", ...cssRules],
         },
         {
           test: /\.css$/i,
           issuer: /\.html$/i,
           // CSS required in templates cannot be extracted safely
           // because Aurelia would try to require it again in runtime
-          use: cssRules
+          use: cssRules,
         },
         {
           test: /\.scss$/,
-          use: extractCss ? [ {
-            loader: MiniCssExtractPlugin.loader
-          }, ...cssRules, ...sassRules
-          ] : [ 'style-loader', ...cssRules, ...sassRules ],
-          issuer: /\.[tj]s$/i
+          use: extractCss
+            ? [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                },
+                ...cssRules,
+                ...sassRules,
+              ]
+            : ["style-loader", ...cssRules, ...sassRules],
+          issuer: /\.[tj]s$/i,
         },
         {
           test: /\.scss$/,
-          use: [ ...cssRules, ...sassRules ],
-          issuer: /\.html?$/i
+          use: [...cssRules, ...sassRules],
+          issuer: /\.html?$/i,
         },
         // Skip minimize in production build to avoid complain on unescaped < such as
         // <span>${ c < 5 ? c : 'many' }</span>
-        { test: /\.html$/i, loader: 'html-loader', options: { minimize: false } },
+        {
+          test: /\.html$/i,
+          loader: "html-loader",
+          options: { minimize: false },
+        },
         { test: /\.ts$/, loader: "ts-loader" },
         // embed small images and fonts as Data Urls and larger ones as files:
-        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset/resource' },
+        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
         {
           test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-          type: 'asset/resource',
+          type: "asset/resource",
         },
 
         {
-          test: /environment\.json$/i, use: [
-            { loader: "app-settings-loader", options: { env: production ? 'production' : 'development' } },
-          ]
+          test: /environment\.json$/i,
+          use: [
+            {
+              loader: "app-settings-loader",
+              options: { env: production ? "production" : "development" },
+            },
+          ],
         },
-        ...when( tests, {
-          test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
-          include: srcDir, exclude: [ /\.(spec|test)\.[jt]s$/i ],
-          enforce: 'post', options: { esModules: true },
-        } )
-      ]
+        ...when(tests, {
+          test: /\.[jt]s$/i,
+          loader: "istanbul-instrumenter-loader",
+          include: srcDir,
+          exclude: [/\.(spec|test)\.[jt]s$/i],
+          enforce: "post",
+          options: { esModules: true },
+        }),
+      ],
     },
     plugins: [
-      ...when( !tests, new DuplicatePackageCheckerPlugin() ),
+      ...when(!tests, new DuplicatePackageCheckerPlugin()),
       new AureliaPlugin(),
-      new ModuleDependenciesPlugin( {
-        'aurelia-testing': [ './compile-spy', './view-spy' ]
-      } ),
-      new HtmlWebpackPlugin( {
-        template: 'index.ejs',
+      new ModuleDependenciesPlugin({
+        "aurelia-testing": ["./compile-spy", "./view-spy"],
+      }),
+      new HtmlWebpackPlugin({
+        template: "index.ejs",
         metadata: {
           // available in index.ejs //
-          baseUrl
-        }
-      } ),
+          baseUrl,
+        },
+      }),
       // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
-      ...when( extractCss, new MiniCssExtractPlugin( { // updated to match the naming conventions for the js files
-        filename: production ? '[name].[contenthash].bundle.css' : '[fullhash].[hash].bundle.css',
-        chunkFilename: production ? '[name].[contenthash].chunk.css' : '[fullhash].[hash].chunk.css'
-      } ) ),
-      ...when( !tests, new CopyWebpackPlugin( {
-        patterns: [
-          { from: 'static', to: outDir, globOptions: { ignore: [ '.*' ] } }
-        ]
-      } ) ), // ignore dot (hidden) files
-      ...when( analyze, new BundleAnalyzerPlugin() ),
+      ...when(
+        extractCss,
+        new MiniCssExtractPlugin({
+          // updated to match the naming conventions for the js files
+          filename: production
+            ? "[name].[contenthash].bundle.css"
+            : "[fullhash].[hash].bundle.css",
+          chunkFilename: production
+            ? "[name].[contenthash].chunk.css"
+            : "[fullhash].[hash].chunk.css",
+        })
+      ),
+      ...when(
+        !tests,
+        new CopyWebpackPlugin({
+          patterns: [
+            { from: "static", to: outDir, globOptions: { ignore: [".*"] } },
+          ],
+        })
+      ), // ignore dot (hidden) files
+      ...when(analyze, new BundleAnalyzerPlugin()),
       /**
        * Note that the usage of following plugin cleans the webpack output directory before build.
        * In case you want to generate any file in the output path as a part of pre-build step, this plugin will likely
@@ -319,7 +377,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
        * `del` (https://www.npmjs.com/package/del), or `rimraf` (https://www.npmjs.com/package/rimraf).
        */
       new CleanWebpackPlugin(),
-      new EnvironmentPlugin( process.env )
-    ]
-  }
-}
+      new EnvironmentPlugin(process.env),
+    ],
+  };
+};
