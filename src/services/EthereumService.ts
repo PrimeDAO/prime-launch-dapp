@@ -195,7 +195,7 @@ export class EthereumService {
     [44787, "Alfajores"],
   ]);
 
-  private chainIdByName = new Map<AllowedNetworks, number>([
+  public chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Goerli, 5],
     [Networks.Kovan, 42],
