@@ -45,8 +45,7 @@ const sassRules = [
 ];
 
 module.exports = (
-  { production } = {},
-  { extractCss, analyze, tests, hmr, port, host } = {}
+  { production, extractCss, analyze, tests, hmr, port, host, } = {}
 ) => {
   const productionFlagFromEnvFile = process.env.PRODUCTION === "true";
   production = productionFlagFromEnvFile
