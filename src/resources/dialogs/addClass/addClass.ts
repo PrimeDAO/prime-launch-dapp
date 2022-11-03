@@ -10,6 +10,7 @@ import { NumberService } from "services/NumberService";
 import { BigNumber } from "ethers";
 import { Utils } from "services/utils";
 import "./addClass.scss";
+import { splitByWordSeparators } from "services/StringService";
 
 const EMPTY_CLASS = {
   className: undefined,
@@ -47,7 +48,8 @@ export class AddClassModal {
   async csvChanged(newValue, oldValue) {
     this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
-    this.class.allowList = new Set<string>(csvContent.split(","));
+    const cleanedCsv = new Set<string>(splitByWordSeparators(csvContent));
+    this.class.allowList = cleanedCsv;
     this.loadingAllowlist = false;
   }
 
