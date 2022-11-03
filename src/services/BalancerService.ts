@@ -47,7 +47,7 @@ export class BalancerService {
     try {
       let success = false;
       const config: BalancerSdkConfig = {
-        network: Network.GOERLI,
+        network: this.ethereumService.chainIdByName.get(EthereumService.targetedNetwork),
         rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
       };
       const balancer = new BalancerSDK(config);
