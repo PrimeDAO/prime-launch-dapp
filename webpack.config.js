@@ -67,6 +67,12 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
         "styles": path.resolve( __dirname, "src/styles" ),
       }
     },
+    fallback: {
+      stream: require.resolve("stream-browserify"),
+      os: require.resolve("os-browserify/browser"),
+      http: require.resolve("stream-http"),
+      https: require.resolve("https-browserify"),
+    },
     entry: {
       app: [
         // Uncomment next line if you need to support IE11
@@ -81,15 +87,15 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
     output: {
       path: outDir,
       publicPath: baseUrl,
-      filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-      sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-      chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+      filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
+      sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[fullhash].bundle.map',
+      chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
     },
     optimization: {
       runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
       // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
       // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
-      moduleIds: 'hashed',
+      moduleIds: 'deterministic',
       // Use splitChunks to breakdown the App/Aurelia bundle down into smaller chunks
       // https://webpack.js.org/plugins/split-chunks-plugin/
       splitChunks: {
@@ -222,7 +228,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
       port: port || project.platform.port,
       host: host
     },
-    devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
+    devtool: production ? undefined : "cheap-module-source-map",
     module: {
       rules: [
         {
@@ -233,7 +239,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
         // only when the issuer is a .js/.ts file, so the loaders are not applied inside html templates
         {
           test: /\.css$/i,
-          issuer: [ { not: [ { test: /\.html$/i } ] } ],
+          issuer: { not: [/\.html$/i] },
           use: extractCss ? [ {
             loader: MiniCssExtractPlugin.loader
           }, ...cssRules
@@ -241,7 +247,7 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
         },
         {
           test: /\.css$/i,
-          issuer: [ { test: /\.html$/i } ],
+          issuer: /\.html$/i,
           // CSS required in templates cannot be extracted safely
           // because Aurelia would try to require it again in runtime
           use: cssRules
@@ -259,14 +265,17 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
           use: [ ...cssRules, ...sassRules ],
           issuer: /\.html?$/i
         },
-        { test: /\.html$/i, loader: 'html-loader' },
+        // Skip minimize in production build to avoid complain on unescaped < such as
+        // <span>${ c < 5 ? c : 'many' }</span>
+        { test: /\.html$/i, loader: 'html-loader', options: { minimize: false } },
         { test: /\.ts$/, loader: "ts-loader" },
         // embed small images and fonts as Data Urls and larger ones as files:
-        { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
-        { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
-        { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
-        // load these fonts normally, as files:
-        { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+        { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset/resource' },
+        {
+          test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
+          type: 'asset/resource',
+        },
+
         {
           test: /environment\.json$/i, use: [
             { loader: "app-settings-loader", options: { env: production ? 'production' : 'development' } },
@@ -294,8 +303,8 @@ module.exports = ( { production } = {}, { extractCss, analyze, tests, hmr, port,
       } ),
       // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
       ...when( extractCss, new MiniCssExtractPlugin( { // updated to match the naming conventions for the js files
-        filename: production ? '[name].[contenthash].bundle.css' : '[name].[hash].bundle.css',
-        chunkFilename: production ? '[name].[contenthash].chunk.css' : '[name].[hash].chunk.css'
+        filename: production ? '[name].[contenthash].bundle.css' : '[fullhash].[hash].bundle.css',
+        chunkFilename: production ? '[name].[contenthash].chunk.css' : '[fullhash].[hash].chunk.css'
       } ) ),
       ...when( !tests, new CopyWebpackPlugin( {
         patterns: [
