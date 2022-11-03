@@ -44,8 +44,16 @@ const sassRules = [
   },
 ];
 
+const httpsCorsRules = {
+  "Access-Control-Allow-Origin": "*",
+  // "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+  "Access-Control-Allow-Methods": "GET",
+  "Access-Control-Allow-Headers":
+    "X-Requested-With, content-type, Authorization",
+};
+
 module.exports = (
-  { production, extractCss, analyze, tests, hmr, port, host, } = {}
+  { production, extractCss, analyze, tests, hmr, port, host, https } = {}
 ) => {
   const productionFlagFromEnvFile = process.env.PRODUCTION === "true";
   production = productionFlagFromEnvFile
@@ -254,8 +262,8 @@ module.exports = (
       client: {
         overlay: false,
       },
-      // server: https ? 'https' : 'http',
-      // headers: https ? httpsCorsRules : {}
+      server: https ? 'https' : 'http',
+      headers: https ? httpsCorsRules : {}
     },
     devtool: production ? undefined : "cheap-module-source-map",
     module: {
