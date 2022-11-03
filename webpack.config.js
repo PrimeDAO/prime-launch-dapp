@@ -2,7 +2,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const project = require("./aurelia_project/aurelia.json");
 const {
   AureliaPlugin,
@@ -340,7 +339,12 @@ module.exports = (
       ],
     },
     plugins: [
-      ...when(!tests, new DuplicatePackageCheckerPlugin()),
+      // Work around for Buffer is undefined:
+      // https://github.com/webpack/changelog-v5/issues/10
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer'],
+      }),
       new AureliaPlugin(),
       new ModuleDependenciesPlugin({
         "aurelia-testing": ["./compile-spy", "./view-spy"],
