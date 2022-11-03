@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://localhost:3330",
+  "fileServerFolder": "src",
+  "integrationFolder": "cypress/integration",
+  "pluginsFile": "cypress/plugins/index.js",
+  "supportFile": "cypress/support/index.js",
+  "testFiles": "**/*.feature",
+  "experimentalStudio": true
+}
