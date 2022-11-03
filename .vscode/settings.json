@@ -7,4 +7,12 @@
     "editor.formatOnSave": false
   },
   "files.eol": "\n",
+
+   // VSCucumberAutoComplete
+  "cucumberautocomplete.steps": [
+		"cypress/integration/**/*.ts",
+		"cypress/integration/common/**/*.ts",
+    ],
+	"cucumberautocomplete.strictGherkinCompletion": true,
+	"cucumberautocomplete.syncfeatures": true,
 }
