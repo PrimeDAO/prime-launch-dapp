@@ -110,15 +110,11 @@ module.exports = (
     output: {
       path: outDir,
       publicPath: baseUrl,
-      filename: production
-        ? "[name].[chunkhash].bundle.js"
-        : "[name].[fullhash].bundle.js",
-      sourceMapFilename: production
-        ? "[name].[chunkhash].bundle.map"
-        : "[name].[fullhash].bundle.map",
+      filename: production ? "[name].[chunkhash].bundle.js" : "[name].bundle.js",
+      sourceMapFilename: production ? "[name].[chunkhash].bundle.map" : undefined,
       chunkFilename: production
         ? "[name].[chunkhash].chunk.js"
-        : "[name].[fullhash].chunk.js",
+        : "[name].chunk.js",
     },
     optimization: {
       runtimeChunk: true, // separates the runtime chunk, required for long term cacheability
@@ -370,10 +366,10 @@ module.exports = (
           // updated to match the naming conventions for the js files
           filename: production
             ? "[name].[contenthash].bundle.css"
-            : "[fullhash].[hash].bundle.css",
+            : "[name].[fullhash].bundle.css",
           chunkFilename: production
             ? "[name].[contenthash].chunk.css"
-            : "[fullhash].[hash].chunk.css",
+            : "[name].[fullhash].chunk.css",
         })
       ),
       ...when(
