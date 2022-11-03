@@ -1,7 +1,7 @@
 import { DialogController } from "aurelia-dialog";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject, observable, computedFrom } from "aurelia-framework";
-import { EthereumService, toWei, fromWei, Address } from "services/EthereumService";
+import { EthereumService, toWei, Address } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenService";
 import { LaunchService } from "services/LaunchService";
 import { IContributorClass, Seed } from "entities/Seed";
@@ -45,7 +45,7 @@ export class AddClassModal {
     this.isDev = process.env.NODE_ENV === "development" && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
   }
 
-  async csvChanged(newValue, oldValue) {
+  private async csvChanged(newValue: File[]): Promise<void> {
     this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
     const cleanedCsv = new Set<string>(splitByWordSeparators(csvContent));

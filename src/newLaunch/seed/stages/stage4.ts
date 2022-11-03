@@ -60,7 +60,7 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
   }
 
-  private async csvChanged(newValue): Promise<void> {
+  private async csvChanged(newValue: File[]): Promise<void> {
     this.loadingAllowlist = true;
     const csvContent = newValue && await newValue[0].text();
     const cleanedCsv = new Set<string>(splitByWordSeparators(csvContent));
