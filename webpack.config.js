@@ -78,18 +78,20 @@ module.exports = (
         // https://github.com/aurelia/binding/issues/702
         // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
         // out-of-date dependencies on 3rd party aurelia plugins
-        "aurelia-binding": path.resolve(
-          __dirname,
-          "node_modules/aurelia-binding"
-        ),
+        "aurelia-binding": path.resolve(__dirname, "node_modules/aurelia-binding"),
+        process: 'process/browser',
+        buffer: 'buffer',
         styles: path.resolve(__dirname, "src/styles"),
+        static: path.resolve( __dirname, 'src/static' ),
       },
-    },
-    fallback: {
-      stream: require.resolve("stream-browserify"),
-      os: require.resolve("os-browserify/browser"),
-      http: require.resolve("stream-http"),
-      https: require.resolve("https-browserify"),
+      fallback: {
+        crypto: require.resolve( 'crypto-browserify' ),
+        stream: require.resolve( 'stream-browserify' ),
+        os: require.resolve( 'os-browserify/browser' ),
+        http: require.resolve( 'stream-http' ),
+        https: require.resolve( 'https-browserify' ),
+        buffer: require.resolve( 'buffer/' ),
+      },
     },
     entry: {
       app: [
@@ -97,9 +99,6 @@ module.exports = (
         // 'promise-polyfill/src/polyfill',
         "aurelia-bootstrapper",
       ],
-    },
-    node: {
-      fs: "empty",
     },
     mode: production ? "production" : "development",
     output: {
@@ -247,13 +246,18 @@ module.exports = (
     },
     performance: { hints: false },
     devServer: {
-      contentBase: outDir,
+      static: outDir,
       // serve index.html for all 404 (required for push-state)
       historyApiFallback: true,
       open: project.platform.open,
       hot: hmr || project.platform.hmr,
       port: port || project.platform.port,
       host: host,
+      client: {
+        overlay: false,
+      },
+      // server: https ? 'https' : 'http',
+      // headers: https ? httpsCorsRules : {}
     },
     devtool: production ? undefined : "cheap-module-source-map",
     module: {
