@@ -33,9 +33,10 @@
         "${workspaceFolder}/src/node_modules/tslib/*.js"
       ],
       "sourceMapPathOverrides": {
-        "webpack:///./src/*": "${webRoot}/*"
+        "webpack://@primedao/${workspaceFolderBasename}/./src/*": "${webRoot}/*"
       },
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "trace": true
     }
   ]
 }
