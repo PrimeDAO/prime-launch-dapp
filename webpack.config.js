@@ -10,7 +10,7 @@ const {
 } = require("aurelia-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { EnvironmentPlugin } = require("webpack");
+const webpack = require("webpack");
 require("dotenv").config({ path: `${process.env.DOTENV_CONFIG_PATH}` });
 
 console.dir({ path: `${process.env.DOTENV_CONFIG_PATH}` });
@@ -139,7 +139,7 @@ module.exports = (
         cacheGroups: {
           default: false, // Disable the built-in groups default & vendors (vendors is redefined below)
           // You can insert additional cacheGroup entries here if you want to split out specific modules
-          // This is required in order to split out vendor css from the app css when using --extractCss
+          // This is required in order to split out vendor css from the app css
           // For example to separate font-awesome and bootstrap:
           // fontawesome: { // separates font-awesome css from the app css (font-awesome is only css/fonts)
           //   name: 'vendor.font-awesome',
@@ -377,7 +377,7 @@ module.exports = (
        * `del` (https://www.npmjs.com/package/del), or `rimraf` (https://www.npmjs.com/package/rimraf).
        */
       new CleanWebpackPlugin(),
-      new EnvironmentPlugin(process.env),
+      new webpack.EnvironmentPlugin(process.env),
     ],
   };
 };
