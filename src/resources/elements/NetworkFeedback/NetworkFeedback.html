@@ -23,6 +23,11 @@
           <div class="celo"></div>
           <div>Alfajores</div>
       </div>
+
+        <div if.bind="!isProductionEnv" class="${isActive(Networks.Localhost) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Localhost)">
+          <div class="eth"></div>
+          <div>Localhost</div>
+        </div>
     </div>
   </div>
 </template>
