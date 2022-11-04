@@ -1,5 +1,6 @@
 import { Given } from "@badeball/cypress-cucumber-preprocessor/methods";
 import { PAGE_LOADING_TIMEOUT } from "./test-constants";
+import { PRIME_PAYMENTS_URL } from "../../../src/configurations/tokenLists"
 
 export class E2eNavigation {
   public static navigateToHomePage() {
@@ -29,23 +30,24 @@ export class E2eNavigation {
 let counter = 0;
 
 Given("I navigate to the Deals home page", () => {
+  console.log('------------------------------------------------------------------------------------------ 2')
+  /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: navigate.ts ~ line 47 ~ Given')
   // cy.intercept("*", {method: "GET"}, {statusCode: 200, body: { hhahaha: "mumumu" }});
   // cy.intercept("*", {method: "POST"}, {statusCode: 200, body: { hhahaha: "mumumu" }});
   cy.intercept("*", (req) => {
-    // /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: navigate.ts ~ line 10 ~ req.url', req.url)
-    // return;
-    // const letThrough = 113;
-    // if (counter < letThrough) {
-    //   counter++;
-    //   /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: navigate.ts ~ line 12 ~ counter', counter)
-    //   req.continue();
-    //   return;
-    // }
     if (req.url.includes("localhost:3330")) {
       req.continue()
       return;
     }
 
+    switch(req.url) {
+      case PRIME_PAYMENTS_URL: {
+        req.continue()
+        return;
+      }
+    }
+
+    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: navigate.ts ~ line 10 ~ req.url', req.url)
     // req.reply({ statusCode: 200, body: JSON.stringify({works: "yay"}) });
     req.reply({ statusCode: 200, body: '{"hi": "okay"}' });
   });
