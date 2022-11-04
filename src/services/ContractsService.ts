@@ -36,7 +36,7 @@ export class ContractsService {
     // , [ContractNames.VAULT, null]
     [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
-    , [ContractNames.SIGNER, null]
+    // , [ContractNames.SIGNER, null]
     , // not on kovan we delete some of these below
   ]);
 
@@ -138,6 +138,7 @@ export class ContractsService {
       if (reuseContracts) {
         contract = ContractsService.Contracts.get(contractName).connect(signerOrProvider);
       } else {
+        // debugger;
         contract = new ethers.Contract(
           ContractsService.getContractAddress(contractName),
           ContractsService.getContractAbi(contractName),
