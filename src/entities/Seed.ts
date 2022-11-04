@@ -5,7 +5,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, Hash, toWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash, Networks, toWei } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -17,6 +17,7 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
+import * as SEED_METADATA_1 from "../../SEED_METADATA_1.json";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -379,13 +380,14 @@ export class Seed implements ILaunch {
           contractAddress: this.address,
           functionName: "metadata",
           returnType: "bytes",
-          resultHandler: (result) => {
-          /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 334 ~ result", result);
-            rawMetadata = result;
-            // rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002e516d506948534850415953554e4770473857666e41486f4a654b324c44486465574d36774163446434336d53435a000000000000000000000000000000000000";
-            // rawMetadata = "0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563";
-          },
-          // resultHandler: (result) => { rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000000"; },
+          resultHandler: (result) => { rawMetadata = result; },
+          // resultHandler: (result) => {
+          // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 334 ~ result", result);
+          //   rawMetadata = result;
+          //   // rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002e516d506948534850415953554e4770473857666e41486f4a654b324c44486465574d36774163446434336d53435a000000000000000000000000000000000000";
+          //   // rawMetadata = "0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563";
+          // },
+          // // resultHandler: (result) => { rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000000"; },
         },
         {
           contractAddress: this.address,
@@ -511,30 +513,38 @@ export class Seed implements ILaunch {
       try {
         await batcher.start();
       } catch (error) {
+        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 516 ~ error", error);
         this.consoleLogService.logMessage(error.message, "error");
       }
+
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 588 ~ rawMetadata", rawMetadata);
 
       const exchangeRate = this.globalPrice;
       this.classPrice = exchangeRate;
 
 
-      // if (rawMetadata && Number(rawMetadata)) {
-      if (rawMetadata) {
+      if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
-        this.metadataHash = "QmPiHSHPAYSUNGpG8WfnAHoJeK2LDHdeWM6wAcDd43mSCZ";
-        // debugger;
-        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 469 ~ this.metadataHash", this.metadataHash);
       } else {
         this.eventAggregator.publish("Seed.InitializationFailed", this.address);
         throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
       }
 
-      await this.hydrateMetadata();
+      if (EthereumService.targetedNetwork === Networks.Localhost) {
+        this.metadata = SEED_METADATA_1 as unknown as ISeedConfig;
+      } else {
+        await this.hydrateMetadata();
+      }
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 517 ~ this.metadata", this.metadata);
+
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
-      if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 520 ~ this.projectTokenInfo", this.projectTokenInfo);
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 522 ~ this.projectTokenInfo.address", this.projectTokenInfo.address);
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 523 ~ this.projectTokenAddress", this.projectTokenAddress);
+      if (!this.projectTokenInfo || (this.projectTokenInfo.address.toLowerCase() !== this.projectTokenAddress.toLowerCase())) {
         throw new Error("project token info is not found or does not match the seed contract");
       }
 
