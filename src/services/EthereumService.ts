@@ -80,7 +80,7 @@ export class EthereumService {
     [Networks.Mainnet]: "http://127.0.0.1:8545",
     [Networks.Goerli]: "http://127.0.0.1:8545",
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
+    // [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
     [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
