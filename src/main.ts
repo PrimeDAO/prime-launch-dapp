@@ -15,6 +15,7 @@ import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
+import { EthereumServiceTesting } from "services/EthereumServiceTesting";
 import { LbpManagerService } from "services/LbpManagerService";
 import { Seed } from "entities/Seed";
 import { LbpManager } from "entities/LbpManager";
@@ -25,6 +26,17 @@ import { LaunchService } from "services/LaunchService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
 export function configure(aurelia: Aurelia): void {
+  // Note, this Cypress hack has to be at the very start.
+  // Reason: Imports in eg. /resources/index, where EthereumService is imported to
+  //   /binding-behaviors results in EthereumService not being mocked "in time" for Cypress.
+  if ((window as any).Cypress) {
+    /**
+     * Mock wallet connection
+     */
+    aurelia.use.singleton(EthereumService, EthereumServiceTesting);
+    (window as any).Cypress.eventAggregator = aurelia.container.get(EventAggregator);
+  }
+
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName("resources/index"))
