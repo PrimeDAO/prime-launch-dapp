@@ -25,6 +25,7 @@
     "serve-dev-alfajores": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=alfajores webpack-dev-server --env development",
     "start-dev": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=goerli webpack-dev-server --env development --open",
     "start-dev:main": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=mainnet webpack-dev-server --env development --open",
+    "start-localhost": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=localhost webpack-dev-server --env development --open",
     "start-prod": "cross-env DOTENV_CONFIG_PATH=.env NETWORK=mainnet webpack-dev-server --env development --open",
     "analyze": "cross-env DOTENV_CONFIG_PATH=.env.production webpack --env production --analyze",
     "test": "au test",
