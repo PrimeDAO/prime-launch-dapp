@@ -56,9 +56,10 @@ export enum Networks {
   Arbitrum = "arbitrum",
   Celo = "celo",
   Alfajores = "alfajores",
+  Localhost = "localhost",
 }
 
-export type AllowedNetworks = Networks.Mainnet | Networks.Kovan | Networks.Goerli | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
+export type AllowedNetworks = Networks.Mainnet | Networks.Kovan | Networks.Goerli | Networks.Arbitrum | Networks.Celo | Networks.Alfajores | Networks.Localhost;
 
 export interface IChainEventInfo {
   chainId: number;
@@ -79,6 +80,7 @@ export class EthereumService {
     // [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
     [Networks.Mainnet]: "http://127.0.0.1:8545",
     [Networks.Goerli]: "http://127.0.0.1:8545",
+    [Networks.Localhost]: "http://127.0.0.1:8545",
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
     // [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
@@ -109,6 +111,7 @@ export class EthereumService {
           1: EthereumService.ProviderEndpoints[Networks.Mainnet],
           5: EthereumService.ProviderEndpoints[Networks.Goerli],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
+          31337: EthereumService.ProviderEndpoints[Networks.Localhost],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
           42220: EthereumService.ProviderEndpoints[Networks.Celo],
           44787: EthereumService.ProviderEndpoints[Networks.Alfajores],
@@ -133,6 +136,7 @@ export class EthereumService {
   }
 
   public initialize(network: AllowedNetworks): void {
+  /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: EthereumService.ts ~ line 139 ~ network", network);
 
     if (!network) {
       throw new Error("Ethereum.initialize: `network` must be specified");
@@ -200,6 +204,7 @@ export class EthereumService {
   public chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Goerli, 5],
+    [Networks.Localhost, 31337],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
     [Networks.Celo, 42220],
