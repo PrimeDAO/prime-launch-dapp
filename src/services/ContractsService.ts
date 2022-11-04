@@ -31,10 +31,10 @@ export interface IStandardEvent<TArgs> {
 export class ContractsService {
 
   private static Contracts = new Map<ContractNames, Contract>([
-    [ContractNames.LBPMANAGERFACTORY, null]
-    , [ContractNames.LBPMANAGER, null]
+    // [ContractNames.LBPMANAGERFACTORY, null]
+    // , [ContractNames.LBPMANAGER, null]
     // , [ContractNames.VAULT, null]
-    , [ContractNames.SEEDFACTORY, null]
+    [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]
     , // not on kovan we delete some of these below
