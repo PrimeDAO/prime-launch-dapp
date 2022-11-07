@@ -51,6 +51,7 @@ export function configure(aurelia: Aurelia): void {
   const storageService = new BrowserStorageService;
   // storageService.lsSet("network", "alfajores");
   const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
+  const isLocalNetwork = network === "localhost";
   const inDev = process.env.NODE_ENV === "development";
 
   if (inDev) {
@@ -75,7 +76,8 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
-      ethereumService.initialize(network ?? (inDev ? Networks.Goerli : Networks.Mainnet));
+      const devNetwork = isLocalNetwork ? Networks.Localhost : Networks.Goerli;
+      ethereumService.initialize(network ?? (inDev ? devNetwork : Networks.Mainnet));
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
