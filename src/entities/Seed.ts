@@ -828,7 +828,7 @@ export class Seed implements ILaunch {
       ));
       return receipt;
     } catch (ex) {
-      this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`);
+      this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`, "error");
     }
   }
 
