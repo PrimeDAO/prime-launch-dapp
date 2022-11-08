@@ -247,7 +247,6 @@ export class SeedAdminDashboard {
   openAddClassModal(index: number = null): void {
     if (this.isMinting[-1]) return;
     if (this.disableClassInteraction) return;
-    if (this.hasEditedClasses) return;
 
     const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(
