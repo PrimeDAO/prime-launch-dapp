@@ -700,7 +700,7 @@ export class Seed implements ILaunch {
   }
 
   public claim(amount: BigNumber): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
+    return this.transactionsService.send(() => this.contract.claim(amount))
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
@@ -782,17 +782,16 @@ export class Seed implements ILaunch {
     individualCaps,
     classVestingDurations,
     classVestingCliffs,
+    classAllowlists,
   }: Record<string, unknown[]>): Promise<TransactionReceipt> {
     try {
-      const whitelistPlaceholder = Array.from({length: classNames.length}, (_) => []);
-
       const addClassArgs = [
         classNames.map(name => formatBytes32String(name as string)),
         classCaps,
         individualCaps,
         classVestingCliffs,
         classVestingDurations,
-        whitelistPlaceholder,
+        classAllowlists.map(list => Array.from(list as Set<string>)),
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.addClassesAndAllowlists(
@@ -805,29 +804,31 @@ export class Seed implements ILaunch {
   }
 
   async changeClass({
-    classIndex,
-    className,
-    classCap,
-    individualCap,
-    classVestingDuration,
-    classVestingCliff,
-  }: Record<string, unknown>): Promise<TransactionReceipt> {
+    editedIndexes,
+    editedClassNames,
+    editedClassCaps,
+    editedIndividualCaps,
+    editedClassVestingDurations,
+    editedClassVestingCliffs,
+    editedClassAllowlists,
+  }: Record<string, unknown[]>): Promise<TransactionReceipt> {
     try {
       const changeClassArgs = [
-        formatBytes32String(className as string),
-        classCap,
-        individualCap,
-        classVestingCliff,
-        classVestingDuration,
+        editedIndexes,
+        editedClassNames.map(name => formatBytes32String(name as string)),
+        editedClassCaps,
+        editedIndividualCaps,
+        editedClassVestingCliffs,
+        editedClassVestingDurations,
+        editedClassAllowlists.map(list => Array.from(list as Set<string>)),
       ];
 
-      const receipt = await this.transactionsService.send(() => this.contract.changeClass(
-        classIndex,
+      const receipt = await this.transactionsService.send(() => this.contract.changeClassesAndAllowlists(
         ...changeClassArgs,
       ));
       return receipt;
     } catch (ex) {
-      this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`);
+      this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`, "error");
     }
   }
 

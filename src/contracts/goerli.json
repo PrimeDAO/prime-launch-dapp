@@ -748,7 +748,7 @@
       ]
     },
     "D2D": {
-      "address": "0xF43F28bC7D7ac20CB0D1EB9b36a41ad2E92798fD",
+      "address": "0x2EDbfAeFcaC083A1a199C6835D12782A0868E50B",
       "abi": "ERC20"
     },
     "Safe": {
@@ -1788,7 +1788,7 @@
       ]
     },
     "Seed": {
-      "address": "0x30e79A727fE2A22Ef1E91BEAddD74CD2E6544267",
+      "address": "0xFaDE87475837DF62eEE39Bd693316C3cD9a065fe",
       "abi": [
         {
           "anonymous": false,
@@ -2015,48 +2015,48 @@
         {
           "inputs": [
             {
-              "internalType": "uint8",
-              "name": "_class",
-              "type": "uint8"
+              "internalType": "uint8[]",
+              "name": "_classes",
+              "type": "uint8[]"
             },
             {
-              "internalType": "bytes32",
-              "name": "_className",
-              "type": "bytes32"
+              "internalType": "bytes32[]",
+              "name": "_classNames",
+              "type": "bytes32[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_classCap",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_classCaps",
+              "type": "uint256[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_individualCap",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_individualCaps",
+              "type": "uint256[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_vestingCliff",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_vestingCliffs",
+              "type": "uint256[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_vestingDuration",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_vestingDurations",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address[][]",
+              "name": "_allowlists",
+              "type": "address[][]"
             }
           ],
-          "name": "changeClass",
+          "name": "changeClassesAndAllowlists",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_funder",
-              "type": "address"
-            },
             {
               "internalType": "uint256",
               "name": "_claimAmount",
@@ -2689,8 +2689,19 @@
       ]
     },
     "SeedFactory": {
-      "address": "0x953ACa991b76D0c5Da56d339DB10ce66c0442E30",
+      "address": "0xBa28a629BB5dD972778C5De45733Cb98F059cA67",
       "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract Seed",
+              "name": "_masterCopy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
         {
           "anonymous": false,
           "inputs": [
@@ -2860,7 +2871,7 @@
       ]
     },
     "SignerV2": {
-      "address": "0x8ec969E2Bb3155A130E193b9f7625d32A79803B5",
+      "address": "0xbD648874bF4231022728E89e1Eda42Ccc9C73312",
       "abi": [
         {
           "inputs": [

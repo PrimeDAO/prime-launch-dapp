@@ -30,6 +30,7 @@ export class SeedAdminDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
+  classesBeforeEditMap: Map<number, IContributorClass> = new Map()
   isMinting: Record<number, boolean> = {};
 
   @computedFrom("ethereumService.defaultAccountAddress")
@@ -51,6 +52,18 @@ export class SeedAdminDashboard {
   @computedFrom("selectedSeed.hasNotStarted")
   get disableClassInteraction(): boolean {
     const disable = !this.selectedSeed.hasNotStarted;
+    return disable;
+  }
+
+  @computedFrom("noAdditions", "hasEditedClasses", "isMinting[-1]")
+  get allowConfirmOrCancel(): boolean {
+    const allow = (!this.noAdditions || this.hasEditedClasses) || !!this.isMinting[-1];
+    return allow;
+  }
+
+  @computedFrom("classesBeforeEditMap.size")
+  get hasEditedClasses(): boolean {
+    const disable = this.classesBeforeEditMap.size > 0;
     return disable;
   }
 
@@ -160,46 +173,77 @@ export class SeedAdminDashboard {
     this.router.navigate(href);
   }
 
-
-
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
     this.newlyAddedClassesIndexes.push(this.selectedSeed.classes.length - 1);
   }
 
-  async editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): Promise<void> {
-    if (!this.noAdditions) {
-      /**
-       * Apply changes to newly added classes without storing in the contract
-       */
-      Object.assign(this.selectedSeed.classes[index], editedClass);
-      return;
-    }
-    if (this.isMinting[index]) return;
+  editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
+    const oldClass = {...this.selectedSeed.classes[index]};
+    this.classesBeforeEditMap.set(index, oldClass); // Store old class data
+    Object.assign(this.selectedSeed.classes[index], editedClass); // Update new class data
+  }
 
+  async new_deployClassesToContract(): Promise<void> {
+    if (!this.allowConfirmOrCancel) return;
+
+    if (!this.noAdditions) {
+      this.deployClassesToContract();
+    } else if (this.hasEditedClasses) {
+      this.batchEditClasses();
+    }
+  }
+
+  async batchEditClasses(): Promise<void> {
     /**
       Otherwise update changes in the contract directly after edit
      */
     try {
-      this.isMinting[index] = true;
+      const editedIndexes: string[] = [];
+      const editedClassNames: string[] = [];
+      const editedClassCaps: BigNumber[] = [];
+      const editedIndividualCaps: BigNumber[] = [];
+      const editedClassVestingDurations: number[] = [];
+      const editedClassVestingCliffs: number[] = [];
+      const editedClassAllowlists: Set<string>[] = [];
+
+      /**
+       * From `classesBeforeEditMap`, we know which classes changed.
+       * Iterate and assign to "edited" arrays, to be sent to the contract
+       */
+      this.classesBeforeEditMap.forEach((_, classIndex) => {
+        const changedClass = this.selectedSeed.classes[classIndex];
+
+        editedIndexes.push(classIndex.toString());
+        editedClassNames.push(changedClass.className);
+        editedClassCaps.push(changedClass.classCap);
+        editedIndividualCaps.push(changedClass.individualCap);
+        editedClassVestingDurations.push(changedClass.classVestingDuration);
+        editedClassVestingCliffs.push(changedClass.classVestingCliff);
+        editedClassAllowlists.push(changedClass.allowList ?? new Set());
+      });
+
+      this.isMinting[-1] = true;
       const receipt = await this.selectedSeed.changeClass({
-        classIndex: index,
-        className: editedClass.className,
-        classCap: editedClass.classCap,
-        individualCap: editedClass.individualCap,
-        classVestingDuration: editedClass.classVestingDuration,
-        classVestingCliff: editedClass.classVestingCliff,
+        editedIndexes,
+        editedClassNames,
+        editedClassCaps,
+        editedIndividualCaps,
+        editedClassVestingDurations,
+        editedClassVestingCliffs,
+        editedClassAllowlists,
       });
       if (receipt) {
-        Object.assign(this.selectedSeed.classes[index], editedClass);
+        this.resetClassesBeforeEdit();
         this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
       }
     } catch (ex) {
+      this.revertEditedClassesBack();
       this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
       this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`);
     } finally {
-      this.isMinting[index] = false;
+      this.isMinting[-1] = false;
     }
   }
 
@@ -226,6 +270,7 @@ export class SeedAdminDashboard {
     const individualCaps: BigNumber[] = [];
     const classVestingDurations: number[] = [];
     const classVestingCliffs: number[] = [];
+    const classAllowlists: Set<string>[] = [];
 
     if (this.noAdditions || this.isMinting[-1]) return;
 
@@ -237,6 +282,7 @@ export class SeedAdminDashboard {
       individualCaps.push(contributorClass.individualCap);
       classVestingDurations.push(contributorClass.classVestingDuration);
       classVestingCliffs.push(contributorClass.classVestingCliff);
+      classAllowlists.push(contributorClass.allowList ?? new Set());
     });
 
     try {
@@ -247,6 +293,7 @@ export class SeedAdminDashboard {
         individualCaps,
         classVestingDurations,
         classVestingCliffs,
+        classAllowlists,
       });
       if (receipt) {
         this.eventAggregator.publish("handleInfo", "Successfully added changes to the contract.");
@@ -262,9 +309,29 @@ export class SeedAdminDashboard {
   }
 
   cancel() {
-    if (this.noAdditions) return;
-    const firstNewlyAddedClass = this.newlyAddedClassesIndexes[0];
-    this.selectedSeed.classes.splice(firstNewlyAddedClass);
-    this.newlyAddedClassesIndexes = [];
+    if (!this.allowConfirmOrCancel) return;
+
+    if (this.hasEditedClasses) {
+      this.revertEditedClassesBack();
+    } else if (!this.noAdditions) {
+      const firstNewlyAddedClass = this.newlyAddedClassesIndexes[0];
+      this.selectedSeed.classes.splice(firstNewlyAddedClass);
+      this.newlyAddedClassesIndexes = [];
+    }
+  }
+
+  /**
+   * From the `classesBeforeEditMap` var, revert classes to before any edition was done
+   */
+  private revertEditedClassesBack(): void {
+    this.classesBeforeEditMap.forEach((uneditedClasses, classIndex) => {
+      Object.assign(this.selectedSeed.classes[classIndex], uneditedClasses);
+    });
+
+    this.resetClassesBeforeEdit();
+  }
+
+  private resetClassesBeforeEdit(): void {
+    this.classesBeforeEditMap = new Map();
   }
 }
