@@ -188,7 +188,6 @@ export class SeedAdminDashboard {
   async new_deployClassesToContract(): Promise<void> {
     if (!this.allowConfirmOrCancel) return;
 
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 242 ~ new_deployClassesToContract");
     if (!this.noAdditions) {
       this.deployClassesToContract();
     } else if (this.hasEditedClasses) {
@@ -197,8 +196,6 @@ export class SeedAdminDashboard {
   }
 
   async batchEditClasses(): Promise<void> {
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 251 ~ batchEditClasses");
-
     /**
       Otherwise update changes in the contract directly after edit
      */

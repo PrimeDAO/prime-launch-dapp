@@ -825,14 +825,9 @@ export class Seed implements ILaunch {
         whitelistPlaceholder,
       ];
 
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 847 ~ this.contract.address", this.contract.address);
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 855 ~ changeClassArgs", changeClassArgs);
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 849 ~ this.contract.functions", this.contract.functions);
-
       const receipt = await this.transactionsService.send(() => this.contract.changeClassesAndAllowlists(
         ...changeClassArgs,
       ));
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 856 ~ receipt", receipt);
       return receipt;
     } catch (ex) {
       this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`);
