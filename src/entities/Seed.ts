@@ -700,7 +700,7 @@ export class Seed implements ILaunch {
   }
 
   public claim(amount: BigNumber): Promise<TransactionReceipt> {
-    return this.transactionsService.send(() => this.contract.claim(this.ethereumService.defaultAccountAddress, amount))
+    return this.transactionsService.send(() => this.contract.claim(amount))
       .then(async (receipt) => {
         if (receipt) {
           await this.hydrate();
