@@ -239,7 +239,7 @@ export class SeedAdminDashboard {
         this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
       }
     } catch (ex) {
-      // TODO revert classes data on edit fail
+      this.revertEditedClassesBack();
       this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
       this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`);
     } finally {
