@@ -206,6 +206,7 @@ export class SeedAdminDashboard {
       const editedIndividualCaps: BigNumber[] = [];
       const editedClassVestingDurations: number[] = [];
       const editedClassVestingCliffs: number[] = [];
+      const editedClassAllowlists: Set<string>[] = [];
 
       /**
        * From `classesBeforeEditMap`, we know which classes changed.
@@ -220,6 +221,7 @@ export class SeedAdminDashboard {
         editedIndividualCaps.push(changedClass.individualCap);
         editedClassVestingDurations.push(changedClass.classVestingDuration);
         editedClassVestingCliffs.push(changedClass.classVestingCliff);
+        editedClassAllowlists.push(changedClass.allowList);
       });
 
       this.isMinting[-1] = true;
@@ -230,6 +232,7 @@ export class SeedAdminDashboard {
         editedIndividualCaps,
         editedClassVestingDurations,
         editedClassVestingCliffs,
+        editedClassAllowlists,
       });
       if (receipt) {
         this.resetClassesBeforeEdit();
@@ -267,6 +270,7 @@ export class SeedAdminDashboard {
     const individualCaps: BigNumber[] = [];
     const classVestingDurations: number[] = [];
     const classVestingCliffs: number[] = [];
+    const classAllowlists: Set<string>[] = [];
 
     if (this.noAdditions || this.isMinting[-1]) return;
 
@@ -278,6 +282,7 @@ export class SeedAdminDashboard {
       individualCaps.push(contributorClass.individualCap);
       classVestingDurations.push(contributorClass.classVestingDuration);
       classVestingCliffs.push(contributorClass.classVestingCliff);
+      classAllowlists.push(contributorClass.allowList);
     });
 
     try {
@@ -288,6 +293,7 @@ export class SeedAdminDashboard {
         individualCaps,
         classVestingDurations,
         classVestingCliffs,
+        classAllowlists,
       });
       if (receipt) {
         this.eventAggregator.publish("handleInfo", "Successfully added changes to the contract.");

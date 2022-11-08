@@ -782,17 +782,16 @@ export class Seed implements ILaunch {
     individualCaps,
     classVestingDurations,
     classVestingCliffs,
+    classAllowlists,
   }: Record<string, unknown[]>): Promise<TransactionReceipt> {
     try {
-      const whitelistPlaceholder = Array.from({length: classNames.length}, (_) => []);
-
       const addClassArgs = [
         classNames.map(name => formatBytes32String(name as string)),
         classCaps,
         individualCaps,
         classVestingCliffs,
         classVestingDurations,
-        whitelistPlaceholder,
+        classAllowlists.map(list => Array.from(list as Set<string>)),
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.addClassesAndAllowlists(
@@ -811,10 +810,9 @@ export class Seed implements ILaunch {
     editedIndividualCaps,
     editedClassVestingDurations,
     editedClassVestingCliffs,
+    editedClassAllowlists,
   }: Record<string, unknown[]>): Promise<TransactionReceipt> {
-    const whitelistPlaceholder = Array.from({length: editedClassNames.length}, (_) => []);
     try {
-
       const changeClassArgs = [
         editedIndexes,
         editedClassNames.map(name => formatBytes32String(name as string)),
@@ -822,7 +820,7 @@ export class Seed implements ILaunch {
         editedIndividualCaps,
         editedClassVestingCliffs,
         editedClassVestingDurations,
-        whitelistPlaceholder,
+        editedClassAllowlists.map(list => Array.from(list as Set<string>)),
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.changeClassesAndAllowlists(
