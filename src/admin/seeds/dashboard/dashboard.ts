@@ -30,6 +30,7 @@ export class SeedAdminDashboard {
   subscriptions: DisposableCollection = new DisposableCollection();
   loading = true;
   newlyAddedClassesIndexes: number[] = [];
+  classesBeforeEditMap: Map<number, IContributorClass> = new Map()
   isMinting: Record<number, boolean> = {};
 
   @computedFrom("ethereumService.defaultAccountAddress")
@@ -51,6 +52,18 @@ export class SeedAdminDashboard {
   @computedFrom("selectedSeed.hasNotStarted")
   get disableClassInteraction(): boolean {
     const disable = !this.selectedSeed.hasNotStarted;
+    return disable;
+  }
+
+  @computedFrom("noAdditions", "hasEditedClasses", "isMinting[-1]")
+  get allowConfirmOrCancel(): boolean {
+    const allow = (!this.noAdditions || this.hasEditedClasses) || !!this.isMinting[-1];
+    return allow;
+  }
+
+  @computedFrom("classesBeforeEditMap.size")
+  get hasEditedClasses(): boolean {
+    const disable = this.classesBeforeEditMap.size > 0;
     return disable;
   }
 
@@ -160,52 +173,79 @@ export class SeedAdminDashboard {
     this.router.navigate(href);
   }
 
-
-
   addClass(newClass: IContributorClass): void {
     if (!this.selectedSeed.classes) this.selectedSeed.classes = [];
     this.selectedSeed.classes.push(newClass);
     this.newlyAddedClassesIndexes.push(this.selectedSeed.classes.length - 1);
   }
 
-  async editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): Promise<void> {
+  editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
+    const oldClass = this.selectedSeed.classes[index];
+    this.classesBeforeEditMap.set(index, oldClass); // Store old class data
+    Object.assign(this.selectedSeed.classes[index], editedClass); // Update new class data
+  }
+
+  async new_deployClassesToContract(): Promise<void> {
+    if (!this.allowConfirmOrCancel) return;
+
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 242 ~ new_deployClassesToContract");
     if (!this.noAdditions) {
-      /**
-       * Apply changes to newly added classes without storing in the contract
-       */
-      Object.assign(this.selectedSeed.classes[index], editedClass);
-      return;
+      this.deployClassesToContract();
+    } else if (this.hasEditedClasses) {
+      this.batchEditClasses();
     }
-    if (this.isMinting[index]) return;
+  }
+
+  async batchEditClasses(): Promise<void> {
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: dashboard.ts ~ line 251 ~ batchEditClasses");
 
     /**
       Otherwise update changes in the contract directly after edit
      */
     try {
-      this.isMinting[index] = true;
+      const editedIndexes: string[] = [];
+      const editedClassNames: string[] = [];
+      const editedClassCaps: BigNumber[] = [];
+      const editedIndividualCaps: BigNumber[] = [];
+      const editedClassVestingDurations: number[] = [];
+      const editedClassVestingCliffs: number[] = [];
+
+
+      this.classesBeforeEditMap.forEach((editedClass, classIndex) => {
+        editedIndexes.push(classIndex.toString());
+        editedClassNames.push(editedClass.className);
+        editedClassCaps.push(editedClass.classCap);
+        editedIndividualCaps.push(editedClass.individualCap);
+        editedClassVestingDurations.push(editedClass.classVestingDuration);
+        editedClassVestingCliffs.push(editedClass.classVestingCliff);
+      });
+
+      this.isMinting[-1] = true;
       const receipt = await this.selectedSeed.changeClass({
-        classIndex: index,
-        className: editedClass.className,
-        classCap: editedClass.classCap,
-        individualCap: editedClass.individualCap,
-        classVestingDuration: editedClass.classVestingDuration,
-        classVestingCliff: editedClass.classVestingCliff,
+        editedIndexes,
+        editedClassNames,
+        editedClassCaps,
+        editedIndividualCaps,
+        editedClassVestingDurations,
+        editedClassVestingCliffs,
       });
       if (receipt) {
-        Object.assign(this.selectedSeed.classes[index], editedClass);
+        this.classesBeforeEditMap = new Map();
         this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
       }
     } catch (ex) {
+      // TODO revert classes data on edit fail
       this.eventAggregator.publish("handleException", "Error trying to save changes to the contract.");
       this.consoleLogService.logMessage(`Error executing 'edit class': ${ex.message}`);
     } finally {
-      this.isMinting[index] = false;
+      this.isMinting[-1] = false;
     }
   }
 
   openAddClassModal(index: number = null): void {
     if (this.isMinting[-1]) return;
     if (this.disableClassInteraction) return;
+    if (this.hasEditedClasses) return;
 
     const editedClass = index !== null ? { ...this.selectedSeed.classes[index] } : undefined;
     this.addClassService.show(

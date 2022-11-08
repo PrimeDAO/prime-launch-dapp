@@ -805,26 +805,34 @@ export class Seed implements ILaunch {
   }
 
   async changeClass({
-    classIndex,
-    className,
-    classCap,
-    individualCap,
-    classVestingDuration,
-    classVestingCliff,
-  }: Record<string, unknown>): Promise<TransactionReceipt> {
+    editedIndexes,
+    editedClassNames,
+    editedClassCaps,
+    editedIndividualCaps,
+    editedClassVestingDurations,
+    editedClassVestingCliffs,
+  }: Record<string, unknown[]>): Promise<TransactionReceipt> {
+    const whitelistPlaceholder = Array.from({length: editedClassNames.length}, (_) => []);
     try {
+
       const changeClassArgs = [
-        formatBytes32String(className as string),
-        classCap,
-        individualCap,
-        classVestingCliff,
-        classVestingDuration,
+        editedIndexes,
+        editedClassNames.map(name => formatBytes32String(name as string)),
+        editedClassCaps,
+        editedIndividualCaps,
+        editedClassVestingCliffs,
+        editedClassVestingDurations,
+        whitelistPlaceholder,
       ];
 
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 847 ~ this.contract.address", this.contract.address);
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 855 ~ changeClassArgs", changeClassArgs);
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 849 ~ this.contract.functions", this.contract.functions);
+
       const receipt = await this.transactionsService.send(() => this.contract.changeClassesAndAllowlists(
-        classIndex,
         ...changeClassArgs,
       ));
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 856 ~ receipt", receipt);
       return receipt;
     } catch (ex) {
       this.consoleLogService.logMessage(`Error while trying to edit a class: ${ex.message}`);

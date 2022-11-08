@@ -184,6 +184,7 @@
                         class="stageButton previousButton
                           ${isMinting[-1] ? 'disabled' : ''}
                           ${disableClassInteraction ? 'disabled' : ''}
+                          ${hasEditedClasses ? 'disabled' : ''}
                         "
                         click.delegate="openAddClassModal()"
                       >
@@ -192,10 +193,21 @@
                     </div>
                     <div class="deployActions" if.bind="selectedSeed.classes.length">
                       <div class="buttonContainer">
-                        <div class="stageButton cancel ${noAdditions || isMinting[-1] ? 'disabled':''}" click.delegate="cancel()"><span>Cancel</span></div>
+                        <div
+                          class="
+                            stageButton cancel
+                            ${allowConfirmOrCancel ? '' : 'disabled'}
+                          "
+                          click.delegate="cancel()"><span>Cancel</span>
+                        </div>
                       </div>
                       <div class="buttonContainer">
-                        <div class="stageButton button1 ${noAdditions || isMinting[-1] ? 'disabled' : ''}" click.delegate="deployClassesToContract()">
+                        <div
+                          class="
+                            stageButton button1
+                            ${allowConfirmOrCancel ? '' : 'disabled'}
+                          "
+                          click.delegate="new_deployClassesToContract()">
                           <span>Confirm</span><i if.bind="!isMinting[-1]" class="fas fa-check"></i><i else class="fas fa-circle-notch fa-spin"></i>
                         </div>
                       </div>
