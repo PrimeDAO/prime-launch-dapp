@@ -245,7 +245,7 @@ export class Seed implements ILaunch {
 
   @computedFrom("uninitialized")
   get canGoToDashboard(): boolean {
-    return !this.uninitialized;
+    return true;
   }
 
   @computedFrom("hasEnoughProjectTokens")
