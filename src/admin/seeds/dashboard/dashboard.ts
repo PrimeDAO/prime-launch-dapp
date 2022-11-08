@@ -221,7 +221,7 @@ export class SeedAdminDashboard {
         editedIndividualCaps.push(changedClass.individualCap);
         editedClassVestingDurations.push(changedClass.classVestingDuration);
         editedClassVestingCliffs.push(changedClass.classVestingCliff);
-        editedClassAllowlists.push(changedClass.allowList);
+        editedClassAllowlists.push(changedClass.allowList ?? new Set());
       });
 
       this.isMinting[-1] = true;
@@ -282,7 +282,7 @@ export class SeedAdminDashboard {
       individualCaps.push(contributorClass.individualCap);
       classVestingDurations.push(contributorClass.classVestingDuration);
       classVestingCliffs.push(contributorClass.classVestingCliff);
-      classAllowlists.push(contributorClass.allowList);
+      classAllowlists.push(contributorClass.allowList ?? new Set());
     });
 
     try {
