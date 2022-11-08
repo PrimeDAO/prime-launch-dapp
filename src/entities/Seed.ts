@@ -821,7 +821,7 @@ export class Seed implements ILaunch {
         classVestingDuration,
       ];
 
-      const receipt = await this.transactionsService.send(() => this.contract.changeClass(
+      const receipt = await this.transactionsService.send(() => this.contract.changeClassesAndAllowlists(
         classIndex,
         ...changeClassArgs,
       ));
