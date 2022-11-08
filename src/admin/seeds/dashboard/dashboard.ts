@@ -180,7 +180,7 @@ export class SeedAdminDashboard {
   }
 
   editClass({ index, editedClass }: { index: number, editedClass: IContributorClass; }): void {
-    const oldClass = this.selectedSeed.classes[index];
+    const oldClass = {...this.selectedSeed.classes[index]};
     this.classesBeforeEditMap.set(index, oldClass); // Store old class data
     Object.assign(this.selectedSeed.classes[index], editedClass); // Update new class data
   }
@@ -210,14 +210,19 @@ export class SeedAdminDashboard {
       const editedClassVestingDurations: number[] = [];
       const editedClassVestingCliffs: number[] = [];
 
+      /**
+       * From `classesBeforeEditMap`, we know which classes changed.
+       * Iterate and assign to "edited" arrays, to be sent to the contract
+       */
+      this.classesBeforeEditMap.forEach((_, classIndex) => {
+        const changedClass = this.selectedSeed.classes[classIndex];
 
-      this.classesBeforeEditMap.forEach((editedClass, classIndex) => {
         editedIndexes.push(classIndex.toString());
-        editedClassNames.push(editedClass.className);
-        editedClassCaps.push(editedClass.classCap);
-        editedIndividualCaps.push(editedClass.individualCap);
-        editedClassVestingDurations.push(editedClass.classVestingDuration);
-        editedClassVestingCliffs.push(editedClass.classVestingCliff);
+        editedClassNames.push(changedClass.className);
+        editedClassCaps.push(changedClass.classCap);
+        editedIndividualCaps.push(changedClass.individualCap);
+        editedClassVestingDurations.push(changedClass.classVestingDuration);
+        editedClassVestingCliffs.push(changedClass.classVestingCliff);
       });
 
       this.isMinting[-1] = true;
@@ -230,7 +235,7 @@ export class SeedAdminDashboard {
         editedClassVestingCliffs,
       });
       if (receipt) {
-        this.classesBeforeEditMap = new Map();
+        this.resetClassesBeforeEdit();
         this.eventAggregator.publish("handleInfo", "Successfully saved changes to the contract.");
       }
     } catch (ex) {
@@ -302,9 +307,29 @@ export class SeedAdminDashboard {
   }
 
   cancel() {
-    if (this.noAdditions) return;
-    const firstNewlyAddedClass = this.newlyAddedClassesIndexes[0];
-    this.selectedSeed.classes.splice(firstNewlyAddedClass);
-    this.newlyAddedClassesIndexes = [];
+    if (!this.allowConfirmOrCancel) return;
+
+    if (this.hasEditedClasses) {
+      this.revertEditedClassesBack();
+    } else if (!this.noAdditions) {
+      const firstNewlyAddedClass = this.newlyAddedClassesIndexes[0];
+      this.selectedSeed.classes.splice(firstNewlyAddedClass);
+      this.newlyAddedClassesIndexes = [];
+    }
+  }
+
+  /**
+   * From the `classesBeforeEditMap` var, revert classes to before any edition was done
+   */
+  private revertEditedClassesBack(): void {
+    this.classesBeforeEditMap.forEach((uneditedClasses, classIndex) => {
+      Object.assign(this.selectedSeed.classes[classIndex], uneditedClasses);
+    });
+
+    this.resetClassesBeforeEdit();
+  }
+
+  private resetClassesBeforeEdit(): void {
+    this.classesBeforeEditMap = new Map();
   }
 }
