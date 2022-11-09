@@ -18,12 +18,14 @@ import {
   Networks,
 } from "./EthereumService";
 import { E2E_ADDRESSES, E2E_ADDRESSES_PRIVATE_KEYS } from "./../../cypress/fixtures/walletFixtures";
+import { ConsoleLogService } from "./ConsoleLogService";
 
 @autoinject
 export class EthereumServiceTesting {
   constructor(
     private eventAggregator: EventAggregator,
     private disclaimerService: DisclaimerService,
+    private consoleLogService: ConsoleLogService,
   ) {}
 
   public static ProviderEndpoints = {
@@ -40,6 +42,12 @@ export class EthereumServiceTesting {
    */
   public readOnlyProvider: BaseProvider;
 
+  private blockSubscribed: boolean;
+
+  private handleNewBlock = async (): Promise<void> => {
+    this.eventAggregator.publish("Network.NewBlock");
+  }
+
   public initialize(network: AllowedNetworks): void {
     if (!network) {
       throw new Error("Ethereum.initialize: `network` must be specified");
@@ -53,6 +61,13 @@ export class EthereumServiceTesting {
       EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
     );
     this.readOnlyProvider.pollingInterval = 15000;
+
+    if (!this.blockSubscribed) {
+      this.readOnlyProvider.on("block", () => {
+        this.handleNewBlock();
+      });
+      this.blockSubscribed = true;
+    }
   }
 
   private chainIdByName = new Map<AllowedNetworks, number>([
@@ -99,7 +114,6 @@ export class EthereumServiceTesting {
      *   In E2e tests, the disclaimer modal popped up on first load, because localStorage is always cleared.
      */
     let account = localStorage.getItem("PRIME_E2E_ADDRESS") ?? E2E_ADDRESSES.CurveLabsMainLaunch;
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: EthereumServiceTesting.ts ~ line 104 ~ account", account);
     if (
       account &&
       !(await this.disclaimerService.ensurePrimeDisclaimed(account))
@@ -117,7 +131,6 @@ export class EthereumServiceTesting {
   }
 
   public ensureConnected(): boolean {
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: EthereumServiceTesting.ts ~ line 121 ~ ensureConnected");
     if (!this.defaultAccountAddress) {
       // TODO: make this await until we're either connected or not?
       this.connect();
@@ -136,7 +149,6 @@ export class EthereumServiceTesting {
   }
 
   private async setProvider(): Promise<void> {
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: EthereumServiceTesting.ts ~ line 141 ~ setProvider");
     const account = localStorage.getItem("PRIME_E2E_ADDRESS");
     const mockFetchFunc: JsonRpcFetchFunc = (method: string) => {
       let payload;
@@ -211,10 +223,29 @@ export class EthereumServiceTesting {
 
   public lastBlock: IBlockInfo;
 
+  public async getLastBlock(): Promise<IBlockInfo> {
+    const blockNumber = await this.readOnlyProvider.getBlockNumber();
+    /**
+     * -1 to be safer on arbitrum cuz sometimes is not valid, perhaps because of block reorganization,
+     * (but I'm not sure this entirely suffices)
+     */
+    return this.getBlock(blockNumber-1);
+  }
+
   /**
    * so unit tests will be able to complete
    */
   public dispose(): void {}
+
+  private async getBlock(blockNumber: number): Promise<IBlockInfo> {
+    try {
+      const block = await this.readOnlyProvider.getBlock(blockNumber) as unknown as IBlockInfo;
+      return block;
+    } catch (e) {
+      this.consoleLogService.logMessage("BLOCK GET ERR", e);
+      return null;
+    }
+  }
 
   public getEtherscanLink(addressOrHash: Address | Hash, tx = false): string {
     let targetedNetwork = EthereumService.targetedNetwork as string;
