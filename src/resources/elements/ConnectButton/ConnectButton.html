@@ -18,7 +18,7 @@
         </div>
       </template>
       <span class="separator">|</span>
-      <div class="connectButton">
+      <div data-test="connectButton" class="connectButton">
         <div if.to-view="txPhase !== 'None'" click.delegate="gotoTx()" class.bind="'pending' + ((txPhase==='Confirming')
           ? ' confirming' : '')">
           <div class="phase">${txPhase}</div><i class="spinner fas fa-circle-notch fa-spin"></i>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div else class="connectButton" click.delegate="onConnect()">Connect to a Wallet</div>
+    <div else data-test="connectButton" class="connectButton" click.delegate="onConnect()">Connect to a Wallet</div>
   </div>
   <wallet-menu showing.bind="showingWalletMenu"></wallet-menu>
   </div>
