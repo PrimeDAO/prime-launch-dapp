@@ -112,6 +112,10 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
       seedService.initialize();
 
+      if ((window as any).Cypress) {
+        (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
+      }
+
       // TODO: rollback. Commented to test pinata with limited requests
       // const lbpManagerService = aurelia.container.get(LbpManagerService);
       // lbpManagerService.initialize();
