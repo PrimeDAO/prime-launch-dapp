@@ -413,21 +413,6 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
         },
-        // {
-        //   contractAddress: this.address,
-        //   functionName: "classes",
-        //   returnType: "uint256",
-        //   paramTypes: ["uint256"],
-        //   paramValues: [0],
-        //   resultHandler: (result: IContributorClass[], b) => {
-        //     this.classes = result;
-        //
-        //     // Default class
-        //     const { price, vestingDuration } = result[0];
-        //     exchangeRate = price;
-        //     this.vestingDuration = vestingDuration.toNumber();
-        //   },
-        // },
         {
           contractAddress: this.address,
           functionName: "price",
@@ -500,12 +485,6 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.seedTip = result; },
         },
-        // { GONE -> ???
-        //   contractAddress: this.address,
-        //   functionName: "feeRemainder",
-        //   returnType: "uint256",
-        //   resultHandler: (result) => { this.feeRemainder = result; },
-        // },
       ];
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -538,12 +517,9 @@ export class Seed implements ILaunch {
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 517 ~ this.metadata", this.metadata);
+      // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 517 ~ this.metadata", this.metadata);
 
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 520 ~ this.projectTokenInfo", this.projectTokenInfo);
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 522 ~ this.projectTokenInfo.address", this.projectTokenInfo.address);
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 523 ~ this.projectTokenAddress", this.projectTokenAddress);
       if (!this.projectTokenInfo || (this.projectTokenInfo.address.toLowerCase() !== this.projectTokenAddress.toLowerCase())) {
         throw new Error("project token info is not found or does not match the seed contract");
       }
