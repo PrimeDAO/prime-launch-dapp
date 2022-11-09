@@ -77,12 +77,10 @@ export class EthereumService {
   ) { }
 
   public static ProviderEndpoints = {
-    // [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
-    [Networks.Mainnet]: "http://127.0.0.1:8545",
-    [Networks.Goerli]: "http://127.0.0.1:8545",
+    [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    [Networks.Goerli]: isLocalhostNetwork() ? "http://127.0.0.1:8545" : `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Localhost]: "http://127.0.0.1:8545",
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    // [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
     [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
@@ -136,7 +134,6 @@ export class EthereumService {
   }
 
   public initialize(network: AllowedNetworks): void {
-  /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: EthereumService.ts ~ line 139 ~ network", network);
 
     if (!network) {
       throw new Error("Ethereum.initialize: `network` must be specified");
@@ -688,6 +685,15 @@ export function capitalizeNetworkName(network: AllowedNetworks = EthereumService
  */
 export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
   const isCeloLike = network === Networks.Celo || network === Networks.Alfajores;
+  return isCeloLike;
+}
+
+/**
+ * Either Celo Mainnet or Testnet
+ * @param network Default: Network the current wallet is connected to
+ */
+export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
+  const isCeloLike = network === Networks.Localhost;
   return isCeloLike;
 }
 

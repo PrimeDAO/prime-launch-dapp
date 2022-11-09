@@ -1,8 +1,12 @@
 import { BigNumber, Contract, ethers, Signer } from "ethers";
-import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, Networks } from "services/EthereumService";
+import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
+import {
+  BaseProvider,
+  JsonRpcProvider,
+} from "@ethersproject/providers";
 
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
@@ -110,11 +114,16 @@ export class ContractsService {
   }
 
   public createProvider(): any {
-    let signerOrProvider;
+    let signerOrProvider: BaseProvider | JsonRpcProvider | ethers.Signer;
     if (this.accountAddress && this.networkInfo?.provider) {
       signerOrProvider = Signer.isSigner(this.accountAddress) ? this.accountAddress : this.networkInfo.provider.getSigner(this.accountAddress);
     } else {
-      signerOrProvider = this.ethereumService.readOnlyProvider;
+      if (isLocalhostNetwork()) {
+        const jsonSigner: JsonRpcProvider = this.ethereumService.readOnlyProvider as JsonRpcProvider;
+        signerOrProvider = jsonSigner.getSigner();
+      } else {
+        signerOrProvider = this.ethereumService.readOnlyProvider;
+      }
     }
     return signerOrProvider;
   }
