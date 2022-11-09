@@ -465,6 +465,10 @@
       top: 10px;
       width: 20px;
       height: 20px;
+
+      .tippy-content {
+        width: 300px;
+      }
     }
 
     .container {
