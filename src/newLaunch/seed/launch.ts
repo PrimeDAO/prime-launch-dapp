@@ -274,6 +274,7 @@ export class NewSeed {
     this.subscriptions.push(this.eventAggregator.subscribe("dev:download-seed", () => {
       this.seedService.dev_setSeedConfigFromLocalStorage(this.launchConfig);
       const stringify = JSON.stringify(this.launchConfig, null, 4);
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: launch.ts ~ line 277 ~ stringify", stringify);
       const fileName = this.launchConfig.general.projectName;
       download(stringify, fileName);
     }));
