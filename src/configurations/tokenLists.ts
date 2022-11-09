@@ -13,14 +13,15 @@ export interface ITokenListMapByNetwork {
   [networkKey: string]: ITokenListConfigMap;
 }
 
+export const PRIME_PAYMENTS_URL = "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json";
+
 /**
  * Mapping of the TokenLists used on each network
  */
 export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   "mainnet": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -39,8 +40,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   },
   "arbitrum": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -59,8 +59,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   },
   "rinkeby": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -76,8 +75,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   },
   "goerli": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
