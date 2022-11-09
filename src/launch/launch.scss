@@ -75,6 +75,7 @@
           text-align: center;
           font-size: 8px;
           border-radius: 32px;
+          margin-top: unset; // spill-over from `.buttonContainer styles.scss`
 
           a {
             margin-left: 0;
