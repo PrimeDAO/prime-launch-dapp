@@ -4,15 +4,17 @@ import { NumberService } from "services/NumberService";
 describe("NumberService.spec", () => {
   const numberService = new NumberService();
 
-  fdescribe("fromString", () => {
+  describe("fromString", () => {
     it("fromString", () => {
       numberService.fromString(158.585559, 100000);/*?*/
       numberService.fromString("158.585559", 100000);/*?*/
+      numberService.fromString("1", 0);/*?*/
       numberService.fromString(BigNumber.from(5), 100000);/*?*/
     });
 
     it("toString", () => {
-      const input = 123.456789;
+      const input = 1;
+      expect(numberService.toString(input, {mantissa: 1})).toBe("1.0");
 
       /** Guard cases */
       expect(numberService.toString(NaN)).toBe(null);
