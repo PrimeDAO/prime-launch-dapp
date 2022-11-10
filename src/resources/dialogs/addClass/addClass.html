@@ -29,7 +29,7 @@
             <input id="className" name="className" maxlength="32" value.bind="class.className"/>
           </div>
 
-          <div class="info-section">
+          <div data-test="class-purchase-limit-field" class="info-section">
             <div class="label">
               <label>Contributor class purchase limit</label>
             </div>
@@ -39,7 +39,7 @@
             <numeric-input name="classCap" value.bind="class.classCap" decimals.bind="model.params.fundingTokenInfo.decimals"></numeric-input>
           </div>
 
-          <div class="info-section">
+          <div data-test="project-token-purchase-limit-field" class="info-section">
             <div class="label">
               <label>Funding Token Contribution Limit</label>
             </div>
@@ -75,7 +75,7 @@
                   </div>
                 </div>
               </div> -->
-              <div>
+              <div data-test="vesting-vested-for-field">
                 <label class="label--small">Token vested for</label>
                 <div class="vesting-period">
                   <numeric-input
@@ -87,7 +87,7 @@
                   <div>days</div>
                 </div>
               </div>
-              <div>
+              <div data-test="vesting-cliff-of-field">
                 <label class="label--small">with a cliff of</label>
                 <div class="vesting-period">
                   <numeric-input
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <div class="infoInput csvList">
+          <div data-test="allowlist-field" class="infoInput csvList">
             <div class="csvUploadInputContainer">
               <div class="label--question">
                 <label>Allowlist (Optional)</label>
