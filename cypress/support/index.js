@@ -31,15 +31,36 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 // Hide fetch/XHR requests
 const app = window.top;
 if (!app.document.head.querySelector('[data-hide-command-log-request]')) {
-  const style = app.document.createElement('style');
-  style.innerHTML = `
+  const hideStyles = app.document.createElement('style');
+  hideStyles.innerHTML = `
+    /** Hide URLs */
     .command-name-request,
     .command-name-new-url,
     .command-name-xhr {
-      display: none
+      display: none;
     };
-  `
-  style.setAttribute('data-hide-command-log-request', '');
 
+    /** Highlight steps */
+    .command-name-step {
+      color: red !important;
+    }
+  `
+  hideStyles.setAttribute('data-hide-command-log-request', '');
+
+  app.document.head.appendChild(hideStyles);
+
+  const style = app.document.createElement('style');
+  style.innerHTML = `
+    /** Highlight steps */
+    .command-name-step .command-method span {
+      color: #f280ff !important;
+      font-size: 16px;
+    }
+    .command-name-step .command-message .command-message-text {
+      font-size: 14px;
+      font-weight: 900;
+    }
+  `
   app.document.head.appendChild(style);
+
 }
