@@ -4,4 +4,5 @@ Feature: Choose Deal type
       Given I'm a Connected Public user
 
     Scenario: Read about deal types
-      Given I navigate to the Deals home page
+      Given I navigate to the Home page
+      Then I can view all my Seeds
