@@ -7,7 +7,7 @@ import { PAGE_LOADING_TIMEOUT } from "../common/test-constants";
 import { E2eSeed } from "../common/seed.e2e";
 
 const UserTypes = ["Anonymous", "Connected Public", "Main Testing"] as const;
-export type UserType = typeof UserTypes[number]
+export type UserType = typeof UserTypes[number];
 
 export class E2eWallet {
   public static isLead = true;
@@ -15,10 +15,11 @@ export class E2eWallet {
   private static _currentWalletAddress: string | undefined = "";
   public static get currentWalletAddress(): string | undefined {
     if (this._currentWalletAddress === "") {
-      const errorMessage = "[Test] Wallet address expected. Please use a step, that specifies an address.\n\n" +
+      const errorMessage =
+        "[Test] Wallet address expected. Please use a step, that specifies an address.\n\n" +
         "Quickest way to fix this, is to set:\n" +
         "E2eWallet.currentWalletAddress = <myAddress>.\n\n" +
-        "If you wanted to test the \"Anonymous User case\", then test code likely has a bug.";
+        'If you wanted to test the "Anonymous User case", then test code likely has a bug.';
       throw new Error(errorMessage);
     }
 
@@ -26,7 +27,7 @@ export class E2eWallet {
   }
   public static set currentWalletAddress(newAddress: string | undefined) {
     if (!newAddress) {
-      throw new Error("[E2E] No address for wallet given")
+      throw new Error("[E2E] No address for wallet given");
     }
 
     localStorage.setItem("PRIME_E2E_ADDRESS", newAddress);
@@ -58,7 +59,7 @@ export class E2eNavbar {
     localStorage.setItem("PRIME_E2E_ADDRESS", address);
     E2eWallet.currentWalletAddress = address;
 
-    cy.get("[data-test='connectButton']").then(connectButton => {
+    cy.get("[data-test='connectButton']").then((connectButton) => {
       // 1. Check if already connected
       const text = connectButton.text().trim();
       if (text !== "Connect to a Wallet") {
@@ -82,7 +83,9 @@ export class E2eNavbar {
     });
 
     cy.get(".navbar-container").within(() => {
-      cy.get("[data-test='connectButton'] smallusersaddress", {timeout: PAGE_LOADING_TIMEOUT}).should("be.visible");
+      cy.get("[data-test='connectButton'] smallusersaddress", {
+        timeout: PAGE_LOADING_TIMEOUT,
+      }).should("be.visible");
     });
   }
 
@@ -97,21 +100,19 @@ export class E2eNavbar {
 
 Given("I'm the Admin of the Seed", () => {
   E2eNavigation.hasAppLoaded().then(() => {
-    cy.waitUntil(() => !!Cypress.SeedService)
+    cy.waitUntil(() => !!Cypress.SeedService);
     cy.wait(0).then(async () => {
-
       // 1. Get seed
-      await Cypress.SeedService.ensureAllSeedsInitialized()
-      const firstSeed = Cypress.SeedService.seedsArray[0]
+      await Cypress.SeedService.ensureAllSeedsInitialized();
+      const firstSeed = Cypress.SeedService.seedsArray[0];
       // 2. get seed admin address
-      const adminAddress = firstSeed.admin
+      const adminAddress = firstSeed.admin;
 
-      E2eWallet.currentWalletAddress = adminAddress
-      E2eSeed.currentSeed = firstSeed
-    })
-  })
-
-})
+      E2eWallet.currentWalletAddress = adminAddress;
+      E2eSeed.currentSeed = firstSeed;
+    });
+  });
+});
 
 Given("I connect to the wallet with address {string}", (address: string) => {
   E2eNavbar.connectToWallet(address);
@@ -125,7 +126,6 @@ Given("I change the address to {string}", (address: string) => {
   E2eWallet.currentWalletAddress = address;
   // @ts-ignore - Hack to access firestore inside Cypress
   Cypress.eventAggregator.publish("accountsChanged", address);
-
 });
 
 Given("I'm a Connected Public user", () => {
@@ -143,7 +143,9 @@ Given(/^I'm an? "(.*)" user$/, (userType: UserType) => {
       break;
     }
     default: {
-      throw new Error("[TEST] No such user type. Available: " + UserTypes.join(", "));
+      throw new Error(
+        "[TEST] No such user type. Available: " + UserTypes.join(", "),
+      );
     }
   }
 });
@@ -167,13 +169,14 @@ Then("I'm connected to my wallet with address {string}", (address: string) => {
 });
 
 function givenImAnAnonymousUser() {
-  E2eNavigation.hasAppLoaded().then(hasLoaded => {
+  E2eNavigation.hasAppLoaded().then((hasLoaded) => {
     E2eWallet.currentWalletAddress = undefined;
     E2eWallet.isLead = false;
 
     if (hasLoaded) {
-      cy.get("[data-test='connectButton']").then(connectButton => {
-        const isConnected = connectButton.text().trim() !== "Connect to a Wallet";
+      cy.get("[data-test='connectButton']").then((connectButton) => {
+        const isConnected =
+          connectButton.text().trim() !== "Connect to a Wallet";
         if (isConnected) {
           E2eNavbar.disconnectWallet();
         }
@@ -186,14 +189,15 @@ function givenImAnAnonymousUser() {
 }
 
 function givenImAConnectedPublicUser() {
-  E2eNavigation.hasAppLoaded().then(hasLoaded => {
+  E2eNavigation.hasAppLoaded().then((hasLoaded) => {
     E2eWallet.currentWalletAddress = E2E_ADDRESSES.ProposalLead;
     E2eWallet.isLead = false;
 
     if (hasLoaded) {
       // If app loaded, then try to connect
-      cy.get("[data-test='connectButton']").then(connectButton => {
-        const isConnected = connectButton.text().trim() !== "Connect to a Wallet";
+      cy.get("[data-test='connectButton']").then((connectButton) => {
+        const isConnected =
+          connectButton.text().trim() !== "Connect to a Wallet";
         if (isConnected) {
           E2eNavbar.disconnectWallet();
         } else {
@@ -205,14 +209,15 @@ function givenImAConnectedPublicUser() {
 }
 
 function givenImAConnectedToMainTestingAccount() {
-  E2eNavigation.hasAppLoaded().then(hasLoaded => {
+  E2eNavigation.hasAppLoaded().then((hasLoaded) => {
     E2eWallet.currentWalletAddress = E2E_ADDRESSES.CurveLabsMainLaunch;
     E2eWallet.isLead = true;
 
     if (hasLoaded) {
       // If app loaded, then try to connect
-      cy.get("[data-test='connectButton']").then(connectButton => {
-        const isConnected = connectButton.text().trim() !== "Connect to a Wallet";
+      cy.get("[data-test='connectButton']").then((connectButton) => {
+        const isConnected =
+          connectButton.text().trim() !== "Connect to a Wallet";
         if (isConnected) {
           E2eNavbar.disconnectWallet();
         } else {
