@@ -8,7 +8,7 @@ import {
   LaunchConfig,
   IClass,
 } from "newLaunch/launchConfig";
-import { Address } from "services/EthereumService";
+import { Address } from "types/types";
 
 export interface ISeedDetails extends ILaunchDetails {
   /**

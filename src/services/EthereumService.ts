@@ -12,6 +12,7 @@ import { autoinject } from "aurelia-framework";
 import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 import { Utils } from "services/utils";
+import type { Address } from "types/types";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -20,7 +21,7 @@ interface IEIP1193 {
   on(eventName: "disconnect", handler: (error: { code: number; message: string }) => void);
 }
 
-export type Address = string;
+export type { Address } from "types/types";
 export type Hash = string;
 
 export interface IBlockInfoNative {
@@ -697,26 +698,7 @@ export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.ta
   return isCeloLike;
 }
 
-/**
- * @param ethValue
- * @param decimals Default is 18.  Can be decimal count or:
- *  "wei",
- *  "kwei",
- *  "mwei",
- *  "gwei",
- *  "szabo",
- *  "finney",
- *  "ether",
- * @returns
- */
-export const toWei = (ethValue: BigNumberish, decimals: string | number = 18): BigNumber => {
-  const t = typeof ethValue;
-  if (t === "string" || t === "number") {
-    // avoid underflows
-    ethValue = Utils.truncateDecimals(Number(ethValue), Number(decimals));
-  }
-  return parseUnits(ethValue.toString(), decimals);
-};
+export { toWei } from "shared/shared";
 
 /**
  * @param weiValue

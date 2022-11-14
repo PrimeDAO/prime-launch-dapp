@@ -18,6 +18,7 @@ import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
 import * as SEED_METADATA_1 from "../../SEED_METADATA_1.json";
+import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -37,16 +38,9 @@ interface IFunderPortfolio {
  * Note: `interface` instead of `type`, because of type hinting.
  *   `type ABC = BigNumber` shows `BigNumber` instead of `ABC`
  */
-export interface IFundingToken extends BigNumber {}
-
-export interface IContractContributorClasses {
-  classNames: string[];
-  classCaps: IFundingToken[];
-  individualCaps: IFundingToken[];
-  vestingDurations: BigNumber[];
-  vestingCliffs: BigNumber[];
-  classFundingsCollected: BigNumber[]; // Keeps track of how much already was collected
-}
+// export interface IFundingToken extends BigNumber {}
+export type { IFundingToken } from "types/types";
+export type { IContractContributorClasses } from "types/types";
 
 export interface IContributorClass {
   className: string;

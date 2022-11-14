@@ -1,7 +1,5 @@
-import { autoinject } from "aurelia-framework";
 import { getAddress } from "ethers/lib/utils";
 
-@autoinject
 export class Utils {
 
   public static sleep(milliseconds: number): Promise<any> {
