@@ -689,6 +689,12 @@ export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.tar
   return isCeloLike;
 }
 
+export function isNetworkPresent(network: AllowedNetworks): boolean {
+  const targetNetwork = EthereumService.ProviderEndpoints[network];
+  const present = !!targetNetwork;
+  return present;
+}
+
 /**
  * Either Celo Mainnet or Testnet
  * @param network Default: Network the current wallet is connected to
