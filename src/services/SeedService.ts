@@ -18,6 +18,8 @@ import { Utils } from "services/utils";
 import { BigNumber } from "ethers";
 import { BrowserStorageService } from "./BrowserStorageService";
 
+const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
+
 export interface ISeedCreatedEventArgs {
   newSeed: Address;
   beneficiary: Address;
@@ -359,5 +361,28 @@ export class SeedService {
     }
 
     return metaDataHash;
+  }
+
+  /**
+   * Manually add to the browser local storage
+   * key: `@primedao/prime-launch-dapp.LOCAL_STORAGE_LAUNCH_CONFIG`
+   * value: `{"data": {<ISeedConfig> ...}}`
+   */
+  public dev_getSeedConfigFromLocalStorage(): ISeedConfig | null {
+    if (IS_PRODUCTION_APP) return null;
+
+    const localStorageLaunchConfig = this.browserStorageService.lsGet<ISeedConfig>("LOCAL_STORAGE_LAUNCH_CONFIG");
+
+    if (localStorageLaunchConfig) {
+      return localStorageLaunchConfig;
+    }
+
+    return null;
+  }
+
+  public dev_setSeedConfigFromLocalStorage(config: ISeedConfig): void {
+    if (IS_PRODUCTION_APP) return;
+
+    this.browserStorageService.lsSet("LOCAL_STORAGE_LAUNCH_CONFIG", config);
   }
 }
