@@ -37,24 +37,6 @@
 
         <!-- <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div> -->
       </div>
-      <div if.bind="showDevCode" class="dev-go-to-seed-stage6">
-        <div click.delegate="__dev_toOldDashboard()" class="item">Old Dash</div>
-        <div click.delegate="__dev_toNewDashboard()" class="item">New Dash</div>
-        <div click.delegate="navigate('/newSeed/stage6')" class="item">Go to Summary</div>
-        <div click.delegate="eventAggregator.publish('dev:use-saved-seed')" class="item">Use Saved</div>
-        <div click.delegate="eventAggregator.publish('dev:update-seed')" class="item">Update</div>
-        <div click.delegate="eventAggregator.publish('dev:download-seed')" class="item">Download</div>
-          <label class="item" for="avatar">Upload</label>
-          <input
-            type="file"
-            id="avatar" name="avatar"
-            accept="application/json"
-            style="display: none;"
-            files.bind="seedJsonFiles"
-            change.delegate="dev_uploadSeed()"
-          >
-
-      </div>
     </div>
 
     <div class="headerConnectButton">
