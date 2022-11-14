@@ -684,6 +684,12 @@ export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.tar
   return isCeloLike;
 }
 
+export function isNetworkPresent(network: AllowedNetworks): boolean {
+  const targetNetwork = EthereumService.ProviderEndpoints[network];
+  const present = !!targetNetwork;
+  return present;
+}
+
 /**
  * @param ethValue
  * @param decimals Default is 18.  Can be decimal count or:

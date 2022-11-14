@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -66,16 +66,18 @@ export function configure(aurelia: Aurelia): void {
   aurelia.start().then(async () => {
     aurelia.container.get(ConsoleLogService);
     try {
-    /**
-     * otherwise singleton is the default
-     */
+      /**
+       * otherwise singleton is the default
+       */
       aurelia.container.registerTransient(Seed);
       aurelia.container.registerTransient(LbpManager);
       aurelia.container.registerTransient(Lbp);
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
-      ethereumService.initialize(network ?? (inDev ? Networks.Goerli : Networks.Mainnet));
+
+      const targetNetwork = handleNetworkFromLocalStorage(network);
+      ethereumService.initialize(targetNetwork);
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
@@ -121,4 +123,16 @@ export function configure(aurelia: Aurelia): void {
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });
+
+  function handleNetworkFromLocalStorage(network: Networks) {
+    let targetNetwork;
+    if (isNetworkPresent(network)) {
+      targetNetwork = network;
+    } else {
+      targetNetwork = inDev ? Networks.Goerli : Networks.Mainnet;
+
+      storageService.lsSet("network", targetNetwork);
+    }
+    return targetNetwork;
+  }
 }
