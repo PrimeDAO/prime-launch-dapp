@@ -10,8 +10,6 @@ import { DisposableCollection } from "services/DisposableCollection";
 import { EventConfigException } from "services/GeneralEvents";
 import { WhiteListService } from "services/WhiteListService";
 import { BigNumber } from "ethers";
-import { DisclaimerService } from "services/DisclaimerService";
-
 
 @autoinject
 export class SeedAdminDashboard {
@@ -47,7 +45,6 @@ export class SeedAdminDashboard {
     private seedService: SeedService,
     private ethereumService: EthereumService,
     private whiteListService: WhiteListService,
-    private disclaimerService: DisclaimerService,
   ) {
     this.subscriptions.push(this.eventAggregator.subscribe("Network.Changed.Account", async () => {
       this.hydrate();
@@ -59,10 +56,6 @@ export class SeedAdminDashboard {
   }
 
   async attached(): Promise<void> {
-    await this.disclaimerService.showDisclaimer(
-      "https://raw.githubusercontent.com/PrimeDAO/public-client-assets/main/Prime-launch/Terms-and-conditions/Aqualis-nov-2022.md",
-      "TEST Disclaimer",
-    );
 
     try {
       if (this.seedService.initializing) {
