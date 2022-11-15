@@ -214,10 +214,12 @@
         <div class="label targetLabel">FUNDING TARGET</div>
         <div class="value target">
           <formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
+          <span class="symbol">${seed.fundingTokenInfo.symbol}</span>
         </div>
         <div class="label maxLabel">MAX</div>
         <div class="value max">
           <formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
+          <span class="symbol">${seed.fundingTokenInfo.symbol}</span>
         </div>
         <!-- <div class="label valuationLabel">VALUATION</div>
         <div class="value valuation">$ <formatted-number
