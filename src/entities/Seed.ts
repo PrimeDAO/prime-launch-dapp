@@ -5,7 +5,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, Hash, Networks, toWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash, isLocalhostNetwork, toWei } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -18,6 +18,8 @@ import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
 import * as SEED_METADATA_1 from "../../SEED_METADATA_1.json";
+import * as lhrealtest from "../../cypress/fixtures/21-[lh]-real-test.json";
+
 import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
 
 export interface ISeedConfiguration {
@@ -499,12 +501,18 @@ export class Seed implements ILaunch {
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
       } else {
-        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-        throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
+        if (!isLocalhostNetwork()) {
+          this.eventAggregator.publish("Seed.InitializationFailed", this.address);
+          throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
+        }
       }
 
-      if (EthereumService.targetedNetwork === Networks.Localhost) {
-        this.metadata = SEED_METADATA_1 as unknown as ISeedConfig;
+      if (isLocalhostNetwork()) {
+        this.metadata = lhrealtest as unknown as ISeedConfig;
+        // if (this.address === "0x93b6BDa6a0813D808d75aA42e900664Ceb868bcF") {
+        // } else {
+        //   this.metadata = SEED_METADATA_1 as unknown as ISeedConfig;
+        // }
       } else {
         await this.hydrateMetadata();
       }
@@ -774,7 +782,7 @@ export class Seed implements ILaunch {
     classVestingDurations,
     classVestingCliffs,
     classAllowlists,
-  }: Record<string, unknown[]>): Promise<TransactionReceipt> {
+  }: IAddClassParams ): Promise<TransactionReceipt> {
     try {
       const addClassArgs = [
         classNames.map(name => formatBytes32String(name as string)),
@@ -782,7 +790,7 @@ export class Seed implements ILaunch {
         individualCaps,
         classVestingCliffs,
         classVestingDurations,
-        classAllowlists.map(list => Array.from(list as Set<string>)),
+        classAllowlists.map(list => Array.from(list)),
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.addClassesAndAllowlists(
