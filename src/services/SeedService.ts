@@ -107,6 +107,7 @@ export class SeedService {
   // }
 
   private async getSeeds(): Promise<void> {
+    return;
     let resolve: (value: void | PromiseLike<void>) => void;
     let reject: (reason?: any) => void;
 

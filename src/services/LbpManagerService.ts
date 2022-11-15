@@ -111,6 +111,7 @@ export class LbpManagerService {
   }
 
   private async getLbps(): Promise<void> {
+    return;
     let resolve: (value: void | PromiseLike<void>) => void;
     let reject: (reason?: any) => void;
 
