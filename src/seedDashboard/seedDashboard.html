@@ -25,11 +25,14 @@
           <div ref="bar" class="bar ${(fractionComplete >= 1) ? 'complete' : ''}">&nbsp;</div>
         </div>
         <div class="raised">
-          <div class="amount">$<formatted-number
+          <div class="amount">
+            <formatted-number
               value.to-view="seed.amountRaised | ethwei:seed.fundingTokenInfo.decimals"
-              thousands-separated></formatted-number>
+              thousands-separated>
+            </formatted-number>
+            ${seed.fundingTokenInfo.symbol}
           </div>
-          <div class="denomination">USD raised</div>
+          <div class="denomination"> raised</div>
           <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
           <div class="perc">
             <formatted-number
