@@ -4,7 +4,7 @@ import { E2E_ADDRESSES } from "../../fixtures/walletFixtures";
 import { Utils } from "../../../src/services/utils";
 import { E2eNavigation } from "../common/navigate";
 import { PAGE_LOADING_TIMEOUT } from "../common/test-constants";
-import { E2eSeed } from "../common/seed.e2e";
+import { E2eSeeds } from "../common/seed.e2e";
 
 const UserTypes = ["Anonymous", "Connected Public", "Main Testing"] as const;
 export type UserType = typeof UserTypes[number];
@@ -97,22 +97,6 @@ export class E2eNavbar {
     this.getConnectWalletButton().should("be.visible");
   }
 }
-
-Given("I'm the Admin of the Seed", () => {
-  E2eNavigation.hasAppLoaded().then(() => {
-    cy.waitUntil(() => !!Cypress.SeedService);
-    cy.wait(0).then(async () => {
-      // 1. Get seed
-      await Cypress.SeedService.ensureAllSeedsInitialized();
-      const firstSeed = Cypress.SeedService.seedsArray[0];
-      // 2. get seed admin address
-      const adminAddress = firstSeed.admin;
-
-      E2eWallet.currentWalletAddress = adminAddress;
-      E2eSeed.currentSeed = firstSeed;
-    });
-  });
-});
 
 Given("I connect to the wallet with address {string}", (address: string) => {
   E2eNavbar.connectToWallet(address);

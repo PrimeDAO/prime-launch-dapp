@@ -3,6 +3,13 @@ import { Then, When } from "@badeball/cypress-cucumber-preprocessor/methods";
 import { NumberService } from "../../../../src/services/NumberService";
 import { E2eApp } from "../../common/app.e2e";
 import { getRouterViewViewModel } from "../../common/aurelia.e2e";
+import {
+  e2eClassName,
+  e2eClassCap,
+  e2eIndividualCap,
+  e2eClassVestedFor,
+  e2eClassCliffOf,
+} from "../../common/e2eConstants";
 
 type ClassModalFields =
   | "class-name"
@@ -11,12 +18,6 @@ type ClassModalFields =
   | "vesting-vested-for"
   | "vesting-cliff-of"
   | "allowlist";
-
-const e2eClassName = "e2e_class_name";
-const e2eClassCap = 1;
-const e2eIndividualCap = 1;
-const e2eClassVestedFor = 0;
-const e2eClassCliffOf = 0;
 
 export class E2eFields {
   public static addToField(additionalValue: string | number): void {
@@ -173,7 +174,7 @@ Then("the new Class should be added", () => {
   E2eApp.getBanner(confirmedMsg).should("be.visible");
   E2eAdminDashboard.getConfirmClasses().should("have.class", "disabled");
   E2eAdminDashboard.getCancelClasses().should("have.class", "disabled");
-})
+});
 
 Then("the changes to the Class should be reflected", () => {
   E2eAdminDashboard.getClassRow({ className: e2eClassName });

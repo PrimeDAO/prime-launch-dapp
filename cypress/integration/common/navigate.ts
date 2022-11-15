@@ -1,7 +1,7 @@
 import { Given } from "@badeball/cypress-cucumber-preprocessor/methods";
 import { PAGE_LOADING_TIMEOUT } from "./test-constants";
 import { PRIME_PAYMENTS_URL } from "../../../src/configurations/tokenLists";
-import { E2eSeed } from "./seed.e2e";
+import { E2eSeeds } from "./seed.e2e";
 import { getRouterViewViewModel } from "./aurelia.e2e";
 
 export class E2eNavigation {
@@ -64,7 +64,7 @@ Given("I navigate to the Home page", () => {
 });
 
 Given("I navigate to the Seed Dashboard", () => {
-  const seed = E2eSeed.currentSeed;
+  const seed = E2eSeeds.currentSeed;
   const seedUrl = `/${E2eNavigation.SEED_DASHBOARD_URL}/${seed.address}`;
   cy.visit(seedUrl);
 
@@ -74,7 +74,7 @@ Given("I navigate to the Seed Dashboard", () => {
 });
 
 Given("I navigate to the Admin Dashboard", () => {
-  const seed = E2eSeed.currentSeed;
+  const seed = E2eSeeds.currentSeed;
   const seedName = seed.metadata.general.projectName;
 
   cy.window().then((window) => {

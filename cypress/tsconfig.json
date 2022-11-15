@@ -1,15 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "types": [
       "cypress",
       "cypress-wait-until"
-    ],
-    "paths": {
-      "services/*": ["../src/services/*"],
-      "entities/*": ["../src/entities/*"],
-    }
+    ]
   },
   "include": [
     "**/*.ts"

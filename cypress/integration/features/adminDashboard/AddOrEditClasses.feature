@@ -4,7 +4,6 @@ Feature: Add or edit Contributor Class
     And I'm the Admin of the Seed
     And I'm connected to the app
 
-  @focus
   Scenario: Admin adds a Contributor Class
     Given I navigate to the Admin Dashboard
   # 	Given the seed has not started
@@ -17,6 +16,7 @@ Feature: Add or edit Contributor Class
   # 	And confirms the addition
   # 	And confirms the Metamask transaction
 
+  @focus
   Scenario: Admin edits a Contributor Class
     And I navigate to the Admin Dashboard
     When I edit a Class
