@@ -6,6 +6,7 @@ import { Router } from "aurelia-router";
 import "./home.scss";
 import { Utils } from "services/utils";
 import axios from "axios";
+import { DisclaimerService } from "services/DisclaimerService";
 
 @singleton(false)
 @autoinject
@@ -19,7 +20,15 @@ export class Home {
     private seedService: SeedService,
     private eventAggregator: EventAggregator,
     private ethereumService: EthereumService,
+    private disclaimerService: DisclaimerService,
   ) {
+  }
+
+  async attached(): Promise<void> {
+    await this.disclaimerService.showDisclaimer(
+      "https://raw.githubusercontent.com/PrimeDAO/public-client-assets/main/Prime-launch/Terms-and-conditions/Aqualis-nov-2022.md",
+      "TEST Disclaimer",
+    );
   }
 
   navigate(href: string): void {
