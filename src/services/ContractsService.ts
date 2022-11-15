@@ -40,7 +40,7 @@ export class ContractsService {
     // , [ContractNames.VAULT, null]
     [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
-    // , [ContractNames.SIGNER, null]
+    , [ContractNames.SIGNER, null]
     , // not on kovan we delete some of these below
   ]);
 
@@ -56,8 +56,7 @@ export class ContractsService {
     /**
      * gnosis safe isn't on kovan, but we need kovan for testing balancer
      */
-    if (EthereumService.targetedNetwork === Networks.Kovan) {
-      ContractsService.Contracts.delete(ContractNames.SEED);
+    if (EthereumService.targetedNetwork === Networks.Kovan || isLocalhostNetwork()) {
       ContractsService.Contracts.delete(ContractNames.SIGNER);
     }
 
