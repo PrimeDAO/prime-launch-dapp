@@ -26,7 +26,7 @@ export class Home {
 
   async attached(): Promise<void> {
     await this.disclaimerService.showDisclaimer(
-      "https://raw.githubusercontent.com/PrimeDAO/public-client-assets/main/Prime-launch/Terms-and-conditions/Aqualis-nov-2022.md",
+      "https://raw.githubusercontent.com/PrimeDAO/prime-launch-dapp/master/src/documentation/officialDocs/TermsOfService.md",
       "TEST Disclaimer",
     );
   }
