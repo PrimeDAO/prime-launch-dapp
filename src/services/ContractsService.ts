@@ -58,12 +58,15 @@ export class ContractsService {
      */
     if (
       EthereumService.targetedNetwork === Networks.Kovan ||
-      isLocalhostNetwork() ||
-      isCeloNetworkLike()
+      isLocalhostNetwork()
     ) {
       ContractsService.Contracts.delete(ContractNames.LBPMANAGERFACTORY);
       ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
       ContractsService.Contracts.delete(ContractNames.SIGNER);
+    }
+    if (isCeloNetworkLike()) {
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGERFACTORY);
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
     }
 
     this.eventAggregator.subscribe("Network.Changed.Account", (account: Address): void => {
@@ -152,10 +155,14 @@ export class ContractsService {
       if (reuseContracts) {
         contract = ContractsService.Contracts.get(contractName).connect(signerOrProvider);
       } else {
-        contract = new ethers.Contract(
-          ContractsService.getContractAddress(contractName),
-          ContractsService.getContractAbi(contractName),
-          signerOrProvider);
+        try {
+          contract = new ethers.Contract(
+            ContractsService.getContractAddress(contractName),
+            ContractsService.getContractAbi(contractName),
+            signerOrProvider);
+        } catch (error) {
+          throw new Error(`No Abi for Contract "${contractName}" found.`);
+        }
       }
       ContractsService.Contracts.set(contractName, contract);
     });
