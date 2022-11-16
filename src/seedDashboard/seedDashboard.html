@@ -25,13 +25,16 @@
           <div ref="bar" class="bar ${(fractionComplete >= 1) ? 'complete' : ''}">&nbsp;</div>
         </div>
         <div class="raised">
-          <div class="amount">$<formatted-number
+          <div class="amount">
+            <formatted-number
               value.to-view="seed.amountRaised | ethwei:seed.fundingTokenInfo.decimals"
-              thousands-separated></formatted-number>
+              thousands-separated>
+            </formatted-number>
+            ${seed.fundingTokenInfo.symbol}
           </div>
-          <div class="denomination">USD raised</div>
+          <div class="denomination"> raised</div>
           <!-- <div if.to-view="fractionComplete < 1" class="perc"> -->
-          <div class="perc">
+          <div class="perc" style="display: none;">
             <formatted-number
               average
               mantissa="0"
@@ -214,18 +217,20 @@
         <div class="label targetLabel">FUNDING TARGET</div>
         <div class="value target">
           <formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
+          <span class="symbol">${seed.fundingTokenInfo.symbol}</span>
         </div>
         <div class="label maxLabel">MAX</div>
         <div class="value max">
           <formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number>
+          <span class="symbol">${seed.fundingTokenInfo.symbol}</span>
         </div>
-        <div class="label valuationLabel">VALUATION</div>
+        <!-- <div class="label valuationLabel">VALUATION</div>
         <div class="value valuation">$ <formatted-number
             if.to-view="seed.valuation"
             value.to-view="seed.valuation"
             average></formatted-number>
           <span else>N/A</span>
-        </div>
+        </div> -->
         <div class="label tokensleftLabel">PROJECT TOKENS LEFT</div>
         <div class="value tokensleft">
           <formatted-number value.to-view="percentProjectTokensLeft" average mantissa="0"></formatted-number>%

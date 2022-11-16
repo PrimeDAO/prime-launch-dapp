@@ -29,15 +29,13 @@ export class Stage3 extends BaseStage<ILaunchConfig> {
     super(router, ethereumService, eventAggregator, tokenService);
   }
 
-  bind() {
-    this.projectTokenAddressText = `The ${capitalizeNetworkName()} address of the token you are offering to contributors`;
-  }
-
-  attached(): void {
+  bind(): void {
     if (!this.wizardState.stage3State) {
       this.wizardState.stage3State = {} as any;
     }
+  }
 
+  attached(): void {
     this.projectTokenAddressText = `The ${capitalizeNetworkName()} address of the token you are offering to contributors`;
   }
 

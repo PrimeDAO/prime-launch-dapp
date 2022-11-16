@@ -523,7 +523,7 @@ export class Seed implements ILaunch {
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
-      if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
+      if (!this.projectTokenInfo || (this.projectTokenInfo.address.toLowerCase() !== this.projectTokenAddress.toLowerCase())) {
         throw new Error("project token info is not found or does not match the seed contract");
       }
 

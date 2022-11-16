@@ -115,7 +115,6 @@ export function configure(aurelia: Aurelia): void {
       // TODO: rollback. Commented to test pinata with limited requests
       // const lbpManagerService = aurelia.container.get(LbpManagerService);
       // lbpManagerService.initialize();
-
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
       eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
