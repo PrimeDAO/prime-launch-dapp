@@ -11,6 +11,7 @@ import { BigNumber } from "ethers";
 import { Utils } from "services/utils";
 import "./addClass.scss";
 import { splitByWordSeparators } from "services/StringService";
+import { DEV_ADDRESSES } from "navbar/navbar";
 
 const EMPTY_CLASS = {
   className: undefined,
@@ -42,7 +43,7 @@ export class AddClassModal {
     private launchService: LaunchService,
     private numberService: NumberService,
   ) {
-    this.isDev = process.env.NODE_ENV === "development" && this.ethereumService.defaultAccountAddress === "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1";
+    this.isDev = process.env.NODE_ENV === "development" && DEV_ADDRESSES.includes(this.ethereumService.defaultAccountAddress);
   }
 
   private async csvChanged(newValue: File[]): Promise<void> {
@@ -164,8 +165,8 @@ export class AddClassModal {
     const CLASS_VESTING_START_TIME = 0 * daysToSeconds;
     this.class = {
       className: "Test Class - " + new Date().toDateString(),
-      classCap: toWei(14, this.model.params.fundingTokenInfo.decimals),
-      individualCap: toWei(14, this.model.params.fundingTokenInfo.decimals),
+      classCap: toWei(1, this.model.params.fundingTokenInfo.decimals),
+      individualCap: toWei(1, this.model.params.fundingTokenInfo.decimals),
       classVestingDuration: CLASS_VESTING_DURATION,
       classVestingCliff: CLASS_VESTING_START_TIME,
       allowList: undefined,

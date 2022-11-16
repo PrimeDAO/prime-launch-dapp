@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, isNetworkPresent, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -51,6 +51,7 @@ export function configure(aurelia: Aurelia): void {
   const storageService = new BrowserStorageService;
   // storageService.lsSet("network", "alfajores");
   const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
+  const isLocalNetwork = network === "localhost";
   const inDev = process.env.NODE_ENV === "development";
 
   if (inDev) {
@@ -112,6 +113,10 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
       seedService.initialize();
 
+      if ((window as any).Cypress) {
+        (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
+      }
+
       // TODO: rollback. Commented to test pinata with limited requests
       // const lbpManagerService = aurelia.container.get(LbpManagerService);
       // lbpManagerService.initialize();
@@ -128,7 +133,8 @@ export function configure(aurelia: Aurelia): void {
     if (isNetworkPresent(network)) {
       targetNetwork = network;
     } else {
-      targetNetwork = inDev ? Networks.Goerli : Networks.Mainnet;
+      const devNetwork = isLocalNetwork ? Networks.Localhost : Networks.Goerli;
+      targetNetwork = inDev ? devNetwork : Networks.Mainnet;
 
       storageService.lsSet("network", targetNetwork);
     }

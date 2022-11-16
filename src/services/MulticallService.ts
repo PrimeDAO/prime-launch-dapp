@@ -1,4 +1,4 @@
-import { Address, EthereumService, Networks } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { createWatcher } from "@makerdao/multicall";
 const addresses = require("/node_modules/@makerdao/multicall/src/addresses.json");
 
@@ -41,7 +41,7 @@ export class MultiCallService {
   }
   public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
     const config = {
-      multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
+      multicallAddress: isLocalhostNetwork() ? "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9" : addresses[EthereumService.targetedNetwork].multicall,
       rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
       interval: 5000000, // basically disable polling, just take the first batch
       errorRetryWait: 5000000, // basically disable polling

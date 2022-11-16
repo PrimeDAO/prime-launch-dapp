@@ -1,10 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "baseUrl": "../node_modules",
+    "strict": false,
     "types": [
-      "cypress"
+      "cypress",
+      "cypress-wait-until"
     ]
   },
   "include": [

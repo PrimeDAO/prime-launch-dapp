@@ -20,51 +20,74 @@ module.exports = (on, config) => {
   // on('<event>', (arg1, arg2) => {
   //   // plugin stuff here
   // });
-  on("file:preprocessor", webpack({
-    webpackOptions: {
-      resolve: {
-        extensions: [".ts", ".js"],
-        alias: {
-          process: 'process/browser',
-        }
-      },
-      devtool: 'cheap-module-source-map',
-      devServer: {
-        client: {
-          overlay: false,
-        },
-      },
-      module: {
-        rules: [
-          {
-            test: /\.ts$/,
-            exclude: [/node_modules/],
-            use: [
-              {
-                loader: "ts-loader"
-              }
-            ]
+  on(
+    "file:preprocessor",
+    webpack({
+      webpackOptions: {
+        resolve: {
+          extensions: [".ts", ".js"],
+          alias: {
+            process: "process/browser",
           },
-          {
-            test: /\.feature$/,
-            use: [
-              {
-                loader: "@badeball/cypress-cucumber-preprocessor/webpack",
-                options: config
-              }
-            ]
-          }
-        ]
+        },
+        devtool: "cheap-module-source-map",
+        devServer: {
+          client: {
+            overlay: false,
+          },
+        },
+        module: {
+          rules: [
+            {
+              test: /\.ts$/,
+              exclude: [/node_modules/],
+              use: [
+                {
+                  loader: "ts-loader",
+                },
+              ],
+            },
+            {
+              test: /\.feature$/,
+              use: [
+                {
+                  loader: "@badeball/cypress-cucumber-preprocessor/webpack",
+                  options: config,
+                },
+              ],
+            },
+          ],
+        },
+        plugins: [
+          new ProvidePlugin({
+            process: "process/browser",
+            Buffer: ["buffer", "Buffer"],
+          }),
+        ],
       },
-      plugins: [
-        new ProvidePlugin({
-          process: 'process/browser',
-          Buffer: ['buffer', 'Buffer'],
-        }),
-      ]
-    }
-  }));
+    }),
+  );
+
+  // on("task", {
+  //   async addSeed(...args) {
+  //     // 1. Get SeedFactory instance
+
+  //     /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: index.js ~ line 70 ~ args', args)
+
+  //     // Now we can run a script and invoke a callback when complete, e.g.
+
+  //     // var relativePath = "tasks/testMgmt.js"
+  //     var relativePath = "../../../launch-contracts/tasks/testMgmt.js"
+  //     // const absolutePath = "/home/hdn/dev/prime/launch-contracts/tasks/testMgmt.js";
+  //     // try {
+
+  //     // } catch (error) {
+  //     //   return error;
+  //     // }
+  //     return "okay";
+  //   },
+  // });
 
   // require('@cypress/code-coverage/task')(on, config)
-  return config
+  return config;
 };

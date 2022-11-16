@@ -5,12 +5,12 @@
         if.to-view="!launch.uninitialized && launch.hasNotStarted"
         ref="timeLeft"
         class="body timeLeft ${(proximity===1) ? 'comingUp' : ((proximity===2) ? 'soon' : 'soon' )}">
-        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft}
+        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Starts in ${currentTimeLeft | timespan:"minutes":false:true}
       </div>
       <div
         if.to-view="!launch.uninitialized && launch.isLive"
         class="body timeLeft live">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE, ${currentTimeLeft} left
+        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE, ${currentTimeLeft | timespan:"minutes":false:true} left
       </div>
       <div
         if.to-view="launch.isDead"
@@ -28,7 +28,7 @@
         <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>UNINITIALIZED
       </div>
     </div>
-    <div class="adminStatus">
+    <div if.bind="isAdminStatus" class="adminStatus">
       <div
         if.to-view="launch.isPaused"
         class="body paused">PAUSED</div>

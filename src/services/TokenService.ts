@@ -3,7 +3,7 @@ import { autoinject } from "aurelia-framework";
 import { Contract, ethers } from "ethers";
 import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { Address, EthereumService, Networks } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { from, Subject } from "rxjs";
 import { concatMap } from "rxjs/operators";
@@ -12,6 +12,7 @@ import { TokenListMap, TokenListService } from "services/TokenListService";
 import TokenMetadataService from "services/TokenMetadataService";
 import { AxiosService } from "services/axiosService";
 import { TimingService } from "services/TimingService";
+import CoingeckoData from "../../coingeckoData.json";
 
 @autoinject
 export class TokenService {
@@ -45,6 +46,14 @@ export class TokenService {
 
   async initialize(): Promise<TokenListMap> {
     this.geckoCoinInfo = new Map<string, string>();
+
+    if (isLocalhostNetwork()) {
+      if (CoingeckoData && CoingeckoData.length) {
+        CoingeckoData.map((tokenInfo: ITokenInfo) =>
+          this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
+      }
+      return this.tokenLists = await this.tokenListService.fetchLists();
+    }
 
     let uri;
 
@@ -176,7 +185,6 @@ export class TokenService {
     if (tokensByGeckoId.size) {
 
       let uri;
-
 
       if (process.env.NODE_ENV === "development") {
         // uri = `https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}`;

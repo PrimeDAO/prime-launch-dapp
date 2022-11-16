@@ -5,7 +5,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, Hash, toWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash, isLocalhostNetwork, toWei } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -17,6 +17,9 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
+import * as lhrealtest from "../../cypress/fixtures/21-[lh]-real-test.json";
+
+import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -36,16 +39,9 @@ interface IFunderPortfolio {
  * Note: `interface` instead of `type`, because of type hinting.
  *   `type ABC = BigNumber` shows `BigNumber` instead of `ABC`
  */
-export interface IFundingToken extends BigNumber {}
-
-export interface IContractContributorClasses {
-  classNames: string[];
-  classCaps: IFundingToken[];
-  individualCaps: IFundingToken[];
-  vestingDurations: BigNumber[];
-  vestingCliffs: BigNumber[];
-  classFundingsCollected: BigNumber[]; // Keeps track of how much already was collected
-}
+// export interface IFundingToken extends BigNumber {}
+export type { IFundingToken } from "types/types";
+export type { IContractContributorClasses } from "types/types";
 
 export interface IContributorClass {
   className: string;
@@ -404,21 +400,6 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
         },
-        // {
-        //   contractAddress: this.address,
-        //   functionName: "classes",
-        //   returnType: "uint256",
-        //   paramTypes: ["uint256"],
-        //   paramValues: [0],
-        //   resultHandler: (result: IContributorClass[], b) => {
-        //     this.classes = result;
-        //
-        //     // Default class
-        //     const { price, vestingDuration } = result[0];
-        //     exchangeRate = price;
-        //     this.vestingDuration = vestingDuration.toNumber();
-        //   },
-        // },
         {
           contractAddress: this.address,
           functionName: "price",
@@ -491,12 +472,6 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.seedTip = result; },
         },
-        // { GONE -> ???
-        //   contractAddress: this.address,
-        //   functionName: "feeRemainder",
-        //   returnType: "uint256",
-        //   resultHandler: (result) => { this.feeRemainder = result; },
-        // },
       ];
 
       let batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -514,11 +489,17 @@ export class Seed implements ILaunch {
       if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
       } else {
-        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
-        throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
+        if (!isLocalhostNetwork()) {
+          this.eventAggregator.publish("Seed.InitializationFailed", this.address);
+          throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
+        }
       }
 
-      await this.hydrateMetadata();
+      if (isLocalhostNetwork()) {
+        this.metadata = lhrealtest as unknown as ISeedConfig;
+      } else {
+        await this.hydrateMetadata();
+      }
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
 
@@ -783,7 +764,7 @@ export class Seed implements ILaunch {
     classVestingDurations,
     classVestingCliffs,
     classAllowlists,
-  }: Record<string, unknown[]>): Promise<TransactionReceipt> {
+  }: IAddClassParams ): Promise<TransactionReceipt> {
     try {
       const addClassArgs = [
         classNames.map(name => formatBytes32String(name as string)),
@@ -791,7 +772,7 @@ export class Seed implements ILaunch {
         individualCaps,
         classVestingCliffs,
         classVestingDurations,
-        classAllowlists.map(list => Array.from(list as Set<string>)),
+        classAllowlists.map(list => Array.from(list)),
       ];
 
       const receipt = await this.transactionsService.send(() => this.contract.addClassesAndAllowlists(

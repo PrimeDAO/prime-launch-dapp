@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, fromWei, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, isCeloNetworkLike, isLocalhostNetwork, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -258,6 +258,14 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
+
+    if (isLocalhostNetwork()) {
+      /** Beneficiary is 2nd account in Hardhat */
+      seedArguments[0] = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+      const tx = (await seedFactory.deploySeed(...seedArguments));
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 273 ~ tx", tx);
+      return;
+    }
 
     const data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
     const transaction = {

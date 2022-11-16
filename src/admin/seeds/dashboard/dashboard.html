@@ -156,13 +156,13 @@
                         <th><div class="table__center-cell">Vested (days)</div></th>
                         <th if.bind="!disableClassInteraction"><div class="table__center-cell">Edit</div></th>
                       </tr>
-                      <tr repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
-                        <td>${class.className}</td>
-                        <td><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
-                        <td><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
-                        <td><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
+                      <tr data-test="class-row" repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
+                        <td data-test="class-name">${class.className}</td>
+                        <td data-test="class-cap"><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="individual-cap"><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="class-vested"><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td if.bind="!disableClassInteraction">
-                          <div class="table__center-cell" if.bind="!isMinting[$index]">
+                          <div data-test="edit-class-button" class="table__center-cell" if.bind="!isMinting[$index]">
                             <img if.bind="noAdditions || newlyAddedClassesIndexes.includes($index)"
                               class="table__edit-icon"
                               click.delegate="openAddClassModal($index)"
@@ -181,6 +181,7 @@
                   <div class="actionPanel">
                     <div class="buttonContainer">
                       <div
+                        data-test="add-class-button"
                         class="stageButton previousButton
                           ${isMinting[-1] ? 'disabled' : ''}
                           ${disableClassInteraction ? 'disabled' : ''}
@@ -194,6 +195,7 @@
                     <div class="deployActions" if.bind="selectedSeed.classes.length">
                       <div class="buttonContainer">
                         <div
+                          data-test="cancel-classes"
                           class="
                             stageButton cancel
                             ${allowConfirmOrCancel ? '' : 'disabled'}
@@ -203,6 +205,7 @@
                       </div>
                       <div class="buttonContainer">
                         <div
+                          data-test="confirm-classes"
                           class="
                             stageButton button1
                             ${allowConfirmOrCancel ? '' : 'disabled'}
