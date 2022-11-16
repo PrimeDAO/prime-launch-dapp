@@ -48,6 +48,12 @@ $heading: Aeonik;
   font-family: $sub-heading;
 }
 
+@mixin wrapText() {
+  white-space: pre-wrap;
+  word-wrap: anywhere;
+  word-break: break-word;
+}
+
 @mixin pre($fontSize: $font-size2) {
   pre {
     white-space: pre-wrap;
