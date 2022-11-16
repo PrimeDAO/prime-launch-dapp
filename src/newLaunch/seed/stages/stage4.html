@@ -211,7 +211,7 @@
           <div>
             <label class="label" for="startTime">Start Time (GMT)</label>
             <div class="vestingDatesContainer">
-              <div class="vestingDates">
+              <div class="vestingDates startTimeInput">
                 <input
                   id="startTime"
                   value.bind="startTime"
@@ -245,7 +245,7 @@
           <div>
             <label class="label" for="endTime">End Time (GMT)</label>
             <div class="vestingDatesContainer">
-              <div class="vestingDates">
+              <div class="vestingDates entTimeInput">
                 <input
                   id="endTime" class="input-style" value.bind="endTime"
                   keydown.delegate="hoursMinutesFilter($event)"
