@@ -61,11 +61,6 @@ export class SeedService {
     private tokenService: TokenService,
     private browserStorageService: BrowserStorageService,
   ) {
-    // @ts-ignore
-    window.SeedService = this;
-    // @ts-ignore
-    window.EthereumService = EthereumService;
-
     this.eventAggregator.subscribe("Seed.InitializationFailed", async (seedAddress: string) => {
       this.seeds?.delete(seedAddress);
     });
@@ -140,7 +135,6 @@ export class SeedService {
     try {
       const seedsMap = new Map<Address, Seed>();
       const filter = this.seedFactory.filters.SeedCreated();
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 126 ~ filter", filter);
       const deletables = new Array<Address>();
 
       await this.contractsService.filterEventsInBlocks<ISeedCreatedEventArgs>(
@@ -148,7 +142,6 @@ export class SeedService {
         filter,
         this.startingBlockNumber,
         txEvents => {
-        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 133 ~ txEvents", txEvents);
           for (const event of txEvents) {
             const seed = this.createSeedFromConfig(event);
 
@@ -157,13 +150,11 @@ export class SeedService {
              */
             // if (seed.address !== "0x18A0775BCF275704E7068BA04635411996114D3D") continue;
 
-            /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 134 ~ seed", seed);
             seedsMap.set(seed.address, seed);
             /**
                  * remove the seed if it is corrupt
                  */
             this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
-              /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 140 ~ newValue", newValue);
               if (newValue) { // pretty much the only case
                 if (this.seeds) {
                   this.seeds.delete(seed.address);

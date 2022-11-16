@@ -1,5 +1,5 @@
 import { BigNumber, Contract, ethers, Signer } from "ethers";
-import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isLocalhostNetwork, Networks } from "services/EthereumService";
+import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isCeloNetworkLike, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
@@ -35,10 +35,10 @@ export interface IStandardEvent<TArgs> {
 export class ContractsService {
 
   private static Contracts = new Map<ContractNames, Contract>([
-    // [ContractNames.LBPMANAGERFACTORY, null]
-    // , [ContractNames.LBPMANAGER, null]
+    [ContractNames.LBPMANAGERFACTORY, null]
+    , [ContractNames.LBPMANAGER, null]
     // , [ContractNames.VAULT, null]
-    [ContractNames.SEEDFACTORY, null]
+    , [ContractNames.SEEDFACTORY, null]
     , [ContractNames.SEED, null]
     , [ContractNames.SIGNER, null]
     , // not on kovan we delete some of these below
@@ -56,7 +56,13 @@ export class ContractsService {
     /**
      * gnosis safe isn't on kovan, but we need kovan for testing balancer
      */
-    if (EthereumService.targetedNetwork === Networks.Kovan || isLocalhostNetwork()) {
+    if (
+      EthereumService.targetedNetwork === Networks.Kovan ||
+      isLocalhostNetwork() ||
+      isCeloNetworkLike()
+    ) {
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGERFACTORY);
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
       ContractsService.Contracts.delete(ContractNames.SIGNER);
     }
 
@@ -146,7 +152,6 @@ export class ContractsService {
       if (reuseContracts) {
         contract = ContractsService.Contracts.get(contractName).connect(signerOrProvider);
       } else {
-        // debugger;
         contract = new ethers.Contract(
           ContractsService.getContractAddress(contractName),
           ContractsService.getContractAbi(contractName),
@@ -231,7 +236,6 @@ export class ContractsService {
     let fetched = 0;
 
     do {
-      // const endBlock = startingBlock + blocksize - 1;
       const endBlock = startingBlock + blocksize + 1;
       await contract.queryFilter(filter, startingBlock, endBlock)
         .then((events: Array<IStandardEvent<TEventArgs>>): void => {

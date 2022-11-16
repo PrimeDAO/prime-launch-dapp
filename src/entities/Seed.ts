@@ -17,7 +17,6 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
-import * as SEED_METADATA_1 from "../../SEED_METADATA_1.json";
 import * as lhrealtest from "../../cypress/fixtures/21-[lh]-real-test.json";
 
 import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
@@ -354,7 +353,6 @@ export class Seed implements ILaunch {
 
   private async hydrate(): Promise<void> {
     try {
-      // debugger;
       let rawMetadata: any;
       // let exchangeRate: BigNumber;
       let totalSupply: BigNumber;
@@ -377,13 +375,6 @@ export class Seed implements ILaunch {
           functionName: "metadata",
           returnType: "bytes",
           resultHandler: (result) => { rawMetadata = result; },
-          // resultHandler: (result) => {
-          // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 334 ~ result", result);
-          //   rawMetadata = result;
-          //   // rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002e516d506948534850415953554e4770473857666e41486f4a654b324c44486465574d36774163446434336d53435a000000000000000000000000000000000000";
-          //   // rawMetadata = "0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563";
-          // },
-          // // resultHandler: (result) => { rawMetadata = "0x0000000000000000000000000000000000000000000000000000000000000000"; },
         },
         {
           contractAddress: this.address,
@@ -488,11 +479,8 @@ export class Seed implements ILaunch {
       try {
         await batcher.start();
       } catch (error) {
-        /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 516 ~ error", error);
         this.consoleLogService.logMessage(error.message, "error");
       }
-
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 588 ~ rawMetadata", rawMetadata);
 
       const exchangeRate = this.globalPrice;
       this.classPrice = exchangeRate;
@@ -509,17 +497,11 @@ export class Seed implements ILaunch {
 
       if (isLocalhostNetwork()) {
         this.metadata = lhrealtest as unknown as ISeedConfig;
-        // if (this.address === "0x93b6BDa6a0813D808d75aA42e900664Ceb868bcF") {
-        // } else {
-        //   this.metadata = SEED_METADATA_1 as unknown as ISeedConfig;
-        // }
       } else {
         await this.hydrateMetadata();
       }
 
       this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
-
-      // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 517 ~ this.metadata", this.metadata);
 
       this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
       if (!this.projectTokenInfo || (this.projectTokenInfo.address.toLowerCase() !== this.projectTokenAddress.toLowerCase())) {
