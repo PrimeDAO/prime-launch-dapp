@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, isNetworkPresent, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -76,6 +76,7 @@ export function configure(aurelia: Aurelia): void {
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
+
       const targetNetwork = handleNetworkFromLocalStorage(network);
       ethereumService.initialize(targetNetwork);
 
@@ -119,7 +120,6 @@ export function configure(aurelia: Aurelia): void {
       // TODO: rollback. Commented to test pinata with limited requests
       // const lbpManagerService = aurelia.container.get(LbpManagerService);
       // lbpManagerService.initialize();
-
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
       eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
