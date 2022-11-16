@@ -193,7 +193,7 @@ export class EthereumService {
 
   private friendlyChainNameById = new Map<number, string>([
     [1, "Mainnet"],
-    [5, "Goreli"],
+    [5, "Goerli"],
     [42, "Kovan"],
     [42161, "Arbitrum One"],
     [42220, "Celo"],
