@@ -4,7 +4,6 @@ import { PLATFORM } from "aurelia-pal";
 import { computedFrom, autoinject } from "aurelia-framework";
 import { bindable } from "aurelia-typed-observable-plugin";
 import "./timeLeft.scss";
-import tippy from "tippy.js";
 import { Seed } from "entities/Seed";
 
 // for webpack
@@ -18,32 +17,45 @@ export class TimeLeft {
   @bindable.booleanAttr hideIcons: boolean;
   @bindable.booleanAttr largest: boolean;
   @bindable.booleanAttr contained: boolean;
+  @bindable.booleanAttr isTimeOnly: boolean;
 
   timeLeft: HTMLElement;
   tippyInstance: any;
+
+  currentTimeLeft: string;
 
   constructor(
     private dateService: DateService,
   ) {}
 
+  private attached(): void {
+    let time;
+    if (this.launch?.hasNotStarted) {
+      time = this.launch.startsInMilliseconds;
+    } else {
+      time = this.launch.endsInMilliseconds;
+    }
+    this.currentTimeLeft = time;
+  }
+
   @computedFrom("launch.startsInMilliseconds", "launch.hasNotStarted")
   get proximity(): number {
     const soon = 86400000;
-    const comingUp = soon * 5;
+    const milliseconds = Number(String(this.launch.startsInMilliseconds).replace("-", ""));
+
     if (this.launch?.hasNotStarted) {
-      if (!this.tippyInstance) {
-        this.tippyInstance = tippy(this.timeLeft,
-          {
-            content: this.dateService.toString(this.launch.startTime, "ddd MMM do - kk:mm z"),
-          });
-      }
-      if (this.launch.startsInMilliseconds > comingUp) {
-        return 3; // faroff
-      } else if (this.launch.startsInMilliseconds <= soon) {
-        return 1; // soon
-      } else {
-        return 2; // comingUp
+      if (milliseconds < soon) {
+        return 2; // soon
+      } else if (milliseconds > soon) {
+        return 1; // comingUp
       }
     }
+  }
+
+  @computedFrom("launch.isPaused", "launch.isClosed")
+  get isAdminStatus(): boolean {
+    // @ts-ignore - isClosed not on LBP
+    const isAdmin = this.launch?.isPaused || this.launch?.isClosed;
+    return isAdmin;
   }
 }

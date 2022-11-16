@@ -4,12 +4,12 @@ const parseErrorData = (data) => {
   return Object.values(data).reduce(
     (accumulator, error) =>
       `${accumulator}${accumulator.length == 0 ? "" : " , "}${error}`,
-    "",
+    ""
   );
 };
 
 const errorHandler = (error) => {
-  const errorMsg = {};
+  let errorMsg = {};
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx

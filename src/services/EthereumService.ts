@@ -12,6 +12,7 @@ import { autoinject } from "aurelia-framework";
 import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 import { Utils } from "services/utils";
+import type { Address } from "types/types";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -20,7 +21,7 @@ interface IEIP1193 {
   on(eventName: "disconnect", handler: (error: { code: number; message: string }) => void);
 }
 
-export type Address = string;
+export type { Address } from "types/types";
 export type Hash = string;
 
 export interface IBlockInfoNative {
@@ -56,9 +57,10 @@ export enum Networks {
   Arbitrum = "arbitrum",
   Celo = "celo",
   Alfajores = "alfajores",
+  Localhost = "localhost",
 }
 
-export type AllowedNetworks = Networks.Mainnet | Networks.Kovan | Networks.Goerli | Networks.Arbitrum | Networks.Celo | Networks.Alfajores;
+export type AllowedNetworks = Networks.Mainnet | Networks.Kovan | Networks.Goerli | Networks.Arbitrum | Networks.Celo | Networks.Alfajores | Networks.Localhost;
 
 export interface IChainEventInfo {
   chainId: number;
@@ -77,8 +79,9 @@ export class EthereumService {
 
   public static ProviderEndpoints = {
     [Networks.Mainnet]: `https://${process.env.RIVET_ID}.eth.rpc.rivet.cloud/`,
+    [Networks.Goerli]: isLocalhostNetwork() ? "http://127.0.0.1:8545" : `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
+    [Networks.Localhost]: "http://127.0.0.1:8545",
     [Networks.Kovan]: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-    [Networks.Goerli]: `https://${process.env.RIVET_ID}.goerli.rpc.rivet.cloud/`,
     [Networks.Arbitrum]: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
     [Networks.Celo]: "https://forno.celo.org",
     [Networks.Alfajores]: "https://alfajores.rpcs.dev:8545",
@@ -107,6 +110,7 @@ export class EthereumService {
           1: EthereumService.ProviderEndpoints[Networks.Mainnet],
           5: EthereumService.ProviderEndpoints[Networks.Goerli],
           42: EthereumService.ProviderEndpoints[Networks.Kovan],
+          31337: EthereumService.ProviderEndpoints[Networks.Localhost],
           42161: EthereumService.ProviderEndpoints[Networks.Arbitrum],
           42220: EthereumService.ProviderEndpoints[Networks.Celo],
           44787: EthereumService.ProviderEndpoints[Networks.Alfajores],
@@ -198,6 +202,7 @@ export class EthereumService {
   public chainIdByName = new Map<AllowedNetworks, number>([
     [Networks.Mainnet, 1],
     [Networks.Goerli, 5],
+    [Networks.Localhost, 31337],
     [Networks.Kovan, 42],
     [Networks.Arbitrum, 42161],
     [Networks.Celo, 42220],
@@ -261,6 +266,11 @@ export class EthereumService {
     return this.walletProvider.getSigner(this.defaultAccountAddress);
   }
 
+  public metaMaskWalletProvider: Web3Provider & IEIP1193 & ExternalProvider;
+  /**
+   * Might be duplication of `walletProvider`, but it was easier to duplicate.
+   */
+  public safeProvider: Web3Provider & IEIP1193 & ExternalProvider;
   /**
    * provided by ethers given provider from Web3Modal
    */
@@ -318,6 +328,26 @@ export class EthereumService {
       }
     }
   }
+
+
+  public async ensureMetaMaskWalletProvider(): Promise<void> {
+    if (!this.metaMaskWalletProvider) {
+      try {
+        const provider = detectEthereumProvider ? (await detectEthereumProvider({ mustBeMetaMask: true })) as any : undefined;
+        this.metaMaskWalletProvider = provider;
+      } catch (error) {
+        console.log(error.message, error, "error");
+      }
+    }
+  }
+
+  private async removeWalletProviderListeners(): Promise<void> {
+    await this.ensureMetaMaskWalletProvider();
+    this.metaMaskWalletProvider.removeListener("accountsChanged", this.handleAccountsChanged);
+    this.metaMaskWalletProvider.removeListener("chainChanged", this.handleChainChanged);
+    this.metaMaskWalletProvider.removeListener("disconnect", this.handleDisconnect);
+  }
+
 
   private ensureWeb3Modal(): void {
     if (!this.web3Modal) {
@@ -389,6 +419,89 @@ export class EthereumService {
       // this.cachedWalletAccount = null;
       // this.web3Modal?.clearCachedProvider();
     }
+  }
+
+
+  public async addTokenToMetamask(
+    tokenAddress: Address,
+    tokenSymbol: string,
+    tokenDecimals: number,
+    tokenImage: string,
+  ): Promise<boolean> {
+
+    let wasAdded = false;
+
+    if (this.walletProvider) {
+
+      if (this.getMetamaskHasToken(tokenAddress)) {
+        return true;
+      }
+
+      try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        wasAdded = await (this.web3ModalProvider as any).request({
+          method: "wallet_watchAsset",
+          params: {
+            type: "ERC20", // Initially only supports ERC20, but eventually more!
+            options: {
+              address: tokenAddress, // The address that the token is at.
+              symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+              decimals: tokenDecimals, // The number of decimals in the token
+              image: tokenImage, // A string url of the token logo
+            },
+          },
+        });
+
+        if (wasAdded) {
+          this.setMetamaskHasToken(tokenAddress);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    return wasAdded;
+  }
+  /**
+   * returns ENS if the address maps to one
+   * @param address
+   * @returns null if there is no ENS
+   */
+  public getEnsForAddress(address: Address): Promise<string> {
+    return this.readOnlyProvider?.lookupAddress(address)
+      .catch(() => null);
+  }
+
+
+  /**
+   * Returns address that is represented by the ENS.
+   * Returns null if it can't resolve the ENS to an address
+   * Returns address if it already is an address
+   */
+  public getAddressForEns(ens: string): Promise<Address> {
+    /**
+     * returns the address if ens already is an address
+     */
+    return this.readOnlyProvider?.resolveName(ens)
+      .catch(() => null); // is neither address nor ENS
+  }
+
+  public getMetamaskHasToken(tokenAddress: Address): boolean {
+    if (!this.defaultAccountAddress) {
+      throw new Error("metamaskHasToken: no account");
+    }
+    return !!this.storageService.lsGet(this.getKeyForMetamaskHasToken(tokenAddress));
+  }
+
+  private getKeyForMetamaskHasToken(tokenAddress: Address): string {
+    return `${this.defaultAccountAddress}_${tokenAddress}`;
+  }
+
+  private setMetamaskHasToken(tokenAddress: Address): void {
+    if (!this.defaultAccountAddress) {
+      throw new Error("metamaskHasToken: no account");
+    }
+    this.storageService.lsSet(this.getKeyForMetamaskHasToken(tokenAddress), true);
   }
 
   // private cachedProviderKey = "cachedWalletProvider";
@@ -583,25 +696,15 @@ export function isNetworkPresent(network: AllowedNetworks): boolean {
 }
 
 /**
- * @param ethValue
- * @param decimals Default is 18.  Can be decimal count or:
- *  "wei",
- *  "kwei",
- *  "mwei",
- *  "gwei",
- *  "szabo",
- *  "finney",
- *  "ether",
- * @returns
+ * Either Celo Mainnet or Testnet
+ * @param network Default: Network the current wallet is connected to
  */
-export const toWei = (ethValue: BigNumberish, decimals: string | number = 18): BigNumber => {
-  const t = typeof ethValue;
-  if (t === "string" || t === "number") {
-    // avoid underflows
-    ethValue = Utils.truncateDecimals(Number(ethValue), Number(decimals));
-  }
-  return parseUnits(ethValue.toString(), decimals);
-};
+export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
+  const isCeloLike = network === Networks.Localhost;
+  return isCeloLike;
+}
+
+export { toWei } from "shared/shared";
 
 /**
  * @param weiValue

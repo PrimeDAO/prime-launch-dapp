@@ -1,8 +1,12 @@
 import { BigNumber, Contract, ethers, Signer } from "ethers";
-import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, Networks } from "services/EthereumService";
+import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isCeloNetworkLike, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
+import {
+  BaseProvider,
+  JsonRpcProvider,
+} from "@ethersproject/providers";
 
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
@@ -52,8 +56,13 @@ export class ContractsService {
     /**
      * gnosis safe isn't on kovan, but we need kovan for testing balancer
      */
-    if (EthereumService.targetedNetwork === Networks.Kovan) {
-      ContractsService.Contracts.delete(ContractNames.SEED);
+    if (
+      EthereumService.targetedNetwork === Networks.Kovan ||
+      isLocalhostNetwork() ||
+      isCeloNetworkLike()
+    ) {
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGERFACTORY);
+      ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
       ContractsService.Contracts.delete(ContractNames.SIGNER);
     }
 
@@ -110,11 +119,16 @@ export class ContractsService {
   }
 
   public createProvider(): any {
-    let signerOrProvider;
+    let signerOrProvider: BaseProvider | JsonRpcProvider | ethers.Signer;
     if (this.accountAddress && this.networkInfo?.provider) {
       signerOrProvider = Signer.isSigner(this.accountAddress) ? this.accountAddress : this.networkInfo.provider.getSigner(this.accountAddress);
     } else {
-      signerOrProvider = this.ethereumService.readOnlyProvider;
+      if (isLocalhostNetwork()) {
+        const jsonSigner: JsonRpcProvider = this.ethereumService.readOnlyProvider as JsonRpcProvider;
+        signerOrProvider = jsonSigner.getSigner();
+      } else {
+        signerOrProvider = this.ethereumService.readOnlyProvider;
+      }
     }
     return signerOrProvider;
   }
@@ -211,7 +225,8 @@ export class ContractsService {
     startingBlockNumber: number,
     handler: (event: Array<IStandardEvent<TEventArgs>>) => void): Promise<void> {
 
-    const blocksToFetch = (await this.ethereumService.getLastBlock()).number - startingBlockNumber;
+    const lastEthBlockNumber = (await this.ethereumService.getLastBlock()).number;
+    const blocksToFetch = lastEthBlockNumber - startingBlockNumber;
     let startingBlock = startingBlockNumber;
 
     /**
@@ -221,7 +236,8 @@ export class ContractsService {
     let fetched = 0;
 
     do {
-      await contract.queryFilter(filter, startingBlock, startingBlock + blocksize - 1)
+      const endBlock = startingBlock + blocksize + 1;
+      await contract.queryFilter(filter, startingBlock, endBlock)
         .then((events: Array<IStandardEvent<TEventArgs>>): void => {
           if (events?.length) {
             handler(events);

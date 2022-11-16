@@ -1,17 +1,19 @@
+
 <template>
   <div class="page animated-page stageContainer stage8 au-animate">
     <div class="infoContainer">
       <div class="heading heading2 title">Thank you!</div>
-      <div class="subtext">
-        <p>Congratulations!</p>
+      <div class="content-end-stage">
+        <div class="end-stage-subtext">
+          <p>Congratulations!</p>
 
-        <p>You have created a ${wizardState.launchTypeTitle} according to your specifications.</p>
+          <p>You have created a ${wizardState.launchTypeTitle} according to your specifications.</p>
 
-        <p>
-          You may inspect the ${wizardState.launchTypeTitle} configuration, stored in the JSON format in IPFS, here:
-          <a class="wrappedLink" href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>.
-          <span class="importantText">Please save this URL.</span>
-        </p>
+          <p>
+            You may inspect the ${wizardState.launchTypeTitle} configuration, stored in the JSON format in IPFS, here:
+            <a class="wrappedLink" href="${ipfsURL}" target="_blank" rel="noopener noreferrer">${ipfsURL}</a>.
+            <span class="importantText">Please save this URL.</span>
+          </p>
 
         <p>
           PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can
@@ -21,14 +23,15 @@
           take 5-7 days."
         </p>
 
-        <p>
-          After being approved, the
-          <etherscanlink
-            hide-clipboard-button
-            address.to-view="wizardState.launchAdminAddress"
-            text="${wizardState.launchTypeTitle} Admin"
-          >
-          </etherscanlink>
+          <p>
+            After being approved, the
+            <etherscanlink
+              hide-clipboard-button
+              address.to-view="wizardState.launchAdminAddress"
+              text="${wizardState.launchTypeTitle} Admin"
+            >
+            </etherscanlink>
+          </p>
 
           will have to fund the ${wizardState.launchTypeTitle} with
 
@@ -54,35 +57,40 @@
           ><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by
           connecting the ${wizardState.launchTypeTitle} Admin wallet to the
           <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
-        </p>
 
-        <p if.bind="wizardState.launchType === 'seed'">
-          After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
-          ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start
-          ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
-        </p>
+          <p if.bind="wizardState.launchType === 'seed'">
+            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start
+            ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
+          </p>
 
-        <p else>
-          After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
-          ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on the start date
-          ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}. But please note
-          that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it to open up
-          swapping. At close time, to ensure an accurate LBP launch, you will need to pause the LBP to turn off
-          swapping. You can do this in the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>
-        </p>
-      </div>
-      <!-- <div class="linksContainer">
-        <div>
-          <i class="fas fa-arrow-right"></i>
-          <a>Go to useful link</a>
+          <p else>
+            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on the start date
+            ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}. But please note
+            that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it to open up
+            swapping. At close time, to ensure an accurate LBP launch, you will need to pause the LBP to turn off
+            swapping. You can do this in the <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>
+          </p>
+          <!-- <div class="linksContainer">
+            <div>
+              <i class="fas fa-arrow-right"></i>
+              <a>Go to useful link</a>
+            </div>
+            <div>
+              <i class="fas fa-arrow-right"></i>
+              <a>Read our FAQ</a>
+            </div>
+          </div> -->
+          <div class="footerButtons">
+            <div class="view-buttons">
+              <a id="open-adb" href="/admin/${wizardState.launchType}s/dashboard">
+                <div class="stageButton previousButton classes-previous">ADMIN DASHBOARD</div>
+              </a>
+              <div class="stageButton proceed button1" click.delegate="cancel()">HOME</div>
+            </div>
+          </div>
         </div>
-        <div>
-          <i class="fas fa-arrow-right"></i>
-          <a>Read our FAQ</a>
-        </div>
-      </div> -->
-      <div class="closeButton">
-        <a class="button1" href="/">Close</a>
       </div>
     </div>
   </div>

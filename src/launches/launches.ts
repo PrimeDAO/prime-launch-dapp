@@ -12,6 +12,7 @@ import { ILaunch } from "services/launchTypes";
 import { LbpManagerService } from "services/LbpManagerService";
 import { LaunchType } from "services/launchTypes";
 import { LbpManager } from "entities/LbpManager";
+import { TokenService } from "services/TokenService";
 
 @singleton(false)
 @autoinject
@@ -27,6 +28,7 @@ export class Launches {
     private seedService: SeedService,
     private lbpManagerService: LbpManagerService,
     private eventAggregator: EventAggregator,
+    private tokenService: TokenService,
   ) {
     this.sort("starts"); // sort order will be ASC
   }
@@ -41,8 +43,11 @@ export class Launches {
     await this.seedService.ensureAllSeedsInitialized();
     await this.lbpManagerService.ensureAllLbpsInitialized();
 
-    this.launches = (this.seedService.seedsArray as Array<ILaunch>)
-      .concat(this.lbpManagerService.lbpManagersArray as Array<ILaunch>);
+    const seeds = this.seedService.seedsArray as Array<ILaunch>;
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: launches.ts ~ line 47 ~ seeds", seeds);
+    const lbps = this.lbpManagerService.lbpManagersArray as Array<ILaunch>;
+
+    this.launches = (seeds).concat(lbps);
     this.launches = filterOutTestLaunches(this.launches);
 
     this.loading = false;
@@ -103,8 +108,8 @@ export class Launches {
   }
 
   onLaunchClick(launch: ILaunch): void {
-    if (launch.canGoToDashboard) {
-      this.router.navigate(`${launch.launchType}/${launch.address}`);
+    if (launch.launchType === "seed") {
+      this.router.navigate(`seed-sale/${launch.address}`);
     } else {
       this.router.navigate(`/admin/${launch.launchType}s/dashboard/${launch.address}`);
     }

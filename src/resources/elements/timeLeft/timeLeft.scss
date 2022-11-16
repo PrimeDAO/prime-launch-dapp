@@ -1,8 +1,12 @@
 @import "styles/colors.scss";
 .timeLeftContainer {
-  font-size: 16px;
+  font-size: 12px;
+  font-family: "Inter";
+
   > div.mainStatus > div,
   > div.adminStatus > div {
+    padding: 4px 8px 4px;
+    border-radius: 87px;
     font-family: Inter;
     align-self: center;
     white-space: nowrap;
@@ -50,16 +54,21 @@
 
     &.uninitialized {
       color: #717171;
+      background: #000000;
+      width: fit-content;
     }
   }
 
   > div.adminStatus > div {
     &.paused {
       color: #ff52cf;
+      background: #38263E;
+      width: fit-content;
     }
 
     &.closed {
-      color: #848484;
+      background: #000000;
+      width: fit-content;
     }
   }
 

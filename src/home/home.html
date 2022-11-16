@@ -2,11 +2,11 @@
   <div class="page animated-page au-animate home">
     <div class="section top">
       <div class="moonshot">
-        <img src="/nasa-pd4lo70LdbI-unsplash.png" />
+        <img src="/static/nasa-pd4lo70LdbI-unsplash.png" />
       </div>
       <div class="title heading heading0">Seamlessly kickstart your DAO</div>
       <div class="subtitle">
-        Prime Launch is a platform for reliable and fair token launches to seamlessly kickstart your DAO.
+          Prime Launch is a platform for fair token launches in a completely permissionless fashion.
       </div>
       <div class="buttons">
         <div class="buttonContainer">
@@ -22,7 +22,7 @@
         <div class="buttonContainer">
           <div class="launch" click.delegate="navigate('register')">
             <div class="title">
-              <div class="header">Launch a Project</div>
+              <div class="header">Launch Project</div>
               <div class="arrow">&#8599;</div>
             </div>
             <div class="icon"></div>
@@ -31,15 +31,26 @@
         </div>
       </div>
     </div>
-    <div class="section launches" if.to-view="!featuredSeeds || featuredSeeds.length">
-      <div class="title heading heading1">Featured Launches</div>
-      <featuredlaunches loading.bind="loading"></featuredlaunches>
-      <div if.bind="!loading" class="launchesButton"><a class="button1" href="launches">VIEW ALL</a></div>
+      <div class="section launches" if.to-view="!featuredSeeds || featuredSeeds.length">
+        <div class="main-launch-sections">
+            <div class="row-launch-section">
+                <div repeat.for="value of launchesState">
+                    <div class="launch-section ${activeLaunchState.id === value.id ? 'launch-active' : ''}" click.delegate="loading ? null : setActiveLaunchState(value)">${value.title}</div>
+                </div>
+            </div>
+            <div class="row-launch-section">
+                <div class="faq-description-sections">What’s this</div>
+                <div class="question">?</div>
+            </div>
+        </div>
+        <div class="launch-line"></div>
+        <featuredlaunches launches-data.bind="launches" launch-type.bind="activeLaunchState.title" loading.bind="loading"></featuredlaunches>
+      <div if.bind="!loading && launches.length !== 0" class="launchesButton"><a class="button-view-all" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
     <div class="section nomiss">
       <div class="noMissColumn">
         <div class="title heading heading1">Never miss a launch</div>
-        <div class="subtitle subtext">Sign-up for our newsletter to stay ahead of the curve</div>
+        <div class="subtitle subtext">Sign-up for the Prime Launch newsletter to never miss a launch</div>
       </div>
       <div class="emailColumn">
         <div class="form">
@@ -51,9 +62,9 @@
       </div>
     </div>
     <div class="section fairLaunch">
-      <div class="pic"><img src="/spacex-OHOU-5UVIYQ-unsplash.png" /></div>
       <div class="rightColumn">
-        <div class="title heading heading1">The real fair launch</div>
+        <div class="footer-subtitle">How it works</div>
+        <div class="footer-title">The real fair launch</div>
         <div class="subtitle subtext">
           <div>The Prime Launch platform allows projects to launch their token effectively and fairly.</div>
           <div>Every launch on Prime Launch provides clarity to contributors about the project and terms. The
@@ -63,9 +74,10 @@
             while maximizing contributor and project surplus.</div>
         </div>
         <div class="launchButton"><button class="button1" click.delegate="navigate('register')">LAUNCH</button></div>
-        <div class="learnMore"><a href="https://primedao.typeform.com/to/xwkxA9XP" target="_blank"
+        <div class="footer-learnMore"><a href="https://primedao.typeform.com/to/xwkxA9XP" target="_blank"
             rel="noopener noreferrer">Request Information</a></div>
       </div>
+        <div class="pic"><img src="/static/spacex-OHOU-5UVIYQ-unsplash.png" /></div>
     </div>
   </div>
 </template>

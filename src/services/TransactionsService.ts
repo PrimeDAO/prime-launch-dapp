@@ -28,6 +28,7 @@ export default class TransactionsService {
       this.eventAggregator.publish("transaction.confirmed", { message: "Transaction was confirmed", receipt });
       return receipt;
     } catch (ex) {
+      /* prettier-ignore */ console.error(">>>> _ >>>> ~ file: TransactionsService.ts ~ line 31 ~ ex", ex);
       const balancerError = BalancerService.tryParseErrorCode(ex?.error?.message);
       if (balancerError) {
         ex.error.message = balancerError;

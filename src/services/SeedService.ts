@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, isCeloNetworkLike, Networks, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, isCeloNetworkLike, isLocalhostNetwork, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -144,10 +144,16 @@ export class SeedService {
         txEvents => {
           for (const event of txEvents) {
             const seed = this.createSeedFromConfig(event);
+
+            /**
+             * TODO: DEV only code
+             */
+            // if (seed.address !== "0x18A0775BCF275704E7068BA04635411996114D3D") continue;
+
             seedsMap.set(seed.address, seed);
             /**
-             * remove the seed if it is corrupt
-             */
+                 * remove the seed if it is corrupt
+                 */
             this.aureliaHelperService.createPropertyWatch(seed, "corrupt", (newValue: boolean) => {
               if (newValue) { // pretty much the only case
                 if (this.seeds) {
@@ -199,6 +205,15 @@ export class SeedService {
     return toWei(pricePerTokenAsEth, Seed.projectTokenPriceDecimals(fundingToken, projectToken));
   }
 
+  // addClass(class: any): Promise<TransactionReceipt> {
+  //   return this.transactionsService.send(() => this.contract.addClass(class))
+  //     .then(async (receipt) => {
+  //       if (receipt) {
+  //         return receipt;
+  //       }
+  //     });
+  // }
+
   public async deploySeed(config: ISeedConfig): Promise<Hash> {
     const seedConfigString = JSON.stringify(config);
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
@@ -208,18 +223,12 @@ export class SeedService {
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
-    const transaction = {
-      to: seedFactory.address,
-      value: isCeloNetworkLike() ? "0" : 0,
-      operation: 0,
-    } as any;
-
     const pricePerToken = this.projectTokenPriceInWei(
       config.launchDetails.pricePerToken,
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
 
-    const metaDataHash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -228,18 +237,46 @@ export class SeedService {
       [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
       [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
       pricePerToken,
-      // convert from ISO string to Unix epoch seconds
-      Date.parse(config.launchDetails.startDate) / 1000,
-      // convert from ISO string to Unix epoch seconds
-      Date.parse(config.launchDetails.endDate) / 1000,
-      [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
-      !!config.launchDetails.whitelist,
-      toWei(SeedService.seedFee),
+      [
+        // convert from ISO string to Unix epoch seconds
+        Date.parse(config.launchDetails.startDate) / 1000,
+        // convert from ISO string to Unix epoch seconds
+        Date.parse(config.launchDetails.endDate) / 1000,
+      ],
+      [
+        config.launchDetails.fundingMax, // inidivCap
+        config.launchDetails.vestingCliff,
+        config.launchDetails.vestingPeriod,
+      ],
+      config.launchDetails.isPermissoned,
+      config.launchDetails.allowList,
+      [
+        toWei((config.launchDetails.seedTip / 100) ?? 0.0),
+        0,
+        0,
+      ],
       Utils.asciiToHex(metaDataHash),
     ];
-    transaction.data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
-    // console.log("estimating transaction:");
-    // console.dir(transaction);
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
+
+    if (isLocalhostNetwork()) {
+      /** Beneficiary is 2nd account in Hardhat */
+      seedArguments[0] = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+      const tx = (await seedFactory.deploySeed(...seedArguments));
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 273 ~ tx", tx);
+      return;
+    }
+
+    const data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
+    const transaction = {
+      to: seedFactory.address,
+      value: isCeloNetworkLike() ? "0" : 0,
+      data: data,
+      gasToken: "0x0000000000000000000000000000000000000000",
+      refundReceiver: "0x0000000000000000000000000000000000000000",
+      operation: 0,
+      safe: safeAddress,
+    } as any;
 
     let estimate;
     if (EthereumService.targetedNetwork === Networks.Arbitrum) {
@@ -250,34 +287,46 @@ export class SeedService {
 
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
-      nonce: await gnosis.getCurrentNonce(),
       baseGas: 0,
       gasPrice: 0,
-      gasToken: "0x0000000000000000000000000000000000000000",
-      refundReceiver: "0x0000000000000000000000000000000000000000",
-      safe: safeAddress,
+      nonce: await gnosis.getCurrentNonce(),
     });
 
-    const { hash, signature } = await signer.callStatic.generateSignature(
-      transaction.to,
-      transaction.value,
-      transaction.data,
-      transaction.operation,
-      transaction.safeTxGas,
-      transaction.baseGas,
-      transaction.gasPrice,
-      transaction.gasToken,
-      transaction.refundReceiver,
-      transaction.nonce,
-    );
+    const { hash, signature } =
+      await signer.callStatic.generateSignature(
+        transaction.to,
+        transaction.value,
+        transaction.data,
+        transaction.operation,
+        transaction.safeTxGas,
+        transaction.baseGas,
+        transaction.gasPrice,
+        transaction.gasToken,
+        transaction.refundReceiver,
+        transaction.nonce,
+      );
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.contractTransactionHash = hash;
     // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
 
     // console.log("generating signature for transaction:");
     // console.dir(transaction);
+    const options = {
+      safe: transaction.safe,
+      to: transaction.to,
+      value: transaction.value,
+      data: transaction.data,
+      operation: transaction.operation,
+      safeTxGas: transaction.safeTxGas,
+      baseGas: transaction.baseGas,
+      gasPrice: transaction.gasPrice,
+      gasToken: transaction.gasToken,
+      refundReceiver: transaction.refundReceiver,
+      nonce: transaction.nonce,
+      contractTransactionHash: hash,
+      sender: signer.address,
+      signature: transaction.signature,
+    };
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,
@@ -296,12 +345,9 @@ export class SeedService {
       return null;
     }
 
-    // eslint-disable-next-line require-atomic-updates
-    transaction.sender = signer.address;
-
     this.consoleLogService.logMessage(`sending to safe txHash: ${ hash }`, "info");
 
-    const response = await gnosis.sendTransaction(transaction);
+    const response = await gnosis.sendTransaction(options);
 
     if (response.status !== 201) {
       throw Error(`An error occurred submitting the transaction: ${response.statusText}`);

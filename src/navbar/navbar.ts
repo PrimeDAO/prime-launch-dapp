@@ -4,8 +4,10 @@ import { Router } from "aurelia-router";
 import { Utils } from "services/utils";
 import "./navbar.scss";
 
-const DEV_ADDRESSES = [
+export const DEV_ADDRESSES = [
   "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
+  "0xE834627cDE2dC8F55Fe4a26741D3e91527A8a498",
+  "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
 ];
 
 const IS_PRODUCTION_APP = process.env.NODE_ENV === "production";
@@ -51,6 +53,16 @@ export class Navbar {
     const seedData = await this.seedJsonFiles[0].text();
     const seedJson = JSON.parse(seedData);
     this.eventAggregator.publish("dev:upload-seed", seedJson);
+  }
+
+  private __dev_toNewDashboard(): void {
+    const seedHash = this.router.currentInstruction.params.address;
+    this.router.navigate(`seed-sale/${seedHash}`);
+  }
+
+  private __dev_toOldDashboard(): void {
+    const seedHash = this.router.currentInstruction.params.address;
+    this.router.navigate(`seed/${seedHash}`);
   }
 
 }

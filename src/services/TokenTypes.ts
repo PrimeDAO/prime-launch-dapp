@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers/lib/ethers";
-import { Address } from "services/EthereumService";
+import { Address } from "types/types";
 import { TransactionResponse } from "services/TransactionsService";
 
 export interface IErc20Token {
@@ -16,19 +16,7 @@ export interface ITokenPrices {
   [key: string]: number;
 }
 
-export interface ITokenInfo {
-  address: Address;
-  decimals: number;
-  logoURI: string;
-  id: string; // id on coingecko
-  name: string; // token name,
-  price?: number;
-  symbol: string; // token symbol,
-  // readonly tags?: string[];
-  // readonly extensions?: {
-  //   readonly [key: string]: string | number | boolean | null;
-  // };
-}
+export type { ITokenInfo } from "types/types";
 
 export interface ITokenHolder {
   /**
@@ -44,4 +32,3 @@ export interface ITokenHolder {
    */
   share: number;
 }
-

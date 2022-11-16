@@ -16,33 +16,84 @@
           <div class="heading heading1 seedAdministrationHeader">
             Seed Administration
           </div>
-          <a if.bind="selectedSeed.address" href="seed/${selectedSeed.address}">Go to ${selectedSeed.metadata.general.projectName} Dashboard</a>
         </div>
-        <div if.bind="seeds.length">
-          <dropdown
-            class="seedsDropdown"
-            if.bind="seeds.length !== 1"
-            item-changed.call="selectSeed(index)"
-            selected-item-index.to-view="selectedSeedIndex"
-            placeholder="Select a Seed...">
-            <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
-          </dropdown>
-          <div else class="heading heading3 projectTitle">
-            ${selectedSeed.metadata.general.projectName}
+        <hr />
+        <div if.bind="seeds.length" class="body">
+          <div class="seedSelector featureContainer">
+            <div class="featureTitle">
+              Seed
+            </div>
+            <dropdown
+              class="seedsDropdown"
+              if.bind="seeds.length !== 1"
+              item-changed.call="selectSeed(index)"
+              selected-item-index.to-view="selectedSeedIndex"
+              placeholder="Select a Seed...">
+              <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
+            </dropdown>
+            <div else class="heading heading3 projectTitle">
+              ${selectedSeed.metadata.general.projectName}
+            </div>
+            <div class="buttonContainer" if.bind="selectedSeed.address">
+              <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
+                Go To Dashboard
+              </div>
+            </div>
           </div>
-          <div if.bind="selectedSeed.address">
+
+          <div if.bind="selectedSeed.address" class="seedSelected">
             <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Fund Seed
               </div>
-              <div class="featureDescription">
-                ${selectedSeed.projectTokenInfo.name} (${selectedSeed.projectTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img> required to fund the Seed: ${selectedSeed.feeRemainder.add(selectedSeed.seedRemainder) | ethwei:selectedSeed.projectTokenInfo.decimals}
+              <div class="classes-overview-container">
+                <div class="classes-overview-container__title">Required to fund</div>
+                <div class="classes-overview-container__table-container">
+                  <table class="classes-overview-container__table">
+                    <tr>
+                      <th>Name</th>
+                      <th><div class="table__center-cell">Token</div></th>
+                      <th><div class="table__center-cell">Amount</div></th>
+                    </tr>
+                    <tr>
+                      <td>Project tokens for sale</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td><div class="table__center-cell">
+                        <formatted-number value.bind="selectedSeed.seedRemainder | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                      </div></td>
+                    </tr>
+                    <tr>
+                      <td>${bigNumberService.asPercentageToNumber(selectedSeed.seedTip)}% tip</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td><div class="table__center-cell">
+                        <formatted-number value.bind="selectedSeed.getTipAmountFromFunding | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                      </div></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" style="border-bottom: 1px solid #64557D; line-height: 1px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
+                      <td>
+                        <div class="table__center-cell">
+                          <formatted-number value.bind="selectedSeed.calculateFundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                        </div>
+                      </td>
+                    </tr>
+
+
+                  </table>
+                </div>
+                <div class="button1 fundButton" click.delegate="selectedSeed.fund()">
+                  Fund
+                </div>
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.fund()">
-                Fund
-              </div>
+
+
+              <hr />
             </div>
-            <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
+            <!-- <div class="featureContainer" if.bind="selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
                 Add Whitelists
               </div>
@@ -80,6 +131,94 @@
                   Remove from whitelist
                 </div>
               </div>
+            </div> -->
+            <div class="featureContainer" if.bind="!this.selectedSeed.isClosed">
+              <div class="featureTitle">
+                Classes
+              </div>
+              <div class="">
+                <div class="featureDescription">
+                  <p>
+                    You can add multiple classes with different options. Make sure you add the classes before the starting date.
+                  </p>
+                  <p class="important">
+                    Important: Adding classes and whitelists will cost gas which you’ll need to pay after confirmation. Classes cannot be deleted (and editted?) after the confirmation proces has been completed.
+                  </p>
+                </div>
+                <div class="classes-overview-container">
+                  <div class="classes-overview-container__title">Classes Overview</div>
+                  <div class="classes-overview-container__table-container">
+                    <table class="classes-overview-container__table">
+                      <tr>
+                        <th>Name</th>
+                        <th><div class="table__center-cell">Class limit</div></th>
+                        <th><div class="table__center-cell">Contribution limit</div></th>
+                        <th><div class="table__center-cell">Vested (days)</div></th>
+                        <th if.bind="!disableClassInteraction"><div class="table__center-cell">Edit</div></th>
+                      </tr>
+                      <tr data-test="class-row" repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
+                        <td data-test="class-name">${class.className}</td>
+                        <td data-test="class-cap"><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="individual-cap"><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="class-vested"><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
+                        <td if.bind="!disableClassInteraction">
+                          <div data-test="edit-class-button" class="table__center-cell" if.bind="!isMinting[$index]">
+                            <img if.bind="noAdditions || newlyAddedClassesIndexes.includes($index)"
+                              class="table__edit-icon"
+                              click.delegate="openAddClassModal($index)"
+                              src="../../../../static/editPencil.svg"/>
+                            <img else
+                              class="table__edit-icon disabled"
+                              src="../../../../static/editPencil.svg"/>
+                          </div>
+                          <div else class="table__center-cell loading">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="actionPanel">
+                    <div class="buttonContainer">
+                      <div
+                        data-test="add-class-button"
+                        class="stageButton previousButton
+                          ${isMinting[-1] ? 'disabled' : ''}
+                          ${disableClassInteraction ? 'disabled' : ''}
+                          ${hasEditedClasses ? 'disabled' : ''}
+                        "
+                        click.delegate="openAddClassModal()"
+                      >
+                        <span>Add Class</span><i class="fas fa-plus"></i>
+                      </div>
+                    </div>
+                    <div class="deployActions" if.bind="selectedSeed.classes.length">
+                      <div class="buttonContainer">
+                        <div
+                          data-test="cancel-classes"
+                          class="
+                            stageButton cancel
+                            ${allowConfirmOrCancel ? '' : 'disabled'}
+                          "
+                          click.delegate="cancel()"><span>Cancel</span>
+                        </div>
+                      </div>
+                      <div class="buttonContainer">
+                        <div
+                          data-test="confirm-classes"
+                          class="
+                            stageButton button1
+                            ${allowConfirmOrCancel ? '' : 'disabled'}
+                          "
+                          click.delegate="new_deployClassesToContract()">
+                          <span>Confirm</span><i if.bind="!isMinting[-1]" class="fas fa-check"></i><i else class="fas fa-circle-notch fa-spin"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
@@ -90,10 +229,11 @@
               </div>
               <div class='inputWrapper'>
                 <input id="receiverAddress" value.bind="receiverAddress" placeholder="0x6C4ef..." />
-                <div class="button1 small" click.delegate="retrieveProjectTokens()">
+                <div class="button1" click.delegate="retrieveProjectTokens()">
                   Retrieve Project Tokens
                 </div>
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="selectedSeed.claimingIsOpen && selectedSeed.fundingTokenBalance != 0">
               <div class="featureTitle">
@@ -102,9 +242,10 @@
               <div class="featureDescription">
                 ${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.withdrawFundingTokens()">
+              <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="!selectedSeed.isClosed">
               <div class="featureTitle">
@@ -113,12 +254,13 @@
               <div class="featureDescription">
                 Pausing will make seed inactive. As the administrator, you will be able to unpause the Seed.
               </div>
-              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.pause()">
+              <div if.bind="!selectedSeed.isPaused && !selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.pause()">
                 Pause
               </div>
-              <div else if.bind="!selectedSeed.isClosed" class="button1 small" click.delegate="selectedSeed.unPause()">
+              <div else if.bind="!selectedSeed.isClosed" class="button1" click.delegate="selectedSeed.unPause()">
                 UnPause
               </div>
+              <hr />
             </div>
             <div class="featureContainer" if.bind="!selectedSeed.isClosed">
               <div class="featureTitle">
@@ -127,9 +269,10 @@
               <div class="featureDescription">
                 Close will permanently stop the seed. The seed cannot be unclosed.
               </div>
-              <div class="button1 small" click.delegate="selectedSeed.close()">
+              <div class="button1" click.delegate="selectedSeed.close()">
                 Close
               </div>
+              <hr />
             </div>
           </div>
         </div>
@@ -138,4 +281,5 @@
         </div>
       </div>
     </div>
+  </div>
 </template>

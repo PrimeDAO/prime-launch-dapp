@@ -3,25 +3,25 @@
   <require from="./mobileMenu/mobileMenu"></require>
   <nav class="navbar-container">
     <div class="logo">
-      <img src="/logomark.svg" alt="PrimeDAO">
+      <img src="/static/logomark.svg" alt="PrimeDAO">
     </div>
 
     <div class="products">
       <div class="container">
         <div class="item active">
-          <div class="icon launch"><img class="mono" src="/launch-mono.svg" /><img class="color" src="/launch.svg" /></div>
+          <div class="icon launch"><img class="mono" src="/static/launch-mono.svg" /><img class="color" src="/static/launch.svg" /></div>
           <div class="text">Launch</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/pools')">
-          <div class="icon pools"><img class="mono" src="/pools-mono.svg" /><img class="color" src="/pools.svg" /></div>
+          <div class="icon pools"><img class="mono" src="/static/pools-mono.svg" /><img class="color" src="/static/pools.svg" /></div>
           <div class="text">Pools</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/rating')">
-          <div class="icon rating"><img class="mono" src="/rating-mono.svg" /><img class="color" src="/rating.svg" /></div>
+          <div class="icon rating"><img class="mono" src="/static/rating-mono.svg" /><img class="color" src="/static/rating.svg" /></div>
           <div class="text">Rating</div>
         </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/deals')">
-          <div class="icon deals"><img class="mono" src="/deals-mono.svg" /><img class="color" src="/deals.svg" /></div>
+          <div class="icon deals"><img class="mono" src="/static/deals-mono.svg" /><img class="color" src="/static/deals.svg" /></div>
           <div class="text">Deals</div>
         </div>
       </div>
@@ -38,6 +38,8 @@
         <!-- <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div> -->
       </div>
       <div if.bind="showDevCode" class="dev-go-to-seed-stage6">
+        <div click.delegate="__dev_toOldDashboard()" class="item">Old Dash</div>
+        <div click.delegate="__dev_toNewDashboard()" class="item">New Dash</div>
         <div click.delegate="navigate('/newSeed/stage6')" class="item">Go to Summary</div>
         <div click.delegate="eventAggregator.publish('dev:use-saved-seed')" class="item">Use Saved</div>
         <div click.delegate="eventAggregator.publish('dev:update-seed')" class="item">Update</div>

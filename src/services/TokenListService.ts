@@ -1,6 +1,6 @@
 import { autoinject } from "aurelia-framework";
 import { IpfsService } from "./IpfsService";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, Networks } from "services/EthereumService";
 import axios from "axios";
 import { TOKEN_LIST_MAP } from "configurations/tokenLists";
 import { ConsoleLogService } from "services/ConsoleLogService";
@@ -58,7 +58,8 @@ export class TokenListService {
    * a structured object.
    */
   public get tokenLists(): ITokenListUris {
-    const { PrimeDao /*, Balancer, External */ } = TOKEN_LIST_MAP[EthereumService.targetedNetwork];
+    const targetNetwork = EthereumService.targetedNetwork === Networks.Localhost ? Networks.Goerli : EthereumService.targetedNetwork;
+    const { PrimeDao /*, Balancer, External */ } = TOKEN_LIST_MAP[targetNetwork];
 
     const primeDaoLists = [PrimeDao.Payments];
     // const balancerLists = [Balancer.Default, Balancer.Vetted];

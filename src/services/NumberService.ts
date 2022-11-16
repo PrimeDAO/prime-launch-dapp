@@ -1,4 +1,4 @@
-﻿import { BigNumber } from "ethers";
+import { BigNumber } from "ethers";
 
 const numeral = require("numeral");
 
@@ -35,7 +35,7 @@ export class NumberService {
    * @param value
    * @param format
    */
-  public toString(value: number | string, options?: IToStringOptions,
+  public toString(value: number | string, options: IToStringOptions = {},
   ): string | null | undefined {
 
     // this helps to display the erroneus value in the GUI
@@ -50,7 +50,7 @@ export class NumberService {
     const thousandSeparated = !options.average && options.thousandSeparated;
     const mantissa = (options.mantissa !== undefined) ? this.fromString(options.mantissa) : 2;
 
-    let formatString: string;
+    let formatString = "";
 
     if (mantissa > 0) {
       formatString = "0.".padEnd(mantissa + 2, "0");
