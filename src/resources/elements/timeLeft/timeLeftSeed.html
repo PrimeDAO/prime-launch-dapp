@@ -2,27 +2,11 @@
   <div class="timeLeftContainer ${contained ? 'contained' : ''}">
     <div class="mainStatus">
       <!-- isTimeOnly -->
-      <template if.bind="isTimeOnly">
-        <!-- !launch.uninitialized && launch.hasNotStarted -->
-        <div
-          if.to-view="!launch.uninitialized && launch.hasNotStarted"
-          ref="timeLeft"
-          class="body timeLeft ${(proximity===1) ? 'comingUp' : ((proximity===2) ? 'soon' : 'soon' )}">
-          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft | timespan:"minutes":false:true}
-        </div>
-        <!-- launch.contributingIsOpen -->
-        <div
-          if.to-view="launch.contributingIsOpen"
-          class="body timeLeft live">
-          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>${currentTimeLeft | timespan:"minutes":false:true}
-        </div>
-        <!-- launch.uninitialized && !launch.isClosed && !launch.isPaused -->
-        <div
-          if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused"
-          class="body">
-          <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>${currentTimeLeft | timespan:"minutes":false:true}
-        </div>
-      </template>
+      <div
+        if.bind="isTimeOnly"
+        class="body">
+        <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>${currentTimeLeft | timespan:"minutes":false:true}
+      </div>
 
       <!-- Times with label -->
       <template else>
