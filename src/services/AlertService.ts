@@ -2,7 +2,7 @@ import { autoinject } from "aurelia-framework";
 import { EventConfig, EventConfigException } from "./GeneralEvents";
 import { DialogCloseResult, DialogService } from "./DialogService";
 import { DisposableCollection } from "./DisposableCollection";
-import { Alert, ShowButtonsEnum } from "../resources/dialogs/alert/alert";
+import { Alert, IAlertModel } from "../resources/dialogs/alert/alert";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { Utils } from "services/utils";
 
@@ -37,18 +37,18 @@ export class AlertService {
       message = config.message;
     }
 
-    this.showAlert(`${message ? `${message}: ` : ""}${Utils.extractExceptionMessage(ex)}`);
+    this.showAlert({message: `${message ? `${message}: ` : ""}${Utils.extractExceptionMessage(ex)}`});
   }
 
   private handleFailure(config: EventConfig | string) {
-    this.showAlert(this.getMessage(config));
+    this.showAlert({message: this.getMessage(config)});
   }
 
   private getMessage(config: EventConfig | string): string {
     return (typeof config === "string") ? config : config.message;
   }
 
-  public showAlert(message: string, buttons = ShowButtonsEnum.OK): Promise<DialogCloseResult> {
+  public showAlert(config: IAlertModel): Promise<DialogCloseResult> {
     /**
      * hack we gotta go through because of how the gradient border, size
      * and position of the dialog is defined in ux-dialog-container.
@@ -58,16 +58,18 @@ export class AlertService {
      */
     let theContainer: Element;
 
-    return this.dialogService.open(Alert, { message, buttons }, {
+    return this.dialogService.open(Alert, config, {
       keyboard: true,
       position: (modalContainer: Element, _modalOverlay: Element): void => {
         theContainer = modalContainer;
         modalContainer.classList.add("alert");
+        modalContainer.classList.add(config.className);
       },
     })
       .whenClosed(
         (result: DialogCloseResult) => {
           theContainer.classList.remove("alert");
+          theContainer.classList.remove(config.className);
           return result;
         },
         // not sure if this works for alert
