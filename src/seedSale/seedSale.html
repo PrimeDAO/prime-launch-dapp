@@ -51,12 +51,7 @@
           <template else>STARTS IN</template>
         </div>
         <div class="text">
-          <template if.bind="seed.isLive">
-            <div class="timer">${seed.endsInMilliseconds | timespan:"minutes":false:true}</div>
-          </template>
-          <template else>
-            <div class="timer">${seed.startsInMilliseconds | timespan:"minutes":false:true}</div>
-          </template>
+          <time-left if.bind="seed" launch.to-view="seed" hide-icons largest is-time-only></time-left>
         </div>
       </div>
     </div>
