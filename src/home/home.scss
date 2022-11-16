@@ -144,6 +144,10 @@
 
           padding: 24px;
 
+          &:hover {
+            @include pcardBgAndGradient($backgroundColor: $Border01);
+          }
+
           .title {
             display: flex;
             justify-content: space-between;
