@@ -114,6 +114,10 @@ body > ux-dialog-container.addClass {
     height: 14px;
     cursor: pointer;
     color: $Neutral02;
+
+    &:hover {
+      color: $White;
+    }
   }
 
   .button-container {
