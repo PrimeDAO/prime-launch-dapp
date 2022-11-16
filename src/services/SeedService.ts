@@ -285,11 +285,12 @@ export class SeedService {
       estimate = (await gnosis.getEstimate(transaction)).data;
     }
 
+    const nonce = estimate.recommendedNonce;
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
       baseGas: 0,
       gasPrice: 0,
-      nonce: await gnosis.getCurrentNonce(),
+      nonce,
     });
 
     const { hash, signature } =
@@ -309,24 +310,43 @@ export class SeedService {
     // eslint-disable-next-line require-atomic-updates
     transaction.signature = signature;
 
+    let options;
     // console.log("generating signature for transaction:");
     // console.dir(transaction);
-    const options = {
-      safe: transaction.safe,
-      to: transaction.to,
-      value: transaction.value,
-      data: transaction.data,
-      operation: transaction.operation,
-      safeTxGas: transaction.safeTxGas,
-      baseGas: transaction.baseGas,
-      gasPrice: transaction.gasPrice,
-      gasToken: transaction.gasToken,
-      refundReceiver: transaction.refundReceiver,
-      nonce: transaction.nonce,
-      contractTransactionHash: hash,
-      sender: signer.address,
-      signature: transaction.signature,
-    };
+    if (isCeloNetworkLike()) {
+      options = {
+        to: transaction.to,
+        value: transaction.value,
+        data: transaction.data,
+        operation: transaction.operation,
+        baseGas: String(transaction.baseGas),
+        gasPrice: String(transaction.gasPrice),
+        gasToken: transaction.gasToken,
+        safeTxGas: transaction.safeTxGas,
+        refundReceiver: transaction.refundReceiver,
+        nonce: String(transaction.nonce),
+        safeTxHash: hash,
+        sender: signer.address,
+        signature: transaction.signature,
+      };
+    } else {
+      options = {
+        safe: transaction.safe,
+        to: transaction.to,
+        value: transaction.value,
+        data: transaction.data,
+        operation: transaction.operation,
+        safeTxGas: transaction.safeTxGas,
+        baseGas: transaction.baseGas,
+        gasPrice: transaction.gasPrice,
+        gasToken: transaction.gasToken,
+        refundReceiver: transaction.refundReceiver,
+        nonce: transaction.nonce,
+        contractTransactionHash: hash,
+        sender: signer.address,
+        signature: transaction.signature,
+      };
+    }
 
     const result = await this.transactionsService.send(() => signer.generateSignature(
       transaction.to,
@@ -349,8 +369,14 @@ export class SeedService {
 
     const response = await gnosis.sendTransaction(options);
 
-    if (response.status !== 201) {
-      throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+    if (isCeloNetworkLike()) {
+      if (response.status !== 200) {
+        throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+      }
+    } else {
+      if (response.status !== 201) {
+        throw Error(`An error occurred submitting the transaction: ${response.statusText}`);
+      }
     }
 
     return metaDataHash;
