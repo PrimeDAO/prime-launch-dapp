@@ -162,7 +162,10 @@ export class SeedSale {
   }
 
   @computedFrom("seed.userFundingTokenBalance", "fundingTokenToPay")
-  get userCanPay(): boolean { return this.seed.userFundingTokenBalance?.gt(this.fundingTokenToPay ?? "0"); }
+  get userCanPay(): boolean {
+    const canPay = this.seed?.userFundingTokenBalance?.gte(this.fundingTokenToPay ?? "0");
+    return canPay;
+  }
 
   @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance")
   get maxUserCanPay(): BigNumber {
@@ -189,6 +192,17 @@ export class SeedSale {
   get maxUserUsdBalance(): number {
     const usdBalance = this.numberService.fromString(this.maxUserTokenBalance) * this.seed.fundingTokenInfo.price;
     return usdBalance;
+  }
+
+  @computedFrom("seed.contributingIsOpen", "userCanPay", "fundingTokenToPay")
+  get disableContribute(): boolean {
+    const disable =
+      !this.seed?.contributingIsOpen ||
+      !this.userCanPay ||
+      !this.fundingTokenToPay ||
+      this.fundingTokenToPay?.eq(0);
+
+    return disable;
   }
 
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")

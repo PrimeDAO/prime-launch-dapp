@@ -118,7 +118,7 @@
             <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
           </template>
           <template else>
-            <button class="buttonLeft" click.delegate="buy()" disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))">
+            <button class="buttonLeft" click.delegate="buy()" disabled.to-view="disableContribute">
               contribute
             </button>
           </template>
@@ -235,7 +235,7 @@
             <div class="class-container__block">
               <div class="class-container__block__title">contribution limit</div>
               <div class="class-container__block__image-container">
-                <img class="class-container__block__image" src.to-view="seed.projectTokenInfo.logoURI" />
+                <img class="class-container__block__image" src.to-view="seed.fundingTokenInfo.logoURI" />
                 <div class="class-container__block__text"><formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>/<formatted-number value.to-view="targetClass.classCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
               </div>
             </div>

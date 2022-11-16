@@ -1,4 +1,4 @@
-body > ux-dialog-container.alert {
+body>ux-dialog-container.alert {
   top: 50%;
   right: unset;
   bottom: unset;
@@ -20,10 +20,21 @@ body > ux-dialog-container.alert {
       border-top-width: 0;
       padding: 4px 40px 24px 40px;
       text-align: center;
+
       .button1 {
         &.small {
           width: 98px;
         }
+      }
+    }
+  }
+}
+
+body>ux-dialog-container {
+  &.wrongNetworkAlert {
+    ux-dialog {
+      ux-dialog-footer {
+        text-align: right;
       }
     }
   }

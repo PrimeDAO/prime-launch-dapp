@@ -96,7 +96,7 @@ export function configure(aurelia: Aurelia): void {
 
       // TimingService.start("BalancerService Initialization");
       // TODO: Remove condition once Symmetric Subgraph is being used
-      if (!isCeloNetworkLike(network)) {
+      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
         const balancerService = aurelia.container.get(BalancerService);
         balancerService.initialize();
       }

@@ -30,6 +30,7 @@ export class AddClassModal {
   private isEdit = false;
   private loadingAllowlist = false;
   private __dev_allowList = "";
+  private classPurchaseLimitText: string;
 
   verified: boolean;
   class: IContributorClass = EMPTY_CLASS;
@@ -97,6 +98,8 @@ export class AddClassModal {
 
   public attached(): void {
     this.okButton.focus();
+
+    this.classPurchaseLimitText = `The maximum amount of contribution (${this.model.params.seed.fundingTokenInfo.symbol}) the allowlisted users within one class can contribute to the launch.`;
   }
 
   @computedFrom("class.allowList")

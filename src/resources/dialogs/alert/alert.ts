@@ -17,6 +17,8 @@ export class Alert {
   private cancelButton: HTMLElement;
   showCancelButton: boolean;
   showOkButton: boolean;
+  private buttonTextPrimary: string;
+  private buttonTextSecondary: string;
 
   constructor(private controller: DialogController) { }
 
@@ -26,6 +28,8 @@ export class Alert {
     this.buttons = model.buttons ?? ShowButtonsEnum.OK;
     this.showCancelButton = !!(this.buttons & ShowButtonsEnum.Cancel);
     this.showOkButton = !!(this.buttons & ShowButtonsEnum.OK);
+    this.buttonTextPrimary = model.buttonTextPrimary ?? "OK";
+    this.buttonTextSecondary = model.buttonTextSecondary ?? "CANCEL";
   }
 
   public attached(): void {
@@ -36,7 +40,10 @@ export class Alert {
   }
 }
 
-interface IAlertModel {
+export interface IAlertModel {
   message: string;
+  className?: string;
   buttons?: ShowButtonsEnum;
+  buttonTextPrimary?: string;
+  buttonTextSecondary?: string;
 }
