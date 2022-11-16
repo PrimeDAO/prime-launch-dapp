@@ -194,6 +194,17 @@ export class SeedSale {
     return usdBalance;
   }
 
+  @computedFrom("seed.contributingIsOpen", "userCanPay", "fundingTokenToPay")
+  get disableContribute(): boolean {
+    const disable =
+      !this.seed?.contributingIsOpen ||
+      !this.userCanPay ||
+      !this.fundingTokenToPay ||
+      this.fundingTokenToPay?.eq(0);
+
+    return disable;
+  }
+
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
     return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0") &&
