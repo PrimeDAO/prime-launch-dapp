@@ -18,9 +18,7 @@ import { DateService, TimespanResolution } from "services/DateService";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
-import dayjs from "dayjs";
 import { LaunchService } from "services/LaunchService";
-import moment from "moment";
 import { BigNumberService } from "services/BigNumberService";
 
 enum Phase {
@@ -226,37 +224,6 @@ export class SeedSale {
     }
   }
 
-  getTimeLeft(): void {
-    const now = dayjs();
-    const startDate = dayjs(this.seed.startTime);
-    const endDate = dayjs(this.seed.endTime);
-
-    let diff = endDate.diff(now, "minutes");
-
-    const diffDays = Math.floor(diff / 60 / 24);
-    diff = diff - (diffDays*60*24);
-    const diffHours = Math.floor(diff / 60);
-
-    const endTitle = this.seed?.hasNotStarted ? "" : "left";
-
-    if (now.diff(startDate) > 0) {
-      const title = this.seed?.hasNotStarted ? "Starts in " : "";
-      this.timeLeft = diffDays > 1 ? `${title}${diffDays} day${diffDays > 1 ? "s" : ""} ${endTitle}`: `${title}${diffHours} hours ${endTitle}`;
-    } else {
-      const soon = 86400000;
-
-      const myDate = Number(now.diff(startDate).toString().replace("-", ""));
-
-      const days = Math.floor(moment.duration(myDate, "milliseconds").asDays());
-      const hours = Math.floor(moment.duration(myDate, "milliseconds").asHours());
-      const milliseconds = Math.floor(moment.duration(myDate, "milliseconds").asMilliseconds());
-
-      const title = "Starts in ";
-
-      this.timeLeft = milliseconds < soon && hours <= 24 ? `${title}${hours} hours ${endTitle}` : `${title}${days.toString().replace("-", "")} days ${endTitle}`;
-    }
-  }
-
   exponentialToDecimal(exponential: number): string {
     let decimal = exponential.toString().toLowerCase();
     if (decimal.includes("e+")) {
@@ -326,7 +293,6 @@ export class SeedSale {
         await seed.ensureInitialized();
       }
       this.seed = seed;
-      this.getTimeLeft();
       this.userTokenBalance = this.maxUserTokenBalance;
       this.userUsdBalance = this.maxUserUsdBalance;
       await this.hydrateUserData();
