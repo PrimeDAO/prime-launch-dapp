@@ -189,6 +189,7 @@ html {
         line-height: 65px;
         margin-bottom: 8px;
         @include standardTextGradient;
+        @include wrapText;
       }
       &.heading3 {
         font-size: 24px;
