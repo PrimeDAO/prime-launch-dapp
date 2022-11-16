@@ -1,5 +1,6 @@
 @import "./animations";
 @import "./colors";
+@import "./variables";
 @import "tippy.js/dist/tippy.css"; // TODO: use CDN?
 
 @mixin standardTextGradient {
