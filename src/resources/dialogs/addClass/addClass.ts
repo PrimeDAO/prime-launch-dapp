@@ -175,11 +175,6 @@ export class AddClassModal {
       allowList: undefined,
     };
   }
-
-  private __dev_addAllowList(address: string): void {
-    const classIndex = this.model.params.index;
-    this.model.params.seed.contract.allowlist([address], [classIndex]);
-  }
 }
 
 interface IAddClassModal {
