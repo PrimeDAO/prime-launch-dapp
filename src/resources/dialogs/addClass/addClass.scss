@@ -1,5 +1,7 @@
 @import "styles/colors.scss";
 
+$addClassModalHeight: 945px;
+
 @mixin boldButton {
   display: inline-block;
   border-radius: 10px;
@@ -20,7 +22,7 @@
 }
 
 body > ux-dialog-container.addClass {
-  height: 95%;
+  height: $addClassModalHeight;
   width: 700px;
   top: 50%;
   right: unset;
@@ -31,6 +33,8 @@ body > ux-dialog-container.addClass {
   ux-dialog {
     overflow-y: auto;
     color: $Neutral04;
+    height: $addClassModalHeight;
+
     ux-dialog-header {
       position: relative;
       font-family: Inter;
@@ -58,7 +62,7 @@ body > ux-dialog-container.addClass {
 
     ux-dialog-footer {
       border-top-width: 0;
-      padding-top: 50px;
+      padding-top: 18px;
       padding-bottom: 20px;
       .cancel {
         cursor: pointer;

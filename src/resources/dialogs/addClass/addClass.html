@@ -15,7 +15,7 @@
 
           <div data-test="class-name-field" class="info-section with-counter">
             <div class="label--question">
-              <label>Class Name Contributor</label>
+              <label>Contributor Class Name</label>
               <!-- <div class="question-mark">
                 <question-mark text="TODO: Add text"></question-mark>
               </div> -->
@@ -31,7 +31,7 @@
 
           <div data-test="class-purchase-limit-field" class="info-section">
             <div class="label">
-              <label>Contributor class purchase limit</label>
+              <label>Contributor Class Purchase Limit</label>
             </div>
             <label for="classCap" class="label--small">
               ${classPurchaseLimitText}
@@ -125,18 +125,6 @@
               <div if.bind="allowlistUrlIsValid && csv" class="allowListFeedback good">Allowlist contains ${class.allowList.size} account${class.allowList.size > 1 ? "s" : ""}</div>
               <div if.bind="!allowlistUrlIsValid && csv" class="allowListFeedback bad"><i class="fas fa-exclamation-triangle"></i> Allowlist cannot be loaded or contains no accounts</div>
             </div>
-          </div>
-
-          <!-- DEV -->
-          <div class="info-section">
-            <div class="label">
-              <label>[DEV] Whitelist</label>
-            </div>
-            <label for="classCap" class="label--small">
-              [DEV] Comma-separated (eg. 0xa..b,0xy..z)
-            </label>
-            <input id="className" maxlength="50" value.bind="__dev_allowList"/>
-            <button class="button1 small" style="padding: 0 5px;" if.bind="isDev" click.delegate="__dev_addAllowList(__dev_allowList)">[DEV] Add Address to Allowlist</button>
           </div>
       </div>
     </ux-dialog-body>
