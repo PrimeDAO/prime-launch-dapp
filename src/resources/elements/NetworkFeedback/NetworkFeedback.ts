@@ -9,7 +9,7 @@ import { BrowserStorageService } from "services/BrowserStorageService";
 export class NetworkFeedback {
 
   private network: AllowedNetworks;
-  private isProductionEnv;
+  private isMainnet;
   private show: boolean;
   private Networks = Networks;
 
@@ -20,14 +20,14 @@ export class NetworkFeedback {
     this.network = EthereumService.targetedNetwork;
     this.show = false;
 
-    this.isProductionEnv = process.env.NODE_ENV !== "development" || process.env.NETWORK === Networks.Mainnet;
+    this.isMainnet = process.env.NETWORK === Networks.Mainnet;
     const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
     if (locallyStoredNetwork) {
-      const defaultNetwork = this.isProductionEnv ? Networks.Mainnet : Networks.Goerli;
+      const defaultNetwork = this.isMainnet ? Networks.Mainnet : Networks.Goerli;
 
-      const invalidlyStoredTestnet = this.isProductionEnv
+      const invalidlyStoredTestnet = this.isMainnet
         && [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(locallyStoredNetwork);
-      const invalidlyStoredMainnet = !this.isProductionEnv
+      const invalidlyStoredMainnet = !this.isMainnet
         && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
       const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
 
