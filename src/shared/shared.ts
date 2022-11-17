@@ -66,7 +66,7 @@ export class Shared {
         config.launchDetails.vestingPeriod,
       ],
       config.launchDetails.isPermissoned,
-      config.launchDetails.allowList,
+      config.launchDetails.allowList ?? [],
       [toWei(config.launchDetails.seedTip / 100 ?? 0.0), 0, 0],
       Utils.asciiToHex(metaDataHash),
     ];
