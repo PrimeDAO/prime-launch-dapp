@@ -61,9 +61,7 @@ const post = async (method, payload, safe, url) => {
       finalUrl = `${url}${safe}${methods[method]}`;
     }
 
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: GnosisService.js ~ line 53 ~ finalUrl', finalUrl)
     const res = await axios.post(finalUrl, payload);
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: GnosisService.js ~ line 69 ~ res', res)
     return res;
   } catch (error) {
     throw Error(errorHandler(error).message);
