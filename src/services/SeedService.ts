@@ -285,7 +285,13 @@ export class SeedService {
       estimate = (await gnosis.getEstimate(transaction)).data;
     }
 
-    const nonce = estimate.recommendedNonce;
+    let nonce;
+    if (isCeloNetworkLike()) {
+      nonce = estimate.recommendedNonce;
+    } else {
+      nonce = await gnosis.getCurrentNonce();
+    }
+
     Object.assign(transaction, {
       safeTxGas: estimate.safeTxGas,
       baseGas: 0,
