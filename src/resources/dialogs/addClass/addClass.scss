@@ -101,6 +101,11 @@ body > ux-dialog-container.addClass {
     box-sizing: border-box;
     border: 1px solid $Border01;
     border-radius: 10px;
+    
+    &[disabled] {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   }
 
   numeric-input {

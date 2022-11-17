@@ -37,6 +37,14 @@ export class AddClassModal {
   isDev = false;
   @observable csv: File
 
+  @computedFrom("model.params.index", "model.params.editedClass")
+  get disableEditingOfClassName(): boolean {
+    const isDefaultClassIndex = this.model?.params?.index === 0;
+    const isEditingClass = !!this.model?.params?.editedClass;
+    const disable = isDefaultClassIndex && isEditingClass;
+    return disable;
+  }
+
   constructor(
     private controller: DialogController,
     protected eventAggregator: EventAggregator,
