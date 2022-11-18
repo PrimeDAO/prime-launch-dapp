@@ -7,9 +7,9 @@
       <div class="body">${message}</div>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button if.bind="showOkButton" class="button2 small" ref="okButton" click.trigger="controller.ok()">${buttonTextPrimary}</button>
-      <button if.bind="showCancelButton" class="button1 small" ref="cancelButton"
-        click.trigger="controller.cancel()">${buttonTextSecondary}</button>
+      <button if.bind="showCancelButton" class="button2 small" ref="cancelButton" click.trigger="controller.cancel()">${buttonTextSecondary}</button>
+      <button if.bind="showOkButton" class="button1 small" ref="okButton"
+        click.trigger="controller.ok()">${buttonTextPrimary}</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>
