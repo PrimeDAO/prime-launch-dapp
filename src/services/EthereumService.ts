@@ -685,6 +685,16 @@ export function capitalizeNetworkName(network: AllowedNetworks = EthereumService
  * Either Celo Mainnet or Testnet
  * @param network Default: Network the current wallet is connected to
  */
+export function isNetwork(network: AllowedNetworks): boolean {
+  const is = EthereumService.targetedNetwork === network;
+  return is;
+}
+
+
+/**
+ * Either Celo Mainnet or Testnet
+ * @param network Default: Network the current wallet is connected to
+ */
 export function isCeloNetworkLike(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
   const isCeloLike = network === Networks.Celo || network === Networks.Alfajores;
   return isCeloLike;
