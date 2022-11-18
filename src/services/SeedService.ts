@@ -1,7 +1,7 @@
 import { ITokenInfo } from "./TokenTypes";
 import { TokenService } from "services/TokenService";
 import { AureliaHelperService } from "services/AureliaHelperService";
-import { EthereumService, fromWei, isCeloNetworkLike, isLocalhostNetwork, Networks, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, isCeloNetworkLike, isLocalhostNetwork, isNetwork, Networks, toWei } from "services/EthereumService";
 import TransactionsService from "services/TransactionsService";
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { IpfsService } from "./IpfsService";
@@ -81,7 +81,7 @@ export class SeedService {
         this.startingBlockNumber = 14836595;
         break;
       case Networks.Alfajores:
-        this.startingBlockNumber = 13297679;
+        this.startingBlockNumber = 14681726;
         break;
       default:
         this.startingBlockNumber = 0;
@@ -104,7 +104,8 @@ export class SeedService {
     /**
      * don't need to reload the seedfactory on account change because we never send txts to it.
      */
-    this.seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    this.seedFactory = await this.getSeedFactory();
+
     /**
      * seeds will take care of themselves on account changes
      */
@@ -219,7 +220,7 @@ export class SeedService {
     // this.consoleLogService.logMessage(`seed registration json: ${seedConfigString}`, "debug");
 
     const safeAddress = await ContractsService.getContractAddress(ContractNames.SAFE);
-    const seedFactory = await this.contractsService.getContractFor(ContractNames.SEEDFACTORY);
+    const seedFactory = await this.getSeedFactory();
     const signer = await this.contractsService.getContractFor(ContractNames.SIGNER);
     const gnosis = api(safeAddress, EthereumService.targetedNetwork);
 
@@ -259,12 +260,24 @@ export class SeedService {
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
 
-    if (isLocalhostNetwork()) {
-      /** Beneficiary is 2nd account in Hardhat */
-      seedArguments[0] = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
-      const tx = (await seedFactory.deploySeed(...seedArguments));
-      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 273 ~ tx", tx);
-      return;
+    if (isCeloNetworkLike() || isLocalhostNetwork()) {
+      if (isLocalhostNetwork()) {
+        /** Beneficiary is 2nd account in Hardhat */
+        seedArguments[0] = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+      }
+      if (isNetwork(Networks.Celo)) {
+        // https://clabs-safe-celo.vercel.app/mainnet:0x0276a552F424949C934bC74bB623886AAc9Ed807/transactions/history
+        seedArguments[0] = "0x0276a552F424949C934bC74bB623886AAc9Ed807";
+      }
+
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 272 ~ seedFactory.address", seedFactory.address);
+      const result = await this.transactionsService.send(() => seedFactory.deploySeed(...seedArguments));
+      if (!result) {
+        return null;
+      }
+      /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 272 ~ result", result);
+
+      return metaDataHash;
     }
 
     const data = (await seedFactory.populateTransaction.deploySeed(...seedArguments)).data;
@@ -386,6 +399,12 @@ export class SeedService {
     }
 
     return metaDataHash;
+  }
+
+  private async getSeedFactory() {
+    const seedFactoryName = (isLocalhostNetwork() || isCeloNetworkLike()) ? ContractNames.SeedFactoryNoAccessControl : ContractNames.SEEDFACTORY;
+    const seedFactory = await this.contractsService.getContractFor(seedFactoryName);
+    return seedFactory;
   }
 
   /**
