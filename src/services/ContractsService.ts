@@ -1,5 +1,5 @@
 import { BigNumber, Contract, ethers, Signer } from "ethers";
-import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isCeloNetworkLike, isLocalhostNetwork, Networks } from "services/EthereumService";
+import { Address, EthereumService, Hash, IBlockInfoNative, IChainEventInfo, isCeloNetworkLike, isLocalhostNetwork, isNetwork, Networks } from "services/EthereumService";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
@@ -14,6 +14,7 @@ export enum ContractNames {
   , LBP = "LiquidityBootstrappingPool"
   , VAULT = "Vault"
   , SEEDFACTORY = "SeedFactory"
+  , SeedFactoryNoAccessControl = "SeedFactoryNoAccessControl" // Safe-free flow https://app.shortcut.com/curvelabs/story/1540/remove-celo-gnosis-flow-from-fe-temporary
   , SEED = "Seed"
   // , WETH = "WETH"
   , PRIME = "Prime"
@@ -64,7 +65,16 @@ export class ContractsService {
       ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
       ContractsService.Contracts.delete(ContractNames.SIGNER);
     }
-    if (isCeloNetworkLike()) {
+
+    if (isNetwork(Networks.Celo)) {
+      ContractsService.Contracts.delete(ContractNames.SEEDFACTORY); // First safe-free version does not have regular `SeedFactory` contract deployed yet
+      ContractsService.Contracts.delete(ContractNames.SIGNER); // First safe-free version does not have regular `SeedFactory` contract deployed yet
+    }
+
+    if (isCeloNetworkLike() || isLocalhostNetwork()) {
+      // https://app.shortcut.com/curvelabs/story/1540/remove-celo-gnosis-flow-from-fe-temporary
+      ContractsService.Contracts.set(ContractNames.SeedFactoryNoAccessControl, null);
+
       ContractsService.Contracts.delete(ContractNames.LBPMANAGERFACTORY);
       ContractsService.Contracts.delete(ContractNames.LBPMANAGER);
     }
