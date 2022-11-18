@@ -24,7 +24,7 @@ export class Navbar {
     this.eventAggregator.subscribe("Network.Changed.Account", (account: string) => {
       if (IS_PRODUCTION_APP) return;
 
-      const isDevAccount = DEV_ADDRESSES.find(address => address.toLowerCase() === account.toLowerCase());
+      const isDevAccount = DEV_ADDRESSES.find(address => address?.toLowerCase() === account?.toLowerCase());
 
       if (isDevAccount) {
         this.showDevCode = true;
