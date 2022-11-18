@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "general": {
+      "projectName": "25 - Celo",
+      "customLinks": [],
+      "projectWebsite": "https://www.prime.xyz/",
+      "whitepaper": "https://launch.prime.xyz/",
+      "github": "https://github.com/PrimeDAO"
+  },
+  "projectDetails": {
+      "summary": "Bananas for the Finance!",
+      "proposition": "Bananas for finance!",
+      "teamDescription": "Bananas for Finance!"
+  },
+  "tokenDetails": {
+      "tokenDistrib": [
+          {
+              "stakeHolder": "Prime HOlders",
+              "amount": "14000000000000000000",
+              "cliff": 1,
+              "vest": 5
+          }
+      ],
+      "maxSupply": "14000000000000000000",
+      "projectTokenInfo": {
+          "address": "0x67DB2ed83cD7F60aa97D84676c10308c4EF14822",
+          "decimals": 18,
+          "logoURI": "https://avatars.githubusercontent.com/u/61662492?s=64&v=4",
+          "name": "TestD2D",
+          "symbol": "TD2D"
+      }
+  },
+  "contactDetails": {
+      "contactEmail": "luuk@prime.xyz",
+      "remarks": "<3"
+  },
+  "launchDetails": {
+      "fundingTokenInfo": {
+          "address": "0x765de816845861e75a25fca122bb6898b8b1282a",
+          "chainId": 42220,
+          "name": "Celo Dollar",
+          "symbol": "CUSD",
+          "decimals": 18,
+          "logoURI": "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/logos/cUSD.png",
+          "id": "celo-dollar",
+          "price": 0.988245
+      },
+      "startDate": "2022-11-18T13:06:00.000Z",
+      "endDate": "2022-11-21T00:00:00.000Z",
+      "adminAddress": "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
+      "legalDisclaimer": "",
+      "geoBlock": false,
+      "pricePerToken": "1",
+      "fundingTarget": "5000000000000000",
+      "fundingMax": "5000000000000000",
+      "vestingPeriod": 0,
+      "vestingCliff": 0,
+      "whitelist": "",
+      "individualCap": "1000000000000000",
+      "isPermissoned": false,
+      "seedTip": 0,
+      "allowList": []
+  },
+  "classes": []
+}

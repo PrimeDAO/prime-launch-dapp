@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "general": {
-    "projectName": "BananFi",
+    "projectName": "24 - Alfajores",
     "customLinks": [],
     "projectWebsite": "https://www.prime.xyz/",
     "whitepaper": "https://launch.prime.xyz/",
@@ -42,20 +42,20 @@
       "id": "celo-dollar",
       "price": 0.985245
   },
-    "startDate": "2022-11-16T13:47:00.000Z",
+    "startDate": "2022-11-18T12:11:00.000Z",
     "endDate": "2022-11-21T12:00:00.000Z",
     "adminAddress": "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
     "legalDisclaimer": "",
     "geoBlock": true,
     "pricePerToken": "1",
-    "fundingTarget": "5000000000000000000",
-    "fundingMax": "5000000000000000000",
-    "vestingPeriod": 86400,
-    "vestingCliff": 86400,
+    "fundingTarget": "50000000000000000",
+    "fundingMax": "50000000000000000",
+    "vestingPeriod": 0,
+    "vestingCliff": 0,
     "whitelist": "",
-    "individualCap": "1000000000000000000",
+    "individualCap": "10000000000000000",
     "isPermissoned": false,
-    "seedTip": 1,
+    "seedTip": 0,
     "allowList": []
   },
   "classes": []

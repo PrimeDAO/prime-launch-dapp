@@ -95,8 +95,7 @@ export class App {
           // eslint-disable-next-line no-bitwise
           buttons: ShowButtonsEnum.OK | ShowButtonsEnum.Cancel,
           className: "wrongNetworkAlert",
-          buttonTextPrimary: "Cancel",
-          buttonTextSecondary: "Switch",
+          buttonTextPrimary: "Switch",
         },
       );
 
