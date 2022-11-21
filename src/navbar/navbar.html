@@ -32,7 +32,7 @@
         <div click.delegate="navigate('/')" class="item ${(router.currentInstruction.config.name === 'home') ? 'active' : ''}">Home</div>
         <div click.delegate="navigate('/register')" class="item ${(router.currentInstruction.config.name === 'register') ? 'active' : ''}">Register</div>
         <div click.delegate="navigate('/launches')" class="item ${(router.currentInstruction.config.name === 'launches') ? 'active' : ''}">Launches</div>
-        <div class="item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">
+        <div class="documentation-link item ${(router.currentInstruction.config.name === 'documentation') ? 'active' : ''}">
           <a href="https://docs.launch.prime.xyz/" target="_blank" rel="noopener noreferrer">Documentation</a>
         </div>
         <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div>

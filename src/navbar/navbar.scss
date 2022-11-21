@@ -128,7 +128,8 @@ $menu-open-duration: 0.1s;
       column-gap: 20px;
       text-align: left;
 
-      >.item {
+      >.item,
+      >.item.documentation-link a {
         cursor: pointer;
         padding: 10px 0;
 
