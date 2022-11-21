@@ -60,7 +60,7 @@
     <div class="seed-info section toppadding">
       <div class="seed-info halfsection1">
         <!-- ================ Section Two ================ -->
-        <div if.bind="!geoBlocked" class="seed-info container">
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark if.bind="seed.fundingTokenInfo.symbol" text="Submit ${seed.fundingTokenInfo.symbol} tokens here to participate in the Seed. Remember to check if there is a vesting release schedule prior to contribution"></question-mark>
           </div>
@@ -126,7 +126,7 @@
         </div>
 
         <!-- ================ Section Three ================ -->
-        <div if.bind="!geoBlocked" class="seed-info container">
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark text="Many projects will lock or vest your tokens over some period of time. Here you may claim fully vested tokens as well as see which tokens are still pending depending on the project's vesting schedule"></question-mark>
           </div>
@@ -193,7 +193,7 @@
         </div>
 
         <!-- ================ Section Four ================ -->
-        <div if.bind="!geoBlocked" class="seed-info container2">
+        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container2">
           <div class="markPosition">
             <question-mark text="As long as the campaign has not yet reached its target, you can retrieve all of your previously-submitted contributions"></question-mark>
           </div>
@@ -210,6 +210,7 @@
             Retrieve
           </button>
         </div>
+
         <div class="notWhitelisted" if.to-view="geoBlocked">
           Sorry, you are located in a country that is not able to participate.
         </div>
