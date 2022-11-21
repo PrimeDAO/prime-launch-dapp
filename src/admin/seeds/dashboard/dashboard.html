@@ -31,9 +31,7 @@
               placeholder="Select a Seed...">
               <div repeat.for="seed of seeds">${seed.metadata.general.projectName}</div>
             </dropdown>
-            <div else class="heading heading3 projectTitle">
-              ${selectedSeed.metadata.general.projectName}
-            </div>
+            <div else class="heading heading3 projectTitle">${selectedSeed.metadata.general.projectName}</div>
             <div class="buttonContainer" if.bind="selectedSeed.address">
               <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
                 Go To Dashboard
