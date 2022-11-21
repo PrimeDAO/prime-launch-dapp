@@ -245,7 +245,7 @@ export class SeedService {
         Date.parse(config.launchDetails.endDate) / 1000,
       ],
       [
-        config.launchDetails.fundingMax, // inidivCap
+        config.launchDetails.individualCap, // inidivCap
         config.launchDetails.vestingCliff,
         config.launchDetails.vestingPeriod,
       ],
