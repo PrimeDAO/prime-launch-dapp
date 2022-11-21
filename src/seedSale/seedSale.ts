@@ -434,7 +434,12 @@ export class SeedSale {
       } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
         this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
-        this.seed.claim(this.projectTokenToReceive);
+        const receipt = await this.seed.claim(this.projectTokenToReceive);
+        if (receipt) {
+          await this.hydrateUserData();
+          this.congratulationsService.show(`You have claimed ${this.numberService.toString(fromWei(this.projectTokenToReceive, this.seed.projectTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.projectTokenInfo.symbol}`);
+          this.projectTokenToReceive = null;
+        }
       }
     }
   }
