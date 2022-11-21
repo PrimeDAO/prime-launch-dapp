@@ -205,6 +205,16 @@ export class SeedSale {
     return disable;
   }
 
+  @computedFrom("seed.claimingIsOpen", "seed.userCanClaim", "projectTokenToReceive")
+  get disableClaimButton(): boolean {
+    const disable =
+      !(this.seed?.claimingIsOpen && this.seed?.userCanClaim) ||
+      !this.projectTokenToReceive ||
+      this.projectTokenToReceive?.eq(0);
+
+    return disable;
+  }
+
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
     return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0") &&
