@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isLocalhostNetwork } from "./EthereumService";
 
 export class GeoBlockService {
   private blacklist = new Set<string>([
@@ -19,7 +20,11 @@ export class GeoBlockService {
 
   public async initialize(): Promise<void> {
     const country = await this.getCountry();
-    this.blackisted = country ? this.blacklist.has(country) : true;
+    if (isLocalhostNetwork()) {
+      this.blackisted = false;
+    } else {
+      this.blackisted = country ? this.blacklist.has(country) : true;
+    }
   }
 
   private getCountry(): Promise<string> {
