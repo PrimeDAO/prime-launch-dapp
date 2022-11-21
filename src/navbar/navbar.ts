@@ -64,5 +64,9 @@ export class Navbar {
     const seedHash = this.router.currentInstruction.params.address;
     this.router.navigate(`seed/${seedHash}`);
   }
+  private __dev_toOverview(): void {
+    const seedHash = this.router.currentInstruction.params.address;
+    this.router.navigate(`seed-overview/${seedHash}`);
+  }
 
 }

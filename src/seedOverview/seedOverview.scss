@@ -1,0 +1,24 @@
+.seedOverview {
+  font-size: 28px;
+
+  .catgeoryContainer {
+    border: 1px solid black;
+    padding: 20px;
+
+    .infoRow {
+      display: flex;
+      justify-content: space-between;
+      width: 40vw;
+      margin: 10px 0;
+
+      .propName {
+        font-size: 28px;
+        font-weight: 900;
+      }
+    }
+
+    .infoRow:nth-child(odd) {
+      background-color: #1a1111;
+    }
+  }
+}

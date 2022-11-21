@@ -284,6 +284,13 @@ export class App {
         route: ["seed-sale/:address"],
         title: "Seed Sale",
       },
+      {
+        moduleId: PLATFORM.moduleName("./seedOverview/seedOverview"),
+        nav: false,
+        name: "seedOverview",
+        route: ["seed-overview/:address"],
+        title: "Seed Overview",
+      },
     ]);
 
     config.fallbackRoute("home");
