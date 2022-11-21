@@ -1,6 +1,7 @@
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
+import { isLocalhostNetwork } from "services/EthereumService";
 import { Utils } from "services/utils";
 import "./navbar.scss";
 
@@ -26,7 +27,7 @@ export class Navbar {
 
       const isDevAccount = DEV_ADDRESSES.find(address => address?.toLowerCase() === account?.toLowerCase());
 
-      if (isDevAccount) {
+      if (isDevAccount || isLocalhostNetwork()) {
         this.showDevCode = true;
         return;
       }
