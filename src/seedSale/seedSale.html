@@ -32,12 +32,13 @@
         </div>
         </div>
         <div class="info">
-          <div class="text">$ <strong>
+          <div class="text"><strong>
             <formatted-number
               value.to-view="seed.amountRaised | ethwei:seed.fundingTokenInfo.decimals"
               thousands-separated>
             </formatted-number>
-            </strong> USD raised
+            </strong>
+            ${seed.fundingTokenInfo.symbol} raised
           </div>
           <div class="text">$<formatted-number
             average
@@ -140,7 +141,7 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
+                  disabled.to-view="!(connected && (seed.claimingIsOpen || seed.userCanClaim))"
                   value.bind="projectTokenToReceive"
                   decimals.bind="seed.projectTokenInfo.decimals"
                   class="withIcon"
@@ -186,7 +187,7 @@
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)">
+          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
             claim
           </button>
         </div>
@@ -200,7 +201,7 @@
             Retrieve Contribution
           </div>
           <div class="text">
-            If Seed Target is not reached by the round end date, all contributions made can be retrieved here.
+            If Funding Target is not reached by the round end date, all contributions made can be retrieved here.
           </div>
           <div class="text2">
             You have contributed <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated></formatted-number> ${seed.fundingTokenInfo.symbol} tokens.
@@ -250,12 +251,14 @@
         <div class="table">
           <div class="row">
             <div class="col">
-              <div class="title">SEED TARGET</div>
+              <div class="title">FUNDING TARGET</div>
               <div class="text"><formatted-number value.to-view="seed.target | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
+              <!-- <span class="symbol">${seed.fundingTokenInfo.symbol}</span> -->
             </div>
             <div class="col">
-              <div class="title">max seed</div>
+              <div class="title">max funding</div>
               <div class="text"><formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
+              <!-- <span class="symbol">${seed.fundingTokenInfo.symbol}</span> -->
             </div>
             <div class="col">
               <div class="title">valuation</div>

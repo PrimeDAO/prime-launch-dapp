@@ -240,7 +240,11 @@
                 Withdraw Funding Tokens
               </div>
               <div class="featureDescription">
-                ${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol}) <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img> will be transfered to your wallet
+                <span class="fundingTokensContainer">
+                  <span>${selectedSeed.fundingTokenBalance | ethwei:selectedSeed.fundingTokenInfo.decimals} ${selectedSeed.fundingTokenInfo.name} (${selectedSeed.fundingTokenInfo.symbol})</span>
+                  <img class="tokenImage" src.to-view="selectedSeed.fundingTokenInfo.logoURI"></img>
+                </span>
+                <span>will be transfered to your wallet</span>
               </div>
               <div class="button1" click.delegate="selectedSeed.withdrawFundingTokens()">
                 Withdraw

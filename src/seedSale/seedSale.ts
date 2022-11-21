@@ -205,6 +205,16 @@ export class SeedSale {
     return disable;
   }
 
+  @computedFrom("seed.claimingIsOpen", "seed.userCanClaim", "projectTokenToReceive")
+  get disableClaimButton(): boolean {
+    const disable =
+      !(this.seed?.claimingIsOpen && this.seed?.userCanClaim) ||
+      !this.projectTokenToReceive ||
+      this.projectTokenToReceive?.eq(0);
+
+    return disable;
+  }
+
   @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
   get lockRequired(): boolean {
     return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0") &&
@@ -424,7 +434,12 @@ export class SeedSale {
       } else if (this.seed.userClaimableAmount.lt(this.projectTokenToReceive)) {
         this.eventAggregator.publish("handleValidationError", `The amount of ${this.seed.projectTokenInfo.symbol} you are requesting exceeds your claimable amount`);
       } else {
-        this.seed.claim(this.projectTokenToReceive);
+        const receipt = await this.seed.claim(this.projectTokenToReceive);
+        if (receipt) {
+          await this.hydrateUserData();
+          this.congratulationsService.show(`You have claimed ${this.numberService.toString(fromWei(this.projectTokenToReceive, this.seed.projectTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.projectTokenInfo.symbol}`);
+          this.projectTokenToReceive = null;
+        }
       }
     }
   }

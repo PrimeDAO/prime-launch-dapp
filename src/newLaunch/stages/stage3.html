@@ -39,19 +39,19 @@
                       <div class="field nameInput ${wizardState.stage3State.tiNameInputPresupplied ? 'presupplied' : ''}
                                                   ${launchConfig.tokenDetails.projectTokenInfo.name ? 'supplied' : ''}">
                         <label>Name</label>
-                        <input class="input-style" type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.name" class="textInput inputElement" />
+                        <input type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.name" class="textInput inputElement input-style" />
                       </div>
                         <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.name}</div>
                       <div class="field symbolInput ${wizardState.stage3State.tiSymbolInputPresupplied ? 'presupplied' : ''}
                                                     ${launchConfig.tokenDetails.projectTokenInfo.symbol ? 'supplied' : ''}">
                         <label>Symbol</label>
-                        <input class="input-style" type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.symbol" class="textInput inputElement" />
+                        <input type="text" value.bind="launchConfig.tokenDetails.projectTokenInfo.symbol" class="textInput inputElement input-style" />
                         <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.symbol}</div>
                       </div>
                       <div class="field decimalsInput ${wizardState.stage3State.tiDecimalsInputPresupplied ? 'presupplied' : ''}
                                                       ${launchConfig.tokenDetails.projectTokenInfo.decimals ? 'supplied' : ''}">
                         <label>Decimals</label>
-                        <input class="input-style" type="text" type="number" step="1" value.bind="launchConfig.tokenDetails.projectTokenInfo.decimals | number" class="textInput inputElement" />
+                        <input type="text" type="number" step="1" value.bind="launchConfig.tokenDetails.projectTokenInfo.decimals | number" class="textInput inputElement input-style" />
                         <div class="goodValue">${launchConfig.tokenDetails.projectTokenInfo.decimals}</div>
                       </div>
                       <div class="field logoInput ${wizardState.stage3State.tiLogoInputPresupplied ? 'presupplied' : ''}

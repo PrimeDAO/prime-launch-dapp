@@ -608,6 +608,15 @@
                 label {
                   color: $AlertOrange;
                 }
+                .goodValue {
+                  display: none;
+                }
+              }
+
+              &.supplied {
+                .goodValue {
+                  display: none;
+                }
               }
             }
           }

@@ -88,6 +88,11 @@
           .important {
             color: $AlertOrange;
           }
+
+          .fundingTokensContainer {
+            display: flex;
+            align-items: center;
+          }
         }
 
         .inputWrapper {
