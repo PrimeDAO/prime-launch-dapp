@@ -17,7 +17,7 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
-import * as lhrealtest from "../../cypress/fixtures/21-[lh]-real-test.json";
+import * as SeedFixtures from "../../cypress/fixtures/seedFixtures";
 
 import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
 
@@ -485,8 +485,9 @@ export class Seed implements ILaunch {
       const exchangeRate = this.globalPrice;
       this.classPrice = exchangeRate;
 
-
-      if (rawMetadata && Number(rawMetadata)) {
+      if (isLocalhostNetwork()) {
+        this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      } else if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
       } else {
         if (!isLocalhostNetwork()) {
@@ -496,7 +497,7 @@ export class Seed implements ILaunch {
       }
 
       if (isLocalhostNetwork()) {
-        this.metadata = lhrealtest as unknown as ISeedConfig;
+        this.metadata = SeedFixtures[this.metadataHash].seed;
       } else {
         await this.hydrateMetadata();
       }
