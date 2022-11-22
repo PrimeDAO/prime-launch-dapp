@@ -12,15 +12,11 @@
           <div class="icon launch"><img class="mono" src="/static/launch-mono.svg" /><img class="color" src="/static/launch.svg" /></div>
           <div class="text">Launch</div>
         </div>
-        <div class="item" click.delegate="goto('https://www.prime.xyz/pools')">
-          <div class="icon pools"><img class="mono" src="/static/pools-mono.svg" /><img class="color" src="/static/pools.svg" /></div>
-          <div class="text">Pools</div>
-        </div>
         <div class="item" click.delegate="goto('https://www.prime.xyz/rating')">
           <div class="icon rating"><img class="mono" src="/static/rating-mono.svg" /><img class="color" src="/static/rating.svg" /></div>
           <div class="text">Rating</div>
         </div>
-        <div class="item" click.delegate="goto('https://www.prime.xyz/deals')">
+        <div class="item" click.delegate="goto('https://deals.prime.xyz/')">
           <div class="icon deals"><img class="mono" src="/static/deals-mono.svg" /><img class="color" src="/static/deals.svg" /></div>
           <div class="text">Deals</div>
         </div>
@@ -40,6 +36,7 @@
         <!-- <div click.delegate="goto('https://primedao.typeform.com/PrimeLaunchSup')" class="item">Support</div> -->
       </div>
       <div if.bind="showDevCode" class="dev-go-to-seed-stage6">
+        <div click.delegate="__dev_toOverview()" class="item">Overview</div>
         <div click.delegate="__dev_toOldDashboard()" class="item">Old Dash</div>
         <div click.delegate="__dev_toNewDashboard()" class="item">New Dash</div>
         <div click.delegate="navigate('/newSeed/stage6')" class="item">Go to Summary</div>

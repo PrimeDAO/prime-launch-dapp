@@ -1,20 +1,32 @@
 import axios from "axios";
-import * as JSON from "../../fixtures/21-[lh]-real-test.json";
 import { Shared } from "../../../src/shared/shared";
 import { ISeedConfig } from "../../../src/newLaunch/seed/config";
 import { IAddClassParams } from "../../../src/types/types";
-import { SeedClassesBuilder } from "./builders/E2eSeedBuilder";
+import { SeedBuilder, SeedClassesBuilder } from "./builders/E2eSeedBuilder";
+import {
+  CLASS_1_WITH_ALLOWLISTED_ADDRESSES,
+  CLASS_2_WITH_ALLOWLISTED_ADDRESSES,
+  CLASS_3_WITH_ALLOWLISTED_ADDRESSES,
+  MINIMUM_PERMISSIONED_SEED,
+  MINIMUM_SEED,
+  MINIMUM_PERMISSIONED_SEED_WITH_CLASS,
+} from "../../fixtures/seedFixtures";
+import { delay } from "./utilities";
 
 axios.defaults.adapter = require("axios/lib/adapters/http");
 
 const baseUrl = "http://localhost:4000";
-async function createSeed() {
+async function createSeed(seedBuilder: SeedBuilder = MINIMUM_SEED) {
   const address = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
-  let seedConfig = JSON as unknown as ISeedConfig;
+  let seedConfig = seedBuilder.seed;
   seedConfig = adjustTimeForTesting(seedConfig);
 
-  const params = Shared.convertToContractSeedParam(seedConfig, address, "");
+  const params = Shared.convertToContractSeedParam(
+    seedConfig,
+    address,
+    seedBuilder.id,
+  );
   const response = await axios.post(`${baseUrl}/seed/create`, params);
   return response.data;
 }
@@ -27,7 +39,7 @@ function adjustTimeForTesting(seedConfig: ISeedConfig) {
   currentDate.toISOString();
 
   const highestStartDate = Math.max(wantedStartDate, currentDateMilli);
-  const tenSeconds = 10 * 1000;
+  const tenSeconds = 10000 * 1000;
   const startDateWithBuffer = highestStartDate + tenSeconds;
   startDateWithBuffer;
   const finalStartDate = new Date(startDateWithBuffer).toISOString();
@@ -42,7 +54,6 @@ function adjustTimeForTesting(seedConfig: ISeedConfig) {
   return seedConfig;
 }
 
-
 export class E2eApi {
   public static async createSeed() {
     const response = await createSeed();
@@ -52,30 +63,32 @@ export class E2eApi {
   public static async addClassToSeed(
     seedId: string,
     seedClassParams?: IAddClassParams,
-    ) {
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: api.e2e.ts ~ line 53 ~ addClassToSeed')
+  ) {
     if (!seedClassParams) {
-      seedClassParams = SeedClassesBuilder.create().seedClass;
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: api.e2e.ts ~ line 53 ~ addClassToSeed')
+      seedClassParams = SeedClassesBuilder.createNewClass();
     }
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: api.e2e.ts ~ line 53 ~ addClassToSeed')
 
     const response = await axios.post(`${baseUrl}/seed/${seedId}/addClass`, {
       seedId,
-      addClassParams: seedClassParams,
+      addClassParams: {
+        ...seedClassParams,
+        classAllowlists: seedClassParams.classAllowlists.map(list => Array.from(list))
+      },
     });
-    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: api.e2e.ts ~ line 64 ~ response', response)
     return response.data;
   }
 }
 
 async function run() {
-  const firstSeed = await createSeed();
-  // setTimeout(async () => {
-  //   firstSeed/*?*/
-  //   const secondSeed = await createSeed();
-  //    secondSeed/*?*/
-  //   const classResponse = await E2eApi.addClassToSeed("0xCafac3dD18aC6c6e92c921884f9E4176737C052c");
-  // }, 100)
+  // const firstSeed = await createSeed(MINIMUM_SEED);
+  // const firstSeed = await createSeed(MINIMUM_PERMISSIONED_SEED);
+  const secondSeed = await createSeed(MINIMUM_PERMISSIONED_SEED_WITH_CLASS);
+  await delay(500);
+  const seedId = secondSeed.newSeed;
+  await E2eApi.addClassToSeed(seedId, CLASS_1_WITH_ALLOWLISTED_ADDRESSES);
+  await delay(500);
+  await E2eApi.addClassToSeed(seedId, CLASS_2_WITH_ALLOWLISTED_ADDRESSES);
+  await delay(500);
+  await E2eApi.addClassToSeed(seedId, CLASS_3_WITH_ALLOWLISTED_ADDRESSES);
 }
-run()
+run();

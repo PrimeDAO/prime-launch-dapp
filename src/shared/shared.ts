@@ -61,7 +61,7 @@ export class Shared {
         Date.parse(config.launchDetails.endDate) / 1000,
       ],
       [
-        config.launchDetails.fundingMax, // inidivCap
+        config.launchDetails.individualCap,
         config.launchDetails.vestingCliff,
         config.launchDetails.vestingPeriod,
       ],

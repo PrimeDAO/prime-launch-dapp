@@ -17,7 +17,7 @@ import { ISeedConfig } from "newLaunch/seed/config";
 import { ILaunch, LaunchType } from "services/launchTypes";
 import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
-import * as lhrealtest from "../../cypress/fixtures/21-[lh]-real-test.json";
+import * as SeedFixtures from "../../cypress/fixtures/seedFixtures";
 
 import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
 
@@ -485,8 +485,9 @@ export class Seed implements ILaunch {
       const exchangeRate = this.globalPrice;
       this.classPrice = exchangeRate;
 
-
-      if (rawMetadata && Number(rawMetadata)) {
+      if (isLocalhostNetwork()) {
+        this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      } else if (rawMetadata && Number(rawMetadata)) {
         this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
       } else {
         if (!isLocalhostNetwork()) {
@@ -496,7 +497,7 @@ export class Seed implements ILaunch {
       }
 
       if (isLocalhostNetwork()) {
-        this.metadata = lhrealtest as unknown as ISeedConfig;
+        this.metadata = SeedFixtures[this.metadataHash].seed;
       } else {
         await this.hydrateMetadata();
       }
@@ -586,18 +587,7 @@ export class Seed implements ILaunch {
     // this.classSold = individualClass.classFundingCollected;
 
     if (account) {
-      let whitelisted: boolean;
-
       const batchedCalls: Array<IBatcherCallsModel> = [
-        // can't figure out how to supply the returnType for a struct
-        // {
-        //   contractAddress: this.address,
-        //   functionName: "funders",
-        //   paramTypes: ["address"],
-        //   paramValues: [account],
-        //   returnType: "[uint256,uint256]",
-        //   resultHandler: (result) => { lock = result; },
-        // },
         {
           contractAddress: this.fundingTokenContract.address,
           functionName: "balanceOf",
@@ -606,14 +596,6 @@ export class Seed implements ILaunch {
           returnType: "uint256",
           resultHandler: (result) => { this.userFundingTokenBalance = result; },
         },
-        // { GONE -> funders
-        //   contractAddress: this.address,
-        //   functionName: "whitelisted",
-        //   paramTypes: ["address"],
-        //   paramValues: [account],
-        //   returnType: "bool",
-        //   resultHandler: (result) => { whitelisted = result; },
-        // },
       ];
 
       const batcher = this.multiCallService.createBatcher(batchedCalls);
@@ -630,6 +612,7 @@ export class Seed implements ILaunch {
        * seeds that will be claimable, but are currently still vesting
        */
       this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
+      const whitelisted = lock.allowlist;
       this.userIsWhitelisted = !this.whitelisted ||
         this.userCanClaim || // can claim now
         this.userPendingAmount.gt(0) || // can eventually claim

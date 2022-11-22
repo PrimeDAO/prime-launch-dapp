@@ -207,7 +207,8 @@
 .launch-card-title {
   font-family: Aeonik;
   font-weight: 700;
-  @include multilineEllipsis(1, 100%, 20px, 1.2)
+  @include multilineEllipsis(1, 100%, 20px, 1.2);
+  @include wrapText;
 }
 .launch-card-description {
   font-family: Inter;

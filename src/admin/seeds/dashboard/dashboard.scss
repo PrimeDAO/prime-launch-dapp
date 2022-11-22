@@ -78,6 +78,10 @@
           }
         }
 
+        .projectTitle {
+          @include wrapText;
+        }
+        
         .featureDescription {
           display: flex;
           flex-direction: column;
