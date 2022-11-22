@@ -123,12 +123,29 @@ export class SeedSale {
   }
 
   @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
-  get hasReachedContributionLimit(): boolean {
+  get hasReachedClassContributionLimit(): boolean {
     if (!this.seed.usersClass) return;
 
     const cap = this.seed.usersClass.classCap;
     const raised = this.seed.usersClass.classFundingCollected;
     const hasReached = raised.gte(cap);
+    return hasReached;
+  }
+
+  @computedFrom("seed.usersClass.individualCap", "seed.userCurrentFundingContributions")
+  get hasReachedIndividualContributionLimit(): boolean {
+    if (!this.seed.usersClass) return;
+    if (!this.seed) return;
+
+    const cap = this.seed.usersClass.individualCap;
+    const raised = this.seed.userCurrentFundingContributions;
+    const hasReached = raised.gte(cap);
+    return hasReached;
+  }
+
+  @computedFrom("seed.usersClass.individualCap", "seed.userCurrentFundingContributions")
+  get hasReachedContributionLimit(): boolean {
+    const hasReached = this.hasReachedClassContributionLimit || this.hasReachedIndividualContributionLimit;
     return hasReached;
   }
 
