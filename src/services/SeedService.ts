@@ -261,13 +261,14 @@ export class SeedService {
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
 
     if (isCeloNetworkLike() || isLocalhostNetwork()) {
-      if (isLocalhostNetwork()) {
+      if (isNetwork(Networks.Celo)) {
+        // sc-1209
+        // https://safe.celo.org/mainnet:0x9C3465Ea2e3Fb3AEc3bDFd124d73FcCe72F71F01/address-book
+        seedArguments[0] = "0x9C3465Ea2e3Fb3AEc3bDFd124d73FcCe72F71F01";
+      }
+      else if (isLocalhostNetwork()) {
         /** Beneficiary is 2nd account in Hardhat */
         seedArguments[0] = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
-      }
-      if (isNetwork(Networks.Celo)) {
-        // https://clabs-safe-celo.vercel.app/mainnet:0x0276a552F424949C934bC74bB623886AAc9Ed807/transactions/history
-        seedArguments[0] = "0x0276a552F424949C934bC74bB623886AAc9Ed807";
       }
 
       /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 272 ~ seedFactory.address", seedFactory.address);
