@@ -8,8 +8,8 @@ import { getRandomId } from "../utilities";
 import { e2eClassName } from "../e2eConstants";
 
 const FUNDING_TARGET = "20000000000000000000";
-const FUNDING_MAX = "64500000000000000000";
-const INDIVIDUAL_CAP = "10000000000000000000";
+const FUNDING_MAX = "34500000000000000000";
+const INDIVIDUAL_CAP = "15000000000000000000";
 
 /**
  * **************************
