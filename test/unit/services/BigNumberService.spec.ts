@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { BigNumberService } from "services/BigNumberService";
 import { NumberService } from "services/NumberService";
 
-type InputMatrix<Expected = number> = [string, [number, number], Expected][]
+type InputMatrix<Expected = number> = [string, [number | string, number | string], Expected][]
 type InputMatrixPercentage<Expected = number> = [string, [string], Expected][]
 
 fdescribe("BigNumberService.spec", () => {
@@ -60,6 +60,8 @@ fdescribe("BigNumberService.spec", () => {
       ["divide - 1/0", [1, 0], 0],
       ["divide - 1/-2", [1, -2], 0],
       ["divide - 0/2", [0, 2], 0],
+      ["fractionAsPercentageToNumber - 0/2", ["6000000000000000000", "20000000000000000000"], 0.3],
+      ["fractionAsPercentageToNumber - 0/2", ["20000000000000000000", "6000000000000000000"], 3.3333333333333335],
     ];
 
     inputMatrix.forEach(([label, [nom, denom], expected]) => {
@@ -93,6 +95,7 @@ fdescribe("BigNumberService.spec", () => {
       ["fractionAsPercentageToNumber - 1/0", [1, 0], 0],
       ["fractionAsPercentageToNumber - 1/-2", [1, -2], 0],
       ["fractionAsPercentageToNumber - 0/2", [0, 2], 0],
+      ["fractionAsPercentageToNumber - 0/2", ["6000000000000000000", "20000000000000000000"], 30],
     ];
 
     inputMatrix.forEach(([label, [nom, denom], expected]) => {

@@ -39,12 +39,10 @@ function adjustTimeForTesting(seedConfig: ISeedConfig) {
   currentDate.toISOString();
 
   const highestStartDate = Math.max(wantedStartDate, currentDateMilli);
-  const tenSeconds = 10000 * 1000;
-  const startDateWithBuffer = highestStartDate + tenSeconds;
-  startDateWithBuffer;
+  const twentySeconds = 20 * 1000;
+  const startDateWithBuffer = highestStartDate + twentySeconds;
   const finalStartDate = new Date(startDateWithBuffer).toISOString();
   seedConfig.launchDetails.startDate = finalStartDate;
-  seedConfig.launchDetails.startDate;
 
   // end date
   const oneDay = 24 * 60 * 60 * 1000;
