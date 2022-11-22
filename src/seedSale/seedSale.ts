@@ -212,13 +212,15 @@ export class SeedSale {
     return canPay;
   }
 
-  @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance")
+  @computedFrom("targetClass.individualCap", "targetClass.classCap", "maxFundable", "seed.userFundingTokenBalance", "seed.amountRaised", "seed.cap")
   get maxUserCanPay(): BigNumber {
+    const hardCapMinusRaised = (this.seed.cap).sub(this.seed.amountRaised);
     const args = [
       this.targetClass.individualCap,
       this.targetClass.classCap,
       this.seed.userFundingTokenBalance,
       this.maxFundable,
+      hardCapMinusRaised,
     ];
     const min = this.bigNumberService.min(args);
     return min;
