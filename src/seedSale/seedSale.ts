@@ -149,13 +149,41 @@ export class SeedSale {
     return hasReached;
   }
 
-  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  @computedFrom("maxFundableClass", "maxFundableIndividual")
   get maxFundable(): IFundingToken {
+    if (this.hasReachedContributionLimit) {
+      return BigNumber.from(0);
+    }
+
+    const args = [
+      this.maxFundableIndividual,
+      this.maxFundableClass,
+    ];
+    const min = this.bigNumberService.min(args);
+
+    return min;
+  }
+
+  @computedFrom("seed.usersClass.classCap", "seed.usersClass.classFundingCollected")
+  get maxFundableClass(): IFundingToken {
     if (!this.seed.usersClass) return;
 
     const cap = this.seed.usersClass.classCap;
     const raised = this.seed.usersClass.classFundingCollected;
-    if (this.hasReachedContributionLimit) {
+    if (this.hasReachedClassContributionLimit) {
+      return BigNumber.from(0);
+    }
+
+    return cap.sub(raised);
+  }
+
+  @computedFrom("seed.usersClass.individualCap", "seed.userCurrentFundingContributions")
+  get maxFundableIndividual(): IFundingToken {
+    if (!this.seed.usersClass) return;
+
+    const cap = this.seed.usersClass.individualCap;
+    const raised = this.seed.userCurrentFundingContributions;
+    if (this.hasReachedIndividualContributionLimit) {
       return BigNumber.from(0);
     }
 
