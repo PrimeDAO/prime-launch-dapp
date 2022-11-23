@@ -10,6 +10,7 @@ PLATFORM.moduleName("../launchCards/lbpCard.html");
 @autoinject
 export class FeaturedLaunches {
   @bindable.booleanAttr({ defaultBindingMode: bindingMode.toView }) loading;
+  @bindable.booleanAttr({ defaultBindingMode: bindingMode.toView }) showAll;
   @bindable({ defaultBindingMode: bindingMode.toView }) launchType;
   @bindable({ defaultBindingMode: bindingMode.toView}) launchesData;
 }

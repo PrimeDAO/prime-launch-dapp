@@ -2,12 +2,22 @@
   <div if.to-view="!loading">
     <horizontal-scroller item-count.to-view="launchesData.length">
       <template repeat.for="launch of launchesData">
-        <compose
-          if.bind="!launch.isClosed && $index <= 3"
-          view-model="../launchCards/launchCard"
-          view='${ launch.launchType === "seed" ? "../launchCards/seedCard.html" : "../launchCards/lbpCard.html" }'
-          model.bind="launch">
-        </compose>
+        <template if.bind="showAll">
+          <compose
+            if.bind="!launch.isClosed"
+            view-model="../launchCards/launchCard"
+            view='${ launch.launchType === "seed" ? "../launchCards/seedCard.html" : "../launchCards/lbpCard.html" }'
+            model.bind="launch">
+          </compose>
+        </template>
+        <template else>
+          <compose
+            if.bind="!launch.isClosed && $index <= 3"
+            view-model="../launchCards/launchCard"
+            view='${ launch.launchType === "seed" ? "../launchCards/seedCard.html" : "../launchCards/lbpCard.html" }'
+            model.bind="launch">
+          </compose>
+        </template>
       </template>
     </horizontal-scroller>
   </div>
