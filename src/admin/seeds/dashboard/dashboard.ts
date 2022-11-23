@@ -1,7 +1,7 @@
 import { Utils } from "services/utils";
 import { TransactionReceipt } from "services/TransactionsService";
 import { Seed } from "entities/Seed";
-import { Address, EthereumService, toWei } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostNetwork, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { SeedService } from "services/SeedService";
 import "./dashboard.scss";
@@ -32,6 +32,9 @@ export class SeedAdminDashboard {
   newlyAddedClassesIndexes: number[] = [];
   classesBeforeEditMap: Map<number, IContributorClass> = new Map()
   isMinting: Record<number, boolean> = {};
+  private allowListClassId: string;
+
+  isLocalhostNetwork = isLocalhostNetwork;
 
   @computedFrom("ethereumService.defaultAccountAddress")
   get connected(): boolean {
@@ -142,9 +145,12 @@ export class SeedAdminDashboard {
     return true;
   }
 
-  addToWhiteList(): void {
-    if (this.hasValidatedAddress(this.addressToAdd, "Please supply a valid address to add to whitelist")) {
-      this.selectedSeed.addToWhitelist(this.addressToAdd);
+  addToWhiteList(classId: number): void {
+    if (
+      this.hasValidatedAddress(this.addressToAdd, "Please supply a valid address to add to allowlist") ||
+      this.hasValidatedAddress(this.allowListClassId, "Please supply a valid class number")
+    ) {
+      this.selectedSeed.addToWhitelist(this.addressToAdd, classId);
     }
   }
 

@@ -973,10 +973,10 @@ export class Seed implements ILaunch {
     });
   }
 
-  async addToWhitelist(address: Address): Promise<TransactionReceipt> {
+  async addToWhitelist(address: Address, classIndex: number): Promise<TransactionReceipt> {
     if (address){
       return this.transactionsService.send(
-        () => this.contract.whitelist(address),
+        () => this.contract.allowlist([address], [classIndex]),
       ).then((receipt) => {
         if (receipt){
           this.hydrateUser();

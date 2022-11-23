@@ -58,12 +58,12 @@ export class Navbar {
 
   private __dev_toNewDashboard(): void {
     const seedHash = this.router.currentInstruction.params.address;
-    this.router.navigate(`seed-sale/${seedHash}`);
+    this.router.navigate(`seed/${seedHash}`);
   }
 
   private __dev_toOldDashboard(): void {
     const seedHash = this.router.currentInstruction.params.address;
-    this.router.navigate(`seed/${seedHash}`);
+    this.router.navigate(`seed-old/${seedHash}`);
   }
   private __dev_toOverview(): void {
     const seedHash = this.router.currentInstruction.params.address;

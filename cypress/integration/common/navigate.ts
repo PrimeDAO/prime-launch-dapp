@@ -5,7 +5,7 @@ import { E2eSeeds } from "./seed.e2e";
 import { getRouterViewViewModel } from "./aurelia.e2e";
 
 export class E2eNavigation {
-  public static SEED_DASHBOARD_URL = "seed-sale";
+  public static SEED_DASHBOARD_URL = "seed";
   public static ADMIN_DASHBOARD_URL = "admin/seeds/dashboard";
 
   public static navigateToHomePage() {
