@@ -33,7 +33,7 @@
             </dropdown>
             <div else class="heading heading3 projectTitle">${selectedSeed.metadata.general.projectName}</div>
             <div class="buttonContainer" if.bind="selectedSeed.address">
-              <div class="stageButton previousButton" click.delegate="navigate('seed-sale/' + selectedSeed.address)">
+              <div class="stageButton previousButton" click.delegate="navigate('seed/' + selectedSeed.address)">
                 Go To Dashboard
               </div>
             </div>

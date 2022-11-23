@@ -204,7 +204,7 @@ export class App {
         moduleId: PLATFORM.moduleName("./seedDashboard/seedDashboard"),
         nav: false,
         name: "seedDashboard",
-        route: ["seed/:address"],
+        route: ["seed-old/:address"],
         title: "SEED Dashboard",
       },
       {
@@ -270,18 +270,11 @@ export class App {
         route: ["comingSoon"],
         title: "Coming Soon!",
       },
-      // {
-      //   moduleId: PLATFORM.moduleName("./seedSale/seedSale"),
-      //   nav: false,
-      //   name: "seedSale",
-      //   route: ["seed-sale"],
-      //   title: "Seed Sale",
-      // },
       {
         moduleId: PLATFORM.moduleName("./seedSale/seedSale"),
         nav: false,
         name: "seedSale",
-        route: ["seed-sale/:address"],
+        route: ["seed/:address"],
         title: "Seed Sale",
       },
       {
