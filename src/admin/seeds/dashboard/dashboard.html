@@ -131,7 +131,9 @@
                 </div>
               </div>
             </div> -->
-            <div class="featureContainer" if.bind="!this.selectedSeed.isClosed">
+
+            <!-- Classes -->
+            <div class="featureContainer" if.bind="selectedSeed.isV2() && !this.selectedSeed.isClosed">
               <div class="featureTitle">
                 Classes
               </div>
@@ -219,6 +221,7 @@
               </div>
               <hr />
             </div>
+
             <div class="featureContainer" if.bind="retrievableProjectTokenAmount.gt(0) && (selectedSeed.isClosed || selectedSeed.maximumReached || selectedSeed.isDead)">
               <div class="featureTitle">
                 Retrieve Project Tokens

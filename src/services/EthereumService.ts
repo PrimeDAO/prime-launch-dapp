@@ -711,7 +711,7 @@ export function isNetworkPresent(network: AllowedNetworks): boolean {
  * @param network Default: Network the current wallet is connected to
  */
 export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
-  const is = network === Networks.Localhost || window.location.host === "localhost:3330";
+  const is = network === Networks.Localhost && window.location.host === "localhost:3330";
   return is;
 }
 
