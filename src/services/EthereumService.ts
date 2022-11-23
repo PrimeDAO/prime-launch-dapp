@@ -711,8 +711,8 @@ export function isNetworkPresent(network: AllowedNetworks): boolean {
  * @param network Default: Network the current wallet is connected to
  */
 export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
-  const isCeloLike = network === Networks.Localhost;
-  return isCeloLike;
+  const is = network === Networks.Localhost || window.location.host === "localhost:3330";
+  return is;
 }
 
 export { toWei } from "shared/shared";
