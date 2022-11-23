@@ -6,6 +6,7 @@ import { IStageState, IWizardState } from "newLaunch/baseStage";
 import { LaunchType } from "services/launchTypes";
 import { SeedService } from "services/SeedService";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
+import { isLocalhostNetwork } from "services/EthereumService";
 
 /**
  * this is the max "real" stage that gathers input from the user and requires
@@ -149,7 +150,7 @@ export class NewSeed {
       },
       {
         route: ["stage6"],
-        nav: true,
+        nav: isLocalhostNetwork() ? true : false,
         moduleId: PLATFORM.moduleName("newLaunch/seed/stages/stage6"), // seed specific stage
         name: "stage6",
         title: this.stageStates[6].title,

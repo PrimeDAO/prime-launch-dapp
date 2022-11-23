@@ -117,7 +117,7 @@ export function configure(aurelia: Aurelia): void {
         (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
       }
 
-      if (!isCeloNetworkLike()) {
+      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
         const lbpManagerService = aurelia.container.get(LbpManagerService);
         lbpManagerService.initialize();
       }

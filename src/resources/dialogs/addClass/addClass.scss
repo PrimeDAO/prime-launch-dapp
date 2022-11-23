@@ -22,13 +22,15 @@ $addClassModalHeight: 945px;
 }
 
 body > ux-dialog-container.addClass {
-  height: $addClassModalHeight;
+  max-height: $addClassModalHeight;
+  height: 85vh;
   width: 700px;
   top: 50%;
   right: unset;
   bottom: unset;
   left: 50%;
   transform: translate(-50%, -50%);
+  overflow: scroll;
 
   ux-dialog {
     overflow-y: auto;
