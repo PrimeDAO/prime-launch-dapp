@@ -180,8 +180,7 @@ export class Home {
         .filter((lbpMgr: LbpManager) => { return !lbpMgr.corrupt; }));
     this.launches = filterOutTestLaunches(this.launches);
     this.launches = this.launches
-      .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime))
-      .slice(0, 3);
+      .sort((a: ILaunch, b: ILaunch) => SortService.evaluateDateTimeAsDate(a.startTime, b.startTime));
 
     this.allLaunches = this.launches;
 

@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="launch-line"></div>
-        <featuredlaunches launches-data.bind="launches" launch-type.bind="activeLaunchState.title" loading.bind="loading"></featuredlaunches>
+        <featuredlaunches launches-data.bind="launches" launch-type.bind="activeLaunchState.title" loading.bind="loading" show-all></featuredlaunches>
       <div if.bind="!loading && launches.length !== 0" class="launchesButton"><a class="button-view-all" href="launches">VIEW ALL LAUNCHES</a></div>
     </div>
     <div class="section nomiss">
