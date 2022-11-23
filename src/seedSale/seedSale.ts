@@ -20,6 +20,7 @@ import { DisclaimerService } from "services/DisclaimerService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 import { LaunchService } from "services/LaunchService";
 import { BigNumberService } from "services/BigNumberService";
+import { SeedVersions } from "types/types";
 
 enum Phase {
   None = "None",
@@ -43,6 +44,7 @@ export class SeedSale {
   lockDate: string;
   vestingDate: string;
 
+  private SeedVersions = SeedVersions;
   private accountAddress: Address = null;
   private txPhase = Phase.None;
   private txReceipt: TransactionReceipt;
@@ -386,6 +388,7 @@ export class SeedSale {
 
   private async hydrateClassData(seed: Seed): Promise<void> {
     if (!seed) return;
+    if (seed.isVersion(SeedVersions.v1)) return;
 
     await Utils.waitUntilTrue(() => !!seed.usersClass, 6000);
     this.targetClass = seed.usersClass;
