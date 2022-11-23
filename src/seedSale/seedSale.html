@@ -46,10 +46,10 @@
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
-      <div class="seed-info col-3 seed-info_time-left">
+      <div if.bind="!seed.isDead" class="seed-info col-3 seed-info_time-left">
         <div class="title">
           <template if.bind="seed.isLive">TIME LEFT</template>
-          <template else>STARTS IN</template>
+          <template if.bind="seed.hasNotStarted">STARTS IN</template>
         </div>
         <div class="text">
           <time-left if.bind="seed" launch.to-view="seed" hide-icons largest is-time-only></time-left>

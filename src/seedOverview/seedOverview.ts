@@ -140,7 +140,7 @@ export class SeedOverview {
   constructor(private seedService: SeedService) {}
 
   async canActivate(): Promise<boolean> {
-    return isLocalhostNetwork();
+    return isLocalhostNetwork() || window.location.host === "localhost:3330";
   }
 
   async activate(params: { address: Address }): Promise<void> {

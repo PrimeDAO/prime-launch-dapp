@@ -181,7 +181,7 @@ export class Seed implements ILaunch {
 
   @computedFrom("_now")
   public get endsInMilliseconds(): number {
-    return this.dateService.getDurationBetween(this.endTime, this._now).asMilliseconds();
+    return this.dateService.getDurationBetween(this._now, this.endTime).asMilliseconds();
   }
 
   @computedFrom("_now")
