@@ -22,7 +22,7 @@
           <span if.to-view="!hideIcons" class="icon far fa-clock"></span>LIVE, ${currentTimeLeft | timespan:"minutes":false:true} left
         </div>
         <div
-          if.to-view="launch.claimingIsOpen"
+          if.to-view="launch.claimingIsOpen || launch.isDead"
           class="body complete">
           <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Complete
         </div>
@@ -32,7 +32,7 @@
           <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Incomplete
         </div>
         <div
-          if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused"
+          if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused && !launch.isDead"
           class="body uninitialized">
           <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>Uninitialized
         </div>
