@@ -40,7 +40,7 @@
             </strong>
             ${seed.fundingTokenInfo.symbol} raised
           </div>
-          <div class="text">$<formatted-number
+          <div class="text"><formatted-number
             average
             mantissa="0"
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
@@ -105,9 +105,9 @@
                   id="">
                 </numeric-input>
               </div>
-              <div class="inputText" show.bind="accountAddress">
+              <!-- <div class="inputText" show.bind="accountAddress">
                 ~ <formatted-number value.to-view="userUsdBalance" average mantissa="3"></formatted-number> USD
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="text">
@@ -264,7 +264,7 @@
               <div class="text"><formatted-number value.to-view="seed.cap | ethwei:seed.fundingTokenInfo.decimals" average></formatted-number></div>
               <!-- <span class="symbol">${seed.fundingTokenInfo.symbol}</span> -->
             </div>
-            <div class="col">
+            <!-- <div class="col">
               <div class="title">valuation</div>
               <div class="text">$ <formatted-number
                 if.to-view="seed.valuation"
@@ -272,7 +272,7 @@
                 average></formatted-number>
                 <span else>N/A</span>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="row">
             <div if.bind="seed.isV2()" class="col">
