@@ -5,7 +5,7 @@ import { autoinject, computedFrom } from "aurelia-framework";
 import { DateService } from "./../services/DateService";
 import { ContractsService, ContractNames } from "./../services/ContractsService";
 import { BigNumber } from "ethers";
-import { Address, EthereumService, fromWei, Hash, isLocalhostNetwork, toWei } from "services/EthereumService";
+import { Address, EthereumService, fromWei, Hash, isLocalhostNetwork, isNetwork, Networks, toWei } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { TokenService } from "services/TokenService";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -19,7 +19,7 @@ import { toBigNumberJs } from "services/BigNumberService";
 import { formatBytes32String, parseBytes32String } from "ethers/lib/utils";
 import * as SeedFixtures from "../../cypress/fixtures/seedFixtures";
 
-import type { IAddClassParams, IContractContributorClasses, IFundingToken } from "types/types";
+import { IAddClassParams, IContractContributorClasses, IFundingToken, SeedVersions } from "types/types";
 
 export interface ISeedConfiguration {
   address: Address;
@@ -55,6 +55,8 @@ export interface IContributorClass {
 
 @autoinject
 export class Seed implements ILaunch {
+  public version: SeedVersions;
+
   public launchType = LaunchType.Seed;
   public contract: any;
   public classes: IContributorClass[] = [];
@@ -352,6 +354,15 @@ export class Seed implements ILaunch {
   }
 
   private async hydrate(): Promise<void> {
+    if (isNetwork(Networks.Mainnet)) {
+      this.hydrateSeedV1();
+      return;
+    }
+
+    this.hydrateSeedV2();
+  }
+
+  private async hydrateSeedV2(): Promise<void> {
     try {
       let rawMetadata: any;
       // let exchangeRate: BigNumber;
@@ -554,7 +565,215 @@ export class Seed implements ILaunch {
       this.hasEnoughProjectTokens =
         this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
 
-      await this.hydrateUser();
+      await this.hydrateUserSeedV2();
+
+      this.version = SeedVersions.v2;
+    }
+    catch (error) {
+      this.disable();
+      this.consoleLogService.logMessage(`Seed: Error initializing seed: ${error?.message ?? error}`, "error");
+    } finally {
+      this.initializing = false;
+    }
+  }
+
+  private async hydrateSeedV1(): Promise<void> {
+    try {
+      let rawMetadata: any;
+      let exchangeRate: BigNumber;
+      let totalSupply: BigNumber;
+
+      let batchedCalls: Array<IBatcherCallsModel> = [
+        {
+          contractAddress: this.address,
+          functionName: "initialized",
+          returnType: "bool",
+          resultHandler: (result) => { this.seedInitialized = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "admin",
+          returnType: "address",
+          resultHandler: (result) => { this.admin = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "metadata",
+          returnType: "bytes",
+          resultHandler: (result) => { rawMetadata = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "seedToken",
+          returnType: "address",
+          resultHandler: (result) => { this.projectTokenAddress = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "fundingToken",
+          returnType: "address",
+          resultHandler: (result) => { this.fundingTokenAddress = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "startTime",
+          returnType: "uint256",
+          resultHandler: (result) => { this.startTime = this.dateService.unixEpochToDate(result.toNumber()); },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "endTime",
+          returnType: "uint256",
+          resultHandler: (result) => { this.endTime = this.dateService.unixEpochToDate(result.toNumber()); },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "price",
+          returnType: "uint256",
+          resultHandler: (result) => { exchangeRate = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "softCap",
+          returnType: "uint256",
+          resultHandler: (result) => { this.target = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "hardCap",
+          returnType: "uint256",
+          resultHandler: (result) => { this.cap = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "paused",
+          returnType: "bool",
+          resultHandler: (result) => { this.isPaused = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "closed",
+          returnType: "bool",
+          resultHandler: (result) => { this.isClosed = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "permissionedSeed",
+          returnType: "bool",
+          resultHandler: (result) => { this.whitelisted = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "vestingDuration",
+          returnType: "uint256",
+          resultHandler: (result) => { this.vestingDuration = result.toNumber(); },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "vestingCliff",
+          returnType: "uint256",
+          resultHandler: (result) => { this.vestingCliff = result.toNumber(); },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "minimumReached",
+          returnType: "bool",
+          resultHandler: (result) => { this.minimumReached = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "fundingCollected",
+          returnType: "uint256",
+          resultHandler: (result) => { this.amountRaised = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "seedRemainder",
+          returnType: "uint256",
+          resultHandler: (result) => { this.seedRemainder = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "seedAmountRequired",
+          returnType: "uint256",
+          resultHandler: (result) => { this.seedAmountRequired = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "feeRemainder",
+          returnType: "uint256",
+          resultHandler: (result) => { this.feeRemainder = result; },
+        },
+      ];
+
+      let batcher = this.multiCallService.createBatcher(batchedCalls);
+
+      await batcher.start();
+
+      if (rawMetadata && Number(rawMetadata)) {
+        this.metadataHash = Utils.toAscii(rawMetadata.slice(2));
+      } else {
+        this.eventAggregator.publish("Seed.InitializationFailed", this.address);
+        throw new Error(`Seed lacks metadata, is unusable: ${this.address}`);
+      }
+
+      await this.hydrateMetadata();
+
+      this.fundingTokenInfo = await this.tokenService.getTokenInfoFromAddress(this.fundingTokenAddress);
+
+      this.projectTokenInfo = this.metadata.tokenDetails.projectTokenInfo;
+      if (!this.projectTokenInfo || (this.projectTokenInfo.address !== this.projectTokenAddress)) {
+        throw new Error("project token info is not found or does not match the seed contract");
+      }
+
+      this.projectTokenContract = this.tokenService.getTokenContract(this.projectTokenAddress);
+      this.fundingTokenContract = this.tokenService.getTokenContract(this.fundingTokenAddress);
+
+      batchedCalls = [
+        {
+          contractAddress: this.fundingTokenContract.address,
+          functionName: "totalSupply",
+          returnType: "uint256",
+          resultHandler: (result) => { totalSupply = result; },
+        },
+        {
+          contractAddress: this.projectTokenContract.address,
+          functionName: "balanceOf",
+          paramTypes: ["address"],
+          paramValues: [this.address],
+          returnType: "uint256",
+          resultHandler: (result) => { this.projectTokenBalance = result; },
+        },
+        {
+          contractAddress: this.fundingTokenContract.address,
+          functionName: "balanceOf",
+          paramTypes: ["address"],
+          paramValues: [this.address],
+          returnType: "uint256",
+          resultHandler: (result) => { this.fundingTokenBalance = result; },
+        },
+      ];
+
+      batcher = this.multiCallService.createBatcher(batchedCalls);
+
+      await batcher.start();
+
+      const price = this.projectTokenPriceInEth(
+        exchangeRate,
+        this.fundingTokenInfo,
+        this.projectTokenInfo);
+
+      this.fundingTokensPerProjectToken = this.numberService.fromString(price);
+
+      this.valuation = this.numberService.fromString(fromWei(totalSupply, this.fundingTokenInfo.decimals))
+              * (this.fundingTokenInfo.price ?? 0);
+
+      this.hasEnoughProjectTokens =
+        this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
+
+      await this.hydrateUserSeedV1();
+
+      this.version = SeedVersions.v1;
     }
     catch (error) {
       this.disable();
@@ -569,6 +788,15 @@ export class Seed implements ILaunch {
   }
 
   private async hydrateUser(): Promise<void> {
+    if (isNetwork(Networks.Mainnet)) {
+      this.hydrateUserSeedV1();
+      return;
+    }
+
+    this.hydrateUserSeedV2();
+  }
+
+  private async hydrateUserSeedV2(): Promise<void> {
     const account = this.ethereumService.defaultAccountAddress;
 
     this.userHydrated = false;
@@ -613,6 +841,66 @@ export class Seed implements ILaunch {
        */
       this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
       const whitelisted = lock.allowlist;
+      this.userIsWhitelisted = !this.whitelisted ||
+        this.userCanClaim || // can claim now
+        this.userPendingAmount.gt(0) || // can eventually claim
+        this.userCanRetrieve ||
+        whitelisted;
+      this.userHydrated = true;
+    }
+  }
+
+  private async hydrateUserSeedV1(): Promise<void> {
+    const account = this.ethereumService.defaultAccountAddress;
+
+    this.userHydrated = false;
+
+    if (account) {
+      let whitelisted: boolean;
+
+      const batchedCalls: Array<IBatcherCallsModel> = [
+        // can't figure out how to supply the returnType for a struct
+        // {
+        //   contractAddress: this.address,
+        //   functionName: "funders",
+        //   paramTypes: ["address"],
+        //   paramValues: [account],
+        //   returnType: "[uint256,uint256]",
+        //   resultHandler: (result) => { lock = result; },
+        // },
+        {
+          contractAddress: this.fundingTokenContract.address,
+          functionName: "balanceOf",
+          paramTypes: ["address"],
+          paramValues: [account],
+          returnType: "uint256",
+          resultHandler: (result) => { this.userFundingTokenBalance = result; },
+        },
+        {
+          contractAddress: this.address,
+          functionName: "whitelisted",
+          paramTypes: ["address"],
+          paramValues: [account],
+          returnType: "bool",
+          resultHandler: (result) => { whitelisted = result; },
+        },
+      ];
+
+      const batcher = this.multiCallService.createBatcher(batchedCalls);
+
+      await batcher.start();
+
+      // can't figure out how to supply the returnType for a struct in the batch
+      const lock: IFunderPortfolio = await this.contract.funders(account);
+
+      this.userCurrentFundingContributions = lock.fundingAmount;
+      this.userClaimableAmount = await this.contract.callStatic.calculateClaim(account);
+      this.userCanClaim = this.userClaimableAmount.gt(0);
+      const seedAmount = this.seedsFromFunding(lock.fundingAmount);
+      /**
+       * seeds that will be claimable, but are currently still vesting
+       */
+      this.userPendingAmount = seedAmount.sub(lock.totalClaimed).sub(this.userClaimableAmount);
       this.userIsWhitelisted = !this.whitelisted ||
         this.userCanClaim || // can claim now
         this.userPendingAmount.gt(0) || // can eventually claim
@@ -853,6 +1141,16 @@ export class Seed implements ILaunch {
     this.isPaused = await this.contract.paused();
     this.isClosed = await this.contract.closed();
     return this.isPaused || this.isClosed;
+  }
+
+  public isVersion(version: SeedVersions): boolean {
+    const is = version === this.version;
+    return is;
+  }
+
+  public isV2(): boolean {
+    const is = this.isVersion(SeedVersions.v2);
+    return is;
   }
 }
 

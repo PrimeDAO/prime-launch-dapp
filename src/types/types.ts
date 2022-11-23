@@ -2,6 +2,11 @@ import { BigNumber } from "ethers";
 
 export type Address = string;
 
+export enum SeedVersions {
+  v1 = "v1.0.0",
+  v2 = "v2.0.0",
+}
+
 export interface ITokenInfo {
   address: Address;
   decimals: number;
