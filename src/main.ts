@@ -117,9 +117,10 @@ export function configure(aurelia: Aurelia): void {
         (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
       }
 
-      // TODO: rollback. Commented to test pinata with limited requests
-      // const lbpManagerService = aurelia.container.get(LbpManagerService);
-      // lbpManagerService.initialize();
+      if (!isCeloNetworkLike()) {
+        const lbpManagerService = aurelia.container.get(LbpManagerService);
+        lbpManagerService.initialize();
+      }
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
       eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));

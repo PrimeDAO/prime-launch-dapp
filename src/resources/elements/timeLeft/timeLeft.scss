@@ -3,6 +3,10 @@
   font-size: 12px;
   font-family: "Inter";
 
+  .mainStatus {
+    text-transform: uppercase;
+  }
+
   > div.mainStatus > div,
   > div.adminStatus > div {
     padding: 4px 8px 4px;

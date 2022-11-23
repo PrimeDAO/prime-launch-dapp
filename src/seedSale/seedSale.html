@@ -228,7 +228,7 @@
             Connect wallet
           </div>
         </div>
-        <div class="class-container" show.bind="accountAddress">
+        <div class="class-container" show.bind="accountAddress && seed.isV2()">
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">Your class</div>
@@ -275,7 +275,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div if.bind="seed.isV2()" class="col">
               <div class="title">Class sold</div>
               <div class="text">
                 <formatted-number value.to-view="classSold" average mantissa="2"></formatted-number>

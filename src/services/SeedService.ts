@@ -264,7 +264,8 @@ export class SeedService {
       if (isNetwork(Networks.Celo)) {
         // sc-1209
         // https://safe.celo.org/mainnet:0x9C3465Ea2e3Fb3AEc3bDFd124d73FcCe72F71F01/address-book
-        seedArguments[0] = "0x9C3465Ea2e3Fb3AEc3bDFd124d73FcCe72F71F01";
+        // TODO `0x0276a552F424949C934bC74bB623886AAc9Ed807` is test mainnet safe, should change to one right above
+        seedArguments[0] = "0x0276a552F424949C934bC74bB623886AAc9Ed807";
       }
       else if (isLocalhostNetwork()) {
         /** Beneficiary is 2nd account in Hardhat */
