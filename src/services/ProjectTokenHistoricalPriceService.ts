@@ -1,3 +1,4 @@
+import { SUBGRAPH_URLS } from "services/BalancerService";
 import { fromWei } from "./EthereumService";
 import { EthereumService, Networks } from "services/EthereumService";
 
@@ -36,7 +37,7 @@ export class ProjectTokenHistoricalPriceService {
   ) {}
 
   private getBalancerSubgraphUrl(): string {
-    return `https://api.thegraph.com/subgraphs/name/balancer-labs/balancer${(EthereumService.targetedNetwork !== Networks.Mainnet) ? ("-" + EthereumService.targetedNetwork + "-v2") : "-v2"}`;
+    return SUBGRAPH_URLS[EthereumService.targetedNetwork];
   }
 
   private getCoingeckoUrl(fundingTokenId: string, startTime: number, endTime: number): string {
@@ -51,7 +52,8 @@ export class ProjectTokenHistoricalPriceService {
       };
     }) || [{ timestamp: 0, priceInUSD: 0 }];
     const res = fundingTokenPricesUSD.filter(price => price.timestamp / 1000 <= timestamp );
-    return res[res.length - 1].priceInUSD;
+
+    return res[res.length - 1]?.priceInUSD ?? 0;
   }
 
   private async getFundingTokenUSDPricesByID(tokenId: string, endTimeSeconds: number, startTimeSeconds: number, intervalMinutes: number): Promise<Array<number>> {

@@ -1,5 +1,6 @@
 import { ILaunchConfig } from "newLaunch/launchConfig";
 import { Address } from "services/EthereumService";
+import { ITokenInfo } from "./TokenTypes";
 
 export enum LaunchType {
   Seed = "seed",
@@ -22,5 +23,10 @@ export interface ILaunch {
   uninitialized: boolean;
   canGoToDashboard: boolean;
   userHydrated: boolean;
+
+  projectTokenAddress: Address;
+  fundingTokenAddress: Address;
+  fundingTokenInfo: ITokenInfo;
+  projectTokenInfo: ITokenInfo;
   metadata: ILaunchConfig;
 }

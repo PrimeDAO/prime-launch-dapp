@@ -23,7 +23,7 @@ export class FormattedNumber {
   @bindable public mantissa?: string | number;
   @bindable public value: number | string;
   @bindable public placement = "top";
-  @bindable public defaultText = "--";
+  @bindable public defaultText = "N/A";
   @bindable.booleanAttr public thousandsSeparated = false;
 
 

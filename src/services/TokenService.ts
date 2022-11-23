@@ -3,7 +3,7 @@ import { autoinject } from "aurelia-framework";
 import { Contract, ethers } from "ethers";
 import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { Address, EthereumService, Networks } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { from, Subject } from "rxjs";
 import { concatMap } from "rxjs/operators";
@@ -12,6 +12,7 @@ import { TokenListMap, TokenListService } from "services/TokenListService";
 import TokenMetadataService from "services/TokenMetadataService";
 import { AxiosService } from "services/axiosService";
 import { TimingService } from "services/TimingService";
+import CoingeckoData from "../../coingeckoData.json";
 
 @autoinject
 export class TokenService {
@@ -45,7 +46,22 @@ export class TokenService {
 
   async initialize(): Promise<TokenListMap> {
     this.geckoCoinInfo = new Map<string, string>();
-    const uri = `https://pro-api.coingecko.com/api/v3/coins/list?x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+
+    if (isLocalhostNetwork()) {
+      if (CoingeckoData && CoingeckoData.length) {
+        CoingeckoData.map((tokenInfo: ITokenInfo) =>
+          this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
+      }
+      return this.tokenLists = await this.tokenListService.fetchLists();
+    }
+
+    let uri;
+
+    if (process.env.NODE_ENV === "development") {
+      uri = "https://api.coingecko.com/api/v3/coins/list";
+    } else {
+      uri = `https://pro-api.coingecko.com/api/v3/coins/list?x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+    }
 
     TimingService.start("get geckoCoinInfo");
     /**
@@ -168,8 +184,15 @@ export class TokenService {
 
     if (tokensByGeckoId.size) {
 
-      const uri = `https://pro-api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+      let uri;
 
+      if (process.env.NODE_ENV === "development") {
+        // uri = `https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}`;
+        uri = `https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+      } else {
+        // uri = `https://pro-api.coingecko.com/api/v3/coins/list?x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+        uri = `https://pro-api.coingecko.com/api/v3/simple/price?vs_currencies=USD%2CUSD&ids=${Array.from(tokensByGeckoId.keys()).join(",")}&x_cg_pro_api_key=${process.env.COINGECKO_API_KEY}`;
+      }
       await axios.get(uri)
         .then((response) => {
           const keys = Object.keys(response.data);

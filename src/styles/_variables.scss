@@ -1,0 +1,101 @@
+@import "./colors";
+
+/**
+ * this is to sync with when the navbar controls start to break
+ */
+$PageBreakWidth: 900px;
+$MobileWidth: 375px;
+
+$border-radius-small: 6px;
+$border-radius-normal: 10px;
+
+$logo-icon-size-small: 20px;
+$logo-icon-background-default: $Neutral03;
+
+$spacing-small: 5px;
+$spacing-medium-small: 7.5px;
+$spacing-normal: 10px;
+
+$input-height: 46px;
+
+$input-border-color-default: $Border01;
+$input-border-color-active: $Secondary02;
+$input-border-color-disabled: $Secondary05;
+$input-border-color-warn: $Border01;
+$input-border-color-alert: $Border01;
+
+$input-background-color-default: $BG04;
+
+$input-text-color-default: $Neutral02;
+$input-text-color-highlighted: $Neutral04;
+$input-text-color-disabled: $Secondary05;
+
+$scroll-bar-thumb-color: $Neutral02;
+
+/* Fonts Sizes */
+$font-size1: 14px;
+$font-size2: 16px;
+$font-size3: 18px; // TODO: Should rename to "text-lg" (Figma)
+$font-size4: 20px;
+
+/* Font Weights */
+$font-bold: 700;
+
+$sub-heading: Inter;
+$heading: Aeonik;
+
+@mixin subHeading() {
+  font-family: $sub-heading;
+}
+
+@mixin wrapText() {
+  white-space: pre-wrap;
+  word-wrap: anywhere;
+  word-break: break-word;
+}
+
+@mixin pre($fontSize: $font-size2) {
+  pre {
+    white-space: pre-wrap;
+    font-family: Inter;
+    font-size: $fontSize;
+    line-height: 22px;
+  }
+}
+
+@mixin spin {
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@mixin loading-icon {
+
+  .loading>i,
+  i.loading {
+    animation-name: spin;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    color: $Primary01;
+  }
+
+  @include spin;
+}
+
+@mixin pcardBgAndGradient($backgroundColor: $BG02, $grColor01: $Primary01, $grColor02: $Secondary02) {
+  background:
+    /* this is the card background: */
+    linear-gradient($backgroundColor, $backgroundColor) padding-box,
+    /* this is the gradient on the left side: */
+    linear-gradient(to bottom, $grColor01, $grColor02) border-box;
+  border-left: $border-radius-small solid transparent;
+}
+
+$pPopupNotificationWidth: 336px;

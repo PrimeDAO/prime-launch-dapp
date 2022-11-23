@@ -29,9 +29,8 @@
             background-color: $BG02;
             border-radius: 6px;
             padding: 56px;
-
             .documentBodyContainer {
-                >.title.heading {
+                > .title.heading {
                     margin-bottom: 28px;
                     font-size: 36px;
                 }
@@ -43,6 +42,13 @@
                     line-height: 140%;
                     color: $Neutral03;
                     margin-bottom: 28px;
+                    p,
+                    h1,
+                    h2,
+                    h3,
+                    h4 {
+                        all: revert;
+                    }
 
                     p,
                     h1,

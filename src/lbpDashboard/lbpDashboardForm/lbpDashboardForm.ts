@@ -11,7 +11,7 @@ import { EthereumService, fromWei } from "services/EthereumService";
 import { BigNumber } from "ethers";
 import { DisposableCollection } from "services/DisposableCollection";
 import { EventAggregator } from "aurelia-event-aggregator";
-import { SwapInfo } from "@balancer-labs/sor2";
+import { SwapInfo } from "@balancer-labs/sdk";
 import { BalancerService } from "services/BalancerService";
 import TransactionsService from "services/TransactionsService";
 import { CongratulationsService } from "services/CongratulationsService";

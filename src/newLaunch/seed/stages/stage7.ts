@@ -15,6 +15,7 @@ export class Stage7 extends BaseStage<ISeedConfig> {
 
   disclaimersConfirmed = false;
 
+
   constructor(
     router: Router,
     eventAggregator: EventAggregator,
@@ -50,8 +51,10 @@ export class Stage7 extends BaseStage<ISeedConfig> {
 
     const distributableSeeds = toBigNumberJs(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals))
       .idiv(this.launchConfig.launchDetails.pricePerToken);
-    this.wizardState.requiredProjectTokenDeposit = toWei(distributableSeeds.plus(distributableSeeds.multipliedBy(SeedService.seedFee)).toString(),
-      this.launchConfig.tokenDetails.projectTokenInfo.decimals);
+    this.wizardState.requiredProjectTokenDeposit = toWei(
+      distributableSeeds.plus(distributableSeeds.multipliedBy(this.launchConfig.launchDetails.seedTip / 100)).toString(),
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals
+    );
   }
 
   async submit(): Promise<void> {
@@ -59,12 +62,6 @@ export class Stage7 extends BaseStage<ISeedConfig> {
       this.eventAggregator.publish("launch.creating", true);
       this.wizardState.launchHash = await this.seedService.deploySeed(this.launchConfig);
       if (this.wizardState.launchHash) {
-      // this.eventAggregator.publish("handleInfo", `Successfully pinned seed registration hash at: this.ipfsService.getIpfsUrl(this.launchHash)`);
-        this.launchConfig.clearState();
-        for (let i = 1; i <= this.maxStage; ++i) {
-          this.stageStates[i].verified = false;
-        }
-        this.eventAggregator.publish("launch.clearState", true);
         this.next();
       }
     } catch (ex) {

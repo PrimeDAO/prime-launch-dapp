@@ -1,5 +1,8 @@
 @import "styles/colors.scss";
 body > ux-dialog-container.congratulations {
+  width: 35%;
+  min-width: 170px;
+  max-width: 530px;
   top: 50%;
   right: unset;
   bottom: unset;
@@ -9,11 +12,12 @@ body > ux-dialog-container.congratulations {
   ux-dialog {
     ux-dialog-header {
       font-family: Inter;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 24px;
-      line-height: 38px;
-      padding: 40px;
-      padding-bottom: 4px;
+      line-height: 33px;
+      padding: 34px;
+      padding-top: 30px;
+      padding-bottom: 10px;
     }
 
     ux-dialog-body {
@@ -26,8 +30,8 @@ body > ux-dialog-container.congratulations {
 
     ux-dialog-footer {
       border-top-width: 0;
-      padding-top: 12px;
-      padding-bottom: 16px;
+      padding-top: 50px;
+      padding-bottom: 20px;
       .button1 {
         &.small {
           width: 98px;

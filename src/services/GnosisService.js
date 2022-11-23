@@ -4,12 +4,12 @@ const parseErrorData = (data) => {
   return Object.values(data).reduce(
     (accumulator, error) =>
       `${accumulator}${accumulator.length == 0 ? "" : " , "}${error}`,
-    ""
+    "",
   );
 };
 
 const errorHandler = (error) => {
-  let errorMsg = {};
+  const errorMsg = {};
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -34,10 +34,14 @@ const getUrl = (network) => {
   switch (network) {
     case "mainnet":
       return `https://safe-transaction.gnosis.io/api/v1/safes/`;
-    case "rinkeby":
-      return `https://safe-transaction.rinkeby.gnosis.io/api/v1/safes/`;
+    case "goerli":
+      return `https://safe-transaction-goerli.safe.global/api/v1/safes/`;
     case "arbitrum":
       return `https://safe-transaction.arbitrum.gnosis.io/api/v1/safes/`;
+    case "celo":
+      return `https://transaction-service.gnosis-safe-staging.celo-networks-dev.org/api/v1/safes/`;
+    case "alfajores":
+      return `https://client-gateway.celo-safe-prod.celo-networks-dev.org/`;
     default:
       return `${network}, is not supported yet`;
   }
@@ -45,7 +49,19 @@ const getUrl = (network) => {
 
 const post = async (method, payload, safe, url) => {
   try {
-    const res = await axios.post(`${url}${safe}${methods[method]}`, payload);
+    let finalUrl = "";
+    if (url === getUrl("alfajores")) {
+      if (method === "getEstimate") {
+        finalUrl = `${url}v2/chains/44787/safes/${safe}${methods[method]}`;
+      } else if (method === "sendTransaction") {
+        finalUrl = `${url}v1/chains/44787/transactions/${safe}/propose/`;
+      }
+
+    } else {
+      finalUrl = `${url}${safe}${methods[method]}`;
+    }
+
+    const res = await axios.post(finalUrl, payload);
     return res;
   } catch (error) {
     throw Error(errorHandler(error).message);
@@ -54,7 +70,17 @@ const post = async (method, payload, safe, url) => {
 
 const get = async (method, safe, url) => {
   try {
-    const res = await axios.get(`${url}${safe}${methods[method]}`);
+    let finalUrl = "";
+    if (url === getUrl("alfajores")) {
+      if (method === "getNonce") {
+        finalUrl = `${url}v1/chains/44787/safes/${safe}/multisig-transactions`;
+      }
+
+    } else {
+      finalUrl = `${url}${safe}${methods[method]}`;
+    }
+
+    const res = await axios.get(finalUrl);
     return res.data;
   } catch (error) {
     throw Error(errorHandler(error).message);

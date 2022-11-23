@@ -1,7 +1,5 @@
-import { autoinject } from "aurelia-framework";
 import { getAddress } from "ethers/lib/utils";
 
-@autoinject
 export class Utils {
 
   public static sleep(milliseconds: number): Promise<any> {
@@ -98,17 +96,17 @@ export class Utils {
   private static pattern = new RegExp(/^(?:http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?%#[\]@!\$&'\(\)\*\+,;=.]+$/i);
 
   public static isValidUrl(str: string, emptyOk = false): boolean {
-    return (emptyOk && (!str || !str.trim())) || (str && Utils.pattern.test(str));
+    return (emptyOk && (!str || !str.trim())) || (!!str && Utils.pattern.test(str));
   }
 
   public static isValidEmail(email: string, emptyOk = false): boolean {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return (emptyOk && (!email || !email.trim())) || (email && re.test(String(email).toLowerCase()));
+    return (emptyOk && (!email || !email.trim())) || (!!email && re.test(String(email).toLowerCase()));
   }
 
   public static isAddress(address: string, emptyOk = false): boolean {
     try {
-      return (emptyOk && (!address || !address.trim())) || (address && !!getAddress(address));
+      return (emptyOk && (!address || !address.trim())) || (!!address && !!getAddress(address));
     } catch (e) { return false; }
   }
 

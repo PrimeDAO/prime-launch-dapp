@@ -64,6 +64,18 @@ export interface ILaunchDetails {
   geoBlock: boolean,
 }
 
+export interface IClass {
+  className: string;
+  projectTokenPurchaseLimit: number;
+  allowList: string;
+  token: ITokenInfo;
+  tokenExchangeRatio: number;
+  fundingTokensTarget: number;
+  fundingTokenMaximum: number;
+  vestingPeriod: number;
+  vestingCliff: number;
+}
+
 export interface ILaunchConfig {
   /**
    * semantic version of this interface. This value must be updated upon any released changes.
@@ -74,6 +86,7 @@ export interface ILaunchConfig {
   tokenDetails: ITokenDetails,
   contactDetails: IContactDetails,
   launchDetails: ILaunchDetails,
+  classes: IClass[],
   clearState: () => void
 }
 
@@ -84,6 +97,7 @@ export class LaunchConfig implements ILaunchConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ILaunchDetails;
+  public classes: IClass[];
 
   constructor() {
     this.clearState();
@@ -124,5 +138,7 @@ export class LaunchConfig implements ILaunchConfig {
       legalDisclaimer: "",
       geoBlock: false,
     };
+
+    this.classes = [];
   }
 }

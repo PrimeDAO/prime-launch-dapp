@@ -1,6 +1,6 @@
 import { LaunchService } from "services/LaunchService";
 import { WhiteListService } from "services/WhiteListService";
-import { autoinject, singleton, computedFrom } from "aurelia-framework";
+import { autoinject, singleton, computedFrom, observable } from "aurelia-framework";
 import { Router } from "aurelia-router";
 import { DateService } from "services/DateService";
 import { BaseStage } from "newLaunch/baseStage";
@@ -10,10 +10,11 @@ import { EventAggregator } from "aurelia-event-aggregator";
 import { NumberService } from "services/NumberService";
 import { DisclaimerService } from "services/DisclaimerService";
 import { BigNumber } from "ethers";
-import { Address, capitalizeNetworkName, EthereumService, fromWei } from "services/EthereumService";
+import { Address, capitalizeNetworkName, EthereumService, fromWei, isCeloNetworkLike } from "services/EthereumService";
 import { ITokenInfo, TokenService } from "services/TokenService";
 import { TokenListService } from "services/TokenListService";
 import { ISeedConfig } from "newLaunch/seed/config";
+import { splitByWordSeparators } from "services/StringService";
 
 @singleton(false)
 @autoinject
@@ -31,11 +32,13 @@ export class Stage4 extends BaseStage<ISeedConfig> {
   lastCheckedFundingAddress: string;
   fundingSymbol: string;
   fundingIcon: string;
-  whitelist: Set<Address>;
-  loadingWhitelist = false;
+  allowlist: Array<Address>;
+  loadingAllowlist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;
   private fundingTokenQuestionMarkText: string;
+
+  @observable csv: File
 
   constructor(
     eventAggregator: EventAggregator,
@@ -57,17 +60,32 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     });
   }
 
+  private async csvChanged(newValue: File[]): Promise<void> {
+    this.loadingAllowlist = true;
+    const csvContent = newValue && await newValue[0].text();
+    const cleanedCsv = new Set<string>(splitByWordSeparators(csvContent));
+    this.allowlist = Array.from(cleanedCsv);
+
+    this.loadingAllowlist = false;
+    // for BE adds allow list param
+    this.launchConfig.launchDetails.allowList = Array.from(cleanedCsv);
+  }
+
   bind(): void {
     this.setFundingTokenQuestionMarkText();
   }
 
   private setFundingTokenQuestionMarkText(): void {
     const addressPart = `The ${capitalizeNetworkName()} address of the token used to purchase project tokens`;
-    const exampleCurrency = false ? "cUSD" : "DAI";
+    const exampleCurrency = isCeloNetworkLike() ? "cUSD" : "DAI";
     this.fundingTokenQuestionMarkText = `${addressPart}. Simply put: The Token used to purchase your project tokens (e.g. ${exampleCurrency})`;
   }
 
   async attached(): Promise<void> {
+    this.startDate = this.launchConfig.launchDetails.startDate && new Date(this.launchConfig.launchDetails.startDate);
+    this.endDate = this.launchConfig.launchDetails.endDate && new Date(this.launchConfig.launchDetails.endDate);
+    /** Could set start/end time as well, but don't care for that */
+
     this.startDatePicker = new Litepicker({
       element: this.startDateRef,
       minDate: Date.now(),
@@ -91,20 +109,24 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     }
   }
 
-  @computedFrom("launchConfig.launchDetails.whitelist")
-  get whitelistUrlIsValid(): boolean {
-    return Utils.isValidUrl(this.launchConfig.launchDetails.whitelist);
-  }
+  @computedFrom("allowlist")
+  get allowlistUrlIsValid(): boolean {
+    if (!this.allowlist || !this.allowlist.length) return false;
 
-  @computedFrom("launchConfig.launchDetails.whitelist", "lastWhitelistUrlValidated")
-  get currentWhitelistIsValidated(): boolean {
-    return this.lastWhitelistUrlValidated === this.launchConfig.launchDetails.whitelist;
+    const validAddress = [...this.allowlist]
+      .filter((address: Address) => (address && Utils.isAddress(address)));
+    const listIsValid = validAddress.length === this.allowlist.length;
+    return listIsValid;
   }
 
   tokenChanged(): void {
     this.launchConfig.launchDetails.fundingTarget =
     this.launchConfig.launchDetails.fundingMax =
     this.launchConfig.launchDetails.pricePerToken = null;
+  }
+
+  togglePermissoned(): void {
+    this.launchConfig.launchDetails.isPermissoned = !this.launchConfig.launchDetails.isPermissoned;
   }
 
   toggleGeoBlocking(): void {
@@ -136,7 +158,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     this.setlaunchConfigEndDate();
     // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
-    this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
+    // TODO: Refactor after BE enables allowlists:
+    // this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 
@@ -157,18 +180,20 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     } else if (!this.launchConfig.launchDetails.pricePerToken) {
       message = "Please enter a value for Project Token Exchange Ratio";
     } else if (!this.launchConfig.launchDetails.fundingTarget || this.launchConfig.launchDetails.fundingTarget === "0") {
-      message = "Please enter a number greater than zero for the Funding Target";
+      message = "Please enter a number greater than zero for the Funding Tokens Target";
     } else if (!this.launchConfig.launchDetails.fundingMax || this.launchConfig.launchDetails.fundingMax === "0") {
-      message = "Please enter a number greater than zero for the Funding Maximum";
+      message = "Please enter a number greater than zero for the Funding Tokens Maximum";
+    } else if (!this.launchConfig.launchDetails.individualCap || this.launchConfig.launchDetails.individualCap === "0") {
+      message = "Please enter a number greater than zero for the Funding Token Contribution Limit";
     } else if (this.launchConfig.tokenDetails.projectTokenInfo.address === this.launchConfig.launchDetails.fundingTokenInfo.address) {
       message = "Funding Token and Project Token cannot be the same. Please reenter one or the other.";
     } else if (BigNumber.from(this.launchConfig.launchDetails.fundingTarget).gt(this.launchConfig.launchDetails.fundingMax)) {
-      message = "Please enter a value for Funding Target less than or equal to Funding Maximum";
+      message = "Please enter a value for Funding Tokens Target less than or equal to Funding Tokens Maximum";
     } else if (this.launchConfig.tokenDetails.maxSupply &&
       this.numberService.fromString(fromWei(this.launchConfig.launchDetails.fundingMax, this.launchConfig.launchDetails.fundingTokenInfo.decimals)) >
       (this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
         this.launchConfig.launchDetails.pricePerToken)) {
-      message = "Funding Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
+      message = "Funding Tokens Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingPeriod) || this.launchConfig.launchDetails.vestingPeriod < 0) {
       message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingCliff) || this.launchConfig.launchDetails.vestingCliff < 0) {
@@ -212,6 +237,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "The document at the URL you provided for Legal Disclaimer either does not exist or does not contain valid Markdown";
     } else if (!Utils.isAddress(this.launchConfig.launchDetails.adminAddress)) {
       message = "Please enter a valid wallet address for the Seed Administrator";
+    } else if (this.launchConfig.launchDetails.seedTip > 45) {
+      message = "Please enter a number lower than or equal to 45% for the tips";
     }
 
     this.stageState.verified = !message;
@@ -224,16 +251,5 @@ export class Stage4 extends BaseStage<ISeedConfig> {
 
   makeMeAdmin() : void {
     this.launchConfig.launchDetails.adminAddress = this.ethereumService.defaultAccountAddress;
-  }
-
-  async getWhiteListFeedback(): Promise<void> {
-    if (this.launchConfig.launchDetails.whitelist) {
-      this.loadingWhitelist = true;
-      this.whitelist = await this.whiteListService.getWhiteList(this.launchConfig.launchDetails.whitelist);
-      this.lastWhitelistUrlValidated = this.launchConfig.launchDetails.whitelist;
-      this.loadingWhitelist = false;
-    } else {
-      this.whitelist = null;
-    }
   }
 }

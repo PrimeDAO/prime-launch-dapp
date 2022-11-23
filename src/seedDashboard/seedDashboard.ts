@@ -118,10 +118,11 @@ export class SeedDashboard {
   }
 
   public async canActivate(params: { address: Address }): Promise<boolean> {
-    await this.seedService.ensureInitialized();
-    const seed = this.seedService.seeds?.get(params.address);
-    await seed.ensureInitialized();
-    return seed?.canGoToDashboard;
+    return Promise.resolve(true);
+    // await this.seedService.ensureInitialized();
+    // const seed = this.seedService.seeds?.get(params.address);
+    // await seed.ensureInitialized();
+    // return seed?.canGoToDashboard;
   }
 
   async activate(params: { address: Address}): Promise<void> {
@@ -130,6 +131,9 @@ export class SeedDashboard {
   }
 
   async attached(): Promise<void> {
+    // @ts-ignore
+    window.seedDashboard = this;
+
     let waiting = false;
 
     this.handleNewBlock();

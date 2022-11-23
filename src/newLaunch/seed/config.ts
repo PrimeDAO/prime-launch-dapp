@@ -6,7 +6,9 @@ import {
   IContactDetails,
   ILaunchDetails,
   LaunchConfig,
+  IClass,
 } from "newLaunch/launchConfig";
+import { Address } from "types/types";
 
 export interface ISeedDetails extends ILaunchDetails {
   /**
@@ -21,10 +23,17 @@ export interface ISeedDetails extends ILaunchDetails {
    * In wei
    */
   fundingMax: string,
+  /**
+   * In wei
+   */
+  individualCap: string,
   vestingPeriod: number,
   vestingCliff: number,
   whitelist: string,
+  isPermissoned: boolean,
   legalDisclaimer: string,
+  allowList: Address[],
+  seedTip: number,
 }
 
 export interface ISeedConfig extends ILaunchConfig {
@@ -38,6 +47,7 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
   public tokenDetails: ITokenDetails;
   public contactDetails: IContactDetails;
   public launchDetails: ISeedDetails;
+  public classes: IClass[];
 
   clearState(): void {
     super.clearState();

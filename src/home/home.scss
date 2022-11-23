@@ -1,6 +1,79 @@
 @import "styles/styles.scss";
 
+
 .page.home {
+  .footer-subtitle {
+    color: rgba(162, 88, 167, 1);
+    font-weight: 700;
+  }
+  .footer-title {
+    color: white;
+    font-size: 48px;
+    font-weight: 700;
+    font-family: Aeonik;
+    margin-bottom: 30px;
+  }
+  .main-launch-sections {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+  .row-launch-section {
+    display: flex;
+  }
+  .faq-description-sections {
+    color: rgba(147, 152, 168, 1);
+    margin-right: 8px;
+  }
+  .question {
+    border-radius: 50%;
+    text-align: center;
+    background-color: #98979b;
+    cursor: default;
+    width: 20px;
+    height: 20px;
+    color: black;
+  }
+  .launches-cards-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    align-items: start;
+  }
+  @media screen and (max-width: 730px) {
+    .launches-cards-content {
+      grid-template-columns: repeat(1, 1fr);
+      place-items: center;
+    }
+  }
+  .launch-section {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 44px;
+    margin-right: 30px;
+    cursor: pointer;
+    color: rgba(147, 152, 168, 1);
+  }
+  .launch-line {
+    border-bottom: 5px solid #292236;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .launch-active {
+    color: rgba(162, 88, 167, 1);
+    border-bottom: 5px solid rgba(162, 88, 167, 1);;
+  }
+  .footer-learnMore {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .button-view-all {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: Inter;
+  }
   .section {
     &.nomiss,
     &.launches {
@@ -16,11 +89,11 @@
 
     &.top {
       width: 56%;
-      margin-bottom: 200px;
+      margin-bottom: 272px;
 
       .moonshot {
         position: absolute;
-        right: 0;
+        right: 113px;
         z-index: -1;
         background-color: $BG01;
 
@@ -41,9 +114,10 @@
         font-weight: 700;
         font-size: 24px;
         line-height: 33px;
-        max-width: 560px;
+        max-width: 582px;
         color: $Neutral03;
-        margin-bottom: 200px;
+        margin-bottom: 55px;
+        padding-bottom: 16px;
         white-space: normal;
       }
 
@@ -51,13 +125,13 @@
         display: grid;
         grid-auto-flow: column;
         justify-content: space-between;
-        cursor: pointer;
         width: 710px;
         grid-gap: 24px;
         .buttonContainer {
           display: flex;
           border-radius: 6px;
           overflow: hidden;
+          cursor: pointer;
         }
         .contribute,
         .launch {
@@ -68,7 +142,11 @@
           background-color: $BG02;
           width: 335px;
 
-          padding: 18px;
+          padding: 24px;
+
+          &:hover {
+            @include pcardBgAndGradient($backgroundColor: $Border01);
+          }
 
           .title {
             display: flex;
@@ -78,7 +156,7 @@
             margin-right: 6px;
 
             .header {
-              font-weight: 600;
+              font-weight: 700;
               font-family: "Aeonik";
               font-size: 28px;
               white-space: nowrap;
@@ -90,7 +168,7 @@
             }
           }
 
-          > .subtitle {
+          >.subtitle {
             color: $Neutral03;
             font-size: 16px;
             font-family: "Inter";
@@ -232,7 +310,7 @@
   }
 }
 
-@media screen and (max-width: 1330px) {
+@media screen and (max-width: 1530px) {
   .page.home {
     .section {
       &.top {

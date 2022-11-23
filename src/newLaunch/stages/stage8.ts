@@ -9,7 +9,6 @@ import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage8 extends BaseStage<ILaunchConfig> {
-
   constructor(
     router: Router,
     ethereumService: EthereumService,
@@ -23,5 +22,15 @@ export class Stage8 extends BaseStage<ILaunchConfig> {
   @computedFrom("wizardState.launchHash")
   get ipfsURL(): string {
     return this.ipfsService.getIpfsUrl(this.wizardState.launchHash);
+  }
+
+  async detached():Promise<void>{
+    if (this.wizardState.launchHash){
+      this.launchConfig.clearState();
+      for (let i = 1; i <= this.maxStage; ++i) {
+        this.stageStates[i].verified = false;
+      }
+      this.eventAggregator.publish("launch.clearState", true);
+    }
   }
 }

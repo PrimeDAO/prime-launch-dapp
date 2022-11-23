@@ -2,9 +2,9 @@ const fs = require('fs-extra');
 const glob = require("glob");
 const path = require("path")
 const { exit } = require("process");
-const srcPath = "../contracts-v2/exports";
+const srcPath = "../launch-contracts/exports";
 const destPath = "./src/contracts";
-const gnosisServiceFilePath = "../contracts-v2/tasks/utils/gnosis.js";
+const gnosisServiceFilePath = "../launch-contracts/lib/gnosis.js";
 const gnosisServiceDestPath = "./src/services/GnosisService.js";
 
 if (!fs.existsSync(srcPath)) {

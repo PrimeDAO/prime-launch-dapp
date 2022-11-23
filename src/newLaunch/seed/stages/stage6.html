@@ -1,254 +1,298 @@
 <template>
   <require from="../../stages/stageSixTokenInfo.html"></require>
+  <require from="newLaunch/geoblocking.html"></require>
+  <require from="newLaunch/permissoned.html"></require>
+
   <div class="page animated-page stageContainer stage6 au-animate ">
     <div class="infoContainer">
       <div class="heading heading2 title">Seed Summary</div>
-      <div class="subtext">Please review the details of your seed submission before proceeding.</div>
-      <div class="summaryContainer">
-        <div class="heading heading3">General Information</div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Project Name
-          </div>
-          <div>
-            ${launchConfig.general.projectName}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Project Website
-          </div>
-          <div>
-            <a href.bind="launchConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${launchConfig.general.projectWebsite}</a>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Whitepaper
-          </div>
-          <div class="ellipses">
-            <a href.bind="launchConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${launchConfig.general.whitepaper}</a>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Github Link
-          </div>
-          <div class="ellipses">
-            <a href.bind="launchConfig.general.github" target="_blank" rel="noopener noreferrer">${launchConfig.general.github}</a>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">Custom Links</div>
-          <div class="customLinks" if.to-view="launchConfig.general.customLinks.length > 0">
-            <template repeat.for="customLink of launchConfig.general.customLinks">
-              <div class="header">Custom Link</div>
-              <div class="header">URL</div>
-              <div class="cell">${customLink.media}</div>
-              <div class="cell ellipses"><a href.bind="customLink.url" target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
-            </template>
-          </div>
-          <div else>[optional input not supplied]</div>
-        </div>
-      </div>
-      <hr />
-      <div class="summaryContainer">
-        <div class="heading heading3">Project Details</div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Short Description
-          </div>
-          <div>
-            ${launchConfig.projectDetails.summary}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Value Proposition
-          </div>
-          <div>
-            ${launchConfig.projectDetails.proposition}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Team Description
-          </div>
-          <div>
-            ${launchConfig.projectDetails.teamDescription}
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div class="summaryContainer">
-        <div class="heading heading3">Token Details</div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Funding Token
-          </div>
-          <stageSixTokenInfo token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Project Token
-          </div>
-          <stageSixTokenInfo token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Maximum Project Token Supply
-          </div>
-          <div class="tokenAmountContainer">
-            <div class="tokenAmount">
-              <formatted-number thousands-separated value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
-            </div>
-            <stageSixTokenInfo short="true" token-info.bind="launchConfig.tokenDetails.projectTokenInfo"></stageSixTokenInfo>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">Project Token Global Distribution</div>
-          <div class="tokenDist" if.to-view="launchConfig.tokenDetails.tokenDistrib.length > 0">
-            <template repeat.for="distrib of launchConfig.tokenDetails.tokenDistrib">
-              <div class="header">Stakeholder</div>
-              <div class="header">Amount</div>
-              <div class="header">Vesting (in days)</div>
-              <div class="header">Cliff (in days)</div>
-              <div class="cell">${distrib.stakeHolder}</div>
-              <div class="cell">
-                <formatted-number thousands-separated value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+        <div class="content-block">
+          <div class="subtext">Please review the details of your seed submission before proceeding.</div>
+            <div class="form-content">
+              <div class="summaryContainer">
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Proposal Name
+                  </div>
+                  <div>
+                    ${launchConfig.general.projectName}
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Proposal Website
+                  </div>
+                  <div>
+                    <a href.bind="launchConfig.general.projectWebsite" target="_blank" rel="noopener noreferrer">${launchConfig.general.projectWebsite}</a>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Whitepaper
+                  </div>
+                  <div class="ellipses">
+                    <a href.bind="launchConfig.general.whitepaper" target="_blank" rel="noopener noreferrer">${launchConfig.general.whitepaper}</a>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Links</div>
+                  <div class="customLinks" if.to-view="launchConfig.general.customLinks.length > 0">
+                    <div class="cell">Github</div>
+                    <div class="cell ellipses"><a href.bind="launchConfig.general.github" target="_blank" rel="noopener noreferrer">${launchConfig.general.github}</a></div>
+                    <template repeat.for="customLink of launchConfig.general.customLinks">
+                      <div class="cell">${customLink.media}</div>
+                      <div class="cell ellipses"><a href.bind="customLink.url" target="_blank" rel="noopener noreferrer">${customLink.url}</a></div>
+                    </template>
+                  </div>
+                  <div else>[optional input not supplied]</div>
+                </div>
+              <div class="summaryContainer">
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Short Description
+                  </div>
+                  <div>
+                    ${launchConfig.projectDetails.summary}
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Value Proposition
+                  </div>
+                  <div>
+                    ${launchConfig.projectDetails.proposition}
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Team Description
+                  </div>
+                  <div>
+                    ${launchConfig.projectDetails.teamDescription}
+                  </div>
+                </div>
               </div>
-              <div class="cell">${distrib.vest}</div>
-              <div class="cell">${distrib.cliff}</div>
-            </template>
-          </div>
-          <div else>[optional input not supplied]</div>
-        </div>
-      </div>
-      <hr />
-      <div class="summaryContainer">
-        <div class="heading heading3">SEED Details</div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Project Token Exchange Ratio
-          </div>
-          <div class="tokenAmountContainer">
-            <div class="tokenAmount">
-              <formatted-number thousands-separated value.bind="launchConfig.launchDetails.pricePerToken" />
+              <div class="summaryContainer">
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Project Token Address
+                  </div>
+                  <div>
+                    ${launchConfig.tokenDetails.projectTokenInfo.address}
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Maximum Project Token Supply
+                  </div>
+                  <div class="tokenAmount">
+                    <formatted-number thousands-separated value.bind="launchConfig.tokenDetails.maxSupply | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" />
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="classes-overview-container">
+                    <div class="classes-overview-container__title">Project Token Distribution per Stakeholder Group</div>
+                    <div class="classes-overview-container__table-container">
+                        <table class="classes-overview-container__table">
+                            <tr>
+                                <th>Stakeholder</th>
+                                <th>Amount</th>
+                                <th>Vest (in days)</th>
+                                <th>Cliff (in days)</th>
+                            </tr>
+                            <template repeat.for="distrib of launchConfig.tokenDetails.tokenDistrib">
+                                <tr>
+                                    <td>${distrib.stakeHolder}</td>
+                                    <td><div class="table__center-cell"><formatted-number thousands-separated value.bind="distrib.amount | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals" /></div></td>
+                                    <td>${distrib.vest}</td>
+                                    <td>${distrib.cliff}</td>
+                                </tr>
+                            </template>
+                            <tr if.to-view="launchConfig.tokenDetails.tokenDistrib.length <= 0">
+                              <td colspan="4">optional input not supplied</td>
+                            </tr>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Funding Token</div>
+                  <div class="tokenAmountContainer">
+                    <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Project Token Exchange Ratio</div>
+                  <div class="tokenAmountContainer">
+                    <div class="tokenAmount">
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.pricePerToken" />
+                    </div>
+                  </div>
+                </div>
+                <div class="inline">
+                <div class="stageLaunchDetails">
+                    <div class="heading heading4">Funding Tokens Target</div>
+                    <div class="tokenAmountContainer">
+                      <div class="tokenAmount">
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+                      </div>
+                    </div>
+                    </div>
+                    <div class="stageLaunchDetails">
+                    <div class="heading heading4">Funding Tokens Maximum</div>
+                    <div class="tokenAmountContainer">
+                      <div class="tokenAmount">
+                        <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Contributor Class Contribution Limit</div>
+                  <div class="tokenAmountContainer">
+                    <div class="tokenAmount">
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+                    </div>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Funding Token Contribution Limit</div>
+                  <div class="tokenAmountContainer">
+                    <div class="tokenAmount">
+                      <formatted-number thousands-separated value.bind="launchConfig.launchDetails.individualCap | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
+                    </div>
+                  </div>
+                </div>
+                <div class="inline">
+                <div class="stageLaunchDetails">
+
+                    <div class="heading heading4">Tokens vested for</div>
+                    <div class="tokenAmountContainer">
+                      <div class="tokenAmount">
+                        ${formattedVestedFor}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stageLaunchDetails">
+                    <div class="heading heading4">with a cliff of</div>
+                    <div class="tokenAmountContainer">
+                      <div class="tokenAmount">
+                        ${formattedCliffOf}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <permissoned
+                    checked.bind="launchConfig.launchDetails.isPermissoned"
+                    disabled.bind="true"
+                    toggle.call="toggle()"
+                  >
+                  </permissoned>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">Allowlist</div>
+                  <div class="tokenAmountContainer">
+                    <div class="tokenAmount">
+                      Allowlist contains ${launchConfig.launchDetails.allowList.length} accounts
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="summaryContainer">
+                <div class="grid2cols">
+                  <div class="stageLaunchDetails">
+                    <div class="heading heading4">
+                      Start Date (GMT)
+                    </div>
+                    <div>
+                      ${launchConfig.launchDetails.startDate | date:{format:"DD-MMM-YYYY", utc: true}}
+                    </div>
+                  </div>
+                  <div class="stageLaunchDetails">
+                    <div class="heading heading4">
+                      Start Time (GMT)
+                    </div>
+                    <div>
+                      ${launchConfig.launchDetails.startDate | date:{format:"HH[:]mm z", utc: true}}
+                    </div>
+                  </div>
+                  <div class="stageLaunchDetails">
+                    <div class="heading heading4">
+                      End Date (GMT)
+                    </div>
+                    <div>
+                      ${launchConfig.launchDetails.endDate | date:{format:"DD-MMM-YYYY", utc:true}}
+                    </div>
+                  </div>
+                  <div class="stageLaunchDetails">
+                    <div class="heading heading4">
+                      End Time (GMT)
+                    </div>
+                    <div>
+                      ${launchConfig.launchDetails.endDate | date:{format:"HH[:]mm z", utc: true}}
+                    </div>
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Legal Disclaimer
+                  </div>
+                  <div class="ellipses" if.to-view="launchConfig.launchDetails.legalDisclaimer">
+                    <a href.bind="launchConfig.launchDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${launchConfig.launchDetails.legalDisclaimer}</a>
+                  </div>
+                  <div else>
+                    [optional input not supplied]
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <geoblocking
+                    checked.bind="launchConfig.launchDetails.geoBlock"
+                    disabled.bind="true"
+                    toggle.call="toggle()">
+                  </geoblocking>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Tipping
+                  </div>
+                  ${launchConfig.launchDetails.seedTip || "--"}%
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Admin Address
+                  </div>
+                  <etherscanlink address.to-view="launchConfig.launchDetails.adminAddress" text.to-view="launchConfig.launchDetails.adminAddress | smallHexString"></etherscanlink>
+                </div>
+              </div>
+              <div class="summaryContainer">
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Contact Email
+                  </div>
+                  <div>
+                    ${launchConfig.contactDetails.contactEmail}
+                  </div>
+                </div>
+                <div class="stageLaunchDetails">
+                  <div class="heading heading4">
+                    Additional Remark
+                  </div>
+                  <div>
+                    ${launchConfig.contactDetails.remarks || "[optional input not supplied]"}
+                  </div>
+                </div>
+              </div>
+                <div class="footerButtons">
+                    <div class="view-buttons">
+                        <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
+                        <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
+                    </div>
+                    <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+                </div>
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Funding Target
-          </div>
-          <div class="tokenAmountContainer">
-            <div class="tokenAmount">
-              <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingTarget | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
             </div>
-            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
-          </div>
         </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Funding Maximum
-          </div>
-          <div class="tokenAmountContainer">
-            <div class="tokenAmount">
-              <formatted-number thousands-separated value.bind="launchConfig.launchDetails.fundingMax | ethwei:launchConfig.launchDetails.fundingTokenInfo.decimals" />
-            </div>
-            <stageSixTokenInfo short="true" token-info.bind="launchConfig.launchDetails.fundingTokenInfo"></stageSixTokenInfo>
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Project tokens vested for
-          </div>
-          <div>${(launchConfig.launchDetails.vestingPeriod * 1000) | timespan:"minutes":largest}</div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            with a cliff of
-          </div>
-          <div>${(launchConfig.launchDetails.vestingCliff * 1000) | timespan:"minutes":largest}</div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Start Date (GMT)
-          </div>
-          <div>
-            ${launchConfig.launchDetails.startDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            End Date (GMT)
-          </div>
-          <div>
-            ${launchConfig.launchDetails.endDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Whitelist
-          </div>
-          <div class="ellipses" if.to-view="launchConfig.launchDetails.whitelist">
-            <a href.bind="launchConfig.launchDetails.whitelist" target="_blank" rel="noopener noreferrer">${launchConfig.launchDetails.whitelist}</a>
-          </div>
-          <div else>
-            [optional input not supplied]
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Legal Disclaimer
-          </div>
-          <div class="ellipses" if.to-view="launchConfig.launchDetails.legalDisclaimer">
-            <a href.bind="launchConfig.launchDetails.legalDisclaimer" target="_blank" rel="noopener noreferrer">${launchConfig.launchDetails.legalDisclaimer}</a>
-          </div>
-          <div else>
-            [optional input not supplied]
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Geoblock
-          </div>
-          <div>
-            ${launchConfig.launchDetails.geoBlock ? "Yes" : "No"}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Admin Address
-          </div>
-          <etherscanlink address.to-view="launchConfig.launchDetails.adminAddress" text.to-view="launchConfig.launchDetails.adminAddress | smallHexString"></etherscanlink>
-        </div>
-      </div>
-      <hr />
-      <div class="summaryContainer">
-        <div class="heading heading3">Contact Details</div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Contact Email
-          </div>
-          <div>
-            ${launchConfig.contactDetails.contactEmail}
-          </div>
-        </div>
-        <div class="stageLaunchDetails">
-          <div class="heading heading4">
-            Additional Remark
-          </div>
-          <div>
-            ${launchConfig.contactDetails.remarks || "[optional input not supplied]"}
-          </div>
-        </div>
-      </div>
-      <div class="buttonContainer">
-        <div class="stageButton cancel" click.delegate="back()">PREVIOUS</div>
-        <div class="stageButton proceed button1" click.delegate="next()">PROCEED</div>
-      </div>
-    </div>
   </div>
 </template>

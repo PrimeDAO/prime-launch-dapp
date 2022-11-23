@@ -1,10 +1,11 @@
-@import "styles/colors.scss";
+@import "styles/styles.scss";
+
 .launchSummaryContainer {
   display: inline-block;
   cursor: default;
   width: 360px;
   min-width: 360px;
-  padding-right: 22px;
+  margin-right: 22px;
   height: 100%;
 
   &:hover {
@@ -15,6 +16,7 @@
     display: grid;
     grid-template-columns: 58px 4fr 1fr;
     grid-template-rows: 10px;
+    max-width: 360px;
     grid-template-areas:
       ". . timeLeft"
       ". . ."
@@ -99,8 +101,8 @@
         grid-area: tokens;
 
         .tokenPairContainer > img {
-          width: 26px;
-          height: 26px;
+          width: 32px;
+          height: 32px;
           border-radius: 16px;
         }
       }
@@ -170,4 +172,128 @@
     min-width: 100%;
     width: 100%;
   }
+}
+
+.launch-card-view {
+  background-color: rgba(41, 34, 54, 1);
+  width: 360px;
+  //min-height: 284px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+}
+.launch-card-view:hover {
+  background-color: rgba(64, 52, 83, 1);
+  .launch-card-type-title {
+    color: $Secondary01;
+  }
+  .launch-card-footer-title {
+    color: $Secondary01;
+  }
+}
+.launch-card-image {
+  border-radius: 50px;
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+}
+.launch-card-type-title {
+  color: rgba(100, 85, 125, 1);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.launch-card-title {
+  font-family: Aeonik;
+  font-weight: 700;
+  @include multilineEllipsis(1, 100%, 20px, 1.2);
+  @include wrapText;
+}
+.launch-card-description {
+  font-family: Inter;
+  font-weight: 400;
+  line-height: 140%;
+  color: rgba(220, 218, 229, 1);
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 14px;
+
+  @include multilineEllipsis(4, 320px, 14px, 1.4);
+}
+.launch-card-header {
+  display: flex;
+  align-items: center;
+  margin-left: 18px;
+}
+.launch-card-footer {
+  padding: 20px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.launch-card-currency-data {
+  display: flex;
+}
+.launch-card-currency-description {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 15px;
+  color: #38DE67;
+}
+.launch-card-currency-icon {
+  color: #38DE67;
+  transform: rotate(180deg);
+  margin-right: 7px;
+}
+.launch-card-currency-price {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+}
+.launch-card-footer-currenyPrice-case {
+  margin-left: 50px;
+}
+.launch-card-event {
+  text-align: center;
+  font-size: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-family: Inter;
+  border-radius: 87px;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+.launch-card-event-title {
+  margin-right: 6px;
+  margin-left: 6px;
+}
+.launch-card-crypto-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+}
+.launch-card-footer-title {
+  font-family: Aeonik;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #64557D;
+}
+.launch-card-event-fullDate {
+  font-family: Inter;
+  font-size: 14px;
+}
+.launch-card-event-time {
+  font-family: Inter;
+  opacity: 0.4;
+  font-size: 14px;
+}
+.launch-card-event-view {
+  display: flex;
+  justify-content: flex-end;
 }

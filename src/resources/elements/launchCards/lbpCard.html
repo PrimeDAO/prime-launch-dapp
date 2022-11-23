@@ -4,32 +4,62 @@
     ref="container"
     href.to-view="launch.canGoToDashboard ? `lbp/${launch.address}` : `${router.currentInstruction.fragment}`"
   >
-    <div if.to-view="!loading" class="launchSummary">
-      <div class="icon">
-        <img src.to-view="launch.projectTokenInfo.logoURI" />
+      <div class="launches-cards-content">
+          <div>
+              <div class="launch-card-view">
+                  <div class="launch-card-event-view">
+                      <div class="launch-card-event">
+                          <div class="countdown">
+                              <time-left launch.to-view="launch" largest contained></time-left>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="launch-card-header">
+                      <image src="${launch.projectTokenInfo.logoURI}" class="launch-card-image" />
+                      <div>
+                          <div class="launch-card-type-title">${launch.launchType}</div>
+                          <div data-test="launch-card-title" class="launch-card-title">${launch.metadata.general.projectName}</div>
+                      </div>
+                  </div>
+                  <div class="launch-card-description">${launch.metadata.projectDetails.summary}</div>
+                  <div class="launch-card-footer">
+                      <div class="launch-card-currency-data">
+                          <div>
+                              <div class="launch-card-footer-title">${launch.projectTokenInfo.symbol} / ${launch.fundingTokenInfo.symbol}</div>
+                              <div class="tokens">
+                                  <token-pair
+                                          token1.to-view="launch.projectTokenInfo.logoURI"
+                                          token2.to-view="launch.fundingTokenInfo.logoURI"
+                                  ></token-pair>
+                              </div>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="launch-card-footer-title">START</div>
+                          <div class="launch-card-event-fullDate">${launch.startTime | date: {format:"MMM Do YYYY"}}</div>
+                          <div class="launch-card-event-time">${launch.startTime | date: {format:"HH[:]mm z"}}</div>
+                      </div>
+                      <div>
+                          <div class="launch-card-footer-title">END</div>
+                          <div class="launch-card-event-fullDate">${launch.endTime | date: {format:"MMM Do YYYY"}}</div>
+                          <div class="launch-card-event-time">${launch.endTime | date: {format:"HH[:]mm z"}}</div>
+                      </div>
+                      <!--                      <div>-->
+                      <!--                          <div class="launch-card-footer-title">${value.currencyPrice.title}</div>-->
+                      <!--                          <div class="launch-card-currency-data">-->
+                      <!--                              <div if.bind="value.currencyPrice.price" class="launch-card-currency-icon">▾</div>-->
+                      <!--                              <div class="launch-card-currency-price">-->
+                      <!--                                  ${value.currencyPrice.price}-->
+                      <!--                              </div>-->
+                      <!--                          </div>-->
+                      <!--                          <div class="launch-card-currency-description">${value.currencyPrice.description}</div>-->
+                      <!--                      </div>-->
+                      <!--                      <div if.bind="value.currencyPrice.title">-->
+                      <!--                          <div class="launch-card-footer-currenyPrice-case"></div>-->
+                      <!--                      </div>-->
+                  </div>
+              </div>
+          </div>
       </div>
-      <div class="typeAndTitle">
-        <div class="launch-type">LBP</div>
-        <div class="title ellipses">${launch.metadata.general.projectName}</div>
-      </div>
-      <div class="countdown">
-        <time-left launch.to-view="launch" largest contained></time-left>
-      </div>
-      <div class="description">${launch.metadata.projectDetails.summary}</div>
-      <div class="tokensTarget">
-        <div class="tokensTitle title subtext">
-          ${launch.projectTokenInfo.symbol}/${launch.fundingTokenInfo.symbol}
-        </div>
-        <div class="tokens">
-          <token-pair
-            token1.to-view="launch.projectTokenInfo.logoURI"
-            token2.to-view="launch.fundingTokenInfo.logoURI"
-          ></token-pair>
-        </div>
-      </div>
-    </div>
-    <div else class="loading">
-      <i class="fas fa-circle-notch fa-spin"></i>
-    </div>
   </a>
 </template>

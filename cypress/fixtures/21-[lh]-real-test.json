@@ -1,0 +1,62 @@
+{
+  "version": "1.0.0",
+  "general": {
+    "projectName": "BanjanFi BanjanFi BanjanFi BanjanFi BanjanFi BanjanFi BanjanFi BanjanFi",
+    "customLinks": [],
+    "projectWebsite": "https://www.prime.xyz/",
+    "whitepaper": "https://launch.prime.xyz/",
+    "github": "https://github.com/PrimeDAO"
+  },
+  "projectDetails": {
+    "summary": "Bananas for the Finance!",
+    "proposition": "Bananas for finance!",
+    "teamDescription": "Bananas for Finance!"
+  },
+  "tokenDetails": {
+    "tokenDistrib": [
+      {
+        "stakeHolder": "Prime HOlders",
+        "amount": "100000000000000000000000000",
+        "cliff": 1,
+        "vest": 1
+      }
+    ],
+    "maxSupply": "100000000000000000000000000",
+    "projectTokenInfo": {
+      "address": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+      "decimals": 18,
+      "logoURI": "https://avatars.githubusercontent.com/u/61662492?s=64&v=4",
+      "name": "My Hardhat Token",
+      "symbol": "MHT"
+}
+  },
+  "contactDetails": { "contactEmail": "luuk@prime.xyz", "remarks": "<3" },
+  "launchDetails": {
+    "fundingTokenInfo": {
+      "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+      "chainId": 31337,
+      "name": "Prime",
+      "symbol": "D2D",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/logos/D2D.png",
+      "id": "prime",
+      "price": 0.055081
+},
+    "startDate": "2022-11-20T13:47:00.000Z",
+    "endDate": "2022-11-21T12:00:00.000Z",
+    "adminAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "legalDisclaimer": "https://raw.githubusercontent.com/PrimeDAO/public-client-assets/main/Prime-launch/Terms-and-conditions/Aqualis-nov-2022.md",
+    "geoBlock": true,
+    "pricePerToken": "1",
+    "fundingTarget": "100000000000000000000000000",
+    "fundingMax": "100000000000000000000000000",
+    "vestingPeriod": 86400,
+    "vestingCliff": 86400,
+    "whitelist": "",
+    "individualCap": "100000000000000000000000000",
+    "isPermissoned": false,
+    "seedTip": 0,
+    "allowList": []
+  },
+  "classes": []
+}

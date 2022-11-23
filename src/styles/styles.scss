@@ -1,5 +1,6 @@
 @import "./animations";
 @import "./colors";
+@import "./variables";
 @import "tippy.js/dist/tippy.css"; // TODO: use CDN?
 
 @mixin standardTextGradient {
@@ -18,6 +19,24 @@
   width: 19px;
   height: 19px;
   border-radius: 9px;
+}
+
+@mixin multilineEllipsis(
+  $lines-to-show: 2,
+  $width: 100%,
+  $font-size: $fontSize-base,
+  $line-height: 1.6
+) {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: $width;
+  height: $font-size * $line-height * $lines-to-show; /* Fallback for non-webkit */
+  font-size: $font-size;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 $BodyPaddingLeftRight: 160px;
@@ -170,6 +189,7 @@ html {
         line-height: 65px;
         margin-bottom: 8px;
         @include standardTextGradient;
+        @include wrapText;
       }
       &.heading3 {
         font-size: 24px;
@@ -235,6 +255,48 @@ html {
 
       &:hover {
         -webkit-text-fill-color: $Secondary04;
+      }
+    }
+
+    .previousButton {
+      border: 2px solid white;
+      border-radius: 50px;
+      border-color: rgba(162, 88, 167, 1);
+      padding-right: 20px;
+      padding-left: 20px;
+      cursor: pointer;
+      height: 48px;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .stageButton {
+      display: flex;
+      align-items: center;
+      text-transform: uppercase;
+    }
+    .cancel {
+      cursor: pointer;
+      color: white;
+      font-family: Inter;
+      font-weight: 600;
+    }
+    .buttonContainer {
+      display: flex;
+      flex-flow: row;
+      column-gap: 48px;
+      margin-top: 80px;
+      justify-content: space-between;
+    }
+    .footerButtons {
+      display: flex;
+      flex-flow: row;
+      column-gap: 48px;
+      margin-top: 80px;
+      justify-content: space-between;
+      .view-buttons {
+        display: flex;
       }
     }
 

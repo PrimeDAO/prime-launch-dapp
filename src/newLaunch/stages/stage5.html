@@ -2,38 +2,41 @@
   <div class="page animated-page stageContainer stage5 au-animate">
     <div class="infoContainer">
       <div class="heading heading2 title">Contact Details</div>
-      <div class="subtext">
-        Please provide your contact details.
-      </div>
-      <div>
-        <div class="infoInput">
-          <div class="labelContainer">
-            <label for="email">Contact Email</label>
+        <div class="content-block">
+          <div class="subtext">
+            Please provide your contact details.
           </div>
-          <input id="email" type="email"
-            value.bind="launchConfig.contactDetails.contactEmail" />
+            <div class="form-content">
+              <div>
+                <div class="infoInput">
+                  <div class="labelContainer">
+                    <label for="email">Contact Email</label>
+                  </div>
+                  <input class="input-style" id="email" type="email"
+                    value.bind="launchConfig.contactDetails.contactEmail" />
+                </div>
+                <div class="infoInput withCounter">
+                  <div class="labelContainer">
+                    <label for="remarks">Additional Remarks</label>
+                    <span value.from-view="launchConfig.contactDetails.remarks">
+                      ${launchConfig.contactDetails.remarks.length}/250
+                    </span>
+                  </div>
+                  <textarea
+                    id="remarks"
+                    class="input-style"
+                    value.bind="launchConfig.contactDetails.remarks"
+                    placeholder="(Optional)"
+                    maxlength="250"></textarea>
+                </div>
+                  <div class="footerButtons">
+                      <div class="view-buttons">
+                          <div class="stageButton previousButton classes-previous" click.delegate="back()">PREVIOUS</div>
+                          <div class="stageButton proceed button1" click.delegate="proceed()">CONTINUE</div>
+                      </div>
+                      <div class="stageButton cancel" click.delegate="cancel()">CANCEL</div>
+                  </div>
+            </div>
         </div>
-        <div class="infoInput withCounter">
-          <div class="labelContainer">
-            <label for="remarks">Additional Remarks</label>
-            <span value.from-view="launchConfig.contactDetails.remarks">
-              ${launchConfig.contactDetails.remarks.length}/250
-            </span>
-          </div>
-          <textarea
-            id="remarks"
-            value.bind="launchConfig.contactDetails.remarks"
-            placeholder="(Optional)"
-            maxlength="250"></textarea>
-        </div>
-        <div class="buttonContainer">
-          <div class="stageButton cancel" click.delegate="back()">
-            PREVIOUS
-          </div>
-          <div
-            class="stageButton proceed button1"
-            click.delegate="proceed()">NEXT</div>
-        </div>
-      </div>
     </div>
 </template>

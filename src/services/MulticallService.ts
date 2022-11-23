@@ -1,6 +1,9 @@
-import { Address, EthereumService, Networks } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostNetwork, Networks } from "services/EthereumService";
 import { createWatcher } from "@makerdao/multicall";
 const addresses = require("/node_modules/@makerdao/multicall/src/addresses.json");
+import localhostAbis from "contracts/localhost.json";
+
+const LOCALHOST_MULTI_CALL_ADDRESS = localhostAbis.contracts.Multicall.address;
 
 type DataType = "uint256" | "bytes32" | "bool" | "uint8" | "address" | "bytes" | "string" | "int" | "uint" | "uint256[]";
 type ResultHandler = (result: any) => void;
@@ -29,11 +32,19 @@ export class MultiCallService {
     addresses[Networks.Arbitrum] = {
       "multicall": "0xC2E9dDC765303D86B0D349bB5FE44D76d41cA74A",
       "rpcUrl": EthereumService.ProviderEndpoints[Networks.Arbitrum],
+    },
+    addresses[Networks.Celo] = {
+      "multicall": "0x57f9b1a50FcAbD56843DA648379C82b24ba464Dd",
+      "rpcUrl": EthereumService.ProviderEndpoints[Networks.Celo],
+    },
+    addresses[Networks.Alfajores] = {
+      "multicall": "0x51bbaE8F2C13E4613033148E0EeD12Fc82a896c5",
+      "rpcUrl": EthereumService.ProviderEndpoints[Networks.Alfajores],
     };
   }
   public createBatcher(model: Array<IBatcherCallsModel>, autoStop = true): IBatcher {
     const config = {
-      multicallAddress: addresses[EthereumService.targetedNetwork].multicall,
+      multicallAddress: isLocalhostNetwork() ? LOCALHOST_MULTI_CALL_ADDRESS : addresses[EthereumService.targetedNetwork].multicall,
       rpcUrl: EthereumService.ProviderEndpoints[EthereumService.targetedNetwork],
       interval: 5000000, // basically disable polling, just take the first batch
       errorRetryWait: 5000000, // basically disable polling

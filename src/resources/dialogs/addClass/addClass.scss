@@ -1,0 +1,385 @@
+@import "styles/colors.scss";
+
+$addClassModalHeight: 945px;
+
+@mixin boldButton {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: $Secondary05;
+  color: $White;
+  cursor: pointer;
+}
+
+body > ux-dialog-container.addClass {
+  max-height: $addClassModalHeight;
+  height: 85vh;
+  width: 700px;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: scroll;
+
+  ux-dialog {
+    overflow-y: auto;
+    color: $Neutral04;
+    height: $addClassModalHeight;
+
+    ux-dialog-header {
+      position: relative;
+      font-family: Inter;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 33px;
+      padding: 34px;
+      padding-top: 30px;
+      padding-bottom: 10px;
+      .label--small {
+        width: 460px;
+        font-size: 16px;
+        line-height: 19.2px; // Why is this smaller then the rest?
+      }
+    }
+
+    ux-dialog-body {
+      border-top-width: 0;
+      padding: 0;
+      font-family: Inter;
+      font-size: 16px;
+      line-height: 24px;
+      overflow: unset;
+    }
+
+    ux-dialog-footer {
+      border-top-width: 0;
+      padding-top: 18px;
+      padding-bottom: 20px;
+      .cancel {
+        cursor: pointer;
+        background-color: transparent;
+        border: transparent;
+        border-radius: 50px;
+        font-family: Inter;
+        font-weight: 600;
+        padding: 8px 17px;
+        text-transform: uppercase;
+      }
+      .button1, .cancel {
+        &:hover {
+          background-color: $Secondary05;
+          color: $Neutral04;
+        }
+        &.small {
+          width: 98px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 33px;
+    color: $Secondary02;
+  }
+  input {
+    width: -webkit-fill-available;
+    width: -moz-available;
+    height: 46px;
+    box-sizing: border-box;
+    border: 1px solid $Border01;
+    border-radius: 10px;
+    
+    &[disabled] {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  numeric-input {
+    &:not([not-wei]) {
+      width: -webkit-fill-available;
+      width: -moz-available;
+    }
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    color: $Neutral02;
+
+    &:hover {
+      color: $White;
+    }
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: end;
+  }
+
+  // .delete-button {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 10px;
+  //   cursor: pointer;
+  // }
+
+  // .delete-button__icon {
+  //   width: 14px;
+  //   height: 18px;
+  // }
+
+  // .delete-button__text {
+  //   font-weight: 700;
+  //   font-size: 16px;
+  //   line-height: 19px;
+  //   letter-spacing: 0.6px;
+  //   text-transform: uppercase;
+  //   color: $Neutral03;
+  // }
+
+  .add-class-container {
+    width: 90%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: flex-start;
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+    align-items: flex-start;
+    &.with-counter span {
+      width: fit-content;
+      flex-grow: 2;
+      text-align: end;
+      color: $Neutral02;
+      font-size: 14px;
+    }
+  }
+
+  .info-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .info-block__input {
+    input {
+      width: 80px;
+    }
+  }
+
+  .info-block__text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 33px;
+    color: $Neutral02;
+  }
+
+  .info-section__text {
+    width: 90%;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: $Neutral03;
+    margin-bottom: 5px;
+  }
+
+  .label--question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .label--small {
+    font-style: normal;
+    font-weight: 400;
+    color: $Neutral03;
+    font-size: 16px;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    width: 100%;
+  }
+
+  .vesting .label--small {
+    line-height: 33px;
+    font-size: 14px;
+  }
+  .vesting-period{
+    width: 176px;
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    gap: 0;
+    input {
+      width: 80px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border: 1px solid $Secondary05;
+    }
+    > div {
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $Border01;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  .question-mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #98979b;
+    cursor: default;
+    > div{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > .mark{
+        font-size: 12px;
+        line-height: 8px;
+      }
+    }
+  }
+
+  .csvList {
+    display: flex;
+    align-items: end;
+
+    .csvUploadInputContainer {
+
+      .inlineWrapper {
+        display:flex;
+        align-items: center;
+        gap: 10px;
+        .csvInputWrapper {
+          &:before {
+            content: 'Browse';
+            @include boldButton;
+          }
+
+          .csvUploadPara {
+            color: $Neutral02;
+            margin: 10px 0;
+          }
+
+          input[id=allowList] {
+            display: none;
+          }
+        }
+      }
+      .loadingAllowlist {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: 6px;
+        i {
+          color: $Primary01;
+        }
+      }
+
+      .allowListFeedback {
+        color: $Neutral02;
+        margin-left: 6px;
+        margin-top: 6px;
+
+        &.bad {
+          i {
+            color: $AlertRed;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+
+  .vesting-period {
+    width: 176px;
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    gap: 0;
+    input {
+      width: 80px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    > div {
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $Secondary05;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  // .vestingDatesContainer {
+  //   display: grid;
+  //   column-gap: 16px;
+  //   grid-template-columns: auto auto;
+  // }
+
+  // .vestingDates {
+  //   width: 176px;
+  //   display: grid;
+  //   grid-template-columns: auto auto;
+  //   column-gap: 0;
+
+  //   input {
+  //     width: 112px;
+  //     border-top-right-radius: 0;
+  //     border-bottom-right-radius: 0;
+  //     border-right: 0px;
+  //   }
+  //   .inputIcon {
+  //     width: 47px;
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //     background-color: $BG01;
+  //     border: 1px solid $Border01;
+  //     border-left: 0px;
+  //     border-top-right-radius: 10px;
+  //     border-bottom-right-radius: 10px;
+  //     z-index: 1;
+  //     cursor: pointer;
+  //     > i {
+  //       font-size: 22px;
+  //     }
+  //   }
+  // }
+}

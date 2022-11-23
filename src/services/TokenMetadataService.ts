@@ -2,7 +2,7 @@ import axios from "axios";
 import { autoinject } from "aurelia-framework";
 import { ContractNames, ContractsService } from "./ContractsService";
 import { getAddress } from "ethers/lib/utils";
-import { EthereumService } from "services/EthereumService";
+import { EthereumService, Networks } from "services/EthereumService";
 import { ITokenInfo } from "services/TokenTypes";
 import { ethers } from "ethers";
 import { ConsoleLogService } from "services/ConsoleLogService";
@@ -114,7 +114,23 @@ export default class TokenMetadataService {
 
         const tokenInfo: ITokenInfo = { address } as unknown as ITokenInfo;
         try {
-          const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+          let network = "";
+          switch (EthereumService.targetedNetwork) {
+            case Networks.Mainnet:
+            case Networks.Goerli:
+              network = "ethereum";
+              break;
+            case Networks.Arbitrum:
+              network = "arbitrum";
+              break;
+            case Networks.Celo:
+            case Networks.Alfajores:
+              network = "celo";
+              break;
+            default:
+              network = EthereumService.targetedNetwork;
+          }
+          const logoURI = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${network}/assets/${address}/logo.png`;
           const logoFound = await axios.get(logoURI).catch(() => null);
           tokenInfo.logoURI = logoFound ? logoURI : null;
           /**

@@ -1,754 +1,9 @@
 {
-  "name": "arbitrum",
-  "chainId": "42161",
+  "name": "alfajores",
+  "chainId": "44787",
   "contracts": {
-    "LBPManager": {
-      "address": "0x44251350E82B044a7c86DE0b25f63a52c4A2B8D5",
-      "abi": [
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "beneficiary",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "tokenAddress",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "FeeTransferred",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "oldAdmin",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newAdmin",
-              "type": "address"
-            }
-          ],
-          "name": "LBPManagerAdminChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "bytes",
-              "name": "metadata",
-              "type": "bytes"
-            }
-          ],
-          "name": "MetadataUpdated",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "lbpAddress",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "PoolTokensWithdrawn",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "admin",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "amounts",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "beneficiary",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "endWeights",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "feePercentage",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "getSwapEnabled",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_sender",
-              "type": "address"
-            }
-          ],
-          "name": "initializeLBP",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_lbpFactory",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_beneficiary",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "_name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "_symbol",
-              "type": "string"
-            },
-            {
-              "internalType": "contract IERC20[]",
-              "name": "_tokenList",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_amounts",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_startWeights",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_startTimeEndTime",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_endWeights",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_fees",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-            }
-          ],
-          "name": "initializeLBPManager",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "initialized",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "lbp",
-          "outputs": [
-            {
-              "internalType": "contract ILBP",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "lbpFactory",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "metadata",
-          "outputs": [
-            {
-              "internalType": "bytes",
-              "name": "",
-              "type": "bytes"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "name",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "poolFunded",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "projectTokenIndex",
-          "outputs": [
-            {
-              "internalType": "uint8",
-              "name": "",
-              "type": "uint8"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "projectTokensRequired",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "projectTokenAmounts",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_receiver",
-              "type": "address"
-            }
-          ],
-          "name": "removeLiquidity",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bool",
-              "name": "_swapEnabled",
-              "type": "bool"
-            }
-          ],
-          "name": "setSwapEnabled",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "startTimeEndTime",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "startWeights",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "swapFeePercentage",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "symbol",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "tokenList",
-          "outputs": [
-            {
-              "internalType": "contract IERC20",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_newAdmin",
-              "type": "address"
-            }
-          ],
-          "name": "transferAdminRights",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-            }
-          ],
-          "name": "updateMetadata",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_receiver",
-              "type": "address"
-            }
-          ],
-          "name": "withdrawPoolTokens",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
-    "LBPManagerFactory": {
-      "address": "0xB448335Ff3105145dc6Cf805e544F1e4a41B35ca",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_lbpFactory",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "oldLBPFactory",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newLBPFactory",
-              "type": "address"
-            }
-          ],
-          "name": "LBPFactoryChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "lbpManager",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "admin",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "bytes",
-              "name": "metadata",
-              "type": "bytes"
-            }
-          ],
-          "name": "LBPManagerDeployed",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "oldMasterCopy",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newMasterCopy",
-              "type": "address"
-            }
-          ],
-          "name": "MastercopyChanged",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_admin",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "_beneficiary",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "_name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "_symbol",
-              "type": "string"
-            },
-            {
-              "internalType": "contract IERC20[]",
-              "name": "_tokenList",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_amounts",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_startWeights",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_startTimeEndtime",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_endWeights",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "_fees",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-            }
-          ],
-          "name": "deployLBPManager",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "lbpFactory",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "masterCopy",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "owner",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "renounceOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_lbpFactory",
-              "type": "address"
-            }
-          ],
-          "name": "setLBPFactory",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_masterCopy",
-              "type": "address"
-            }
-          ],
-          "name": "setMasterCopy",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "transferOwnership",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
     "Safe": {
-      "address": "0x9941869DC4D03Dd9F86F55507Ff8785bB28cFDb3",
+      "address": "0xF1734d53F5560C319395D633D131a5aB39aB06D7",
       "abi": [
         {
           "inputs": [],
@@ -1784,7 +1039,7 @@
       ]
     },
     "Seed": {
-      "address": "0x0788407B68acdd4009AE6c31411808c6fA24BEb3",
+      "address": "0xb2Ef655802404f0556C239ebBE331e639B87f735",
       "abi": [
         {
           "anonymous": false,
@@ -1796,7 +1051,7 @@
               "type": "address"
             },
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "uint256",
               "name": "amountReclaimed",
               "type": "uint256"
@@ -1828,13 +1083,32 @@
               "type": "address"
             },
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "uint256",
               "name": "amountPurchased",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "seedRemainder",
               "type": "uint256"
             }
           ],
           "name": "SeedsPurchased",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "amountClaimed",
+              "type": "uint256"
+            }
+          ],
+          "name": "TipClaimed",
           "type": "event"
         },
         {
@@ -1847,26 +1121,52 @@
               "type": "address"
             },
             {
-              "indexed": false,
+              "indexed": true,
               "internalType": "uint256",
               "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "beneficiary",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "feeAmount",
               "type": "uint256"
             }
           ],
           "name": "TokensClaimed",
           "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "_classNames",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_classCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_individualCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_vestingCliffs",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_vestingDurations",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address[][]",
+              "name": "_allowlist",
+              "type": "address[][]"
+            }
+          ],
+          "name": "addClassesAndAllowlists",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
         {
           "inputs": [],
@@ -1879,6 +1179,24 @@
             }
           ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_buyers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_classes",
+              "type": "uint8[]"
+            }
+          ],
+          "name": "allowlist",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -1908,25 +1226,14 @@
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
             }
           ],
           "stateMutability": "nonpayable",
           "type": "function"
         },
         {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_funder",
-              "type": "address"
-            }
-          ],
-          "name": "calculateClaim",
+          "inputs": [],
+          "name": "calculateClaimBeneficiary",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1943,7 +1250,64 @@
               "internalType": "address",
               "name": "_funder",
               "type": "address"
+            }
+          ],
+          "name": "calculateClaimFunder",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint8[]",
+              "name": "_classes",
+              "type": "uint8[]"
             },
+            {
+              "internalType": "bytes32[]",
+              "name": "_classNames",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_classCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_individualCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_vestingCliffs",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_vestingDurations",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address[][]",
+              "name": "_allowlists",
+              "type": "address[][]"
+            }
+          ],
+          "name": "changeClassesAndAllowlists",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
             {
               "internalType": "uint256",
               "name": "_claimAmount",
@@ -1951,6 +1315,13 @@
             }
           ],
           "name": "claim",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "claimTip",
           "outputs": [
             {
               "internalType": "uint256",
@@ -1959,6 +1330,50 @@
             }
           ],
           "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "classes",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "className",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "classCap",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "individualCap",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vestingCliff",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vestingDuration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "classFundingCollected",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
           "type": "function"
         },
         {
@@ -1995,96 +1410,6 @@
           "type": "function"
         },
         {
-          "inputs": [],
-          "name": "fee",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "feeAmountRequired",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "feeClaimed",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_funder",
-              "type": "address"
-            }
-          ],
-          "name": "feeClaimedForFunder",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_funder",
-              "type": "address"
-            }
-          ],
-          "name": "feeForFunder",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "feeRemainder",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
           "inputs": [
             {
               "internalType": "address",
@@ -2095,6 +1420,11 @@
           "name": "funders",
           "outputs": [
             {
+              "internalType": "uint8",
+              "name": "class",
+              "type": "uint8"
+            },
+            {
               "internalType": "uint256",
               "name": "totalClaimed",
               "type": "uint256"
@@ -2103,6 +1433,11 @@
               "internalType": "uint256",
               "name": "fundingAmount",
               "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowlist",
+              "type": "bool"
             }
           ],
           "stateMutability": "view",
@@ -2149,6 +1484,44 @@
         },
         {
           "inputs": [],
+          "name": "getAllClasses",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "classNames",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "classCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "individualCaps",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "vestingCliffs",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "vestingDurations",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "classFundingsCollected",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
           "name": "hardCap",
           "outputs": [
             {
@@ -2179,7 +1552,7 @@
             },
             {
               "internalType": "uint256[]",
-              "name": "_softHardThresholds",
+              "name": "_softAndHardCap",
               "type": "uint256[]"
             },
             {
@@ -2188,24 +1561,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
-              "name": "_startTime",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_startTimeAndEndTime",
+              "type": "uint256[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_endTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint32",
-              "name": "_vestingDuration",
-              "type": "uint32"
-            },
-            {
-              "internalType": "uint32",
-              "name": "_vestingCliff",
-              "type": "uint32"
+              "internalType": "uint256[]",
+              "name": "_defaultClassParameters",
+              "type": "uint256[]"
             },
             {
               "internalType": "bool",
@@ -2213,9 +1576,14 @@
               "type": "bool"
             },
             {
-              "internalType": "uint256",
-              "name": "_fee",
-              "type": "uint256"
+              "internalType": "address[]",
+              "name": "_allowlistAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_tip",
+              "type": "uint256[]"
             }
           ],
           "name": "initialize",
@@ -2239,19 +1607,6 @@
         {
           "inputs": [],
           "name": "isFunded",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "isWhitelistBatchInvoked",
           "outputs": [
             {
               "internalType": "bool",
@@ -2472,7 +1827,40 @@
         },
         {
           "inputs": [],
-          "name": "totalFunderCount",
+          "name": "tip",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "tipPercentage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vestingCliff",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vestingDuration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tipAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalClaimed",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "totalBuyableSeed",
           "outputs": [
             {
               "internalType": "uint256",
@@ -2485,20 +1873,33 @@
         },
         {
           "inputs": [],
-          "name": "unpause",
-          "outputs": [],
-          "stateMutability": "nonpayable",
+          "name": "totalFunderCount",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
           "type": "function"
         },
         {
           "inputs": [
             {
               "internalType": "address",
-              "name": "buyer",
+              "name": "_buyer",
               "type": "address"
             }
           ],
-          "name": "unwhitelist",
+          "name": "unAllowlist",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "unpause",
           "outputs": [],
           "stateMutability": "nonpayable",
           "type": "function"
@@ -2518,83 +1919,12 @@
         },
         {
           "inputs": [],
-          "name": "vestingCliff",
-          "outputs": [
-            {
-              "internalType": "uint32",
-              "name": "",
-              "type": "uint32"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "vestingDuration",
-          "outputs": [
-            {
-              "internalType": "uint32",
-              "name": "",
-              "type": "uint32"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "vestingStartTime",
           "outputs": [
             {
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "_buyer",
-              "type": "address"
-            }
-          ],
-          "name": "whitelist",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address[]",
-              "name": "_buyers",
-              "type": "address[]"
-            }
-          ],
-          "name": "whitelistBatch",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "name": "whitelisted",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
             }
           ],
           "stateMutability": "view",
@@ -2610,8 +1940,19 @@
       ]
     },
     "SeedFactory": {
-      "address": "0xe2314dd8d79DB953490385f48AFB96e70e15F4ac",
+      "address": "0x36aebabB3fD32589425B1c0170EFfB55C7982575",
       "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract Seed",
+              "name": "_masterCopy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
         {
           "anonymous": false,
           "inputs": [
@@ -2669,7 +2010,7 @@
             },
             {
               "internalType": "uint256[]",
-              "name": "_softHardThresholds",
+              "name": "_softAndHardCap",
               "type": "uint256[]"
             },
             {
@@ -2678,19 +2019,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
-              "name": "_startTime",
-              "type": "uint256"
+              "internalType": "uint256[]",
+              "name": "_startTimeAndEndTime",
+              "type": "uint256[]"
             },
             {
-              "internalType": "uint256",
-              "name": "_endTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint32[]",
-              "name": "_vestingDurationAndCliff",
-              "type": "uint32[]"
+              "internalType": "uint256[]",
+              "name": "_defaultClassParameters",
+              "type": "uint256[]"
             },
             {
               "internalType": "bool",
@@ -2698,9 +2034,14 @@
               "type": "bool"
             },
             {
-              "internalType": "uint256",
-              "name": "_fee",
-              "type": "uint256"
+              "internalType": "address[]",
+              "name": "_allowlistAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_tip",
+              "type": "uint256[]"
             },
             {
               "internalType": "bytes",
@@ -2781,7 +2122,7 @@
       ]
     },
     "SignerV2": {
-      "address": "0x0564448C22484eeAE4B33C75c6f6718Fb05C3b8c",
+      "address": "0xFb59890ec6bb01A2054f397AFAEf78228508D108",
       "abi": [
         {
           "inputs": [
@@ -3022,6 +2363,191 @@
           "type": "function"
         }
       ]
+    },
+    "SeedFactoryNoAccessControl": {
+      "address": "0xbAB666d5460d30e1c3ed760615C48d7f044aAFA7",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "contract Seed",
+              "name": "_masterCopy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newSeed",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            }
+          ],
+          "name": "SeedCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_admin",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_softAndHardCap",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_startTimeAndEndTime",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_defaultClassParameters",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bool",
+              "name": "_permissionedSeed",
+              "type": "bool"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_allowlistAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_tip",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_metadata",
+              "type": "bytes"
+            }
+          ],
+          "name": "deploySeed",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "masterCopy",
+          "outputs": [
+            {
+              "internalType": "contract Seed",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "renounceOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "contract Seed",
+              "name": "_masterCopy",
+              "type": "address"
+            }
+          ],
+          "name": "setMasterCopy",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "transferOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
+    "D2D": {
+      "abi": "ERC20"
     }
   }
 }

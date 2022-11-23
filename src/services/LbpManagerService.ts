@@ -61,14 +61,20 @@ export class LbpManagerService {
       case Networks.Mainnet:
         StartingBlockNumber = 13764353;
         break;
-      case Networks.Rinkeby:
-        StartingBlockNumber = 9580627;
+      case Networks.Goerli:
+        StartingBlockNumber = 7722221;
         break;
       case Networks.Kovan:
         StartingBlockNumber = 28079815;
         break;
       case Networks.Arbitrum:
         StartingBlockNumber = 5288502;
+        break;
+      case Networks.Celo:
+        StartingBlockNumber = 14836595;
+        break;
+      case Networks.Alfajores:
+        StartingBlockNumber = 13297679;
         break;
       default:
         StartingBlockNumber = 0;
@@ -134,15 +140,7 @@ export class LbpManagerService {
         StartingBlockNumber,
         txEvents => {
           for (const event of txEvents) {
-
-            if (EthereumService.targetedNetwork === Networks.Rinkeby) {
-            /**
-             * for some reason getSwapEnabled crashes with this LBP
-             */
-              if (event.args.lbpManager === "0x81A9ea03cD2DF39d5b01A202BBbCc741c97069B6") {
-                continue;
-              }
-            } else if (EthereumService.targetedNetwork === Networks.Mainnet) {
+            if (EthereumService.targetedNetwork === Networks.Mainnet) {
               /**
                * PrimeDAO test app
                */

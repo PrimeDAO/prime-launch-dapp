@@ -13,14 +13,15 @@ export interface ITokenListMapByNetwork {
   [networkKey: string]: ITokenListConfigMap;
 }
 
+export const PRIME_PAYMENTS_URL = "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json";
+
 /**
  * Mapping of the TokenLists used on each network
  */
 export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   "mainnet": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -39,8 +40,7 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   },
   "arbitrum": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -59,8 +59,23 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
   },
   "rinkeby": {
     PrimeDao: {
-      Payments:
-        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primePayment.json",
+      Payments: PRIME_PAYMENTS_URL,
+    },
+    // Balancer: {
+    //   Default:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",
+    //   Vetted:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
+    // },
+    // External: [
+    //   "ipns://tokens-uniswap-org",
+    //   // 'https://tokens.coingecko.com/uniswap/all.json',
+    //   "https://umaproject.org/uma.tokenlist.json",
+    // ],
+  },
+  "goerli": {
+    PrimeDao: {
+      Payments: PRIME_PAYMENTS_URL,
     },
     // Balancer: {
     //   Default:
@@ -78,6 +93,40 @@ export const TOKEN_LIST_MAP: ITokenListMapByNetwork = {
     PrimeDao: {
       Payments:
         "",
+    },
+    // Balancer: {
+    //   Default:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",
+    //   Vetted:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
+    // },
+    // External: [
+    //   "ipns://tokens-uniswap-org",
+    //   // 'https://tokens.coingecko.com/uniswap/all.json',
+    //   "https://umaproject.org/uma.tokenlist.json",
+    // ],
+  },
+  "celo": {
+    PrimeDao: {
+      Payments:
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primeCeloPayment.json",
+    },
+    // Balancer: {
+    //   Default:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/listed.tokenlist.json",
+    //   Vetted:
+    //     "https://storageapi.fleek.co/balancer-team-bucket/assets/vetted.tokenlist.json",
+    // },
+    // External: [
+    //   "ipns://tokens-uniswap-org",
+    //   // 'https://tokens.coingecko.com/uniswap/all.json',
+    //   "https://umaproject.org/uma.tokenlist.json",
+    // ],
+  },
+  "alfajores": {
+    PrimeDao: {
+      Payments:
+        "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/primeAlfajoresPayment.json",
     },
     // Balancer: {
     //   Default:

@@ -1,40 +1,50 @@
 <template>
   <div class="timeLeftContainer ${contained ? 'contained' : ''}">
     <div class="mainStatus">
+      <!-- isTimeOnly -->
       <div
-        if.to-view="!launch.uninitialized && launch.hasNotStarted"
-        ref="timeLeft"
-        class="body timeLeft ${(proximity===1) ? 'soon' : ((proximity===2) ? 'comingUp' : 'farOff' )}">
-        <span if.to-view="!hideIcons" class="icon far fa-clock"></span>in ${launch.startsInMilliseconds | timespan:"minutes":largest}
+        if.bind="isTimeOnly"
+        class="body">
+        <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>${currentTimeLeft | timespan:"minutes":false:true}
       </div>
-      <div
-        if.to-view="launch.contributingIsOpen"
-        class="body live">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>LIVE
+
+      <!-- Times with label -->
+      <template else>
+        <div
+          if.to-view="!launch.uninitialized && launch.hasNotStarted"
+          ref="timeLeft"
+          class="body timeLeft ${(proximity===1) ? 'comingUp' : ((proximity===2) ? 'soon' : 'soon' )}">
+          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Starts in ${currentTimeLeft | timespan:"minutes":false:true}
+        </div>
+        <div
+          if.to-view="launch.contributingIsOpen"
+          class="body timeLeft live">
+          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>LIVE, ${currentTimeLeft | timespan:"minutes":false:true} left
+        </div>
+        <div
+          if.to-view="launch.claimingIsOpen || launch.isDead"
+          class="body complete">
+          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Complete
+        </div>
+        <div
+          if.to-view="launch.incomplete"
+          class="body incomplete">
+          <span if.to-view="!hideIcons" class="icon far fa-clock"></span>Incomplete
+        </div>
+        <div
+          if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused && !launch.isDead"
+          class="body uninitialized">
+          <span if.to-view="!hideIcons" class="icon fa fa-clock"></span>Uninitialized
+        </div>
       </div>
-      <div
-        if.to-view="launch.claimingIsOpen"
-        class="body complete">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>COMPLETE
-      </div>
-      <div
-        if.to-view="launch.incomplete"
-        class="body incomplete">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>INCOMPLETE
-      </div>
-      <div
-        if.to-view="launch.uninitialized && !launch.isClosed && !launch.isPaused"
-        class="body uninitialized">
-        <span if.to-view="!hideIcons" class="icon fa fa-circle"></span>UNINITIALIZED
-      </div>
-    </div>
-    <div class="adminStatus">
+      </template>
+    <div if.bind="isAdminStatus" class="adminStatus">
       <div
         if.to-view="launch.isPaused"
-        class="body paused">PAUSED</div>
+        class="body paused">Paused</div>
       <div
         if.to-view="launch.isClosed"
-        class="body closed">CLOSED</div>
+        class="body closed">Closed</div>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -15,6 +15,7 @@ import { HTMLSanitizer } from "aurelia-templating-resources";
 import DOMPurify from "dompurify";
 import { TokenService } from "services/TokenService";
 import { ContractsDeploymentProvider } from "services/ContractsDeploymentProvider";
+import { EthereumServiceTesting } from "services/EthereumServiceTesting";
 import { LbpManagerService } from "services/LbpManagerService";
 import { Seed } from "entities/Seed";
 import { LbpManager } from "entities/LbpManager";
@@ -22,8 +23,20 @@ import { Lbp } from "entities/Lbp";
 import { Vault } from "entities/Vault";
 import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
+import { BrowserStorageService } from "services/BrowserStorageService";
 
 export function configure(aurelia: Aurelia): void {
+  // Note, this Cypress hack has to be at the very start.
+  // Reason: Imports in eg. /resources/index, where EthereumService is imported to
+  //   /binding-behaviors results in EthereumService not being mocked "in time" for Cypress.
+  if ((window as any).Cypress) {
+    /**
+     * Mock wallet connection
+     */
+    aurelia.use.singleton(EthereumService, EthereumServiceTesting);
+    (window as any).Cypress.eventAggregator = aurelia.container.get(EventAggregator);
+  }
+
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName("resources/index"))
@@ -35,7 +48,10 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  const network = process.env.NETWORK as AllowedNetworks;
+  const storageService = new BrowserStorageService;
+  // storageService.lsSet("network", "alfajores");
+  const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
+  const isLocalNetwork = network === "localhost";
   const inDev = process.env.NODE_ENV === "development";
 
   if (inDev) {
@@ -51,16 +67,18 @@ export function configure(aurelia: Aurelia): void {
   aurelia.start().then(async () => {
     aurelia.container.get(ConsoleLogService);
     try {
-    /**
-     * otherwise singleton is the default
-     */
+      /**
+       * otherwise singleton is the default
+       */
       aurelia.container.registerTransient(Seed);
       aurelia.container.registerTransient(LbpManager);
       aurelia.container.registerTransient(Lbp);
       aurelia.container.registerTransient(Vault);
 
       const ethereumService = aurelia.container.get(EthereumService);
-      ethereumService.initialize(network ?? (inDev ? Networks.Rinkeby : Networks.Mainnet));
+
+      const targetNetwork = handleNetworkFromLocalStorage(network);
+      ethereumService.initialize(targetNetwork);
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
@@ -77,8 +95,11 @@ export function configure(aurelia: Aurelia): void {
       TimingService.end("LaunchService Initialization");
 
       // TimingService.start("BalancerService Initialization");
-      const balancerService = aurelia.container.get(BalancerService);
-      balancerService.initialize();
+      // TODO: Remove condition once Symmetric Subgraph is being used
+      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
+        const balancerService = aurelia.container.get(BalancerService);
+        balancerService.initialize();
+      }
       // TimingService.end("BalancerService Initialization");
 
       TimingService.start("GeoBlockService Initialization");
@@ -92,9 +113,14 @@ export function configure(aurelia: Aurelia): void {
       const seedService = aurelia.container.get(SeedService);
       seedService.initialize();
 
-      const lbpManagerService = aurelia.container.get(LbpManagerService);
-      lbpManagerService.initialize();
+      if ((window as any).Cypress) {
+        (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
+      }
 
+      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
+        const lbpManagerService = aurelia.container.get(LbpManagerService);
+        lbpManagerService.initialize();
+      }
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
       eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
@@ -102,4 +128,17 @@ export function configure(aurelia: Aurelia): void {
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });
+
+  function handleNetworkFromLocalStorage(network: Networks) {
+    let targetNetwork;
+    if (isNetworkPresent(network)) {
+      targetNetwork = network;
+    } else {
+      const devNetwork = isLocalNetwork ? Networks.Localhost : Networks.Goerli;
+      targetNetwork = inDev ? devNetwork : Networks.Mainnet;
+
+      storageService.lsSet("network", targetNetwork);
+    }
+    return targetNetwork;
+  }
 }

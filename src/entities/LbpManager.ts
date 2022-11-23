@@ -122,7 +122,7 @@ export class LbpManager implements ILaunch {
 
   @computedFrom("uninitialized")
   get canGoToDashboard(): boolean {
-    return !this.uninitialized;
+    return true;
   }
 
   @computedFrom("lbpInitialized", "poolFunded")

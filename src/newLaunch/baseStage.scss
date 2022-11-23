@@ -6,10 +6,228 @@
   background-color: $Border03;
 }
 
+.footer-input {
+  max-width: 100%;
+}
+
+.csvList {
+  display: flex;
+  align-items: end;
+
+  .questionMark {
+    line-height: 1;
+    font-weight: normal
+  }
+
+  .csvLabelContent {
+    margin-right: 15px;
+  }
+}
+
+.content-block {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+}
+
+.content-end-stage {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 3fr 1.5fr;
+}
+
+.content-classes {
+  border-top: 1px solid #a258a7;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  margin-left: 100px;
+  padding-top: 32px;
+}
+
+//#footer-date-content {
+//
+//}
+
+.inline {
+  display: flex;
+  column-gap: 60px;
+  flex-wrap: wrap;
+}
+
+.grid2cols {
+  display: grid;
+  grid-template-columns: 185px 185px;
+}
+
+@media screen and (max-width: 730px) {
+  .content-block {
+    grid-template-columns: 1fr;
+  }
+  .footer-input {
+    max-width: 50%;
+  }
+  #footer-date-content {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 906px) {
+  .content-classes {
+    //border-top: 1px solid #a258a7;
+    //display: grid;
+    grid-template-columns: 1fr;
+    margin-left: 0px;
+  }
+}
+
+.form-content {
+  margin-top: 32px;
+}
+
+.class-title {
+  font-weight: 700;
+  font-size: 26px;
+  color: rgba(162, 88, 167, 1);
+  margin-top: 32px;
+}
+
+.classes-description {
+  width: 320px;
+  color: rgba(220, 218, 229, 1);
+  font-size: 16px;
+  font-family: Inter;
+}
+
+.input-style {
+  background-color: rgba(21, 19, 24, 1);
+}
+
+#open-adb {
+  color: white;
+  text-decoration: none;
+}
+
+@mixin boldButton {
+  display: inline-block;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 15px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: rgba(64, 52, 83, 1);
+  color: $White;
+  cursor: pointer;
+}
+
+.make-admin-button {
+  @include boldButton;
+  width: max-content;
+}
+
+.end-stage-subtext {
+  line-height: 24px;
+  font-size: 16px;
+  color: $Neutral03;
+  margin-bottom: 48px;
+  margin-top: 32px;
+}
+
+.goodValue {
+  margin-bottom: 16px;
+  color: $Neutral02;
+  line-height: 24px;
+  margin-top: -5px;
+}
+
+.else-subtext {
+  margin-top: 16px;
+}
+
+#add-social-link {
+  color: rgba(147, 152, 168, 1);
+  text-decoration: underline;
+  font-family: Inter;
+}
+
+.classes-previous {
+  margin-right: 21px;
+}
+
+.underline {
+  text-decoration: underline
+}
+
+.classes-overview-container {
+  background: $BG02;
+  border: 2px solid $BG01;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 645px;
+}
+
+.classes-overview-container__para {
+  color: $AlertOrange;
+  line-height: 24px;
+  margin:0;
+}
+
+.classes-overview-container__title {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: $Neutral04;
+
+}
+
+.classes-overview-container__table-container {
+  background: $BG01;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.classes-overview-container__table {
+  width: 100%;
+  border-collapse:separate;
+  font-size: 16px;
+  border-spacing: 16px;
+  border: none;
+  tr, td {
+    border: none;
+  }
+  th {
+    color: $Secondary02;
+    text-align: start;
+    font-weight: 700;
+  }
+  td {
+    font-weight: 400;
+  }
+
+  .table__edit-icon {
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+  }
+
+  .table__center-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .infoContainer {
   font-family: Inter;
-  background-color: $BG02;
-  border: 1px solid $Border01;
   border-radius: 16px;
   padding: 24px;
   min-width: 640px;
@@ -26,6 +244,8 @@
     font-size: 16px;
     color: $Neutral03;
     margin-bottom: 48px;
+    margin-top: 32px;
+    max-width: 360px;
   }
   .infoInput {
     margin-bottom: 32px;
@@ -48,27 +268,7 @@
       color: $Neutral02;
     }
   }
-  .buttonContainer {
-    display: flex;
-    flex-flow: row wrap;
-    column-gap: 48px;
-    margin-top: 80px;
-    .stageButton {
-      display: flex;
-      align-items: center;
-    }
-    .cancel {
-      cursor: pointer;
-      color: $Shade01;
-      font-family: Inter;
-      font-weight: 600;
-    }
-  }
-  .stageButton {
-    display: flex;
-    align-items: center;
-  }
-  label {
+  label, .label {
     display: block;
     font-size: 17px;
     font-weight: 600;
@@ -124,22 +324,35 @@
   a {
     color: $Neutral02;
   }
+
   .labeledQuestion {
     display: flex;
     flex-flow: row nowrap;
     gap: 16px;
   }
+
   .questionMark {
     width: 20px;
     height: 20px;
     align-self: center;
   }
+
+  .toggle-description {
+    line-height: 24px;
+    margin: 2px 0;
+  }
+
   .importantText {
     font-weight: 800;
   }
 }
 
-.page.stageContainer {
+.content-classes .infoContainer {
+  padding: 0 0 0 24px;
+}
+
+.page.stageContainer, .content-classes {
+  margin-bottom: 130px;
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -219,6 +432,60 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      row-gap: 40px;
+      margin-bottom: 16px;
+    }
+
+    .csvUploadInputContainer {
+
+      .inlineWrapper {
+        display:flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .csvUploadPara {
+        color: $Neutral02;
+        margin: 10px 0;
+      }
+
+      input[id=allowList] {
+        display: none;
+      }
+
+      .label {
+        display: flex;
+        width: 100%;
+      }
+
+      .csvInputWrapper {
+        &:before {
+          content: 'Browse';
+          @include boldButton;
+        }
+      }
+
+      .loadingAllowlist {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: 6px;
+        i {
+          color: $Primary01;
+        }
+      }
+
+      .allowListFeedback {
+        color: $Neutral02;
+        margin-left: 6px;
+        margin-top: 6px;
+
+        &.bad {
+          i {
+            color: $AlertRed;
+            margin-right: 6px;
+          }
+        }
+      }
     }
     .button2 {
       margin-left: 0;
@@ -232,6 +499,7 @@
     .infoInput.supply {
       input {
         width: 112px;
+        background-color: rgba(21, 19, 24, 1);
       }
     }
     .tickerContainer {
@@ -275,11 +543,11 @@
       }
 
       .projectTokenInfoFormContainer {
-        margin-left: 8px;
         .explanation,
         .fileNote {
           color: $Neutral02;
           line-height: 24px;
+          margin-top: 10px;
         }
 
         .explanation {
@@ -288,7 +556,6 @@
 
         .tokenForm {
           .field {
-            margin-left: 8px;
             &:not(:last-of-type) {
               margin-bottom: 16px;
             }
@@ -327,11 +594,6 @@
               }
             }
 
-            .goodValue {
-              display: none;
-              color: $Neutral02;
-            }
-
             &.presupplied {
               .inputElement {
                 display: none;
@@ -346,6 +608,15 @@
                 label {
                   color: $AlertOrange;
                 }
+                .goodValue {
+                  display: none;
+                }
+              }
+
+              &.supplied {
+                .goodValue {
+                  display: none;
+                }
               }
             }
           }
@@ -359,12 +630,18 @@
         line-height: 32px;
         text-align: left;
       }
+
+      .distribRowWrapper {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+
       .distribRow {
         display: flex;
         flex-flow: row wrap;
         flex: 1;
-        justify-content: space-between;
-        margin-bottom: 32px;
+        margin-bottom: 16px;
         column-gap: 10px;
         .category {
           display: flex;
@@ -397,6 +674,7 @@
     }
     .addLink {
       cursor: pointer;
+      margin-top: 16px;
     }
   }
 
@@ -420,6 +698,7 @@
         }
         input {
           width: 72px;
+          background-color: rgba(21, 19, 24, 1);
         }
         > label {
           align-self: center;
@@ -456,26 +735,34 @@
         flex-flow: row wrap;
         flex: 1;
         gap: 32px;
-        &.maxTargetLabel label {
+
+        &.maxTargetLabel label:not(.label) {
           font-size: 14px;
           line-height: 20px;
           margin-bottom: 5px;
           -webkit-text-fill-color: $White;
           font-weight: 400;
         }
+
         &.fundingTarget {
           flex-flow: column;
+
           .fundingDescrp {
             color: $Neutral02;
+            max-width: 75%;
+            margin: 0 0 15px 0;
           }
+
           .fundingTicker {
             display: flex;
             align-items: center;
             gap: 12px;
+
             .ticker {
               font-family: Inter;
               color: $Neutral02;
             }
+
             img {
               @include tokenIcon;
               border-radius: 12px;
@@ -484,9 +771,13 @@
               top: 1px;
             }
           }
+          input {
+            background-color: rgba(21, 19, 24, 1);
+          }
         }
       }
-      .vestingPeriod {
+      .vestingPeriod,
+      .seedTipping {
         width: 176px;
         display: flex;
         flex-flow: row nowrap;
@@ -511,9 +802,17 @@
         display: grid;
         column-gap: 16px;
         grid-template-columns: auto auto;
+
+        .startTimeInput,
+        .endTimeInput {
+          .inputIcon {
+            cursor: default;
+          }
+        }
       }
 
-      .vestingDates {
+      .vestingDates,
+      .seedTipping {
         width: 176px;
         display: grid;
         grid-template-columns: auto auto;
@@ -542,27 +841,16 @@
           }
         }
       }
-    }
-    .whitelistContainer {
-      .loadingWhitelist {
-        display: inline-block;
-        font-size: 18px;
-        margin-left: 6px;
-        i {
-          color: $Primary01;
+
+      .seedTipping {
+        width: 104px;
+        margin-bottom: 80px;
+
+        input {
+          width: 57px;
         }
-      }
-
-      .whiteListFeedback {
-        color: $Neutral02;
-        margin-left: 6px;
-        margin-top: 6px;
-
-        &.bad {
-          i {
-            color: $AlertRed;
-            margin-right: 6px;
-          }
+        > div {
+          width: 47px;
         }
       }
     }
@@ -647,18 +935,90 @@
 
   &.stage6 {
     .infoContainer {
+      label {
+        font-size: 16px;
+      }
+    }
+    .infoInput {
+      margin-bottom: 0px;
+    }
+    .checkboxContainer {
+      width: 60px;
+      height: 32px;
+      border: 1px solid #2a2a2a;
+      border-radius: 23px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: $Gradient01;
+      cursor: pointer;
+      &.isInactive {
+        background: $Secondary05;
+      }
+      /* Note: Only on stage 6! */
+      &, * {
+        cursor: not-allowed;
+      }
+      i.yes {
+        position: absolute;
+        left: 10px;
+        color: black;
+        font-weight: 800;
+      }
+      i.no {
+        position: absolute;
+        right: 10px;
+        color: black;
+        font-weight: 800;
+      }
+      .checkbox {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        > input {
+          width: 28px;
+          height: 28px;
+          visibility: hidden;
+          position: absolute;
+          &:checked + label {
+            left: 28px;
+          }
+        }
+        & label {
+          display: block;
+          width: 22px;
+          height: 22px;
+          position: absolute;
+          left: 4px;
+          background: white;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          border: 2px solid black;
+        }
+      }
+    }
+    .infoContainer {
       .summaryContainer {
-        margin-bottom: 40px;
+        .heading4 {
+          font-size: 16px;
+        }
+        .classes-overview-container {
+          margin-top: 0px;
+        }
         word-break: break-word;
         > .heading.heading3 {
           margin-bottom: 20px;
         }
+        a{
+          color: white;
+        }
         .stageLaunchDetails {
           display: grid;
           gap: 10px;
-          margin-bottom: 20px;
-          font-size: 18px;
-          color: $Neutral02;
+          margin-bottom: 30px;
+          font-size: 16px;
+          color: white;
 
           .tokenAmountContainer {
             display: flex;
@@ -695,9 +1055,6 @@
             margin-bottom: 20px;
             background-color: $Shade03;
           }
-        }
-        &:not(:first-child) {
-          margin-top: 40px;
         }
       }
     }
@@ -784,7 +1141,7 @@
     }
   }
 
-  .page.stageContainer {
+  .page.stageContainer,.content-classes {
     &.stage1 {
       .infoContainer {
         .otherLinks {
@@ -865,7 +1222,8 @@
 }
 
 @media screen and (max-width: 600px) {
-  .page.stageContainer {
+  .page.stageContainer,
+  .content-classes {
     &.stage4 {
       .infoInput {
         .pptContainer {

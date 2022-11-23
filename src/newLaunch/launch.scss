@@ -1,18 +1,32 @@
 @import "styles/colors.scss";
+
+.line {
+  position: absolute;
+  display: block;
+  min-width: 12ch;
+  max-width: 100px;
+  height: 3px;
+  content: '';
+  z-index: 0;
+  background-color: $Border01;
+}
+
 .newLaunchContainer {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
   justify-items: center;
   background-color: $BG01;
+
   &.stage8 {
     grid-template-columns: 1fr;
+
     .currentStageSidebar {
       display: none;
     }
   }
+
   .sideBarDropDownContainer {
     display: none;
     cursor: pointer;
+
     .sideBarDropDown {
       font-family: Inter;
       color: $Secondary02;
@@ -21,76 +35,71 @@
       padding-bottom: 32px;
     }
   }
+
   .currentStageSidebar {
-    line-height: 32px;
+    line-height: 22px;
     font-size: 18px;
     font-family: Inter;
     font-weight: 300;
     color: $Neutral02;
-    padding: 80px 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
     .currentstage {
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: rgba(64, 52, 83, 1);
+      margin-right: 25px;
+      z-index: 1;
     }
+
     .active {
-      color: $Secondary02;
+      color: rgba(162, 88, 167, 1);
     }
+
     .stagesNumber {
       display: flex;
-      gap: 16px;
       flex-flow: row nowrap;
       align-items: center;
+      color: $Neutral04;
+
+      .circledNumber {
+        background-color: rgba(64, 52, 83, 1);
+      }
     }
-    .timeLine {
-      width: 40px;
-      height: 20.8px;
-      display: grid;
-      justify-content: center;
-      padding-top: 2.4px;
-      padding-bottom: 2.4px;
-      .ruler {
-        width: 3.75px;
-        height: 20.8px;
-        background-color: $Neutral02;
+
+    .stagesNumber:hover {
+      .circledNumber {
+        background-color: $Neutral04;
+      }
+
+      color: $Neutral04;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 400;
+      font-family: Inter;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .stageActive {
+      .circledNumber {
+        background-color: rgba(162, 88, 167, 1);
       }
     }
   }
-}
 
-@media screen and (max-width: 1300px) {
-  .newLaunchContainer {
-    grid-template-columns: unset;
-    .sideBarDropDownContainer {
-      display: block;
-    }
-    &.stage8 {
-      .sideBarDropDown {
-        display: none;
-      }
-    }
+  @media screen and (max-width: 730px) {
     .currentStageSidebar {
-      line-height: 16px;
-      font-size: 16px;
-      padding-top: unset;
-      padding-bottom: 32px;
-      display: none;
-      .timeLine {
-        height: 3px;
-        display: grid;
-        justify-content: center;
-        .ruler {
-          width: 3.75px;
-          height: 4px;
-          background-color: $Neutral02;
-        }
-      }
-      .stagesNumber {
-        .value {
-          font-size: 18px;
-        }
-      }
+      flex-direction: column;
     }
-    .currentStageSidebar.show {
-      display: block;
+    .line {
+      display: none;
     }
   }
 }

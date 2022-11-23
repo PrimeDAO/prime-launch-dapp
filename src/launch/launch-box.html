@@ -1,4 +1,4 @@
-<template bindable="name, subTitle1, btnText, poweredBy, logo, route, disabled">
+<template bindable="name, subTitle1, btnText, poweredBy, route, disabled">
   <div class="launch-box-container">
     <div class="topSection">
       <div class="heading heading3 title">${name}</div>
@@ -15,7 +15,7 @@
     </div>
     <div class="container-footer">
       <div>POWERED BY</div>
-      <img alt="icon" src.bind="logo" />
+      <slot></slot>
     </div>
   </div>
 </template>
