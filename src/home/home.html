@@ -38,10 +38,10 @@
                     <div class="launch-section ${activeLaunchState.id === value.id ? 'launch-active' : ''}" click.delegate="loading ? null : setActiveLaunchState(value)">${value.title}</div>
                 </div>
             </div>
-            <div class="row-launch-section">
+            <!-- <div class="row-launch-section">
                 <div class="faq-description-sections">What’s this</div>
                 <div class="question">?</div>
-            </div>
+            </div> -->
         </div>
         <div class="launch-line"></div>
         <featuredlaunches launches-data.bind="launches" launch-type.bind="activeLaunchState.title" loading.bind="loading" show-all></featuredlaunches>
