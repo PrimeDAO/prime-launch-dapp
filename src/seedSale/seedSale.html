@@ -60,7 +60,7 @@
     <div class="seed-info section toppadding">
       <div class="seed-info halfsection1">
         <!-- ================ Section Two ================ -->
-        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
+        <div data-test="contribute-container" if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark if.bind="seed.fundingTokenInfo.symbol" text="Submit ${seed.fundingTokenInfo.symbol} tokens here to participate in the Seed. Remember to check if there is a vesting release schedule prior to contribution"></question-mark>
           </div>
@@ -82,7 +82,7 @@
                   placeholder="0"
                   id="">
                 </numeric-input>
-                <div class="maxIcon ${(connected && seed.contributingIsOpen) ? '' : 'disabled'}" click.delegate="handleMaxBuy()">
+                <div data-test="max-contribute-button" class="maxIcon ${(connected && seed.contributingIsOpen) ? '' : 'disabled'}" click.delegate="handleMaxBuy()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -117,10 +117,10 @@
 
           <!-- Unlock / Contribute button -->
           <template if.to-view="lockRequired">
-            <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
+            <button data-test="unlock-funding-tokens-button" class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
           </template>
           <template else>
-            <button class="buttonLeft" click.delegate="buy()" disabled.to-view="disableContribute">
+            <button data-test="contribute-button" class="buttonLeft" click.delegate="buy()" disabled.to-view="disableContribute">
               contribute
             </button>
           </template>
