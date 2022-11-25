@@ -3,6 +3,7 @@ import { PAGE_LOADING_TIMEOUT } from "./test-constants";
 import { PRIME_PAYMENTS_URL } from "../../../src/configurations/tokenLists";
 import { E2eSeeds } from "./seed.e2e";
 import { getRouterViewViewModel } from "./aurelia.e2e";
+import { HOMEPAGE_PATH, SEED_DASHBOARD_PATH } from "./e2eConstants";
 
 export class E2eNavigation {
   public static SEED_DASHBOARD_URL = "seed";
@@ -33,6 +34,16 @@ export class E2eNavigation {
       const { pathname } = window.location;
       return pathname !== "blank"; // Cypress returns "blank" if app not loaded yet
     });
+  }
+
+  /**
+   * SEED
+   */
+  public static navigateToSeedFromHomePage(seedName: string) {
+    return cy.contains(
+      "featuredlaunches [data-test='launch-card-title']",
+      seedName,
+    ).click();
   }
 }
 
@@ -79,24 +90,25 @@ Given("I navigate to the Admin Dashboard", () => {
 
   cy.window().then((window) => {
     const { pathname } = window.location;
+    /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: navigate.ts ~ line 92 ~ pathname', pathname)
     /**
      * Click on Launch card on homepage for quickest navigation
      */
-    if (pathname === "/") {
+    if (pathname === HOMEPAGE_PATH) {
       cy.contains(
         "featuredlaunches [data-test='launch-card-title']",
         seedName,
       ).click();
-      cy.contains("button", "access dashboard").click();
 
       /** App does not hydrate classes fast enough */
       getRouterViewViewModel(".adminContainer").then((adminDashboard) => {
         adminDashboard;
         cy.waitUntil(() => adminDashboard.selectedSeed.classes.length !== 0)
       });
+    } else if (pathname.includes(SEED_DASHBOARD_PATH)) {
+      cy.contains("button", "access dashboard").click();
     }
+    // const adminDashboardUrl = `admin/seeds/dashboard/${seed.address}`;
+    // cy.visit(adminDashboardUrl);
   });
-
-  // const adminDashboardUrl = `admin/seeds/dashboard/${seed.address}`;
-  // cy.visit(adminDashboardUrl);
 });

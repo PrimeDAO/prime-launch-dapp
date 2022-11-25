@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor/methods";
-import { E2E_ADDRESSES } from "../../fixtures/walletFixtures";
+import { E2E_ADDRESSES, INVERSED_E2E_ADDRESSES_MAP } from "../../fixtures/walletFixtures";
 import { Utils } from "../../../src/services/utils";
 import { E2eNavigation } from "../common/navigate";
 import { PAGE_LOADING_TIMEOUT } from "../common/test-constants";
@@ -107,6 +107,12 @@ Given("I'm connected to the app", () => {
 });
 
 Given("I change the address to {string}", (address: string) => {
+  /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: wallet.e2e.ts ~ line 110 ~ address', address)
+  if (E2E_ADDRESSES[address]) {
+    address = E2E_ADDRESSES[address]
+  }
+  /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: wallet.e2e.ts ~ line 112 ~ address', address)
+
   E2eWallet.currentWalletAddress = address;
   // @ts-ignore - Hack to access firestore inside Cypress
   Cypress.eventAggregator.publish("accountsChanged", address);

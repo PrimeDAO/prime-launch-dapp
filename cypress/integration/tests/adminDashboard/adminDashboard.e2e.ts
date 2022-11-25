@@ -9,6 +9,7 @@ import {
   e2eIndividualCap,
   e2eClassVestedFor,
   e2eClassCliffOf,
+  confirmedMsg,
 } from "../../common/e2eConstants";
 
 type ClassModalFields =
@@ -66,6 +67,19 @@ export class E2eClassModal {
 }
 
 export class E2eAdminDashboard {
+  public static getFundingContainer() {
+    return cy.get("[data-test='funding-container']");
+  }
+
+  public static fund() {
+    this.getFundingContainer().should("be.visible");
+    cy.get("[data-test='fund-button']").click();
+  }
+
+  public static goToSeedDashboard() {
+    cy.get("[data-test='go-to-dashboard']").click();
+  }
+
   static getCancelClasses() {
     return cy.get("[data-test='cancel-classes']");
   }
@@ -170,7 +184,6 @@ When("I confirm the Class addition", () => {
 });
 
 Then("the new Class should be added", () => {
-  const confirmedMsg = "Transaction was confirmed";
   E2eApp.getBanner(confirmedMsg).should("be.visible");
   E2eAdminDashboard.getConfirmClasses().should("have.class", "disabled");
   E2eAdminDashboard.getCancelClasses().should("have.class", "disabled");

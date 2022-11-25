@@ -16,6 +16,7 @@ import { delay } from "./utilities";
 axios.defaults.adapter = require("axios/lib/adapters/http");
 
 const baseUrl = "http://localhost:4000";
+
 async function createSeed(seedBuilder: SeedBuilder = MINIMUM_SEED) {
   const address = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
@@ -46,15 +47,16 @@ function adjustTimeForTesting(seedConfig: ISeedConfig) {
 
   // end date
   const oneDay = 24 * 60 * 60 * 1000;
-  const finalEndDate = new Date(highestStartDate + oneDay).toISOString();
+  const endDateWithBuffer = highestStartDate + oneDay;
+  const finalEndDate = new Date(endDateWithBuffer).toISOString();
   seedConfig.launchDetails.endDate = finalEndDate;
 
   return seedConfig;
 }
 
 export class E2eApi {
-  public static async createSeed() {
-    const response = await createSeed();
+  public static async createSeed(seedBuilder?: SeedBuilder) {
+    const response = await createSeed(seedBuilder);
     return response;
   }
 
@@ -89,4 +91,4 @@ async function run() {
   await delay(500);
   await E2eApi.addClassToSeed(seedId, CLASS_3_WITH_ALLOWLISTED_ADDRESSES);
 }
-run();
+// run();
