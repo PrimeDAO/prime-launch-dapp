@@ -566,7 +566,9 @@ export class Seed implements ILaunch {
       this.hasEnoughProjectTokens =
         this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
 
-      await this.hydrateUserSeedV2();
+      if (this.ethereumService.defaultAccountAddress) {
+        await this.hydrateUserSeedV2();
+      }
 
       this.version = SeedVersions.v2;
     }
@@ -772,7 +774,9 @@ export class Seed implements ILaunch {
       this.hasEnoughProjectTokens =
         this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
 
-      await this.hydrateUserSeedV1();
+      if (this.ethereumService.defaultAccountAddress) {
+        await this.hydrateUserSeedV1();
+      }
 
       this.version = SeedVersions.v1;
     }
@@ -790,11 +794,11 @@ export class Seed implements ILaunch {
 
   private async hydrateUser(): Promise<void> {
     if (isNetwork(Networks.Mainnet)) {
-      this.hydrateUserSeedV1();
+      await this.hydrateUserSeedV1();
       return;
     }
 
-    this.hydrateUserSeedV2();
+    await this.hydrateUserSeedV2();
   }
 
   private async hydrateUserSeedV2(): Promise<void> {
