@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-console */
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import {
   BaseProvider,
   JsonRpcFetchFunc,
@@ -20,6 +20,7 @@ import {
 } from "./EthereumService";
 import { E2E_ADDRESSES, E2E_ADDRESSES_PRIVATE_KEYS, INVERSED_E2E_ADDRESSES_MAP } from "./../../cypress/fixtures/walletFixtures";
 import { ConsoleLogService } from "./ConsoleLogService";
+import { getAddress } from "ethers/lib/utils";
 
 @autoinject
 export class EthereumServiceTesting {
@@ -50,6 +51,7 @@ export class EthereumServiceTesting {
   }
 
   public initialize(network: AllowedNetworks): void {
+    /* prettier-ignore */ console.log(">>>> B >>>> ~ file: EthereumServiceTesting.ts ~ line 54 ~ initialize");
     if (!network) {
       throw new Error("Ethereum.initialize: `network` must be specified");
     }
@@ -69,6 +71,11 @@ export class EthereumServiceTesting {
       });
       this.blockSubscribed = true;
     }
+
+    // @ts-ignore
+    window.Testing = {
+      changeAccount: this.changeAccount,
+    };
   }
 
   private chainIdByName = new Map<AllowedNetworks, number>([
@@ -78,6 +85,22 @@ export class EthereumServiceTesting {
     [Networks.Celo, 42220],
     [Networks.Alfajores, 44787],
   ]);
+
+  private async getCurrentAccountFromProvider(provider: Web3Provider): Promise<Signer | string> {
+    let account: Signer | string;
+    if (Signer.isSigner(provider)) {
+      account = provider;
+    } else {
+      const accounts = await provider.listAccounts();
+
+      if (accounts) {
+        account = getAddress(accounts[0]);
+      } else {
+        account = null;
+      }
+    }
+    return account;
+  }
 
   private async fireAccountsChangedHandler(account: Address) {
     console.info(`account changed: ${account}`);
@@ -91,6 +114,11 @@ export class EthereumServiceTesting {
     console.info(`disconnected: ${error?.code}: ${error?.message}`);
     this.eventAggregator.publish("Network.Changed.Disconnect", error);
   }
+
+  /**
+   * signer or address
+   */
+  private defaultAccount: Signer | Address;
 
   public getDefaultSigner() {
     return {
@@ -151,6 +179,33 @@ export class EthereumServiceTesting {
 
   private async setProvider(): Promise<void> {
     const account = localStorage.getItem("PRIME_E2E_ADDRESS");
+    this.setWalletProvider(account);
+
+    let address = localStorage.getItem("PRIME_E2E_ADDRESS");
+    if (address === "null") {
+      address = null;
+    } else if (address === "undefined") {
+      address = undefined;
+    }
+
+    if (address === null || address === undefined) return;
+
+    this.defaultAccount = await this.getCurrentAccountFromProvider(this.walletProvider);
+    this.defaultAccountAddress = address;
+    this.fireAccountsChangedHandler(address);
+
+    /**
+     * Simulate account changed from Metamask
+        this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
+     */
+    this.eventAggregator.subscribe("accountsChanged", async (account) => {
+      this.defaultAccount = await this.getCurrentAccountFromProvider(this.walletProvider);
+      this.defaultAccountAddress = account;
+      this.fireAccountsChangedHandler(account);
+    });
+  }
+
+  private setWalletProvider(account: string) {
     const mockFetchFunc: JsonRpcFetchFunc = (method: string) => {
       let payload;
       switch (method) {
@@ -168,32 +223,12 @@ export class EthereumServiceTesting {
     const walletProvider = new ethers.providers.Web3Provider(mockFetchFunc);
 
     this.walletProvider = walletProvider;
-
+    // debugger;
     this.walletProvider.lookupAddress = () => Promise.resolve("");
-
-    let address = localStorage.getItem("PRIME_E2E_ADDRESS");
-    if (address === "null") {
-      address = null;
-    } else if (address === "undefined") {
-      address = undefined;
-    }
-
-    if (address === null || address === undefined) return;
-
-    this.defaultAccountAddress = address;
-    this.fireAccountsChangedHandler(address);
-
-    /**
-     * Simulate account changed from Metamask
-        this.web3ModalProvider.on("accountsChanged", this.handleAccountsChanged);
-     */
-    this.eventAggregator.subscribe("accountsChanged", (account) => {
-      this.defaultAccountAddress = account;
-      this.fireAccountsChangedHandler(account);
-    });
   }
 
   public disconnect(error: { code: number; message: string }): void {
+    this.defaultAccount = undefined;
     this.defaultAccountAddress = undefined;
     this.fireAccountsChangedHandler(null);
     this.walletProvider = undefined;
@@ -286,6 +321,11 @@ export class EthereumServiceTesting {
      * returns the address if ens already is an address
      */
     return this.walletProvider?.resolveName(ens).catch(() => null); // is neither address nor ENS
+  }
+
+
+  private changeAccount = (address: string) => {
+    this.eventAggregator.publish("accountsChanged", address);
   }
 }
 
