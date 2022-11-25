@@ -88,10 +88,10 @@ export class AddClassModal {
       message = "Please enter a value for Class Purchase limit that is lower or equal to the Funding Tokens Maximum value";
     } else if (!this.class.individualCap) {
       message = "Please enter a value for project token purchase limit";
-    } else if (this.class.individualCap.gt(hardCap)) { /* ⚠️ IndividualCap ≤ HardCAP */
-      message = "Please enter a value for Project token Purchase limit that is lower or equal to the Funding Tokens Maximum";
     } else if (this.class.individualCap.gt(this.class.classCap)) { /* ⚠️ IndividualCap ≤ ClassCAP */
       message = "Please enter a value for Project token Purchase limit that is lower or equal to the Class Purchase limit value";
+    } else if (this.class.individualCap.gt(hardCap)) { /* ⚠️ IndividualCap ≤ HardCAP */
+      message = "Please enter a value for Project token Purchase limit that is lower or equal to the Funding Tokens Maximum";
     } else if (this.class.classVestingDuration === null || this.class.classVestingDuration === undefined) {
       message = "Please enter a value for \"Project tokens vested for\" ";
     } else if (this.class.classVestingCliff === null || this.class.classVestingCliff === undefined) {
