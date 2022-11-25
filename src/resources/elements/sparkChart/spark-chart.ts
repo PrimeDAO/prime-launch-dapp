@@ -79,13 +79,13 @@ export class SparkChart {
         vertLine: {
           visible: true,
           width: 1,
-          color: "#98979b", // $Neutral02
+          color: "#9398A8", // $Neutral02
           style: 0,
         },
         horzLine: {
           visible: true,
           width: 1,
-          color: "#98979b", // $Neutral02
+          color: "#9398A8", // $Neutral02
           style: 0,
         },
         mode: CrosshairMode.Magnet,

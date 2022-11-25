@@ -1,14 +1,14 @@
-<template bindable="checked, toggle, disabled">
+<template bindable="checked, toggle, disabled, showDescription">
   <div class="infoInput">
     <div class="labeledQuestion">
       <label for="permissionedToggle">Set Permissioned SEED</label>
       <div class="questionMark">
         <question-mark allow-html
-          text="TODO">
+          text="A Permissioned Seed is a seed with an allowlist and only provided addresses can contribute to it. A Permissionless Seed does not require an allowlist and anybody can contribute to it.">
         </question-mark>
       </div>
     </div>
-    <p class="toggle-description">SEED is permissioned..</p>
+    <p if.bind="showDescription !== 'false'" class="toggle-description">Please toggle if you are planning to use an allowlist.</p>
 
     <div class="checkboxContainer ${!checked ? 'isInactive' : ''}"
       click.delegate="toggle()">

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "general": {
-      "projectName": "25 - Celo",
+      "projectName": "25 - Celo - Test",
       "customLinks": [],
       "projectWebsite": "https://www.prime.xyz/",
       "whitepaper": "https://launch.prime.xyz/",
@@ -45,8 +45,8 @@
           "id": "celo-dollar",
           "price": 0.988245
       },
-      "startDate": "2022-11-18T13:06:00.000Z",
-      "endDate": "2022-11-21T00:00:00.000Z",
+      "startDate": "2022-11-25T12:48:00.000Z",
+      "endDate": "2022-11-26T00:00:00.000Z",
       "adminAddress": "0xB86fa0cfEEA21558DF988AD0ae22F92a8EF69AC1",
       "legalDisclaimer": "",
       "geoBlock": false,
