@@ -139,7 +139,7 @@ export class ContractsService {
     } else {
       if (isLocalhostNetwork()) {
         const jsonSigner: JsonRpcProvider = this.ethereumService.readOnlyProvider as JsonRpcProvider;
-        signerOrProvider = jsonSigner.getSigner();
+        signerOrProvider = jsonSigner.getSigner(this.ethereumService.defaultAccountAddress ?? undefined);
       } else {
         signerOrProvider = this.ethereumService.readOnlyProvider;
       }
@@ -197,6 +197,7 @@ export class ContractsService {
   }
 
   public getContractAtAddress(contractName: ContractNames, address: Address): Contract & any {
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: ContractsService.ts ~ line 199 ~ contractName", contractName);
     return new ethers.Contract(
       address,
       ContractsService.getContractAbi(contractName),
