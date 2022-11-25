@@ -44,11 +44,11 @@
             <div class="fundingToken cell body hot"><img src.to-view="launch.fundingTokenInfo.logoURI"></img>${launch.fundingTokenInfo.symbol}</div>
             <div class="type cell body hot">${launch.launchType.toUpperCase()}</div>
             <div class="starts cell body hot">
-              <time-left launch.to-view="launch" hide-icons largest></time-left>
+              <time-left launch.to-view="launch" hide-icons largest contained></time-left>
             </div>
             <div class="whitelist cell body hot">
               <span if.to-view="launch.whitelisted" class="fa fa-check"></span>
-              <span else>N/A</span>
+              <span else></span>
             </div>
           </a>
         </template>
