@@ -15,9 +15,10 @@ import {
   EthereumService,
   Hash,
   IBlockInfo,
+  isLocalhostNetwork,
   Networks,
 } from "./EthereumService";
-import { E2E_ADDRESSES, E2E_ADDRESSES_PRIVATE_KEYS } from "./../../cypress/fixtures/walletFixtures";
+import { E2E_ADDRESSES, E2E_ADDRESSES_PRIVATE_KEYS, INVERSED_E2E_ADDRESSES_MAP } from "./../../cypress/fixtures/walletFixtures";
 import { ConsoleLogService } from "./ConsoleLogService";
 
 @autoinject
@@ -260,8 +261,19 @@ export class EthereumServiceTesting {
     }/${addressOrHash}`;
   }
 
+  /**
+   * returns ENS if the address maps to one
+   * @param address
+   * @returns null if there is no ENS
+   */
   public getEnsForAddress(address: Address): Promise<string> {
-    return this.walletProvider?.lookupAddress(address).catch(() => null);
+    if (isLocalhostNetwork()) {
+      return getLocalEnsMapping(address);
+
+    }
+
+    return this.readOnlyProvider?.lookupAddress(address)
+      .catch(() => null);
   }
 
   /**
@@ -276,3 +288,8 @@ export class EthereumServiceTesting {
     return this.walletProvider?.resolveName(ens).catch(() => null); // is neither address nor ENS
   }
 }
+
+function getLocalEnsMapping(address: Address) {
+  return Promise.resolve(INVERSED_E2E_ADDRESSES_MAP[address]);
+}
+

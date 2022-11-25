@@ -13,6 +13,7 @@ import { formatUnits, getAddress, parseUnits } from "ethers/lib/utils";
 import { DisclaimerService } from "services/DisclaimerService";
 import { Utils } from "services/utils";
 import type { Address } from "types/types";
+import { INVERSED_E2E_ADDRESSES_MAP } from "../../cypress/fixtures/walletFixtures";
 
 interface IEIP1193 {
   on(eventName: "accountsChanged", handler: (accounts: Array<Address>) => void);
@@ -469,6 +470,10 @@ export class EthereumService {
    * @returns null if there is no ENS
    */
   public getEnsForAddress(address: Address): Promise<string> {
+    if (isLocalhostNetwork()) {
+      return getLocalEnsMapping(address);
+    }
+
     return this.readOnlyProvider?.lookupAddress(address)
       .catch(() => null);
   }
@@ -734,3 +739,7 @@ export const fromWei = (weiValue: BigNumberish, decimals: string | number = 18):
 };
 
 export const NULL_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
+
+function getLocalEnsMapping(address: Address) {
+  return Promise.resolve(INVERSED_E2E_ADDRESSES_MAP[address]);
+}
