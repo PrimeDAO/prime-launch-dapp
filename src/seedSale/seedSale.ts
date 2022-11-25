@@ -273,10 +273,12 @@ export class SeedSale {
     return disable;
   }
 
-  @computedFrom("userFundingTokenAllowance", "fundingTokenToPay")
+  @computedFrom("userFundingTokenAllowance", "fundingTokenToPay", "maxUserCanPay")
   get lockRequired(): boolean {
-    return this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0") &&
-      this.maxUserCanPay.gte(this.fundingTokenToPay ?? "0"); }
+    const notEnoughAllowance = this.userFundingTokenAllowance?.lt(this.fundingTokenToPay ?? "0");
+    const notEnoughBalance = this.maxUserCanPay.gte(this.fundingTokenToPay ?? "0");
+    return notEnoughAllowance && notEnoughBalance;
+  }
 
   @computedFrom("seed", "ethereumService.defaultAccountAddress")
   private get seedDisclaimerStatusKey() {
