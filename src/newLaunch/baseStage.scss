@@ -38,9 +38,8 @@
 
 .content-classes {
   display: grid;
-  grid-template-columns: 1fr 1.7fr;
-  margin-left: 100px;
-  padding-top: 32px;
+  grid-template-columns: 1.5fr 2fr;
+  margin-top: 32px;
 }
 
 //#footer-date-content {
@@ -364,7 +363,7 @@
 }
 
 .content-classes .infoContainer {
-  padding: 0 0 0 24px;
+  padding: 0;
 }
 
 .page.stageContainer, .content-classes {
