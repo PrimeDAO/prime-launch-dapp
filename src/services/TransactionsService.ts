@@ -4,6 +4,7 @@ import { TransactionResponse, TransactionReceipt } from "@ethersproject/provider
 import { EventAggregator } from "aurelia-event-aggregator";
 import { autoinject } from "aurelia-framework";
 import { EthereumService, Hash } from "services/EthereumService";
+import { EventConfigException } from "./GeneralEvents";
 
 @autoinject
 export default class TransactionsService {
@@ -28,11 +29,15 @@ export default class TransactionsService {
       this.eventAggregator.publish("transaction.confirmed", { message: "Transaction was confirmed", receipt });
       return receipt;
     } catch (ex) {
+      let finalEx = ex;
       const balancerError = BalancerService.tryParseErrorCode(ex?.error?.message);
       if (balancerError) {
-        ex.error.message = balancerError;
+        finalEx.error.message = balancerError;
+      } else if (ex?.data?.message) {
+        const exMessage = ex.data.message;
+        finalEx = new EventConfigException(exMessage, ex);
       }
-      this.eventAggregator.publish("transaction.failed", ex);
+      this.eventAggregator.publish("transaction.failed", finalEx);
       return null;
     }
   }

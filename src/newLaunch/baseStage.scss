@@ -37,11 +37,9 @@
 }
 
 .content-classes {
-  border-top: 1px solid #a258a7;
   display: grid;
-  grid-template-columns: 1fr 1.7fr;
-  margin-left: 100px;
-  padding-top: 32px;
+  grid-template-columns: 1.5fr 2fr;
+  margin-top: 32px;
 }
 
 //#footer-date-content {
@@ -231,6 +229,23 @@
   border-radius: 16px;
   padding: 24px;
   min-width: 640px;
+  
+  .content-block {
+    .form-content {
+      
+      .numeric-input-style {
+        background-color: $BG04;
+      }
+
+      permissoned {
+        .toggle-description {
+          color: $Neutral03;
+          margin: 10px 0;
+        }
+
+      }
+    }
+  }
 
   a {
     font-family: Aeonik;
@@ -348,11 +363,10 @@
 }
 
 .content-classes .infoContainer {
-  padding: 0 0 0 24px;
+  padding: 0;
 }
 
 .page.stageContainer, .content-classes {
-  margin-bottom: 130px;
   &.stage1 {
     .infoContainer {
       .infoInput {
@@ -445,7 +459,7 @@
       }
 
       .csvUploadPara {
-        color: $Neutral02;
+        color: $Neutral03;
         margin: 10px 0;
       }
 
@@ -748,7 +762,7 @@
           flex-flow: column;
 
           .fundingDescrp {
-            color: $Neutral02;
+            color: $Neutral03;
             max-width: 75%;
             margin: 0 0 15px 0;
           }
@@ -829,7 +843,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: $BG01;
+          background-color: $BG04;
           border: 1px solid $Border01;
           border-left: 0px;
           border-top-right-radius: 10px;
@@ -845,8 +859,8 @@
       .seedTipping {
         width: 104px;
         margin-bottom: 80px;
-
         input {
+          background-color: $BG04;
           width: 57px;
         }
         > div {
