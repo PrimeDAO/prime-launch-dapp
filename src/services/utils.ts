@@ -126,7 +126,17 @@ export class Utils {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static extractExceptionMessage(ex: any): string {
-    return ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex;
+    const errorHttpResponseBody = ex.body;
+
+    let messageFromBody;
+    try {
+      messageFromBody = JSON.parse(errorHttpResponseBody).error;
+    } catch (error) {
+      // swallow
+    }
+
+    const extracted = messageFromBody ?? ex?.error?.message ?? ex?.reason ?? ex?.message ?? ex;
+    return extracted;
   }
 
   public static allowableNumericInput(e: KeyboardEvent): boolean {
