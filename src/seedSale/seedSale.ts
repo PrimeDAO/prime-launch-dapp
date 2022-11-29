@@ -193,10 +193,20 @@ export class SeedSale {
   }
 
   @computedFrom("fundingTokenToPay", "seed.fundingTokensPerProjectToken")
-  get projectTokenReward(): number {
-    return (this.seed?.fundingTokensPerProjectToken > 0) ?
-      (this.numberService.fromString(fromWei(this.fundingTokenToPay ?? "0", this.seed.fundingTokenInfo.decimals))) / this.seed?.fundingTokensPerProjectToken
-      : 0;
+  get projectTokenReward(): string {
+    const reward =
+      this.seed?.fundingTokensPerProjectToken > 0
+        ? this.numberService.fromString(
+          fromWei(
+            this.fundingTokenToPay ?? "0",
+            this.seed.fundingTokenInfo.decimals,
+          ),
+        ) / this.seed?.fundingTokensPerProjectToken
+        : 0;
+
+    const rewardString = this.numberService.toString(reward, {thousandSeparated: true, mantissa: 1 });
+
+    return rewardString;
   }
 
   /** TODO: don't use current balance */
