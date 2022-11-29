@@ -159,8 +159,12 @@
                       </tr>
                       <tr data-test="class-row" repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
                         <td data-test="class-name">${class.className}</td>
-                        <td data-test="class-cap"><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
-                        <td data-test="individual-cap"><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="class-cap"><div class="table__center-cell">
+                          <formatted-number value.bind="class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+                        </div></td>
+                        <td data-test="individual-cap"><div class="table__center-cell">
+                          <formatted-number value.bind="class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+                        </div></td>
                         <td data-test="class-vested"><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td if.bind="!disableClassInteraction">
                           <div data-test="edit-class-button" class="table__center-cell" if.bind="!isMinting[$index]">
