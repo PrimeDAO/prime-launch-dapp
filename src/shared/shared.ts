@@ -1,12 +1,32 @@
 import { BigNumberish, BigNumber } from "ethers";
-import { parseUnits } from "ethers/lib/utils";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 
 import { ISeedConfig } from "../newLaunch/seed/config";
 import { Utils } from "../services/utils";
 import { Address, ITokenInfo } from "../types/types";
 
 export const DEFAULT_DECIMALS = 18;
+export const ONE_SECONDS_IN_MILLISECONDS = 1000;
 export const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+export const ONE_DAY_IN_MILLISECONDS = 60 * 60 * 24 * ONE_SECONDS_IN_MILLISECONDS;
+
+export function dayToMilliSeconds(numOfDays: number): number {
+  const asMillis = numOfDays * ONE_DAY_IN_MILLISECONDS;
+  return asMillis;
+}
+
+export function dayToSeconds(numOfDays: number): number {
+  const asMillis = numOfDays * ONE_DAY_IN_SECONDS;
+  return asMillis;
+}
+
+export function secondsToMilliSeconds(numOfSeconds: number): number {
+  const asMillis = numOfSeconds * ONE_SECONDS_IN_MILLISECONDS;
+  return asMillis;
+}
+
+export const TEN_SECONDS = secondsToMilliSeconds(10);
+
 
 
 /**
