@@ -13,7 +13,7 @@
     <div class="seed-info section row">
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div class="countdown">
+            <div data-test="seed-countdown" class="countdown">
               <time-left if.bind="seed" launch.to-view="seed"></time-left>
             </div>
             <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
@@ -127,7 +127,7 @@
         </div>
 
         <!-- ================ Section Three ================ -->
-        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
+        <div data-test="claim-container" if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark text="Many projects will lock or vest your tokens over some period of time. Here you may claim fully vested tokens as well as see which tokens are still pending depending on the project's vesting schedule"></question-mark>
           </div>
@@ -150,7 +150,7 @@
                   id=""
                 >
                 </numeric-input>
-                <div class="maxIcon ${(connected && (seed.claimingIsOpen || seed.userCanClaim)) ? '' : 'disabled'}" click.delegate="handleMaxClaim()">
+                <div data-test="max-claim-button" class="maxIcon ${(connected && (seed.claimingIsOpen || seed.userCanClaim)) ? '' : 'disabled'}" click.delegate="handleMaxClaim()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -188,7 +188,7 @@
           <div class="text">
             Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
           </div>
-          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
+          <button data-test="claim-button" class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
             claim
           </button>
         </div>

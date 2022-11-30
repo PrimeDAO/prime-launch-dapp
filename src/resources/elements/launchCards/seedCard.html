@@ -1,5 +1,6 @@
 <template>
   <a
+    data-test="seed-card"
     class="launchSummaryContainer ${launch.canGoToDashboard ? 'hot' : '' }"
     ref="container"
     href.to-view="launch.canGoToDashboard ? `seed/${launch.address}` : `${router.currentInstruction.fragment}`"
