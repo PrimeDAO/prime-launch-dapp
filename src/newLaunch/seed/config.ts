@@ -8,7 +8,7 @@ import {
   LaunchConfig,
   IClass,
 } from "newLaunch/launchConfig";
-import { Address } from "types/types";
+import { Address, SeedVersions } from "types/types";
 
 export interface ISeedDetails extends ILaunchDetails {
   /**
@@ -41,7 +41,7 @@ export interface ISeedConfig extends ILaunchConfig {
 }
 
 export class SeedConfig extends LaunchConfig implements ISeedConfig {
-  public version: string;
+  public version = SeedVersions.v2;
   public general: IGeneral;
   public projectDetails:IProjectDetails;
   public tokenDetails: ITokenDetails;
@@ -51,6 +51,7 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
 
   clearState(): void {
     super.clearState();
+    this.version = SeedVersions.v2;
     this.launchDetails.pricePerToken = null;
     this.launchDetails.fundingTarget = "";
     this.launchDetails.fundingMax = "";
