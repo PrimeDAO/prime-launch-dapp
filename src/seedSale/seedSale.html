@@ -5,7 +5,7 @@
       <div class="admin-container">
         <div class="admin-container__block">
           <div class="admin-container__block__title">Administration Dashboard</div>
-          <div class="admin-container__block__text">Access the Dashboard to carry out actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
+          <div class="admin-container__block__text">Access the Dashboard to carry out actions for your project such as funding your seed, managing your allowlist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
         </div>
         <button class="admin-container__button" click.delegate="onAdminButtonClick()">access dashboard</button>
       </div>
@@ -228,7 +228,7 @@
           Sorry, you are located in a country that is not able to participate.
         </div>
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
-          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
+          Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
         </div>
       </div>
 

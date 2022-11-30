@@ -104,16 +104,16 @@
             </div>-->
             <div class="featureContainer" if.bind="isLocalhostNetwork() && selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
-                Whitelist an account
+                Allowlist an account
               </div>
               <div class="featureDescription">
-                Add an account to the whitelist
+                Add an account to the allowlist
               </div>
               <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
                 <input value.bind="allowListClassId" placeholder="1" />
                 <div class="button1 small" click.delegate="addToWhiteList(allowListClassId)">
-                  Add to whitelist
+                  Add to allowlist
                 </div>
               </div>
             </div>
