@@ -304,7 +304,6 @@ export class SeedSale {
   async hydrateUserData(): Promise<void> {
     if (this.ethereumService.defaultAccountAddress) {
       this.userFundingTokenAllowance = await this.seed?.fundingTokenAllowance();
-      if (this.seed) this.targetClass = this.seed.usersClass;
     }
   }
 
@@ -379,12 +378,12 @@ export class SeedSale {
       this.seed = seed;
       this.userTokenBalance = this.maxUserTokenBalance;
       this.userUsdBalance = this.maxUserUsdBalance;
-      await this.hydrateUserData();
       //this.disclaimSeed();
 
-      /** Not connected, so just retunr */
+      /** Not connected, so just return */
       if (!this.accountAddress) return;
 
+      await this.hydrateUserData();
       await this.hydrateClassData(seed);
     } catch (ex) {
       this.eventAggregator.publish("handleException", new EventConfigException("Sorry, an error occurred", ex));
@@ -454,10 +453,10 @@ export class SeedSale {
 
     if (await this.disclaimSeed()) {
       this.seed.unlockFundingTokens(this.fundingTokenToPay)
-        .then((receipt) => {
+        .then(async (receipt) => {
           if (receipt) {
-            this.hydrateUserData();
-            this.hydrateClassData(this.seed);
+            await this.hydrateUserData();
+            await this.hydrateClassData(this.seed);
             // this.congratulationsService.show(`You have unlocked ${this.numberService.toString(fromWei(this.fundingTokenToPay, this.seed.fundingTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.fundingTokenInfo.symbol}.  The last step is to click the Contribute button!`);
           }
         });
@@ -500,6 +499,7 @@ export class SeedSale {
         const receipt = await this.seed.claim(this.projectTokenToReceive);
         if (receipt) {
           await this.hydrateUserData();
+          await this.hydrateClassData(this.seed);
           this.congratulationsService.show(`You have claimed ${this.numberService.toString(fromWei(this.projectTokenToReceive, this.seed.projectTokenInfo.decimals), { thousandSeparated: true })} ${this.seed.projectTokenInfo.symbol}`);
           this.projectTokenToReceive = null;
         }
@@ -510,9 +510,10 @@ export class SeedSale {
   async retrieve(): Promise<void> {
     if (this.seed.userCanRetrieve) {
       this.seed.retrieveFundingTokens()
-        .then((receipt) => {
+        .then(async (receipt) => {
           if (receipt) {
-            this.hydrateUserData();
+            await this.hydrateUserData();
+            await this.hydrateClassData(this.seed);
           }
         });
     }
