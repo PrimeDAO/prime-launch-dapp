@@ -17,7 +17,7 @@ axios.defaults.adapter = require("axios/lib/adapters/http");
 
 const baseUrl = "http://localhost:4000";
 
-async function createSeed(seedBuilder: SeedBuilder = MINIMUM_SEED) {
+export async function createSeed(seedBuilder: SeedBuilder = MINIMUM_SEED) {
   const address = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
   let seedConfig = seedBuilder.seed;

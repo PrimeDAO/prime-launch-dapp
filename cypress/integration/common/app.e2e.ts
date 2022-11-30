@@ -1,4 +1,5 @@
 import { confirmedMsg } from "./e2eConstants";
+import { E2eSeeds } from "./seed.e2e";
 
 export class E2eApp {
   public static getBanner(bannerMessage: string) {

@@ -4,6 +4,7 @@ import { PRIME_PAYMENTS_URL } from "../../../src/configurations/tokenLists";
 import { E2eSeeds } from "./seed.e2e";
 import { getRouterViewViewModel } from "./aurelia.e2e";
 import { HOMEPAGE_PATH, SEED_DASHBOARD_PATH } from "./e2eConstants";
+import { E2eSeedCards } from "./ui-elements/e2e-seedCard";
 
 export class E2eNavigation {
   public static SEED_DASHBOARD_URL = "seed";
@@ -39,11 +40,12 @@ export class E2eNavigation {
   /**
    * SEED
    */
-  public static navigateToSeedFromHomePage(seedName: string) {
-    return cy.contains(
-      "featuredlaunches [data-test='launch-card-title']",
-      seedName,
-    ).click();
+  public static navigateToSeedFromHomePage(seedId: string) {
+    E2eSeedCards.getSeedCardById(seedId).click()
+    // return cy.contains(
+    //   "featuredlaunches [data-test='launch-card-title']",
+    //   seedName,
+    // ).click();
   }
 }
 
@@ -99,6 +101,8 @@ Given("I navigate to the Admin Dashboard", () => {
         "featuredlaunches [data-test='launch-card-title']",
         seedName,
       ).click();
+
+      cy.contains("button", "access dashboard").click();
 
       /** App does not hydrate classes fast enough */
       getRouterViewViewModel(".adminContainer").then((adminDashboard) => {

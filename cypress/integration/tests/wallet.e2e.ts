@@ -1,10 +1,14 @@
 import "reflect-metadata";
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor/methods";
-import { E2E_ADDRESSES, INVERSED_E2E_ADDRESSES_MAP } from "../../fixtures/walletFixtures";
-import { Utils } from "../../../src/services/utils";
+import { E2E_ADDRESSES } from "../../fixtures/walletFixtures";
 import { E2eNavigation } from "../common/navigate";
 import { PAGE_LOADING_TIMEOUT } from "../common/test-constants";
 import { E2eSeeds } from "../common/seed.e2e";
+import { INDIVIDUAL_CAP } from "../common/builders/E2eSeedBuilder";
+
+import { Utils } from "../../../src/services/utils";
+import { fromWei } from "../../../src/shared/shared";
+import { NumberService } from "../../../src/services/NumberService";
 
 const UserTypes = ["Anonymous", "Connected Public", "Main Testing"] as const;
 export type UserType = typeof UserTypes[number];
@@ -109,7 +113,7 @@ Given("I'm connected to the app", () => {
 Given("I change the address to {string}", (address: string) => {
   /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: wallet.e2e.ts ~ line 110 ~ address', address)
   if (E2E_ADDRESSES[address]) {
-    address = E2E_ADDRESSES[address]
+    address = E2E_ADDRESSES[address];
   }
   /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: wallet.e2e.ts ~ line 112 ~ address', address)
 
@@ -217,3 +221,47 @@ function givenImAConnectedToMainTestingAccount() {
     }
   });
 }
+
+Then(
+  "the address should have the Individual Cap transferred to it",
+  async (amount: number) => {
+    const numberService = new NumberService();
+    const seed = E2eSeeds.currentSeed;
+
+    const balanceBigNumber = await seed.projectTokenContract.balanceOf(
+      E2eWallet.currentWalletAddress,
+    );
+    const balanceString = fromWei(
+      balanceBigNumber,
+      seed.projectTokenInfo.decimals,
+    );
+    const balance = numberService.fromString(balanceString);
+
+    const individualCapString = fromWei(
+      INDIVIDUAL_CAP,
+      seed.fundingTokenInfo.decimals,
+    ); // TODO probably have to account for exchange ration
+    const individualCap = numberService.fromString(individualCapString)
+
+    const expected = balance >= individualCap;
+    expect(expected, `Balance: ${balance} >= Indiv Cap: ${individualCap}`).to.be.true;
+  },
+);
+
+Then(
+  /^the address should have "(\d+)" transferred to it$/,
+  async (amount: number) => {
+    const seed = E2eSeeds.currentSeed;
+    const balanceBigNumber = await seed.projectTokenContract.balanceOf(
+      E2eWallet.currentWalletAddress,
+    );
+    const balanceString = fromWei(
+      balanceBigNumber,
+      seed.projectTokenInfo.decimals,
+    );
+    const numberService = new NumberService();
+    const balance = numberService.fromString(balanceString);
+    const expected = balance >= amount;
+    expect(expected, `Balance: ${balance} >= Amount: ${amount}`).to.be.true;
+  },
+);

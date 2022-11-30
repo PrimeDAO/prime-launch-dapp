@@ -132,8 +132,8 @@ export class E2eAdminDashboard {
 
 When("I edit a Class", () => {
   E2eAdminDashboard.editClass();
-  const newValue = "newnew";
-  E2eClassModal.addToField("class-name", newValue);
+  const newValue = "123";
+  E2eClassModal.addToField("class-purchase-limit", newValue);
   E2eClassModal.save();
   E2eAdminDashboard.getFirstClassRow().within(() => {
     cy.get("[data-test='class-name']")

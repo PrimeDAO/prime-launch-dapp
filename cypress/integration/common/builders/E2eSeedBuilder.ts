@@ -7,9 +7,9 @@ import { BigNumber } from "ethers";
 import { getRandomId } from "../utilities";
 import { e2eClassName } from "../e2eConstants";
 
-const FUNDING_TARGET = "20000000000000000000";
-const FUNDING_MAX = "34500000000000000000";
-const INDIVIDUAL_CAP = "15000000000000000000";
+export const FUNDING_TARGET = "20000000000000000000"; // 20
+export const FUNDING_MAX = "34500000000000000000"; // 34.5
+export const INDIVIDUAL_CAP = "15000000000000000000"; // 15
 
 /**
  * **************************
@@ -163,13 +163,19 @@ export class SeedClassesBuilder {
     classAllowlists: [defaultSeedClass.allowList],
   };
 
-  withClassName(className: string): SeedClassesBuilder {
+  public withClassName(className: string): SeedClassesBuilder {
     this.seedClass.classNames = [formatBytes32String(className)];
     return this;
   }
 
-  withAllowlists(allowList: string[]): SeedClassesBuilder {
+  public withAllowlists(allowList: string[]): SeedClassesBuilder {
     this.seedClass.classAllowlists = [new Set(allowList)];
+    return this;
+  }
+
+  public with(data?: Partial<IAddClassParams>): SeedClassesBuilder {
+    // @ts-ignore Spread types may only be created from object types.ts(2698) --> works in ts 4.6.2
+    this.seedClass = { ...this.seedClass, ...data };
     return this;
   }
 

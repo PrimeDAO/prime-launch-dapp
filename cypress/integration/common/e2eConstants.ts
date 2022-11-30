@@ -12,3 +12,5 @@ export const confirmedMsg = "Transaction was confirmed";
 export const HOMEPAGE_PATH = "/";
 export const SEED_DASHBOARD_PATH = "seed/";
 export const SEED_ADMIN_DASHBOARD_PATH = "seeds/dashboard";
+
+export const UI_TIMEOUT = 25000;

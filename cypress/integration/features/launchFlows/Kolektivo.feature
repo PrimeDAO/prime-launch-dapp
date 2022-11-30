@@ -1,39 +1,57 @@
 Feature: Kolektivo Launch
-  Background: Admin is in Admin Dashboard page
-
-  @focus
-  Scenario: Seed setup - Contributing
-    Given 1 seed
-    And 1 permissioned seed
-    And the Seed has 2 Classes
+  Background:
     And I navigate to the Home page
     And I'm the Admin of the Seed
     And I'm connected to the app
 
-    Given I navigate to the Seed "MINIMUM_PERMISSIONED_SEED_WITH_CLASS"
+  # @focus
+  Scenario: Seed setup - Contributing
+    And 1 permissioned seed named "_27_KOLEKTIVO_CELO_TEST_SEED"
+    And the Seed has 1 Class named "_27_KOLEKTIVO_SEED_CLASS"
+    And I navigate to the Home page
+    And I'm the Admin of the Seed
+    And I'm connected to the app
+
+    Given I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
     And I navigate to the Admin Dashboard
     And I fund the Seed
 
-    # Given I navigate to the Home page
-    # And I change the address to "Class1_User1"
-    # And I'm connected to the app
-    # And I navigate to the Seed "MINIMUM_PERMISSIONED_SEED_WITH_CLASS"
-
-  @focus
+  # @focus
   Scenario: Contribute - Admin
-    Given I navigate to the Seed "MINIMUM_PERMISSIONED_SEED_WITH_CLASS"
-    And I wait 6 seconds
-    And I input the max amount
+    Given I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
+    And I input the max amount to contribute
+    Then the max amount should be "200,000.0"
     And I unlock the amount
     And I contribute the amount
 
   @focus
   Scenario: Contribute - Class1_User1
+    And I change the address to "Class1_User1"
+    And I'm connected to the app
+    And I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
+    And I input the max amount to contribute
+    Then the max amount should be "50,000.0"
+    And I unlock the amount
+    And I contribute the amount
+
+  # @focus
+  Scenario: Contribute - Class1_User2
+    Given I navigate to the Home page
+    And I change the address to "Class1_User2"
+    And I'm connected to the app
+    And I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
+    And I input the max amount to contribute
+    Then the max amount should be "4.5"
+    And I unlock the amount
+    And I contribute the amount
+
+  # @focus
+  Scenario: Retrieving Funds - Class1_User1
     Given I navigate to the Home page
     And I change the address to "Class1_User1"
     And I'm connected to the app
-    And I navigate to the Seed "MINIMUM_PERMISSIONED_SEED_WITH_CLASS"
-    And I wait 5 seconds
-    And I input the max amount
-    And I unlock the amount
-    And I contribute the amount
+    And I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
+
+    And I input the max amount to claim
+    And I claim the amount
+    Then the address should have "15" transferred to it
