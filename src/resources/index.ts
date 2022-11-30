@@ -33,6 +33,7 @@ export function configure(config: FrameworkConfiguration): void {
     PLATFORM.moduleName("./value-converters/number"),
     PLATFORM.moduleName("./value-converters/ethwei"),
     PLATFORM.moduleName("./value-converters/date"),
+    PLATFORM.moduleName("./value-converters/secondToMillis"),
     PLATFORM.moduleName("./value-converters/timespan"),
     PLATFORM.moduleName("./value-converters/boolean"),
     PLATFORM.moduleName("./value-converters/secondsDays"),
