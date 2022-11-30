@@ -214,6 +214,11 @@
     color: $Neutral02;
   }
 
+  .tagGithub,
+  .tagReddit {
+    color: $Neutral02;
+  }
+
   .tagTwitter {
     @include logo("twitterTag.svg");
     height: 30px;

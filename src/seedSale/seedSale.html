@@ -301,31 +301,46 @@
             </div>
           </div>
         </div>
-        <div class="title heading heading2 mobileTitle">About ${seed.projectTokenInfo.name}</div>
+        <div class="title heading heading3 mobileTitle">About ${seed.metadata.general.projectName}</div>
         <p class="description2">
           ${seed.metadata.projectDetails.summary}
         </p>
         <div class="tagsContainer">
           <div class="tagContainer">
             <div class="tagWorld"></div>
-            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank">Website</a>
+            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank" rel="noopener noreferrer">Website</a>
           </div>
           <div class="tagContainer">
-            <div class="tagWorld"></div>
-            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank">Whitepaper</a>
+            <div class="tagPDF"></div>
+            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank" rel="noopener noreferrer">Whitepaper</a>
           </div>
+          <div class="tagContainer">
+            <div class="tagGithub fab fa-github fa-lg"></div>
+            <a class="tagText" href="${seed.metadata.general.github}" target="_blank" rel="noopener noreferrer">Github</a>
+          </div>
+
           <template repeat.for="link of seed.metadata.general.customLinks | sort:sortEvaluator">
             <div class="tagContainer">
-              <div class="tagWorld" if.bind="link.media === 'Website'"></div>
-              <div class="tagPDF" if.bind="link.media === 'Whitepaper'"></div>
               <div class="tagTwitter" if.bind="link.media === 'Twitter'"></div>
               <div class="tagTelegram" if.bind="link.media === 'Telegram'"></div>
               <div class="tagDiscord" if.bind="link.media === 'Discord'"></div>
+              <div class="tagReddit fab fa-reddit fa-lg" if.bind="link.media === 'Reddit'"></div>
+              <div class="tagSearch" if.bind="link.media === 'LinkedIn'"></div>
               <div class="tagSearch" if.bind="link.media === 'Etherscan'"></div>
               <div class="tagSearch" if.bind="link.media === 'Tokenomics Article'"></div>
-              <a class="tagText" href="${formatLink(link.url)}" target="_blank">${link.media}</a>
+              <a class="tagText" href="${formatLink(link.url)}" target="_blank" rel="noopener noreferrer">${link.media}</a>
             </div>
           </template>
+
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <a class="tagText" href.to-view="ethereumService.getEtherscanLink(seed.projectTokenInfo.address)" target="_blank" rel="noopener noreferrer">Project Token on Etherscan</a>
+          </div>
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <a class="tagText" href.to-view="ethereumService.getEtherscanLink(seed.admin)" target="_blank" rel="noopener noreferrer">Project Owner on Etherscan</a>
+          </div>
+
         </div>
       </div>
     </div>
