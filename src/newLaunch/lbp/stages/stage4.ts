@@ -34,7 +34,6 @@ export class Stage4 extends BaseStage<ILbpConfig> {
   lastCheckedFundingAddress: string;
   fundingSymbol: string;
   fundingIcon: string;
-  whitelist: Set<Address>;
   loadingWhitelist = false;
   lastWhitelistUrlValidated: string;
   tokenList: Array<ITokenInfo>;

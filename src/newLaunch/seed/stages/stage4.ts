@@ -159,7 +159,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
     // Save the admin address to wizard state in order to persist it after launchConfig state is cleared in stage7
     this.wizardState.launchAdminAddress = this.launchConfig.launchDetails.adminAddress;
     // TODO: Refactor after BE enables allowlists:
-    // this.wizardState.whiteList = this.launchConfig.launchDetails.whitelist;
     this.wizardState.launchStartDate = this.launchConfig.launchDetails.startDate;
   }
 
@@ -231,10 +230,6 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "Please enter a valid value for End Time (hh:mm in GMT)";
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
-    } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.whitelist, true)) {
-      message = "Please enter a valid URL for Whitelist";
-    } else if (!!this.launchConfig.launchDetails.whitelist && !(await this.whiteListService.getWhiteList(this.launchConfig.launchDetails.whitelist))) {
-      message = "Whitelist cannot be fetched or parsed. Please enter a URL to a whitelist that conforms to the given formatting rules";
     } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
     } else if (this.launchConfig.launchDetails.legalDisclaimer &&

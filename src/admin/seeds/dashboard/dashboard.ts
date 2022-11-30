@@ -166,10 +166,10 @@ export class SeedAdminDashboard {
     }
   }
 
-  async addWhitelist(): Promise<TransactionReceipt> {
-    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
-    return await this.selectedSeed.addWhitelist(whitelistAddress);
-  }
+  // async addWhitelist(): Promise<TransactionReceipt> {
+  //   const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
+  //   return await this.selectedSeed.addWhitelist(whitelistAddress);
+  // }
 
   connect(): void {
     this.ethereumService.ensureConnected();

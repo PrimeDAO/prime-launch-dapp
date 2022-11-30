@@ -53,19 +53,18 @@
               thousands-separated
             >
             </formatted-number>
-            ${launchConfig.launchConfig.fundingTokenInfo.symbol} </span
-          ><span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. This can all be done by
+            ${launchConfig.launchConfig.fundingTokenInfo.symbol}. This can all be done by
           connecting the ${wizardState.launchTypeTitle} Admin wallet to the
           <a href="/admin/${wizardState.launchType}s/dashboard">Admin Dashboard</a>.
 
           <p if.bind="wizardState.launchType === 'seed'">
-            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            After adding the funds the
             ${wizardState.launchTypeTitle} is initialized. The ${wizardState.launchTypeTitle} will automatically start
             ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.
           </p>
 
           <p else>
-            After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the
+            After adding the funds the
             ${wizardState.launchTypeTitle} will become available in the Prime Launch UI on the start date
             ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}. But please note
             that LBP swapping will be in a "paused" state until, as the LBP administrator, you unpause it to open up

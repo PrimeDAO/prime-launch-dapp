@@ -29,7 +29,6 @@ export interface ISeedDetails extends ILaunchDetails {
   individualCap: string,
   vestingPeriod: number,
   vestingCliff: number,
-  whitelist: string,
   isPermissoned: boolean,
   legalDisclaimer: string,
   allowList: Address[],
@@ -57,7 +56,6 @@ export class SeedConfig extends LaunchConfig implements ISeedConfig {
     this.launchDetails.fundingMax = "";
     this.launchDetails.vestingPeriod = null;
     this.launchDetails.vestingCliff = null;
-    this.launchDetails.whitelist = "";
     this.launchDetails.legalDisclaimer = "";
   }
 }
