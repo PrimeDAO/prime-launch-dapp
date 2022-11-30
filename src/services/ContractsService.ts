@@ -197,7 +197,6 @@ export class ContractsService {
   }
 
   public getContractAtAddress(contractName: ContractNames, address: Address): Contract & any {
-    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: ContractsService.ts ~ line 199 ~ contractName", contractName);
     return new ethers.Contract(
       address,
       ContractsService.getContractAbi(contractName),
