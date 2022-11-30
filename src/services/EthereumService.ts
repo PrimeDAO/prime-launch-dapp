@@ -720,23 +720,7 @@ export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.ta
   return is;
 }
 
-export { toWei } from "shared/shared";
-
-/**
- * @param weiValue
- * @param decimals Default is 18.  Can be decimal count or:
- *  "wei",
- *  "kwei",
- *  "mwei",
- *  "gwei",
- *  "szabo",
- *  "finney",
- *  "ether",
- * @returns
- */
-export const fromWei = (weiValue: BigNumberish, decimals: string | number = 18): string => {
-  return formatUnits(weiValue.toString(), decimals);
-};
+export { toWei, fromWei } from "shared/shared";
 
 export const NULL_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
 

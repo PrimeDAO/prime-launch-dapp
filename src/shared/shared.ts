@@ -33,6 +33,22 @@ export const toWei = (
   return parseUnits(ethValue.toString(), decimals);
 };
 
+/**
+ * @param weiValue
+ * @param decimals Default is 18.  Can be decimal count or:
+ *  "wei",
+ *  "kwei",
+ *  "mwei",
+ *  "gwei",
+ *  "szabo",
+ *  "finney",
+ *  "ether",
+ * @returns
+ */
+export const fromWei = (weiValue: BigNumberish, decimals: string | number = 18): string => {
+  return formatUnits(weiValue.toString(), decimals);
+};
+
 export class Shared {
   public static convertToContractSeedParam(
     config: ISeedConfig,
