@@ -186,7 +186,19 @@
             </div>
           </div>
           <div class="text">
-            Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
+            <template if.to-view="seed.incomplete">
+              This seed round is incomplete, hence there are no tokens to be claimed. You can retrieve from the section below any funding tokens that you may have contributed.
+            </template>
+            <template else>
+              <span if.to-view="targetClass.classVestingCliff">
+                Tokens can be claimed
+                <formatted-date tooltip="${targetClass.classVestingCliff} seconds">
+                  ${targetClass.classVestingCliff | secondToMillis | timespan:'days' }
+                </formatted-date>
+              </span>
+              <span else>Tokens can be immediately claimed</span>
+              after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
+            </template>
           </div>
           <button data-test="claim-button" class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
             claim
