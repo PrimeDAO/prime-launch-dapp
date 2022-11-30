@@ -1,6 +1,8 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
+
+    <!-- Access Dashboard -->
     <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">
       <div class="admin-container">
         <div class="admin-container__block">
@@ -10,7 +12,10 @@
         <button class="admin-container__button" click.delegate="onAdminButtonClick()">access dashboard</button>
       </div>
     </div>
+
+    <!-- Top row -->
     <div class="seed-info section row">
+      <!-- Seed name and description -->
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
             <div data-test="seed-countdown" class="countdown">
@@ -22,6 +27,8 @@
           ${seed.metadata.projectDetails.proposition}
         </p>
       </div>
+
+      <!-- Progress bar -->
       <div class="seed-info col-4">
         <div class="text-container">
           <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
@@ -46,6 +53,8 @@
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
+
+      <!-- Time -->
       <div if.bind="!seed.isDead" class="seed-info col-3 seed-info_time-left">
         <div class="title">
           <template if.bind="seed.isLive">TIME LEFT</template>
@@ -57,7 +66,10 @@
       </div>
     </div>
     <hr />
+
+    <!-- Bottom row -->
     <div class="seed-info section toppadding">
+      <!-- Contribute / Claim / Retrieve -->
       <div class="seed-info halfsection1">
         <!-- ================ Section Two ================ -->
         <div data-test="contribute-container" if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
@@ -224,15 +236,19 @@
           </button>
         </div>
 
+        <!-- Geoblock -->
         <div class="notWhitelisted" if.to-view="geoBlocked">
           Sorry, you are located in a country that is not able to participate.
         </div>
+
+        <!-- Allowlist -->
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
           Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
         </div>
       </div>
 
       <div class="seed-info halfsection2">
+        <!-- ================ Section One Eligility ================ -->
         <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
@@ -241,6 +257,8 @@
             Connect wallet
           </div>
         </div>
+
+        <!-- Your Class -->
         <div class="class-container" show.bind="accountAddress && seed.isV2()">
           <div class="class-container__blocks">
             <div class="class-container__block">
@@ -265,6 +283,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Targets and other -->
         <div class="table">
           <div class="row">
             <div class="col">
@@ -301,10 +321,14 @@
             </div>
           </div>
         </div>
+
+        <!-- About -->
         <div class="title heading heading3 mobileTitle">About ${seed.metadata.general.projectName}</div>
         <p class="description2">
           ${seed.metadata.projectDetails.summary}
         </p>
+
+        <!-- Links -->
         <div class="tagsContainer">
           <div class="tagContainer">
             <div class="tagWorld"></div>
