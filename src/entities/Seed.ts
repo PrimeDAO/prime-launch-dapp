@@ -361,11 +361,11 @@ export class Seed implements ILaunch {
 
   private async hydrate(): Promise<void> {
     if (isNetwork(Networks.Mainnet)) {
-      this.hydrateSeedV1();
+      await this.hydrateSeedV1();
       return;
     }
 
-    this.hydrateSeedV2();
+    await this.hydrateSeedV2();
   }
 
   private async hydrateSeedV2(): Promise<void> {
