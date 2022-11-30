@@ -804,6 +804,10 @@
         @media screen and (max-width: 570px) {
           height: 24px;
         }
+
+        .complete {
+          background: $Gradient07;
+        }
       }
 
       .info {
