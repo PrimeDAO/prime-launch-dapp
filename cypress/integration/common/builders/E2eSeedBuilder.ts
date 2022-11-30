@@ -77,7 +77,6 @@ const LAUNCH_DETAILS = {
   fundingMax: FUNDING_MAX,
   vestingPeriod: 0,
   vestingCliff: 0,
-  whitelist: "",
   individualCap: INDIVIDUAL_CAP,
   isPermissoned: false,
   seedTip: 0,

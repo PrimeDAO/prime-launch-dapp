@@ -78,7 +78,6 @@
         "fundingMax": "200000000000000000000000",
         "vestingPeriod": 63072000,
         "vestingCliff": 31536000,
-        "whitelist": "",
         "individualCap": "200000000000000000000000",
         "isPermissoned": true,
         "seedTip": 1.5
