@@ -1,7 +1,7 @@
 import { formatBytes32String } from "ethers/lib/utils";
 
 import { ONE_DAY_IN_SECONDS } from "../../../../src/shared/shared";
-import { IAddClassParams } from "../../../../src/types/types";
+import { IAddClassParams, SeedVersions } from "../../../../src/types/types";
 import { ISeedConfig } from "../../../../src/newLaunch/seed/config";
 import { BigNumber } from "ethers";
 import { getRandomId } from "../utilities";
@@ -89,7 +89,7 @@ export class SeedBuilder {
 
   // @ts-ignore
   public seed: ISeedConfig = {
-    version: "1.0.0",
+    version: SeedVersions.v2,
     general: GENERAL_DATA,
     projectDetails: PROJECT_DETAILS,
     tokenDetails: TOKEN_DETAILS,
