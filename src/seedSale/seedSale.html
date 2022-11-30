@@ -142,7 +142,7 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  disabled.to-view="!(connected && (seed.claimingIsOpen || seed.userCanClaim))"
+                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
                   value.bind="projectTokenToReceive"
                   decimals.bind="seed.projectTokenInfo.decimals"
                   class="withIcon"
@@ -150,7 +150,7 @@
                   id=""
                 >
                 </numeric-input>
-                <div data-test="max-claim-button" class="maxIcon ${(connected && (seed.claimingIsOpen || seed.userCanClaim)) ? '' : 'disabled'}" click.delegate="handleMaxClaim()">
+                <div data-test="max-claim-button" class="maxIcon ${(!(seed.claimingIsOpen && seed.userCanClaim)) ? 'disabled' : ''}" click.delegate="handleMaxClaim()">
                   <div class="iconText">
                     MAX
                   </div>
