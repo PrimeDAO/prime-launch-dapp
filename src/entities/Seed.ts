@@ -280,6 +280,11 @@ export class Seed implements ILaunch {
     return fundWithTip;
   }
 
+  @computedFrom("metadata.launchDetails.legalDisclaimer")
+  get hasLegalDisclaimer(): boolean {
+    return !!this.metadata.launchDetails.legalDisclaimer;
+  }
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
@@ -957,6 +962,7 @@ export class Seed implements ILaunch {
   }
 
   public claim(amount: BigNumber): Promise<TransactionReceipt> {
+    // debugger;
     return this.transactionsService.send(() => this.contract.claim(amount))
       .then(async (receipt) => {
         if (receipt) {
@@ -1090,7 +1096,9 @@ export class Seed implements ILaunch {
   }
 
   public fundingTokenAllowance(): Promise<BigNumber> {
-    return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+    const allowance = this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 1095 ~ allowance", allowance);
+    return allowance;
   }
 
   public async updateUserFundingTokenBalance(userAddress: Address): Promise<void> {
