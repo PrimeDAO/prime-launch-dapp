@@ -28,6 +28,8 @@ enum Phase {
   Confirming = "Confirming"
 }
 
+const SEEDS_PURCHASED_EVENT = "SeedsPurchased";
+
 @autoinject
 export class SeedSale {
   address: Address
@@ -380,6 +382,8 @@ export class SeedSale {
       this.userUsdBalance = this.maxUserUsdBalance;
       //this.disclaimSeed();
 
+      this.handleNewBlock(seed);
+
       /** Not connected, so just return */
       if (!this.accountAddress) return;
 
@@ -394,6 +398,37 @@ export class SeedSale {
       }
       this.loading = false;
     }
+  }
+
+  private detached(): void {
+    this.subscriptions.dispose();
+    this.seed.contract.off(SEEDS_PURCHASED_EVENT, this.handleNewSeedsPurchased);
+  }
+
+  private handleNewBlock(seed: Seed): void {
+    seed.contract.on(SEEDS_PURCHASED_EVENT, this.handleNewSeedsPurchased);
+  }
+
+  handleNewSeedsPurchased = async (): Promise<void> => {
+    await this.updateSeedAmountRaised();
+    await this.seed.updateUserFundingTokenBalance(this.ethereumService.defaultAccountAddress);
+
+    if (this.fundingTokenToPay?.gt(this.maxUserCanPay)) {
+      this.handleMaxBuy();
+    }
+  }
+
+  private async updateSeedAmountRaised() {
+    const updatedAmount = await this.seed.contract.callStatic.fundingCollected();
+    const same = updatedAmount.toString() === this.seed.amountRaised.toString();
+    if (same) {
+      return;
+    }
+
+    this.seed.amountRaised = updatedAmount;
+    await this.seed.hydrateUser();
+    await this.hydrateUserData();
+    await this.hydrateClassData(this.seed);
   }
 
   private async hydrateClassData(seed: Seed): Promise<void> {

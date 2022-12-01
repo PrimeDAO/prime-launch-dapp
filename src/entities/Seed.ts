@@ -797,7 +797,7 @@ export class Seed implements ILaunch {
     return this.initializedPromise;
   }
 
-  private async hydrateUser(): Promise<void> {
+  public async hydrateUser(): Promise<void> {
     if (isNetwork(Networks.Mainnet)) {
       await this.hydrateUserSeedV1();
       return;
