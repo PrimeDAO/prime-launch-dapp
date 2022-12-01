@@ -1,6 +1,7 @@
 import { autoinject } from "aurelia-framework";
 import { Seed } from "entities/Seed";
-import { isLocalhostNetwork } from "services/EthereumService";
+import { BigNumber } from "ethers";
+import { EthereumService, isLocalhostNetwork } from "services/EthereumService";
 import { SeedService } from "services/SeedService";
 import { Address } from "types/types";
 import "./seedOverview.scss";
@@ -136,8 +137,12 @@ export class SeedOverview {
 
   private seedProps = [];
   private seedPropsMap = seedPropsMap;
+  private claimFunderValue: BigNumber;
 
-  constructor(private seedService: SeedService) {}
+  constructor(
+    private seedService: SeedService,
+    private ethereumService: EthereumService,
+  ) {}
 
   async canActivate(): Promise<boolean> {
     return isLocalhostNetwork();
@@ -168,5 +173,12 @@ export class SeedOverview {
       (prop) => !propsToIgnore.includes(prop),
     );
     return filteredProps;
+  }
+
+  private async calculateClaimFunder() {
+    this.claimFunderValue =
+      (await this.seed.contract.callStatic.calculateClaimFunder(
+        this.ethereumService.defaultAccountAddress,
+      )).toString();
   }
 }

@@ -1,7 +1,38 @@
 <template>
+  <div if.bind="seed" class="seedOverview__contractFunctions">
+    <h2 class="title heading heading2">Funding Tokens Allowance</h2>
+
+    <div>
+      <h3>Get Allowance</h3>
+      <button click.delegate="seed.fundingTokenAllowance()">
+        Get Allowance
+      </button>
+    </div>
+    <div>
+      <h3>Approve Allowance</h3>
+      <numeric-input
+        value.bind="allowanceToApprove"
+        decimals.bind="seed.fundingTokenInfo.decimals"
+        placeholder="0.0"
+      >
+      </numeric-input>
+      <button click.delegate="seed.unlockFundingTokens(allowanceToApprove || '1000000000000000000')">
+        Approve Allowance
+      </button>
+    </div>
+
+    <h2 class="title heading heading2">Project Tokens</h2>
+
+    <div>
+      <h3>calculateClaimFunder</h3>
+      <button click.delegate="calculateClaimFunder()">calculateClaimFunder</button>
+      <span>Result: ${claimFunderValue}</span>
+    </div>
+  </div>
+
   <div if.bind="seed" class="seedOverview">
     <!-- Booleans -->
-    <h2 class="title heading heading2 ">Booleans</h2>
+    <h2 class="title heading heading2">Booleans</h2>
     <div class="catgeoryContainer boolean-container">
       <div class="infoRow" repeat.for="prop of seedPropsMap.booleans">
         <span class="propName heading heading4">${prop}</span>
@@ -10,7 +41,7 @@
     </div>
 
     <!-- Times -->
-    <h2 class="title heading heading2 ">Times</h2>
+    <h2 class="title heading heading2">Times</h2>
     <div class="catgeoryContainer boolean-container">
       <div class="infoRow" repeat.for="prop of seedPropsMap.times">
         <span class="propName heading heading4">${prop}</span>
@@ -19,7 +50,7 @@
     </div>
 
     <!-- Addresses -->
-    <h2 class="title heading heading2 ">Addresses</h2>
+    <h2 class="title heading heading2">Addresses</h2>
     <div class="catgeoryContainer boolean-container">
       <div class="infoRow" repeat.for="prop of seedPropsMap.addresses">
         <span class="propName heading heading4">${prop}</span>
@@ -28,11 +59,14 @@
     </div>
 
     <!-- Numbers -->
-    <h2 class="title heading heading2 ">Numbers</h2>
+    <h2 class="title heading heading2">Numbers</h2>
     <div class="catgeoryContainer boolean-container">
       <div class="fundingToken-container">
         <h3>fundingToken</h3>
-        <div class="infoRow" repeat.for="prop of seedPropsMap.numbers.fundingToken">
+        <div
+          class="infoRow"
+          repeat.for="prop of seedPropsMap.numbers.fundingToken"
+        >
           <span class="propName heading heading4">${prop}</span>
           <span>${seed[prop] | ethwei:seed.fundingTokenInfo.decimals}</span>
         </div>
@@ -40,12 +74,14 @@
 
       <div class="projectToken-container">
         <h3>projectToken</h3>
-        <div class="infoRow" repeat.for="prop of seedPropsMap.numbers.projectToken">
+        <div
+          class="infoRow"
+          repeat.for="prop of seedPropsMap.numbers.projectToken"
+        >
           <span class="propName heading heading4">${prop}</span>
           <span>${seed[prop] | ethwei:seed.projectTokenInfo.decimals}</span>
         </div>
       </div>
     </div>
-
   </div>
 </template>

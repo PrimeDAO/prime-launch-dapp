@@ -1,3 +1,5 @@
+import { inverseMapping } from "../../src/shared/shared-objects";
+
 export const E2E_ADDRESSES = {
   ConnectedPublicUser: "0x0000000000000000000000000000000000000000",
   HardhatRoot: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
@@ -14,6 +16,11 @@ export const E2E_ADDRESSES = {
   User9: "0x71bE63f3384f5fb98995898A86B02Fb2426c5788",
   userNotAllowlisted: "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a",
 };
+
+E2E_ADDRESSES["Class1_NewlyAdded1"] = E2E_ADDRESSES.User6;
+
+export const INVERSED_E2E_ADDRESSES_MAP = inverseMapping(E2E_ADDRESSES);
+
 
 export const ALLOWLISTED_ADDRESSES = Object.values(E2E_ADDRESSES).filter(
   (address) => address !== E2E_ADDRESSES.userNotAllowlisted,

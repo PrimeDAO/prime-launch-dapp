@@ -7,7 +7,6 @@ Feature: Edit Contributor Class
     # And I'm connected to the app
     # And I navigate to the Admin Dashboard
 
-  @focus
   Scenario: Admin edits a Contributor Class
     Given 1 seed
     And 1 seed

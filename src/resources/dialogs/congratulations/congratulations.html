@@ -7,7 +7,7 @@
       <div class="body">${message}</div>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button class="button1 small" ref="okButton" click.trigger="controller.ok()">Close</button>
+      <button data-test="confirm-dialog-button" class="button1 small" ref="okButton" click.trigger="controller.ok()">Close</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

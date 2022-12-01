@@ -1,34 +1,41 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
   <div class="page animated-page au-animate seed-sale">
+
+    <!-- Access Dashboard -->
     <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">
       <div class="admin-container">
         <div class="admin-container__block">
           <div class="admin-container__block__title">Administration Dashboard</div>
-          <div class="admin-container__block__text">Access the Dashboard to carry out actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
+          <div class="admin-container__block__text">Access the Dashboard to carry out actions for your project such as funding your seed, managing your allowlist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
         </div>
         <button class="admin-container__button" click.delegate="onAdminButtonClick()">access dashboard</button>
       </div>
     </div>
+
+    <!-- Top row -->
     <div class="seed-info section row">
+      <!-- Seed name and description -->
       <div class="col-6 seed-info-title">
         <div class="mobile-head">
-            <div class="countdown">
+            <div data-test="seed-countdown" class="countdown">
               <time-left if.bind="seed" launch.to-view="seed"></time-left>
             </div>
-            <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName} SEED</div>
+            <div class="title heading heading2 mobileTitle">${seed.metadata.general.projectName}</div>
         </div>
         <p class="description">
           ${seed.metadata.projectDetails.proposition}
         </p>
       </div>
+
+      <!-- Progress bar -->
       <div class="seed-info col-4">
         <div class="text-container">
           <img class="icon" src.to-view="seed.projectTokenInfo.logoURI"></img>
-          <div class="text">${seed.metadata.general.projectName} (${seed.projectTokenInfo.symbol})</div>
+          <div class="text">${seed.projectTokenInfo.name} (${seed.projectTokenInfo.symbol})</div>
         </div>
         <div class="fullProgress">
-          <div class="progress" css="width: ${fractionCompleteForBar}%;">
+          <div class="progress ${(fractionComplete >= 1) ? 'complete' : ''}" css="width: ${fractionCompleteForBar}%;">
         </div>
         </div>
         <div class="info">
@@ -46,6 +53,8 @@
             value.to-view="fractionComplete * 100"></formatted-number>%</div>
         </div>
       </div>
+
+      <!-- Time -->
       <div if.bind="!seed.isDead" class="seed-info col-3 seed-info_time-left">
         <div class="title">
           <template if.bind="seed.isLive">TIME LEFT</template>
@@ -57,10 +66,13 @@
       </div>
     </div>
     <hr />
+
+    <!-- Bottom row -->
     <div class="seed-info section toppadding">
+      <!-- Contribute / Claim / Retrieve -->
       <div class="seed-info halfsection1">
         <!-- ================ Section Two ================ -->
-        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
+        <div data-test="contribute-container" if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark if.bind="seed.fundingTokenInfo.symbol" text="Submit ${seed.fundingTokenInfo.symbol} tokens here to participate in the Seed. Remember to check if there is a vesting release schedule prior to contribution"></question-mark>
           </div>
@@ -69,7 +81,7 @@
           </div>
           <div class="infoInputs">
             <div class="inputContainer">
-              <div class="cryptoInput">
+              <div data-test="contribute-input-container" class="cryptoInput">
                 <div class="half">
                   <img class="halfIcon" src.to-view="seed.fundingTokenInfo.logoURI" />
                   <div class="halfText">${seed.fundingTokenInfo.symbol}</div>
@@ -82,7 +94,7 @@
                   placeholder="0"
                   id="">
                 </numeric-input>
-                <div class="maxIcon ${(connected && seed.contributingIsOpen) ? '' : 'disabled'}" click.delegate="handleMaxBuy()">
+                <div data-test="max-contribute-button" class="maxIcon ${(seed.contributingIsOpen) ? '' : 'disabled'}" click.delegate="handleMaxBuy()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -117,17 +129,17 @@
 
           <!-- Unlock / Contribute button -->
           <template if.to-view="lockRequired">
-            <button class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
+            <button data-test="unlock-funding-tokens-button" class="buttonLeft" click.delegate="unlockFundingTokens()">UNLOCK</button>
           </template>
           <template else>
-            <button class="buttonLeft" click.delegate="buy()" disabled.to-view="disableContribute">
+            <button data-test="contribute-button" class="buttonLeft" click.delegate="buy()" disabled.to-view="disableContribute">
               contribute
             </button>
           </template>
         </div>
 
         <!-- ================ Section Three ================ -->
-        <div if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
+        <div data-test="claim-container" if.bind="connected && seed.userIsWhitelisted && !geoBlocked" class="seed-info container">
           <div class="markPosition">
             <question-mark text="Many projects will lock or vest your tokens over some period of time. Here you may claim fully vested tokens as well as see which tokens are still pending depending on the project's vesting schedule"></question-mark>
           </div>
@@ -142,7 +154,7 @@
                   <div class="halfText">${seed.projectTokenInfo.symbol}</div>
                 </div>
                 <numeric-input
-                  disabled.to-view="!(connected && (seed.claimingIsOpen || seed.userCanClaim))"
+                  disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
                   value.bind="projectTokenToReceive"
                   decimals.bind="seed.projectTokenInfo.decimals"
                   class="withIcon"
@@ -150,7 +162,7 @@
                   id=""
                 >
                 </numeric-input>
-                <div class="maxIcon ${(connected && (seed.claimingIsOpen || seed.userCanClaim)) ? '' : 'disabled'}" click.delegate="handleMaxClaim()">
+                <div data-test="max-claim-button" class="maxIcon ${(!(seed.claimingIsOpen && seed.userCanClaim)) ? 'disabled' : ''}" click.delegate="handleMaxClaim()">
                   <div class="iconText">
                     MAX
                   </div>
@@ -186,9 +198,21 @@
             </div>
           </div>
           <div class="text">
-            Tokens can be claimed ${seed.vestingCliff | secondsDays} days after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met.
+            <template if.to-view="seed.incomplete">
+              This seed round is incomplete, hence there are no tokens to be claimed. You can retrieve from the section below any funding tokens that you may have contributed.
+            </template>
+            <template else>
+              <span if.to-view="targetClass.classVestingCliff">
+                Tokens can be claimed
+                <formatted-date tooltip="${targetClass.classVestingCliff} seconds">
+                  ${targetClass.classVestingCliff | secondToMillis | timespan:'days' }
+                </formatted-date>
+              </span>
+              <span else>Tokens can be immediately claimed</span>
+              after the Max is reached or when the campaign expires on ${seed.endTime | date}, assuming the Target has been met
+            </template>
           </div>
-          <button class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
+          <button data-test="claim-button" class="buttonLeft" click.delegate="claim()" disabled.to-view="disableClaimButton">
             claim
           </button>
         </div>
@@ -212,15 +236,19 @@
           </button>
         </div>
 
+        <!-- Geoblock -->
         <div class="notWhitelisted" if.to-view="geoBlocked">
           Sorry, you are located in a country that is not able to participate.
         </div>
+
+        <!-- Allowlist -->
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
-          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
+          Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
         </div>
       </div>
 
       <div class="seed-info halfsection2">
+        <!-- ================ Section One Eligility ================ -->
         <div class="seed-info container" show.bind="!accountAddress">
           <div class="subtitle">
             Connect wallet to check eligibility and see your specific class information
@@ -229,6 +257,8 @@
             Connect wallet
           </div>
         </div>
+
+        <!-- Your Class -->
         <div class="class-container" show.bind="accountAddress && seed.isV2()">
           <div class="class-container__blocks">
             <div class="class-container__block">
@@ -253,6 +283,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Targets and other -->
         <div class="table">
           <div class="row">
             <div class="col">
@@ -289,31 +321,50 @@
             </div>
           </div>
         </div>
-        <div class="title heading heading2 mobileTitle">About ${seed.projectTokenInfo.name}</div>
+
+        <!-- About -->
+        <div class="title heading heading3 mobileTitle">About ${seed.metadata.general.projectName}</div>
         <p class="description2">
           ${seed.metadata.projectDetails.summary}
         </p>
+
+        <!-- Links -->
         <div class="tagsContainer">
           <div class="tagContainer">
             <div class="tagWorld"></div>
-            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank">Website</a>
+            <a class="tagText" href="${seed.metadata.general.projectWebsite}" target="_blank" rel="noopener noreferrer">Website</a>
           </div>
           <div class="tagContainer">
-            <div class="tagWorld"></div>
-            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank">Whitepaper</a>
+            <div class="tagPDF"></div>
+            <a class="tagText" href="${seed.metadata.general.whitepaper}" target="_blank" rel="noopener noreferrer">Whitepaper</a>
           </div>
+          <div class="tagContainer">
+            <div class="tagGithub fab fa-github fa-lg"></div>
+            <a class="tagText" href="${seed.metadata.general.github}" target="_blank" rel="noopener noreferrer">Github</a>
+          </div>
+
           <template repeat.for="link of seed.metadata.general.customLinks | sort:sortEvaluator">
             <div class="tagContainer">
-              <div class="tagWorld" if.bind="link.media === 'Website'"></div>
-              <div class="tagPDF" if.bind="link.media === 'Whitepaper'"></div>
               <div class="tagTwitter" if.bind="link.media === 'Twitter'"></div>
               <div class="tagTelegram" if.bind="link.media === 'Telegram'"></div>
               <div class="tagDiscord" if.bind="link.media === 'Discord'"></div>
+              <div class="tagReddit fab fa-reddit fa-lg" if.bind="link.media === 'Reddit'"></div>
+              <div class="tagSearch" if.bind="link.media === 'LinkedIn'"></div>
               <div class="tagSearch" if.bind="link.media === 'Etherscan'"></div>
               <div class="tagSearch" if.bind="link.media === 'Tokenomics Article'"></div>
-              <a class="tagText" href="${formatLink(link.url)}" target="_blank">${link.media}</a>
+              <a class="tagText" href="${formatLink(link.url)}" target="_blank" rel="noopener noreferrer">${link.media}</a>
             </div>
           </template>
+
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <a class="tagText" href.to-view="ethereumService.getEtherscanLink(seed.projectTokenInfo.address)" target="_blank" rel="noopener noreferrer">Project Token on Etherscan</a>
+          </div>
+          <div class="tagContainer">
+            <div class="tagSearch"></div>
+            <a class="tagText" href.to-view="ethereumService.getEtherscanLink(seed.admin)" target="_blank" rel="noopener noreferrer">Project Owner on Etherscan</a>
+          </div>
+
         </div>
       </div>
     </div>
