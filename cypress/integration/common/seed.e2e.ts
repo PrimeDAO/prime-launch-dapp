@@ -213,12 +213,11 @@ Given("I unlock the amount", () => {
   // cy.pause()
   // cy.wait(8000)
 
-  if (!E2eSeeds.currentSeed.hasLegalDisclaimer) {
-    return;
-  }
 
   E2eSeedDashboard.unlockFundingTokens();
-  E2eApp.confirmDisclaimer();
+  if (E2eSeeds.currentSeed.hasLegalDisclaimer) {
+    E2eApp.confirmDisclaimer();
+  }
   E2eApp.txWasConfirmed();
 });
 

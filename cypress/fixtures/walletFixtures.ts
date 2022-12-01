@@ -17,6 +17,8 @@ export const E2E_ADDRESSES = {
   userNotAllowlisted: "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a",
 };
 
+E2E_ADDRESSES["Class1_NewlyAdded1"] = E2E_ADDRESSES.User6;
+
 export const INVERSED_E2E_ADDRESSES_MAP = inverseMapping(E2E_ADDRESSES);
 
 

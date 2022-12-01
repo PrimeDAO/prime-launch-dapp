@@ -1,6 +1,7 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor/methods";
 import { E2eApp } from "../../common/app.e2e";
 import { UI_TIMEOUT } from "../../common/e2eConstants";
+import { E2eFields } from "../adminDashboard/adminDashboard.e2e";
 
 export class E2eSeedDashboard {
   public static waitForSeedIsLive(): void {
@@ -23,6 +24,8 @@ export class E2eSeedDashboard {
   /* prettier-ignore */
   public static getContributeContainer() { return cy.get("[data-test='contribute-container']").should("be.visible"); }
   /* prettier-ignore */
+  public static getContributeInput() { return cy.get("[data-test='contribute-input-container'] input").should("be.visible"); }
+  /* prettier-ignore */
   public static getContributeButton() { return cy.get("[data-test='contribute-button']").should("be.visible"); }
 
   /* prettier-ignore */
@@ -42,6 +45,12 @@ export class E2eSeedDashboard {
 
   public static contribute(): void {
     this.getContributeButton().click();
+  }
+
+  public static changeContributeValue(value: string | number): void {
+    cy.get("[data-test='contribute-input-container']").within(() => {
+      E2eFields.changeField(value)
+    })
   }
 
   public static unlockOrContribute(): void {
@@ -80,6 +89,12 @@ Given("I claim the amount", () => {
   E2eSeedDashboard.claim();
   E2eApp.confirmDialog();
 });
+
+Given("I input {string} to contribute", (inputValue: string) => {
+  E2eSeedDashboard.changeContributeValue(inputValue)
+  /* prettier-ignore */ console.log('>>>> _ >>>> ~ file: seedDashboard.e2e.ts ~ line 87 ~ inputValue', inputValue)
+})
+
 
 Then("the max amount should be {string}", (maxAmount: number) => {
   E2eSeedDashboard.getContributeContainer().within(() => {
