@@ -2,12 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "strict": false,
-    "types": [
-      "cypress",
-      "cypress-wait-until"
-    ]
+    "types": ["cypress", "cypress-wait-until"]
   },
-  "include": [
-    "**/*.ts"
-  ]
+  "include": ["**/*.ts", "support/populateSeeds.js"]
 }

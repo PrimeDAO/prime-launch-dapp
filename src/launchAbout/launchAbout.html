@@ -33,7 +33,7 @@
     <div class="adminPage" if.bind="showAdminDashboardLink">
       <div class="description">Administration Dashboard</div>
       <template if.bind="launchType === 'seed'">
-        <div class="body subtext">Access the Administration Dashboard to carry out administrative actions for your project such as funding your seed, managing your whitelist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
+        <div class="body subtext">Access the Administration Dashboard to carry out administrative actions for your project such as funding your seed, managing your allowlist, retrieving project tokens, withdrawing funding tokens, pausing and closing your launch.</div>
         <div class="doit"><a class="button1" href="${`/admin/seeds/dashboard/${launch.address}`}">Access</a></div>
       </template>
       <template if.bind="launchType === 'lbp'">

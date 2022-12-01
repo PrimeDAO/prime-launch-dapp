@@ -1,6 +1,7 @@
 <template>
   <div class="page animated-page au-animate seedDashboardContainer">
     <div show.to-view="!loading" class="seedDashboard">
+      <!-- Seed name and description -->
       <div class="seedBanner">
         <div class="title heading heading2 ellipses">${seed.metadata.general.projectName}</div>
         <div class="countdown">
@@ -15,6 +16,7 @@
         </div>
       </div>
 
+      <!-- Progress bar -->
       <div class="seedProgress">
         <div class="tokenId">
           <div class="icon"><img src.to-view="seed.projectTokenInfo.logoURI"></img></div>
@@ -44,12 +46,9 @@
         </div>
       </div>
 
+      <!-- Contribute / Claim / Retrieve -->
       <div class="forms">
-        <!--
-          ================
-          Section One
-          ================
-        -->
+        <!-- ================ Section One Eligility ================ -->
         <div if.to-view="!connected && !geoBlocked" class="section section1">
           <div class="description">Check eligibility</div>
           <div class="help">
@@ -58,11 +57,7 @@
           <div class="subdescription subtext">Connect your wallet to contribute and claim rewards</div>
           <div class="doit"><button class="button1" click.delegate="connect()">CONNECT</button></div>
         </div>
-        <!--
-          ================
-          Section Two
-          ================
-        -->
+        <!-- ================ Section Two ================ -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section2">
           <div class="description">Contribute ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
@@ -124,11 +119,7 @@
             <div class="doit"><button disabled.to-view="!seed.contributingIsOpen || !userCanPay || (!fundingTokenToPay || fundingTokenToPay.eq(0))" class="submitButton button1" click.delegate="buy()">CONTRIBUTE</button></div>
           </template>
         </div>
-        <!--
-          ================
-          Section Three
-          ================
-        -->
+        <!-- ================ Section Three ================ -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section3">
           <div class="description">Claim ${seed.projectTokenInfo.symbol}</div>
           <div class="help">
@@ -186,11 +177,7 @@
               disabled.to-view="!(seed.claimingIsOpen && seed.userCanClaim)"
               class="submitButton button1" click.delegate="claim()">CLAIM</button></div>
         </div>
-        <!--
-          ================
-          Section Four
-          ================
-        -->
+        <!-- ================ Section Four ================ -->
         <div if.to-view="connected && seed.userIsWhitelisted && !geoBlocked" class="section section4">
           <div class="description">Retrieve Contributed ${seed.fundingTokenInfo.symbol}</div>
           <div class="help">
@@ -201,18 +188,18 @@
           <div class="doit"><button class="submitButton button1" disabled.to-view="!seed.userCanRetrieve" click.delegate="retrieve()">RETRIEVE</button>
           </div>
         </div>
+
+        <!-- Geoblock -->
         <div class="notWhitelisted" if.to-view="geoBlocked">
           Sorry, you are located in a country that is not able to participate.
         </div>
+        <!-- Allowlist -->
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
-          Sorry, this Seed has a whitelist and your account has not been whitelisted. So using this account, you will not be able to participate.
+          Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
         </div>
       </div>
-      <!--
-          ================
-          Right Column
-          ================
-        -->
+
+      <!-- ================ Right Column ================ -->
       <div class="section seedSummary">
         <div class="label targetLabel">FUNDING TARGET</div>
         <div class="value target">

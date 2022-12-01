@@ -139,7 +139,7 @@ export class ContractsService {
     } else {
       if (isLocalhostNetwork()) {
         const jsonSigner: JsonRpcProvider = this.ethereumService.readOnlyProvider as JsonRpcProvider;
-        signerOrProvider = jsonSigner.getSigner();
+        signerOrProvider = jsonSigner.getSigner(this.ethereumService.defaultAccountAddress ?? undefined);
       } else {
         signerOrProvider = this.ethereumService.readOnlyProvider;
       }

@@ -5,7 +5,7 @@
     <div class="infoContainer">
       <div class="heading heading2 title">Ready to Go!</div>
       <div class="content-block">
-        <div class="subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        <div class="subtext"></div>
         <div class="form-content">
           <div class="body">By clicking SUBMIT, you will initiate the process of creating a new Seed! This will:
             <ol>
@@ -15,19 +15,19 @@
             <p>PrimeDAO Governance needs to approve and initialize your new Seed before it can appear in and be used in the Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
             <p>
-              After being approved, the 
-              <etherscanlink hide-clipboard-button address.to-view="launchConfig.launchDetails.adminAddress" text="Seed Admin"></etherscanlink> 
+              After being approved, the
+              <etherscanlink hide-clipboard-button address.to-view="launchConfig.launchDetails.adminAddress" text="Seed Admin"></etherscanlink>
               will have to fund the ${wizardState.launchTypeTitle} with
               <formatted-number
                 value.to-view="wizardState.requiredProjectTokenDeposit  | ethwei:launchConfig.tokenDetails.projectTokenInfo.decimals"
                 thousands-separated>
               </formatted-number>
-              ${launchConfig.tokenDetails.projectTokenInfo.symbol}<span if.to-view="!!wizardState.whiteList">, and add the whitelist</span>. 
-              This can be done by connecting the Seed Admin wallet to the 
+              ${launchConfig.tokenDetails.projectTokenInfo.symbol}.
+              This can be done by connecting the Seed Admin wallet to the
               <a href="/admin/${wizardState.launchType}s/dashboard" target="_blank" rel="noopener noreferrer">Admin Dashboard</a>.
             </p>
 
-            <p>After adding the funds<span if.to-view="!!wizardState.whiteList"> and whitelist</span>, the Seed is initialized. The Seed will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
+            <p>After adding the funds, the Seed is initialized. The Seed will automatically start ${wizardState.launchStartDate | date:{format:"dddd MMMM Do, YYYY - HH[:]mm z", utc: true}}.</p>
 
           </div>
 

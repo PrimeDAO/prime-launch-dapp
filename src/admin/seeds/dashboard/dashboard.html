@@ -33,14 +33,14 @@
             </dropdown>
             <div else class="heading heading3 projectTitle">${selectedSeed.metadata.general.projectName}</div>
             <div class="buttonContainer" if.bind="selectedSeed.address">
-              <div class="stageButton previousButton" click.delegate="navigate('seed/' + selectedSeed.address)">
+              <div data-test="go-to-dashboard" class="stageButton previousButton" click.delegate="navigate('seed/' + selectedSeed.address)">
                 Go To Dashboard
               </div>
             </div>
           </div>
 
           <div if.bind="selectedSeed.address" class="seedSelected">
-            <div class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
+            <div data-test="funding-container" class="featureContainer" if.bind="!selectedSeed.hasEnoughProjectTokens && !isDead">
               <div class="featureTitle">
                 Fund Seed
               </div>
@@ -83,7 +83,7 @@
 
                   </table>
                 </div>
-                <div class="button1 fundButton" click.delegate="selectedSeed.fund()">
+                <div data-test="fund-button" class="button1 fundButton" click.delegate="selectedSeed.fund()">
                   Fund
                 </div>
               </div>
@@ -104,16 +104,16 @@
             </div>-->
             <div class="featureContainer" if.bind="isLocalhostNetwork() && selectedSeed.whitelisted && !selectedSeed.isClosed">
               <div class="featureTitle">
-                Whitelist an account
+                Allowlist an account
               </div>
               <div class="featureDescription">
-                Add an account to the whitelist
+                Add an account to the allowlist
               </div>
               <div class='inputWrapper'>
                 <input id="addressToAdd" value.bind="addressToAdd" placeholder="0x6C4ef..." />
                 <input value.bind="allowListClassId" placeholder="1" />
                 <div class="button1 small" click.delegate="addToWhiteList(allowListClassId)">
-                  Add to whitelist
+                  Add to allowlist
                 </div>
               </div>
             </div>
@@ -159,8 +159,12 @@
                       </tr>
                       <tr data-test="class-row" repeat.for="class of selectedSeed.classes" class.bind="isMinting[$index] ? 'loading' : ''">
                         <td data-test="class-name">${class.className}</td>
-                        <td data-test="class-cap"><div class="table__center-cell">${class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
-                        <td data-test="individual-cap"><div class="table__center-cell">${class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals}</div></td>
+                        <td data-test="class-cap"><div class="table__center-cell">
+                          <formatted-number value.bind="class.classCap | ethwei:selectedSeed.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+                        </div></td>
+                        <td data-test="individual-cap"><div class="table__center-cell">
+                          <formatted-number value.bind="class.individualCap | ethwei:selectedSeed.fundingTokenInfo.decimals" thousands-separated></formatted-number>
+                        </div></td>
                         <td data-test="class-vested"><div class="table__center-cell">${class.classVestingDuration | secondsDays}</div></td>
                         <td if.bind="!disableClassInteraction">
                           <div data-test="edit-class-button" class="table__center-cell" if.bind="!isMinting[$index]">

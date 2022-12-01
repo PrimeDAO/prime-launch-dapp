@@ -1,4 +1,5 @@
 import { ITokenInfo } from "services/TokenTypes";
+import { SeedVersions } from "types/types";
 
 export const SocialLinkNames = [
   "Twitter",
@@ -104,7 +105,7 @@ export class LaunchConfig implements ILaunchConfig {
   }
 
   clearState(): void {
-    this.version = "1.0.0";
+    this.version = SeedVersions.v1;
     this.general = {
       projectName: "",
       customLinks: [],

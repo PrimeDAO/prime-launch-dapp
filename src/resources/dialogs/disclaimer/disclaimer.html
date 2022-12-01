@@ -11,7 +11,7 @@
       <label><input type="checkbox" class="checkbox" checked.bind="checked">I acknowledge that I have fully read and understood this disclaimer</label>
       <div class="action-buttons">
         <div role="button" class="button2" click.trigger="controller.cancel(false)">Decline</div>
-        <button class="button1" disabled.to-view="!checked" ref="okButton" click.trigger="controller.ok(true)">Accept</button>
+        <button data-test="accept-disclaimer" class="button1" disabled.to-view="!checked" ref="okButton" click.trigger="controller.ok(true)">Accept</button>
       </div>
     </ux-dialog-footer>
   </ux-dialog>
