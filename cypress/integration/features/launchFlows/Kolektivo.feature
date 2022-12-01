@@ -19,29 +19,29 @@ Feature: Kolektivo Launch
   # @focus
   Scenario: Contribute - Admin
     Given I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
-    And I input the max amount to contribute
-    Then the max amount should be "200,000.0"
-    And I unlock the amount
-    And I contribute the amount
+    # And I input "100,000" to contribute
+    # Then the max amount should be "100,000.0"
+    # And I unlock the amount
+    # And I contribute the amount
 
   @focus
   Scenario: Contribute - Class1_User1
     And I change the address to "Class1_User1"
     And I'm connected to the app
     And I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
-    And I input the max amount to contribute
-    Then the max amount should be "50,000.0"
-    And I unlock the amount
-    And I contribute the amount
+    # And I input the max amount to contribute
+    # Then the max amount should be "50,000.0"
+    # And I unlock the amount
+    # And I contribute the amount
 
   # @focus
-  Scenario: Contribute - Class1_User2
+  Scenario: Contribute - Class1_NewlyAdded1
     Given I navigate to the Home page
-    And I change the address to "Class1_User2"
+    And I change the address to "Class1_NewlyAdded1"
     And I'm connected to the app
     And I navigate to the Seed "_27_KOLEKTIVO_CELO_TEST_SEED"
     And I input the max amount to contribute
-    Then the max amount should be "4.5"
+    Then the max amount should be "50,000.0"
     And I unlock the amount
     And I contribute the amount
 
