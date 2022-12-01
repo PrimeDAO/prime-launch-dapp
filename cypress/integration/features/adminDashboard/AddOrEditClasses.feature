@@ -1,6 +1,7 @@
 Feature: Add or edit Contributor Class
   Background: Admin is in Admin Dashboard page
-    Given I navigate to the Home page
+    Given 1 seed
+    And I navigate to the Home page
     And I'm the Admin of the Seed
     And I'm connected to the app
 

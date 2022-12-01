@@ -7,6 +7,7 @@ import {
   BaseProvider,
   JsonRpcProvider,
 } from "@ethersproject/providers";
+import { EventConfigException } from "./GeneralEvents";
 
 export enum ContractNames {
   LBPMANAGERFACTORY = "LBPManagerFactory",
@@ -138,7 +139,7 @@ export class ContractsService {
     } else {
       if (isLocalhostNetwork()) {
         const jsonSigner: JsonRpcProvider = this.ethereumService.readOnlyProvider as JsonRpcProvider;
-        signerOrProvider = jsonSigner.getSigner();
+        signerOrProvider = jsonSigner.getSigner(this.ethereumService.defaultAccountAddress ?? undefined);
       } else {
         signerOrProvider = this.ethereumService.readOnlyProvider;
       }
@@ -242,7 +243,13 @@ export class ContractsService {
     startingBlockNumber: number,
     handler: (event: Array<IStandardEvent<TEventArgs>>) => void): Promise<void> {
 
-    const lastEthBlockNumber = (await this.ethereumService.getLastBlock()).number;
+    const lastBlock = await this.ethereumService.getLastBlock();
+    if (lastBlock === null) {
+      this.eventAggregator.publish("handleException", new EventConfigException("Could not filter events", "No Blocks found"));
+      return;
+    }
+
+    const lastEthBlockNumber = lastBlock.number;
     const blocksToFetch = lastEthBlockNumber - startingBlockNumber;
     let startingBlock = startingBlockNumber;
 

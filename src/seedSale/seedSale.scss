@@ -214,6 +214,11 @@
     color: $Neutral02;
   }
 
+  .tagGithub,
+  .tagReddit {
+    color: $Neutral02;
+  }
+
   .tagTwitter {
     @include logo("twitterTag.svg");
     height: 30px;
@@ -798,6 +803,10 @@
         height: 14px;
         @media screen and (max-width: 570px) {
           height: 24px;
+        }
+
+        .complete {
+          background: $Gradient07;
         }
       }
 

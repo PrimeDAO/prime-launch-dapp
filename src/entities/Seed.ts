@@ -280,6 +280,11 @@ export class Seed implements ILaunch {
     return fundWithTip;
   }
 
+  @computedFrom("metadata.launchDetails.legalDisclaimer")
+  get hasLegalDisclaimer(): boolean {
+    return !!this.metadata.launchDetails.legalDisclaimer;
+  }
+
   constructor(
     private contractsService: ContractsService,
     private consoleLogService: ConsoleLogService,
@@ -356,11 +361,11 @@ export class Seed implements ILaunch {
 
   private async hydrate(): Promise<void> {
     if (isNetwork(Networks.Mainnet)) {
-      this.hydrateSeedV1();
+      await this.hydrateSeedV1();
       return;
     }
 
-    this.hydrateSeedV2();
+    await this.hydrateSeedV2();
   }
 
   private async hydrateSeedV2(): Promise<void> {
@@ -566,7 +571,9 @@ export class Seed implements ILaunch {
       this.hasEnoughProjectTokens =
         this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
 
-      await this.hydrateUserSeedV2();
+      if (this.ethereumService.defaultAccountAddress) {
+        await this.hydrateUserSeedV2();
+      }
 
       this.version = SeedVersions.v2;
     }
@@ -772,7 +779,9 @@ export class Seed implements ILaunch {
       this.hasEnoughProjectTokens =
         this.seedInitialized && ((this.seedRemainder && this.feeRemainder) ? this.projectTokenBalance?.gte(this.feeRemainder?.add(this.seedRemainder)) : false);
 
-      await this.hydrateUserSeedV1();
+      if (this.ethereumService.defaultAccountAddress) {
+        await this.hydrateUserSeedV1();
+      }
 
       this.version = SeedVersions.v1;
     }
@@ -788,13 +797,13 @@ export class Seed implements ILaunch {
     return this.initializedPromise;
   }
 
-  private async hydrateUser(): Promise<void> {
+  public async hydrateUser(): Promise<void> {
     if (isNetwork(Networks.Mainnet)) {
-      this.hydrateUserSeedV1();
+      await this.hydrateUserSeedV1();
       return;
     }
 
-    this.hydrateUserSeedV2();
+    await this.hydrateUserSeedV2();
   }
 
   private async hydrateUserSeedV2(): Promise<void> {
@@ -953,6 +962,7 @@ export class Seed implements ILaunch {
   }
 
   public claim(amount: BigNumber): Promise<TransactionReceipt> {
+    // debugger;
     return this.transactionsService.send(() => this.contract.claim(amount))
       .then(async (receipt) => {
         if (receipt) {
@@ -1086,7 +1096,9 @@ export class Seed implements ILaunch {
   }
 
   public fundingTokenAllowance(): Promise<BigNumber> {
-    return this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+    const allowance = this.fundingTokenContract.allowance(this.ethereumService.defaultAccountAddress, this.address);
+    // /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: Seed.ts ~ line 1095 ~ allowance", allowance);
+    return allowance;
   }
 
   public async updateUserFundingTokenBalance(userAddress: Address): Promise<void> {

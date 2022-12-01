@@ -124,7 +124,7 @@ export function configure(aurelia: Aurelia): void {
     } catch (ex) {
       const eventAggregator = aurelia.container.get(EventAggregator);
       eventAggregator.publish("handleException", new EventConfigException("Error initializing the app", ex));
-      alert(`Sorry, unable to initialize, possibly could not connect to ethereum: ${ex.message}`);
+      alert(`Sorry, unable to initialize, possibly could not connect to ethereum: ${ex.message}. If your VPN is enabled, please turn it off and refresh the page.`);
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });

@@ -1,0 +1,86 @@
+{
+    "version": "2.0.0",
+    "general": {
+        "projectName": "Kolektivo Test",
+        "customLinks": [
+            {
+                "media": "Twitter",
+                "url": "https://twitter.com/kolektivo"
+            },
+            {
+                "media": "LinkedIn",
+                "url": "https://www.linkedin.com/company/kolektivocw/"
+            }
+        ],
+        "projectWebsite": "https://www.kolektivo.network/",
+        "whitepaper": "https://www.kolektivo.network/whitepaper",
+        "github": "https://github.com/Kolektivo"
+    },
+    "projectDetails": {
+        "summary": "Kolektivo is a collection of institutional technologies allowing local communities to launch, finance, and govern their regenerative economies backed by natural capital.",
+        "proposition": "Kolektivo is a collection of institutional technologies allowing local communities to launch, finance, and govern their regenerative economies backed by natural capital.",
+        "teamDescription": "Kolektivo’s team consists of Web3 veterans who have worked towards its execution for the past five years. Past contributions include Balancer, Toucan, KlimaDAO, DxDAO, and PrimeDAO."
+    },
+    "tokenDetails": {
+        "tokenDistrib": [
+            {
+                "stakeHolder": "Builders and Ecosystem",
+                "amount": "17500000000000000000000000",
+
+                "cliff": 365,
+                "vest": 1095
+            },
+            {
+                "stakeHolder": "Seed Contributors",
+                "amount": "17500000000000000000000000",
+
+                "cliff": 365,
+                "vest": 1095
+            },
+            {
+                "stakeHolder": "Kolektivo Network Treasury",
+                "amount": "67500000000000000000000000",
+                "cliff": 365,
+                "vest": 1095
+            }
+        ],
+        "maxSupply": "100000000000000000000000000",
+        "projectTokenInfo": {
+            "address": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+            "decimals": 18,
+            "logoURI": "https://avatars.githubusercontent.com/u/61662492?s=64&v=4",
+            "name": "My Hardhat Token",
+            "symbol": "MHT"
+        }
+    },
+    "contactDetails": {
+        "contactEmail": "seed@regenerative.fi",
+        "remarks": "Please contact PrimeDAO if you have any issues, still need to pass KYC requirements, or would like to introduce other parties to join the seed."
+    },
+    "launchDetails": {
+        "fundingTokenInfo": {
+            "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+            "chainId": 31337,
+            "name": "Prime",
+            "symbol": "D2D",
+            "decimals": 18,
+            "logoURI": "https://raw.githubusercontent.com/PrimeDAO/tokenlists/main/logos/D2D.png",
+            "id": "prime",
+            "price": 0.055081
+        },
+        "startDate": "2022-11-03T20:47:00.000Z",
+        "endDate": "2022-11-03T22:00:00.000Z",
+        "adminAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "legalDisclaimer": "",
+        "geoBlock": false,
+        "pricePerToken": "0.2",
+        "fundingTarget": "100000000000000000000000",
+        "fundingMax": "200000000000000000000000",
+        "vestingPeriod": 63072000,
+        "vestingCliff": 31536000,
+        "individualCap": "200000000000000000000000",
+        "isPermissoned": true,
+        "seedTip": 1.5
+    },
+    "classes": []
+}

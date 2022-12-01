@@ -1,15 +1,15 @@
 import { formatBytes32String } from "ethers/lib/utils";
 
 import { ONE_DAY_IN_SECONDS } from "../../../../src/shared/shared";
-import { IAddClassParams } from "../../../../src/types/types";
+import { IAddClassParams, SeedVersions } from "../../../../src/types/types";
 import { ISeedConfig } from "../../../../src/newLaunch/seed/config";
 import { BigNumber } from "ethers";
 import { getRandomId } from "../utilities";
 import { e2eClassName } from "../e2eConstants";
 
-const FUNDING_TARGET = "20000000000000000000";
-const FUNDING_MAX = "34500000000000000000";
-const INDIVIDUAL_CAP = "15000000000000000000";
+export const FUNDING_TARGET = "20000000000000000000"; // 20
+export const FUNDING_MAX = "34500000000000000000"; // 34.5
+export const INDIVIDUAL_CAP = "15000000000000000000"; // 15
 
 /**
  * **************************
@@ -77,7 +77,6 @@ const LAUNCH_DETAILS = {
   fundingMax: FUNDING_MAX,
   vestingPeriod: 0,
   vestingCliff: 0,
-  whitelist: "",
   individualCap: INDIVIDUAL_CAP,
   isPermissoned: false,
   seedTip: 0,
@@ -89,7 +88,7 @@ export class SeedBuilder {
 
   // @ts-ignore
   public seed: ISeedConfig = {
-    version: "1.0.0",
+    version: SeedVersions.v2,
     general: GENERAL_DATA,
     projectDetails: PROJECT_DETAILS,
     tokenDetails: TOKEN_DETAILS,
@@ -163,13 +162,19 @@ export class SeedClassesBuilder {
     classAllowlists: [defaultSeedClass.allowList],
   };
 
-  withClassName(className: string): SeedClassesBuilder {
+  public withClassName(className: string): SeedClassesBuilder {
     this.seedClass.classNames = [formatBytes32String(className)];
     return this;
   }
 
-  withAllowlists(allowList: string[]): SeedClassesBuilder {
+  public withAllowlists(allowList: string[]): SeedClassesBuilder {
     this.seedClass.classAllowlists = [new Set(allowList)];
+    return this;
+  }
+
+  public with(data?: Partial<IAddClassParams>): SeedClassesBuilder {
+    // @ts-ignore Spread types may only be created from object types.ts(2698) --> works in ts 4.6.2
+    this.seedClass = { ...this.seedClass, ...data };
     return this;
   }
 

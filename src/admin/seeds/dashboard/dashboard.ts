@@ -155,7 +155,7 @@ export class SeedAdminDashboard {
   }
 
   removeFromWhiteList(): void {
-    if (this.hasValidatedAddress(this.addressToRemove, "Please supply a valid address to remove from whitelist")) {
+    if (this.hasValidatedAddress(this.addressToRemove, "Please supply a valid address to remove from allowlist")) {
       this.selectedSeed.removeFromWhitelist(this.addressToRemove);
     }
   }
@@ -166,10 +166,10 @@ export class SeedAdminDashboard {
     }
   }
 
-  async addWhitelist(): Promise<TransactionReceipt> {
-    const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
-    return await this.selectedSeed.addWhitelist(whitelistAddress);
-  }
+  // async addWhitelist(): Promise<TransactionReceipt> {
+  //   const whitelistAddress: Set<Address> = await this.whiteListService.getWhiteList(this.selectedSeed.metadata.launchDetails.whitelist);
+  //   return await this.selectedSeed.addWhitelist(whitelistAddress);
+  // }
 
   connect(): void {
     this.ethereumService.ensureConnected();
