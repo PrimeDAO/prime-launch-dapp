@@ -367,7 +367,7 @@ export class SeedSale {
       }
       const seed = this.seedService.seeds.get(this.address);
       if (!seed) {
-        throw new Error("Failed to instantiate Seed");
+        throw new Error("Seed not found. Please make sure you are connected to the correct network.");
       }
       if (seed.initializing) {
         if (!waiting) {
