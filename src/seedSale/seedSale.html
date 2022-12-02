@@ -243,7 +243,25 @@
 
         <!-- Allowlist -->
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
-          Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
+          <!-- Kolektivo specific -->
+          <template if.bind="seed.metadata.general.projectName.toLowerCase().includes('kolektivo')">
+            <p>
+              To participate in this launch, you must be added to one of the allowlists managed by Kolektivo.
+            </p>
+            <div class="kolektivo-allowlist-info">
+              <span class="tagContainer">
+                <div class="tagSearch"></div>
+                <a href="https://medium.com/primedao/prime-launch-to-support-the-kolektivo-seed-on-celo-2ff42f9338d8" target="_blank" rel="noopener noreferrer">Learn More</a>
+              </span>
+              <span class="tagContainer">
+                <div class="tagSearch"></div>
+                <a href="https://kolektivo.typeform.com/LaunchKNT" target="_blank" rel="noopener noreferrer">Join Allowlist</a>
+              </span>
+            </div>
+          </template>
+
+          <!-- Generic -->
+          <template else>Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.</template>
         </div>
       </div>
 
