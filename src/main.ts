@@ -25,6 +25,9 @@ import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
+const DEFAULT_MAINNET_NETWORK = Networks.Celo;
+const DEFAULT_TESTNET_NETWORK = Networks.Goerli;
+
 export function configure(aurelia: Aurelia): void {
   // Note, this Cypress hack has to be at the very start.
   // Reason: Imports in eg. /resources/index, where EthereumService is imported to
@@ -49,8 +52,7 @@ export function configure(aurelia: Aurelia): void {
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
   const storageService = new BrowserStorageService;
-  // storageService.lsSet("network", "alfajores");
-  const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
+  const network = getLegalNetwork(storageService.lsGet<AllowedNetworks>("network"), process.env.NETWORK as AllowedNetworks);
   const isLocalNetwork = network === "localhost";
   const inDev = process.env.NODE_ENV === "development";
 
@@ -129,16 +131,38 @@ export function configure(aurelia: Aurelia): void {
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });
 
+  function getLegalNetwork(locallyStoredNetwork: AllowedNetworks, networkFromEnv: AllowedNetworks) {
+    const isMainnet = networkFromEnv === Networks.Mainnet;
+
+    const invalidlyStoredTestnet = isMainnet
+    && [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(locallyStoredNetwork);
+    const invalidlyStoredMainnet = !isMainnet
+    && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+    const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
+
+    if (illegalNetwork) {
+      const defaultNetwork = isMainnet ? DEFAULT_MAINNET_NETWORK : DEFAULT_TESTNET_NETWORK;
+      return defaultNetwork;
+    }
+
+    return locallyStoredNetwork;
+  }
+
   function handleNetworkFromLocalStorage(network: Networks) {
     let targetNetwork;
     if (isNetworkPresent(network)) {
       targetNetwork = network;
     } else {
       const devNetwork = isLocalNetwork ? Networks.Localhost : Networks.Goerli;
-      targetNetwork = inDev ? devNetwork : Networks.Mainnet;
+      /**
+       * Temp change to Celo as default mainnet
+       * https://app.shortcut.com/curvelabs/story/2109/change-default-network-to-celo-temporary
+         // targetNetwork = inDev ? devNetwork : Networks.Mainnet;
+       */
+      targetNetwork = inDev ? devNetwork : DEFAULT_MAINNET_NETWORK;
 
-      storageService.lsSet("network", targetNetwork);
     }
+    storageService.lsSet("network", targetNetwork);
     return targetNetwork;
   }
 }
