@@ -158,7 +158,10 @@
           <div if.bind="launchConfig.launchDetails.isPermissoned" class="infoInput csvList">
             <div class="csvUploadInputContainer">
               <span class="label"><span class="csvLabelContent">Allowlist (Optional)</span><question-mark text="Upload a single column .csv file that contains all the addresses that are allowed to participate in this SEED for this contributor class."></question-mark></span>
-              <p class="csvUploadPara">Choose a .csv file to import your allowlist.</p>
+              <p class="csvUploadPara">
+                <p>Choose a .csv file to import your allowlist.</p>
+                <p>An allowlist can also be added through the Admin Dashboard later.</p>
+              </p>
               <span class="inlineWrapper">
                 <label class="csvInputWrapper">
                   <input class="footer-input"
