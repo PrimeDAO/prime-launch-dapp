@@ -281,13 +281,19 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">Your class</div>
-              <div class="class-container__block__text--large">${targetClass.className}</div>
+              <div class="class-container__block__text--large">
+                <template if.bind="connected && !seed.userIsWhitelisted && !geoBlocked">None</template>
+                <template else>${targetClass.className}</template>
+              </div>
             </div>
             <div class="class-container__block">
               <div class="class-container__block__title">contribution limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.fundingTokenInfo.logoURI" />
-                <div class="class-container__block__text">
+                <div if.bind="connected && !seed.userIsWhitelisted && !geoBlocked" class="class-container__block__text">
+                  0 / 0
+                </div>
+                <div else class="class-container__block__text">
                   <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>
                   /
                   <formatted-number value.to-view="targetClass.individualCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
@@ -297,7 +303,10 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">vesting</div>
-              <div class="class-container__block__text--small">${vestingDate} with ${lockDate} lock</div>
+              <div class="class-container__block__text--small">
+                <template if.bind="connected && !seed.userIsWhitelisted && !geoBlocked">0 days with 0 days lock</template>
+                <template else>${vestingDate} with ${lockDate} lock</template>
+              </div>
             </div>
           </div>
         </div>
