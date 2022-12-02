@@ -1,6 +1,6 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
-  <div class="page animated-page au-animate seed-sale">
+  <div if.bind="seed" class="page animated-page au-animate seed-sale">
 
     <!-- Access Dashboard -->
     <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">

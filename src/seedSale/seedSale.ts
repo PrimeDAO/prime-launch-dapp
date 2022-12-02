@@ -402,7 +402,7 @@ export class SeedSale {
 
   private detached(): void {
     this.subscriptions.dispose();
-    this.seed.contract.off(SEEDS_PURCHASED_EVENT, this.handleNewSeedsPurchased);
+    this.seed?.contract.off(SEEDS_PURCHASED_EVENT, this.handleNewSeedsPurchased);
   }
 
   private handleNewBlock(seed: Seed): void {
