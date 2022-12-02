@@ -198,12 +198,16 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       (this.numberService.fromString(fromWei(this.launchConfig.tokenDetails.maxSupply, this.launchConfig.tokenDetails.projectTokenInfo.decimals)) *
         this.launchConfig.launchDetails.pricePerToken)) {
       message = "Funding Tokens Maximum cannot be greater than Maximum Project Token Supply times the Project Token Exchange Ratio";
+
+      // Vesting
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingPeriod) || this.launchConfig.launchDetails.vestingPeriod < 0) {
       message = "Please enter a number greater than or equal to zero for \"Project tokens vested for\" ";
     } else if (!this.numberService.stringIsNumber(this.launchConfig.launchDetails.vestingCliff) || this.launchConfig.launchDetails.vestingCliff < 0) {
       message = "Please enter a number greater than or equal to zero for \"with a cliff of\" ";
     } else if (this.launchConfig.launchDetails.vestingCliff > this.launchConfig.launchDetails.vestingPeriod) {
       message = "Please enter a value of \"with a cliff of\" less than \"Project tokens vested for\"";
+
+      // Dates
     } else if (!this.startDate) {
       message = "Please select a Start Date";
     } else if (!this.startTime) {
@@ -230,6 +234,8 @@ export class Stage4 extends BaseStage<ISeedConfig> {
       message = "Please enter a valid value for End Time (hh:mm in GMT)";
     } else if (this.setlaunchConfigEndDate() <= this.setlaunchConfigStartDate()) {
       message = "Please select an End Date greater than the Start Date";
+
+      // Legal Disclaimer
     } else if (!Utils.isValidUrl(this.launchConfig.launchDetails.legalDisclaimer, true)) {
       message = "Please enter a valid URL for Legal Disclaimer";
     } else if (this.launchConfig.launchDetails.legalDisclaimer &&
