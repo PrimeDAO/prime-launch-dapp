@@ -711,12 +711,16 @@ export function isNetworkPresent(network: AllowedNetworks): boolean {
   return present;
 }
 
+export function isLocalhostUrl(): boolean {
+  const is = window.location.host === "localhost:3330";
+  return is;
+}
+
 /**
- * Either Celo Mainnet or Testnet
  * @param network Default: Network the current wallet is connected to
  */
 export function isLocalhostNetwork(network: AllowedNetworks = EthereumService.targetedNetwork): boolean {
-  const is = network === Networks.Localhost && window.location.host === "localhost:3330";
+  const is = network === Networks.Localhost && isLocalhostUrl();
   return is;
 }
 
