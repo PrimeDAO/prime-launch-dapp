@@ -1,5 +1,5 @@
 import { autoinject, containerless, customElement } from "aurelia-framework";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostNetwork, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostUrl, Networks } from "services/EthereumService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
 @autoinject
@@ -13,7 +13,7 @@ export class NetworkFeedback {
   private show: boolean;
   private Networks = Networks;
 
-  private isLocalhostNetwork = isLocalhostNetwork
+  private isLocalhostUrl = isLocalhostUrl
 
   constructor(
     private ethereumService: EthereumService,

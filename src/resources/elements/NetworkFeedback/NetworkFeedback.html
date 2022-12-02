@@ -24,7 +24,7 @@
           <div>Alfajores</div>
       </div>
 
-        <div if.bind="isLocalhostNetwork() && !isMainnet" class="${isActive(Networks.Localhost) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Localhost)">
+        <div if.bind="isLocalhostUrl() && !isMainnet" class="${isActive(Networks.Localhost) ? 'dropdown__item--active' : 'dropdown__item'}" click.delegate="onDropDownItemClick(Networks.Localhost)">
           <div class="eth"></div>
           <div>Localhost</div>
         </div>
