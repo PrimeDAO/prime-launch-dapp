@@ -63,6 +63,7 @@
         & > hr {
           background-color: inherit;
           margin: 0;
+          margin-top: 40px;
           border-bottom: 1px solid $Border01;
         }
 
@@ -128,7 +129,6 @@
       }
 
       .button1 {
-        margin-bottom: 40px;
         margin-left: 0;
         &.disabled {
           background: $Neutral02;
