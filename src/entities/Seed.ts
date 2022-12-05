@@ -254,28 +254,10 @@ export class Seed implements ILaunch {
 
   @computedFrom("seedRemainder", "seedTip")
   get getTipAmountFromFunding(): BigNumber {
-    const fundWithTip = BigNumber.from(
-      toBigNumberJs(this.seedRemainder)
-        .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
-        .toString(),
-    );
-
-    return fundWithTip;
-  }
-
-  /**
-   * result = Fund * ( 1 + tip )
-   *                 percentageAmount
-   * (note, `tip` is already stored in percentage fraction)
-   */
-  @computedFrom("seedRemainder", "seedTip")
-  get calculateFundWithTip(): BigNumber {
-    const percentageAmount = fromWei(toWei(1).add(this.seedTip));
-    const fundWithTip = BigNumber.from(
-      toBigNumberJs(this.seedRemainder)
-        .multipliedBy(toBigNumberJs(percentageAmount))
-        .toString(),
-    );
+    const amount = toBigNumberJs(this.seedRemainder)
+      .multipliedBy(toBigNumberJs(fromWei((this.seedTip))))
+      .integerValue(); // Solidity truncates decimals
+    const fundWithTip = BigNumber.from(amount.toString());
 
     return fundWithTip;
   }

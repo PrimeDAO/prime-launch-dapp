@@ -75,7 +75,7 @@
                       <td><div class="table__center-cell">  <img class="tokenImage" src.to-view="selectedSeed.projectTokenInfo.logoURI"></img>${selectedSeed.projectTokenInfo.symbol}</div></td>
                       <td>
                         <div class="table__center-cell">
-                          <formatted-number value.bind="selectedSeed.calculateFundWithTip | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
+                          <formatted-number value.bind="selectedSeed.seedAmountRequired | ethwei:selectedSeed.projectTokenInfo.decimals" thousands-separated></formatted-number>
                         </div>
                       </td>
                     </tr>
