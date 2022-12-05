@@ -15,7 +15,7 @@
             <span class="importantText">Please save this URL.</span>
           </p>
 
-        <p>
+        <p if.bind="!isCeloNetworkLike(EthereumService.targetedNetwork)">
           PrimeDAO Governance needs to approve and initialize your new ${wizardState.launchTypeTitle} before it can
           appear in and be used in the Prime Launch interface. The approval takes place in the
           <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>.
@@ -24,7 +24,9 @@
         </p>
 
           <p>
-            After being approved, the
+            <template if.bind="!isCeloNetworkLike(EthereumService.targetedNetwork)">After being approved, the</template>
+            <template else>In order to initialize the Seed, the</template>
+
             <etherscanlink
               hide-clipboard-button
               address.to-view="wizardState.launchAdminAddress"

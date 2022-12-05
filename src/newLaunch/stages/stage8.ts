@@ -1,4 +1,4 @@
-import { EthereumService } from "./../../services/EthereumService";
+import { EthereumService, isCeloNetworkLike } from "./../../services/EthereumService";
 import { ILaunchConfig } from "../launchConfig";
 import { Router } from "aurelia-router";
 import { EventAggregator } from "aurelia-event-aggregator";
@@ -9,6 +9,8 @@ import { TokenService } from "services/TokenService";
 
 @autoinject
 export class Stage8 extends BaseStage<ILaunchConfig> {
+  private isCeloNetworkLike = isCeloNetworkLike
+
   constructor(
     router: Router,
     ethereumService: EthereumService,

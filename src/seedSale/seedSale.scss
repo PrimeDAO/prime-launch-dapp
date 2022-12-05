@@ -5,16 +5,32 @@
   mask: url("../../static/" + $url) no-repeat center;
 }
 
-//.seed-info {
-//
-//  &_time-left {
-//    @media screen and (min-width: 1080px) {
-//      .page.seed-sale.section {
-//        flex-direction: column;
-//      }
-//  }
-//}
+.seed-info {
+  .notWhitelisted {
+    .kolektivo-allowlist-info {
+      display: flex;
 
+      .tagContainer {
+
+        &:first-of-type {
+          margin-right: 10px;
+        }
+
+        a {
+          @include standardTextGradient;
+        }
+      }
+    }
+  }
+
+  //
+  //  &_time-left {
+  //    @media screen and (min-width: 1080px) {
+  //      .page.seed-sale.section {
+  //        flex-direction: column;
+  //      }
+  //  }
+}
 .page.seed-sale {
 
   .admin-container {

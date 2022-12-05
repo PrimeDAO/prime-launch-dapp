@@ -52,6 +52,9 @@ const httpsCorsRules = {
     "X-Requested-With, content-type, Authorization",
 };
 
+const commitHash = require('child_process').execSync('git rev-parse HEAD').toString()
+/* prettier-ignore */ console.log('>>>> _ >>>> ~ file: webpack.config.js ~ line 56 ~ commitHash', commitHash)
+
 module.exports = (
   { production, extractCss, analyze, tests, hmr, port, host, https } = {}
 ) => {
@@ -389,6 +392,9 @@ module.exports = (
        */
       new CleanWebpackPlugin(),
       new webpack.EnvironmentPlugin(process.env),
+      new webpack.DefinePlugin({
+        'COMMIT_HASH': JSON.stringify(commitHash),
+      })
     ],
   };
 };

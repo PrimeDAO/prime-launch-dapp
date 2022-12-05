@@ -1,5 +1,5 @@
 import { autoinject, containerless, customElement } from "aurelia-framework";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostNetwork, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostUrl, Networks } from "services/EthereumService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
 @autoinject
@@ -13,7 +13,7 @@ export class NetworkFeedback {
   private show: boolean;
   private Networks = Networks;
 
-  private isLocalhostNetwork = isLocalhostNetwork
+  private isLocalhostUrl = isLocalhostUrl
 
   constructor(
     private ethereumService: EthereumService,
@@ -23,21 +23,7 @@ export class NetworkFeedback {
     this.show = false;
 
     this.isMainnet = process.env.NETWORK === Networks.Mainnet;
-    const locallyStoredNetwork = this.storageService.lsGet<AllowedNetworks>("network");
-    if (locallyStoredNetwork) {
-      const defaultNetwork = this.isMainnet ? Networks.Mainnet : Networks.Goerli;
-
-      const invalidlyStoredTestnet = this.isMainnet
-        && [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(locallyStoredNetwork);
-      const invalidlyStoredMainnet = !this.isMainnet
-        && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
-      const illegalNetwork = (invalidlyStoredTestnet || invalidlyStoredMainnet);
-
-      if (illegalNetwork) {
-        this.network = defaultNetwork;
-        this.storageService.lsSet("network", `${defaultNetwork}`);
-      }
-    }
+    this.network = EthereumService.targetedNetwork;
   }
 
   setShow(): void {

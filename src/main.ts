@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isNetworkPresent, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostNetwork, isNetworkPresent, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -24,6 +24,16 @@ import { Vault } from "entities/Vault";
 import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
 import { BrowserStorageService } from "services/BrowserStorageService";
+
+/**
+ * Temp change to Celo as default mainnet
+ * https://app.shortcut.com/curvelabs/story/2109/change-default-network-to-celo-temporary
+*/
+const DEFAULT_MAINNET_NETWORK = Networks.Celo;
+const DEFAULT_TESTNET_NETWORK = Networks.Goerli;
+const networkFromEnv = process.env.NETWORK as AllowedNetworks;
+const isMainnet = networkFromEnv === Networks.Mainnet;
+const inDev = process.env.NODE_ENV === "development";
 
 export function configure(aurelia: Aurelia): void {
   // Note, this Cypress hack has to be at the very start.
@@ -48,12 +58,6 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  const storageService = new BrowserStorageService;
-  // storageService.lsSet("network", "alfajores");
-  const network = storageService.lsGet<AllowedNetworks>("network") ?? process.env.NETWORK as AllowedNetworks;
-  const isLocalNetwork = network === "localhost";
-  const inDev = process.env.NODE_ENV === "development";
-
   if (inDev) {
     aurelia.use.developmentLogging(); // everything
   } else {
@@ -77,8 +81,10 @@ export function configure(aurelia: Aurelia): void {
 
       const ethereumService = aurelia.container.get(EthereumService);
 
-      const targetNetwork = handleNetworkFromLocalStorage(network);
-      ethereumService.initialize(targetNetwork);
+      const storageService = new BrowserStorageService;
+      const network = getLegalNetwork(storageService.lsGet<AllowedNetworks>("network"));
+      storageService.lsSet("network", network);
+      ethereumService.initialize(network);
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
@@ -96,7 +102,7 @@ export function configure(aurelia: Aurelia): void {
 
       // TimingService.start("BalancerService Initialization");
       // TODO: Remove condition once Symmetric Subgraph is being used
-      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
+      if (!isCeloNetworkLike(network) && !isLocalhostNetwork()) {
         const balancerService = aurelia.container.get(BalancerService);
         balancerService.initialize();
       }
@@ -117,7 +123,7 @@ export function configure(aurelia: Aurelia): void {
         (window as any).Cypress.SeedService = aurelia.container.get(SeedService);
       }
 
-      if (!isCeloNetworkLike(network) && !isLocalNetwork) {
+      if (!isCeloNetworkLike(network) && !isLocalhostNetwork()) {
         const lbpManagerService = aurelia.container.get(LbpManagerService);
         lbpManagerService.initialize();
       }
@@ -128,17 +134,25 @@ export function configure(aurelia: Aurelia): void {
     }
     aurelia.setRoot(PLATFORM.moduleName("app"));
   });
+}
 
-  function handleNetworkFromLocalStorage(network: Networks) {
-    let targetNetwork;
-    if (isNetworkPresent(network)) {
-      targetNetwork = network;
-    } else {
-      const devNetwork = isLocalNetwork ? Networks.Localhost : Networks.Goerli;
-      targetNetwork = inDev ? devNetwork : Networks.Mainnet;
-
-      storageService.lsSet("network", targetNetwork);
-    }
-    return targetNetwork;
+function getLegalNetwork(locallyStoredNetwork: AllowedNetworks) {
+  if (!isNetworkPresent(locallyStoredNetwork)) {
+    return networkFromEnv;
   }
+
+  const invalidlyStoredTestnet = isMainnet
+    && [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(locallyStoredNetwork);
+  if (invalidlyStoredTestnet) {
+    return DEFAULT_MAINNET_NETWORK;
+  }
+
+  const invalidlyStoredMainnet = !isMainnet
+    && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+  if (invalidlyStoredMainnet) {
+    return DEFAULT_TESTNET_NETWORK;
+  }
+
+  const legalNetwork = isLocalhostNetwork(networkFromEnv) ? Networks.Localhost : locallyStoredNetwork;
+  return legalNetwork;
 }

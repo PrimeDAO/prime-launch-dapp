@@ -9,13 +9,16 @@
         <div class="form-content">
           <div class="body">By clicking SUBMIT, you will initiate the process of creating a new Seed! This will:
             <ol>
-              <li>Create a request for creation of the Seed that the PrimeDAO must accept to be displayed in the Prime Launch interface.</li>
+              <li if.bind="!isCeloNetworkLike(EthereumService.targetedNetwork)">Create a request for creation of the Seed that the PrimeDAO must accept to be displayed in the Prime Launch interface.</li>
               <li>Give you an IPFS URL which you can use to review the saved Seed information. <span class="importantText">Please save this URL.</span></li>
             </ol>
-            <p>PrimeDAO Governance needs to approve and initialize your new Seed before it can appear in and be used in the Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
+
+            <p if.bind="!isCeloNetworkLike(EthereumService.targetedNetwork)">PrimeDAO Governance needs to approve and initialize your new Seed before it can appear in and be used in the Prime Launch interface. The approval takes place in the <a href.bind="multiSigWalletUri" target="_blank" rel="noopener noreferrer">Prime Launch multisig wallet</a>. Reviews generally take 5-7 days.</p>
 
             <p>
-              After being approved, the
+              <template if.bind="!isCeloNetworkLike(EthereumService.targetedNetwork)">After being approved, the</template>
+              <template else>In order to initialize the Seed, the</template>
+
               <etherscanlink hide-clipboard-button address.to-view="launchConfig.launchDetails.adminAddress" text="Seed Admin"></etherscanlink>
               will have to fund the ${wizardState.launchTypeTitle} with
               <formatted-number

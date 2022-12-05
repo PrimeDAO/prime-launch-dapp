@@ -89,6 +89,14 @@ Various code dependencies include:
 * Interactions with Ethereum and wallet providers - [ethers.js](https://docs.ethers.io/v5/)
 * Mainnet web3 provider - [Rivet](https://rivet.cloud/)
 
+## Releasing
+```bash
+npm version [patch|minor|major]
+npm run changelog
+git tag -a v2.0.2 -m "v2.0.2"
+git push --follow-tags
+```
+
 ## Architecture
 ### Technical Description
 The project framework is [Aurelia](https://aurelia.io).

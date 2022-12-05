@@ -66,4 +66,3 @@ export const _27_KOLEKTIVO_SEED_CLASS = SeedClassesBuilder.create()
     classVestingCliffs: [dayToSeconds(365)],
     classVestingDurations: [dayToSeconds(730)],
   }).seedClass;
-/* prettier-ignore */ console.log(">>>> _ >>>> ~ file: seedFixtures.ts ~ line 69 ~ _27_KOLEKTIVO_SEED_CLASS", _27_KOLEKTIVO_SEED_CLASS);

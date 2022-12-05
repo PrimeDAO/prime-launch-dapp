@@ -1,6 +1,6 @@
 import { toBigNumberJs } from "services/BigNumberService";
 import { ISeedConfig } from "newLaunch/seed/config";
-import { EthereumService, fromWei, toWei } from "services/EthereumService";
+import { EthereumService, fromWei, isCeloNetworkLike, toWei } from "services/EthereumService";
 import { autoinject, computedFrom } from "aurelia-framework";
 import { BaseStage } from "newLaunch/baseStage";
 import { Router, Redirect, RouteConfig } from "aurelia-router";
@@ -14,7 +14,7 @@ import { TokenService } from "services/TokenService";
 export class Stage7 extends BaseStage<ISeedConfig> {
 
   disclaimersConfirmed = false;
-
+  private isCeloNetworkLike = isCeloNetworkLike
 
   constructor(
     router: Router,
@@ -53,7 +53,7 @@ export class Stage7 extends BaseStage<ISeedConfig> {
       .idiv(this.launchConfig.launchDetails.pricePerToken);
     this.wizardState.requiredProjectTokenDeposit = toWei(
       distributableSeeds.plus(distributableSeeds.multipliedBy(this.launchConfig.launchDetails.seedTip / 100)).toString(),
-      this.launchConfig.tokenDetails.projectTokenInfo.decimals
+      this.launchConfig.tokenDetails.projectTokenInfo.decimals,
     );
   }
 
