@@ -1,4 +1,28 @@
-## [2.0.2](https://github.com/PrimeDAO/prime-launch-dapp/compare/v1.0.3...v2.0.2) (2022-12-02)
+## [2.0.4](https://github.com/PrimeDAO/prime-launch-dapp/compare/v2.0.3...v2.0.4) (2022-12-05)
+
+
+### Bug Fixes
+
+* **entities.Seed:** truncate value Reason: ethers.BigNumber does not work with decimals .. ([9f48350](https://github.com/PrimeDAO/prime-launch-dapp/commit/9f48350e2c670e0954939ec4620e87a8f5bb3c2c))
+
+
+### Features
+
+* **appVersion:** add version page ([0799fe6](https://github.com/PrimeDAO/prime-launch-dapp/commit/0799fe629f5b96f3a79f004a0ce35173312e92a3))
+* **elements:** featured: add bindable to show all launches ([e1bd289](https://github.com/PrimeDAO/prime-launch-dapp/commit/e1bd2893f674c42b052f81d32a369a6477e20249))
+* **seedSale:** add custom text for kolektivo (not allowlisted case) ([74d11d0](https://github.com/PrimeDAO/prime-launch-dapp/commit/74d11d0bab53a9fe08555400001273bcd198af25))
+* **seedSale:** Hide Class Information for Addresses That Are Not In The Allowlist ([74943b2](https://github.com/PrimeDAO/prime-launch-dapp/commit/74943b22df50739474bf5953cc2b63165791af05))
+* **seedSale:** let page be empty, if no seed found .. ([bc86e65](https://github.com/PrimeDAO/prime-launch-dapp/commit/bc86e656de03d7c330232dd3afac29e9fe3e3215))
+* **seedSale:** update error, when seed not found ([ff85064](https://github.com/PrimeDAO/prime-launch-dapp/commit/ff85064ae9b0d52ad065dd13e3cb47d5d53d9538))
+* **services.Ethereum:** isLocalhostUrl and refac to use that ([5448746](https://github.com/PrimeDAO/prime-launch-dapp/commit/5448746822edfdb674264d140f1691b121ca4d69))
+
+
+
+## [2.0.3](https://github.com/PrimeDAO/prime-launch-dapp/compare/v1.0.3...v2.0.3) (2022-12-02)
+
+### Chore
+* **webpack:** expose commithash
+* **pkg:** add conventional commit
 
 
 ### Bug Fixes
@@ -126,7 +150,6 @@
 * **adminDashboard:** disable class interaction once started ([e2c2070](https://github.com/PrimeDAO/prime-launch-dapp/commit/e2c2070d5acefa0b60b17ceff80f2d989ac07e24))
 * **adminDashboard:** revert edited classes on fail ([79e688f](https://github.com/PrimeDAO/prime-launch-dapp/commit/79e688fea666cfdf6392b647bd0de83adc4cd5b4))
 * **app:** adjust buttons text ([3bb826d](https://github.com/PrimeDAO/prime-launch-dapp/commit/3bb826d840d0bf13ca5eb24dfa63f8f76c5774ca))
-* **appVersion:** add version page ([de64745](https://github.com/PrimeDAO/prime-launch-dapp/commit/de64745c3d3fd686e42e52ce1c338202a99a6ad5))
 * **dialogs:** addClass: add funding token symbol to text ([61e84d8](https://github.com/PrimeDAO/prime-launch-dapp/commit/61e84d84733d68848d7f085755754ffe40158fbd))
 * **dialogs:** addClass: adjust styles and copy ([a79d8dc](https://github.com/PrimeDAO/prime-launch-dapp/commit/a79d8dc8130b64c3ddd228cb206875e9b856584d))
 * **dialogs:** alert: arg to obj, and add className, and button text customization ([151b659](https://github.com/PrimeDAO/prime-launch-dapp/commit/151b6599077371dfde1609ee1352db7d986a4e26))
@@ -182,18 +205,26 @@
 * **entities:** temp setting of class name ([888b300](https://github.com/PrimeDAO/prime-launch-dapp/commit/888b3004de0899fe82f40f90261bfa5c429c2544))
 * **launchCards:** date format ([46abacb](https://github.com/PrimeDAO/prime-launch-dapp/commit/46abacb2efae606df16fc9b1c091a893c4b13daa))
 * **seedDashboard:** allow "gte", because exact amount should also be possible ([6bd46c1](https://github.com/PrimeDAO/prime-launch-dapp/commit/6bd46c100e1d43f2ec6cdedfe76c47ecaf73d7a8))
+* **seedDashboard:** allow "gte", because exact amount should also be possible ([4773a2a](https://github.com/PrimeDAO/prime-launch-dapp/commit/4773a2a1e84d1e3aaf559c1904b63c52f818ee0e))
 * **seedDashboard:** init <timeLeft> when `seed` is available ([203244d](https://github.com/PrimeDAO/prime-launch-dapp/commit/203244d135bebfc1029899743f417c0058178a92))
 * **seedDashboard:** init <timeLeft> when `seed` is available ([d16ea28](https://github.com/PrimeDAO/prime-launch-dapp/commit/d16ea28c4604549b1e59530062a13b3f04eb966c))
 * **seedDashboard:** max button takes correct min now ([73febb0](https://github.com/PrimeDAO/prime-launch-dapp/commit/73febb06681db7b420ba0960a6720f2baa9ef7f4))
 * **seedDashboard:** this.seed undefined ([52dcf09](https://github.com/PrimeDAO/prime-launch-dapp/commit/52dcf0957439faa496e244a82a26e6155695db5c))
+* **seedDashboard:** this.seed undefined ([8ebb53d](https://github.com/PrimeDAO/prime-launch-dapp/commit/8ebb53d731c8ddfc5682a565fc105362692d8718))
 * **seedDashboard:** timeLeft, and sorry-not-whitelisted or geoblocked ([e2f34ff](https://github.com/PrimeDAO/prime-launch-dapp/commit/e2f34ff8758c59851b6626158e1cd6d47577d3a4))
 * **seedDashboard:** timeLeft, and sorry-not-whitelisted or geoblocked ([c6f8261](https://github.com/PrimeDAO/prime-launch-dapp/commit/c6f8261a3d818313f23d68c745096ce6d607db6a))
+* **wizard.seed:** remove celo import (from future work) ([5c5a550](https://github.com/PrimeDAO/prime-launch-dapp/commit/5c5a55063fbde4249515838736fee00a2266ae81))
+* **wizard.Seed:** swap exchange ratio copy ([dbeb6a4](https://github.com/PrimeDAO/prime-launch-dapp/commit/dbeb6a4847c1648b87b1cad866ed2cce6b3bfcb8))
 * **wizard.Seed:** take network name ([c85cb34](https://github.com/PrimeDAO/prime-launch-dapp/commit/c85cb34762f80cfaaef20475cb9a1a31ebd011fd))
+* **wizard.Seed:** take network name ([d9cfeb2](https://github.com/PrimeDAO/prime-launch-dapp/commit/d9cfeb2e90c32e276bd7e529da2fb9b200de5cd9))
 * **wizard.seed:** typo ([dc32e7f](https://github.com/PrimeDAO/prime-launch-dapp/commit/dc32e7f114863f0c38f78009795ddf877ff000f0))
 * **wizard.submit:** correct token address for etherscanlink ([fc5ad29](https://github.com/PrimeDAO/prime-launch-dapp/commit/fc5ad298e03179fce1da3e32fff2b65bd9f744d7))
 * **wizard.submit:** correct token address for etherscanlink ([3ad282a](https://github.com/PrimeDAO/prime-launch-dapp/commit/3ad282a93bec69fbf7c817669abadee8efb04a05))
+* **wizard.submit:** correct token address for etherscanlink ([9998450](https://github.com/PrimeDAO/prime-launch-dapp/commit/999845010348206527ef597f55f2add192ec4411))
 * **wizard.summary:** funding decimals ([a03cb9c](https://github.com/PrimeDAO/prime-launch-dapp/commit/a03cb9cff4193c6cd74df27afd11c923b425b395))
+* **wizard.token:** move copy to `bind()` hook (was showing as undefined) ([dfd34c8](https://github.com/PrimeDAO/prime-launch-dapp/commit/dfd34c8c30bcacc3875bc7f720dbe257ddaf5883))
 * **wizard.Token:** take network name ([82d1867](https://github.com/PrimeDAO/prime-launch-dapp/commit/82d18674ca3b0077721aca8743d701bcf70ba1b8))
+* **wizard.Token:** take network name ([39f87e6](https://github.com/PrimeDAO/prime-launch-dapp/commit/39f87e655305aa04530be429ba8fbb4b78f77b72))
 
 
 ### Features
@@ -201,7 +232,9 @@
 * **adminDashboard:** clean up types for addClassBatch() ([aa161e3](https://github.com/PrimeDAO/prime-launch-dapp/commit/aa161e328d560267866196d46b6524de8b5764ec))
 * **classes:** update class name, fetch first class ([db4fd31](https://github.com/PrimeDAO/prime-launch-dapp/commit/db4fd3174e3f362fa99de5f4703c6bf4beddfb0d))
 * **elements:** add formattedDate component ([abfec69](https://github.com/PrimeDAO/prime-launch-dapp/commit/abfec69062db3d25757f2d1dc40d24c5f95ddfba))
+* **elements:** add formattedDate component ([8ca7941](https://github.com/PrimeDAO/prime-launch-dapp/commit/8ca79413ca74086a02eecae7f0563abaf09005e1))
 * **entities:** add type for Class from Contract and load into Seed ([709c3d1](https://github.com/PrimeDAO/prime-launch-dapp/commit/709c3d1162c6be4f20b27d1d482e1778e13ee220))
+* **launches:** filter out launches base on criteria ([4e1b5ae](https://github.com/PrimeDAO/prime-launch-dapp/commit/4e1b5aed42cbe5016544f386f27e25c712421dbe))
 * **launches:** fix seed project name ([7e1c92c](https://github.com/PrimeDAO/prime-launch-dapp/commit/7e1c92c0a260693d1031f94b26b5d9d94fce6de9))
 * **launch:** update label for permission toggle ([8bf3be1](https://github.com/PrimeDAO/prime-launch-dapp/commit/8bf3be1cb8b1ef5cbbc8e3ee815254125d322460))
 * **seed.config:** add `isPermissioned` prop ([909440c](https://github.com/PrimeDAO/prime-launch-dapp/commit/909440cd0acbfe5b47ed82a2659439af02b2ac54))
@@ -210,10 +243,13 @@
 * **seedDashboard:** add class sold ([4aac888](https://github.com/PrimeDAO/prime-launch-dapp/commit/4aac888f91f46498ad466fb30e60eaf58b9249a6))
 * **seedDashboard:** add class sold ([b2df466](https://github.com/PrimeDAO/prime-launch-dapp/commit/b2df4668021fd6205c798f69aa604bddd3c49748))
 * **seedDashboard:** enhance dates with new formattedDate component (now, have tooltip) ([66ff07a](https://github.com/PrimeDAO/prime-launch-dapp/commit/66ff07ac64fe7b3458976d00ed67a8be36beef11))
+* **seedDashboard:** enhance dates with new formattedDate component (now, have tooltip) ([b4941c2](https://github.com/PrimeDAO/prime-launch-dapp/commit/b4941c24112da53ba71fe13696d4b219b6708a77))
+* **seedDashboard:** enhance dates with new formattedDate component (now, have tooltip) ([3dc2d7b](https://github.com/PrimeDAO/prime-launch-dapp/commit/3dc2d7b3cbe1bb43d943cf29f26903810d0e1d49))
 * **seedDashboard:** get the correct user class ([a069aa6](https://github.com/PrimeDAO/prime-launch-dapp/commit/a069aa6c3fda716657a94f5c583254517233a27a))
 * **seedDashboard:** get the correct user class ([3b7559c](https://github.com/PrimeDAO/prime-launch-dapp/commit/3b7559c8429e217ba2a0397f04f28526bb0eaebe))
 * **seedDashboard:** load defaultClass ([63b9ab6](https://github.com/PrimeDAO/prime-launch-dapp/commit/63b9ab6f49015ddc4ca1a1f19939ac3162126cf8))
 * **seedDashboard:** make amount raised reactive ([3992ad6](https://github.com/PrimeDAO/prime-launch-dapp/commit/3992ad6d72aac240e747c800ce2d8eb59aac67c3))
+* **seedDashboard:** make amount raised reactive ([eee4f15](https://github.com/PrimeDAO/prime-launch-dapp/commit/eee4f15bac52e4da4333c3dca0505b5c23133565))
 * **seedDashboard:** remove "$" from caps ([3ad3437](https://github.com/PrimeDAO/prime-launch-dapp/commit/3ad343769cfdebf907d1cf982372c3de97c8110e))
 * **seedDashboard:** remove "$" from caps ([9f6a46c](https://github.com/PrimeDAO/prime-launch-dapp/commit/9f6a46cb5d0c3d6f73c989a09ec91c0f5c7edd20))
 * **seedDashboard:** remove "Class price" and add Class name ([c218529](https://github.com/PrimeDAO/prime-launch-dapp/commit/c21852928ce24ed48a34c7ea75d066d418f3c287))
@@ -229,10 +265,14 @@
 * **seedDashboard:** update time left (resp. starts in) ([6047572](https://github.com/PrimeDAO/prime-launch-dapp/commit/60475720416befdbc7c8e125a18e9e51a16779dd))
 * **seedDashboard:** update time left (resp. starts in) ([869db04](https://github.com/PrimeDAO/prime-launch-dapp/commit/869db047c0484f64c186e373957a4f643dcded8f))
 * **seed:** reactively update user balance ([9065fd1](https://github.com/PrimeDAO/prime-launch-dapp/commit/9065fd156bc9f46314e9ff6347c4c053e24c23f9))
+* **seed:** reactively update user balance ([6f3a9d5](https://github.com/PrimeDAO/prime-launch-dapp/commit/6f3a9d53b7c934965e43d635067288a38e937cba))
 * **services.date:** add "< 1 day" case ([b1274f0](https://github.com/PrimeDAO/prime-launch-dapp/commit/b1274f09693682158625aafba63089fe1e9085bb))
+* **services.date:** add "< 1 day" case ([9267757](https://github.com/PrimeDAO/prime-launch-dapp/commit/92677577b605df1ca28681fd1f55ba68099702d0))
+* **services:** add `metadata` to launchTypes ([9a363da](https://github.com/PrimeDAO/prime-launch-dapp/commit/9a363da851cbda293eb9f0c3458f4ce1dcd95218))
 * **services:** add min to BigNumber ([7665715](https://github.com/PrimeDAO/prime-launch-dapp/commit/76657159315eefbbe73811eb22208b1213a33961))
 * **services:** add min to BigNumber ([1c04f34](https://github.com/PrimeDAO/prime-launch-dapp/commit/1c04f34506389996c90d1f64528f1afe4c6cac1d))
 * **services:** capitalizeNetwork function ([e3e9a91](https://github.com/PrimeDAO/prime-launch-dapp/commit/e3e9a9108fc87cb60ab8258d52d13bb4d347308a))
+* **services:** capitalizeNetwork function ([28877bb](https://github.com/PrimeDAO/prime-launch-dapp/commit/28877bbc7bf8b942a6fb83ff7df472f74324d5a6))
 * **services:** fix min calc ([b53646f](https://github.com/PrimeDAO/prime-launch-dapp/commit/b53646f1e480099eb3ad5526c521cd2298913b62))
 * **services:** remove old addClass call ([98515fd](https://github.com/PrimeDAO/prime-launch-dapp/commit/98515fdb07c07dc793792936cb86c70c11090dea))
 * **services:** TxService, add console log. Reason: was hard to know where error came from ([fc78ab0](https://github.com/PrimeDAO/prime-launch-dapp/commit/fc78ab0f3e28e1b9e9daca5351d9364a2ac0ef33))
@@ -242,7 +282,9 @@
 * **services:** update where tip is taken from ([c2ad9c9](https://github.com/PrimeDAO/prime-launch-dapp/commit/c2ad9c94e300520098517dc620c1e7fe07955e0a))
 * **wizard.seed.thankyou:** open admin dashboard in new tab ([c138005](https://github.com/PrimeDAO/prime-launch-dapp/commit/c1380052367218a6c60b063ed3699f5d8191a365))
 * **wizard.seed.thankyou:** open admin dashboard in new tab ([9cb0e7c](https://github.com/PrimeDAO/prime-launch-dapp/commit/9cb0e7c07293026098b74fd1deff591b21839c52))
+* **wizard.seed.thankyou:** open admin dashboard in new tab ([eff97b2](https://github.com/PrimeDAO/prime-launch-dapp/commit/eff97b20b687cf6d16f2ff99e1d6060eb6a6ae20))
 * **wizard.seed:** copy update ([e357830](https://github.com/PrimeDAO/prime-launch-dapp/commit/e3578305a3e1ab375a92d0548b7f99594a51534d)), closes [#753](https://github.com/PrimeDAO/prime-launch-dapp/issues/753)
+* **wizard.seed:** copy update ([c4a7ed0](https://github.com/PrimeDAO/prime-launch-dapp/commit/c4a7ed02f5e99cc5c47aa24cfd038ac82c45107d)), closes [#753](https://github.com/PrimeDAO/prime-launch-dapp/issues/753)
 * **wizard.seedDetails:** add permissionedToggle ([c8809e6](https://github.com/PrimeDAO/prime-launch-dapp/commit/c8809e6678899aeb12c3b3fb2f8de5146cc93cb8))
 * **wizard.seedDetails:** add tipping ([a32ae2b](https://github.com/PrimeDAO/prime-launch-dapp/commit/a32ae2b71f872d0f5ea47cb7a0a93c5e8189e37c))
 * **wizard.seed:** handle allowList ([9279ef0](https://github.com/PrimeDAO/prime-launch-dapp/commit/9279ef0ba49b48d5c6492471eb74cbba3d11da26))
@@ -253,8 +295,11 @@
 
 ### Performance Improvements
 
+* **EthBalance:** don't call getBalance, reason: not used ([8de6316](https://github.com/PrimeDAO/prime-launch-dapp/commit/8de6316903b1e637ad6a899cc7203c74d074f74f))
 * remove call to getBlock (reason: not used) ([0b85797](https://github.com/PrimeDAO/prime-launch-dapp/commit/0b85797b9259c71eea74d812eccce00bbaf110d2))
+* remove call to getBlock (reason: not used) ([a80b086](https://github.com/PrimeDAO/prime-launch-dapp/commit/a80b0864e9ed583c9d3f7dbfeac6f8a1c8dda918))
 * **seedDashboard:** adjust way to get new blocks ([f95ab56](https://github.com/PrimeDAO/prime-launch-dapp/commit/f95ab56cf26c072a1eb8d1b756d2e4ff40dc1c72))
+* **seedDashboard:** adjust way to get new blocks ([208d1c1](https://github.com/PrimeDAO/prime-launch-dapp/commit/208d1c191fe6cab972ac6ca617fa65cac249b05a))
 
 
 ### Reverts
@@ -264,6 +309,76 @@
 * Revert "revert formatting" ([efaa94f](https://github.com/PrimeDAO/prime-launch-dapp/commit/efaa94fc4902569744c719ee5ed3ae7a439d9205))
 * Revert "add mobile style" - only package-lock.json change ([ffd5178](https://github.com/PrimeDAO/prime-launch-dapp/commit/ffd517896a4cf81149fba1d202a8c38505afac3e))
 * Revert "updated sor2 into sor" ([e6dda5f](https://github.com/PrimeDAO/prime-launch-dapp/commit/e6dda5f166efffbda4da8adc7bd9ffa7ad0e3ece))
+* Revert "perf(EthBalance): don't call getBalance, reason: not used" ([d3da55e](https://github.com/PrimeDAO/prime-launch-dapp/commit/d3da55eb6738665734393c258db40de55ca1f711))
+* Revert "lint fix" ([d44a829](https://github.com/PrimeDAO/prime-launch-dapp/commit/d44a82954d0bf1e171f6caebd2be4dab83522f09))
+
+
+
+## [1.0.1-alpha.1](https://github.com/PrimeDAO/prime-launch-dapp/compare/v1.0.0...v1.0.1-alpha.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* add commas to numerical fields ([#580](https://github.com/PrimeDAO/prime-launch-dapp/issues/580)) ([f20b6ef](https://github.com/PrimeDAO/prime-launch-dapp/commit/f20b6ef6033ae5c58425664f6521286d02ebab08))
+* add https in the website plaeholders ([#561](https://github.com/PrimeDAO/prime-launch-dapp/issues/561)) ([9414764](https://github.com/PrimeDAO/prime-launch-dapp/commit/9414764b4e28f51ef469ed163b847f956bbdc989))
+* add N/A at whitelist if no whitelist ([#530](https://github.com/PrimeDAO/prime-launch-dapp/issues/530)) ([b252efe](https://github.com/PrimeDAO/prime-launch-dapp/commit/b252efed81e25b04a3c88f04a4032ce5d7acf1ef))
+* change error message of lpb number of tokens ([#374](https://github.com/PrimeDAO/prime-launch-dapp/issues/374)) ([05e5ef2](https://github.com/PrimeDAO/prime-launch-dapp/commit/05e5ef289cb9a13ddaa21f1bb2951bf85614b0b8))
+* change ethereum button color ([#541](https://github.com/PrimeDAO/prime-launch-dapp/issues/541)) ([da21fa0](https://github.com/PrimeDAO/prime-launch-dapp/commit/da21fa0f931f4fa37480dd1affd55005ae1f6fb6))
+* change fair launch image and add border radius to it ([#422](https://github.com/PrimeDAO/prime-launch-dapp/issues/422)) ([5e80b43](https://github.com/PrimeDAO/prime-launch-dapp/commit/5e80b43afcd94648502ecfe348b6cebef0a8b9b5))
+* change launch page subtitle ([#526](https://github.com/PrimeDAO/prime-launch-dapp/issues/526)) ([c56f56f](https://github.com/PrimeDAO/prime-launch-dapp/commit/c56f56f327e287c68eb4ccc53d082d895cb9ba6d))
+* change link of request information of seed and lbp ([#532](https://github.com/PrimeDAO/prime-launch-dapp/issues/532)) ([8e16422](https://github.com/PrimeDAO/prime-launch-dapp/commit/8e164224e8fa8697b9f8a8df2868803bece2ed73))
+* change submenu order ([#531](https://github.com/PrimeDAO/prime-launch-dapp/issues/531)) ([9ebb831](https://github.com/PrimeDAO/prime-launch-dapp/commit/9ebb831283186b8f349d71377b87cd665f05a57b))
+* change text in apply for launch ([#524](https://github.com/PrimeDAO/prime-launch-dapp/issues/524)) ([74bceea](https://github.com/PrimeDAO/prime-launch-dapp/commit/74bceeaa6edf5091ab0768896fbae3d941b16c6d))
+* change title to Seamlessly kickstart your DAO ([#523](https://github.com/PrimeDAO/prime-launch-dapp/issues/523)) ([f8851ed](https://github.com/PrimeDAO/prime-launch-dapp/commit/f8851ed1d97b01806d5141fd180dfb87c3bf40f6))
+* change view all launches to view all ([#525](https://github.com/PrimeDAO/prime-launch-dapp/issues/525)) ([c89a034](https://github.com/PrimeDAO/prime-launch-dapp/commit/c89a034b31259f4d1ef1226fad0266f813280cb2))
+* cliff and vest should be able to be 0 ([#543](https://github.com/PrimeDAO/prime-launch-dapp/issues/543)) ([c9423eb](https://github.com/PrimeDAO/prime-launch-dapp/commit/c9423eb6a25d510f312a06d93ac905a7ffe0791b))
+* fix button redirection ([#571](https://github.com/PrimeDAO/prime-launch-dapp/issues/571)) ([e74c416](https://github.com/PrimeDAO/prime-launch-dapp/commit/e74c4164d64a37d6352a5dbafa3208993b8c6a36))
+* fix invalid bignumber value when submitting a new seed ([#455](https://github.com/PrimeDAO/prime-launch-dapp/issues/455)) ([aee99db](https://github.com/PrimeDAO/prime-launch-dapp/commit/aee99db960daca366ba70bb4cd7fb7d8c7f9dfe1))
+* fix request information ([#400](https://github.com/PrimeDAO/prime-launch-dapp/issues/400)) ([85a89ee](https://github.com/PrimeDAO/prime-launch-dapp/commit/85a89ee5a2176a25931ddb8a2fc7f46130cee751))
+* fix spinner not showing ([#598](https://github.com/PrimeDAO/prime-launch-dapp/issues/598)) ([818c4bc](https://github.com/PrimeDAO/prime-launch-dapp/commit/818c4bc71a51a726fece04310add24018175344b))
+* fix weights feedback spacing ([#432](https://github.com/PrimeDAO/prime-launch-dapp/issues/432)) ([a1ac311](https://github.com/PrimeDAO/prime-launch-dapp/commit/a1ac31148e133336e676fc8cea2179cb0970679e))
+* modify tooltips and add a new one ([#606](https://github.com/PrimeDAO/prime-launch-dapp/issues/606)) ([66889b8](https://github.com/PrimeDAO/prime-launch-dapp/commit/66889b874221780cd0d2bc7265efd10b3fdd709e))
+* remplace launch by register ([#542](https://github.com/PrimeDAO/prime-launch-dapp/issues/542)) ([c2b8224](https://github.com/PrimeDAO/prime-launch-dapp/commit/c2b82244fe4efa46539efa7874541e149cdaca05))
+* replace primelaunch by prime launch ([#528](https://github.com/PrimeDAO/prime-launch-dapp/issues/528)) ([ab31f5d](https://github.com/PrimeDAO/prime-launch-dapp/commit/ab31f5d3087a96a9cda1a25e34a2f85af84c459a))
+* **seedDashboard:** allow "gte", because exact amount should also be possible ([6bd46c1](https://github.com/PrimeDAO/prime-launch-dapp/commit/6bd46c100e1d43f2ec6cdedfe76c47ecaf73d7a8))
+* **seedDashboard:** this.seed undefined ([52dcf09](https://github.com/PrimeDAO/prime-launch-dapp/commit/52dcf0957439faa496e244a82a26e6155695db5c))
+* submenu should always be visible ([#529](https://github.com/PrimeDAO/prime-launch-dapp/issues/529)) ([b2c88d2](https://github.com/PrimeDAO/prime-launch-dapp/commit/b2c88d221c1554927fbafbb7bcefb41734f3a7be))
+* token ratio need adjustments ([#415](https://github.com/PrimeDAO/prime-launch-dapp/issues/415)) ([3fca93c](https://github.com/PrimeDAO/prime-launch-dapp/commit/3fca93ca0333d7de02a30cde4afaa7202d43aab1))
+* update url of request information ([#615](https://github.com/PrimeDAO/prime-launch-dapp/issues/615)) ([e500750](https://github.com/PrimeDAO/prime-launch-dapp/commit/e5007505de477409db62547bdb1e36a53df82e11))
+* **wizard.Seed:** take network name ([c85cb34](https://github.com/PrimeDAO/prime-launch-dapp/commit/c85cb34762f80cfaaef20475cb9a1a31ebd011fd))
+* **wizard.submit:** correct token address for etherscanlink ([fc5ad29](https://github.com/PrimeDAO/prime-launch-dapp/commit/fc5ad298e03179fce1da3e32fff2b65bd9f744d7))
+* **wizard.submit:** correct token address for etherscanlink ([3ad282a](https://github.com/PrimeDAO/prime-launch-dapp/commit/3ad282a93bec69fbf7c817669abadee8efb04a05))
+* **wizard.Token:** take network name ([82d1867](https://github.com/PrimeDAO/prime-launch-dapp/commit/82d18674ca3b0077721aca8743d701bcf70ba1b8))
+
+
+### Features
+
+* added icons over time remaining dashboard ([#454](https://github.com/PrimeDAO/prime-launch-dapp/issues/454)) ([ecb9a28](https://github.com/PrimeDAO/prime-launch-dapp/commit/ecb9a286ac851b757c4499b8bb94d2462df2120c))
+* display link to the launch in the launch admin page ([#447](https://github.com/PrimeDAO/prime-launch-dapp/issues/447)) ([7c24459](https://github.com/PrimeDAO/prime-launch-dapp/commit/7c24459ff86a825789a4df1ac35a8ecad344475b))
+* **elements:** add formattedDate component ([abfec69](https://github.com/PrimeDAO/prime-launch-dapp/commit/abfec69062db3d25757f2d1dc40d24c5f95ddfba))
+* **lbp:** largest -> largest2 ([#705](https://github.com/PrimeDAO/prime-launch-dapp/issues/705)) ([1f8f223](https://github.com/PrimeDAO/prime-launch-dapp/commit/1f8f22357d209d6c4d534c3990ab4a2a07c75068))
+* **seedDashboard:** enhance dates with new formattedDate component (now, have tooltip) ([66ff07a](https://github.com/PrimeDAO/prime-launch-dapp/commit/66ff07ac64fe7b3458976d00ed67a8be36beef11))
+* **seedDashboard:** make amount raised reactive ([3992ad6](https://github.com/PrimeDAO/prime-launch-dapp/commit/3992ad6d72aac240e747c800ce2d8eb59aac67c3))
+* **seed:** reactively update user balance ([9065fd1](https://github.com/PrimeDAO/prime-launch-dapp/commit/9065fd156bc9f46314e9ff6347c4c053e24c23f9))
+* **services.date:** add "< 1 day" case ([b1274f0](https://github.com/PrimeDAO/prime-launch-dapp/commit/b1274f09693682158625aafba63089fe1e9085bb))
+* **services:** capitalizeNetwork function ([e3e9a91](https://github.com/PrimeDAO/prime-launch-dapp/commit/e3e9a9108fc87cb60ab8258d52d13bb4d347308a))
+* **wizard.seed.thankyou:** open admin dashboard in new tab ([c138005](https://github.com/PrimeDAO/prime-launch-dapp/commit/c1380052367218a6c60b063ed3699f5d8191a365))
+* **wizard.seed.thankyou:** open admin dashboard in new tab ([9cb0e7c](https://github.com/PrimeDAO/prime-launch-dapp/commit/9cb0e7c07293026098b74fd1deff591b21839c52))
+* **wizard.seed:** copy update ([e357830](https://github.com/PrimeDAO/prime-launch-dapp/commit/e3578305a3e1ab375a92d0548b7f99594a51534d)), closes [#753](https://github.com/PrimeDAO/prime-launch-dapp/issues/753)
+
+
+### Performance Improvements
+
+* remove call to getBlock (reason: not used) ([0b85797](https://github.com/PrimeDAO/prime-launch-dapp/commit/0b85797b9259c71eea74d812eccce00bbaf110d2))
+* **seedDashboard:** adjust way to get new blocks ([f95ab56](https://github.com/PrimeDAO/prime-launch-dapp/commit/f95ab56cf26c072a1eb8d1b756d2e4ff40dc1c72))
+
+
+### Reverts
+
+* Revert "save" ([35ed796](https://github.com/PrimeDAO/prime-launch-dapp/commit/35ed796deadaa7d739866a87cb4cc632e0cc662f))
+* Revert "lint fix" ([d44a829](https://github.com/PrimeDAO/prime-launch-dapp/commit/d44a82954d0bf1e171f6caebd2be4dab83522f09))
+* Revert "Removed unnecessary margin from button (#279)" (#301) ([365edf1](https://github.com/PrimeDAO/prime-launch-dapp/commit/365edf1590a1e3cadf2864e945ae0f30d7855933)), closes [#279](https://github.com/PrimeDAO/prime-launch-dapp/issues/279) [#301](https://github.com/PrimeDAO/prime-launch-dapp/issues/301)
+* Revert "fix docs link" ([45f246a](https://github.com/PrimeDAO/prime-launch-dapp/commit/45f246aca82c9d4dc88d98a03e9cf43fc5b9eb70))
 
 
 
