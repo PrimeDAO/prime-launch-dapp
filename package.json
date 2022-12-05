@@ -1,6 +1,6 @@
 {
   "name": "@primedao/prime-launch-dapp",
-  "version": "1.1.0",
+  "version": "2.0.3",
   "description": "The PrimeDAO's Home for IDOs",
   "repository": {
     "type": "git",
@@ -10,6 +10,7 @@
   "homepage": "./",
   "license": "MIT",
   "scripts": {
+    "changelog": "node ./node_modules/conventional-changelog-cli/cli.js -p angular -i CHANGELOG.md -s",
     "build": "cross-env DOTENV_CONFIG_PATH=.env webpack --env production extractCSS",
     "build-arbitrum": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=arbitrum webpack --env production extractCss",
     "build-kovan": "cross-env DOTENV_CONFIG_PATH=.env.production NETWORK=kovan webpack --env production  extractCss",
@@ -79,6 +80,7 @@
     "aurelia-webpack-plugin": "^5.0.4",
     "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^4.0.0",
+    "conventional-changelog-cli": "^2.2.2",
     "copy-webpack-plugin": "^10.2.4",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",

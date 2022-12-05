@@ -1,6 +1,6 @@
 <template>
   <require from="resources/elements/questionMark/questionMark.html"></require>
-  <div class="page animated-page au-animate seed-sale">
+  <div if.bind="seed" class="page animated-page au-animate seed-sale">
 
     <!-- Access Dashboard -->
     <div class="seed-info section row" show.bind="seed.admin === accountAddress && accountAddress">
@@ -243,7 +243,25 @@
 
         <!-- Allowlist -->
         <div class="notWhitelisted" if.to-view="connected && !seed.userIsWhitelisted && !geoBlocked">
-          Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.
+          <!-- Kolektivo specific -->
+          <template if.bind="seed.metadata.general.projectName.toLowerCase().includes('kolektivo')">
+            <p>
+              To participate in this launch, you must be added to one of the allowlists managed by Kolektivo.
+            </p>
+            <div class="kolektivo-allowlist-info">
+              <span class="tagContainer">
+                <div class="tagSearch"></div>
+                <a href="https://medium.com/primedao/prime-launch-to-support-the-kolektivo-seed-on-celo-2ff42f9338d8" target="_blank" rel="noopener noreferrer">Learn More</a>
+              </span>
+              <span class="tagContainer">
+                <div class="tagSearch"></div>
+                <a href="https://kolektivo.typeform.com/LaunchKNT" target="_blank" rel="noopener noreferrer">Join Allowlist</a>
+              </span>
+            </div>
+          </template>
+
+          <!-- Generic -->
+          <template else>Sorry, this Seed has an allowlist and your account has not been allowlisted. So using this account, you will not be able to participate.</template>
         </div>
       </div>
 
@@ -263,13 +281,19 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">Your class</div>
-              <div class="class-container__block__text--large">${targetClass.className}</div>
+              <div class="class-container__block__text--large">
+                <template if.bind="connected && !seed.userIsWhitelisted && !geoBlocked">None</template>
+                <template else>${targetClass.className}</template>
+              </div>
             </div>
             <div class="class-container__block">
               <div class="class-container__block__title">contribution limit</div>
               <div class="class-container__block__image-container">
                 <img class="class-container__block__image" src.to-view="seed.fundingTokenInfo.logoURI" />
-                <div class="class-container__block__text">
+                <div if.bind="connected && !seed.userIsWhitelisted && !geoBlocked" class="class-container__block__text">
+                  0 / 0
+                </div>
+                <div else class="class-container__block__text">
                   <formatted-number value.to-view="seed.userCurrentFundingContributions | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number>
                   /
                   <formatted-number value.to-view="targetClass.individualCap | ethwei:seed.fundingTokenInfo.decimals" thousands-separated mantissa="0"></formatted-number></div>
@@ -279,7 +303,10 @@
           <div class="class-container__blocks">
             <div class="class-container__block">
               <div class="class-container__block__title">vesting</div>
-              <div class="class-container__block__text--small">${vestingDate} with ${lockDate} lock</div>
+              <div class="class-container__block__text--small">
+                <template if.bind="connected && !seed.userIsWhitelisted && !geoBlocked">0 days with 0 days lock</template>
+                <template else>${vestingDate} with ${lockDate} lock</template>
+              </div>
             </div>
           </div>
         </div>

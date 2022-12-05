@@ -1,0 +1,9 @@
+<template>
+  <h2 class="title heading heading2">App version</h2>
+  <p>${appVersion}</p>
+  <h2 class="title heading heading2">Commit</h2>
+  <p>
+    ${commitHash}
+    <copy-to-clipboard-button handle-click.call="copyAddress()" text-to-copy.to-view="commitHash"></copy-to-clipboard-button>
+  </p>
+</template>
