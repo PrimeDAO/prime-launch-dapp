@@ -58,9 +58,6 @@ export function configure(aurelia: Aurelia): void {
 
   aurelia.use.singleton(HTMLSanitizer, DOMPurify);
 
-  const storageService = new BrowserStorageService;
-  const network = getLegalNetwork(storageService.lsGet<AllowedNetworks>("network"));
-
   if (inDev) {
     aurelia.use.developmentLogging(); // everything
   } else {
@@ -84,9 +81,10 @@ export function configure(aurelia: Aurelia): void {
 
       const ethereumService = aurelia.container.get(EthereumService);
 
-      const targetNetwork = handleNetworkFromLocalStorage(network);
-      storageService.lsSet("network", targetNetwork);
-      ethereumService.initialize(targetNetwork);
+      const storageService = new BrowserStorageService;
+      const network = getLegalNetwork(storageService.lsGet<AllowedNetworks>("network"));
+      storageService.lsSet("network", network);
+      ethereumService.initialize(network);
 
       ContractsDeploymentProvider.initialize(EthereumService.targetedNetwork);
 
@@ -157,15 +155,4 @@ function getLegalNetwork(locallyStoredNetwork: AllowedNetworks) {
 
   const legalNetwork = isLocalhostNetwork(networkFromEnv) ? Networks.Localhost : locallyStoredNetwork;
   return legalNetwork;
-}
-
-function handleNetworkFromLocalStorage(network: Networks) {
-  let targetNetwork;
-  if (isNetworkPresent(network)) {
-    targetNetwork = network;
-  } else {
-    const devNetwork = isLocalhostNetwork(networkFromEnv) ? Networks.Localhost : Networks.Goerli;
-    targetNetwork = isMainnet ? DEFAULT_MAINNET_NETWORK : devNetwork;
-  }
-  return targetNetwork;
 }
