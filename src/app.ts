@@ -278,6 +278,13 @@ export class App {
         title: "Seed Sale",
       },
       {
+        moduleId: PLATFORM.moduleName("./appVersion/appVersion"),
+        nav: false,
+        name: "appVersion",
+        route: ["version"],
+        title: "Version",
+      },
+      {
         moduleId: PLATFORM.moduleName("./seedOverview/seedOverview"),
         nav: false,
         name: "seedOverview",
