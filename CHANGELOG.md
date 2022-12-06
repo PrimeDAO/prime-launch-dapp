@@ -1,3 +1,18 @@
+## [2.0.6](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.5...2.0.6) (2022-12-06)
+
+
+### Bug Fixes
+
+* **elements.NetworkFeedback:** check for mainnet (including celo) ([a491f1f](https://github.com/PrimeDAO/prime-launch-dapp/commit/a491f1fa36becc3dc3dac09e191410eaf77d35f9))
+
+
+### Features
+
+* **app:** add /version path ([c6e53e4](https://github.com/PrimeDAO/prime-launch-dapp/commit/c6e53e4a53e1cb1f155987e952cf8628b3e499ce))
+* **seedSale.Kolektivo:** update Kol link ([a7c9aa1](https://github.com/PrimeDAO/prime-launch-dapp/commit/a7c9aa1ae2286c1a20bc9a5d1c67e24d877bb558))
+
+
+
 ## [2.0.5](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.4...2.0.5) (2022-12-06)
 
 
@@ -33,7 +48,7 @@
 
 
 
-## [2.0.3](https://github.com/PrimeDAO/prime-launch-dapp/compare/v1.0.3...v2.0.3) (2022-12-02)
+## [2.0.3](https://github.com/PrimeDAO/prime-launch-dapp/compare/v2.0.2...v2.0.3) (2022-12-02)
 
 
 ### Bug Fixes
@@ -166,6 +181,7 @@
 * **dialogs:** alert: arg to obj, and add className, and button text customization ([151b659](https://github.com/PrimeDAO/prime-launch-dapp/commit/151b6599077371dfde1609ee1352db7d986a4e26))
 * **docs:** update docs link to external side ([f0f02af](https://github.com/PrimeDAO/prime-launch-dapp/commit/f0f02af20c6982a476bf0eac79678425f71d551b))
 * **elements:** featured: add bindable to show all launches ([3b429c7](https://github.com/PrimeDAO/prime-launch-dapp/commit/3b429c7d29d703a643c652ede27e50e8e4f354a1))
+* **elements:** featured: add bindable to show all launches ([e1bd289](https://github.com/PrimeDAO/prime-launch-dapp/commit/e1bd2893f674c42b052f81d32a369a6477e20249))
 * **entities:** Seed: add disclaimer check ([8f3418a](https://github.com/PrimeDAO/prime-launch-dapp/commit/8f3418a16b9344b34bae9dced6a457e7e642ba04))
 * **entities:** Seed: support for localhost metadata ([9793ff5](https://github.com/PrimeDAO/prime-launch-dapp/commit/9793ff58c69ce71db7fe9c8d26cc694b7e65cad7))
 * **entities:** Seed: update change class name (reason: contract update) ([24406e3](https://github.com/PrimeDAO/prime-launch-dapp/commit/24406e386b20c43978b49caf1ca0e9040d8f8808))
