@@ -695,6 +695,27 @@ export function isNetwork(network: AllowedNetworks): boolean {
   return is;
 }
 
+/**
+ * Ethereum,
+ * Celo,
+ * Arbitrum
+ * @param network
+ */
+export function isMainnet(network: AllowedNetworks): boolean {
+  const is = [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(network);
+  return is;
+}
+
+/**
+ * Kovan, Goerli,
+ * Alfajores,
+ * Localhost
+ * @param network
+ */
+export function isTestnet(network: AllowedNetworks): boolean {
+  const is = [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(network);
+  return is;
+}
 
 /**
  * Either Celo Mainnet or Testnet

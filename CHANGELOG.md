@@ -1,4 +1,19 @@
-## [2.0.4](https://github.com/PrimeDAO/prime-launch-dapp/compare/v2.0.3...v2.0.4) (2022-12-05)
+## [2.0.5](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.4...2.0.5) (2022-12-06)
+
+
+### Bug Fixes
+
+* **main:** ENV var should be strongest ([9dce0cd](https://github.com/PrimeDAO/prime-launch-dapp/commit/9dce0cd3a815e3e162a1320536a787a14af60e4e))
+
+
+### Features
+
+* **services.Ethereum:** add main- and testnet check-functions ([00be51d](https://github.com/PrimeDAO/prime-launch-dapp/commit/00be51df763b7766829a4603e519131e41362bf4))
+* **services.Seed:** increase Celo startingBlocknumber ([9215593](https://github.com/PrimeDAO/prime-launch-dapp/commit/9215593ebcd19e243cb98cf5c9260589514ba6e2))
+
+
+
+## [2.0.4](https://github.com/PrimeDAO/prime-launch-dapp/compare/v2.0.3...2.0.4) (2022-12-05)
 
 
 ### Bug Fixes
@@ -19,10 +34,6 @@
 
 
 ## [2.0.3](https://github.com/PrimeDAO/prime-launch-dapp/compare/v1.0.3...v2.0.3) (2022-12-02)
-
-### Chore
-* **webpack:** expose commithash
-* **pkg:** add conventional commit
 
 
 ### Bug Fixes
