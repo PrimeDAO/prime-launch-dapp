@@ -80,7 +80,8 @@ export class SeedService {
       case Networks.Celo:
         // this.startingBlockNumber = 14836595; // has 2 celo mainnet test seeds
         // this.startingBlockNumber = 16223809; // only has seed with "test" in its name
-        this.startingBlockNumber = 16341159;
+        // this.startingBlockNumber = 16341159; // wrong Kol seed v2
+        this.startingBlockNumber = 16480211; // Update: Only show latest 2 Kol seeds
         break;
       case Networks.Alfajores:
         this.startingBlockNumber = 14681726;

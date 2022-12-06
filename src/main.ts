@@ -3,7 +3,7 @@ import { PinataIpfsClient } from "./services/PinataIpfsClient";
 import { Aurelia } from "aurelia-framework";
 import * as environment from "../config/environment.json";
 import { PLATFORM } from "aurelia-pal";
-import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostNetwork, isNetworkPresent, Networks } from "services/EthereumService";
+import { AllowedNetworks, EthereumService, isCeloNetworkLike, isLocalhostNetwork, isMainnet, isNetworkPresent, isTestnet, Networks } from "services/EthereumService";
 import { EventConfigException } from "services/GeneralEvents";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { ContractsService } from "services/ContractsService";
@@ -25,14 +25,8 @@ import { BalancerService } from "services/BalancerService";
 import { LaunchService } from "services/LaunchService";
 import { BrowserStorageService } from "services/BrowserStorageService";
 
-/**
- * Temp change to Celo as default mainnet
- * https://app.shortcut.com/curvelabs/story/2109/change-default-network-to-celo-temporary
-*/
-const DEFAULT_MAINNET_NETWORK = Networks.Celo;
-const DEFAULT_TESTNET_NETWORK = Networks.Goerli;
 const networkFromEnv = process.env.NETWORK as AllowedNetworks;
-const isMainnet = networkFromEnv === Networks.Mainnet;
+const ENV_IS_MAINNET = isMainnet(networkFromEnv);
 const inDev = process.env.NODE_ENV === "development";
 
 export function configure(aurelia: Aurelia): void {
@@ -136,21 +130,26 @@ export function configure(aurelia: Aurelia): void {
   });
 }
 
+/**
+ * Handle network assignment (storing and local storage)
+ * - Want ENV variables be the strongest
+ * - But since, we offer network selector, should also check, that locally stored
+ *   - Testnet is not going on mainnet
+ *   - and vice versa
+ */
 function getLegalNetwork(locallyStoredNetwork: AllowedNetworks) {
   if (!isNetworkPresent(locallyStoredNetwork)) {
     return networkFromEnv;
   }
 
-  const invalidlyStoredTestnet = isMainnet
-    && [Networks.Alfajores, Networks.Kovan, Networks.Goerli, Networks.Localhost].includes(locallyStoredNetwork);
+  const invalidlyStoredTestnet = ENV_IS_MAINNET && isTestnet(locallyStoredNetwork);
   if (invalidlyStoredTestnet) {
-    return DEFAULT_MAINNET_NETWORK;
+    return networkFromEnv;
   }
 
-  const invalidlyStoredMainnet = !isMainnet
-    && [Networks.Mainnet, Networks.Celo, Networks.Arbitrum].includes(locallyStoredNetwork);
+  const invalidlyStoredMainnet = !ENV_IS_MAINNET && isMainnet(locallyStoredNetwork);
   if (invalidlyStoredMainnet) {
-    return DEFAULT_TESTNET_NETWORK;
+    return networkFromEnv;
   }
 
   const legalNetwork = isLocalhostNetwork(networkFromEnv) ? Networks.Localhost : locallyStoredNetwork;
