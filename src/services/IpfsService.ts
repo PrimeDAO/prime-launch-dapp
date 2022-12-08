@@ -87,7 +87,8 @@ export class IpfsService {
    */
   public getIpfsUrl(hash: string, protocol= "ipfs"): string {
     const format = process.env.IPFS_GATEWAY;
-    const encodedHash = (protocol === "ipfs") ? new CID(hash).toV1().toBaseEncodedString("base32") : hash;
+    // const encodedHash = (protocol === "ipfs") ? new CID(hash).toV1().toBaseEncodedString("base32") : hash;
+    const encodedHash = (protocol === "ipfs") ? new CID(hash).toV0().toBaseEncodedString() : hash;
     return format.replace("${hash}", encodedHash).replace("${protocol}", protocol);
   }
 }

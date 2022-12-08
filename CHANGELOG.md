@@ -1,3 +1,12 @@
+## [2.0.7](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.6...2.0.7) (2022-12-08)
+
+
+### Bug Fixes
+
+* **services.Ipfs:** use v0, since our pinata account has v0 encoding (source: ([2773c2d](https://github.com/PrimeDAO/prime-launch-dapp/commit/2773c2d9e33769204aff0c0c771a0a53fb732785))
+
+
+
 ## [2.0.6](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.5...2.0.6) (2022-12-06)
 
 

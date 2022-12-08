@@ -3,7 +3,7 @@ import { autoinject } from "aurelia-framework";
 import { Contract, ethers } from "ethers";
 import axios from "axios";
 import { ContractNames, ContractsService } from "services/ContractsService";
-import { Address, EthereumService, isLocalhostNetwork, Networks } from "services/EthereumService";
+import { Address, EthereumService, isLocalhostUrl, Networks } from "services/EthereumService";
 import { ConsoleLogService } from "services/ConsoleLogService";
 import { from, Subject } from "rxjs";
 import { concatMap } from "rxjs/operators";
@@ -47,7 +47,7 @@ export class TokenService {
   async initialize(): Promise<TokenListMap> {
     this.geckoCoinInfo = new Map<string, string>();
 
-    if (isLocalhostNetwork()) {
+    if (isLocalhostUrl()) {
       if (CoingeckoData && CoingeckoData.length) {
         CoingeckoData.map((tokenInfo: ITokenInfo) =>
           this.geckoCoinInfo.set(this.getTokenGeckoMapKey(tokenInfo.name, tokenInfo.symbol), tokenInfo.id));
