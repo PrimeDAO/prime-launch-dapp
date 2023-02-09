@@ -1,11 +1,20 @@
-## [2.0.8](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.7...v2.0.8) (2023-02-09)
+## [2.0.9](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.7...v2.0.9) (2023-02-09)
 
 
 ### Bug Fixes
 
+* **launches:** make "test" launches case insensitive ([00e2dba](https://github.com/PrimeDAO/prime-launch-dapp/commit/00e2dba389f7c7bb1849d6c4def05d27ccdc31e4))
 * **seedSale:** await dialog ([a9ef9ec](https://github.com/PrimeDAO/prime-launch-dapp/commit/a9ef9ec285013cafa42306414dffc1c4d4359dcb))
+* **services.Seed:** account for mainnet has seed v1 contracts ([52da800](https://github.com/PrimeDAO/prime-launch-dapp/commit/52da80083b7453d2d20280b14ebfe4c9b777ece5))
+* **services.Seed:** deploySeed: default seedTip ([4d7a583](https://github.com/PrimeDAO/prime-launch-dapp/commit/4d7a583daaa85ba120742f08e44ca21107f7a8e6))
+* **services.Seed:** revert dev code ([9f2b6b3](https://github.com/PrimeDAO/prime-launch-dapp/commit/9f2b6b3aacb7953ab0547861dbe6933095684e39))
 * **services:** add testing and prod pinata gateway logic ([8af9490](https://github.com/PrimeDAO/prime-launch-dapp/commit/8af94908c3e9eb866997987188841103bdcf1ca4))
 * **stage7:** default seedTip ([87505a5](https://github.com/PrimeDAO/prime-launch-dapp/commit/87505a5246ed6b57de818fca932a36e264bfe703))
+
+
+### Features
+
+* **services.Seed:** increase starting block number ([f7f69d0](https://github.com/PrimeDAO/prime-launch-dapp/commit/f7f69d05e2f15e1e0dd81e8f929549f1356e2182))
 
 
 
