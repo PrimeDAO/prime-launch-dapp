@@ -234,8 +234,7 @@ export class SeedService {
       config.tokenDetails.projectTokenInfo);
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 234 ~ pricePerToken", pricePerToken);
 
-    // const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
-    const metaDataHash: Hash = "";
+    const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -265,7 +264,6 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
-    return;
 
     if (isCeloNetworkLike() || isLocalhostNetwork()) {
       if (isNetwork(Networks.Celo)) {
