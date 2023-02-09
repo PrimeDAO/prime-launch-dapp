@@ -237,32 +237,52 @@ export class SeedService {
     const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
-    const seedArguments = [
-      safeAddress,
-      config.launchDetails.adminAddress,
-      [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
-      [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
-      pricePerToken,
-      [
+    let seedArguments;
+    if (isNetwork(Networks.Mainnet)) {
+      /** Mainnet does not have v2 contracts for seed yet. */
+      seedArguments = [
+        safeAddress,
+        config.launchDetails.adminAddress,
+        [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
+        [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
+        pricePerToken,
         // convert from ISO string to Unix epoch seconds
         Date.parse(config.launchDetails.startDate) / 1000,
         // convert from ISO string to Unix epoch seconds
         Date.parse(config.launchDetails.endDate) / 1000,
-      ],
-      [
-        config.launchDetails.individualCap, // inidivCap
-        config.launchDetails.vestingCliff,
-        config.launchDetails.vestingPeriod,
-      ],
-      config.launchDetails.isPermissoned,
-      config.launchDetails.allowList ?? [],
-      [
+        [config.launchDetails.vestingPeriod, config.launchDetails.vestingCliff],
+        config.launchDetails.isPermissoned,
         toWei(((config.launchDetails.seedTip ?? 0.0) / 100) ?? 0.0),
-        0,
-        0,
-      ],
-      Utils.asciiToHex(metaDataHash),
-    ];
+        Utils.asciiToHex(metaDataHash),
+      ];
+    } else {
+      seedArguments = [
+        safeAddress,
+        config.launchDetails.adminAddress,
+        [config.tokenDetails.projectTokenInfo.address, config.launchDetails.fundingTokenInfo.address],
+        [config.launchDetails.fundingTarget, config.launchDetails.fundingMax],
+        pricePerToken,
+        [
+          // convert from ISO string to Unix epoch seconds
+          Date.parse(config.launchDetails.startDate) / 1000,
+          // convert from ISO string to Unix epoch seconds
+          Date.parse(config.launchDetails.endDate) / 1000,
+        ],
+        [
+          config.launchDetails.individualCap, // inidivCap
+          config.launchDetails.vestingCliff,
+          config.launchDetails.vestingPeriod,
+        ],
+        config.launchDetails.isPermissoned,
+        config.launchDetails.allowList ?? [],
+        [
+          toWei(((config.launchDetails.seedTip ?? 0.0) / 100) ?? 0.0),
+          0,
+          0,
+        ],
+        Utils.asciiToHex(metaDataHash),
+      ];
+    }
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
 
     if (isCeloNetworkLike() || isLocalhostNetwork()) {
