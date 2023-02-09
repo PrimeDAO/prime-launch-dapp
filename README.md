@@ -93,8 +93,12 @@ Various code dependencies include:
 ```bash
 npm version [patch|minor|major]
 npm run changelog
-git tag -a v2.0.2 -m "v2.0.2"
+commit with message `chore(release): 2.0.8`
+git tag -a 2.0.8 -m "2.0.8"
 git push --follow-tags
+
+# if fails, remove tag via
+git tag -d v2.0.8
 ```
 
 ## Architecture
