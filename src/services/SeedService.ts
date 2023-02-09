@@ -72,7 +72,8 @@ export class SeedService {
       case Networks.Goerli:
         // this.startingBlockNumber = 7722221;
         // this.startingBlockNumber = 7941589;
-        this.startingBlockNumber = 7951590;
+        // this.startingBlockNumber = 7951590;
+        this.startingBlockNumber = 8453061;
         break;
       case Networks.Arbitrum:
         this.startingBlockNumber = 5288502;
@@ -231,8 +232,10 @@ export class SeedService {
       config.launchDetails.pricePerToken,
       config.launchDetails.fundingTokenInfo,
       config.tokenDetails.projectTokenInfo);
+    /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 234 ~ pricePerToken", pricePerToken);
 
-    const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    // const metaDataHash: Hash = await this.ipfsService.saveString(seedConfigString, `${config.general.projectName}`);
+    const metaDataHash: Hash = "";
     this.consoleLogService.logMessage(`seed registration hash: ${metaDataHash}`, "info");
 
     const seedArguments = [
@@ -262,6 +265,7 @@ export class SeedService {
       Utils.asciiToHex(metaDataHash),
     ];
     /* prettier-ignore */ console.log(">>>> _ >>>> ~ file: SeedService.ts ~ line 253 ~ seedArguments", seedArguments);
+    return;
 
     if (isCeloNetworkLike() || isLocalhostNetwork()) {
       if (isNetwork(Networks.Celo)) {
