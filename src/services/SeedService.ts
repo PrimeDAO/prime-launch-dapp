@@ -255,7 +255,7 @@ export class SeedService {
       config.launchDetails.isPermissoned,
       config.launchDetails.allowList ?? [],
       [
-        toWei((config.launchDetails.seedTip / 100) ?? 0.0),
+        toWei(((config.launchDetails.seedTip ?? 0.0) / 100) ?? 0.0),
         0,
         0,
       ],
