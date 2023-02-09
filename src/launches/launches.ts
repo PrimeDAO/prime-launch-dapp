@@ -129,7 +129,7 @@ export function filterOutTestLaunches(launches: ILaunch[]): ILaunch[] {
 
   const filteredLaunches = launches.filter((launch) => {
     const testIdentifier = "Test";
-    const isTest = launch.metadata.general.projectName.includes(testIdentifier);
+    const isTest = launch.metadata.general.projectName.toLowerCase().includes(testIdentifier);
     const isAccepted = !isTest;
     return isAccepted;
   });
