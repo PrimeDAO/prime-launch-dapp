@@ -1,3 +1,14 @@
+## [2.0.8](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.7...v2.0.8) (2023-02-09)
+
+
+### Bug Fixes
+
+* **seedSale:** await dialog ([a9ef9ec](https://github.com/PrimeDAO/prime-launch-dapp/commit/a9ef9ec285013cafa42306414dffc1c4d4359dcb))
+* **services:** add testing and prod pinata gateway logic ([8af9490](https://github.com/PrimeDAO/prime-launch-dapp/commit/8af94908c3e9eb866997987188841103bdcf1ca4))
+* **stage7:** default seedTip ([87505a5](https://github.com/PrimeDAO/prime-launch-dapp/commit/87505a5246ed6b57de818fca932a36e264bfe703))
+
+
+
 ## [2.0.7](https://github.com/PrimeDAO/prime-launch-dapp/compare/2.0.6...2.0.7) (2022-12-08)
 
 
