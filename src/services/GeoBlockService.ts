@@ -31,6 +31,12 @@ export class GeoBlockService {
     return axios.get(`https://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`)
       .then((response) => {
         return response.data.country_code ?? null;
+      })
+      .catch((error) => {
+        return axios.get(`https://api.ip2location.io`)
+          .then((response) => {
+            return response.data.country_code ?? null;
+          });
       });
   }
 
